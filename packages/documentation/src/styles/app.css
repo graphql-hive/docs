@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+@import 'fumadocs-twoslash/twoslash.css';
+
+.flowchart {
+  --mermaid-node-fill: var(--color-neutral-100);
+  --mermaid-node-stroke: var(--color-neutral-200);
+  --mermaid-arrow: var(--color-neutral-500);
+
+  margin: 1.5rem auto 0 auto;
+
+  & .label text,
+  span {
+    font-size: 14px !important;
+  }
+
+  & div:has(> .nodeLabel) {
+    display: unset !important;
+  }
+}
+
+.dark .flowchart {
+  --mermaid-node-fill: oklch(from var(--color-neutral-50) l c h / 0.5);
+  --mermaid-node-stroke: var(--color-neutral-100);
+  --mermaid-arrow: var(--color-neutral-300);
+}

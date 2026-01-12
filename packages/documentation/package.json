@@ -1,0 +1,46 @@
+{
+  "name": "docs",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "dev": "bun --bun vite dev",
+    "build": "bun --bun vite build",
+    "start": "bun .output/server/index.mjs",
+    "typecheck": "bun --bun fumadocs-mdx && bun --bun tsc --noEmit",
+    "postinstall": "bun --bun fumadocs-mdx",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@sparticuz/chromium": "^143.0.4",
+    "@tanstack/devtools-vite": "^0.4.1",
+    "@tanstack/react-router": "1.147.1",
+    "@tanstack/react-router-devtools": "1.147.1",
+    "@tanstack/react-start": "1.147.1",
+    "fumadocs-core": "16.4.7",
+    "fumadocs-mdx": "14.2.5",
+    "fumadocs-twoslash": "^3.1.12",
+    "fumadocs-ui": "16.4.7",
+    "lucide-react": "^0.562.0",
+    "nitro": "^3.0.1-alpha.1",
+    "nitropack": "^2.13.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "rehype-mermaid": "^3.0.0",
+    "tailwind-merge": "^3.4.0",
+    "twoslash": "^0.3.6",
+    "vite": "^7.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^25.0.5",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
+    "vite-tsconfig-paths": "^6.0.4"
+  }
+}
