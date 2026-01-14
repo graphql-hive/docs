@@ -70,14 +70,15 @@ const serverLoader = createServerFn({
     };
   });
 
-const clientLoader = browserCollections.docs.createClientLoader({
-  component(
-    { toc, frontmatter, default: MDX },
-    // you can define props for the component
-    props: {
-      className?: string;
-    },
-  ) {
+const clientLoader = browserCollections.docs.createClientLoader<{
+  className?: string;
+}>({
+  component(loaded, props) {
+    const { toc, default: MDX } = loaded;
+    const frontmatter = loaded.frontmatter as {
+      title: string;
+      description?: string;
+    };
     return (
       <DocsPage toc={toc} {...props}>
         <DocsTitle>{frontmatter.title}</DocsTitle>

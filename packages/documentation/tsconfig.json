@@ -1,14 +1,14 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "compilerOptions": {
-    "types": ["vite/client"],
+    "types": ["vite/client", "bun"],
+    "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "fumadocs-mdx:collections/*": [".source/*"]
+      "@/*": ["./src/*"]
     },
     "jsx": "react-jsx",
-    "noEmit": true
+    "composite": true
   }
 }
