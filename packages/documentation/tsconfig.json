@@ -8,6 +8,7 @@
       "@/*": ["./src/*"],
       "fumadocs-mdx:collections/*": [".source/*"]
     },
+    "jsx": "react-jsx",
     "noEmit": true
   }
 }
