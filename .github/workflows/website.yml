@@ -38,8 +38,6 @@ jobs:
 
           vercel build --token=$VERCEL_TOKEN $PROD_FLAG
 
-          cp -R src/images .vercel/output/static/for-og
-
           vercel deploy --prebuilt --token=$VERCEL_TOKEN $PROD_FLAG
 
       # TODO: Deploy to Vercel or CloudFlare
