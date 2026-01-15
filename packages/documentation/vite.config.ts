@@ -11,7 +11,14 @@ import tsConfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [
     devtools(),
-    nitro(),
+    nitro(
+      process.env["VERCEL"]
+        ? {
+            preset: "vercel",
+            output: { dir: ".output" },
+          }
+        : {},
+    ),
     mdx(await import("./source.config")),
     tailwindcss(),
     tsConfigPaths({

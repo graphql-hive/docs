@@ -14,9 +14,6 @@ jobs:
       - name: install dependencies
         run: bun install --frozen-lockfile
 
-      - name: build
-        run: bun run build
-
       - name: "temporary deploy to Piotr's Vercel account"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -34,9 +31,11 @@ jobs:
             PROD_FLAG=""
           fi
 
-          vercel pull --yes --token=$VERCEL_TOKEN --environment=$ENV_FLAG
+          # Build with VERCEL preset (outputs to .output/ for prerender compatibility)
+          VERCEL=1 CI=true bun run build
 
-          vercel build --token=$VERCEL_TOKEN $PROD_FLAG
+          # Move output to where vercel deploy --prebuilt expects it
+          mv .output .vercel/output
 
           vercel deploy --prebuilt --token=$VERCEL_TOKEN $PROD_FLAG
 

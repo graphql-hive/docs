@@ -24,11 +24,13 @@
     "@hasparus/eslint-config": "2.0.12",
     "@tsconfig/strictest": "2.0.8",
     "@types/bun": "latest",
+    "docs": "workspace:*",
+    "eslint": "9.39.2",
     "jiti": "2.6.1",
     "prettier": "3.7.4",
+    "srvx": "^0.10.0",
     "turbo": "2.7.4",
-    "typescript": "5.9.3",
-    "eslint": "9.39.2"
+    "typescript": "5.9.3"
   },
   "patchedDependencies": {
     "mermaid-isomorphic@3.0.4": "patches/mermaid-isomorphic@3.0.4.patch"
