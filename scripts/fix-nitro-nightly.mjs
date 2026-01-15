@@ -27,20 +27,20 @@ const nodeModules = join(bunCache, nitroNightlyDir, "node_modules");
 const nitroSymlink = join(nodeModules, "nitro");
 const nitroNightlyPkg = join(nodeModules, "nitro-nightly");
 
-if (existsSync(nitroSymlink)) {
-  const stat = lstatSync(nitroSymlink);
-  if (stat.isSymbolicLink()) {
-    console.log("[fix-nitro-nightly] Symlink already exists");
-    process.exit(0);
-  }
-}
-
 try {
   symlinkSync(nitroNightlyPkg, nitroSymlink);
-  console.log("[fix-nitro-nightly] Created nitro -> nitro-nightly symlink");
 } catch (err) {
   if (err.code === "EEXIST") {
-    console.log("[fix-nitro-nightly] Symlink already exists");
+    const stat = lstatSync(nitroSymlink);
+    if (stat.isSymbolicLink()) {
+      //  symlink already exists, we're good
+      process.exit(0);
+    } else {
+      console.error(
+        "[fix-nitro-nightly] File exists but it's not a symlink:",
+        err.message
+      );
+    }
   } else {
     console.error("[fix-nitro-nightly] Failed to create symlink:", err.message);
     process.exit(1);
