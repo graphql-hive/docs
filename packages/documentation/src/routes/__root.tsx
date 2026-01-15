@@ -1,25 +1,30 @@
-import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
-import * as React from 'react';
-import appCss from '@/styles/app.css?url';
-import { RootProvider } from 'fumadocs-ui/provider/tanstack';
+import appCss from "@/styles/app.css?url";
+import {
+  createRootRoute,
+  HeadContent,
+  Outlet,
+  Scripts,
+} from "@tanstack/react-router";
+import { RootProvider } from "fumadocs-ui/provider/tanstack";
 
 export const Route = createRootRoute({
+  component: RootComponent,
   head: () => ({
+    links: [{ href: appCss, rel: "stylesheet" }],
     meta: [
       {
-        charSet: 'utf-8',
+        // eslint-disable-next-line unicorn/text-encoding-identifier-case
+        charSet: "utf-8",
       },
       {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
+        content: "width=device-width, initial-scale=1",
+        name: "viewport",
       },
       {
-        title: 'Fumadocs on TanStack Start',
+        title: "Fumadocs on TanStack Start",
       },
     ],
-    links: [{ rel: 'stylesheet', href: appCss }],
   }),
-  component: RootComponent,
 });
 
 function RootComponent() {
@@ -32,7 +37,11 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html suppressHydrationWarning>
+    <html
+      lang="en"
+      // todo: investigate if this can be removed
+      suppressHydrationWarning
+    >
       <head>
         <HeadContent />
       </head>

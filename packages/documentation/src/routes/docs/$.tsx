@@ -1,13 +1,13 @@
-import { createFileRoute, notFound } from '@tanstack/react-router';
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
-import { createServerFn } from '@tanstack/react-start';
+import { baseOptions } from '@/lib/layout.shared';
 import { source } from '@/lib/source';
+import { createFileRoute, notFound } from '@tanstack/react-router';
+import { createServerFn } from '@tanstack/react-start';
+import { useFumadocsLoader } from 'fumadocs-core/source/client';
 import browserCollections from 'fumadocs-mdx:collections/browser';
+import * as Twoslash from 'fumadocs-twoslash/ui';
+import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
-import * as Twoslash from 'fumadocs-twoslash/ui';
-import { baseOptions } from '@/lib/layout.shared';
-import { useFumadocsLoader } from 'fumadocs-core/source/client';
 
 export const Route = createFileRoute('/docs/$')({
   component: Page,
@@ -28,14 +28,14 @@ const serverLoader = createServerFn({
     if (!page) throw notFound();
 
     return {
-      path: page.path,
       pageTree: await source.serializePageTree(source.getPageTree()),
+      path: page.path,
     };
   });
 
 const clientLoader = browserCollections.docs.createClientLoader({
   component(
-    { toc, frontmatter, default: MDX },
+    { default: MDX, frontmatter, toc },
     // you can define props for the component
     props: {
       className?: string;
