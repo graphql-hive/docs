@@ -1,22 +1,25 @@
-import { rehypeCodeDefaultOptions } from 'fumadocs-core/mdx-plugins';
-import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
-import { transformerTwoslash } from 'fumadocs-twoslash';
-import rehypeMermaid, { type RehypeMermaidOptions } from 'rehype-mermaid';
+import { rehypeCodeDefaultOptions } from "fumadocs-core/mdx-plugins";
+import { defineConfig, defineDocs } from "fumadocs-mdx/config";
+import { transformerTwoslash } from "fumadocs-twoslash";
+import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 
 export const docs = defineDocs({
-  dir: 'content/docs',
+  dir: "content/docs",
 });
 
 export default defineConfig({
   mdxOptions: {
     // mermaid must run before shiki (rehypeCode) to find raw code blocks
     rehypeCodeOptions: {
-      langs: ['js', 'jsx', 'ts', 'tsx'],
+      langs: ["js", "jsx", "ts", "tsx"],
       themes: {
-        dark: 'github-dark',
-        light: 'github-light',
+        dark: "github-dark",
+        light: "github-light",
       },
-      transformers: [...(rehypeCodeDefaultOptions.transformers ?? []), transformerTwoslash()],
+      transformers: [
+        ...(rehypeCodeDefaultOptions.transformers ?? []),
+        transformerTwoslash(),
+      ],
     },
     rehypePlugins: (plugins) => [mermaidConfig(), ...plugins],
   },
@@ -28,12 +31,12 @@ function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {
     {
       mermaidConfig: {
         flowchart: {
-          defaultRenderer: 'elk',
+          defaultRenderer: "elk",
           padding: 6,
         },
-        fontFamily: 'var(--font-sans)',
-        look: 'classic',
-        theme: 'neutral',
+        fontFamily: "var(--font-sans)",
+        look: "classic",
+        theme: "neutral",
         themeCSS: `
           .node rect {
             fill: var(--mermaid-node-fill);
