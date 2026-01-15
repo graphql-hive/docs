@@ -24,19 +24,12 @@ jobs:
           bun i -g vercel
 
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            ENV_FLAG="production"
             PROD_FLAG="--prod"
           else
-            ENV_FLAG="preview"
             PROD_FLAG=""
           fi
 
-          # Build with VERCEL preset (outputs to .output/ for prerender compatibility)
-          VERCEL=1 CI=true bun run build
-
-          # Move output to where vercel deploy --prebuilt expects it
-          mv .output .vercel/output
-
+          vercel build $PROD_FLAG
           vercel deploy --prebuilt --token=$VERCEL_TOKEN $PROD_FLAG
 
       # TODO: Deploy to Vercel or CloudFlare
