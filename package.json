@@ -12,10 +12,11 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "turbo --ui tui run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
+    "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
     "@hasparus/eslint-config": "2.0.12",
