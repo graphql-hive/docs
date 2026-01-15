@@ -8,7 +8,7 @@
     "build": "bun --bun vite build",
     "start": "bun .output/server/index.mjs",
     "typecheck": "bun --bun fumadocs-mdx && bun --bun tsc --noEmit",
-    "postinstall": "bun --bun fumadocs-mdx",
+    "postinstall": "bun --bun fumadocs-mdx && bun playwright install chromium",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -25,7 +25,7 @@
     "lucide-react": "^0.562.0",
     "nitro": "^3.0.1-alpha.1",
     "nitropack": "^2.13.0",
-    "playwright": "1.53.1",
+    "playwright": "1.57.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "rehype-mermaid": "^3.0.0",
