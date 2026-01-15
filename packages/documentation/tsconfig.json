@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", ".source/**/*.ts"],
   "compilerOptions": {
     "types": ["vite/client", "bun"],
     "rootDir": ".",
@@ -10,6 +10,8 @@
       "fumadocs-mdx:collections/*": ["./.source/*"]
     },
     "jsx": "react-jsx",
-    "composite": true
+    "composite": true,
+    "noEmit": false,
+    "outDir": "dist"
   }
 }

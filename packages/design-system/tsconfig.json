@@ -2,8 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "outDir": "dist",
-    "composite": true
+    "composite": true,
+    "noEmit": false,
+    "outDir": "dist"
   },
   "include": ["src", "eslint.config.ts"],
   "exclude": ["node_modules", "dist"]
