@@ -15,15 +15,56 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: build
-        # TanStack Start prerender server doesn't exit after completion
-        # timeout kills it, then we verify .output exists
-        run: |
-          timeout 300 bun run build || true
-          test -d packages/documentation/.output/server
+        run: bun run build
 
       - name: "temporary deploy to Piotr's Vercel account"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: team_yDNaxOv70B1OWKrLECwUJo5H
+          VERCEL_PROJECT_ID: prj_ISkyItJ2df8zZAS564zOrYQYxCxG
         run: |
-          
+          cd packages/documentation
+          npm i -g vercel
+
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            ENV_FLAG="production"
+            PROD_FLAG="--prod"
+          else
+            ENV_FLAG="preview"
+            PROD_FLAG=""
+          fi
+
+          vercel pull --yes --token=$VERCEL_TOKEN --environment=$ENV_FLAG
+
+          vercel build --token=$VERCEL_TOKEN $PROD_FLAG
+
+          cp -R src/images .vercel/output/static/for-og
+
+          DEPLOYMENT_URL=$(vercel deploy --prebuilt --token=$VERCEL_TOKEN $PROD_FLAG)
+
+          echo "Deployed to: $DEPLOYMENT_URL"
+          # Strip https:// for DEPLOYMENT_ALIAS
+          echo "DEPLOYMENT_ALIAS=${DEPLOYMENT_URL#https://}" >> $GITHUB_ENV
+
+      - name: Create GitHub Preview Deployment
+        if: github.ref_name != 'main'
+        uses: chrnorm/deployment-action@v2
+        with:
+          token: "${{ github.token }}"
+          environment-url: https://${{ env.DEPLOYMENT_ALIAS }}
+          environment: Preview
+          production-environment: false
+          initial-status: success
+
+      - name: Create GitHub Production Deployment
+        if: github.ref_name == 'main'
+        uses: chrnorm/deployment-action@v2
+        with:
+          token: "${{ github.token }}"
+          environment-url: https://${{ env.DEPLOYMENT_ALIAS }}
+          environment: Production
+          production-environment: true
+          initial-status: success
 
       # TODO: Deploy to Vercel or CloudFlare
       # - uses: the-guild-org/shared-config/website-cf@main
