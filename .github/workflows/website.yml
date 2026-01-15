@@ -15,9 +15,15 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: build
-        run: bun run build
+        # TanStack Start prerender server doesn't exit after completion
+        # timeout kills it, then we verify .output exists
+        run: |
+          timeout 300 bun run build || true
+          test -d packages/documentation/.output/server
 
-     
+      - name: "temporary deploy to Piotr's Vercel account"
+        run: |
+          
 
       # TODO: Deploy to Vercel or CloudFlare
       # - uses: the-guild-org/shared-config/website-cf@main

@@ -16,7 +16,8 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "postinstall": "node scripts/fix-nitro-nightly.mjs"
   },
   "devDependencies": {
     "@hasparus/eslint-config": "2.0.12",
@@ -29,5 +30,8 @@
   },
   "patchedDependencies": {
     "mermaid-isomorphic@3.0.4": "patches/mermaid-isomorphic@3.0.4.patch"
+  },
+  "overrides": {
+    "nitro": "npm:nitro-nightly@latest"
   }
 }
