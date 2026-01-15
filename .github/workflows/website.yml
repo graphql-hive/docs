@@ -29,6 +29,7 @@ jobs:
             PROD_FLAG=""
           fi
 
+          vercel pull --yes --token=$VERCEL_TOKEN
           vercel build $PROD_FLAG
           vercel deploy --prebuilt --token=$VERCEL_TOKEN $PROD_FLAG
 
