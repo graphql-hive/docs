@@ -19,7 +19,7 @@ export default defineConfig({
     }),
     tanstackStart({
       prerender: {
-        // TanStack Start prerender broken with Vercel preset (wrong cwd for preview server)
+        // TanStack Start prerender has path bug with Vercel preset
         enabled: false,
       },
     }),

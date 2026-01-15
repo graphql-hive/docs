@@ -5,7 +5,7 @@
   "sideEffects": false,
   "scripts": {
     "dev": "bun --bun vite dev",
-    "build": "bun --bun vite build",
+    "build": "vite build",
     "start": "bun .output/server/index.mjs",
     "typecheck": "bun --bun fumadocs-mdx && bun --bun tsc --noEmit",
     "postinstall": "bun --bun fumadocs-mdx && bun playwright install chromium",
