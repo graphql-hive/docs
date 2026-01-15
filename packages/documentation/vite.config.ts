@@ -10,7 +10,7 @@ import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [
-    devtools(),
+    !process.env["CI"] && devtools(),
     nitro({ preset: "vercel" }),
     mdx(await import("./source.config")),
     tailwindcss(),
@@ -19,7 +19,8 @@ export default defineConfig({
     }),
     tanstackStart({
       prerender: {
-        enabled: true,
+        // TanStack Start prerender broken with Vercel preset (wrong cwd for preview server)
+        enabled: false,
       },
     }),
     react(),
