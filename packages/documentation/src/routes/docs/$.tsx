@@ -14,6 +14,7 @@ import * as Twoslash from "fumadocs-twoslash/ui";
 import { baseOptions } from "@/lib/layout.shared";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
 import { isMarkdownPreferred } from "fumadocs-core/negotiation";
+import { PageActions } from "@/components/page-actions";
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
@@ -26,9 +27,14 @@ export const Route = createFileRoute("/docs/$")({
   server: {
     handlers: {
       GET: async ({ request, params }) => {
-        if (!isMarkdownPreferred(request)) return;
+        const rawSplat = params._splat ?? "";
+        const isMdxRequest = rawSplat.endsWith(".mdx");
+        const slugs = (isMdxRequest ? rawSplat.slice(0, -4) : rawSplat)
+          .split("/")
+          .filter(Boolean);
 
-        const slugs = params._splat?.split("/") ?? [];
+        if (!isMdxRequest && !isMarkdownPreferred(request)) return;
+
         const page = source.getPage(slugs);
         if (!page) {
           return new Response("Not found", {
@@ -66,12 +72,15 @@ const serverLoader = createServerFn({
 
     return {
       path: page.path,
+      url: page.url,
       pageTree: await source.serializePageTree(source.getPageTree()),
     };
   });
 
 const clientLoader = browserCollections.docs.createClientLoader<{
   className?: string;
+  markdownUrl: string;
+  githubUrl: string;
 }>({
   component(loaded, props) {
     const { toc, default: MDX } = loaded;
@@ -80,7 +89,18 @@ const clientLoader = browserCollections.docs.createClientLoader<{
       description?: string;
     };
     return (
-      <DocsPage toc={toc} {...props}>
+      <DocsPage
+        toc={toc}
+        tableOfContent={{
+          footer: (
+            <PageActions
+              markdownUrl={props.markdownUrl}
+              githubUrl={props.githubUrl}
+            />
+          ),
+        }}
+        {...props}
+      >
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <DocsBody>
@@ -103,6 +123,8 @@ function Page() {
     <DocsLayout {...baseOptions()} tree={data.pageTree}>
       {clientLoader.useContent(data.path, {
         className: "",
+        markdownUrl: `${data.url}.mdx`,
+        githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,
       })}
     </DocsLayout>
   );

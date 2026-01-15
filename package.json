@@ -18,6 +18,7 @@
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "@fumadocs/cli": "^1.2.2",
     "@hasparus/eslint-config": "2.0.12",
     "@tsconfig/strictest": "2.0.8",
     "@types/bun": "latest",
@@ -28,5 +29,13 @@
   },
   "patchedDependencies": {
     "mermaid-isomorphic@3.0.4": "patches/mermaid-isomorphic@3.0.4.patch"
+  },
+  "dependencies": {
+    "@radix-ui/react-popover": "^1.1.15",
+    "class-variance-authority": "^0.7.1",
+    "fumadocs-ui": "^16.4.7",
+    "lucide-react": "^0.562.0",
+    "react": "^19.2.3",
+    "tailwind-merge": "^3.4.0"
   }
 }

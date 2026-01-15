@@ -13,9 +13,9 @@ export default defineConfig({
     port: 1440,
   },
   plugins: [
+    mdx(await import("./source.config")),
     devtools(),
     nitro(),
-    mdx(await import("./source.config")),
     tailwindcss(),
     tsConfigPaths({
       projects: ["./tsconfig.json"],
