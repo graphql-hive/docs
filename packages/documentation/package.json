@@ -13,6 +13,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@hive/design-system": "workspace:*",
     "@sparticuz/chromium": "^143.0.4",
     "@tanstack/devtools-vite": "^0.4.1",
     "@tanstack/react-router": "1.147.1",

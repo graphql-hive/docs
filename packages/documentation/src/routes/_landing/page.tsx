@@ -1,40 +1,36 @@
 import { ReactElement } from 'react';
-import { Metadata } from 'next';
+// Guild components
+import { Anchor } from '@hive/design-system/guild-components/components/anchor';
 import {
-  Anchor,
   ArchDecoration,
-  CallToAction,
-  cn,
   DecorationIsolation,
-  GetYourAPIGameRightSection,
-  Heading,
   HighlightDecoration,
-  InfoCard,
   LargeHiveIconDecoration,
-  ToolsAndLibrariesCards,
-} from '@theguild/components';
-import { CheckIcon } from '../components/check-icon';
-import { CommunitySection } from '../components/community-section';
-import { CompanyTestimonialsSection } from '../components/company-testimonials';
-import { EcosystemManagementSection } from '../components/ecosystem-management';
-import { FrequentlyAskedQuestions } from '../components/frequently-asked-questions';
-import { Hero, HeroFeatures, HeroLinks } from '../components/hero';
-import { LandingPageContainer } from '../components/landing-page-container';
-import { LandingPageFeatureTabs } from '../components/landing-page-feature-tabs';
-import { StatsItem, StatsList } from '../components/stats';
-import { TeamSection } from '../components/team-section';
-import { TrustedBySection } from '../components/trusted-by-section';
-import { metadata as rootMetadata } from './layout';
+} from '@hive/design-system/guild-components/components/decorations';
+import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
+import { GetYourAPIGameRightSection } from '@hive/design-system/guild-components/components/get-your-api-game-right-section';
+import { Heading } from '@hive/design-system/guild-components/components/heading';
+import { InfoCard } from '@hive/design-system/guild-components/components/info-card';
+import { ToolsAndLibrariesCards } from '@hive/design-system/guild-components/components/tools-and-libraries-cards';
+import { cn } from '@hive/design-system/guild-components/cn';
+// Hive components
+import { CheckIcon } from '@hive/design-system/hive-components/check-icon';
+import { CommunitySection } from '@hive/design-system/hive-components/community-section';
+import { CompanyTestimonialsSection } from '@hive/design-system/hive-components/company-testimonials';
+import { EcosystemManagementSection } from '@hive/design-system/hive-components/ecosystem-management';
+import { FrequentlyAskedQuestions } from '@hive/design-system/hive-components/frequently-asked-questions';
+import { Hero, HeroFeatures, HeroLinks } from '@hive/design-system/hive-components/hero';
+import { LandingPageContainer } from '@hive/design-system/hive-components/landing-page-container';
+import { LandingPageFeatureTabs } from '@hive/design-system/hive-components/landing-page-feature-tabs';
+import { StatsItem, StatsList } from '@hive/design-system/hive-components/stats';
+import { TeamSection } from '@hive/design-system/hive-components/team-section';
+import { TrustedBySection } from '@hive/design-system/hive-components/trusted-by-section';
 
-export const metadata: Metadata = {
+// TODO: Add proper metadata handling for TanStack Start
+export const metadata = {
   title: 'Open-Source GraphQL Federation Platform',
   description:
     'Fully Open-Source schema registry, analytics and gateway for GraphQL federation and other GraphQL APIs',
-  alternates: {
-    // to remove leading slash
-    canonical: '.',
-  },
-  openGraph: rootMetadata.openGraph,
 };
 
 export default function IndexPage(): ReactElement {
