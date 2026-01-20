@@ -1,8 +1,13 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
-import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import { createServerFn } from "@tanstack/react-start";
+import { PageActions } from "@/components/page-actions";
+import { baseOptions } from "@/lib/layout.shared";
 import { source } from "@/lib/source";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { isMarkdownPreferred } from "fumadocs-core/negotiation";
+import { useFumadocsLoader } from "fumadocs-core/source/client";
 import browserCollections from "fumadocs-mdx:collections/browser";
+import * as Twoslash from "fumadocs-twoslash/ui";
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import {
   DocsBody,
   DocsDescription,
@@ -10,11 +15,6 @@ import {
   DocsTitle,
 } from "fumadocs-ui/layouts/docs/page";
 import defaultMdxComponents from "fumadocs-ui/mdx";
-import * as Twoslash from "fumadocs-twoslash/ui";
-import { baseOptions } from "@/lib/layout.shared";
-import { useFumadocsLoader } from "fumadocs-core/source/client";
-import { isMarkdownPreferred } from "fumadocs-core/negotiation";
-import { PageActions } from "@/components/page-actions";
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/docs/$")({
   },
   server: {
     handlers: {
-      GET: async ({ request, params }) => {
+      GET: async ({ params, request }) => {
         const rawSplat = params._splat ?? "";
         const isMdxRequest = rawSplat.endsWith(".mdx");
         const slugs = (isMdxRequest ? rawSplat.slice(0, -4) : rawSplat)
@@ -38,14 +38,12 @@ export const Route = createFileRoute("/docs/$")({
         const page = source.getPage(slugs);
         if (!page) {
           return new Response("Not found", {
-            status: 404,
             headers: { "Content-Type": "text/plain" },
+            status: 404,
           });
         }
 
-        const getText = (
-          page.data as { getText?: (mode: string) => Promise<string> }
-        ).getText;
+        const {getText} = (page.data as { getText?: (mode: string) => Promise<string> });
         if (!getText) {
           return new Response("getText not available", { status: 500 });
         }
@@ -53,8 +51,8 @@ export const Route = createFileRoute("/docs/$")({
         const content = await getText("raw");
         return new Response(content, {
           headers: {
-            "Content-Type": "text/markdown",
             "Content-Length": String(new TextEncoder().encode(content).length),
+            "Content-Type": "text/markdown",
           },
         });
       },
@@ -71,34 +69,34 @@ const serverLoader = createServerFn({
     if (!page) throw notFound();
 
     return {
+      pageTree: await source.serializePageTree(source.getPageTree()),
       path: page.path,
       url: page.url,
-      pageTree: await source.serializePageTree(source.getPageTree()),
     };
   });
 
 const clientLoader = browserCollections.docs.createClientLoader<{
   className?: string;
-  markdownUrl: string;
   githubUrl: string;
+  markdownUrl: string;
 }>({
   component(loaded, props) {
-    const { toc, default: MDX } = loaded;
+    const { default: MDX, toc } = loaded;
     const frontmatter = loaded.frontmatter as {
-      title: string;
       description?: string;
+      title: string;
     };
     return (
       <DocsPage
-        toc={toc}
         tableOfContent={{
           footer: (
             <PageActions
-              markdownUrl={props.markdownUrl}
               githubUrl={props.githubUrl}
+              markdownUrl={props.markdownUrl}
             />
           ),
         }}
+        toc={toc}
         {...props}
       >
         <DocsTitle>{frontmatter.title}</DocsTitle>
@@ -123,8 +121,8 @@ function Page() {
     <DocsLayout {...baseOptions()} tree={data.pageTree}>
       {clientLoader.useContent(data.path, {
         className: "",
-        markdownUrl: `${data.url}.mdx`,
         githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,
+        markdownUrl: `${data.url}.mdx`,
       })}
     </DocsLayout>
   );

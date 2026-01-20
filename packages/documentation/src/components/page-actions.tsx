@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Check, Copy, Github } from "lucide-react";
 import { useCopyButton } from "fumadocs-ui/utils/use-copy-button";
+import { Check, Copy, Github } from "lucide-react";
+import { useState } from "react";
 
 const cache = new Map<string, string>();
 const actionClass =
@@ -33,7 +33,7 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
   });
 
   return (
-    <button disabled={isLoading} className={actionClass} onClick={onClick}>
+    <button className={actionClass} disabled={isLoading} onClick={onClick}>
       {checked ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
       Copy Markdown
     </button>
@@ -41,20 +41,20 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
 }
 
 export function PageActions({
-  markdownUrl,
   githubUrl,
+  markdownUrl,
 }: {
-  markdownUrl: string;
   githubUrl: string;
+  markdownUrl: string;
 }) {
   return (
     <div className="flex flex-col items-start gap-2">
       <LLMCopyButton markdownUrl={markdownUrl} />
       <a
+        className={actionClass}
         href={githubUrl}
         rel="noreferrer noopener"
         target="_blank"
-        className={actionClass}
       >
         <Github className="size-3.5" />
         View on GitHub

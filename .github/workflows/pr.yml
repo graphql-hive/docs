@@ -1,0 +1,41 @@
+name: pr
+on:
+  pull_request: {}
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+
+  typescript:
+    uses: ./.github/workflows/typescript-typecheck.yml
+
+  # todo: add tests
+  # tests:
+  #   uses: ./.github/workflows/tests.yml
+
+  website-preview:
+    uses: ./.github/workflows/website.yml
+    if: ${{ !github.event.pull_request.head.repo.fork }}
+    secrets: inherit
+
+  # todo: add storybook (or lighter alternative) for the design system
+  # storybook-preview:
+  #   uses: ./.github/workflows/storybook.yml
+  #   if: ${{ !github.event.pull_request.head.repo.fork }}
+  #   secrets: inherit
+
+  # todo: release snapshots of the libraries (if we need them)
+  # alpha:
+  #   uses: the-guild-org/shared-config/.github/workflows/release-snapshot.yml@main
+  #   if: ${{ github.event.pull_request.title != 'Upcoming Release Changes' }}
+  #   with:
+  #     npmTag: alpha
+  #     buildScript: build
+  #     packageManager: bun
+  #   secrets:
+  #     githubToken: ${{ secrets.GITHUB_TOKEN }}
+  #     npmToken: ${{ secrets.NPM_TOKEN }}

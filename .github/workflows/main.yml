@@ -1,0 +1,36 @@
+name: ci
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ci-main
+  cancel-in-progress: false
+
+jobs:
+  code-style:
+    uses: ./.github/workflows/lint.yml
+
+  typescript:
+    uses: ./.github/workflows/typescript-typecheck.yml
+
+  # tests:
+  #   uses: ./.github/workflows/tests.yml
+
+  website:
+    uses: ./.github/workflows/website.yml
+    secrets: inherit
+
+  # storybook:
+  #   uses: ./.github/workflows/storybook.yml
+  #   secrets: inherit
+
+  # release:
+  #   uses: the-guild-org/shared-config/.github/workflows/release.yml@main
+  #   with:
+  #     buildScript: build
+  #     packageManager: bun
+  #   secrets:
+  #     githubToken: ${{ secrets.GITHUB_TOKEN }}
+  #     npmToken: ${{ secrets.NPM_TOKEN }}

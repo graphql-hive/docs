@@ -4,7 +4,7 @@
  * Run with: bun test src/routes/docs/-$.test.ts
  * Requires dev server running: bun run dev
  */
-import { test, expect, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
 
 const BASE_URL = process.env["TEST_URL"] || "http://localhost:1440";
 
