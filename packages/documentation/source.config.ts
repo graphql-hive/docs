@@ -18,7 +18,9 @@ export default defineConfig({
       /**
        * Mermaid must run before Shiki to find unprocessed code blocks.
        */
-      mermaidConfig(), ...plugins],
+      mermaidConfig(),
+      ...plugins,
+    ],
     rehypeCodeOptions: {
       langs: ["js", "jsx", "ts", "tsx"],
       themes: {

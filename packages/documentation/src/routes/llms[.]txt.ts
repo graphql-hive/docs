@@ -16,7 +16,9 @@ export const Route = createFileRoute("/llms.txt")({
           "## Docs",
           "",
           ...pages.map((page) => {
-            const desc = page.data.description ? `: ${page.data.description}` : "";
+            const desc = page.data.description
+              ? `: ${page.data.description}`
+              : "";
             return `- [${page.data.title}](${baseUrl}${page.url}.md)${desc}`;
           }),
         ];
