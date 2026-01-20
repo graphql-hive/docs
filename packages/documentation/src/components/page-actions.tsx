@@ -9,7 +9,7 @@ const actionClass =
   "inline-flex items-center gap-2 text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring disabled:pointer-events-none disabled:opacity-50";
 
 export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
-  const [isLoading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [checked, onClick] = useCopyButton(async () => {
     const cached = cache.get(markdownUrl);
     if (cached) return navigator.clipboard.writeText(cached);
@@ -33,7 +33,7 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
   });
 
   return (
-    <button className={actionClass} disabled={isLoading} onClick={onClick}>
+    <button className={actionClass} disabled={loading} onClick={onClick}>
       {checked ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
       Copy Markdown
     </button>

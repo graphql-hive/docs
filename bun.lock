@@ -6,7 +6,7 @@
       "name": "@scriptorium/monorepo",
       "devDependencies": {
         "@fumadocs/cli": "^1.2.2",
-        "@hasparus/eslint-config": "2.0.12",
+        "@hasparus/eslint-config": "2.0.17",
         "@tsconfig/strictest": "2.0.8",
         "@types/bun": "latest",
         "docs": "workspace:*",
@@ -231,7 +231,7 @@
 
     "@fumadocs/ui": ["@fumadocs/ui@16.4.7", "", { "dependencies": { "next-themes": "^0.4.6", "postcss-selector-parser": "^7.1.1", "tailwind-merge": "^3.4.0" }, "peerDependencies": { "@types/react": "*", "fumadocs-core": "16.4.7", "next": "16.x.x", "react": "^19.2.0", "react-dom": "^19.2.0", "tailwindcss": "^4.0.0" }, "optionalPeers": ["@types/react", "next", "tailwindcss"] }, "sha512-NnkMIN5BzBRh2OzA9rp2SgbGEkEwfCfq0sE4vq2n+GkIDIggicGYUNgSl2gtIBQsKYKP/a4/0wrkQKdq4eUJlw=="],
 
-    "@hasparus/eslint-config": ["@hasparus/eslint-config@2.0.12", "", { "dependencies": { "@eslint/eslintrc": "3.3.3", "@eslint/js": "9.17.0", "@theguild/eslint-config": "0.13.4", "eslint-plugin-import": "2.32.0", "eslint-plugin-jsonc": "2.21.0", "eslint-plugin-jsx-a11y": "6.10.2", "eslint-plugin-mdx": "3.6.2", "eslint-plugin-n": "17.23.1", "eslint-plugin-perfectionist": "4.6.0", "eslint-plugin-promise": "7.2.1", "eslint-plugin-react": "7.37.5", "eslint-plugin-react-hooks": "7.0.1", "eslint-plugin-sonarjs": "3.0.5", "eslint-plugin-unicorn": "62.0.0", "eslint-plugin-yml": "1.19.1", "globals": "15.14.0", "typescript-eslint": "8.18.2" }, "peerDependencies": { "eslint": "^9.0.0", "typescript": "^5.0.0" } }, "sha512-5WfvspuBeu6bxVbi7YT7wQE9NJM+RGoKlzzSGleSPXTaxTiY5ywcfjprFc0fogsFLmwfrzyhDZrtQrX3qZkEEQ=="],
+    "@hasparus/eslint-config": ["@hasparus/eslint-config@2.0.17", "", { "dependencies": { "@eslint/eslintrc": "3.3.3", "@eslint/js": "9.17.0", "@theguild/eslint-config": "0.13.4", "eslint-plugin-import": "2.32.0", "eslint-plugin-jsonc": "2.21.0", "eslint-plugin-jsx-a11y": "6.10.2", "eslint-plugin-mdx": "3.6.2", "eslint-plugin-n": "17.23.1", "eslint-plugin-perfectionist": "4.6.0", "eslint-plugin-promise": "7.2.1", "eslint-plugin-react": "7.37.5", "eslint-plugin-react-hooks": "7.0.1", "eslint-plugin-sonarjs": "3.0.5", "eslint-plugin-unicorn": "62.0.0", "eslint-plugin-yml": "1.19.1", "globals": "15.14.0", "typescript-eslint": "8.18.2" }, "peerDependencies": { "eslint": "^9.0.0", "typescript": "^5.0.0" } }, "sha512-4EO7HPWHcgK3QV6Oa/rCrTzFUh/k/RIofCUP1voSicUCRaxsoStiWp12lD3vjfLwJhc562r7RfhA4Sr07QMNiQ=="],
 
     "@humanfs/core": ["@humanfs/core@0.19.1", "", {}, "sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA=="],
 

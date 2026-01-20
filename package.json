@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@fumadocs/cli": "^1.2.2",
-    "@hasparus/eslint-config": "2.0.12",
+    "@hasparus/eslint-config": "2.0.17",
     "@tsconfig/strictest": "2.0.8",
     "@types/bun": "latest",
     "docs": "workspace:*",
