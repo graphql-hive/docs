@@ -11,7 +11,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useLocation } from '@tanstack/react-router';
 import cn from 'clsx';
 import {
   Tab as HeadlessTab,
@@ -221,7 +221,8 @@ function useActiveTabFromURL(
   id: string,
 ) {
   const hash = useHash();
-  const searchParams = useSearchParams();
+  const { searchStr } = useLocation();
+  const searchParams = new URLSearchParams(searchStr);
   const tabsInSearchParams = searchParams.getAll(searchParamKey).sort();
 
   const tabIndexFromSearchParams = items.findIndex((_, index) =>

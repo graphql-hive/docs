@@ -7,7 +7,6 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "next/navigation": ["./src/next-replacements/navigation.ts"],
       "nextra-theme-docs": ["./src/nextra-stubs/theme-docs.ts"],
       "nextra/components": ["./src/nextra-stubs/components.tsx"],
       "nextra/hooks": ["./src/nextra-stubs/hooks.ts"],

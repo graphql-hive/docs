@@ -11,7 +11,7 @@ import React, {
   useRef,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { usePathname } from 'next/navigation';
+import { useLocation } from '@tanstack/react-router';
 import { setMenu, useMenu } from 'nextra-theme-docs';
 import { Search } from 'nextra/components';
 import { useMounted } from 'nextra/hooks';
@@ -206,7 +206,7 @@ interface ProductsMenuProps extends MenuContentColumnsProps {
  */
 export const ProductsMenu = React.forwardRef<HTMLDivElement, ProductsMenuProps>(
   ({ productName, ...rest }, ref) => {
-    const pathname = usePathname();
+    const { pathname } = useLocation();
 
     const bidirectionalProductLink = (product: (typeof PRODUCTS)[keyof typeof PRODUCTS]) => {
       if (productName === product.name) {
