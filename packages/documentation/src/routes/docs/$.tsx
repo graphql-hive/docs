@@ -3,7 +3,6 @@ import { baseOptions } from "@/lib/layout.shared";
 import { source } from "@/lib/source";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { isMarkdownPreferred } from "fumadocs-core/negotiation";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
 import browserCollections from "fumadocs-mdx:collections/browser";
 import * as Twoslash from "fumadocs-twoslash/ui";
@@ -19,46 +18,10 @@ import defaultMdxComponents from "fumadocs-ui/mdx";
 export const Route = createFileRoute("/docs/$")({
   component: Page,
   loader: async ({ params }) => {
-    const slugs = params._splat?.split("/") ?? [];
+    const slugs = params._splat?.split("/").filter(Boolean) ?? [];
     const data = await serverLoader({ data: slugs });
     await clientLoader.preload(data.path);
     return data;
-  },
-  server: {
-    handlers: {
-      GET: async ({ params, request }) => {
-        const rawSplat = params._splat ?? "";
-        const isMdxRequest = rawSplat.endsWith(".mdx");
-        const slugs = (isMdxRequest ? rawSplat.slice(0, -4) : rawSplat)
-          .split("/")
-          .filter(Boolean);
-
-        if (!isMdxRequest && !isMarkdownPreferred(request)) return;
-
-        const page = source.getPage(slugs);
-        if (!page) {
-          return new Response("Not found", {
-            headers: { "Content-Type": "text/plain" },
-            status: 404,
-          });
-        }
-
-        const { getText } = page.data as {
-          getText?: (mode: string) => Promise<string>;
-        };
-        if (!getText) {
-          return new Response("getText not available", { status: 500 });
-        }
-
-        const content = await getText("raw");
-        return new Response(content, {
-          headers: {
-            "Content-Length": String(new TextEncoder().encode(content).length),
-            "Content-Type": "text/markdown",
-          },
-        });
-      },
-    },
   },
 });
 
