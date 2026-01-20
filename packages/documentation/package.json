@@ -10,7 +10,8 @@
     "typecheck": "bun --bun fumadocs-mdx && bun --bun tsc --noEmit",
     "postinstall": "bun --bun fumadocs-mdx && bun playwright install chromium",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "bun test"
   },
   "dependencies": {
     "@sparticuz/chromium": "^143.0.4",
