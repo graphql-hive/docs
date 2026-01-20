@@ -43,7 +43,9 @@ export const Route = createFileRoute("/docs/$")({
           });
         }
 
-        const {getText} = (page.data as { getText?: (mode: string) => Promise<string> });
+        const { getText } = page.data as {
+          getText?: (mode: string) => Promise<string>;
+        };
         if (!getText) {
           return new Response("getText not available", { status: 500 });
         }

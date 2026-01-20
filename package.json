@@ -17,12 +17,13 @@
     "lint:fix": "turbo run lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
+    "fix": "bun lint:fix && bun format",
     "typecheck": "turbo run typecheck",
     "postinstall": "node scripts/fix-nitro-nightly.mjs"
   },
   "devDependencies": {
     "@fumadocs/cli": "^1.2.2",
-    "@hasparus/eslint-config": "2.0.12",
+    "@hasparus/eslint-config": "2.0.15",
     "@tsconfig/strictest": "2.0.8",
     "@types/bun": "latest",
     "docs": "workspace:*",

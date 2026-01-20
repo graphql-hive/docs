@@ -1,6 +1,6 @@
+import { rehypeCodeDefaultOptions } from "fumadocs-core/mdx-plugins";
 import { defineConfig, defineDocs } from "fumadocs-mdx/config";
 import { transformerTwoslash } from "fumadocs-twoslash";
-import { rehypeCodeDefaultOptions } from "fumadocs-core/mdx-plugins";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 
 export const docs = defineDocs({
@@ -35,13 +35,13 @@ function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {
     rehypeMermaid,
     {
       mermaidConfig: {
-        fontFamily: "var(--font-sans)",
-        theme: "neutral",
-        look: "classic",
         flowchart: {
           defaultRenderer: "elk",
           padding: 6,
         },
+        fontFamily: "var(--font-sans)",
+        look: "classic",
+        theme: "neutral",
         themeCSS: `
           .node rect {
             fill: var(--mermaid-node-fill);
