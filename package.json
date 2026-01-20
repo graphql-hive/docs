@@ -12,21 +12,30 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "turbo --ui tui run dev",
     "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "format:check": "prettier --check \"**/*.{ts,tsx,md}\"",
+    "typecheck": "turbo run typecheck",
+    "postinstall": "node scripts/fix-nitro-nightly.mjs"
   },
   "devDependencies": {
     "@hasparus/eslint-config": "2.0.12",
     "@tsconfig/strictest": "2.0.8",
     "@types/bun": "latest",
+    "docs": "workspace:*",
+    "eslint": "9.39.2",
     "jiti": "2.6.1",
     "prettier": "3.7.4",
+    "srvx": "^0.10.0",
     "turbo": "2.7.4",
     "typescript": "5.9.3"
   },
   "patchedDependencies": {
     "mermaid-isomorphic@3.0.4": "patches/mermaid-isomorphic@3.0.4.patch"
+  },
+  "overrides": {
+    "nitro": "npm:nitro-nightly@latest"
   }
 }
