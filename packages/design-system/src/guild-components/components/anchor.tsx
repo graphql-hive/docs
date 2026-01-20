@@ -1,5 +1,5 @@
 import { forwardRef, ReactElement } from 'react';
-import NextLink from 'next/link';
+import { Link } from '@tanstack/react-router';
 import { cn } from '../cn';
 import { ILink } from '../types/components';
 
@@ -9,36 +9,37 @@ export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(function Anchor
   forwardedRef,
 ): ReactElement {
   const classes = cn('outline-none focus-visible:ring', className);
+  const hrefString = typeof href === 'string' ? href : href?.pathname ?? '';
 
-  if (typeof href === 'string') {
-    if (href.startsWith('#')) {
-      return (
-        <a ref={forwardedRef} href={href} className={classes} {...props}>
-          {children}
-        </a>
-      );
-    }
-
-    if (newWindow && /^https?:\/\//.test(href)) {
-      return (
-        <a
-          ref={forwardedRef}
-          href={href}
-          target="_blank"
-          rel="noreferrer"
-          className={classes}
-          {...props}
-        >
-          {children}
-        </a>
-      );
-    }
+  // Hash links
+  if (hrefString.startsWith('#')) {
+    return (
+      <a ref={forwardedRef} href={hrefString} className={classes} {...props}>
+        {children}
+      </a>
+    );
   }
 
+  // External links
+  if (newWindow || /^https?:\/\//.test(hrefString)) {
+    return (
+      <a
+        ref={forwardedRef}
+        href={hrefString}
+        target="_blank"
+        rel="noreferrer"
+        className={classes}
+        {...props}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  // Internal links - use TanStack Router Link
   return (
-    <NextLink ref={forwardedRef} href={href} {...props} className={classes} legacyBehavior={false}>
-      {/* eslint-disable-next-line react/jsx-no-useless-fragment -- Fragment needed to fix Error: React.Children.only expected to receive a single React element child */}
-      <>{children}</>
-    </NextLink>
+    <Link ref={forwardedRef} to={hrefString} className={classes} {...props}>
+      {children}
+    </Link>
   );
 });

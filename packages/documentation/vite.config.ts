@@ -28,9 +28,16 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("src", import.meta.url)),
+      "@hive/design-system": fileURLToPath(
+        new URL("../design-system/src", import.meta.url)
+      ),
     },
   },
   server: {
     port: 1440,
+  },
+  ssr: {
+    // Ensure workspace packages and their deps are bundled
+    noExternal: ["@hive/design-system", "clsx", "tailwind-merge"],
   },
 });
