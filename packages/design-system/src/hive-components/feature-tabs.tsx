@@ -16,7 +16,7 @@ type StaticImageData = { src: string; width: number; height: number; blurDataURL
 export type Highlight = {
   title: string;
   description: string;
-  image?: StaticImageData;
+  image?: string | StaticImageData;
   link?: string;
 };
 
@@ -300,8 +300,8 @@ export function ActiveHighlightImage() {
               <Image
                 width={925} // max rendered width is 880px
                 height={578} // max rendered height is 618px, and the usual is 554px
-                src={highlight.image.src}
-                background={highlight.image.blurDataURL}
+                src={typeof highlight.image === 'string' ? highlight.image : highlight.image.src}
+                background={typeof highlight.image === 'object' ? highlight.image.blurDataURL : undefined}
                 className="absolute left-6 top-[24px] h-[calc(100%-24px)] rounded-tl-3xl object-cover object-left lg:left-[55px] lg:top-[108px] lg:h-[calc(100%-108px)]"
                 role="presentation"
                 alt=""

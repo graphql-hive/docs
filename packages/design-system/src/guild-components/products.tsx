@@ -61,7 +61,7 @@ export interface ProductInfo {
   name: string;
   title: string;
   href: `https://${string}`;
-  logo: FC<SVGProps<SVGElement>> | FC<HTMLProps<HTMLElement>>;
+  logo: FC<SVGProps<SVGSVGElement>> | FC<HTMLProps<HTMLElement>>;
   primaryColor: `#${string}`;
 }
 
