@@ -37,8 +37,10 @@ export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(function Anchor
   }
 
   // Internal links - use TanStack Router Link
+  // Filter out props that TanStack Router Link doesn't accept
+  const { target, rel, ...linkProps } = props;
   return (
-    <Link ref={forwardedRef} to={hrefString} className={classes} {...props}>
+    <Link ref={forwardedRef} to={hrefString} className={classes} {...linkProps}>
       {children}
     </Link>
   );

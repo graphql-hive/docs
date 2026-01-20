@@ -2,22 +2,24 @@
 
 import { Component } from 'react';
 
-export class ErrorBoundary extends Component<{
-  fallback: React.ReactNode;
-  children: React.ReactNode;
-}> {
-  state = { hasError: false };
+type State = { hasError: boolean };
+
+export class ErrorBoundary extends Component<
+  { fallback: React.ReactNode; children: React.ReactNode },
+  State
+> {
+  override state: State = { hasError: false };
 
   static getDerivedStateFromError(error: Error) {
     console.error(error);
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, info: { componentStack: string }) {
+  override componentDidCatch(error: Error, info: { componentStack: string }) {
     console.error(error, info);
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       return this.props.fallback;
     }

@@ -1,5 +1,9 @@
-import Image, { StaticImageData } from 'next/image';
-import { Anchor, cn } from '@theguild/components';
+import { Image } from '@unpic/react';
+import { Anchor } from '../guild-components/components/anchor';
+import { cn } from '../guild-components/cn';
+
+// Type for static image imports (Vite/webpack)
+type StaticImageData = { src: string; width: number; height: number; blurDataURL?: string };
 
 export interface LinkCardProps extends React.HTMLAttributes<HTMLAnchorElement> {
   description?: string;
@@ -18,13 +22,15 @@ export function LinkCard({
   className,
   ...rest
 }: LinkCardProps) {
+  const imgSrc = typeof src === 'string' ? src : src.src;
+
   if (!title && !description) {
     return (
       <Anchor
         href={href}
         className="border-beige-200 mt-6 block overflow-hidden rounded-2xl border dark:border-neutral-800"
       >
-        <Image src={src} alt={alt || ''} />
+        <Image src={imgSrc} alt={alt || ''} layout="fullWidth" />
       </Anchor>
     );
   }
@@ -43,7 +49,7 @@ export function LinkCard({
         <p className="text-sm">{description}</p>
       </span>
       <Image
-        src={src}
+        src={imgSrc}
         alt={alt || ''}
         role="presentation"
         width={286}

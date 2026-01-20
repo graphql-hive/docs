@@ -39,14 +39,16 @@ export function MainProductCard({ as: Root, product, className, ...rest }: Produ
         <Icon className="mt-8" />
         <ArrowIcon className="absolute bottom-8 right-8" />
         <DecorationIsolation>
-          <Decoration
-            strokeWidth="0.5px"
-            className={cn(
-              'stroke-white/70',
-              'pointer-events-none absolute bottom-0 right-0 h-full opacity-0 transition-opacity duration-500 group-focus-within:opacity-100 group-hover:opacity-100',
-            )}
-            fill={`url(#${id})`}
-          />
+          {Decoration && (
+            <Decoration
+              strokeWidth="0.5px"
+              className={cn(
+                'stroke-white/70',
+                'pointer-events-none absolute bottom-0 right-0 h-full opacity-0 transition-opacity duration-500 group-focus-within:opacity-100 group-hover:opacity-100',
+              )}
+              fill={`url(#${id})`}
+            />
+          )}
           <svg
             // To remove from layout, but we can't use `display: none` because it breaks the gradient
             className="size-0"

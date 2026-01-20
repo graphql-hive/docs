@@ -1,18 +1,23 @@
 'use client';
 
 import { ReactNode, useState } from 'react';
-import { LuGlobeLock, LuPackage, LuUserRound } from 'react-icons/lu';
-import {
-  CallToAction,
-  cn,
-  Heading,
-  ComparisonTable as Table,
-  TextLink,
-} from '@theguild/components';
-import { CheckmarkIcon, XIcon } from '../../app/gateway/federation-compatible-benchmarks/icons';
+import { CallToAction } from '../../guild-components/components/call-to-action';
+import { cn } from '../../guild-components/cn';
+import { Heading } from '../../guild-components/components/heading';
+import { ComparisonTable as Table } from '../../guild-components/components/comparison-table';
+import { TextLink } from '../../guild-components/components/text-link';
 import { GatewayIcon } from '../icons';
 import { NestedSticky } from '../nested-sticky';
-import { AvailabilityIcon, EnterpriseSupportIcon, UsageIcon } from './icons';
+import {
+  AvailabilityIcon,
+  CheckmarkIcon,
+  EnterpriseSupportIcon,
+  GlobeLockIcon as LuGlobeLock,
+  PackageIcon as LuPackage,
+  UsageIcon,
+  UserRoundIcon as LuUserRound,
+  XIcon,
+} from './icons';
 
 type PlanName = 'Hobby' | 'Pro' | 'Enterprise';
 interface PricingPlan {

@@ -1,9 +1,8 @@
 import { ReactElement } from 'react';
-import { StaticImageData } from 'next/image';
 import clsx from 'clsx';
 import { IHeroMarketplaceProps } from '../types/components';
 import { Button } from './button';
-import { Image } from './image';
+import { Image, StaticImageData } from './image';
 import CubeBL from '../static/illustrations/marketplace-cube-bl.png';
 import CubeBR from '../static/illustrations/marketplace-cube-br.png';
 import CubeTL from '../static/illustrations/marketplace-cube-tl.png';

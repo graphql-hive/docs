@@ -68,6 +68,7 @@ export const MarketplaceSearch = ({
 
       return queryList.items.filter(e => matchedResults.includes(e.title.toLowerCase()));
     }
+    return undefined;
   }, [query, queryList]);
 
   return (

@@ -1,12 +1,22 @@
 'use client';
 
-import { FC } from 'react';
-import { addBasePath } from 'next/dist/client/add-base-path';
+import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { useMounted } from 'nextra/hooks';
-import ReactPlayer from 'react-player/lazy';
 import { IHeroVideoProps } from '../types/components';
 import { Anchor } from './anchor';
+
+// Simple hook to check if component is mounted (replaces nextra/hooks useMounted)
+function useMounted() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  return mounted;
+}
+
+// Extract YouTube video ID from URL
+function getYouTubeId(url: string): string | null {
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/);
+  return match?.[1] ?? null;
+}
 
 export const HeroVideo: FC<IHeroVideoProps> = ({
   title,
@@ -15,10 +25,10 @@ export const HeroVideo: FC<IHeroVideoProps> = ({
   video,
   flipped,
   className,
-  videoProps,
 }) => {
-  // fixes Hydration failed error
   const mounted = useMounted();
+  const youtubeId = getYouTubeId(video.src);
+
   return (
     <section className={clsx('bg-gray-100 dark:bg-neutral-800', className)}>
       <div
@@ -50,25 +60,21 @@ export const HeroVideo: FC<IHeroVideoProps> = ({
             flipped ? 'md:mr-8' : 'md:ml-8',
           )}
         >
-          {mounted && (
-            <ReactPlayer
-              url={video.src}
-              light={
-                video.placeholder.startsWith('/')
-                  ? addBasePath(video.placeholder)
-                  : video.placeholder
-              }
+          {mounted && youtubeId && (
+            <iframe
+              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0`}
+              title={typeof title === 'string' ? title : 'Video'}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="size-full border-0"
+            />
+          )}
+          {mounted && !youtubeId && (
+            <video
+              src={video.src}
+              poster={video.placeholder}
               controls
-              height="100%"
-              width="100%"
-              config={{
-                youtube: {
-                  playerVars: {
-                    autoplay: 1,
-                  },
-                },
-              }}
-              {...videoProps}
+              className="size-full object-cover"
             />
           )}
         </div>

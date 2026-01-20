@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { cn } from '@theguild/components';
+import { cn } from '../guild-components/cn';
 
 export interface LargeCalloutProps extends React.HTMLAttributes<HTMLDivElement> {
   icon?: ReactNode;

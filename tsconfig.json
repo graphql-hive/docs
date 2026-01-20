@@ -6,7 +6,8 @@
     "moduleResolution": "Bundler",
     "target": "ESNext",
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "exactOptionalPropertyTypes": false
   },
   "exclude": ["node_modules"],
   "references": [

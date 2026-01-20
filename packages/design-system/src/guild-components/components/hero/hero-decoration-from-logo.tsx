@@ -1,10 +1,10 @@
-import { cloneElement, ReactElement } from 'react';
+import { cloneElement, ReactElement, SVGProps } from 'react';
 import { cn } from '../../cn';
 import { DecorationIsolation, DecorationIsolationProps } from '../decorations';
 import { GRADIENT_WHITE_2_ID } from './hero-gradient-ids';
 
 export interface HeroDecorationFromLogoProps extends DecorationIsolationProps {
-  logo: ReactElement;
+  logo: ReactElement<SVGProps<SVGSVGElement>>;
 }
 
 export function HeroDecorationFromLogo({ logo, ...rest }: HeroDecorationFromLogoProps) {

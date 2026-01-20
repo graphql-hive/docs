@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useId, useRef, useState } from 'react';
-import NextLink from 'next/link';
+import { Link as NextLink } from '@tanstack/react-router';
 import { cn } from '../cn';
 
 interface DropdownContextValue {
@@ -10,9 +10,9 @@ interface DropdownContextValue {
   isHovering: boolean;
   setIsHovering: (value: boolean) => void;
   buttonId: string;
-  buttonRef: React.RefObject<HTMLButtonElement>;
+  buttonRef: React.RefObject<HTMLButtonElement | null>;
   menuId: string;
-  menuRef: React.RefObject<HTMLDivElement>;
+  menuRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const DropdownContext = createContext<DropdownContextValue | null>(null);
@@ -169,8 +169,17 @@ interface DropdownItemProps extends React.HTMLAttributes<HTMLElement> {
 
 export function DropdownItem({ children, onClick, className, href, ...props }: DropdownItemProps) {
   if (href) {
+    // For external links, use anchor tag
+    if (href.startsWith('http') || href.startsWith('mailto:')) {
+      return (
+        <a role="menuitem" href={href} className={className} onClick={onClick} target="_blank" rel="noreferrer" {...props}>
+          {children}
+        </a>
+      );
+    }
+    // For internal links, use TanStack Router
     return (
-      <NextLink role="menuitem" href={href} className={className} onClick={onClick} {...props}>
+      <NextLink role="menuitem" to={href} className={className} onClick={onClick} {...props}>
         {children}
       </NextLink>
     );

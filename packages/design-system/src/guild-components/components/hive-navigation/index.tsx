@@ -560,7 +560,10 @@ const TopOfSiteMarker: FC<{
     if (mounted && markerRef.current) {
       const marker = markerRef.current;
       const observer = new IntersectionObserver(entries => {
-        onChangeRef.current(entries[0].boundingClientRect.y < -1);
+        const entry = entries[0];
+        if (entry) {
+          onChangeRef.current(entry.boundingClientRect.y < -1);
+        }
       });
       observer.observe(markerRef.current);
 
@@ -568,6 +571,7 @@ const TopOfSiteMarker: FC<{
         observer.unobserve(marker);
       };
     }
+    return undefined;
   }, [mounted]);
 
   // We can't create a portal to document.body if we are not in the browser.

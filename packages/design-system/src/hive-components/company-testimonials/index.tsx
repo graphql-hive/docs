@@ -1,11 +1,15 @@
 'use client';
 
 import React, { Fragment, useRef } from 'react';
-import Head from 'next/head';
-import Image, { StaticImageData } from 'next/image';
-import * as Tabs from '@radix-ui/react-tabs';
-import { CallToAction, cn, Heading } from '@theguild/components';
+import { Image } from '@unpic/react';
+import { Tabs } from '@base-ui-components/react/tabs';
+import { CallToAction } from '../../guild-components/components/call-to-action';
+import { cn } from '../../guild-components/cn';
+import { Heading } from '../../guild-components/components/heading';
 import { ArrowIcon } from '../arrow-icon';
+
+// Type for static image imports (Vite/webpack)
+type StaticImageData = { src: string; width: number; height: number; blurDataURL?: string };
 import {
   KarrotLogo,
   NacelleLogo,
@@ -90,7 +94,7 @@ const testimonials: Testimonial[] = [
 export function CompanyTestimonialsSection({ className }: { className?: string }) {
   const tabsListRef = useRef<HTMLDivElement>(null);
   const scrollviewRef = React.useRef<HTMLDivElement>(null);
-  const updateDotsOnScroll = useRef<(event: React.UIEvent) => void>();
+  const updateDotsOnScroll = useRef<() => void>(undefined);
   updateDotsOnScroll.current ||= debounce(() => {
     const scrollview = scrollviewRef.current;
     const tabsList = tabsListRef.current;
@@ -101,18 +105,16 @@ export function CompanyTestimonialsSection({ className }: { className?: string }
 
     const tabs = tabsList.querySelectorAll('[role="tab"]');
     for (const [i, tab] of tabs.entries()) {
-      tab.setAttribute('data-state', i === index ? 'active' : 'inactive');
+      if (i === index) {
+        tab.setAttribute('data-selected', '');
+      } else {
+        tab.removeAttribute('data-selected');
+      }
     }
   }, 50);
 
   return (
-    <>
-      <Head>
-        {/* not preloading nacelle, because it's rendered from the get go, but below the fold */}
-        <link rel="preload" href={karrotPicture.src} as="image" />
-        <link rel="preload" href={wealthsimplePicture.src} as="image" />
-      </Head>
-      <section
+    <section
         className={cn(
           'bg-beige-100 text-green-1000 relative overflow-hidden rounded-3xl px-4 py-6 md:p-10 lg:p-[72px]',
           className,
@@ -122,11 +124,11 @@ export function CompanyTestimonialsSection({ className }: { className?: string }
           Loved by Developers, Trusted by Businesses
         </Heading>
         <Tabs.Root
-          defaultValue={testimonials[0].company}
+          defaultValue={testimonials[0]?.company}
           className="flex flex-col overflow-hidden"
           // we need scrolling for mobile, so this can't be changed to a state-driven opacity transition
           onValueChange={value => {
-            const id = getTestimonialId(value);
+            const id = getTestimonialId(value as string);
             const element = document.getElementById(id)?.parentElement;
             const scrollview = scrollviewRef.current;
 
@@ -143,14 +145,14 @@ export function CompanyTestimonialsSection({ className }: { className?: string }
             {testimonials.map(testimonial => {
               const Logo = testimonial.logo;
               return (
-                <Tabs.Trigger
+                <Tabs.Tab
                   key={testimonial.company}
                   value={testimonial.company}
-                  className='hive-focus lg:rdx-state-active:bg-white rdx-state-active:text-green-1000 lg:rdx-state-active:border-beige-600 flex flex-1 grow-0 items-center justify-center rounded-[15px] border-transparent p-0.5 font-medium leading-6 text-green-800 lg:grow lg:border lg:bg-transparent lg:p-4 [&[data-state="active"]>:first-child]:bg-blue-400'
+                  className='hive-focus lg:data-[selected]:bg-white data-[selected]:text-green-1000 lg:data-[selected]:border-beige-600 flex flex-1 grow-0 items-center justify-center rounded-[15px] border-transparent p-0.5 font-medium leading-6 text-green-800 lg:grow lg:border lg:bg-transparent lg:p-4 [&[data-selected]>:first-child]:bg-blue-400'
                 >
                   <div className="size-2 rounded-full bg-blue-200 transition-colors lg:hidden" />
                   <Logo title={testimonial.company} height={32} className="max-lg:sr-only" />
-                </Tabs.Trigger>
+                </Tabs.Tab>
               );
             })}
           </Tabs.List>
@@ -163,23 +165,23 @@ export function CompanyTestimonialsSection({ className }: { className?: string }
             {testimonials.map(
               ({ company, data, caseStudyHref, text, picture, person, logo: Logo }) => {
                 return (
-                  <Tabs.Content
+                  <Tabs.Panel
                     key={company}
                     value={company}
                     tabIndex={-1}
                     className={cn(
                       'relative flex w-full shrink-0 snap-center flex-col outline-none',
                       'gap-6 md:flex-row lg:gap-12',
-                      'lg:data-[state="inactive"]:hidden',
+                      'lg:data-[hidden]:hidden',
                       caseStudyHref
-                        ? 'data-[state="active"]:pb-[72px] lg:data-[state="active"]:pb-0'
+                        ? 'not-data-[hidden]:pb-[72px] lg:not-data-[hidden]:pb-0'
                         : 'max-lg:pb-8',
                     )}
-                    forceMount // we mount everything, as we scroll through tabs on mobile
+                    keepMounted // we mount everything, as we scroll through tabs on mobile
                   >
                     {picture && (
                       <Image
-                        src={picture.img}
+                        src={typeof picture.img === 'string' ? picture.img : picture.img.src}
                         role="presentation"
                         alt=""
                         width={300}
@@ -233,14 +235,13 @@ export function CompanyTestimonialsSection({ className }: { className?: string }
                         </ul>
                       </>
                     )}
-                  </Tabs.Content>
+                  </Tabs.Panel>
                 );
               },
             )}
           </div>
         </Tabs.Root>
       </section>
-    </>
   );
 }
 

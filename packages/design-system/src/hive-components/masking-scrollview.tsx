@@ -1,7 +1,14 @@
 'use client';
 
+import * as React from 'react';
 import { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
-import { useMounted } from '@theguild/components';
+
+// useMounted hook - returns true when component is mounted (client-side)
+function useMounted() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  return mounted;
+}
 
 export interface MaskingScrollviewProps {
   fade: 'x' | 'y';

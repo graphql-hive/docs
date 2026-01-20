@@ -1,4 +1,4 @@
-import { cn } from '@theguild/components';
+import { cn } from '../guild-components/cn';
 import { AligentLogo, KarrotLogo, LinktreeLogo, MeetupLogo, SoundYXZLogo } from './company-logos';
 
 export function TrustedBySection(props: React.HTMLAttributes<HTMLElement>) {

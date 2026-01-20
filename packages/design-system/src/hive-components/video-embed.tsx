@@ -1,4 +1,4 @@
-import { cn } from '@theguild/components';
+import { cn } from '../guild-components/cn';
 
 export function VideoEmbed({
   src,

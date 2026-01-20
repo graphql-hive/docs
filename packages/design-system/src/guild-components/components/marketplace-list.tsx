@@ -152,9 +152,8 @@ export function MarketplaceListItem({ item, ...rest }: MarketplaceListItemProps)
       >
         <Image
           {...item.image}
-          placeholder={item.image.placeholder || 'empty'}
-          width="92"
-          height="92"
+          width={92}
+          height={92}
           className="aspect-square rounded-lg object-contain ring-1 ring-inset ring-[rgb(from_var(--fg)_r_g_b_/_0.1)]"
         />
       </div>

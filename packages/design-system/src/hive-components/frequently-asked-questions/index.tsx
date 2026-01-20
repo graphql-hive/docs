@@ -1,8 +1,10 @@
 import { Children, ComponentPropsWithoutRef, ReactElement, ReactNode } from 'react';
-import * as RadixAccordion from '@radix-ui/react-accordion';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
-import { Anchor, cn, Heading } from '@theguild/components';
-import { AttachPageFAQSchema } from '../../lib';
+import { Accordion } from '@base-ui-components/react/accordion';
+import { ChevronDownIcon } from '../ui/icons';
+import { Anchor } from '../../guild-components/components/anchor';
+import { cn } from '../../guild-components/cn';
+import { Heading } from '../../guild-components/components/heading';
+import { AttachPageFAQSchema } from '../../guild-components/components/faq/attach-page-faq-schema';
 import FederationQuestions from './federation-questions.mdx';
 import HomeQuestions from './home-questions.mdx';
 import { OpenAccordionItemWhenLinkedTo } from './open-accordion-item-when-linked-to';
@@ -25,11 +27,11 @@ const h2 = (props: ComponentPropsWithoutRef<'h2'>) => (
 
 const UnwrapChild = (props: { children?: ReactNode }) => props.children as unknown as ReactElement;
 
-const Accordion = (props: ComponentPropsWithoutRef<'ul'>) => (
+const AccordionWrapper = (props: ComponentPropsWithoutRef<'ul'>) => (
   <>
-    <RadixAccordion.Root asChild type="single" collapsible>
-      <ul className="divide-beige-400 basis-1/2 divide-y max-xl:grow" {...props} />
-    </RadixAccordion.Root>
+    <Accordion.Root className="divide-beige-400 basis-1/2 divide-y max-xl:grow">
+      {props.children}
+    </Accordion.Root>
     <OpenAccordionItemWhenLinkedTo />
   </>
 );
@@ -52,43 +54,46 @@ const AccordionItem = (props: ComponentPropsWithoutRef<'li'>) => {
     typeof first === 'string'
       ? first
       : typeof first === 'object' && 'type' in first
-        ? first.props.children
+        ? (first as ReactElement<{ children?: ReactNode }>).props.children
         : null;
 
   if (!question) return null;
 
   return (
-    <RadixAccordion.Item
-      asChild
+    <Accordion.Item
       value={question}
-      className="rdx-state-open:pb-4 relative pb-0 focus-within:z-10"
-      itemScope
-      itemProp="mainEntity"
-      itemType="https://schema.org/Question"
-      id={questionToId(question)}
+      className="data-[open]:pb-4 relative pb-0 focus-within:z-10"
     >
-      <li>
-        <RadixAccordion.Header>
-          <RadixAccordion.Trigger className="hive-focus hover:bg-beige-100/80 -mx-2 my-1 flex w-[calc(100%+1rem)] items-center justify-between rounded-xl bg-white px-2 py-3 text-left font-medium transition-colors duration-[.8s] md:my-2 md:py-4">
+      <div
+        itemScope
+        itemProp="mainEntity"
+        itemType="https://schema.org/Question"
+        id={questionToId(question)}
+      >
+        <Accordion.Header>
+          <Accordion.Trigger className="hive-focus hover:bg-beige-100/80 -mx-2 my-1 flex w-[calc(100%+1rem)] items-center justify-between rounded-xl bg-white px-2 py-3 text-left font-medium transition-colors duration-[.8s] md:my-2 md:py-4">
             <span itemProp="name">{question}</span>
-            <ChevronDownIcon className="size-5 [[data-state='open']_&]:[transform:rotateX(180deg)]" />
-          </RadixAccordion.Trigger>
-        </RadixAccordion.Header>
-        <RadixAccordion.Content
-          forceMount
-          className="overflow-hidden bg-white text-green-800 data-[state=closed]:hidden"
-          itemScope
-          itemProp="acceptedAnswer"
-          itemType="https://schema.org/Answer"
+            <ChevronDownIcon className="size-5 [[data-open]_&]:[transform:rotateX(180deg)]" />
+          </Accordion.Trigger>
+        </Accordion.Header>
+        <Accordion.Panel
+          keepMounted
+          className="overflow-hidden bg-white text-green-800 data-[closed]:hidden"
         >
-          <div itemProp="text" className="space-y-2">
-            {answers.map((answer, i) => (
-              <p key={i}>{answer}</p>
-            ))}
+          <div
+            itemScope
+            itemProp="acceptedAnswer"
+            itemType="https://schema.org/Answer"
+          >
+            <div itemProp="text" className="space-y-2">
+              {answers.map((answer, i) => (
+                <p key={i}>{answer}</p>
+              ))}
+            </div>
           </div>
-        </RadixAccordion.Content>
-      </li>
-    </RadixAccordion.Item>
+        </Accordion.Panel>
+      </div>
+    </Accordion.Item>
   );
 };
 
@@ -107,7 +112,7 @@ export function FrequentlyAskedQuestions({ className }: { className?: string }) 
             a,
             h2,
             p: UnwrapChild,
-            ul: Accordion,
+            ul: AccordionWrapper,
             li: AccordionItem,
           }}
         />
@@ -194,7 +199,7 @@ export function FrequentlyAskedPartnersQuestions({ className }: { className?: st
           a,
           h2,
           p: UnwrapChild,
-          ul: Accordion,
+          ul: AccordionWrapper,
           li: AccordionItem,
         }}
       />

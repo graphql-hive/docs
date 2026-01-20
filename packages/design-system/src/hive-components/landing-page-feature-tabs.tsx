@@ -104,19 +104,19 @@ export function LandingPageFeatureTabs({ className }: LandingPageFeatureTabsProp
         title="Schema Registry"
         documentationLink="/docs/schema-registry"
         description="Publish schemas, compose federated GraphQL api, and detect backward-incompatible changes with ease."
-        highlights={highlights['Schema Registry']}
+        highlights={highlights['Schema Registry']!}
       />
       <FeatureTab
         title="GraphQL Observability"
         documentationLink="/docs/schema-registry/usage-reporting"
         description="Insights into API usage and user experience metrics."
-        highlights={highlights['GraphQL Observability']}
+        highlights={highlights['GraphQL Observability']!}
       />
       <FeatureTab
         title="GraphQL Gateway"
         documentationLink="/docs/gateway"
         description="Entry point to your distributed data graph."
-        highlights={highlights['GraphQL Gateway']}
+        highlights={highlights['GraphQL Gateway']!}
       />
       <ActiveHighlightImage />
     </FeatureTabs>

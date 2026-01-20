@@ -1,6 +1,8 @@
+'use client';
+
 import { useRef, useState } from 'react';
-import { Content, Root, Trigger } from '@radix-ui/react-tooltip';
-import { CallToAction, cn } from '@theguild/components';
+import { CallToAction } from '../../guild-components/components/call-to-action';
+import { cn } from '../../guild-components/cn';
 import { BookIcon } from '../book-icon';
 import { Slider } from '../slider';
 
@@ -26,7 +28,7 @@ export function PricingSlider({
         className,
       )}
       // 10$ base price + 10$ per 1M
-      style={{ '--ops': min, '--price': 'calc(10 + var(--ops) * 10)' }}
+      style={{ '--ops': min, '--price': 'calc(10 + var(--ops) * 10)' } as React.CSSProperties}
       {...rest}
     >
       <div
@@ -66,34 +68,28 @@ export function PricingSlider({
         />
         <span className="font-medium">{max}M</span>
       </div>
-      <Root delayDuration={0} open={popoverOpen} onOpenChange={setPopoverOpen}>
-        <Trigger asChild>
-          <CallToAction
-            variant="tertiary"
-            className="mt-6 md:absolute md:right-8 md:top-8 md:mt-0"
-            id="operations-button"
-            onClick={event => {
-              // Radix doesn't open Tooltips on touch devices by design
-              if (window.matchMedia('(hover: none)').matches) {
-                event.preventDefault();
-                setPopoverOpen(true);
-              }
-            }}
-          >
-            <BookIcon /> Learn about operations
-          </CallToAction>
-        </Trigger>
-        <Content
-          side="top"
-          align="center"
-          className="border-beige-400 bg-beige-100 text-green-1000 z-50 m-2 max-w-[328px] overflow-visible rounded-2xl border px-4 py-3 shadow-md sm:max-w-[420px]"
-          avoidCollisions
+
+      {/* Native tooltip/popover to replace Radix Tooltip */}
+      <div className="relative mt-6 md:absolute md:right-8 md:top-8 md:mt-0">
+        <CallToAction
+          variant="tertiary"
+          id="operations-button"
+          onClick={() => setPopoverOpen(!popoverOpen)}
+          onMouseEnter={() => setPopoverOpen(true)}
+          onMouseLeave={() => setPopoverOpen(false)}
         >
-          Every GraphQL request that is processed by your GraphQL API and reported to GraphQL Hive.
-          If your server receives 1M GraphQL requests, all of them will be reported to Hive
-          (assuming no sampling).
-        </Content>
-      </Root>
+          <BookIcon /> Learn about operations
+        </CallToAction>
+        {popoverOpen && (
+          <div
+            className="border-beige-400 bg-beige-100 text-green-1000 absolute bottom-full left-1/2 z-50 mb-2 max-w-[328px] -translate-x-1/2 overflow-visible rounded-2xl border px-4 py-3 shadow-md sm:max-w-[420px]"
+          >
+            Every GraphQL request that is processed by your GraphQL API and reported to GraphQL Hive.
+            If your server receives 1M GraphQL requests, all of them will be reported to Hive
+            (assuming no sampling).
+          </div>
+        )}
+      </div>
     </div>
   );
 }

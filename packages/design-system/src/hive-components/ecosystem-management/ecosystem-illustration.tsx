@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
+import { cn } from '../../guild-components/cn';
 import {
-  cn,
   CodegenIcon,
   HiveGatewayIcon,
   HiveIcon,
   HiveRouterIcon,
   StellateIcon,
-} from '@theguild/components';
+} from '../../guild-components/components/icons';
 import { DashedLine } from './dashed-line';
 import { GraphQLLogo } from './graphql-logo';
 import { IconGradientDefs } from './icon-gradient-defs';
@@ -65,7 +65,7 @@ export function EcosystemIllustration(props: { className?: string }) {
       className={cn(
         'grid h-min flex-1 grid-cols-1 items-center gap-y-0 overflow-visible md:grid-cols-[auto_minmax(2rem,1fr)_min-content_minmax(2rem,1fr)_auto]',
         props.className,
-        styles.container,
+        styles['container'],
         '[--edge:32px] sm:[--edge:48px] md:[--edge:96px]',
       )}
       style={
@@ -170,7 +170,7 @@ export function EcosystemIllustration(props: { className?: string }) {
         <Node
           title={
             <>
-              <span className={styles.smHidden}>Hive</span> Console
+              <span className={styles['smHidden']}>Hive</span> Console
             </>
           }
           description={
@@ -198,7 +198,7 @@ function Node({ title, description, children, className, ...rest }: NodeProps) {
   return (
     <div
       className={cn(
-        styles.node,
+        styles['node'],
         'firefox:[backdrop-filter:blur(12px)] relative z-10 flex min-h-[96px] items-center gap-4 rounded-2xl bg-[linear-gradient(135deg,rgb(255_255_255/0.10),rgb(255_255_255/0.20))] p-4 backdrop-blur-md xl:p-[22px] [&>svg]:shrink-0',
         description && 'flex-row',
         className,
@@ -210,7 +210,7 @@ function Node({ title, description, children, className, ...rest }: NodeProps) {
         <div className="flex flex-col text-left">
           <div className="font-medium text-green-100">{title}</div>
           {description && (
-            <div className={cn('mt-0.5 text-sm leading-5 text-green-200', styles.desc)}>
+            <div className={cn('mt-0.5 text-sm leading-5 text-green-200', styles['desc'])}>
               {description}
             </div>
           )}

@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from 'react';
+import { ComponentType, ReactNode } from 'react';
 import { cn } from '../../cn';
 import { siteOrigin } from '../../constants';
 import { HiveCombinationMark } from '../../logos';
@@ -198,7 +198,7 @@ const DEFAULT_ITEMS: HiveFooterItems = {
 HiveFooter.DEFAULT_ITEMS = DEFAULT_ITEMS;
 
 interface SocialLink extends Omit<ILink, 'children'> {
-  icon: (props: ComponentProps<'svg'>) => ReactNode;
+  icon: ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
 const SOCIAL_ICONS: SocialLink[] = [

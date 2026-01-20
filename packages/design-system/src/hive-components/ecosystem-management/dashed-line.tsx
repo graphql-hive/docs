@@ -1,4 +1,4 @@
-import { cn } from '../../lib/utils';
+import { cn } from '../../guild-components/cn';
 import css from './ecosystem-management.module.css';
 
 export interface DashedLineProps extends React.SVGProps<SVGSVGElement> {

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { ReactElement, ReactNode } from 'react';
-import { cn } from '@theguild/components';
+import { cn } from '../../cn';
 import { useTweenPlaybackRate } from './use-tween-playback-rate';
 
 const PresetSpeedToMs = {

@@ -1,11 +1,9 @@
 import { useId } from 'react';
-import {
-  CallToAction,
-  cn,
-  ContactButton,
-  DecorationIsolation,
-  Heading,
-} from '@theguild/components';
+import { CallToAction } from '../guild-components/components/call-to-action';
+import { cn } from '../guild-components/cn';
+import { ContactButton } from '../guild-components/components/contact-us';
+import { DecorationIsolation } from '../guild-components/components/decorations';
+import { Heading } from '../guild-components/components/heading';
 
 /**
  * This component differs from the `GetYourAPIGameRightSection`

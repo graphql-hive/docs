@@ -1,6 +1,12 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import { ReactElement } from 'react';
-import { Callout, Code } from '@theguild/components';
+// TODO: Callout and Code are from nextra/components - need fumadocs equivalents
+// For now using simple HTML equivalents
+// import { Callout, Code } from 'nextra/components';
+const Code = ({ children }: { children: React.ReactNode }) => <code>{children}</code>;
+const Callout = ({ children, type: _type, emoji: _emoji }: { children: React.ReactNode; type?: string; emoji?: string }) => (
+  <div className="my-4 rounded-md border-l-4 border-blue-500 bg-blue-50 p-4 dark:bg-blue-900/20">{children}</div>
+);
 
 type CLIError = {
   code: string;

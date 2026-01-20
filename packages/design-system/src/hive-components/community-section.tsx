@@ -1,13 +1,16 @@
-import Image, { StaticImageData } from 'next/image';
-import { GlobeIcon } from '@radix-ui/react-icons';
-import {
-  CallToAction,
-  cn,
-  DiscordIcon,
-  GitHubIcon,
-  Heading,
-  TwitterIcon,
-} from '@theguild/components';
+import { Image } from '@unpic/react';
+import { GlobeIcon } from './ui/icons';
+import { CallToAction } from '../guild-components/components/call-to-action';
+import { cn } from '../guild-components/cn';
+import { DiscordIcon, GitHubIcon, TwitterIcon } from '../guild-components/components/icons';
+import { Heading } from '../guild-components/components/heading';
+
+interface StaticImageData {
+  src: string;
+  height: number;
+  width: number;
+  blurDataURL?: string;
+}
 import { MaskingScrollview } from './masking-scrollview';
 import Achrafash from './community-section/achrafash_.png';
 import ChimameRt from './community-section/chimame_rt.png';

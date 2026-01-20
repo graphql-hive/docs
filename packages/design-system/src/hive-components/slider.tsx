@@ -1,7 +1,7 @@
 'use client';
 
 import { InputHTMLAttributes } from 'react';
-import { cn } from '@theguild/components';
+import { cn } from '../guild-components/cn';
 
 const svgHref = new URL('./code-icon-white.svg', import.meta.url).toString();
 
@@ -61,7 +61,7 @@ export function Slider({ counter, className, deadZone, style, ...rest }: SliderP
         <img src={svgHref} width={24} height={24} alt="" />
       </div>
 
-      <style jsx>{`
+      <style>{`
         @property --val {
           syntax: '<integer>';
           initial-value: 0;
@@ -80,23 +80,23 @@ export function Slider({ counter, className, deadZone, style, ...rest }: SliderP
               --val: 100;
             }
           }
-          input {
+          .hive-slider input {
             overflow: hidden;
           }
-          ::-webkit-slider-thumb {
+          .hive-slider ::-webkit-slider-thumb {
             view-timeline: --thumb inline;
           }
         }
 
         @supports not (font: -apple-system-body) {
-          div,
-          div:after {
+          .hive-slider div,
+          .hive-slider div:after {
             transition: transform var(--hive-ease-overshoot-far) 500ms;
           }
 
           @container (width >= 512px) {
-            div,
-            div:after {
+            .hive-slider div,
+            .hive-slider div:after {
               transition: transform var(--hive-ease-overshoot-a-bit) 500ms;
             }
           }

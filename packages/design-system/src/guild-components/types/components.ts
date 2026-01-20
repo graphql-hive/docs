@@ -1,15 +1,33 @@
 import { ComponentProps, ReactElement, ReactNode } from 'react';
-import { ImageProps as IImage } from 'next/image';
-import { LinkProps } from 'next/link';
-import { ReactPlayerProps } from 'react-player';
+
+// Simplified image props (was next/image)
+export interface IImage {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  className?: string;
+}
 
 interface IVideo {
   src: string;
   placeholder: string;
 }
 
-export type ILink = LinkProps &
-  Pick<ComponentProps<'a'>, 'target' | 'rel' | 'title' | 'className' | 'style'> & {
+// Simplified video props (was react-player)
+export interface ReactPlayerProps {
+  url?: string;
+  playing?: boolean;
+  loop?: boolean;
+  controls?: boolean;
+  muted?: boolean;
+  width?: string | number;
+  height?: string | number;
+}
+
+export type ILink = {
+  href: string | { pathname?: string };
+} & Pick<ComponentProps<'a'>, 'target' | 'rel' | 'title' | 'className' | 'style' | 'onClick'> & {
     children: ReactNode;
     newWindow?: boolean;
   };

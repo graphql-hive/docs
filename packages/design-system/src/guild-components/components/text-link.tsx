@@ -29,7 +29,7 @@ export function TextLink({ className, children, ...rest }: TextLinkProps) {
 function flattenFragments(children: React.ReactNode): React.ReactNode[] {
   return React.Children.toArray(children).flatMap(child =>
     typeof child === 'object' && 'type' in child && child.type === React.Fragment
-      ? (child.props.children as React.ReactNode[])
+      ? ((child as React.ReactElement<{ children?: React.ReactNode[] }>).props.children ?? [])
       : child,
   );
 }

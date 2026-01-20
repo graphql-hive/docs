@@ -1,21 +1,34 @@
-import { ReactNode } from 'react';
-import { Content, Root, Trigger } from '@radix-ui/react-tooltip';
+'use client';
+
+import { ReactNode, useState } from 'react';
+
+// Native Tooltip component to replace @radix-ui/react-tooltip
+// TODO: Migrate to Base UI Tooltip when available
 
 export function Tooltip({ content, children }: { content: string; children: ReactNode }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Root delayDuration={350}>
-      <Trigger className="hive-focus -mx-1 -my-0.5 rounded px-1 py-0.5 text-left">
+    <span
+      className="relative inline-block"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+      onFocus={() => setIsOpen(true)}
+      onBlur={() => setIsOpen(false)}
+    >
+      <span className="hive-focus -mx-1 -my-0.5 rounded px-1 py-0.5 text-left cursor-help">
         {children}
-      </Trigger>
-      <Content
-        align="start"
-        sideOffset={5}
-        className="bg-green-1000 z-20 rounded px-2 py-[3px] text-sm font-normal text-white shadow"
-      >
-        {content}
-        <TooltipArrow className="text-green-1000 absolute bottom-0 left-1/3 -translate-x-1/2 translate-y-full" />
-      </Content>
-    </Root>
+      </span>
+      {isOpen && (
+        <span
+          role="tooltip"
+          className="bg-green-1000 absolute left-0 top-full z-20 mt-1 rounded px-2 py-[3px] text-sm font-normal text-white shadow whitespace-nowrap"
+        >
+          {content}
+          <TooltipArrow className="text-green-1000 absolute -top-1 left-4 rotate-180" />
+        </span>
+      )}
+    </span>
   );
 }
 

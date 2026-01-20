@@ -1,11 +1,8 @@
-import NextLink from 'next/link';
-import {
-  CallToAction,
-  cn,
-  DecorationIsolation,
-  Heading,
-  HighlightDecoration,
-} from '@theguild/components';
+import { Link } from '@tanstack/react-router';
+import { CallToAction } from '../../guild-components/components/call-to-action';
+import { cn } from '../../guild-components/cn';
+import { DecorationIsolation, HighlightDecoration } from '../../guild-components/components/decorations';
+import { Heading } from '../../guild-components/components/heading';
 import { ArrowIcon } from '../arrow-icon';
 import { BookIcon } from '../book-icon';
 import { CheckIcon } from '../check-icon';
@@ -34,20 +31,20 @@ export function EcosystemManagementSection({ className }: { className?: string }
                 <div className="font-medium text-white">Apollo Federation v1 and v2</div>
                 <div>
                   Best in class{' '}
-                  <NextLink
+                  <Link
                     className="underline underline-offset-2"
-                    href="/federation-gateway-audit"
+                    to="/federation-gateway-audit"
                   >
                     compatibility with Apollo Federation spec
-                  </NextLink>
+                  </Link>
                 </div>
               </>,
               <>
                 <div className="font-medium text-white">
                   Powerful and flexible{' '}
-                  <NextLink className="underline decoration-1 underline-offset-2" href="/gateway">
+                  <Link className="underline decoration-1 underline-offset-2" to="/gateway">
                     GraphQL Gateway (Router)
-                  </NextLink>
+                  </Link>
                 </div>
                 <div>
                   GraphQL Subscriptions support and built-in security features (RBAC, JWT, Persisted
@@ -57,20 +54,22 @@ export function EcosystemManagementSection({ className }: { className?: string }
               <>
                 <span className="font-medium text-white">No vendor-lock</span> — dive into our full
                 GraphQL ecosystem, or&nbsp;build your own stack, connecting{' '}
-                <NextLink className="underline decoration-1 underline-offset-2" href="/federation">
+                <Link className="underline decoration-1 underline-offset-2" to="/federation">
                   GraphQL federation
-                </NextLink>
+                </Link>
                 ,{' '}
-                <NextLink className="underline decoration-1 underline-offset-2" href="/gateway">
+                <Link className="underline decoration-1 underline-offset-2" to="/gateway">
                   Hive Gateway
-                </NextLink>
+                </Link>
                 ,{' '}
-                <NextLink
+                <a
                   className="underline decoration-1 underline-offset-2"
                   href="https://the-guild.dev/graphql/mesh"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   GraphQL Mesh
-                </NextLink>{' '}
+                </a>{' '}
                 and more.
               </>,
               <>

@@ -1,12 +1,17 @@
 'use client';
 
 import { createContext, ReactNode, useContext, useState } from 'react';
-import Image, { StaticImageData } from 'next/image';
-import NextLink from 'next/link';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
-import * as Tabs from '@radix-ui/react-tabs';
-import { CallToAction, cn, Heading } from '@theguild/components';
+import { Image } from '@unpic/react';
+import { Link } from '@tanstack/react-router';
+import { Tabs } from '@base-ui-components/react/tabs';
+import { ChevronDownIcon } from './ui/icons';
+import { CallToAction } from '../guild-components/components/call-to-action';
+import { cn } from '../guild-components/cn';
+import { Heading } from '../guild-components/components/heading';
 import { ArrowIcon } from './arrow-icon';
+
+// Type for static image imports (Vite/webpack)
+type StaticImageData = { src: string; width: number; height: number; blurDataURL?: string };
 
 export type Highlight = {
   title: string;
@@ -34,12 +39,12 @@ export function FeatureTabs<T extends string>({
   tabTexts = {},
 }: FeatureTabsProps<T>) {
   const tabs = Object.keys(highlights) as T[];
-  const [currentTab, setCurrentTab] = useState<T>(tabs[0]);
+  const [currentTab, setCurrentTab] = useState<T>(tabs[0]!);
 
   const allHighlights = Object.values<Highlight[]>(highlights).flat();
 
   const smallScreenTabHandlers = useSmallScreenTabsHandlers();
-  const [activeHighlight, setActiveHighlight] = useState(allHighlights[0].title);
+  const [activeHighlight, setActiveHighlight] = useState(allHighlights[0]?.title ?? '');
 
   return (
     <section
@@ -52,26 +57,26 @@ export function FeatureTabs<T extends string>({
       <FeatureTabsContext.Provider value={{ activeHighlight, setActiveHighlight, highlights }}>
         <Tabs.Root
           {...smallScreenTabHandlers}
-          onValueChange={value => {
+          onValueChange={(value) => {
             const tab = value as T;
             setCurrentTab(tab);
-            setActiveHighlight(highlights[tab][0].title);
+            setActiveHighlight(highlights[tab]?.[0]?.title ?? '');
             smallScreenTabHandlers.onValueChange();
           }}
           value={currentTab}
         >
-          <Tabs.List className='group relative z-10 mx-4 my-6 flex flex-col overflow-hidden focus-within:overflow-visible max-sm:h-[58px] max-sm:focus-within:pointer-events-none max-sm:focus-within:rounded-b-none max-sm:focus-within:has-[>:nth-child(2)[data-state="active"]]:translate-y-[-100%] max-sm:focus-within:has-[>:nth-child(3)[data-state="active"]]:translate-y-[-200%] sm:flex-row sm:rounded-2xl sm:bg-[--tab-bg] md:mx-0 md:mb-12 md:mt-0'>
+          <Tabs.List className='group relative z-10 mx-4 my-6 flex flex-col overflow-hidden focus-within:overflow-visible max-sm:h-[58px] max-sm:focus-within:pointer-events-none max-sm:focus-within:rounded-b-none max-sm:focus-within:has-[>:nth-child(2)[data-selected]]:translate-y-[-100%] max-sm:focus-within:has-[>:nth-child(3)[data-selected]]:translate-y-[-200%] sm:flex-row sm:rounded-2xl sm:bg-[--tab-bg] md:mx-0 md:mb-12 md:mt-0'>
             {tabs.map((tab, i) => {
               return (
-                <Tabs.Trigger
+                <Tabs.Tab
                   key={tab}
                   value={tab}
-                  className='hive-focus rdx-state-active:text-green-1000 rdx-state-active:border-[--tab-bg-dark] rdx-state-active:bg-white max-sm:rdx-state-inactive:hidden group-focus-within:rdx-state-inactive:flex max-sm:rdx-state-inactive:rounded-none max-sm:group-focus-within:rdx-state-inactive:border-y-[--tab-bg] max-sm:group-focus-within:[&:nth-child(2)]:rdx-state-active:rounded-none max-sm:group-focus-within:[&:nth-child(2)]:rdx-state-active:border-y-[--tab-bg] max-sm:group-focus-within:first:rdx-state-active:border-b-[--tab-bg] max-sm:group-focus-within:first:rdx-state-active:rounded-b-none max-sm:rdx-state-inactive:pointer-events-none max-sm:rdx-state-inactive:group-focus-within:pointer-events-auto z-10 flex flex-1 items-center justify-center gap-2.5 rounded-lg border-transparent p-4 text-base font-medium leading-6 text-green-800 max-sm:border max-sm:border-[--tab-bg-dark] max-sm:bg-[--tab-bg] max-sm:group-focus-within:aria-selected:z-20 max-sm:group-focus-within:aria-selected:ring-4 sm:rounded-[15px] sm:border sm:text-xs sm:max-lg:p-3 sm:max-[721px]:p-2 md:text-sm lg:text-base max-sm:group-focus-within:[&:last-child]:border-t-[--tab-bg] max-sm:group-focus-within:[&:nth-child(3)]:rounded-t-none [&>svg]:shrink-0 max-sm:group-focus-within:[&[data-state="inactive"]:first-child]:rounded-t-lg max-sm:group-focus-within:[&[data-state="inactive"]:first-child]:border-t-[--tab-bg-dark] [&[data-state="inactive"]>:last-child]:invisible max-sm:group-focus-within:[[data-state="active"]+&:last-child]:rounded-b-lg max-sm:group-focus-within:[[data-state="active"]+&:last-child]:border-b-[--tab-bg-dark] max-sm:group-focus-within:[[data-state="inactive"]+&:last-child[data-state="inactive"]]:rounded-b-lg max-sm:group-focus-within:[[data-state="inactive"]+&:last-child[data-state="inactive"]]:border-b-[--tab-bg-dark]'
+                  className='hive-focus data-[selected]:text-green-1000 data-[selected]:border-[--tab-bg-dark] data-[selected]:bg-white max-sm:not-data-[selected]:hidden group-focus-within:not-data-[selected]:flex max-sm:not-data-[selected]:rounded-none max-sm:group-focus-within:not-data-[selected]:border-y-[--tab-bg] max-sm:group-focus-within:[&:nth-child(2)]:data-[selected]:rounded-none max-sm:group-focus-within:[&:nth-child(2)]:data-[selected]:border-y-[--tab-bg] max-sm:group-focus-within:first:data-[selected]:border-b-[--tab-bg] max-sm:group-focus-within:first:data-[selected]:rounded-b-none max-sm:not-data-[selected]:pointer-events-none max-sm:not-data-[selected]:group-focus-within:pointer-events-auto z-10 flex flex-1 items-center justify-center gap-2.5 rounded-lg border-transparent p-4 text-base font-medium leading-6 text-green-800 max-sm:border max-sm:border-[--tab-bg-dark] max-sm:bg-[--tab-bg] max-sm:group-focus-within:aria-selected:z-20 max-sm:group-focus-within:aria-selected:ring-4 sm:rounded-[15px] sm:border sm:text-xs sm:max-lg:p-3 sm:max-[721px]:p-2 md:text-sm lg:text-base max-sm:group-focus-within:[&:last-child]:border-t-[--tab-bg] max-sm:group-focus-within:[&:nth-child(3)]:rounded-t-none [&>svg]:shrink-0 max-sm:group-focus-within:[&:not([data-selected])]:first-child:rounded-t-lg max-sm:group-focus-within:[&:not([data-selected])]:first-child:border-t-[--tab-bg-dark] [&:not([data-selected])>:last-child]:invisible max-sm:group-focus-within:[[data-selected]+&:last-child]:rounded-b-lg max-sm:group-focus-within:[[data-selected]+&:last-child]:border-b-[--tab-bg-dark] max-sm:group-focus-within:[[:not([data-selected])]+&:last-child:not([data-selected])]:rounded-b-lg max-sm:group-focus-within:[[:not([data-selected])]+&:last-child:not([data-selected])]:border-b-[--tab-bg-dark]'
                 >
                   {icons[i]}
                   {tabTexts[tab] || tab}
                   <ChevronDownIcon className="ml-auto size-6 text-green-800 transition group-focus-within:rotate-90 sm:hidden" />
-                </Tabs.Trigger>
+                </Tabs.Tab>
               );
             })}
           </Tabs.List>
@@ -121,8 +126,8 @@ function Feature({
         {highlights.map((highlight, i) => {
           if (highlight.link) {
             return (
-              <NextLink
-                href={highlight.link}
+              <Link
+                to={highlight.link}
                 key={i}
                 title={'Learn more about ' + highlight.title}
                 onPointerOver={() => setActiveHighlight(highlight.title)}
@@ -130,7 +135,7 @@ function Feature({
               >
                 <dt className="text-green-1000 font-medium">{highlight.title}</dt>
                 <dd className="mt-2 text-sm leading-5 text-green-800">{highlight.description}</dd>
-              </NextLink>
+              </Link>
             );
           }
 
@@ -223,7 +228,7 @@ function useSmallScreenTabsHandlers() {
         case 'Enter': {
           const item = items[index];
           if (item instanceof HTMLElement) {
-            if (item.dataset.state === 'active') {
+            if (item.hasAttribute('data-selected')) {
               item.blur();
             } else {
               item.focus();
@@ -233,7 +238,7 @@ function useSmallScreenTabsHandlers() {
         }
       }
 
-      items[index].ariaSelected = 'true';
+      items[index]!.ariaSelected = 'true';
     },
   };
 }
@@ -244,11 +249,11 @@ export function FeatureTab({ title, highlights, description, documentationLink }
   const { setActiveHighlight } = useFeatureTabsContext();
 
   return (
-    <Tabs.Content
+    <Tabs.Panel
       value={title}
       // Make it accessible to crawlers, otherwise there's no DOM element to index
-      forceMount
-      className="data-[state=inactive]:hidden"
+      keepMounted
+      className="data-[hidden]:hidden"
       tabIndex={-1}
     >
       <Feature
@@ -258,7 +263,7 @@ export function FeatureTab({ title, highlights, description, documentationLink }
         highlights={highlights}
         setActiveHighlight={setActiveHighlight}
       />
-    </Tabs.Content>
+    </Tabs.Panel>
   );
 }
 
@@ -295,9 +300,8 @@ export function ActiveHighlightImage() {
               <Image
                 width={925} // max rendered width is 880px
                 height={578} // max rendered height is 618px, and the usual is 554px
-                src={highlight.image}
-                placeholder="blur"
-                blurDataURL={highlight.image.blurDataURL}
+                src={highlight.image.src}
+                background={highlight.image.blurDataURL}
                 className="absolute left-6 top-[24px] h-[calc(100%-24px)] rounded-tl-3xl object-cover object-left lg:left-[55px] lg:top-[108px] lg:h-[calc(100%-108px)]"
                 role="presentation"
                 alt=""

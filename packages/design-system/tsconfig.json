@@ -4,8 +4,23 @@
     "jsx": "react-jsx",
     "composite": true,
     "noEmit": false,
-    "outDir": "dist"
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "next/navigation": ["./src/next-replacements/navigation.ts"],
+      "nextra-theme-docs": ["./src/nextra-stubs/theme-docs.ts"],
+      "nextra/components": ["./src/nextra-stubs/components.tsx"],
+      "nextra/hooks": ["./src/nextra-stubs/hooks.ts"],
+      "nextra/icons": ["./src/nextra-stubs/icons.tsx"],
+      "nextra/normalize-pages": ["./src/nextra-stubs/normalize-pages.ts"]
+    }
   },
   "include": ["src", "eslint.config.ts"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "src/guild-components/server"
+  ]
 }

@@ -1,4 +1,5 @@
-import { cn, Heading } from '@theguild/components';
+import { cn } from '../guild-components/cn';
+import { Heading } from '../guild-components/components/heading';
 
 export function PlanComparison({ className }: { className?: string }) {
   return (

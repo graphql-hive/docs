@@ -1,5 +1,5 @@
 import { ComponentProps, FC } from 'react';
-import { cn } from '@theguild/components';
+import { cn } from '../../cn';
 
 export interface ComparisonTableProps extends React.HTMLAttributes<HTMLTableElement> {
   scheme?: 'green' | 'neutral';

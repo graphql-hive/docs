@@ -1,4 +1,7 @@
-import { cn, ContactButton, DecorationIsolation, Heading } from '@theguild/components';
+import { cn } from '../guild-components/cn';
+import { ContactButton } from '../guild-components/components/contact-us';
+import { DecorationIsolation } from '../guild-components/components/decorations';
+import { Heading } from '../guild-components/components/heading';
 
 export function GotAnIdeaSection({ className }: { className?: string }) {
   return (

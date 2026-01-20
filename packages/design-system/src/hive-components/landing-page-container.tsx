@@ -1,15 +1,16 @@
 import { ReactNode } from 'react';
-import * as Tooltip from '@radix-ui/react-tooltip';
-import { cn, CookiesConsent } from '@theguild/components';
+import { cn } from '../guild-components/cn';
+import { CookiesConsent } from '../guild-components/components/cookies-consent';
 
 /**
- * Adds styles, cookie consent banner and Radix Tooltip provider.
+ * Adds styles and cookie consent banner.
+ * TODO: Add Base UI Tooltip Provider when migrated
  */
 export function LandingPageContainer(props: { children: ReactNode; className?: string }) {
   return (
-    <Tooltip.Provider>
+    <>
       <div className={cn('flex h-full flex-col', props.className)}>{props.children}</div>
       <CookiesConsent />
-    </Tooltip.Provider>
+    </>
   );
 }

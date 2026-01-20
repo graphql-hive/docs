@@ -1,15 +1,12 @@
 'use client';
 
 import { HTMLAttributes, ReactElement, ReactNode, useRef, useState } from 'react';
-import {
-  CallToAction,
-  cn,
-  ContactButton,
-  ContactTextLink,
-  Heading,
-  ShieldFlashIcon,
-  TextLink,
-} from '@theguild/components';
+import { CallToAction } from '../../guild-components/components/call-to-action';
+import { cn } from '../../guild-components/cn';
+import { ContactButton, ContactTextLink } from '../../guild-components/components/contact-us';
+import { Heading } from '../../guild-components/components/heading';
+import { ShieldFlashIcon } from '../../guild-components/components/icons';
+import { TextLink } from '../../guild-components/components/text-link';
 import { Tooltip } from '../tooltip';
 import {
   AvailabilityIcon,

@@ -134,7 +134,6 @@ export const dummyHeroGradient: IHeroGradientProps = {
   image: {
     src: yogaImage,
     alt: 'Illustration',
-    loading: 'eager' as const,
   },
 };
 

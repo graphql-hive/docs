@@ -1,7 +1,44 @@
 import { ReactElement } from 'react';
-import Link from 'next/link';
-import { format } from 'date-fns';
-import { getPageMap } from '@theguild/components/server';
+import { Link } from '@tanstack/react-router';
+
+// TODO: getPageMap needs to be implemented for TanStack Start
+// For now using a stub implementation
+async function getPageMap(_path: string): Promise<PageMapItem[]> {
+  // This should be implemented to fetch the page map from Fumadocs or similar
+  console.warn('getPageMap not yet implemented for TanStack Start');
+  return [];
+}
+
+type PageMapItem = {
+  name: string;
+  route: string;
+  frontMatter?: {
+    title?: string;
+    date?: string;
+    description?: string;
+  };
+  data?: unknown;
+  children?: unknown;
+};
+
+// Native date formatting to replace date-fns
+function formatDate(date: Date): string {
+  const day = date.getDate();
+  const suffix = getOrdinalSuffix(day);
+  const month = date.toLocaleDateString('en-US', { month: 'long' });
+  const year = date.getFullYear();
+  return `${day}${suffix} ${month} ${year}`;
+}
+
+function getOrdinalSuffix(day: number): string {
+  if (day > 3 && day < 21) return 'th';
+  switch (day % 10) {
+    case 1: return 'st';
+    case 2: return 'nd';
+    case 3: return 'rd';
+    default: return 'th';
+  }
+}
 
 type Changelog = {
   title: string;
@@ -30,10 +67,10 @@ function ProductUpdateTeaser(props: Changelog): ReactElement {
         className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
         dateTime={props.date}
       >
-        {format(new Date(props.date), 'do MMMM yyyy')}
+        {formatDate(new Date(props.date))}
       </time>
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-        <Link href={props.route}>{props.title}</Link>
+        <Link to={props.route}>{props.title}</Link>
       </h3>
       <div className="mb-4 mt-1 max-w-[600px] text-base font-normal leading-6 text-gray-500 dark:text-gray-400">
         {props.description}
@@ -60,9 +97,9 @@ export async function getChangelogs(): Promise<Changelog[]> {
         throw error;
       }
       return {
-        title: frontMatter.title,
+        title: frontMatter.title ?? item.name,
         date,
-        description: frontMatter.description,
+        description: frontMatter.description ?? '',
         route,
       };
     })

@@ -1,6 +1,5 @@
-import { StaticImageData } from 'next/image';
 import { ArrowIcon } from '../icons';
-import { Image } from '../image';
+import { Image, StaticImageData } from '../image';
 import { NavigationMenuLink } from './navigation-menu';
 
 export interface GraphQLConfCardProps {

@@ -1,6 +1,8 @@
-import Image from 'next/image';
-import { CallToAction, cn, Heading } from '@theguild/components';
-import { Author, authors } from '../authors';
+import { Image } from '@unpic/react';
+import { CallToAction } from '../guild-components/components/call-to-action';
+import { cn } from '../guild-components/cn';
+import { Heading } from '../guild-components/components/heading';
+import { Author, authors } from './authors';
 import { ArrowIcon } from './arrow-icon';
 
 export function TeamSection({ className }: { className?: string }) {
@@ -45,18 +47,18 @@ export function TeamSection({ className }: { className?: string }) {
 }
 
 const teamMembers: Author[] = [
-  authors.denis,
-  authors.dotan,
-  authors.gil,
-  authors.kamil,
-  authors.laurin,
-  authors.saihaj,
-  authors.tuval,
-  authors.uri,
-  authors.valentin,
-  authors.jason,
-  authors.arda,
-  authors.jdolle,
+  authors['denis']!,
+  authors['dotan']!,
+  authors['gil']!,
+  authors['kamil']!,
+  authors['laurin']!,
+  authors['saihaj']!,
+  authors['tuval']!,
+  authors['uri']!,
+  authors['valentin']!,
+  authors['jason']!,
+  authors['arda']!,
+  authors['jdolle']!,
 ];
 
 function TeamGallery(props: React.HTMLAttributes<HTMLElement>) {

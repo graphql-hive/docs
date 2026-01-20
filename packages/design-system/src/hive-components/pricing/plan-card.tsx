@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
-import { ChevronDownIcon, Cross2Icon } from '@radix-ui/react-icons';
-import { cn } from '@theguild/components';
+import { ChevronDownIcon, Cross2Icon } from '../ui/icons';
+import { cn } from '../../guild-components/cn';
 
 export interface PlanCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
