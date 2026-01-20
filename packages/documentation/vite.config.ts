@@ -1,35 +1,36 @@
-import { fileURLToPath } from "node:url";
-import react from "@vitejs/plugin-react";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import { defineConfig } from "vite";
-import tsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
+import { devtools } from "@tanstack/devtools-vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import react from "@vitejs/plugin-react";
 import mdx from "fumadocs-mdx/vite";
 import { nitro } from "nitro/vite";
-import { devtools } from "@tanstack/devtools-vite";
+import { fileURLToPath } from "node:url";
+import { defineConfig } from "vite";
+import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  server: {
-    port: 1440,
-  },
   plugins: [
+    !process.env["CI"] && devtools(),
+    nitro({ preset: "vercel" }),
     mdx(await import("./source.config")),
-    devtools(),
-    nitro(),
     tailwindcss(),
     tsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
     tanstackStart({
       prerender: {
-        enabled: true,
+        // TanStack Start prerender has path bug with Vercel preset
+        enabled: false,
       },
     }),
     react(),
   ],
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "@": fileURLToPath(new URL("src", import.meta.url)),
     },
+  },
+  server: {
+    port: 1440,
   },
 });

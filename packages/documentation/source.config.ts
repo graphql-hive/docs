@@ -15,18 +15,18 @@ export const docs = defineDocs({
 export default defineConfig({
   mdxOptions: {
     // mermaid must run before shiki (rehypeCode) to find raw code blocks
-    rehypePlugins: (plugins) => [mermaidConfig(), ...plugins],
     rehypeCodeOptions: {
+      langs: ["js", "jsx", "ts", "tsx"],
       themes: {
-        light: "github-light",
         dark: "github-dark",
+        light: "github-light",
       },
       transformers: [
         ...(rehypeCodeDefaultOptions.transformers ?? []),
         transformerTwoslash(),
       ],
-      langs: ["js", "jsx", "ts", "tsx"],
     },
+    rehypePlugins: (plugins) => [mermaidConfig(), ...plugins],
   },
 });
 
