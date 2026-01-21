@@ -13,7 +13,8 @@ export const Route = createRootRoute({
     links: [{ href: appCss, rel: "stylesheet" }],
     meta: [
       {
-        charSet: "utf8",
+        // eslint-disable-next-line unicorn/text-encoding-identifier-case
+        charSet: "utf-8",
       },
       {
         content: "width=device-width, initial-scale=1",
