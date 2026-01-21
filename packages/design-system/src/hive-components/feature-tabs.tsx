@@ -27,6 +27,10 @@ export interface FeatureTabsProps<T extends string> {
   highlights: Record<T, Highlight[]>;
   icons: React.ReactNode[];
   /**
+   * Explicit tab order. If not provided, uses Object.keys(highlights).
+   */
+  tabs?: readonly T[];
+  /**
    * On very narrow screens, we shorten the tab names.
    */
   tabTexts?: Partial<Record<T, ReactNode>>;
@@ -37,9 +41,10 @@ export function FeatureTabs<T extends string>({
   className,
   highlights,
   icons,
+  tabs: tabsProp,
   tabTexts = {},
 }: FeatureTabsProps<T>) {
-  const tabs = Object.keys(highlights) as T[];
+  const tabs = tabsProp ?? (Object.keys(highlights) as T[]);
   const [currentTab, setCurrentTab] = useState<T>(tabs[0]!);
 
   const allHighlights = Object.values<Highlight[]>(highlights).flat();

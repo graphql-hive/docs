@@ -8,7 +8,7 @@ import registryVersionControlSystemImage from '../../public/features/registry/ve
 import { ActiveHighlightImage, FeatureTab, FeatureTabs, Highlight } from './feature-tabs';
 import { GatewayIcon } from './icons';
 
-const tabs = ['Schema Registry', 'GraphQL Observability', 'GraphQL Gateway'];
+const tabs = ['Schema Registry', 'GraphQL Observability', 'GraphQL Gateway'] as const;
 type Tab = (typeof tabs)[number];
 
 export const highlights: Record<Tab, Highlight[]> = {
@@ -99,7 +99,7 @@ export function LandingPageFeatureTabs({ className }: LandingPageFeatureTabsProp
     <GatewayIcon key="gateway-icon" />,
   ];
   return (
-    <FeatureTabs className={className} highlights={highlights} icons={icons}>
+    <FeatureTabs className={className} highlights={highlights} icons={icons} tabs={tabs}>
       <FeatureTab
         description="Publish schemas, compose federated GraphQL api, and detect backward-incompatible changes with ease."
         documentationLink="/docs/schema-registry"
