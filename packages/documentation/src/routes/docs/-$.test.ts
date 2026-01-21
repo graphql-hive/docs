@@ -3,10 +3,10 @@
  *
  * Run with: bun test src/routes/docs/-$.test.ts
  */
-import { type Subprocess, spawn } from "bun";
+import { spawn, type Subprocess } from "bun";
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 
-const TEST_PORT = 14401;
+const TEST_PORT = 14_401;
 const BASE_URL = process.env["TEST_URL"] || `http://localhost:${TEST_PORT}`;
 
 let devServer: Subprocess | null = null;
@@ -16,7 +16,10 @@ async function waitForServer(maxAttempts = 30): Promise<void> {
     try {
       const res = await fetch(BASE_URL, { signal: AbortSignal.timeout(1000) });
       if (res.ok || res.status < 500) return;
-    } catch {}
+    } catch {
+      // eslint-disable-next-line no-console
+      console.log(`Server not ready after ${i + 1}s, retrying...`);
+    }
     await new Promise((r) => setTimeout(r, 1000));
   }
   throw new Error(`Server not ready after ${maxAttempts}s`);
@@ -25,11 +28,14 @@ async function waitForServer(maxAttempts = 30): Promise<void> {
 beforeAll(async () => {
   if (process.env["TEST_URL"]) return; // user-provided server
 
-  devServer = spawn(["bun", "--bun", "vite", "dev", "--port", String(TEST_PORT)], {
-    cwd: import.meta.dir + "/../../..",
-    stdout: "ignore",
-    stderr: "ignore",
-  });
+  devServer = spawn(
+    ["bun", "--bun", "vite", "dev", "--port", String(TEST_PORT)],
+    {
+      cwd: import.meta.dir + "/../../..",
+      stderr: "ignore",
+      stdout: "ignore",
+    },
+  );
 
   await waitForServer();
 }, 60_000);
@@ -70,7 +76,9 @@ describe(".mdx extension", () => {
   });
 
   test("/docs/test.mdx returns markdown for nested page", async () => {
-    const res = await fetch(`${BASE_URL}/docs/test.mdx`, { redirect: "follow" });
+    const res = await fetch(`${BASE_URL}/docs/test.mdx`, {
+      redirect: "follow",
+    });
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("text/markdown");
     const text = await res.text();
