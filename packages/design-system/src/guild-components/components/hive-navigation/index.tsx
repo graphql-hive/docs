@@ -1,19 +1,18 @@
 'use client';
 
 import { useLocation } from '@tanstack/react-router';
-import { setMenu, useMenu } from 'nextra-theme-docs';
-import { Search } from 'nextra/components';
-import { useMounted } from 'nextra/hooks';
-import { MenuIcon } from 'nextra/icons';
 import React, {
   ComponentProps,
+  createContext,
   FC,
   forwardRef,
   Fragment,
   ReactElement,
   ReactNode,
+  useContext,
   useEffect,
   useRef,
+  useState,
 } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -44,6 +43,57 @@ import {
 } from './navigation-menu';
 
 export * from './graphql-conf-card';
+
+// Menu context for hamburger menu state (replaces nextra-theme-docs useMenu/setMenu)
+const MenuContext = createContext<{
+  menu: boolean;
+  setMenu: React.Dispatch<React.SetStateAction<boolean>>;
+}>({ menu: false, setMenu: () => {} });
+
+function useMenu() {
+  return useContext(MenuContext).menu;
+}
+
+function useSetMenu() {
+  return useContext(MenuContext).setMenu;
+}
+
+// useMounted hook (replaces nextra/hooks useMounted)
+function useMounted() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  return mounted;
+}
+
+// MenuIcon component (replaces nextra/icons MenuIcon)
+function MenuIcon({ className, ...props }: React.SVGProps<SVGSVGElement> & { className?: string }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      height="24"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="24"
+      {...props}
+    >
+      <path
+        className="origin-center transition-transform [.open_&]:translate-y-[5px] [.open_&]:rotate-45"
+        d="M4 7h16"
+      />
+      <path className="transition-opacity [.open_&]:opacity-0" d="M4 12h16" />
+      <path
+        className="origin-center transition-transform [.open_&]:-translate-y-[5px] [.open_&]:-rotate-45"
+        d="M4 17h16"
+      />
+    </svg>
+  );
+}
 
 const ENTERPRISE_MENU_HIDDEN = true;
 
@@ -88,18 +138,19 @@ export function HiveNavigation({
   className,
   companyMenuChildren,
   developerMenu,
-  logo = <HiveLogoLink isHive={productName === 'Hive'} />,
+  logo,
+  navLinks,
   productName,
-  navLinks = [
+  search,
+}: HiveNavigationProps) {
+  // Default values that depend on productName need to be set here
+  const resolvedLogo = logo ?? <HiveLogoLink isHive={productName === 'Hive'} />;
+  const resolvedNavLinks = navLinks ?? [
     {
       children: 'Pricing',
       href: productName === 'Hive' ? '/pricing' : 'https://the-guild.dev/graphql/hive/pricing',
     },
-  ],
-  // we need the background transition disabled to avoid an unpleasant flicker
-  // when navigating from a forced light mode page to a dark mode page
-  search = <Search className="[&_input]:transition-none" />,
-}: HiveNavigationProps) {
+  ];
   const containerRef = useRef<HTMLDivElement>(null!);
 
   return (
@@ -117,7 +168,7 @@ export function HiveNavigation({
 
       {/* mobile menu */}
       <div className="flex items-center justify-between md:hidden">
-        {logo}
+        {resolvedLogo}
         <HamburgerButton />
       </div>
 
@@ -126,7 +177,7 @@ export function HiveNavigation({
         className={cn('mx-auto hidden md:flex', WIDTH_STYLE, className)}
         delayDuration={0}
       >
-        {logo}
+        {resolvedLogo}
         <NavigationMenuList className="ml-4 bg-white dark:bg-transparent [@media(min-width:1180px)]:ml-16">
           <NavigationMenuItem>
             <NavigationMenuTrigger>Products</NavigationMenuTrigger>
@@ -154,7 +205,7 @@ export function HiveNavigation({
               <CompanyMenu>{companyMenuChildren}</CompanyMenu>
             </NavigationMenuContent>
           </NavigationMenuItem>
-          {navLinks.map(({ children, href }, i) => (
+          {resolvedNavLinks.map(({ children, href }, i) => (
             <NavigationMenuItem className="flex" key={i}>
               <NavigationMenuLink className="font-medium" href={href}>
                 {children}
@@ -533,6 +584,7 @@ function HiveLogoLink({ isHive }: { isHive: boolean }) {
 
 function HamburgerButton() {
   const menu = useMenu();
+  const setMenu = useSetMenu();
   return (
     <button
       aria-label="Menu"

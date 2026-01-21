@@ -1,10 +1,10 @@
-import auditImage from '../../../public/features/gateway/audit.png';
-import observabilityClientsImage from '../../../public/features/observability/clients.webp';
-import observabilityOperationsImage from '../../../public/features/observability/operations.webp';
-import observabilityOverallImage from '../../../public/features/observability/overall.webp';
-import registryExplorerImage from '../../../public/features/registry/explorer.webp';
-import registrySchemaChecksImage from '../../../public/features/registry/schema-checks.webp';
-import registryVersionControlSystemImage from '../../../public/features/registry/version-control-system.webp';
+import auditImage from '../../public/features/gateway/audit.png';
+import observabilityClientsImage from '../../public/features/observability/clients.webp';
+import observabilityOperationsImage from '../../public/features/observability/operations.webp';
+import observabilityOverallImage from '../../public/features/observability/overall.webp';
+import registryExplorerImage from '../../public/features/registry/explorer.webp';
+import registrySchemaChecksImage from '../../public/features/registry/schema-checks.webp';
+import registryVersionControlSystemImage from '../../public/features/registry/version-control-system.webp';
 import { ActiveHighlightImage, FeatureTab, FeatureTabs, Highlight } from './feature-tabs';
 import { GatewayIcon } from './icons';
 
