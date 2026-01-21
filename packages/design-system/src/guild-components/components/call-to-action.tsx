@@ -103,7 +103,7 @@ export function CallToAction(props: CallToActionProps) {
   const { children, className: _1, variant: _2, ...rest } = props;
 
   return (
-    <button className={className} {...rest}>
+    <button className={className} type="button" {...rest}>
       {growingBorderBox}
       {children}
     </button>

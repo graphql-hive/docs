@@ -1,12 +1,12 @@
-import auditImage from '../../public/features/gateway/audit.png';
-import observabilityClientsImage from '../../public/features/observability/clients.webp';
-import observabilityOperationsImage from '../../public/features/observability/operations.webp';
-import observabilityOverallImage from '../../public/features/observability/overall.webp';
-import registryExplorerImage from '../../public/features/registry/explorer.webp';
-import registrySchemaChecksImage from '../../public/features/registry/schema-checks.webp';
-import registryVersionControlSystemImage from '../../public/features/registry/version-control-system.webp';
-import { ActiveHighlightImage, FeatureTab, FeatureTabs, Highlight } from './feature-tabs';
-import { GatewayIcon } from './icons';
+import { ActiveHighlightImage, FeatureTab, FeatureTabs, Highlight } from '../feature-tabs';
+import { GatewayIcon } from '../icons';
+import auditImage from './audit.png';
+import observabilityClientsImage from './clients.webp';
+import observabilityOperationsImage from './operations.webp';
+import observabilityOverallImage from './overall.webp';
+import registryExplorerImage from './explorer.webp';
+import registrySchemaChecksImage from './schema-checks.webp';
+import registryVersionControlSystemImage from './version-control-system.webp';
 
 const tabs = ['Schema Registry', 'GraphQL Observability', 'GraphQL Gateway'] as const;
 type Tab = (typeof tabs)[number];
