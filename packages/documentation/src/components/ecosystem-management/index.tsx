@@ -1,9 +1,9 @@
 import { Link } from '@tanstack/react-router';
 
-import { cn } from '../../guild-components/cn';
-import { CallToAction } from '../../guild-components/components/call-to-action';
-import { DecorationIsolation, HighlightDecoration } from '../../guild-components/components/decorations';
-import { Heading } from '../../guild-components/components/heading';
+import { cn } from '@hive/design-system/guild-components/cn';
+import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
+import { DecorationIsolation, HighlightDecoration } from '@hive/design-system/guild-components/components/decorations';
+import { Heading } from '@hive/design-system/guild-components/components/heading';
 import { ArrowIcon } from '../arrow-icon';
 import { BookIcon } from '../book-icon';
 import { CheckIcon } from '../check-icon';

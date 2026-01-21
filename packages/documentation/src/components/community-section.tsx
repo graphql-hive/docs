@@ -1,9 +1,9 @@
 import { Image } from '@unpic/react';
 
-import { cn } from '../guild-components/cn';
-import { CallToAction } from '../guild-components/components/call-to-action';
-import { Heading } from '../guild-components/components/heading';
-import { DiscordIcon, GitHubIcon, TwitterIcon } from '../guild-components/components/icons';
+import { cn } from '@hive/design-system/guild-components/cn';
+import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
+import { Heading } from '@hive/design-system/guild-components/components/heading';
+import { DiscordIcon, GitHubIcon, TwitterIcon } from '@hive/design-system/guild-components/components/icons';
 import Achrafash from './community-section/achrafash_.png';
 import ChimameRt from './community-section/chimame_rt.png';
 import Daniel2Color from './community-section/daniel2color.jpg';

@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-// Guild components
+// Guild components (reusable across Hive-branded sites)
 import { Anchor } from '@hive/design-system/guild-components/components/anchor';
 import {
   ArchDecoration,
@@ -13,18 +13,18 @@ import { Heading } from '@hive/design-system/guild-components/components/heading
 import { InfoCard } from '@hive/design-system/guild-components/components/info-card';
 import { ToolsAndLibrariesCards } from '@hive/design-system/guild-components/components/tools-and-libraries-cards';
 import { cn } from '@hive/design-system/guild-components/cn';
-// Hive components
-import { CheckIcon } from '@hive/design-system/hive-components/check-icon';
-import { CommunitySection } from '@hive/design-system/hive-components/community-section';
-import { CompanyTestimonialsSection } from '@hive/design-system/hive-components/company-testimonials';
-import { EcosystemManagementSection } from '@hive/design-system/hive-components/ecosystem-management';
-import { FrequentlyAskedQuestions } from '@hive/design-system/hive-components/frequently-asked-questions';
-import { Hero, HeroFeatures, HeroLinks } from '@hive/design-system/hive-components/hero';
-import { LandingPageContainer } from '@hive/design-system/hive-components/landing-page-container';
-import { LandingPageFeatureTabs } from '@hive/design-system/hive-components/landing-page-feature-tabs';
-import { StatsItem, StatsList } from '@hive/design-system/hive-components/stats';
-import { TeamSection } from '@hive/design-system/hive-components/team-section';
-import { TrustedBySection } from '@hive/design-system/hive-components/trusted-by-section';
+// Hive landing page specific components
+import { CheckIcon } from './check-icon';
+import { CommunitySection } from './community-section';
+import { CompanyTestimonialsSection } from './company-testimonials';
+import { EcosystemManagementSection } from './ecosystem-management';
+import { FrequentlyAskedQuestions } from './frequently-asked-questions';
+import { Hero, HeroFeatures, HeroLinks } from './hero';
+import { LandingPageContainer } from './landing-page-container';
+import { LandingPageFeatureTabs } from './landing-page-feature-tabs';
+import { StatsItem, StatsList } from './stats';
+import { TeamSection } from './team-section';
+import { TrustedBySection } from './trusted-by-section';
 
 // TODO: Add proper metadata handling for TanStack Start
 export const metadata = {

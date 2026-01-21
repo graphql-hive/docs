@@ -1,8 +1,8 @@
 import { Image } from '@unpic/react';
 
-import { cn } from '../guild-components/cn';
-import { CallToAction } from '../guild-components/components/call-to-action';
-import { Heading } from '../guild-components/components/heading';
+import { cn } from '@hive/design-system/guild-components/cn';
+import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
+import { Heading } from '@hive/design-system/guild-components/components/heading';
 import { ArrowIcon } from './arrow-icon';
 import { Author, authors } from './authors';
 

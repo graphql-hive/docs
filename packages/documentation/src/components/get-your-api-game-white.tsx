@@ -1,8 +1,8 @@
-import { cn } from '../guild-components/cn';
-import { CallToAction } from '../guild-components/components/call-to-action';
-import { ContactButton } from '../guild-components/components/contact-us';
-import { DecorationIsolation } from '../guild-components/components/decorations';
-import { Heading } from '../guild-components/components/heading';
+import { cn } from '@hive/design-system/guild-components/cn';
+import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
+import { ContactButton } from '@hive/design-system/guild-components/components/contact-us';
+import { DecorationIsolation } from '@hive/design-system/guild-components/components/decorations';
+import { Heading } from '@hive/design-system/guild-components/components/heading';
 
 const GRADIENT_ID = 'arch-gradient-g7x9p2';
 

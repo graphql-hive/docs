@@ -5,9 +5,9 @@ import { Link } from '@tanstack/react-router';
 import { Image } from '@unpic/react';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
-import { cn } from '../guild-components/cn';
-import { CallToAction } from '../guild-components/components/call-to-action';
-import { Heading } from '../guild-components/components/heading';
+import { cn } from '@hive/design-system/guild-components/cn';
+import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
+import { Heading } from '@hive/design-system/guild-components/components/heading';
 import { ArrowIcon } from './arrow-icon';
 import { ChevronDownIcon } from './ui/icons';
 
@@ -47,10 +47,9 @@ export function FeatureTabs<T extends string>({
   const tabs = tabsProp ?? (Object.keys(highlights) as T[]);
   const [currentTab, setCurrentTab] = useState<T>(tabs[0]!);
 
-  const allHighlights = Object.values<Highlight[]>(highlights).flat();
-
   const smallScreenTabHandlers = useSmallScreenTabsHandlers();
-  const [activeHighlight, setActiveHighlight] = useState(allHighlights[0]?.title ?? '');
+  // Use the first tab's first highlight, not the first key in the object (which may be sorted differently)
+  const [activeHighlight, setActiveHighlight] = useState(highlights[tabs[0]!]?.[0]?.title ?? '');
 
   return (
     <section

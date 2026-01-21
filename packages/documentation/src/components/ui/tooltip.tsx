@@ -4,7 +4,7 @@
 // TODO: Migrate to Base UI Tooltip when available
 import { createContext, HTMLAttributes, ReactNode, useContext, useEffect, useRef, useState } from 'react';
 
-import { cn } from '../../guild-components/cn';
+import { cn } from '@hive/design-system/guild-components/cn';
 
 interface TooltipContextValue {
   open: boolean;

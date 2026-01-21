@@ -1,5 +1,5 @@
-import { cn } from '../guild-components/cn';
-import { Heading } from '../guild-components/components/heading';
+import { cn } from '@hive/design-system/guild-components/cn';
+import { Heading } from '@hive/design-system/guild-components/components/heading';
 
 export function PlanComparison({ className }: { className?: string }) {
   return (

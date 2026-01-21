@@ -50,6 +50,7 @@
     "packages/documentation": {
       "name": "docs",
       "dependencies": {
+        "@base-ui-components/react": "^1.0.0-rc.0",
         "@hive/design-system": "workspace:*",
         "@sparticuz/chromium": "^143.0.4",
         "@tanstack/devtools-vite": "^0.4.1",

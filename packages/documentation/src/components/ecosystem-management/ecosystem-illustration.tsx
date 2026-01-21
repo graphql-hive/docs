@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 
-import { cn } from '../../guild-components/cn';
+import { cn } from '@hive/design-system/guild-components/cn';
 import {
   CodegenIcon,
   HiveGatewayIcon,
   HiveIcon,
   HiveRouterIcon,
   StellateIcon,
-} from '../../guild-components/components/icons';
+} from '@hive/design-system/guild-components/components/icons';
 import { DashedLine } from './dashed-line';
 import styles from './ecosystem-management.module.css';
 import { GraphQLLogo } from './graphql-logo';

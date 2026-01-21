@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
 
-import { cn } from '../guild-components/cn';
+import { cn } from '@hive/design-system/guild-components/cn';
 import {
   ArchDecoration,
   ArchDecorationGradientDefs,
   DecorationIsolation,
   HighlightDecoration,
-} from '../guild-components/components/decorations';
+} from '@hive/design-system/guild-components/components/decorations';
 
 export function Hero(props: { children: ReactNode; className?: string }) {
   return (
