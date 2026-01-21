@@ -10,10 +10,11 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: setup environment
-        uses: ./.github/actions/setup
-        with:
-          actor: test
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+  
+      - name: install dependencies
+        run: bun install --frozen-lockfile
 
       - name: run tests
         run: pnpm test
