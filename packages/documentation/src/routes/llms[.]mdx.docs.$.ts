@@ -8,7 +8,19 @@ export const Route = createFileRoute("/llms.mdx/docs/$")({
         const slugs = params._splat?.split("/") ?? [];
         const page = source.getPage(slugs);
         if (!page) throw notFound();
-        return new Response(await page.data.getText("raw"), {
+
+        const processed = await page.data.getText("processed");
+        // We're adding frontmatter back, but only the parts relevant to LLMs.
+        const frontmatter = [
+          "---",
+          `title: ${page.data.title}`,
+          page.data.description && `description: ${page.data.description}`,
+          "---",
+        ]
+          .filter(Boolean)
+          .join("\n");
+
+        return new Response(`${frontmatter}\n${processed}`, {
           headers: {
             "Content-Type": "text/markdown",
           },
