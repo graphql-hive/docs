@@ -1,5 +1,5 @@
 // Stub for nextra/components
-import { ReactNode, HTMLAttributes, FC } from 'react';
+import { FC, HTMLAttributes, ReactNode } from 'react';
 
 // Re-export local Tabs
 export { Tabs } from '../guild-components/components/tabs';
@@ -7,8 +7,8 @@ export { Tabs } from '../guild-components/components/tabs';
 // Pre component stub
 export interface PreProps extends HTMLAttributes<HTMLPreElement> {
   children?: ReactNode;
-  'data-filename'?: string;
   'data-copy'?: string;
+  'data-filename'?: string;
   'data-language'?: string;
   'data-theme'?: string;
 }
@@ -18,7 +18,7 @@ export function Pre({ children, ...props }: PreProps) {
 }
 
 // Stub components - these should be replaced with Fumadocs equivalents
-export const Callout: FC<{ children?: ReactNode; type?: string; emoji?: string }> = ({ children }) => (
+export const Callout: FC<{ children?: ReactNode; emoji?: string; type?: string; }> = ({ children }) => (
   <div className="nextra-callout">{children}</div>
 );
 

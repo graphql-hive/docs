@@ -1,11 +1,12 @@
-import { forwardRef, ReactElement } from 'react';
 import { Link } from '@tanstack/react-router';
+import { forwardRef, ReactElement } from 'react';
+
 import { cn } from '../cn';
 import { ILink } from '../types/components';
 
 export type AnchorProps = ILink;
 export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(function Anchor(
-  { href = '', children, newWindow, className, ...props },
+  { children, className, href = '', newWindow, ...props },
   forwardedRef,
 ): ReactElement {
   const classes = cn('outline-none focus-visible:ring', className);
@@ -14,7 +15,7 @@ export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(function Anchor
   // Hash links
   if (hrefString.startsWith('#')) {
     return (
-      <a ref={forwardedRef} href={hrefString} className={classes} {...props}>
+      <a className={classes} href={hrefString} ref={forwardedRef} {...props}>
         {children}
       </a>
     );
@@ -24,11 +25,11 @@ export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(function Anchor
   if (newWindow || /^https?:\/\//.test(hrefString)) {
     return (
       <a
-        ref={forwardedRef}
-        href={hrefString}
-        target="_blank"
-        rel="noreferrer"
         className={classes}
+        href={hrefString}
+        ref={forwardedRef}
+        rel="noreferrer"
+        target="_blank"
         {...props}
       >
         {children}
@@ -38,9 +39,9 @@ export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(function Anchor
 
   // Internal links - use TanStack Router Link
   // Filter out props that TanStack Router Link doesn't accept
-  const { target, rel, ...linkProps } = props;
+  const { rel, target, ...linkProps } = props;
   return (
-    <Link ref={forwardedRef} to={hrefString} className={classes} {...linkProps}>
+    <Link className={classes} ref={forwardedRef} to={hrefString} {...linkProps}>
       {children}
     </Link>
   );

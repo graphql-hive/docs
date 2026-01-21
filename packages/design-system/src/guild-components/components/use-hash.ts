@@ -12,8 +12,8 @@ export function useHash() {
     const handleHashChange = () => setHash(location.hash.replace('#', ''));
     handleHashChange();
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    globalThis.addEventListener('hashchange', handleHashChange);
+    return () => globalThis.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   return hash;

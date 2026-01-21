@@ -1,5 +1,6 @@
-import { isValidElement, ReactElement } from 'react';
 import clsx from 'clsx';
+import { isValidElement, ReactElement } from 'react';
+
 import { IHeroGradientProps } from '../types/components';
 import { Button } from './button';
 import { Image } from './image';
@@ -16,13 +17,13 @@ const Shadow = ({ className }: { className: string }): ReactElement => {
 };
 
 export const HeroGradient = ({
-  title,
-  description,
-  link,
-  version,
-  colors = [],
-  image,
   className,
+  colors = [],
+  description,
+  image,
+  link,
+  title,
+  version,
 }: IHeroGradientProps): ReactElement => {
   return (
     <section className={clsx('bg-white md:py-14 dark:bg-dark', className)}>

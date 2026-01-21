@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import { cn } from '../cn';
 import { UnionToIntersection } from '../types/utility';
 import { Anchor, AnchorProps } from './anchor';
@@ -7,27 +8,27 @@ import { Stud } from './stud';
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export declare namespace InfoCardProps {
   interface InfoCardBaseProps {
-    icon: ReactNode;
     heading: ReactNode;
-    scheme?: 'neutral' | 'green';
+    icon: ReactNode;
+    scheme?: 'green' | 'neutral';
   }
 
   interface InfoCardLinkProps extends InfoCardBaseProps, Omit<AnchorProps, 'as'> {
     href: AnchorProps['href'];
   }
 
-  interface InfoCardInertProps extends InfoCardBaseProps, React.HTMLAttributes<HTMLElement> {
+  interface InfoCardInertProps extends React.HTMLAttributes<HTMLElement>, InfoCardBaseProps {
     as: 'div' | 'li';
   }
 }
 
-export type InfoCardProps = InfoCardProps.InfoCardLinkProps | InfoCardProps.InfoCardInertProps;
+export type InfoCardProps = InfoCardProps.InfoCardInertProps | InfoCardProps.InfoCardLinkProps;
 
 export function InfoCard({
-  icon,
-  heading,
-  className,
   children,
+  className,
+  heading,
+  icon,
   scheme = 'neutral',
   ...rest
 }: InfoCardProps) {

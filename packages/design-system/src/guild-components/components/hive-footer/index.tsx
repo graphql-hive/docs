@@ -1,4 +1,5 @@
 import { ComponentType, ReactNode } from 'react';
+
 import { cn } from '../../cn';
 import { siteOrigin } from '../../constants';
 import { HiveCombinationMark } from '../../logos';
@@ -23,10 +24,10 @@ if (process.env.NODE_ENV === 'development') {
 
 export type HiveFooterProps = {
   className?: string;
-  logo?: ReactNode;
-  href?: string;
   description?: string;
+  href?: string;
   items?: HiveFooterItems;
+  logo?: ReactNode;
   /**
    * In case this component is used outside of Hive Platform in a design-consistent but less related context,
    */
@@ -35,10 +36,10 @@ export type HiveFooterProps = {
 
 export function HiveFooter({
   className,
-  logo = <HiveCombinationMark className="h-8 w-auto" />,
-  href = `${siteOrigin}/`,
   description = 'Open-source GraphQL management platform',
+  href = `${siteOrigin}/`,
   items,
+  logo = <HiveCombinationMark className="h-8 w-auto" />,
   showSecurityBadges,
 }: HiveFooterProps) {
   items = { ...HiveFooter.DEFAULT_ITEMS, ...items };
@@ -55,8 +56,8 @@ export function HiveFooter({
       >
         <div className="max-lg:col-span-full">
           <Anchor
-            href={href}
             className="hive-focus -m-1.5 flex rounded p-1.5 text-green-1000 dark:text-white"
+            href={href}
           >
             {logo}
           </Anchor>
@@ -74,8 +75,8 @@ export function HiveFooter({
             <List heading="Company" links={items.company} />
             {items.links?.map((link, i) => (
               <Anchor
-                key={i}
                 className="hive-focus -m-2 rounded p-2 font-medium hover:text-blue-700 hover:underline dark:hover:text-blue-100"
+                key={i}
                 {...link}
               />
             ))}
@@ -90,8 +91,8 @@ export function HiveFooter({
           <div className="flex gap-6 lg:order-1">
             {SOCIAL_ICONS.map(({ icon: Icon, ...iconProps }) => (
               <Anchor
-                key={iconProps.title}
                 className="hive-focus -m-1 rounded-md p-1 hover:text-blue-700 dark:hover:text-blue-100"
+                key={iconProps.title}
                 {...iconProps}
               >
                 <Icon className="h-5 w-auto" />
@@ -108,13 +109,13 @@ export function HiveFooter({
 }
 
 function List({
+  className,
   heading,
   links,
-  className,
 }: {
+  className?: string;
   heading: string;
   links: ILink[] | undefined;
-  className?: string;
 }) {
   if (!links?.length) return null;
 
@@ -136,53 +137,52 @@ function List({
 }
 
 export interface HiveFooterItems {
-  developer?: ILink[];
   company?: ILink[];
-  resources?: ILink[];
+  developer?: ILink[];
   links?: ILink[];
+  resources?: ILink[];
 }
 
 const DEFAULT_ITEMS: HiveFooterItems = {
-  developer: [
-    {
-      children: 'Documentation',
-      title: 'Read the docs',
-      href: '/docs',
-    },
-    {
-      children: 'Hive Status',
-      title: 'Check Hive status',
-      href: 'https://status.graphql-hive.com/',
-    },
-    {
-      children: 'Hive Updates',
-      title: 'Read most recent developments from Hive',
-      href: 'https://the-guild.dev/graphql/hive/product-updates',
-    },
-    {
-      children: 'Blog',
-      title: 'Read our blog',
-      href: 'https://the-guild.dev/graphql/hive/blog',
-    },
-  ],
   company: [
     {
       children: 'About',
-      title: 'Learn more about us',
       href: 'https://the-guild.dev/about-us',
+      title: 'Learn more about us',
     },
     {
       children: 'Brand Assets',
-      title: 'Brand Assets',
       href: 'https://the-guild.dev/logos',
+      title: 'Brand Assets',
     },
     {
       children: 'Newsletter',
-      title: 'Newsletter',
       href: 'https://the-guild.dev/newsletter',
+      title: 'Newsletter',
     },
   ],
-  resources: [],
+  developer: [
+    {
+      children: 'Documentation',
+      href: '/docs',
+      title: 'Read the docs',
+    },
+    {
+      children: 'Hive Status',
+      href: 'https://status.graphql-hive.com/',
+      title: 'Check Hive status',
+    },
+    {
+      children: 'Hive Updates',
+      href: 'https://the-guild.dev/graphql/hive/product-updates',
+      title: 'Read most recent developments from Hive',
+    },
+    {
+      children: 'Blog',
+      href: 'https://the-guild.dev/graphql/hive/blog',
+      title: 'Read our blog',
+    },
+  ],
   links: [
     {
       children: 'OSS Friends',
@@ -193,6 +193,7 @@ const DEFAULT_ITEMS: HiveFooterItems = {
       href: 'https://the-guild.dev/graphql/hive/pricing',
     },
   ],
+  resources: [],
 };
 
 HiveFooter.DEFAULT_ITEMS = DEFAULT_ITEMS;
@@ -203,34 +204,34 @@ interface SocialLink extends Omit<ILink, 'children'> {
 
 const SOCIAL_ICONS: SocialLink[] = [
   {
+    href: 'https://github.com/the-guild-org',
     icon: GitHubIcon,
     title: 'Check our GitHub account',
-    href: 'https://github.com/the-guild-org',
   },
   {
+    href: 'https://twitter.com/TheGuildDev',
     icon: TwitterIcon,
     title: 'Visit our Twitter',
-    href: 'https://twitter.com/TheGuildDev',
   },
   {
+    href: 'https://linkedin.com/company/the-guild-software',
     icon: LinkedInIcon,
     title: 'Visit our LinkedIn',
-    href: 'https://linkedin.com/company/the-guild-software',
   },
   {
+    href: 'https://discord.com/invite/xud7bH9',
     icon: DiscordIcon,
     title: 'Reach us on Discord',
-    href: 'https://discord.com/invite/xud7bH9',
   },
   {
+    href: 'https://youtube.com/watch?v=d_GBgH-L5c4&list=PLhCf3AUOg4PgQoY_A6xWDQ70yaNtPYtZd',
     icon: YouTubeIcon,
     title: 'Watch Our Videos',
-    href: 'https://youtube.com/watch?v=d_GBgH-L5c4&list=PLhCf3AUOg4PgQoY_A6xWDQ70yaNtPYtZd',
   },
 ];
 
 const productLinks = [...FOUR_MAIN_PRODUCTS, ...SIX_HIGHLIGHTED_PRODUCTS].map(
-  ({ name, href, title }) => ({
+  ({ href, name, title }) => ({
     children: name,
     href,
     title,
@@ -240,11 +241,11 @@ const productLinks = [...FOUR_MAIN_PRODUCTS, ...SIX_HIGHLIGHTED_PRODUCTS].map(
 function DecorationArch(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={360}
+      fill="none"
       height={360}
       viewBox="0 0 360 360"
-      fill="none"
+      width={360}
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
@@ -253,12 +254,12 @@ function DecorationArch(props: React.SVGProps<SVGSVGElement>) {
       />
       <defs>
         <linearGradient
+          gradientUnits="userSpaceOnUse"
           id="paint0_linear_711_2541"
           x1={180}
-          y1={-0.000_007_868_05}
           x2={180}
+          y1={-0.000_007_868_05}
           y2={360}
-          gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#C1D3D7" />
           <stop offset={1} stopColor="#86B6C1" />

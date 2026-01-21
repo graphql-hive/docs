@@ -1,25 +1,25 @@
+export { cn } from './cn';
+export * from './components';
+export * from './logos';
+export * from './next-types';
+export { PRODUCTS } from './products';
+export * from './types/components';
 export { Navbar, NotFoundPage, useConfig, useTheme, useThemeConfig } from 'nextra-theme-docs';
 export {
+  Banner,
+  Bleed,
   Callout,
   Cards,
   Code,
+  Collapse,
   FileTree,
   Mermaid,
-  Steps,
-  Tabs,
-  Bleed,
-  Collapse,
   Search,
-  Banner,
+  Steps,
   Table,
+  Tabs,
 } from 'nextra/components';
 export { useMounted } from 'nextra/hooks';
-export * from './components';
-export { PRODUCTS } from './products';
-export * from './types/components';
-export * from './logos';
-export { cn } from './cn';
-export * from './next-types';
 export { normalizePages } from 'nextra/normalize-pages';
 
 /**
@@ -29,7 +29,5 @@ export { normalizePages } from 'nextra/normalize-pages';
  */
 
 declare module 'react' {
-  interface CSSProperties {
-    [key: `--${string}`]: string | number | undefined;
-  }
+  type CSSProperties = Record<`--${string}`, number | string | undefined>;
 }

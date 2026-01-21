@@ -4,7 +4,7 @@
 export const __LANDING_WIDTHS_ID = 'hive-l-widths';
 
 export interface HiveLayoutConfigProps {
-  widths: 'landing-narrow' | 'docs-wide';
+  widths: 'docs-wide' | 'landing-narrow';
 }
 
 /**

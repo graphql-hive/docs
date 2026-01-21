@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
 import { Link } from '@tanstack/react-router';
+import { ReactElement } from 'react';
 
 // TODO: getPageMap needs to be implemented for TanStack Start
 // For now using a stub implementation
@@ -10,15 +10,15 @@ async function getPageMap(_path: string): Promise<PageMapItem[]> {
 }
 
 type PageMapItem = {
-  name: string;
-  route: string;
+  children?: unknown;
+  data?: unknown;
   frontMatter?: {
-    title?: string;
     date?: string;
     description?: string;
+    title?: string;
   };
-  data?: unknown;
-  children?: unknown;
+  name: string;
+  route: string;
 };
 
 // Native date formatting to replace date-fns
@@ -41,10 +41,10 @@ function getOrdinalSuffix(day: number): string {
 }
 
 type Changelog = {
-  title: string;
   date: string;
   description: string;
   route: string;
+  title: string;
 };
 
 export async function ProductUpdatesPage() {
@@ -87,7 +87,7 @@ export async function getChangelogs(): Promise<Changelog[]> {
       if ('data' in item || 'children' in item) {
         throw new Error('Incorrect page map');
       }
-      const { route, frontMatter = {} } = item;
+      const { frontMatter = {}, route } = item;
       let date: string;
 
       try {
@@ -97,10 +97,10 @@ export async function getChangelogs(): Promise<Changelog[]> {
         throw error;
       }
       return {
-        title: frontMatter.title ?? item.name,
         date,
         description: frontMatter.description ?? '',
         route,
+        title: frontMatter.title ?? item.name,
       };
     })
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());

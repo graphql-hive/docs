@@ -1,6 +1,7 @@
 import { useId } from 'react';
-import { CallToAction } from '../guild-components/components/call-to-action';
+
 import { cn } from '../guild-components/cn';
+import { CallToAction } from '../guild-components/components/call-to-action';
 import { ContactButton } from '../guild-components/components/contact-us';
 import { DecorationIsolation } from '../guild-components/components/decorations';
 import { Heading } from '../guild-components/components/heading';
@@ -18,8 +19,8 @@ export function GetYourAPIGameRightList({ className }: { className?: string }) {
       <div className="flex items-stretch justify-between gap-x-8 gap-y-10 px-4 py-6 max-lg:flex-col md:items-center md:p-24 md:px-12 xl:px-[120px]">
         <Heading
           as="h2"
-          size="md"
           className="text-[40px] leading-[1.2] tracking-[-0.2px] max-sm:text-balance max-sm:text-center max-sm:text-[32px]/[1.25] md:text-[56px] md:leading-[1.142586] md:tracking-[-0.56px]"
+          size="md"
         >
           Get your
           <br className="max-lg:hidden" /> API game right.
@@ -40,7 +41,7 @@ export function GetYourAPIGameRightList({ className }: { className?: string }) {
             </li>
           </ul>
           <div className="mt-8 flex gap-x-4 gap-y-2 whitespace-pre max-sm:flex-col">
-            <CallToAction variant="secondary-inverted" href="https://app.graphql-hive.com/">
+            <CallToAction href="https://app.graphql-hive.com/" variant="secondary-inverted">
               Get started for free
             </CallToAction>
             <ContactButton variant="tertiary">Talk to us</ContactButton>
@@ -55,12 +56,12 @@ function CheckmarkCircle() {
   return (
     <div className="h-min grow-0 rounded-full border p-[3px] max-md:mt-px">
       <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
+        className="translate-y-[0.5px]"
+        fill="currentColor"
         height="16"
         viewBox="0 0 16 17"
-        fill="currentColor"
-        className="translate-y-[0.5px]"
+        width="16"
+        xmlns="http://www.w3.org/2000/svg"
       >
         <path d="M6.66668 10.163L12.7947 4.03564L13.7373 4.97831L6.66668 12.049L2.42401 7.80631L3.36668 6.86364L6.66668 10.163Z" />
       </svg>
@@ -72,25 +73,25 @@ function StrokeDecoration(props: React.SVGAttributes<SVGSVGElement>) {
   const id = useId();
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="492"
       height="409"
       viewBox="0 0 492 409"
+      width="492"
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
         d="M475.973 311.082C485.909 301.145 491.5 287.658 491.5 273.616L491.5 0.5L389.821 0.499999L389.821 309.081C389.821 353.676 353.676 389.821 309.081 389.821L0.500001 389.821L0.5 491.5L273.616 491.5C287.658 491.5 301.145 485.909 311.082 475.973L388.967 398.088L398.088 388.967L475.973 311.082Z"
-        stroke={`url(#${id})`}
         fill="none"
+        stroke={`url(#${id})`}
       />
       <defs>
         <linearGradient
+          gradientUnits="userSpaceOnUse"
           id={id}
           x1="246"
-          y1="234.671"
           x2="476.625"
+          y1="234.671"
           y2="483.908"
-          gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#A2C1C4" stopOpacity="0" />
           <stop offset="1" stopColor="#A2C1C4" stopOpacity="0.8" />

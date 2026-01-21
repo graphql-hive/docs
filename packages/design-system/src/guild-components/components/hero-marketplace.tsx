@@ -1,14 +1,15 @@
-import { ReactElement } from 'react';
 import clsx from 'clsx';
-import { IHeroMarketplaceProps } from '../types/components';
-import { Button } from './button';
-import { Image, StaticImageData } from './image';
+import { ReactElement } from 'react';
+
 import CubeBL from '../static/illustrations/marketplace-cube-bl.png';
 import CubeBR from '../static/illustrations/marketplace-cube-br.png';
 import CubeTL from '../static/illustrations/marketplace-cube-tl.png';
 import CubeTR from '../static/illustrations/marketplace-cube-tr.png';
 import IllustrationDesktop from '../static/illustrations/marketplace-desktop.png';
 import IllustrationMobile from '../static/illustrations/marketplace-mobile.png';
+import { IHeroMarketplaceProps } from '../types/components';
+import { Button } from './button';
+import { Image, StaticImageData } from './image';
 
 const Shadow = ({ className }: { className: string }): ReactElement => {
   return (
@@ -24,19 +25,19 @@ const Shadow = ({ className }: { className: string }): ReactElement => {
 const Cube = ({ className, src }: { className: string; src: StaticImageData }): ReactElement => {
   return (
     <Image
+      alt="Cube"
       className={clsx('absolute -translate-x-1/2 -translate-y-1/2', className)}
       src={src}
-      alt="Cube"
     />
   );
 };
 
 export const HeroMarketplace = ({
-  title,
-  description,
-  link,
   className,
+  description,
   image,
+  link,
+  title,
 }: IHeroMarketplaceProps): ReactElement => (
   <section className={clsx('overflow-hidden bg-white dark:bg-dark', className)}>
     <div className="relative">
@@ -49,10 +50,10 @@ export const HeroMarketplace = ({
         <Shadow className="bottom-[-600px] left-[-30px] [background:var(--colorB)] md:bottom-[-700px] md:left-5" />
       </div>
       <div>
-        <Cube src={CubeTL} className="-top-2.5 left-6 md:left-10 md:top-6" />
-        <Cube src={CubeTR} className="-bottom-60 -right-52 top-auto md:bottom-auto md:top-20" />
-        <Cube src={CubeBR} className="-bottom-32 -right-20 hidden md:block" />
-        <Cube src={CubeBL} className="-bottom-40 left-10 hidden md:block" />
+        <Cube className="-top-2.5 left-6 md:left-10 md:top-6" src={CubeTL} />
+        <Cube className="-bottom-60 -right-52 top-auto md:bottom-auto md:top-20" src={CubeTR} />
+        <Cube className="-bottom-32 -right-20 hidden md:block" src={CubeBR} />
+        <Cube className="-bottom-40 left-10 hidden md:block" src={CubeBL} />
       </div>
       <div className="container mb-28 mt-16 flex max-w-[90rem] flex-wrap items-center pb-1 pt-20 md:mb-20 md:mt-7 md:flex-nowrap md:pt-0">
         <picture
@@ -60,7 +61,7 @@ export const HeroMarketplace = ({
           {...image}
         >
           <source media="(min-width:768px)" srcSet={IllustrationDesktop} />
-          <Image className="mx-auto w-auto" src={IllustrationMobile} alt="Products List" />
+          <Image alt="Products List" className="mx-auto w-auto" src={IllustrationMobile} />
         </picture>
         <div className="relative z-[1]">
           <h2 className="mb-2.5 max-w-lg text-2xl font-bold text-white md:text-3xl dark:text-gray-50">

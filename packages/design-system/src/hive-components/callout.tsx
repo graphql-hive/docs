@@ -1,59 +1,59 @@
-type CalloutType = 'note' | 'tip' | 'warning' | 'critical' | 'info' | 'success';
+type CalloutType = 'critical' | 'info' | 'note' | 'success' | 'tip' | 'warning';
 
 interface CalloutProps {
-  type: CalloutType;
   children: React.ReactNode;
   title?: string;
+  type: CalloutType;
 }
 
 const calloutConfig: Record<
   CalloutType,
   {
-    title: string;
     bgColor: string;
     borderColor: string;
+    title: string;
     titleColor: string;
   }
 > = {
-  note: {
-    title: 'Note',
-    bgColor: 'bg-blue-50 dark:bg-blue-950/30',
-    borderColor: 'border-blue-500 dark:border-blue-400',
-    titleColor: 'text-blue-700 dark:text-blue-400',
-  },
-  tip: {
-    title: 'Tip',
-    bgColor: 'bg-purple-50 dark:bg-purple-950/30',
-    borderColor: 'border-purple-500 dark:border-purple-400',
-    titleColor: 'text-purple-700 dark:text-purple-400',
-  },
-  warning: {
-    title: 'Warning',
-    bgColor: 'bg-yellow-50 dark:bg-yellow-950/30',
-    borderColor: 'border-yellow-500 dark:border-yellow-400',
-    titleColor: 'text-yellow-700 dark:text-yellow-400',
-  },
   critical: {
-    title: 'Critical',
     bgColor: 'bg-red-50 dark:bg-red-950/30',
     borderColor: 'border-red-500 dark:border-red-400',
+    title: 'Critical',
     titleColor: 'text-red-700 dark:text-red-400',
   },
   info: {
-    title: 'Info',
     bgColor: 'bg-cyan-50 dark:bg-cyan-950/30',
     borderColor: 'border-cyan-500 dark:border-cyan-400',
+    title: 'Info',
     titleColor: 'text-cyan-700 dark:text-cyan-400',
   },
+  note: {
+    bgColor: 'bg-blue-50 dark:bg-blue-950/30',
+    borderColor: 'border-blue-500 dark:border-blue-400',
+    title: 'Note',
+    titleColor: 'text-blue-700 dark:text-blue-400',
+  },
   success: {
-    title: 'Success',
     bgColor: 'bg-green-50 dark:bg-green-950/30',
     borderColor: 'border-green-500 dark:border-green-400',
+    title: 'Success',
     titleColor: 'text-green-700 dark:text-green-400',
+  },
+  tip: {
+    bgColor: 'bg-purple-50 dark:bg-purple-950/30',
+    borderColor: 'border-purple-500 dark:border-purple-400',
+    title: 'Tip',
+    titleColor: 'text-purple-700 dark:text-purple-400',
+  },
+  warning: {
+    bgColor: 'bg-yellow-50 dark:bg-yellow-950/30',
+    borderColor: 'border-yellow-500 dark:border-yellow-400',
+    title: 'Warning',
+    titleColor: 'text-yellow-700 dark:text-yellow-400',
   },
 };
 
-export function Callout({ type, children, title }: CalloutProps) {
+export function Callout({ children, title, type }: CalloutProps) {
   const config = calloutConfig[type];
 
   if (!config) {

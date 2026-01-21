@@ -1,22 +1,22 @@
 import { cn } from '../guild-components/cn';
 
 export function VideoEmbed({
+  className,
   src,
   title,
-  className,
 }: {
+  className?: string;
   src: string;
   title: string;
-  className?: string;
 }) {
   return (
     <video
-      className={cn('mx-auto mt-6', className)}
-      playsInline
       autoPlay
+      className={cn('mx-auto mt-6', className)}
+      controls
       loop
       muted
-      controls
+      playsInline
       title={title}
     >
       <source src={src} type={`video/${src.slice(src.lastIndexOf('.') + 1)}`} />

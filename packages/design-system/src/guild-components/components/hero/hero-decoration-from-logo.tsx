@@ -1,4 +1,5 @@
 import { cloneElement, ReactElement, SVGProps } from 'react';
+
 import { cn } from '../../cn';
 import { DecorationIsolation, DecorationIsolationProps } from '../decorations';
 import { GRADIENT_WHITE_2_ID } from './hero-gradient-ids';
@@ -13,10 +14,10 @@ export function HeroDecorationFromLogo({ logo, ...rest }: HeroDecorationFromLogo
       {cloneElement(logo, {
         className: cn('absolute -left-1/2 top-1/2 -translate-y-1/2 stroke-white/10 max-lg:hidden'),
         fill: `url(#${GRADIENT_WHITE_2_ID})`,
-        strokeWidth: '0.1',
         height: '50%',
-        width: 'auto',
         opacity: 0.8,
+        strokeWidth: '0.1',
+        width: 'auto',
       })}
       {cloneElement(logo, {
         className: cn(
@@ -25,9 +26,9 @@ export function HeroDecorationFromLogo({ logo, ...rest }: HeroDecorationFromLogo
           'h-2/3 lg:h-[calc(100%-5%)]',
         ),
         fill: `url(#${GRADIENT_WHITE_2_ID})`,
+        opacity: 0.6,
         strokeWidth: '0.1',
         width: 'auto',
-        opacity: 0.6,
       })}
     </DecorationIsolation>
   );

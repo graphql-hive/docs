@@ -3,6 +3,203 @@
 @import 'fumadocs-ui/css/preset.css';
 @import 'fumadocs-twoslash/twoslash.css';
 
+/* Source files to scan for Tailwind classes */
+@source "../../**/*.tsx";
+@source "../../../design-system/src/**/*.tsx";
+
+/* Dark mode with light-only sections support
+   Adding .light class to a container opts it out of dark mode */
+@custom-variant dark (&:where(.dark, .dark *):not(.light *));
+
+/* Nextra primary color HSL variables (used by @theguild/components) */
+:root {
+  --nextra-primary-hue: 0deg;
+  --nextra-primary-saturation: 0%;
+  --nextra-primary-lightness: 50%;
+}
+
+/* Hive colors migrated from @theguild/tailwind-config */
+@theme {
+  --color-hive-yellow: #E1FF00;
+  --color-primary: #E1FF00;
+
+  --color-blue-100: #F4F5F5;
+  --color-blue-200: #DCE3E4;
+  --color-blue-300: #C1D3D7;
+  --color-blue-400: #A4C4CB;
+  --color-blue-500: #86B6C1;
+  --color-blue-600: #68A8B6;
+  --color-blue-700: #4F96A6;
+  --color-blue-800: #437C89;
+  --color-blue-900: #39616A;
+  --color-blue-1000: #2E474C;
+
+  --color-green-100: #ECF6F3;
+  --color-green-200: #CAE4DE;
+  --color-green-300: #A7D5CA;
+  --color-green-400: #8CBEB3;
+  --color-green-500: #6AAC9E;
+  --color-green-600: #55998D;
+  --color-green-700: #3B736A;
+  --color-green-800: #245850;
+  --color-green-900: #15433C;
+  --color-green-1000: #00342C;
+
+  --color-beige-100: #F8F7F6;
+  --color-beige-200: #F1EEE4;
+  --color-beige-300: #E9E5DA;
+  --color-beige-400: #DEDACF;
+  --color-beige-500: #CFCABF;
+  --color-beige-600: #B9B4A9;
+  --color-beige-700: #A29E93;
+  --color-beige-800: #86827A;
+  --color-beige-900: #6D6A63;
+  --color-beige-1000: #4D4B46;
+
+  /* Functional colors */
+  --color-critical-bright: #FD3325;
+  --color-critical-dark: #F81202;
+  --color-warning-bright: #FE8830;
+  --color-positive-bright: #24D551;
+  --color-positive-dark: #1BA13D;
+
+  /* Subtle functional tones (for callouts) */
+  --color-warning-100: #FBF8CB;
+  --color-warning-500: #E7DE62;
+  --color-warning-800: #7D7204;
+  --color-critical-100: #FFF0E8;
+  --color-critical-500: #FFC6BB;
+  --color-critical-800: #932D47;
+  --color-info-100: #E7F7FF;
+  --color-info-500: #9FC9DC;
+  --color-info-800: #205B75;
+  --color-positive-100: #F3FBD7;
+  --color-positive-500: #AFD563;
+  --color-positive-800: #406B10;
+
+  /* Custom docs colors */
+  --color-blueish-green: #003834;
+  --color-dark: #111;
+
+  /* Nextra primary colors (HSL-based, for theming) */
+  --color-nextra-primary-50: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) calc(var(--nextra-primary-lightness) + 52%));
+  --color-nextra-primary-100: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) calc(var(--nextra-primary-lightness) + 49%));
+  --color-nextra-primary-200: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) calc(var(--nextra-primary-lightness) + 41%));
+  --color-nextra-primary-300: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) calc(var(--nextra-primary-lightness) + 32%));
+  --color-nextra-primary-400: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) calc(var(--nextra-primary-lightness) + 21%));
+  --color-nextra-primary-500: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) calc(var(--nextra-primary-lightness) + 5%));
+  --color-nextra-primary-600: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) var(--nextra-primary-lightness));
+  --color-nextra-primary-700: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) calc(var(--nextra-primary-lightness) - 6%));
+  --color-nextra-primary-750: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) calc(var(--nextra-primary-lightness) - 10%));
+  --color-nextra-primary-800: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) calc(var(--nextra-primary-lightness) - 13%));
+  --color-nextra-primary-900: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) calc(var(--nextra-primary-lightness) - 21%));
+  --color-nextra-primary-1000: hsl(var(--nextra-primary-hue) var(--nextra-primary-saturation) calc(var(--nextra-primary-lightness) - 33%));
+
+  /* Accordion animations */
+  --animate-accordion-down: accordion-down 0.5s ease;
+  --animate-accordion-up: accordion-up 0.5s ease;
+}
+
+/* Accordion keyframes */
+@keyframes accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+/* Firefox variant - targets Firefox browser */
+@custom-variant firefox {
+  @supports (-moz-appearance: none) {
+    @slot;
+  }
+}
+
+/* Radix UI state variants (rdx- prefix) */
+@custom-variant rdx-state-open (&[data-state="open"]);
+@custom-variant rdx-state-closed (&[data-state="closed"]);
+@custom-variant rdx-state-checked (&[data-state="checked"]);
+@custom-variant rdx-state-unchecked (&[data-state="unchecked"]);
+@custom-variant rdx-state-indeterminate (&[data-state="indeterminate"]);
+@custom-variant rdx-state-on (&[data-state="on"]);
+@custom-variant rdx-state-off (&[data-state="off"]);
+@custom-variant rdx-state-active (&[data-state="active"]);
+@custom-variant rdx-state-inactive (&[data-state="inactive"]);
+@custom-variant rdx-state-instant-open (&[data-state="instant-open"]);
+@custom-variant rdx-state-delayed-open (&[data-state="delayed-open"]);
+@custom-variant rdx-disabled (&[data-disabled]);
+@custom-variant rdx-highlighted (&[data-highlighted]);
+@custom-variant rdx-placeholder (&[data-placeholder]);
+
+/* Group variants for Radix states */
+@custom-variant group-rdx-state-open (:merge(.group)[data-state="open"] &);
+@custom-variant group-rdx-state-closed (:merge(.group)[data-state="closed"] &);
+@custom-variant group-rdx-state-checked (:merge(.group)[data-state="checked"] &);
+@custom-variant group-rdx-state-unchecked (:merge(.group)[data-state="unchecked"] &);
+
+/* Peer variants for Radix states */
+@custom-variant peer-rdx-state-open (:merge(.peer)[data-state="open"] ~ &);
+@custom-variant peer-rdx-state-closed (:merge(.peer)[data-state="closed"] ~ &);
+@custom-variant peer-rdx-state-checked (:merge(.peer)[data-state="checked"] ~ &);
+@custom-variant peer-rdx-state-unchecked (:merge(.peer)[data-state="unchecked"] ~ &);
+
+/* Radix side/orientation variants */
+@custom-variant rdx-side-top (&[data-side="top"]);
+@custom-variant rdx-side-bottom (&[data-side="bottom"]);
+@custom-variant rdx-side-left (&[data-side="left"]);
+@custom-variant rdx-side-right (&[data-side="right"]);
+@custom-variant rdx-orientation-horizontal (&[data-orientation="horizontal"]);
+@custom-variant rdx-orientation-vertical (&[data-orientation="vertical"]);
+
+/* Utility: mask-image-none */
+@utility mask-image-none {
+  mask-image: none;
+}
+
+/* Blockquote utility - adds styled quotation marks with configurable color
+   Usage: blockquote-[#color] or blockquote-[var(--color-name)]
+   Example: blockquote-[#A4C4CB] or blockquote-[var(--color-blue-400)] */
+@utility blockquote-* {
+  position: relative;
+  quotes: """ """ "'" "'";
+  --blockquote-color: --value(--color-*, [color]);
+
+  &::before,
+  &::after {
+    line-height: 0;
+    position: relative;
+    font-size: 2.25em;
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    color: var(--blockquote-color);
+  }
+
+  &::before {
+    content: open-quote;
+    left: -0.375em;
+  }
+
+  &::after {
+    content: close-quote;
+  }
+}
+
 .flowchart {
   --mermaid-node-fill: var(--color-neutral-100);
   --mermaid-node-stroke: var(--color-neutral-200);

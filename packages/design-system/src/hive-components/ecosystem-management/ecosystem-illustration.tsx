@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import { cn } from '../../guild-components/cn';
 import {
   CodegenIcon,
@@ -8,6 +9,7 @@ import {
   StellateIcon,
 } from '../../guild-components/components/icons';
 import { DashedLine } from './dashed-line';
+import styles from './ecosystem-management.module.css';
 import { GraphQLLogo } from './graphql-logo';
 import { IconGradientDefs } from './icon-gradient-defs';
 import { AndroidLogo } from './logos/android';
@@ -16,7 +18,6 @@ import { GrpcLogo } from './logos/grpc';
 import { McpLogo } from './logos/mcp';
 import { OpenAPILogo } from './logos/openapi';
 import { ReactLogo } from './logos/react';
-import styles from './ecosystem-management.module.css';
 
 const boxHeight = 66;
 const halfBoxHeight = boxHeight / 2;
@@ -70,8 +71,8 @@ export function EcosystemIllustration(props: { className?: string }) {
       )}
       style={
         {
-          '--stellate-height': `${stellateHeight}px`,
           '--gateway-height': `${gatewayHeight}px`,
+          '--stellate-height': `${stellateHeight}px`,
         } as React.CSSProperties
       }
     >
@@ -80,7 +81,7 @@ export function EcosystemIllustration(props: { className?: string }) {
       {/* Col 1: Codegen (Desktop) */}
       <div className="hidden items-center justify-end md:flex">
         <Node
-          title="Codegen"
+          className="z-20"
           description={
             <>
               GraphQL Code
@@ -88,7 +89,7 @@ export function EcosystemIllustration(props: { className?: string }) {
               Generation
             </>
           }
-          className="z-20"
+          title="Codegen"
         >
           <CodegenIcon className="size-12 fill-[url(#linear-blue)] stroke-[url(#linear-white)] stroke-[0.5px]" />
         </Node>
@@ -110,7 +111,7 @@ export function EcosystemIllustration(props: { className?: string }) {
 
         <div className="z-20 flex justify-center">
           <Node
-            title="Stellate"
+            className="h-[--stellate-height] max-md:px-6"
             description={
               <>
                 GraphQL Edge Security
@@ -118,7 +119,7 @@ export function EcosystemIllustration(props: { className?: string }) {
                 and Caching Layer
               </>
             }
-            className="h-[--stellate-height] max-md:px-6"
+            title="Stellate"
           >
             <StellateIcon className="size-12 [&>g]:fill-[url(#linear-blue)] [&>g]:stroke-[url(#linear-white)] [&>g]:stroke-[0.2px]" />
           </Node>
@@ -128,9 +129,9 @@ export function EcosystemIllustration(props: { className?: string }) {
 
         <div className="z-20 flex justify-center">
           <Node
-            title={null}
-            description={null}
             className="h-[--gateway-height] flex-row gap-2 px-8"
+            description={null}
+            title={null}
           >
             <div className="flex flex-col items-center gap-2">
               <HiveGatewayIcon className="size-12 fill-[url(#linear-blue)] stroke-[url(#linear-white)] stroke-[0.5px]" />
@@ -168,11 +169,7 @@ export function EcosystemIllustration(props: { className?: string }) {
       {/* Col 5: Console (Desktop) */}
       <div className="hidden items-center justify-start md:flex">
         <Node
-          title={
-            <>
-              <span className={styles['smHidden']}>Hive</span> Console
-            </>
-          }
+          className="z-20"
           description={
             <>
               Schema registry
@@ -180,7 +177,11 @@ export function EcosystemIllustration(props: { className?: string }) {
               and monitoring
             </>
           }
-          className="z-20"
+          title={
+            <>
+              <span className={styles['smHidden']}>Hive</span> Console
+            </>
+          }
         >
           <HiveIcon className="size-12 [&>g]:fill-[url(#linear-blue)] [&>g]:stroke-[url(#linear-white)] [&>g]:stroke-[0.2px]" />
         </Node>
@@ -190,11 +191,11 @@ export function EcosystemIllustration(props: { className?: string }) {
 }
 
 interface NodeProps extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
-  title: ReactNode;
   description?: ReactNode;
+  title: ReactNode;
 }
 
-function Node({ title, description, children, className, ...rest }: NodeProps) {
+function Node({ children, className, description, title, ...rest }: NodeProps) {
   return (
     <div
       className={cn(
@@ -228,7 +229,7 @@ function LeftConnections() {
   return (
     <div
       className="hidden flex-col items-center justify-center md:flex"
-      style={{ paddingBlock: halfBoxHeight, height: fullHeight }}
+      style={{ height: fullHeight, paddingBlock: halfBoxHeight }}
     >
       <DashedLine className="h-1/2 translate-x-[1.5px] translate-y-[-1.5px] text-green-700" />
       <DashedLine className="h-1/2 translate-x-[1.5px] translate-y-[1.5px] -scale-y-100 text-green-700" />
@@ -241,8 +242,8 @@ function RightConnections() {
     <div
       className="relative hidden shrink grow-0 grid-flow-col-dense grid-cols-1 place-items-center justify-center md:grid"
       style={{
-        paddingBlock: halfBoxHeight,
         height: fullHeight,
+        paddingBlock: halfBoxHeight,
         // todo: change 20px and 14px to something based on cqi or vars?
         gridTemplateRows: `${firstRow} calc(${secondRow} + 20px) calc(${thirdRow} - 14px) 1fr`,
       }}

@@ -8,8 +8,8 @@ export function PlanComparison({ className }: { className?: string }) {
     >
       <Heading
         as="h2"
-        size="md"
         className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-white"
+        size="md"
       >
         All plans include
         <span className="text-green-1000 inline-block rounded-2xl bg-gradient-to-r from-blue-300 to-blue-500 px-3 py-2">

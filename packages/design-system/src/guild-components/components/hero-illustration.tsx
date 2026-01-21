@@ -1,16 +1,17 @@
-import { ReactElement } from 'react';
 import clsx from 'clsx';
+import { ReactElement } from 'react';
+
 import { IHeroIllustrationProps } from '../types/components';
 import { Button } from './button';
 import { Image } from './image';
 
 export const HeroIllustration = ({
-  title,
-  description,
-  link,
-  image,
-  flipped,
   className,
+  description,
+  flipped,
+  image,
+  link,
+  title,
 }: IHeroIllustrationProps): ReactElement => (
   <section className={clsx('bg-white dark:bg-dark', className)}>
     <div

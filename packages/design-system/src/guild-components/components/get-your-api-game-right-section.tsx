@@ -16,13 +16,13 @@ export function GetYourAPIGameRightSection({ className }: { className?: string }
       <div className="flex items-stretch justify-between gap-x-6 gap-y-4 p-4 max-md:flex-col sm:items-center md:h-[308px] md:px-24">
         <Heading
           as="h2"
-          size="md"
           className="text-[40px] leading-[1.2] tracking-[-0.2px] max-sm:text-balance max-sm:text-center md:text-[56px] md:leading-[1.142586] md:tracking-[-0.56px]"
+          size="md"
         >
           Get your API game right.
         </Heading>
         <div className="flex gap-x-4 gap-y-2 whitespace-pre max-sm:flex-col">
-          <CallToAction variant="secondary-inverted" href="https://app.graphql-hive.com/">
+          <CallToAction href="https://app.graphql-hive.com/" variant="secondary-inverted">
             Get started for free
           </CallToAction>
           <ContactButton variant="tertiary">Talk to us</ContactButton>
@@ -35,10 +35,10 @@ export function GetYourAPIGameRightSection({ className }: { className?: string }
 function GreenArchDecoration(props: React.SVGAttributes<SVGSVGElement>) {
   return (
     <svg
-      width={538}
+      fill="none"
       height={309}
       viewBox="0 0 538 309"
-      fill="none"
+      width={538}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -48,12 +48,12 @@ function GreenArchDecoration(props: React.SVGAttributes<SVGSVGElement>) {
       />
       <defs>
         <linearGradient
+          gradientUnits="userSpaceOnUse"
           id="paint0_linear_711_2526"
           x1={273.25}
-          y1={-3.009_75}
           x2={273.25}
+          y1={-3.009_75}
           y2={308.05}
-          gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#55998D" />
           <stop offset={1} stopColor="#245850" />
@@ -66,10 +66,10 @@ function GreenArchDecoration(props: React.SVGAttributes<SVGSVGElement>) {
 function StrokeDecoration(props: React.SVGAttributes<SVGSVGElement>) {
   return (
     <svg
-      width={304}
+      fill="none"
       height={284}
       viewBox="0 0 304 284"
-      fill="none"
+      width={304}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -79,12 +79,12 @@ function StrokeDecoration(props: React.SVGAttributes<SVGSVGElement>) {
       />
       <defs>
         <linearGradient
+          gradientUnits="userSpaceOnUse"
           id="paint0_linear_711_2520"
           x1={152}
-          y1={159.05}
           x2={294.5}
+          y1={159.05}
           y2={5.049_82}
-          gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#A2C1C4" stopOpacity={0} />
           <stop offset={1} stopColor="#A2C1C4" stopOpacity={0.8} />

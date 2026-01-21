@@ -1,11 +1,12 @@
 import React from 'react';
+
 import { cn } from '../cn';
 import { Anchor, AnchorProps } from './anchor';
 import { ArrowIcon } from './icons';
 
 export type TextLinkProps = AnchorProps;
 
-export function TextLink({ className, children, ...rest }: TextLinkProps) {
+export function TextLink({ children, className, ...rest }: TextLinkProps) {
   const hasArrow =
     children &&
     flattenFragments(children).some(

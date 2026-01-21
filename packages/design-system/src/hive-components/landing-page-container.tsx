@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import { cn } from '../guild-components/cn';
 import { CookiesConsent } from '../guild-components/components/cookies-consent';
 

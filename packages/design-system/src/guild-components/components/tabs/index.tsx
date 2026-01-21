@@ -1,6 +1,7 @@
 'use no memo';
 
 import { ComponentProps } from 'react';
+
 import { Tabs as _Tabs, Tab } from './index.client';
 
 export type { TabsProps } from './index.client';

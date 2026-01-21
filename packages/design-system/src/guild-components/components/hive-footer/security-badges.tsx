@@ -1,25 +1,26 @@
 import { ReactNode } from 'react';
+
 import { cn } from '../../cn';
-import { ReactComponent as CSAStarLevelOneIcon } from '../icons/csa-star-level-one.svg';
+import CSAStarLevelOneIcon from '../icons/csa-star-level-one.svg?svgr';
 
 function SecurityBadge({
-  href,
   children,
   className,
+  href,
 }: {
-  href: string;
   children: ReactNode;
   className?: string;
+  href: string;
 }) {
   return (
     <a
-      href={href}
-      target="_blank"
-      rel="noreferrer noopener"
       className={cn(
         'hive-focus size-fit rounded-full p-1 hover:bg-blue-200 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(var(--nextra-bg))] dark:hover:bg-white/20 dark:hover:*:opacity-100',
         className,
       )}
+      href={href}
+      rel="noreferrer noopener"
+      target="_blank"
     >
       {children}
     </a>
@@ -34,9 +35,9 @@ export function SecurityBadges() {
       </SecurityBadge>
       <SecurityBadge href="https://security.graphql-hive.com/">
         <img
-          src="https://storage.piotrbox.monwid-olechnowicz.com/soc2-badge.webp"
           alt="AICPA SOC 2"
           className="size-[88px] dark:opacity-95"
+          src="https://storage.piotrbox.monwid-olechnowicz.com/soc2-badge.webp"
         />
       </SecurityBadge>
     </div>

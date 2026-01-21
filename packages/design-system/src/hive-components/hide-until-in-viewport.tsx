@@ -3,10 +3,10 @@
 import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
 
 interface HideUntilInViewportProps {
+  children: ReactNode;
+  fallback?: ReactNode;
   /** Fires when IntersectionObserver enters viewport */
   onEnter?: (id?: string) => void;
-  fallback?: ReactNode;
-  children: ReactNode;
 }
 
 export const HideUntilInViewport = ({

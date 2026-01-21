@@ -1,4 +1,9 @@
 import { CardsColorfulProps } from '../components/cards-colorful';
+import heroIllustrationImage from '../static/dummy/envelop/communication.png';
+import featureListImage3 from '../static/dummy/envelop/features-modern.png';
+import featureListImage2 from '../static/dummy/envelop/features-performant.png';
+import featureListImage1 from '../static/dummy/envelop/features-pluggable.png';
+import yogaImage from '../static/illustrations/yoga.svg';
 import {
   IFeatureListProps,
   IHeroGradientProps,
@@ -7,168 +12,163 @@ import {
   IHeroVideoProps,
   IInfoListProps,
 } from '../types/components';
-import heroIllustrationImage from '../static/dummy/envelop/communication.png';
-import featureListImage3 from '../static/dummy/envelop/features-modern.png';
-import featureListImage2 from '../static/dummy/envelop/features-performant.png';
-import featureListImage1 from '../static/dummy/envelop/features-pluggable.png';
-import yogaImage from '../static/illustrations/yoga.svg';
 
 export const dummyFeatureList: IFeatureListProps = {
-  title: 'The best and simple features',
   description: 'Powerful plugin system learn more learn more',
-  link: {
-    href: '/wow',
-    children: 'Hello world',
-  },
   items: [
     {
+      description: 'Powerful plugin system',
       image: {
         alt: 'Toy Brick Icon',
         src: featureListImage1,
       },
-      title: 'Pluggable',
-      description: 'Powerful plugin system',
       link: {
         children: 'GitHub',
-        title: 'Learn more',
         href: 'https://github.com/the-guild-org',
+        title: 'Learn more',
       },
+      title: 'Pluggable',
     },
     {
+      description: 'Use any Node framework, use any execution',
       image: {
         alt: 'Gauge Icon',
         src: featureListImage2,
       },
       title: 'Performant',
-      description: 'Use any Node framework, use any execution',
     },
     {
+      description: 'Use all the latest GraphQL Capabilities',
       image: {
         alt: 'Toy Brick Icon',
         src: featureListImage3,
       },
       title: 'Modern',
-      description: 'Use all the latest GraphQL Capabilities',
     },
   ],
+  link: {
+    children: 'Hello world',
+    href: '/wow',
+  },
+  title: 'The best and simple features',
 };
 
 export const dummyInfoList: IInfoListProps = {
-  title: 'Get Started',
   items: [
     {
-      title: 'Install GraphQL Envelop',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas euismod amet duis quisque semper.',
       link: {
         children: 'Documentation',
-        title: 'Read the documentation',
         href: '#',
+        title: 'Read the documentation',
       },
+      title: 'Install GraphQL Envelop',
     },
     {
-      title: 'GitHub integration',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Egestas euismod amet duis quisque semper.',
       link: {
         children: 'GitHub',
-        title: 'View the code',
         href: 'https://github.com/dotansimha/envelop',
+        title: 'View the code',
       },
+      title: 'GitHub integration',
     },
     {
-      title: "Let's work together",
       description: 'We want to hear from you, our community of fellow engineers.',
       link: {
         children: 'envelop@theguild.dev',
-        title: 'Reach us out',
         href: 'mailto:envelop@theguild.dev',
+        title: 'Reach us out',
       },
+      title: "Let's work together",
     },
   ],
+  title: 'Get Started',
 };
 
 export const dummyHeroVideo: IHeroVideoProps = {
-  title: 'Easy Installation',
   description:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc scelerisque mauris imperdiet nulla vehicula, vitae porttitor massa consequat. Proin semper bibendum aliquam.',
+  flipped: true,
   link: {
     children: 'Documentation',
-    title: 'Read the documentation',
     href: '#',
+    title: 'Read the documentation',
   },
+  title: 'Easy Installation',
   video: {
-    src: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
     placeholder: 'https://ak.picdn.net/shutterstock/videos/1033186691/thumb/1.jpg',
+    src: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
   },
-  flipped: true,
 };
 
 export const dummyHeroIllustration: IHeroIllustrationProps = {
-  title: 'Direct communication with your server',
   description:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc scelerisque mauris imperdiet nulla vehicula, vitae porttitor massa consequat. Proin semper bibendum aliquam.',
+  flipped: true,
+  image: {
+    alt: 'Illustration',
+    src: heroIllustrationImage,
+  },
   link: {
     children: 'Documentation',
-    title: 'Read the documentation',
     href: '#',
+    title: 'Read the documentation',
   },
-  image: {
-    src: heroIllustrationImage,
-    alt: 'Illustration',
-  },
-  flipped: true,
+  title: 'Direct communication with your server',
 };
 
 export const dummyHeroGradient: IHeroGradientProps = {
-  title: 'A GraphQL server framework for improved developer experience',
+  colors: ['#ff34ae', '#1cc8ee'],
   description:
     'Use any Node framework and any GraphQL feature, with the easiest plugins system - A new framework by The Guild',
+  image: {
+    alt: 'Illustration',
+    src: yogaImage,
+  },
   link: {
     children: 'Get Started',
-    title: 'Learn more about GraphQL Envelop',
     href: '/docs',
+    title: 'Learn more about GraphQL Envelop',
   },
+  title: 'A GraphQL server framework for improved developer experience',
   version: '1.0.7',
-  colors: ['#ff34ae', '#1cc8ee'],
-  image: {
-    src: yogaImage,
-    alt: 'Illustration',
-  },
 };
 
 export const dummyHeroMarketplace: IHeroMarketplaceProps = {
-  title: 'Marketplace',
   description:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec sem ex. Aenean semper vehicula nibh non luctus. In rutrum nisl vitae ligula mollis feugiat.',
   link: {
     children: 'Get Started',
-    title: 'Learn more about the ',
     href: '#',
+    title: 'Learn more about the ',
   },
+  title: 'Marketplace',
 };
 
 export const dummyCardsColorful: CardsColorfulProps = {
   cards: [
     {
-      title: 'GraphQL Modules',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
       category: 'New release by the guild',
-      link: {
-        title: 'Learn more',
-        href: '#',
-      },
       color: '#3547e5',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      link: {
+        href: '#',
+        title: 'Learn more',
+      },
+      title: 'GraphQL Modules',
     },
     {
-      title: 'Clean up your code!',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
       category: 'Pro tip',
-      link: {
-        title: 'Learn more',
-        href: '#',
-      },
       color: '#0b0d11',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      link: {
+        href: '#',
+        title: 'Learn more',
+      },
+      title: 'Clean up your code!',
     },
   ],
 };

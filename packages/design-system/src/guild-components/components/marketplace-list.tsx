@@ -2,6 +2,7 @@
 
 import { ReactElement, useEffect, useMemo, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+
 import { cn } from '../cn';
 import { IMarketplaceItemProps, IMarketplaceListProps } from '../types/components';
 import { Anchor } from './anchor';
@@ -33,12 +34,12 @@ const numberFormat = Intl.NumberFormat('en-US', {
 });
 
 export const MarketplaceList = ({
-  title,
-  placeholder,
-  items,
-  pagination,
   className,
   colorScheme = 'neutral',
+  items,
+  pagination,
+  placeholder,
+  title,
 }: IMarketplaceListProps): ReactElement => {
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -74,8 +75,8 @@ export const MarketplaceList = ({
       {title && (
         <Heading
           as="h2"
-          size="sm"
           className="mb-6 mt-4 text-2xl/8 font-medium text-[--fg,theme(colors.neutral.900)] dark:text-white"
+          size="sm"
         >
           {title}
         </Heading>
@@ -85,10 +86,9 @@ export const MarketplaceList = ({
           <ul className="grid gap-4 lg:grid-cols-2 lg:gap-6">
             {pages[currentPage].map((item, i) => {
               return (
-                <li key={item.title} className="*:h-full">
+                <li className="*:h-full" key={item.title}>
                   <MarketplaceListItem
                     item={item}
-                    tabIndex={i === 0 ? 0 : -1}
                     // focusgroup vertical navigation
                     onKeyDown={event => {
                       const ul = event.currentTarget.parentElement!.parentElement!;
@@ -99,10 +99,11 @@ export const MarketplaceList = ({
                         ?.toString();
 
                       const columns =
-                        parseInt(gridTemplateColumns?.match(/repeat\((\d)/)?.[1] as string) || 1;
+                        Number.parseInt(gridTemplateColumns?.match(/repeat\((\d)/)?.[1] as string) || 1;
 
                       moveFocusOnArrowKeys(event, columns);
                     }}
+                    tabIndex={i === 0 ? 0 : -1}
                   />
                 </li>
               );
@@ -110,17 +111,17 @@ export const MarketplaceList = ({
           </ul>
           {pageCount > 1 && (
             <ReactPaginate
-              pageCount={pageCount}
-              forcePage={currentPage}
-              pageRangeDisplayed={3}
-              marginPagesDisplayed={1}
-              onPageChange={page => setCurrentPage(page.selected)}
-              containerClassName="flex justify-center gap-2 mt-6"
-              previousClassName="hidden"
-              nextClassName="hidden"
-              breakLinkClassName="hive-focus rounded text-[--fg-80] [.green_&]:text-green-200"
-              pageLinkClassName="hive-focus text-sm font-medium rounded-lg [.green_&]:text-green-200 [.green_&]:border-green-700 border border-neutral-600 dark:text-neutral-200 size-7 flex justify-center items-center select-none"
               activeLinkClassName="text-[--bg] dark:!text-[--bg] bg-[--fg] [.green_&]:bg-green-300 [.green_&]:text-green-800"
+              breakLinkClassName="hive-focus rounded text-[--fg-80] [.green_&]:text-green-200"
+              containerClassName="flex justify-center gap-2 mt-6"
+              forcePage={currentPage}
+              marginPagesDisplayed={1}
+              nextClassName="hidden"
+              onPageChange={page => setCurrentPage(page.selected)}
+              pageCount={pageCount}
+              pageLinkClassName="hive-focus text-sm font-medium rounded-lg [.green_&]:text-green-200 [.green_&]:border-green-700 border border-neutral-600 dark:text-neutral-200 size-7 flex justify-center items-center select-none"
+              pageRangeDisplayed={3}
+              previousClassName="hidden"
             />
           )}
         </>
@@ -152,9 +153,9 @@ export function MarketplaceListItem({ item, ...rest }: MarketplaceListItemProps)
       >
         <Image
           {...item.image}
-          width={92}
-          height={92}
           className="aspect-square rounded-lg object-contain ring-1 ring-inset ring-[rgb(from_var(--fg)_r_g_b_/_0.1)]"
+          height={92}
+          width={92}
         />
       </div>
       <div className="flex flex-col">
@@ -187,7 +188,7 @@ export function MarketplaceListItem({ item, ...rest }: MarketplaceListItemProps)
 function moveFocusOnArrowKeys(event: React.KeyboardEvent<HTMLAnchorElement>, columns: number) {
   let listItem: Element | null | undefined;
 
-  const move = ({ ArrowDown: '⬇', ArrowUp: '⬆', ArrowRight: '➡️', ArrowLeft: '⬅️' } as const)[
+  const move = ({ ArrowDown: '⬇', ArrowLeft: '⬅️', ArrowRight: '➡️', ArrowUp: '⬆' } as const)[
     event.key
   ];
 

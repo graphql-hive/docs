@@ -1,26 +1,27 @@
 import { ReactElement } from 'react';
+
 import { HideUntilInViewport } from './hide-until-in-viewport';
 
 export type EmbbedBoolean = '0' | '1';
 
 // See: https://codesandbox.io/docs/embedding#embed-options
 export type EmbedOptions = Partial<{
-  module: string;
   autoresize: EmbbedBoolean;
   codemirror: EmbbedBoolean;
+  editorsize: number;
   eslint: EmbbedBoolean;
   expanddevtools: EmbbedBoolean;
-  hidedevtools: EmbbedBoolean;
   fontsize: number;
   forcerefresh: EmbbedBoolean;
+  hidedevtools: EmbbedBoolean;
   highlights: number[];
-  editorsize: number;
   initialpath: string;
+  module: string;
   moduleview: EmbbedBoolean;
-  previewwindow: 'console' | 'tests' | 'browser';
+  previewwindow: 'browser' | 'console' | 'tests';
   runonclick: EmbbedBoolean;
-  view: 'editor' | 'split' | 'preview';
   theme: 'dark' | 'light';
+  view: 'editor' | 'preview' | 'split';
 }>;
 
 export interface ICodeSandboxProps {
@@ -38,8 +39,8 @@ export const CodeSandbox = ({
   size,
 }: ICodeSandboxProps): ReactElement => {
   const allOptions: EmbedOptions = {
-    fontsize: 11,
     autoresize: '1',
+    fontsize: 11,
     ...embedOptions,
   };
 
@@ -50,18 +51,18 @@ export const CodeSandbox = ({
   return (
     <HideUntilInViewport fallback={<div style={{ height: size || '500px' }} />}>
       <iframe
-        title={`codeSandbox-${codeSandboxId}`}
-        src={`https://codesandbox.io/embed/${codeSandboxId}?${optionsQueryString}`}
         allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr"
         sandbox="allow-forms allow-modals allow-popups allow-presentation allow-scripts"
+        src={`https://codesandbox.io/embed/${codeSandboxId}?${optionsQueryString}`}
         style={{
-          width: '100%',
-          height: size || '500px',
           border: 0,
           borderRadius: '4px',
+          height: size || '500px',
           overflow: 'hidden',
           pointerEvents: readonly ? 'none' : 'auto',
+          width: '100%',
         }}
+        title={`codeSandbox-${codeSandboxId}`}
       />
     </HideUntilInViewport>
   );

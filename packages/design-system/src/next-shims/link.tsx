@@ -1,25 +1,25 @@
+import { Link as RouterLink } from '@tanstack/react-router';
 // Runtime shim for next/link -> @tanstack/react-router Link
 import { forwardRef, type ReactNode } from 'react';
-import { Link as RouterLink } from '@tanstack/react-router';
 
 export interface LinkProps {
-  href: string | { pathname?: string; query?: Record<string, string> };
   as?: string;
+  children?: ReactNode;
+  className?: string;
+  href: { pathname?: string; query?: Record<string, string> } | string;
+  legacyBehavior?: boolean;
+  locale?: false | string;
+  passHref?: boolean;
+  prefetch?: boolean;
+  rel?: string;
   replace?: boolean;
   scroll?: boolean;
   shallow?: boolean;
-  passHref?: boolean;
-  prefetch?: boolean;
-  locale?: string | false;
-  legacyBehavior?: boolean;
-  children?: ReactNode;
-  className?: string;
   target?: string;
-  rel?: string;
 }
 
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
-  { href, children, replace, prefetch, target, rel, className, ...props },
+  { children, className, href, prefetch, rel, replace, target, ...props },
   ref
 ) {
   const hrefString = typeof href === 'string' ? href : href.pathname ?? '/';
@@ -28,11 +28,11 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
   if (hrefString.startsWith('http') || hrefString.startsWith('mailto:')) {
     return (
       <a
-        ref={ref}
-        href={hrefString}
-        target={target ?? '_blank'}
-        rel={rel ?? 'noreferrer'}
         className={className}
+        href={hrefString}
+        ref={ref}
+        rel={rel ?? 'noreferrer'}
+        target={target ?? '_blank'}
         {...props}
       >
         {children}
@@ -43,7 +43,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
   // Hash links - use regular anchor
   if (hrefString.startsWith('#')) {
     return (
-      <a ref={ref} href={hrefString} className={className} {...props}>
+      <a className={className} href={hrefString} ref={ref} {...props}>
         {children}
       </a>
     );
@@ -52,10 +52,10 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
   // Internal links - use TanStack Router
   return (
     <RouterLink
-      ref={ref}
-      to={hrefString}
       className={className}
       preload={prefetch === false ? undefined : 'intent'}
+      ref={ref}
+      to={hrefString}
       {...props}
     >
       {children}

@@ -1,18 +1,19 @@
 import React, { ReactNode } from 'react';
+
 import { cn } from '../guild-components/cn';
 
 export interface LargeCalloutProps extends React.HTMLAttributes<HTMLDivElement> {
+  cta?: ReactNode;
+  heading?: string;
   icon?: ReactNode;
   variant: 'primary' | 'secondary';
-  heading?: string;
-  cta?: ReactNode;
 }
 
 export function LargeCallout({
-  icon,
-  heading,
   children,
   cta,
+  heading,
+  icon,
   variant,
   ...rest
 }: LargeCalloutProps) {
@@ -41,11 +42,11 @@ export function LargeCallout({
 export function DocsIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={24}
+      fill="currentColor"
       height={25}
       viewBox="0 0 24 25"
-      fill="currentColor"
+      width={24}
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path d="M21 18.375H6a1 1 0 000 2h15v2H6a3 3 0 01-3-3v-15a2 2 0 012-2h16v16zm-16-1.95c.162-.033.329-.05.5-.05H19v-12H5v12.05zm11-7.05H8v-2h8v2z" />

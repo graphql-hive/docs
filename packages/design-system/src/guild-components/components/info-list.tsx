@@ -1,9 +1,10 @@
-import { ReactElement } from 'react';
 import clsx from 'clsx';
+import { ReactElement } from 'react';
+
 import { IInfoListProps } from '../types/components';
 import { Anchor } from './anchor';
 
-export const InfoList = ({ title, items, className }: IInfoListProps): ReactElement => (
+export const InfoList = ({ className, items, title }: IInfoListProps): ReactElement => (
   <section className={clsx('bg-white dark:bg-dark', className)}>
     <div className="container max-w-[90rem] py-12">
       {title && (

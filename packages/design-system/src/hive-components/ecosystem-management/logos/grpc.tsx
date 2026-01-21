@@ -1,10 +1,10 @@
 export function GrpcLogo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width={38}
+      fill="none"
       height={38}
       viewBox="0 0 38 38"
-      fill="none"
+      width={38}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -20,18 +20,18 @@ export function GrpcLogo(props: React.SVGProps<SVGSVGElement>) {
       </g>
       <defs>
         <linearGradient
+          gradientUnits="userSpaceOnUse"
           id="paint0_linear_5564_3164"
           x1={1.133_06}
-          y1={12.1356}
           x2={10.7257}
+          y1={12.1356}
           y2={36.7115}
-          gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#A7D5CA" />
           <stop offset={1} stopColor="#86B6C1" />
         </linearGradient>
         <clipPath id="clip0_5564_3164">
-          <path fill="#fff" d="M0 0H37.4118V37.4118H0z" />
+          <path d="M0 0H37.4118V37.4118H0z" fill="#fff" />
         </clipPath>
       </defs>
     </svg>

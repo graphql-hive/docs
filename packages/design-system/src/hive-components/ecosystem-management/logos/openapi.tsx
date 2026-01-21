@@ -1,10 +1,10 @@
 export function OpenAPILogo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width={29}
+      fill="none"
       height={29}
       viewBox="0 0 29 29"
-      fill="none"
+      width={29}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -16,18 +16,18 @@ export function OpenAPILogo(props: React.SVGProps<SVGSVGElement>) {
       </g>
       <defs>
         <linearGradient
+          gradientUnits="userSpaceOnUse"
           id="paint0_linear_5564_3161"
           x1={0.001_831_05}
-          y1={-0.000_061_035_2}
           x2={28.0596}
+          y1={-0.000_061_035_2}
           y2={28.0547}
-          gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#A7D5CA" />
           <stop offset={1} stopColor="#86B6C1" />
         </linearGradient>
         <clipPath id="clip0_5564_3161">
-          <path fill="#fff" d="M0 0H28.0588V28.0588H0z" />
+          <path d="M0 0H28.0588V28.0588H0z" fill="#fff" />
         </clipPath>
       </defs>
     </svg>

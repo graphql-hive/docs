@@ -1,14 +1,14 @@
 // Stub for nextra-theme-docs
-import { ReactNode, createContext, useContext } from 'react';
+import { createContext, ReactNode, useContext } from 'react';
 
 export interface DocsThemeConfig {
-  logo?: ReactNode;
-  project?: { link?: string };
   chat?: { link?: string };
   docsRepositoryBase?: string;
   footer?: { text?: ReactNode };
   head?: ReactNode;
+  logo?: ReactNode;
   primaryHue?: number;
+  project?: { link?: string };
 }
 
 export function useConfig(): DocsThemeConfig {
@@ -21,9 +21,9 @@ export function useThemeConfig(): DocsThemeConfig {
 
 export function useTheme() {
   return {
-    theme: 'light' as 'light' | 'dark',
+    resolvedTheme: 'light' as 'dark' | 'light',
     setTheme: (_theme: string) => {},
-    resolvedTheme: 'light' as 'light' | 'dark',
+    theme: 'light' as 'dark' | 'light',
   };
 }
 
@@ -37,7 +37,7 @@ export function useMenu() {
   return useContext(MenuContext).menu;
 }
 
-export function setMenu(value: boolean | ((prev: boolean) => boolean)) {
+export function setMenu(value: ((prev: boolean) => boolean) | boolean) {
   // This is a simplified stub - in real usage, this would be connected to context
   console.warn('setMenu stub called', value);
 }

@@ -1,32 +1,35 @@
 declare module '*.svg' {
-  import { SVGProps, ReactNode } from 'react';
-  export const ReactComponent: (props: SVGProps<SVGSVGElement>) => ReactNode;
   const src: string;
   export default src;
 }
 
+declare module '*.svg?svgr' {
+  const content: React.FC<React.SVGProps<SVGElement>>;
+  export default content;
+}
+
 declare module '*.jpg' {
-  const content: { src: string; width: number; height: number; blurDataURL?: string };
+  const content: { blurDataURL?: string; height: number; src: string; width: number; };
   export default content;
 }
 
 declare module '*.jpeg' {
-  const content: { src: string; width: number; height: number; blurDataURL?: string };
+  const content: { blurDataURL?: string; height: number; src: string; width: number; };
   export default content;
 }
 
 declare module '*.png' {
-  const content: { src: string; width: number; height: number; blurDataURL?: string };
+  const content: { blurDataURL?: string; height: number; src: string; width: number; };
   export default content;
 }
 
 declare module '*.webp' {
-  const content: { src: string; width: number; height: number; blurDataURL?: string };
+  const content: { blurDataURL?: string; height: number; src: string; width: number; };
   export default content;
 }
 
 declare module '*.gif' {
-  const content: { src: string; width: number; height: number };
+  const content: { height: number; src: string; width: number; };
   export default content;
 }
 

@@ -1,20 +1,21 @@
 import { Image } from '@unpic/react';
+
 import { cn } from '../guild-components/cn';
 
 export interface SmallAvatarProps {
-  src: string;
   alt?: string;
   className?: string;
+  src: string;
 }
 
-export function SmallAvatar({ className, alt, src }: SmallAvatarProps) {
+export function SmallAvatar({ alt, className, src }: SmallAvatarProps) {
   return (
     <Image
+      alt={alt || ''}
+      className={cn('size-6 rounded-full object-cover', className)}
+      height={24}
       src={src}
       width={24}
-      height={24}
-      className={cn('size-6 rounded-full object-cover', className)}
-      alt={alt || ''}
     />
   );
 }

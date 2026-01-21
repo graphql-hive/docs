@@ -4,8 +4,8 @@ import { cn } from '../cn';
 import { CallToAction, CallToActionProps } from './call-to-action';
 
 const openCrisp = (event: React.MouseEvent<HTMLAnchorElement>) => {
-  if (window.$crisp) {
-    window.$crisp.push(['do', 'chat:open']);
+  if (globalThis.$crisp) {
+    globalThis.$crisp.push(['do', 'chat:open']);
     event.preventDefault();
   }
 };
@@ -32,7 +32,7 @@ export function ContactTextLink(props: ContactTextLinkProps) {
 }
 
 export interface ContactButtonProps
-  extends Omit<CallToActionProps.AnchorProps, 'onClick' | 'href' | 'children'> {
+  extends Omit<CallToActionProps.AnchorProps, 'children' | 'href' | 'onClick'> {
   children?: React.ReactNode;
 }
 

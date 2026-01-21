@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
-import { CallToAction } from '../../guild-components/components/call-to-action';
+
 import { cn } from '../../guild-components/cn';
+import { CallToAction } from '../../guild-components/components/call-to-action';
 import { DecorationIsolation, HighlightDecoration } from '../../guild-components/components/decorations';
 import { Heading } from '../../guild-components/components/heading';
 import { ArrowIcon } from '../arrow-icon';
@@ -65,8 +66,8 @@ export function EcosystemManagementSection({ className }: { className?: string }
                 <a
                   className="underline decoration-1 underline-offset-2"
                   href="https://the-guild.dev/graphql/mesh"
-                  target="_blank"
                   rel="noreferrer"
+                  target="_blank"
                 >
                   GraphQL Mesh
                 </a>{' '}
@@ -79,7 +80,7 @@ export function EcosystemManagementSection({ className }: { className?: string }
                 <div>100% on-prem and open-source</div>
               </>,
             ].map((text, i) => (
-              <li key={i} className="flex items-start gap-4">
+              <li className="flex items-start gap-4" key={i}>
                 <CheckIcon className="mt-0.5 shrink-0 text-blue-400" />
                 <div>{text}</div>
               </li>
@@ -88,8 +89,8 @@ export function EcosystemManagementSection({ className }: { className?: string }
           <div className="bottom-0 flex w-full gap-x-4 gap-y-2 max-lg:absolute max-lg:translate-y-[calc(100%+40px)] max-sm:flex-col lg:flex-col">
             <CallToAction
               href="/federation"
-              variant="primary-inverted"
               title="Learn what GraphQL Federation is and when to use it."
+              variant="primary-inverted"
             >
               Learn GraphQL Federation
               <ArrowIcon />

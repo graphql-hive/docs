@@ -1,10 +1,10 @@
 export function AndroidLogo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width={29}
+      fill="none"
       height={29}
       viewBox="0 0 29 29"
-      fill="none"
+      width={29}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -14,12 +14,12 @@ export function AndroidLogo(props: React.SVGProps<SVGSVGElement>) {
       />
       <defs>
         <linearGradient
+          gradientUnits="userSpaceOnUse"
           id="paint0_linear_5564_3149"
           x1={1.168_64}
-          y1={6.2804}
           x2={13.9167}
+          y1={6.2804}
           y2={28.4893}
-          gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#8CBEB3" />
           <stop offset={1} stopColor="#68A8B6" />

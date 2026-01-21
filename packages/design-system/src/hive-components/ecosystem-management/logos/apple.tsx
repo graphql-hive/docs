@@ -1,10 +1,10 @@
 export function AppleLogo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width={29}
+      fill="none"
       height={29}
       viewBox="0 0 29 29"
-      fill="none"
+      width={29}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -14,12 +14,12 @@ export function AppleLogo(props: React.SVGProps<SVGSVGElement>) {
       />
       <defs>
         <linearGradient
+          gradientUnits="userSpaceOnUse"
           id="paint0_linear_5564_3146"
           x1={5.160_77}
-          y1={3.507_45}
           x2={25.9014}
+          y1={3.507_45}
           y2={20.9816}
-          gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#8CBEB3" />
           <stop offset={1} stopColor="#68A8B6" />

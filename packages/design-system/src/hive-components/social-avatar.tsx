@@ -1,7 +1,7 @@
 'use client';
 
-import { ReactElement } from 'react';
 import { Image } from '@unpic/react';
+import { ReactElement } from 'react';
 
 /**
  * TODO: We should drop this and use the avatars defined in authors/index.ts
@@ -10,7 +10,7 @@ import { Image } from '@unpic/react';
 export const SocialAvatar = ({
   author,
 }: {
-  author: { name: string; github?: string; twitter?: string };
+  author: { github?: string; name: string; twitter?: string };
 }): ReactElement => {
   // Use GitHub avatar if available, otherwise Twitter
   const avatarUrl = author.github
@@ -38,12 +38,12 @@ export const SocialAvatar = ({
 
   return (
     <Image
-      src={avatarUrl}
       alt={author.name}
+      className="size-10 rounded-full"
+      height={40}
+      src={avatarUrl}
       title={author.name}
       width={40}
-      height={40}
-      className="size-10 rounded-full"
     />
   );
 };

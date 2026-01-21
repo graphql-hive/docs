@@ -6,8 +6,8 @@ const BOTTOM_THRESHOLD_ADJUSTMENT = 10;
 
 interface NestedStickyProps {
   children: ReactNode;
-  offsetTop: number;
   offsetBottom: number;
+  offsetTop: number;
   zIndex?: number;
 }
 
@@ -19,8 +19,8 @@ interface NestedStickyProps {
  */
 export function NestedSticky({
   children,
-  offsetTop,
   offsetBottom,
+  offsetTop,
   zIndex = 10,
 }: NestedStickyProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -42,7 +42,7 @@ export function NestedSticky({
     // relative at the top
     // fixed when we scroll
     // absolute when we're near the bottom
-    type State = 'fixed' | 'absolute' | 'relative';
+    type State = 'absolute' | 'fixed' | 'relative';
     let state: State = 'relative';
     let prevState: State = 'relative';
 
@@ -55,13 +55,13 @@ export function NestedSticky({
     };
 
     const updateStyles = () => {
-      placeholder.style.height = state !== 'relative' ? `${height}px` : '0';
+      placeholder.style.height = state === 'relative' ? '0' : `${height}px`;
 
       if (state === 'fixed') {
         sticky.style.position = 'fixed';
         sticky.style.top = `${offsetTop}px`;
         sticky.style.width = `${width}px`;
-        sticky.setAttribute('data-sticky', 'fixed');
+        sticky.dataset.sticky = 'fixed';
       } else if (state === 'absolute') {
         const containerRect = container.getBoundingClientRect();
         const stickyRect = sticky.getBoundingClientRect();
@@ -71,12 +71,12 @@ export function NestedSticky({
         sticky.style.position = 'absolute';
         sticky.style.top = `${relativeTop}px`;
         sticky.style.width = `${width}px`;
-        sticky.setAttribute('data-sticky', 'absolute');
+        sticky.dataset.sticky = 'absolute';
       } else {
         sticky.style.position = 'relative';
         sticky.style.top = '';
         sticky.style.width = '';
-        sticky.removeAttribute('data-sticky');
+        delete sticky.dataset.sticky;
       }
     };
 
@@ -129,8 +129,8 @@ export function NestedSticky({
   }, [offsetTop, offsetBottom, zIndex]);
 
   return (
-    <div ref={containerRef} className="relative">
-      <div style={{ width: '100%', height: 0 }} />
+    <div className="relative" ref={containerRef}>
+      <div style={{ height: 0, width: '100%' }} />
       <div>{children}</div>
     </div>
   );

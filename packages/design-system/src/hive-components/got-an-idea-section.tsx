@@ -14,12 +14,12 @@ export function GotAnIdeaSection({ className }: { className?: string }) {
       <DecorationIsolation>
         <svg
           className="absolute right-[481px] top-[-29px] overflow-visible"
-          width="930"
+          fill="none"
           height="373"
           viewBox="0 0 930 373"
-          fill="none"
+          width="930"
         >
-          <g opacity="0.5" filter="url(#filter0_f_2003_9852)">
+          <g filter="url(#filter0_f_2003_9852)" opacity="0.5">
             <path
               d="M489.136 401C501.525 401 513.423 396.068 522.189 387.302L590.26 319.231L598.231 311.26L666.302 243.189C675.068 234.423 680 222.525 680 210.136L680 -29L590.26 -29L590.26 241.132C590.26 279.866 558.866 311.26 520.132 311.26L250 311.26L250 401L489.136 401Z"
               fill="#A2C1C4"
@@ -27,25 +27,25 @@ export function GotAnIdeaSection({ className }: { className?: string }) {
           </g>
           <defs>
             <filter
+              colorInterpolationFilters="sRGB"
+              filterUnits="userSpaceOnUse"
+              height="930"
               id="filter0_f_2003_9852"
+              width="930"
               x="0"
               y="-279"
-              width="930"
-              height="930"
-              filterUnits="userSpaceOnUse"
-              colorInterpolationFilters="sRGB"
             >
               <feFlood floodOpacity="0" result="BackgroundImageFix" />
-              <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-              <feGaussianBlur stdDeviation="125" result="effect1_foregroundBlur_2003_9852" />
+              <feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape" />
+              <feGaussianBlur result="effect1_foregroundBlur_2003_9852" stdDeviation="125" />
             </filter>
           </defs>
         </svg>
         <svg
-          width="1392"
+          fill="none"
           height="373"
           viewBox="0 0 1392 373"
-          fill="none"
+          width="1392"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -66,45 +66,45 @@ export function GotAnIdeaSection({ className }: { className?: string }) {
           />
           <defs>
             <linearGradient
+              gradientUnits="userSpaceOnUse"
               id="paint0_linear_2003_9879"
               x1="252.5"
-              y1="48"
               x2="329.643"
+              y1="48"
               y2="245.934"
-              gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#A2C1C4" stopOpacity="0" />
               <stop offset="1" stopColor="#A2C1C4" stopOpacity="0.8" />
             </linearGradient>
             <linearGradient
+              gradientUnits="userSpaceOnUse"
               id="paint1_linear_2003_9879"
               x1="1139.5"
-              y1="48"
               x2="1062.36"
+              y1="48"
               y2="245.934"
-              gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#A2C1C4" stopOpacity="0" />
               <stop offset="1" stopColor="#A2C1C4" stopOpacity="0.8" />
             </linearGradient>
             <linearGradient
+              gradientUnits="userSpaceOnUse"
               id="paint2_linear_2003_9879"
               x1="252.5"
-              y1="324"
               x2="329.643"
+              y1="324"
               y2="126.066"
-              gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#A2C1C4" stopOpacity="0" />
               <stop offset="1" stopColor="#A2C1C4" stopOpacity="0.8" />
             </linearGradient>
             <linearGradient
+              gradientUnits="userSpaceOnUse"
               id="paint3_linear_2003_9879"
               x1="1139.5"
-              y1="324"
               x2="1062.36"
+              y1="324"
               y2="126.066"
-              gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#A2C1C4" stopOpacity="0" />
               <stop offset="1" stopColor="#A2C1C4" stopOpacity="0.8" />
@@ -112,13 +112,13 @@ export function GotAnIdeaSection({ className }: { className?: string }) {
           </defs>
         </svg>
       </DecorationIsolation>
-      <Heading as="h2" size="md" className="text-white">
+      <Heading as="h2" className="text-white" size="md">
         Got an idea for a new library?
       </Heading>
       <p className="mb-8 mt-4 text-white/80">
         Join our community to chat with us and let's build something together!
       </p>
-      <ContactButton variant="primary-inverted" className="mt-8">
+      <ContactButton className="mt-8" variant="primary-inverted">
         Get in touch
       </ContactButton>
     </div>

@@ -1,30 +1,31 @@
 'use client';
 
-import { createContext, ReactNode, useContext, useState } from 'react';
-import { Image } from '@unpic/react';
-import { Link } from '@tanstack/react-router';
 import { Tabs } from '@base-ui-components/react/tabs';
-import { ChevronDownIcon } from './ui/icons';
-import { CallToAction } from '../guild-components/components/call-to-action';
+import { Link } from '@tanstack/react-router';
+import { Image } from '@unpic/react';
+import { createContext, ReactNode, useContext, useState } from 'react';
+
 import { cn } from '../guild-components/cn';
+import { CallToAction } from '../guild-components/components/call-to-action';
 import { Heading } from '../guild-components/components/heading';
 import { ArrowIcon } from './arrow-icon';
+import { ChevronDownIcon } from './ui/icons';
 
 // Type for static image imports (Vite/webpack)
-type StaticImageData = { src: string; width: number; height: number; blurDataURL?: string };
+type StaticImageData = { blurDataURL?: string; height: number; src: string; width: number; };
 
 export type Highlight = {
-  title: string;
   description: string;
-  image?: string | StaticImageData;
+  image?: StaticImageData | string;
   link?: string;
+  title: string;
 };
 
 export interface FeatureTabsProps<T extends string> {
+  children: React.ReactNode;
   className?: string;
   highlights: Record<T, Highlight[]>;
   icons: React.ReactNode[];
-  children: React.ReactNode;
   /**
    * On very narrow screens, we shorten the tab names.
    */
@@ -32,10 +33,10 @@ export interface FeatureTabsProps<T extends string> {
 }
 
 export function FeatureTabs<T extends string>({
+  children,
   className,
   highlights,
   icons,
-  children,
   tabTexts = {},
 }: FeatureTabsProps<T>) {
   const tabs = Object.keys(highlights) as T[];
@@ -54,7 +55,7 @@ export function FeatureTabs<T extends string>({
         className,
       )}
     >
-      <FeatureTabsContext.Provider value={{ activeHighlight, setActiveHighlight, highlights }}>
+      <FeatureTabsContext.Provider value={{ activeHighlight, highlights, setActiveHighlight }}>
         <Tabs.Root
           {...smallScreenTabHandlers}
           onValueChange={(value) => {
@@ -69,9 +70,9 @@ export function FeatureTabs<T extends string>({
             {tabs.map((tab, i) => {
               return (
                 <Tabs.Tab
+                  className='hive-focus data-[selected]:text-green-1000 data-[selected]:border-[--tab-bg-dark] data-[selected]:bg-white max-sm:not-data-[selected]:hidden group-focus-within:not-data-[selected]:flex max-sm:not-data-[selected]:rounded-none max-sm:group-focus-within:not-data-[selected]:border-y-[--tab-bg] max-sm:group-focus-within:[&:nth-child(2)]:data-[selected]:rounded-none max-sm:group-focus-within:[&:nth-child(2)]:data-[selected]:border-y-[--tab-bg] max-sm:group-focus-within:first:data-[selected]:border-b-[--tab-bg] max-sm:group-focus-within:first:data-[selected]:rounded-b-none max-sm:not-data-[selected]:pointer-events-none max-sm:not-data-[selected]:group-focus-within:pointer-events-auto z-10 flex flex-1 items-center justify-center gap-2.5 rounded-lg border-transparent p-4 text-base font-medium leading-6 text-green-800 max-sm:border max-sm:border-[--tab-bg-dark] max-sm:bg-[--tab-bg] max-sm:group-focus-within:aria-selected:z-20 max-sm:group-focus-within:aria-selected:ring-4 sm:rounded-[15px] sm:border sm:text-xs sm:max-lg:p-3 sm:max-[721px]:p-2 md:text-sm lg:text-base max-sm:group-focus-within:[&:last-child]:border-t-[--tab-bg] max-sm:group-focus-within:[&:nth-child(3)]:rounded-t-none [&>svg]:shrink-0 max-sm:group-focus-within:[&:not([data-selected])]:first-child:rounded-t-lg max-sm:group-focus-within:[&:not([data-selected])]:first-child:border-t-[--tab-bg-dark] [&:not([data-selected])>:last-child]:invisible max-sm:group-focus-within:[[data-selected]+&:last-child]:rounded-b-lg max-sm:group-focus-within:[[data-selected]+&:last-child]:border-b-[--tab-bg-dark] max-sm:group-focus-within:[[:not([data-selected])]+&:last-child:not([data-selected])]:rounded-b-lg max-sm:group-focus-within:[[:not([data-selected])]+&:last-child:not([data-selected])]:border-b-[--tab-bg-dark]'
                   key={tab}
                   value={tab}
-                  className='hive-focus data-[selected]:text-green-1000 data-[selected]:border-[--tab-bg-dark] data-[selected]:bg-white max-sm:not-data-[selected]:hidden group-focus-within:not-data-[selected]:flex max-sm:not-data-[selected]:rounded-none max-sm:group-focus-within:not-data-[selected]:border-y-[--tab-bg] max-sm:group-focus-within:[&:nth-child(2)]:data-[selected]:rounded-none max-sm:group-focus-within:[&:nth-child(2)]:data-[selected]:border-y-[--tab-bg] max-sm:group-focus-within:first:data-[selected]:border-b-[--tab-bg] max-sm:group-focus-within:first:data-[selected]:rounded-b-none max-sm:not-data-[selected]:pointer-events-none max-sm:not-data-[selected]:group-focus-within:pointer-events-auto z-10 flex flex-1 items-center justify-center gap-2.5 rounded-lg border-transparent p-4 text-base font-medium leading-6 text-green-800 max-sm:border max-sm:border-[--tab-bg-dark] max-sm:bg-[--tab-bg] max-sm:group-focus-within:aria-selected:z-20 max-sm:group-focus-within:aria-selected:ring-4 sm:rounded-[15px] sm:border sm:text-xs sm:max-lg:p-3 sm:max-[721px]:p-2 md:text-sm lg:text-base max-sm:group-focus-within:[&:last-child]:border-t-[--tab-bg] max-sm:group-focus-within:[&:nth-child(3)]:rounded-t-none [&>svg]:shrink-0 max-sm:group-focus-within:[&:not([data-selected])]:first-child:rounded-t-lg max-sm:group-focus-within:[&:not([data-selected])]:first-child:border-t-[--tab-bg-dark] [&:not([data-selected])>:last-child]:invisible max-sm:group-focus-within:[[data-selected]+&:last-child]:rounded-b-lg max-sm:group-focus-within:[[data-selected]+&:last-child]:border-b-[--tab-bg-dark] max-sm:group-focus-within:[[:not([data-selected])]+&:last-child:not([data-selected])]:rounded-b-lg max-sm:group-focus-within:[[:not([data-selected])]+&:last-child:not([data-selected])]:border-b-[--tab-bg-dark]'
                 >
                   {icons[i]}
                   {tabTexts[tab] || tab}
@@ -88,36 +89,36 @@ export function FeatureTabs<T extends string>({
 }
 
 interface FeatureProps {
-  title: string;
   description?: string;
-  highlights: Highlight[];
   documentationLink?:
-    | string
     | {
-        text: string;
         href: string;
-      };
+        text: string;
+      }
+    | string;
+  highlights: Highlight[];
   setActiveHighlight: (highlight: string) => void;
+  title: string;
 }
 
 function Feature({
-  title,
   description,
   documentationLink,
   highlights,
   setActiveHighlight,
+  title,
 }: FeatureProps) {
   if (typeof documentationLink === 'string') {
     documentationLink = {
-      text: 'Learn more',
       href: documentationLink,
+      text: 'Learn more',
     };
   }
 
   return (
     <div className="flex flex-col gap-6 px-4 pb-4 md:gap-12 md:px-8 md:pb-12">
       <header className="flex flex-wrap items-center gap-4 md:flex-col md:items-start md:gap-6">
-        <Heading as="h2" size="md" className="text-green-1000 max-sm:text-2xl max-sm:leading-8">
+        <Heading as="h2" className="text-green-1000 max-sm:text-2xl max-sm:leading-8" size="md">
           {title}
         </Heading>
         {description && <p className="basis-full leading-6 text-green-800">{description}</p>}
@@ -127,11 +128,11 @@ function Feature({
           if (highlight.link) {
             return (
               <Link
-                to={highlight.link}
-                key={i}
-                title={'Learn more about ' + highlight.title}
-                onPointerOver={() => setActiveHighlight(highlight.title)}
                 className="hover:bg-beige-100 -m-2 block rounded-lg p-2 md:-m-4 md:rounded-xl md:p-4"
+                key={i}
+                onPointerOver={() => setActiveHighlight(highlight.title)}
+                title={'Learn more about ' + highlight.title}
+                to={highlight.link}
               >
                 <dt className="text-green-1000 font-medium">{highlight.title}</dt>
                 <dd className="mt-2 text-sm leading-5 text-green-800">{highlight.description}</dd>
@@ -141,9 +142,9 @@ function Feature({
 
           return (
             <div
+              className="hover:bg-beige-100 -m-2 rounded-lg p-2 md:-m-4 md:rounded-xl md:p-4"
               key={i}
               onPointerOver={() => setActiveHighlight(highlight.title)}
-              className="hover:bg-beige-100 -m-2 rounded-lg p-2 md:-m-4 md:rounded-xl md:p-4"
             >
               <dt className="text-green-1000 font-medium">{highlight.title}</dt>
               <dd className="mt-2 text-sm leading-5 text-green-800">{highlight.description}</dd>
@@ -152,7 +153,7 @@ function Feature({
         })}
       </dl>
       {documentationLink && (
-        <CallToAction variant="primary" href={documentationLink.href}>
+        <CallToAction href={documentationLink.href} variant="primary">
           {documentationLink.text}
           <span className="sr-only">
             {/* descriptive text for screen readers and SEO audits */} about {title}
@@ -176,7 +177,7 @@ function useSmallScreenTabsHandlers() {
     onValueChange: () => {
       if (!isSmallScreen()) return;
       setTimeout(() => {
-        const activeElement = document.activeElement;
+        const {activeElement} = document;
         // This isn't a perfect dropdown for keyboard users, but we only render it on mobiles.
         if (activeElement && activeElement instanceof HTMLElement && activeElement.role === 'tab') {
           activeElement.blur();
@@ -194,7 +195,7 @@ function useSmallScreenTabsHandlers() {
       event.preventDefault();
 
       // We proceed only if the tablist is focused.
-      const activeElement = document.activeElement;
+      const {activeElement} = document;
       if (
         !activeElement ||
         !(activeElement instanceof HTMLElement) ||
@@ -208,7 +209,7 @@ function useSmallScreenTabsHandlers() {
         return;
       }
 
-      let index = Array.from(items).indexOf(activeElement);
+      let index = [...items].indexOf(activeElement);
       for (const [i, item] of items.entries()) {
         if (item.ariaSelected === 'true') {
           index = i;
@@ -228,7 +229,7 @@ function useSmallScreenTabsHandlers() {
         case 'Enter': {
           const item = items[index];
           if (item instanceof HTMLElement) {
-            if (item.hasAttribute('data-selected')) {
+            if (Object.hasOwn(item.dataset, 'selected')) {
               item.blur();
             } else {
               item.focus();
@@ -245,23 +246,23 @@ function useSmallScreenTabsHandlers() {
 
 export interface FeatureTabProps extends Omit<FeatureProps, 'setActiveHighlight'> {}
 
-export function FeatureTab({ title, highlights, description, documentationLink }: FeatureTabProps) {
+export function FeatureTab({ description, documentationLink, highlights, title }: FeatureTabProps) {
   const { setActiveHighlight } = useFeatureTabsContext();
 
   return (
     <Tabs.Panel
-      value={title}
+      className="data-[hidden]:hidden"
       // Make it accessible to crawlers, otherwise there's no DOM element to index
       keepMounted
-      className="data-[hidden]:hidden"
       tabIndex={-1}
+      value={title}
     >
       <Feature
-        title={title}
         description={description}
         documentationLink={documentationLink}
         highlights={highlights}
         setActiveHighlight={setActiveHighlight}
+        title={title}
       />
     </Tabs.Panel>
   );
@@ -269,8 +270,8 @@ export function FeatureTab({ title, highlights, description, documentationLink }
 
 interface FeatureTabsContextType {
   activeHighlight: string;
-  setActiveHighlight: (highlight: string) => void;
   highlights: Record<string, Highlight[]>;
+  setActiveHighlight: (highlight: string) => void;
 }
 
 const FeatureTabsContext = createContext<FeatureTabsContextType | undefined>(undefined);
@@ -284,7 +285,7 @@ export function useFeatureTabsContext() {
 }
 
 export function ActiveHighlightImage() {
-  const { highlights, activeHighlight } = useFeatureTabsContext();
+  const { activeHighlight, highlights } = useFeatureTabsContext();
   const allHighlights = Object.values<Highlight[]>(highlights).flat();
 
   return (
@@ -293,18 +294,18 @@ export function ActiveHighlightImage() {
         (highlight, i) =>
           highlight.image && (
             <div
-              key={i}
-              data-current={activeHighlight === highlight.title}
               className="absolute inset-0 opacity-0 transition delay-150 duration-150 ease-linear data-[current=true]:z-10 data-[current=true]:opacity-100 data-[current=true]:delay-0"
+              data-current={activeHighlight === highlight.title}
+              key={i}
             >
               <Image
-                width={925} // max rendered width is 880px
-                height={578} // max rendered height is 618px, and the usual is 554px
-                src={typeof highlight.image === 'string' ? highlight.image : highlight.image.src}
+                alt=""
                 background={typeof highlight.image === 'object' ? highlight.image.blurDataURL : undefined}
                 className="absolute left-6 top-[24px] h-[calc(100%-24px)] rounded-tl-3xl object-cover object-left lg:left-[55px] lg:top-[108px] lg:h-[calc(100%-108px)]"
+                height={578} // max rendered height is 618px, and the usual is 554px
                 role="presentation"
-                alt=""
+                src={typeof highlight.image === 'string' ? highlight.image : highlight.image.src}
+                width={925} // max rendered width is 880px
               />
             </div>
           ),

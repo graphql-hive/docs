@@ -1,27 +1,27 @@
 import { cn } from '../guild-components/cn';
 
 export function YoutubeIframe({
-  src,
-  id,
-  title,
   className,
+  id,
+  src,
+  title,
 }: {
-  src?: string;
-  id?: string;
-  title: string;
   className?: string;
+  id?: string;
+  src?: string;
+  title: string;
 }) {
   return (
     // I'm not sure if this is not a false positive, and it YouTube
     // iframes don't work without both allow-same-origin and allow-scripts
     // eslint-disable-next-line react/iframe-missing-sandbox
     <iframe
-      className={cn('mt-6 h-[400px] w-full', className)}
-      src={src || `https://www.youtube.com/embed/${id}`}
-      title={title}
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowFullScreen
+      className={cn('mt-6 h-[400px] w-full', className)}
       sandbox="allow-scripts allow-presentation allow-same-origin allow-popups"
+      src={src || `https://www.youtube.com/embed/${id}`}
+      title={title}
     />
   );
 }

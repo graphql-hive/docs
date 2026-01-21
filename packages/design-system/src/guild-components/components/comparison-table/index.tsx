@@ -1,4 +1,5 @@
 import { ComponentProps, FC } from 'react';
+
 import { cn } from '../../cn';
 
 export interface ComparisonTableProps extends React.HTMLAttributes<HTMLTableElement> {
@@ -21,8 +22,8 @@ const Table = ({ className, scheme = 'green', ...props }: ComparisonTableProps) 
 };
 
 const TableRow: FC<ComponentProps<'tr'> & { highlight?: boolean }> = ({
-  highlight,
   className,
+  highlight,
   ...props
 }) => {
   return (
@@ -54,7 +55,7 @@ const TableCell: FC<ComponentProps<'td'>> = ({ className, ...props }) => {
  * because we also reexport `Table` from nextra.
  */
 export const ComparisonTable = Object.assign(Table, {
-  Row: TableRow,
-  Header: TableHeader,
   Cell: TableCell,
+  Header: TableHeader,
+  Row: TableRow,
 });

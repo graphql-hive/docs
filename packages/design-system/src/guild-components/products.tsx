@@ -1,4 +1,5 @@
 import { FC, HTMLProps, ReactElement, SVGProps } from 'react';
+
 import { cn } from './cn';
 import {
   CodegenIcon,
@@ -31,219 +32,219 @@ import {
 } from './logos';
 
 export type ProductType =
+  | 'ANGULAR'
+  | 'CODEGEN'
+  | 'CONDUCTOR'
+  | 'CONFIG'
+  | 'ENVELOP'
+  | 'ESLINT'
+  | 'FETS'
+  | 'HELTIN'
   | 'HIVE'
   | 'HIVE_GATEWAY'
   | 'HIVE_ROUTER'
-  | 'CONDUCTOR'
-  | 'YOGA'
-  | 'ENVELOP'
   | 'INSPECTOR'
-  | 'CODEGEN'
+  | 'KITQL'
   | 'MESH'
-  | 'TOOLS'
   | 'MODULES'
-  | 'ESLINT'
-  | 'CONFIG'
+  | 'NEXTRA'
   | 'SCALARS'
   | 'SOFA'
-  | 'STITCHING'
-  | 'ANGULAR'
-  | 'WHATSAPP'
-  | 'KITQL'
   | 'SSE'
+  | 'STELLATE'
+  | 'STITCHING'
+  | 'TOOLS'
+  | 'WHATSAPP'
   | 'WS'
-  | 'FETS'
-  | 'HELTIN'
-  | 'NEXTRA'
-  | 'STELLATE';
+  | 'YOGA';
 
 export interface ProductInfo {
-  name: string;
-  title: string;
   href: `https://${string}`;
-  logo: FC<SVGProps<SVGSVGElement>> | FC<HTMLProps<HTMLElement>>;
+  logo: FC<HTMLProps<HTMLElement>> | FC<SVGProps<SVGSVGElement>>;
+  name: string;
   primaryColor: `#${string}`;
+  title: string;
 }
 
 export const PRODUCTS: Record<ProductType, ProductInfo> = {
-  HIVE: {
-    name: 'Hive',
-    title: 'Open Source GraphQL Federation Platform (Schema Registry, Gateway, Analytics)',
-    href: 'https://the-guild.dev/graphql/hive',
-    logo: HiveIcon,
-    primaryColor: '#ffb21d',
-  },
-  HIVE_GATEWAY: {
-    name: 'Hive Gateway',
-    title:
-      'GraphQL Gateway (Router) for federated GraphQL with Subscriptions support and built-in security features',
-    href: 'https://the-guild.dev/graphql/hive/gateway',
-    logo: HiveGatewayIcon,
-    primaryColor: '#ffb21d',
-  },
-  HIVE_ROUTER: {
-    name: 'Hive Router',
-    title:
-      'Open-source (MIT) GraphQL Federation Router. Built with Rust for maximum performance and robustness.',
-    href: 'https://github.com/graphql-hive/router',
-    logo: HiveRouterIcon,
-    primaryColor: '#ffb21d',
-  },
-  MESH: {
-    name: 'Mesh',
-    title: 'A fully-featured GraphQL federation framework',
-    href: 'https://the-guild.dev/graphql/mesh',
-    logo: MeshIcon,
-    primaryColor: '#1bcbe2',
-  },
-  YOGA: {
-    name: 'Yoga',
-    title: 'A fully-featured, simple to set up, performant and extendable server',
-    href: 'https://the-guild.dev/graphql/yoga-server',
-    logo: YogaIcon,
-    primaryColor: '#c026d3',
-  },
-  CONDUCTOR: {
-    name: 'Conductor',
-    title: 'All-in-one GraphQL Gateway',
-    href: 'https://the-guild.dev/graphql/gateway',
-    logo: ConductorLettermark,
-    primaryColor: '#0f766e',
-  },
-  ENVELOP: {
-    name: 'Envelop',
-    title: 'Develop and share plugins that are usable with any GraphQL server framework or schema',
-    href: 'https://the-guild.dev/graphql/envelop',
-    logo: EnvelopLettermark,
-    primaryColor: '#ff00e5',
-  },
-  STITCHING: {
-    name: 'Stitching',
-    title:
-      'Automatically stitch multiple schemas together into one larger API in a simple, fast and powerful way',
-    href: 'https://the-guild.dev/graphql/stitching',
-    logo: StitchingLettermark,
-    primaryColor: '#f95428',
-  },
-  INSPECTOR: {
-    name: 'Inspector',
-    title: 'Schema management tool',
-    href: 'https://the-guild.dev/graphql/inspector',
-    logo: InspectorLettermark,
-    primaryColor: '#59f79d',
-  },
-  CODEGEN: {
-    name: 'Codegen',
-    title: 'Generation of typed queries, mutations, subscriptions and typed GraphQL resolvers',
-    href: 'https://the-guild.dev/graphql/codegen',
-    logo: CodegenIcon,
-    primaryColor: '#0284c7',
-  },
-  TOOLS: {
-    name: 'Tools',
-    title: 'A set of utilities for faster GraphQL development',
-    href: 'https://the-guild.dev/graphql/tools',
-    logo: ToolsLettermark,
-    primaryColor: '#184ae8',
-  },
-  MODULES: {
-    name: 'Modules',
-    title: 'Enterprise grade tooling for your GraphQL server',
-    href: 'https://the-guild.dev/graphql/modules',
-    logo: ModulesLettermark,
-    primaryColor: '#e535ab',
-  },
-  ESLINT: {
-    name: 'GraphQL ESLint',
-    title: 'Customizable ESLint parser, plugin, and rule set for GraphQL',
-    href: 'https://the-guild.dev/graphql/eslint',
-    logo: GraphQLESlintLettermark,
-    primaryColor: '#5639ca',
-  },
-  CONFIG: {
-    name: 'Config',
-    title: 'One configuration for all your GraphQL projects',
-    href: 'https://the-guild.dev/graphql/config',
-    logo: ConfigLettermark,
-    primaryColor: '#6d7a99',
-  },
-  FETS: {
-    name: 'feTS',
-    title: 'Build and consume REST APIs with the e2e type safety using TypeScript and OpenAPI',
-    href: 'https://the-guild.dev/fets',
-    logo: FetsLettermark,
-    primaryColor: '#3178c6',
-  },
-  SCALARS: {
-    name: 'Scalars',
-    title: 'Common custom GraphQL Scalars for precise type-safe GraphQL schemas',
-    href: 'https://the-guild.dev/graphql/scalars',
-    logo: ScalarsLettermark,
-    primaryColor: '#f38',
-  },
-  SOFA: {
-    name: 'SOFA',
-    title: 'Generate RESTful APIs from your GraphQL server',
-    href: 'https://the-guild.dev/graphql/sofa-api',
-    logo: SofaLettermark,
-    primaryColor: '#e873ff',
-  },
   ANGULAR: {
-    name: 'Angular',
-    title: 'A fully-featured GraphQL client for Angular',
     href: 'https://the-guild.dev/graphql/apollo-angular',
     logo: AngularLettermark,
+    name: 'Angular',
     primaryColor: '#ff1035',
+    title: 'A fully-featured GraphQL client for Angular',
   },
-  WHATSAPP: {
-    name: 'WhatsApp',
-    title: 'Full stack, open source tutorial',
-    href: 'https://github.com/Urigo/WhatsApp-Clone-Tutorial',
-    logo: WhatsAppLettermark,
-    primaryColor: '#31eb14',
+  CODEGEN: {
+    href: 'https://the-guild.dev/graphql/codegen',
+    logo: CodegenIcon,
+    name: 'Codegen',
+    primaryColor: '#0284c7',
+    title: 'Generation of typed queries, mutations, subscriptions and typed GraphQL resolvers',
   },
-  KITQL: {
-    name: 'KitQL',
-    title: 'A set of tools, helping you building efficient apps in a fast way',
-    href: 'https://kitql.dev',
-    logo: KitQLLettermark,
-    primaryColor: '#ff3e00',
+  CONDUCTOR: {
+    href: 'https://the-guild.dev/graphql/gateway',
+    logo: ConductorLettermark,
+    name: 'Conductor',
+    primaryColor: '#0f766e',
+    title: 'All-in-one GraphQL Gateway',
   },
-  WS: {
-    name: 'WS',
-    title: 'Reference implementation of the GraphQL over WS spec',
-    href: 'https://the-guild.dev/graphql/ws',
-    logo: WSLettermark,
-    primaryColor: '#0bf2e7',
+  CONFIG: {
+    href: 'https://the-guild.dev/graphql/config',
+    logo: ConfigLettermark,
+    name: 'Config',
+    primaryColor: '#6d7a99',
+    title: 'One configuration for all your GraphQL projects',
   },
-  SSE: {
-    name: 'SSE',
-    title: 'Reference implementation of the GraphQL over SSE spec',
-    href: 'https://the-guild.dev/graphql/sse',
-    logo: SSELettermark,
-    primaryColor: '#08e045',
+  ENVELOP: {
+    href: 'https://the-guild.dev/graphql/envelop',
+    logo: EnvelopLettermark,
+    name: 'Envelop',
+    primaryColor: '#ff00e5',
+    title: 'Develop and share plugins that are usable with any GraphQL server framework or schema',
+  },
+  ESLINT: {
+    href: 'https://the-guild.dev/graphql/eslint',
+    logo: GraphQLESlintLettermark,
+    name: 'GraphQL ESLint',
+    primaryColor: '#5639ca',
+    title: 'Customizable ESLint parser, plugin, and rule set for GraphQL',
+  },
+  FETS: {
+    href: 'https://the-guild.dev/fets',
+    logo: FetsLettermark,
+    name: 'feTS',
+    primaryColor: '#3178c6',
+    title: 'Build and consume REST APIs with the e2e type safety using TypeScript and OpenAPI',
   },
   HELTIN: {
-    name: 'heltin',
-    title: 'Mental healthcare registry',
     href: 'https://the-guild.dev/heltin',
     logo: HeltinLettermark,
+    name: 'heltin',
     primaryColor: '#1d90ff',
+    title: 'Mental healthcare registry',
+  },
+  HIVE: {
+    href: 'https://the-guild.dev/graphql/hive',
+    logo: HiveIcon,
+    name: 'Hive',
+    primaryColor: '#ffb21d',
+    title: 'Open Source GraphQL Federation Platform (Schema Registry, Gateway, Analytics)',
+  },
+  HIVE_GATEWAY: {
+    href: 'https://the-guild.dev/graphql/hive/gateway',
+    logo: HiveGatewayIcon,
+    name: 'Hive Gateway',
+    primaryColor: '#ffb21d',
+    title:
+      'GraphQL Gateway (Router) for federated GraphQL with Subscriptions support and built-in security features',
+  },
+  HIVE_ROUTER: {
+    href: 'https://github.com/graphql-hive/router',
+    logo: HiveRouterIcon,
+    name: 'Hive Router',
+    primaryColor: '#ffb21d',
+    title:
+      'Open-source (MIT) GraphQL Federation Router. Built with Rust for maximum performance and robustness.',
+  },
+  INSPECTOR: {
+    href: 'https://the-guild.dev/graphql/inspector',
+    logo: InspectorLettermark,
+    name: 'Inspector',
+    primaryColor: '#59f79d',
+    title: 'Schema management tool',
+  },
+  KITQL: {
+    href: 'https://kitql.dev',
+    logo: KitQLLettermark,
+    name: 'KitQL',
+    primaryColor: '#ff3e00',
+    title: 'A set of tools, helping you building efficient apps in a fast way',
+  },
+  MESH: {
+    href: 'https://the-guild.dev/graphql/mesh',
+    logo: MeshIcon,
+    name: 'Mesh',
+    primaryColor: '#1bcbe2',
+    title: 'A fully-featured GraphQL federation framework',
+  },
+  MODULES: {
+    href: 'https://the-guild.dev/graphql/modules',
+    logo: ModulesLettermark,
+    name: 'Modules',
+    primaryColor: '#e535ab',
+    title: 'Enterprise grade tooling for your GraphQL server',
   },
   NEXTRA: {
-    name: 'Nextra',
-    title:
-      'Simple, powerful and flexible site generation framework with everything you love from Next.js',
     href: 'https://nextra.site',
     logo: NextraLogo,
+    name: 'Nextra',
     primaryColor: '#000',
+    title:
+      'Simple, powerful and flexible site generation framework with everything you love from Next.js',
+  },
+  SCALARS: {
+    href: 'https://the-guild.dev/graphql/scalars',
+    logo: ScalarsLettermark,
+    name: 'Scalars',
+    primaryColor: '#f38',
+    title: 'Common custom GraphQL Scalars for precise type-safe GraphQL schemas',
+  },
+  SOFA: {
+    href: 'https://the-guild.dev/graphql/sofa-api',
+    logo: SofaLettermark,
+    name: 'SOFA',
+    primaryColor: '#e873ff',
+    title: 'Generate RESTful APIs from your GraphQL server',
+  },
+  SSE: {
+    href: 'https://the-guild.dev/graphql/sse',
+    logo: SSELettermark,
+    name: 'SSE',
+    primaryColor: '#08e045',
+    title: 'Reference implementation of the GraphQL over SSE spec',
   },
   STELLATE: {
-    name: 'Stellate',
-    title: 'The GraphQL Edge Platform for security, caching, and observability',
     href: 'https://stellate.co',
     logo: StellateIcon,
+    name: 'Stellate',
     primaryColor: '#FF7752',
+    title: 'The GraphQL Edge Platform for security, caching, and observability',
+  },
+  STITCHING: {
+    href: 'https://the-guild.dev/graphql/stitching',
+    logo: StitchingLettermark,
+    name: 'Stitching',
+    primaryColor: '#f95428',
+    title:
+      'Automatically stitch multiple schemas together into one larger API in a simple, fast and powerful way',
+  },
+  TOOLS: {
+    href: 'https://the-guild.dev/graphql/tools',
+    logo: ToolsLettermark,
+    name: 'Tools',
+    primaryColor: '#184ae8',
+    title: 'A set of utilities for faster GraphQL development',
+  },
+  WHATSAPP: {
+    href: 'https://github.com/Urigo/WhatsApp-Clone-Tutorial',
+    logo: WhatsAppLettermark,
+    name: 'WhatsApp',
+    primaryColor: '#31eb14',
+    title: 'Full stack, open source tutorial',
+  },
+  WS: {
+    href: 'https://the-guild.dev/graphql/ws',
+    logo: WSLettermark,
+    name: 'WS',
+    primaryColor: '#0bf2e7',
+    title: 'Reference implementation of the GraphQL over WS spec',
+  },
+  YOGA: {
+    href: 'https://the-guild.dev/graphql/yoga-server',
+    logo: YogaIcon,
+    name: 'Yoga',
+    primaryColor: '#c026d3',
+    title: 'A fully-featured, simple to set up, performant and extendable server',
   },
 };
 
@@ -266,12 +267,12 @@ export const SIX_HIGHLIGHTED_PRODUCTS = [
 /** List of products displayed in hamburger menu. */
 export const PRODUCTS_MENU_LIST = Object.fromEntries<
   | {
-      type: 'separator';
+      href: string;
       title: ReactElement;
     }
   | {
-      href: string;
       title: ReactElement;
+      type: 'separator';
     }
 >(
   (
@@ -281,7 +282,6 @@ export const PRODUCTS_MENU_LIST = Object.fromEntries<
       return [
         i,
         {
-          type: 'separator',
           title: (
             <>
               {/* This is a one-off class. The margins and paddings of the parent list item are were large. */}
@@ -294,6 +294,7 @@ export const PRODUCTS_MENU_LIST = Object.fromEntries<
               <span className="ml-2 font-medium text-gray-500 dark:text-neutral-400">{item}</span>
             </>
           ),
+          type: 'separator',
         },
       ];
     }

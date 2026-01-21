@@ -10,7 +10,10 @@
     "typecheck": "bun --bun fumadocs-mdx && bun --bun tsc --noEmit",
     "postinstall": "bun --bun fumadocs-mdx && bun playwright install chromium",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "bunx playwright test",
+    "test:ui": "bunx playwright test --ui",
+    "test:headed": "bunx playwright test --headed"
   },
   "dependencies": {
     "@hive/design-system": "workspace:*",
@@ -37,6 +40,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "@tailwindcss/vite": "^4.1.18",
     "@types/mdx": "^2.0.13",
     "@types/node": "^25.0.5",
@@ -45,6 +49,7 @@
     "@vitejs/plugin-react": "^5.1.2",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
+    "vite-plugin-svgr": "^4.5.0",
     "vite-tsconfig-paths": "^6.0.4"
   }
 }

@@ -1,21 +1,22 @@
 import { useId } from 'react';
+
 import { cn } from '../../cn';
 import { FOUR_MAIN_PRODUCTS, ProductInfo, PRODUCTS } from '../../products';
 import { DecorationIsolation, HighlightDecoration } from '../decorations';
 import { ArrowIcon } from '../icons';
-import { ReactComponent as HiveDecoration } from './hive-decoration.svg';
-import { ReactComponent as HiveGatewayDecoration } from './hive-gateway-decoration.svg';
-import { ReactComponent as MeshDecoration } from './mesh-decoration.svg';
-import { ReactComponent as YogaDecoration } from './yoga-decoration.svg';
+import HiveDecoration from './hive-decoration.svg?svgr';
+import HiveGatewayDecoration from './hive-gateway-decoration.svg?svgr';
+import MeshDecoration from './mesh-decoration.svg?svgr';
+import YogaDecoration from './yoga-decoration.svg?svgr';
 
 const cardDecorations = {
   [PRODUCTS.HIVE.name]: HiveDecoration,
-  [PRODUCTS.YOGA.name]: YogaDecoration,
-  [PRODUCTS.MESH.name]: MeshDecoration,
   [PRODUCTS.HIVE_GATEWAY.name]: HiveGatewayDecoration,
+  [PRODUCTS.MESH.name]: MeshDecoration,
+  [PRODUCTS.YOGA.name]: YogaDecoration,
 };
 
-export function MainProductCard({ as: Root, product, className, ...rest }: ProductCardProps) {
+export function MainProductCard({ as: Root, className, product, ...rest }: ProductCardProps) {
   const Decoration = cardDecorations[product.name];
   const Icon = product.logo;
 
@@ -41,12 +42,12 @@ export function MainProductCard({ as: Root, product, className, ...rest }: Produ
         <DecorationIsolation>
           {Decoration && (
             <Decoration
-              strokeWidth="0.5px"
               className={cn(
                 'stroke-white/70',
                 'pointer-events-none absolute bottom-0 right-0 h-full opacity-0 transition-opacity duration-500 group-focus-within:opacity-100 group-hover:opacity-100',
               )}
               fill={`url(#${id})`}
+              strokeWidth="0.5px"
             />
           )}
           <svg
@@ -55,12 +56,12 @@ export function MainProductCard({ as: Root, product, className, ...rest }: Produ
           >
             <defs>
               <linearGradient
+                gradientUnits="userSpaceOnUse"
                 id={id}
                 x1="1"
-                y1="2"
                 x2="161"
+                y1="2"
                 y2="171"
-                gradientUnits="userSpaceOnUse"
               >
                 {isHive ? (
                   <>
@@ -83,7 +84,7 @@ export function MainProductCard({ as: Root, product, className, ...rest }: Produ
   );
 }
 
-export function AncillaryProductCard({ product, as: Root, className, ...rest }: ProductCardProps) {
+export function AncillaryProductCard({ as: Root, className, product, ...rest }: ProductCardProps) {
   const Logo = product.logo;
   return (
     <Root
@@ -94,16 +95,16 @@ export function AncillaryProductCard({ product, as: Root, className, ...rest }: 
       {...rest}
     >
       <a
-        href={product.href}
         className="relative flex h-full flex-col justify-between rounded-[inherit] p-8 focus:outline-none focus-visible:outline-none"
+        href={product.href}
       >
         <div>
           <p className="font-medium">{product.name}</p>
           <p className="mt-2 text-sm text-green-800">{product.title}</p>
         </div>
         <div
-          role="presentation"
           className="mt-8 flex size-8 items-center justify-center rounded bg-green-1000 p-[5px] text-sm/5 font-medium text-white"
+          role="presentation"
         >
           <Logo />
         </div>

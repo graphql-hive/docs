@@ -1,10 +1,11 @@
 'use client';
 
 import { ReactNode, useState } from 'react';
-import { CallToAction } from '../../guild-components/components/call-to-action';
+
 import { cn } from '../../guild-components/cn';
-import { Heading } from '../../guild-components/components/heading';
+import { CallToAction } from '../../guild-components/components/call-to-action';
 import { ComparisonTable as Table } from '../../guild-components/components/comparison-table';
+import { Heading } from '../../guild-components/components/heading';
 import { TextLink } from '../../guild-components/components/text-link';
 import { GatewayIcon } from '../icons';
 import { NestedSticky } from '../nested-sticky';
@@ -14,54 +15,54 @@ import {
   EnterpriseSupportIcon,
   GlobeLockIcon as LuGlobeLock,
   PackageIcon as LuPackage,
-  UsageIcon,
   UserRoundIcon as LuUserRound,
+  UsageIcon,
   XIcon,
 } from './icons';
 
-type PlanName = 'Hobby' | 'Pro' | 'Enterprise';
+type PlanName = 'Enterprise' | 'Hobby' | 'Pro';
 interface PricingPlan {
-  name: PlanName;
   cta: ReactNode;
+  name: PlanName;
 }
 
 const pricingTiers: PricingPlan[] = [
   {
-    name: 'Hobby',
     cta: (
       <CallToAction
-        variant="tertiary"
         // todo: move this style as size="sm" to design system
         className="px-3 py-2 text-sm"
         href="https://app.graphql-hive.com"
+        variant="tertiary"
       >
         Get started for free
       </CallToAction>
     ),
+    name: 'Hobby',
   },
   {
-    name: 'Pro',
     cta: (
       <CallToAction
-        variant="primary"
         className="px-3 py-2 text-sm"
         href="https://app.graphql-hive.com"
+        variant="primary"
       >
         Try free for 30 days
       </CallToAction>
     ),
+    name: 'Pro',
   },
   {
-    name: 'Enterprise',
     cta: (
       <CallToAction
-        variant="primary"
         className="px-3 py-2 text-sm"
         href="https://the-guild.dev/contact"
+        variant="primary"
       >
         Shape your business
       </CallToAction>
     ),
+    name: 'Enterprise',
   },
 ];
 
@@ -74,9 +75,9 @@ export function PlansTable({ className }: { className?: string }) {
   return (
     <section className={cn('relative p-4 py-12 md:px-6 lg:py-24 xl:px-[120px]', className)}>
       <Heading
-        size="md"
         as="h3"
         className="text-pretty text-center max-md:text-[32px]/10 max-md:tracking-[-.16px]"
+        size="md"
       >
         Hive Console allows you to do so much more.
         <br className="max-xl:hidden" /> On&nbsp;your&nbsp;own&nbsp;terms.
@@ -86,10 +87,10 @@ export function PlansTable({ className }: { className?: string }) {
         tailor to your&nbsp;needs.
       </p>
 
-      <MobileNavbar setActivePlan={setActivePlan} activePlan={activePlan} />
+      <MobileNavbar activePlan={activePlan} setActivePlan={setActivePlan} />
 
       <div className="md:nextra-scrollbar md:-mx-6 md:overflow-x-auto md:px-6">
-        <NestedSticky offsetTop={80} offsetBottom={90}>
+        <NestedSticky offsetBottom={90} offsetTop={80}>
           <div
             aria-hidden
             className="bg-beige-100 [[data-sticky]>&]:border-beige-200 relative flex items-center rounded-3xl border border-transparent *:text-left max-md:hidden md:*:w-1/4 [[data-sticky]>&]:rounded-t-none [[data-sticky]>&]:shadow-sm"
@@ -128,9 +129,9 @@ export function PlansTable({ className }: { className?: string }) {
           </thead>
           <tbody>
             <TableSubheaderRow
+              description="Structure teams your way. No enterprise tax."
               icon={<LuUserRound />}
               title="Organization and Team"
-              description="Structure teams your way. No enterprise tax."
             />
 
             <tr>
@@ -198,9 +199,9 @@ export function PlansTable({ className }: { className?: string }) {
             </tr>
 
             <TableSubheaderRow
+              description="Experiment, iterate and ship to production in no time."
               icon={<LuPackage />}
               title="Projects"
-              description="Experiment, iterate and ship to production in no time."
             />
 
             <tr>
@@ -218,7 +219,7 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/schema-registry#publish-a-schema">
+                <TextLink href="/docs/schema-registry#publish-a-schema" target="_blank">
                   Subgraph/schema publishes
                 </TextLink>
               </PlansTableCell>
@@ -235,7 +236,7 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/schema-registry#check-a-schema">
+                <TextLink href="/docs/schema-registry#check-a-schema" target="_blank">
                   Subgraph/schema checks
                 </TextLink>
               </PlansTableCell>
@@ -285,9 +286,9 @@ export function PlansTable({ className }: { className?: string }) {
             </tr>
 
             <TableSubheaderRow
+              description="Monitor and evolve your schema in a flexible way."
               icon={<UsageIcon />}
               title="Analytics, Monitoring & Metrics"
-              description="Monitor and evolve your schema in a flexible way."
             />
 
             <tr>
@@ -369,9 +370,9 @@ export function PlansTable({ className }: { className?: string }) {
             </tr>
 
             <TableSubheaderRow
+              description="Performant and extendible. Stress-tested in production."
               icon={<GatewayIcon />}
               title="Gateway"
-              description="Performant and extendible. Stress-tested in production."
             />
 
             <tr>
@@ -392,9 +393,9 @@ export function PlansTable({ className }: { className?: string }) {
                 Apollo Federation v1 support
                 <br />
                 <TextLink
+                  className="text-sm text-green-800"
                   href="/federation-gateway-audit"
                   target="_blank"
-                  className="text-sm text-green-800"
                 >
                   Check out the federation audit
                 </TextLink>
@@ -415,9 +416,9 @@ export function PlansTable({ className }: { className?: string }) {
                 Apollo Federation v2 support
                 <br />
                 <TextLink
+                  className="text-sm text-green-800"
                   href="/federation-gateway-audit"
                   target="_blank"
-                  className="text-sm text-green-800"
                 >
                   Check out the federation audit
                 </TextLink>
@@ -435,7 +436,7 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/gateway/subscriptions">
+                <TextLink href="/docs/gateway/subscriptions" target="_blank">
                   Subscriptions over WebSocket and SSE
                 </TextLink>
               </PlansTableCell>
@@ -452,7 +453,7 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/gateway/authorization-authentication">
+                <TextLink href="/docs/gateway/authorization-authentication" target="_blank">
                   JWT authentication
                 </TextLink>
               </PlansTableCell>
@@ -470,8 +471,8 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  target="_blank"
                   href="docs/gateway/authorization-authentication#rolescope-based-authentication-rbac-with-requiresscope-directive"
+                  target="_blank"
                 >
                   Role-based Access Control (RBAC)
                 </TextLink>
@@ -489,7 +490,7 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/gateway/persisted-documents">
+                <TextLink href="/docs/gateway/persisted-documents" target="_blank">
                   Persisted documents
                 </TextLink>
               </PlansTableCell>
@@ -507,8 +508,8 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  target="_blank"
                   href="/docs/gateway/monitoring-tracing#opentelemetry-traces"
+                  target="_blank"
                 >
                   OpenTelemetry (OTEL) tracing
                 </TextLink>
@@ -527,8 +528,8 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  target="_blank"
                   href="/docs/gateway/monitoring-tracing#prometheus-metrics"
+                  target="_blank"
                 >
                   Prometheus metrics
                 </TextLink>
@@ -547,8 +548,8 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  target="_blank"
                   href="/docs/gateway/other-features/security/demand-control"
+                  target="_blank"
                 >
                   Demand control
                 </TextLink>
@@ -567,8 +568,8 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  target="_blank"
                   href="/docs/gateway/other-features/security/rate-limiting"
+                  target="_blank"
                 >
                   Rate limiting
                 </TextLink>
@@ -587,8 +588,8 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  target="_blank"
                   href="/docs/gateway/other-features/security/hmac-signature"
+                  target="_blank"
                 >
                   Subgraph request signing
                 </TextLink>
@@ -607,8 +608,8 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  target="_blank"
                   href="/docs/gateway/other-features/performance/response-caching"
+                  target="_blank"
                 >
                   Response caching
                 </TextLink>
@@ -626,7 +627,7 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/gateway/defer-stream">
+                <TextLink href="/docs/gateway/defer-stream" target="_blank">
                   Incremental Delivery (Defer & Stream)
                 </TextLink>
               </PlansTableCell>
@@ -643,7 +644,7 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/gateway/other-features/custom-plugins">
+                <TextLink href="/docs/gateway/other-features/custom-plugins" target="_blank">
                   Custom plugins
                 </TextLink>
               </PlansTableCell>
@@ -659,28 +660,28 @@ export function PlansTable({ className }: { className?: string }) {
             </tr>
 
             <TableSubheaderRow
+              description="Engineered for uninterrupted performance and reliability."
               icon={<AvailabilityIcon />}
               title="Availability"
-              description="Engineered for uninterrupted performance and reliability."
             />
             <tr>
               <PlansTableCell>Support SLA</PlansTableCell>
               <PlansTableCell activePlan={activePlan} plan="Hobby">
                 <TextLink
-                  href="https://the-guild.dev/graphql/hive/sla.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="text-sm text-green-800"
+                  href="https://the-guild.dev/graphql/hive/sla.pdf"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Pre-defined SLA
                 </TextLink>
               </PlansTableCell>
               <PlansTableCell activePlan={activePlan} plan="Pro">
                 <TextLink
-                  href="https://the-guild.dev/graphql/hive/sla.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="text-sm text-green-800"
+                  href="https://the-guild.dev/graphql/hive/sla.pdf"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Pre-defined SLA
                 </TextLink>
@@ -729,9 +730,9 @@ export function PlansTable({ className }: { className?: string }) {
             </tr>
 
             <TableSubheaderRow
+              description="You can rely on us when you need help."
               icon={<EnterpriseSupportIcon />}
               title="Support"
-              description="You can rely on us when you need help."
             />
             <tr>
               <PlansTableCell>GitHub issues and chat support</PlansTableCell>
@@ -809,18 +810,18 @@ export function PlansTable({ className }: { className?: string }) {
             </tr>
 
             <TableSubheaderRow
+              description="Enterprise-grade software, affordable for everyone."
               icon={<LuGlobeLock />}
               title="Compliance / Security"
-              description="Enterprise-grade software, affordable for everyone."
             />
             <tr>
               <PlansTableCell>
                 SOC 2 Type II Certified
                 <br />
                 <TextLink
+                  className="text-sm text-green-800"
                   href="https://security.graphql-hive.com"
                   target="_blank"
-                  className="text-sm text-green-800"
                 >
                   Learn more
                 </TextLink>
@@ -837,7 +838,7 @@ export function PlansTable({ className }: { className?: string }) {
             </tr>
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/management/audit-logs">
+                <TextLink href="/docs/management/audit-logs" target="_blank">
                   Audit logs
                 </TextLink>
               </PlansTableCell>
@@ -859,30 +860,30 @@ export function PlansTable({ className }: { className?: string }) {
 }
 
 function MobileNavbar({
-  setActivePlan,
   activePlan,
+  setActivePlan,
 }: {
-  setActivePlan: (plan: PlanName) => void;
   activePlan: PlanName;
+  setActivePlan: (plan: PlanName) => void;
 }) {
   return (
     <NestedSticky
+      offsetBottom={482}
       offsetTop={
         // --nextra-navbar-height
         64
       }
-      offsetBottom={482}
     >
       <div className="bg-beige-100 before:bg-beige-100 before:border-b-beige-400 relative top-0 z-10 w-full rounded-2xl p-2 duration-100 ease-[var(--hive-ease-overshoot-a-bit)] before:absolute before:inset-0 before:opacity-0 before:transition md:hidden [[data-sticky]>&:before]:scale-x-125 [[data-sticky]>&:before]:border-b [[data-sticky]>&:before]:opacity-100 [[data-sticky]>&:before]:shadow-sm">
         <div className="relative flex w-full">
           {pricingTiers.map(tier => (
             <button
-              key={tier.name}
-              onClick={() => setActivePlan(tier.name)}
               className={cn(
                 'hive-focus bg-beige-100 flex-1 rounded-xl px-3 py-2 text-center text-sm font-medium leading-5 transition hover:z-10 hover:ring hover:ring-inset focus:z-10',
                 activePlan === tier.name && 'bg-white',
               )}
+              key={tier.name}
+              onClick={() => setActivePlan(tier.name)}
             >
               {tier.name}
             </button>
@@ -894,11 +895,11 @@ function MobileNavbar({
 
             return (
               <div
+                aria-hidden={!isActive}
                 className={cn(
                   'absolute inset-0 z-10 flex items-center justify-center rounded-lg *:!w-full aria-hidden:pointer-events-none aria-hidden:z-0',
                   i === 0 && 'bg-beige-100',
                 )}
-                aria-hidden={!isActive}
                 key={plan.name}
               >
                 {plan.cta}
@@ -912,15 +913,15 @@ function MobileNavbar({
 }
 
 function PlansTableCell({
-  plan,
   activePlan: currentPlan,
   children,
   className,
+  plan,
 }: {
-  plan?: PlanName;
   activePlan?: PlanName;
   children: ReactNode;
   className?: string;
+  plan?: PlanName;
 }) {
   return (
     <td
@@ -937,14 +938,14 @@ function PlansTableCell({
 }
 
 interface TableSubheaderRowProps {
+  description: ReactNode;
   icon: ReactNode;
   title: string;
-  description: ReactNode;
 }
-function TableSubheaderRow({ icon, title, description }: TableSubheaderRowProps) {
+function TableSubheaderRow({ description, icon, title }: TableSubheaderRowProps) {
   return (
     <tr className="subheader">
-      <td colSpan={4} className="pb-6 pt-8">
+      <td className="pb-6 pt-8" colSpan={4}>
         <div className="flex items-center text-[32px]/10 max-md:text-[20px]/6 max-md:font-medium [&>svg]:m-[6.67px] [&>svg]:mr-[10.67px] [&>svg]:size-[26.67px] [&>svg]:text-green-600">
           {icon}
           {title}

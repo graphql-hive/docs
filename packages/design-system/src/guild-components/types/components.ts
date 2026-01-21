@@ -2,110 +2,110 @@ import { ComponentProps, ReactElement, ReactNode } from 'react';
 
 // Simplified image props (was next/image)
 export interface IImage {
-  src: string;
   alt: string;
-  width?: number;
-  height?: number;
   className?: string;
+  height?: number;
+  src: string;
+  width?: number;
 }
 
 interface IVideo {
-  src: string;
   placeholder: string;
+  src: string;
 }
 
 // Simplified video props (was react-player)
 export interface ReactPlayerProps {
-  url?: string;
-  playing?: boolean;
-  loop?: boolean;
   controls?: boolean;
+  height?: number | string;
+  loop?: boolean;
   muted?: boolean;
-  width?: string | number;
-  height?: string | number;
+  playing?: boolean;
+  url?: string;
+  width?: number | string;
 }
 
-export type ILink = {
-  href: string | { pathname?: string };
-} & Pick<ComponentProps<'a'>, 'target' | 'rel' | 'title' | 'className' | 'style' | 'onClick'> & {
+export type ILink = Pick<ComponentProps<'a'>, 'className' | 'onClick' | 'rel' | 'style' | 'target' | 'title'> & {
     children: ReactNode;
     newWindow?: boolean;
-  };
+  } & {
+  href: { pathname?: string } | string;
+};
 
 export interface IFeatureListProps {
   className?: string;
-  title?: string;
   description?: string;
   items: {
-    title: string;
     description: string;
     image: IImage;
     link?: ILink;
+    title: string;
   }[];
   link?: ILink;
+  title?: string;
 }
 
 export interface IInfoListProps {
   className?: string;
-  title?: string | ReactNode;
   items: {
-    title: string | ReactNode;
-    description: string | ReactNode;
+    description: ReactNode | string;
     link?: ILink;
+    title: ReactNode | string;
   }[];
+  title?: ReactNode | string;
 }
 
 export interface IHeroVideoProps {
   className?: string;
-  title: string | ReactNode;
-  description: string | ReactNode;
+  description: ReactNode | string;
   flipped?: boolean;
   link?: ILink;
+  title: ReactNode | string;
   video: IVideo;
   videoProps?: ReactPlayerProps;
 }
 
 export interface IHeroIllustrationProps {
   className?: string;
-  title: string | ReactNode;
-  description: string | ReactNode;
+  description: ReactNode | string;
   flipped?: boolean;
-  link?: ILink;
   image: IImage;
+  link?: ILink;
+  title: ReactNode | string;
 }
 
 export interface IHeroGradientProps {
   className?: string;
-  title: string | ReactNode;
-  description: string | ReactNode;
   colors?: string[];
-  version?: string | ReactNode;
-  link?: ILink | ILink[];
+  description: ReactNode | string;
   image?: IImage;
+  link?: ILink | ILink[];
+  title: ReactNode | string;
+  version?: ReactNode | string;
 }
 
 export interface IHeroMarketplaceProps {
   className?: string;
-  title: string | ReactNode;
-  description: string | ReactNode;
-  link: ILink;
+  description: ReactNode | string;
   image?: IImage;
+  link: ILink;
+  title: ReactNode | string;
 }
 
 export interface IMarketplaceItemProps {
-  title: string;
-  description: string | ReactNode;
-  tags?: string[];
-  modal?: {
-    header: {
-      image?: IImage;
-      description?: string | ILink;
-    };
-    content: string | (() => ReactNode) | ReactNode;
-  };
-  update: string;
+  description: ReactNode | string;
   image: IImage;
   link: Omit<ILink, 'children'>;
+  modal?: {
+    content: (() => ReactNode) | ReactNode | string;
+    header: {
+      description?: ILink | string;
+      image?: IImage;
+    };
+  };
+  tags?: string[];
+  title: string;
+  update: string;
   weeklyNPMDownloads?: number;
 }
 
@@ -115,35 +115,35 @@ export interface IMarketplaceItemsProps {
 
 export interface IMarketplaceListProps {
   className?: string;
-  title?: string;
   colorScheme?: 'green' | 'neutral';
-  placeholder: string | ReactElement;
-  pagination: number;
   items: IMarketplaceItemProps[];
+  pagination: number;
+  placeholder: ReactElement | string;
+  title?: string;
 }
 
 export interface IMarketplaceSearchProps {
   className?: string;
-  title: string | ReactNode;
-  placeholder: string;
   colorScheme?: 'green' | 'neutral';
+  placeholder: string;
   primaryList: IMarketplaceListProps;
-  secondaryList?: IMarketplaceListProps;
   queryList?: IMarketplaceListProps;
-  tagsFilter?: string[] | ReadonlyArray<string>;
+  secondaryList?: IMarketplaceListProps;
+  tagsFilter?: readonly string[] | string[];
+  title: ReactNode | string;
 }
 
 export interface ISchemaPageProps {
+  editorData: Omit<IEditorProps, 'children' | 'icon'>[];
   schemaName: string;
   tags?: string[];
-  editorData: Omit<IEditorProps, 'icon' | 'children'>[];
 }
 
 export interface IEditorProps {
   children: ReactNode;
-  title: string;
   frameworks?: string[];
-  schema?: string;
   image?: string;
   operations?: string;
+  schema?: string;
+  title: string;
 }

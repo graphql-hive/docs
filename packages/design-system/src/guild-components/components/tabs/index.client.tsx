@@ -1,19 +1,6 @@
 'use client';
 
 import {
-  FC,
-  Fragment,
-  ReactElement,
-  ReactNode,
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
-import { useLocation } from '@tanstack/react-router';
-import cn from 'clsx';
-import {
   Tab as HeadlessTab,
   TabProps as HeadlessTabProps,
   TabGroup,
@@ -25,14 +12,28 @@ import {
   TabPanels,
   // this component is almost verbatim copied from Nextra, so we keep @headlessui/react to guarantee it works the same
 } from '@headlessui/react';
+import { useLocation } from '@tanstack/react-router';
+import cn from 'clsx';
+import {
+  FC,
+  Fragment,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
+
 import { useHash } from '../use-hash';
 
-type TabItem = string | ReactElement;
+type TabItem = ReactElement | string;
 
 type TabObjectItem = {
+  disabled: boolean;
   key?: string;
   label: TabItem;
-  disabled: boolean;
 };
 
 function isTabObjectItem(item: unknown): item is TabObjectItem {
@@ -40,9 +41,11 @@ function isTabObjectItem(item: unknown): item is TabObjectItem {
 }
 
 export interface TabsProps
-  extends Pick<TabGroupProps, 'defaultIndex' | 'selectedIndex' | 'onChange'> {
-  items: (TabItem | TabObjectItem)[];
+  extends Pick<TabGroupProps, 'defaultIndex' | 'onChange' | 'selectedIndex'> {
   children: ReactNode;
+  /** Tabs CSS class name. */
+  className?: TabListProps['className'];
+  items: (TabItem | TabObjectItem)[];
   /**
    * URLSearchParams key for persisting the selected tab.
    * @default "tab"
@@ -54,22 +57,20 @@ export interface TabsProps
    * Leave empty or set to `null` to disable localStorage persistence.
    * Set to a string to use a custom key.
    */
-  storageKey?: string | true | null;
-  /** Tabs CSS class name. */
-  className?: TabListProps['className'];
+  storageKey?: true | string | null;
   /** Tab CSS class name. */
   tabClassName?: HeadlessTabProps['className'];
 }
 
 export const Tabs = ({
-  items,
   children,
-  searchParamKey = 'tab',
-  storageKey = null,
-  defaultIndex = 0,
-  selectedIndex: _selectedIndex,
-  onChange,
   className,
+  defaultIndex = 0,
+  items,
+  onChange,
+  searchParamKey = 'tab',
+  selectedIndex: _selectedIndex,
+  storageKey = null,
   tabClassName,
 }: TabsProps) => {
   const id = useId();
@@ -104,13 +105,13 @@ export const Tabs = ({
 
       // the storage event only get picked up (by the listener) if the localStorage was changed in
       // another browser's tab/window (of the same app), but not within the context of the current tab.
-      window.dispatchEvent(new StorageEvent('storage', { key: storageKey, newValue }));
+      globalThis.dispatchEvent(new StorageEvent('storage', { key: storageKey, newValue }));
     } else {
       setSelectedIndex(index);
     }
 
     if (searchParamKey) {
-      const searchParams = new URLSearchParams(window.location.search);
+      const searchParams = new URLSearchParams(globalThis.location.search);
       const tabKeys = new Set(searchParams.getAll(searchParamKey));
 
       // we remove only tabs from this list from search params
@@ -128,20 +129,20 @@ export const Tabs = ({
       // and finally, we add the clicked tab
       searchParams.append(searchParamKey, getTabKey(items, index, id));
 
-      window.history.replaceState(
+      globalThis.history.replaceState(
         null,
         '',
-        `${window.location.pathname}?${searchParams.toString()}`,
+        `${globalThis.location.pathname}?${searchParams.toString()}`,
       );
     }
   };
 
   return (
     <TabGroup
-      selectedIndex={selectedIndex}
+      as={Fragment}
       defaultIndex={defaultIndex}
       onChange={handleChange}
-      as={Fragment}
+      selectedIndex={selectedIndex}
     >
       <TabList
         className={args =>
@@ -155,10 +156,8 @@ export const Tabs = ({
       >
         {items.map((item, index) => (
           <HeadlessTab
-            key={index}
-            disabled={isTabObjectItem(item) && item.disabled}
             className={args => {
-              const { selected, disabled, hover, focus } = args;
+              const { disabled, focus, hover, selected } = args;
               return cn(
                 focus && 'hive-focus ring-inset',
                 'cursor-pointer whitespace-nowrap',
@@ -179,6 +178,8 @@ export const Tabs = ({
                 typeof tabClassName === 'function' ? tabClassName(args) : tabClassName,
               );
             }}
+            disabled={isTabObjectItem(item) && item.disabled}
+            key={index}
           >
             {isTabObjectItem(item) ? item.label : item}
           </HeadlessTab>
@@ -192,14 +193,13 @@ export const Tabs = ({
 export const Tab: FC<TabPanelProps> = ({
   children,
   // For SEO display all the Panel in the DOM and set `display: none;` for those that are not selected
-  unmount = false,
   className,
+  unmount = false,
   ...props
 }) => {
   return (
     <TabPanel
       {...props}
-      unmount={unmount}
       className={args =>
         cn(
           'mt-[1.25em] rounded',
@@ -207,6 +207,7 @@ export const Tab: FC<TabPanelProps> = ({
           typeof className === 'function' ? className(args) : className,
         )
       }
+      unmount={unmount}
     >
       {children}
     </TabPanel>
@@ -257,12 +258,12 @@ function useActiveTabFromURL(
     }
 
     return function cleanUpTabFromSearchParams() {
-      const newSearchParams = new URLSearchParams(window.location.search);
+      const newSearchParams = new URLSearchParams(globalThis.location.search);
       newSearchParams.delete(searchParamKey);
-      window.history.replaceState(
+      globalThis.history.replaceState(
         null,
         '',
-        `${window.location.pathname}?${newSearchParams.toString()}`,
+        `${globalThis.location.pathname}?${newSearchParams.toString()}`,
       );
     };
     // tabPanelsRef is a ref, so it's not a dependency
@@ -305,9 +306,9 @@ function useActiveTabFromStorage(
       setSelectedTab(value);
     }
 
-    window.addEventListener('storage', onStorageChange);
+    globalThis.addEventListener('storage', onStorageChange);
     return () => {
-      window.removeEventListener('storage', onStorageChange);
+      globalThis.removeEventListener('storage', onStorageChange);
     };
   }, [storageKey]);
 }
@@ -332,9 +333,9 @@ function slugify(label: string) {
   return label
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // strip accents
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .replaceAll(/[\u0300-\u036F]/g, '') // strip accents
+    .replaceAll(/[^a-z0-9]+/g, '-')
+    .replaceAll(/^-+|-+$/g, '');
 }
 
-const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
+const useIsomorphicLayoutEffect = globalThis.window === undefined ? useEffect : useLayoutEffect;

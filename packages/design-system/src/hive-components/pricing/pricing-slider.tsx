@@ -1,8 +1,9 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { CallToAction } from '../../guild-components/components/call-to-action';
+
 import { cn } from '../../guild-components/cn';
+import { CallToAction } from '../../guild-components/components/call-to-action';
 import { BookIcon } from '../book-icon';
 import { Slider } from '../slider';
 
@@ -22,11 +23,11 @@ export function PricingSlider({
 
   return (
     <div
-      ref={rootRef}
       className={cn(
         'relative isolate block select-none rounded-3xl border border-green-400 p-4 [counter-set:ops_calc(var(--ops))] sm:p-8',
         className,
       )}
+      ref={rootRef}
       // 10$ base price + 10$ per 1M
       style={{ '--ops': min, '--price': 'calc(10 + var(--ops) * 10)' } as React.CSSProperties}
       {...rest}
@@ -54,17 +55,17 @@ export function PricingSlider({
         <span className="font-medium">{min}M</span>
         <Slider
           aria-label="How many operations per month do you need?"
-          deadZone="16px"
-          min={min}
-          max={max}
-          step={1}
-          defaultValue={min}
           counter="after:content-['$'_counter(price)_'_/_month'] after:[counter-set:price_calc(var(--price))]"
+          deadZone="16px"
+          defaultValue={min}
+          max={max}
+          min={min}
           onChange={event => {
             const value = event.currentTarget.valueAsNumber;
             rootRef.current!.style.setProperty('--ops', `${value}`);
             onChange(value);
           }}
+          step={1}
         />
         <span className="font-medium">{max}M</span>
       </div>
@@ -72,11 +73,11 @@ export function PricingSlider({
       {/* Native tooltip/popover to replace Radix Tooltip */}
       <div className="relative mt-6 md:absolute md:right-8 md:top-8 md:mt-0">
         <CallToAction
-          variant="tertiary"
           id="operations-button"
           onClick={() => setPopoverOpen(!popoverOpen)}
           onMouseEnter={() => setPopoverOpen(true)}
           onMouseLeave={() => setPopoverOpen(false)}
+          variant="tertiary"
         >
           <BookIcon /> Learn about operations
         </CallToAction>

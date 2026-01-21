@@ -1,21 +1,21 @@
 // Stub for nextra/normalize-pages
 
 export interface PageItem {
+  children?: PageItem[];
   name: string;
   route: string;
   title?: string;
   type?: string;
-  children?: PageItem[];
 }
 
 export interface NormalizedResult {
-  activeType?: string;
   activeIndex?: number;
-  activeThemeContext?: Record<string, unknown>;
   activePath?: PageItem[];
+  activeThemeContext?: Record<string, unknown>;
+  activeType?: string;
   directories?: PageItem[];
-  flatDirectories?: PageItem[];
   docsDirectories?: PageItem[];
+  flatDirectories?: PageItem[];
   flatDocsDirectories?: PageItem[];
   topLevelNavbarItems?: PageItem[];
 }
@@ -23,8 +23,8 @@ export interface NormalizedResult {
 export function normalizePages(_opts: { list: PageItem[]; route: string }): NormalizedResult {
   return {
     directories: [],
-    flatDirectories: [],
     docsDirectories: [],
+    flatDirectories: [],
     flatDocsDirectories: [],
     topLevelNavbarItems: [],
   };

@@ -1,5 +1,6 @@
-import { ReactElement } from 'react';
 import clsx from 'clsx';
+import { ReactElement } from 'react';
+
 import { Anchor, AnchorProps } from './anchor';
 
 export interface ButtonProps extends AnchorProps {

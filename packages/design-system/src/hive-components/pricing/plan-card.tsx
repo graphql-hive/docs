@@ -1,28 +1,29 @@
 import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
-import { ChevronDownIcon, Cross2Icon } from '../ui/icons';
+
 import { cn } from '../../guild-components/cn';
+import { ChevronDownIcon, Cross2Icon } from '../ui/icons';
 
 export interface PlanCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  name: string;
+  adjustable: boolean;
+  callToAction: ReactNode;
   description: string;
+  features: ReactNode;
+  highlighted: boolean;
+  name: string;
   price: ReactNode | string;
   startingFrom?: boolean;
-  features: ReactNode;
-  adjustable: boolean;
-  highlighted: boolean;
-  callToAction: ReactNode;
 }
 
 export function PlanCard({
-  name,
-  description,
-  price,
-  startingFrom,
-  features,
   adjustable,
-  highlighted,
   callToAction,
   className,
+  description,
+  features,
+  highlighted,
+  name,
+  price,
+  startingFrom,
   ...rest
 }: PlanCardProps): ReactElement {
   const [collapsed, setCollapsed] = useState(true);
@@ -142,14 +143,14 @@ export function PlanCard({
         { signal: abortController.signal },
       );
 
-      window.addEventListener(
+      globalThis.addEventListener(
         'keydown',
         function onEscape(e) {
           if (e.key === 'Escape') {
             // in case somebody presses escape befoere the opening transition finishes
             transitionAbortController.current?.abort();
             collapse(true);
-            window.removeEventListener('keydown', onEscape);
+            globalThis.removeEventListener('keydown', onEscape);
           }
         },
         { signal: abortController.signal },
@@ -172,7 +173,6 @@ export function PlanCard({
         onClick={() => collapse(true)}
       />
       <article
-        ref={cardRef}
         className={cn(
           'relative isolate rounded-3xl bg-white shadow-[inset_0_0_0_1px_theme(colors.green.400)]',
           'duration-200 before:absolute before:inset-0 before:-z-10 before:rounded-3xl before:bg-[linear-gradient(#fff,#fff),linear-gradient(to_bottom,#68A8B6,#DEDACF,#E1FF00)] before:p-[4px] before:opacity-0 before:transition-[opacity,top,height] before:content-[""] before:[background-clip:content-box,padding-box] before:[transition-duration:50ms,25ms,25ms] sm:mt-[52px] sm:before:top-[-40px]',
@@ -185,6 +185,7 @@ export function PlanCard({
             'sm:before:top-[-52px] sm:before:h-[calc(100%+52px)] sm:before:pt-[50px] sm:before:delay-[29ms] sm:before:[transition-duration:150ms,75ms,75ms]',
           className,
         )}
+        ref={cardRef}
         {...rest}
       >
         <div
@@ -215,10 +216,10 @@ export function PlanCard({
             <p className="mt-2">{description}</p>
             {!collapsed && (
               <button
-                onClick={() => collapse(true)}
-                className="absolute right-0 top-1 text-green-800 transition-opacity duration-700 ease-in-out sm:hidden"
-                style={{ opacity: 1 }}
                 aria-label="Close"
+                className="absolute right-0 top-1 text-green-800 transition-opacity duration-700 ease-in-out sm:hidden"
+                onClick={() => collapse(true)}
+                style={{ opacity: 1 }}
               >
                 <Cross2Icon className="size-5" />
               </button>
@@ -243,9 +244,9 @@ export function PlanCard({
           </ul>
 
           <button
-            onClick={() => collapse(!collapsed)}
             aria-expanded={!collapsed}
             className="border-beige-200 text-green-1000 relative h-12 w-full gap-2 pt-4 text-center font-bold transition-opacity aria-expanded:border-t sm:hidden sm:border-t [[data-open='true']+footer>&]:pointer-events-none"
+            onClick={() => collapse(!collapsed)}
           >
             <span className="absolute inset-0 flex items-center justify-center transition-opacity duration-200 [[aria-expanded=false]>&]:delay-700 [[aria-expanded=true]>&]:opacity-0">
               Show key features

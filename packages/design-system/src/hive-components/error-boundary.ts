@@ -5,7 +5,7 @@ import { Component } from 'react';
 type State = { hasError: boolean };
 
 export class ErrorBoundary extends Component<
-  { fallback: React.ReactNode; children: React.ReactNode },
+  { children: React.ReactNode; fallback: React.ReactNode; },
   State
 > {
   override state: State = { hasError: false };

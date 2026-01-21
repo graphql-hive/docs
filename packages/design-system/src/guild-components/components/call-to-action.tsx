@@ -1,4 +1,5 @@
 import { HTMLAttributes } from 'react';
+
 import { cn } from '../cn';
 import { Anchor } from './anchor';
 
@@ -29,15 +30,15 @@ export declare namespace CallToActionProps {
   }
 
   export interface AnchorProps extends BaseProps, React.ComponentPropsWithoutRef<typeof Anchor> {
-    href: string;
     as?: never;
+    href: string;
   }
 
   export interface ButtonProps
     extends BaseProps,
       React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
-    href?: never;
     as?: never;
+    href?: never;
   }
 
   /**
@@ -47,8 +48,8 @@ export declare namespace CallToActionProps {
   export interface NonInteractiveProps
     extends BaseProps,
       React.DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> {
+    as: 'div' | 'span';
     href?: never;
-    as: 'span' | 'div';
   }
 }
 
@@ -77,7 +78,7 @@ export function CallToAction(props: CallToActionProps) {
   );
 
   if ('href' in props && typeof props.href === 'string') {
-    const { className: _1, variant: _2, children, ...rest } = props;
+    const { children, className: _1, variant: _2, ...rest } = props;
 
     return (
       <Anchor className={className} {...rest}>
@@ -88,7 +89,7 @@ export function CallToAction(props: CallToActionProps) {
   }
 
   if (props.as) {
-    const { className: _1, variant: _2, children, as, ...rest } = props;
+    const { as, children, className: _1, variant: _2, ...rest } = props;
     // for this use case HTMLElement is enough, we don't need to use the more specific HTMLDivElement
     const Root = as as 'span';
     return (
@@ -99,7 +100,7 @@ export function CallToAction(props: CallToActionProps) {
     );
   }
 
-  const { className: _1, variant: _2, children, ...rest } = props;
+  const { children, className: _1, variant: _2, ...rest } = props;
 
   return (
     <button className={className} {...rest}>

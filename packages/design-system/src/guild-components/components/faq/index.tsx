@@ -1,3 +1,4 @@
+import { Accordion } from '@base-ui-components/react/accordion';
 import {
   Children,
   cloneElement,
@@ -6,7 +7,7 @@ import {
   ReactElement,
   ReactNode,
 } from 'react';
-import { Accordion } from '@base-ui-components/react/accordion';
+
 import { ChevronDownIcon } from '../../../hive-components/ui/icons';
 import { cn } from '../../cn';
 import { Anchor } from '../anchor';
@@ -26,16 +27,16 @@ const a: FC<ComponentPropsWithoutRef<'a'>> = props => (
 );
 
 const h2: FC<ComponentPropsWithoutRef<'h2'>> = props => (
-  <Heading as="h2" size="md" className="basis-1/2" {...props} />
+  <Heading as="h2" className="basis-1/2" size="md" {...props} />
 );
 
 type MDXComponentProps = { components?: Record<string, FC> };
 
 export const FrequentlyAskedQuestions: FC<{
-  className?: string;
   children: ReactElement<MDXComponentProps>;
+  className?: string;
   faqPages?: string[];
-}> = ({ className, faqPages, children }) => {
+}> = ({ children, className, faqPages }) => {
   return (
     <section
       className={cn(
@@ -48,9 +49,9 @@ export const FrequentlyAskedQuestions: FC<{
         components: {
           a,
           h2,
+          li: AccordionItem,
           p: UnwrapChild,
           ul: AccordionWrapper,
-          li: AccordionItem,
         },
       })}
     </section>
@@ -89,12 +90,12 @@ const AccordionItem: FC<ComponentPropsWithoutRef<'li'>> = props => {
 
   return (
     <Accordion.Item
-      value={question}
       className="data-[open]:pb-4 relative pb-0 focus-within:z-10"
+      value={question}
     >
       <div
-        itemScope
         itemProp="mainEntity"
+        itemScope
         itemType="https://schema.org/Question"
       >
         <Accordion.Header>
@@ -104,15 +105,15 @@ const AccordionItem: FC<ComponentPropsWithoutRef<'li'>> = props => {
           </Accordion.Trigger>
         </Accordion.Header>
         <Accordion.Panel
-          keepMounted
           className="overflow-hidden bg-white text-green-800 data-[closed]:hidden"
+          keepMounted
         >
           <div
-            itemScope
             itemProp="acceptedAnswer"
+            itemScope
             itemType="https://schema.org/Answer"
           >
-            <div itemProp="text" className="space-y-2">
+            <div className="space-y-2" itemProp="text">
               {answers.map((answer, i) => (
                 <p key={i}>{answer}</p>
               ))}

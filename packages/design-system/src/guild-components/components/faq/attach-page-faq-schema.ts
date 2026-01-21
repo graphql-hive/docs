@@ -1,11 +1,11 @@
 'use client';
 
-import { FC, useEffect } from 'react';
 import { useLocation } from '@tanstack/react-router';
+import { FC, useEffect } from 'react';
 
 export const AttachPageFAQSchema: FC<{ faqPages?: string[] }> = ({ faqPages = [] }) => {
   const location = useLocation();
-  const pathname = location.pathname;
+  const {pathname} = location;
 
   useEffect(() => {
     const html = document.querySelector('html')!;

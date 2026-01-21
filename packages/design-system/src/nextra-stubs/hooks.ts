@@ -1,5 +1,5 @@
 // Stub for nextra/hooks
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export function useMounted(): boolean {
   const [mounted, setMounted] = useState(false);
@@ -8,8 +8,8 @@ export function useMounted(): boolean {
 }
 
 export function useFSRoute(): string {
-  if (typeof window !== 'undefined') {
-    return window.location.pathname;
+  if (globalThis.window !== undefined) {
+    return globalThis.location.pathname;
   }
   return '/';
 }

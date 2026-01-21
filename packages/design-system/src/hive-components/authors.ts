@@ -1,22 +1,22 @@
 // Author data for team section
 export interface Author {
-  name: string;
-  avatar?: string | { src: string; blurDataURL?: string };
-  link?: string;
+  avatar?: { blurDataURL?: string; src: string; } | string;
   github?: string;
+  link?: string;
+  name: string;
 }
 
 export const authors: Record<string, Author> = {
-  denis: { name: 'Denis Badurina', github: 'enisdenjo' },
-  dotan: { name: 'Dotan Simha', github: 'dotansimha' },
-  gil: { name: 'Gil Kaufman', github: 'gilgardosh' },
-  kamil: { name: 'Kamil Kisiela', github: 'kamilkisiela' },
-  laurin: { name: 'Laurin Quast', github: 'n1ru4l' },
-  saihaj: { name: 'Saihajpreet Singh', github: 'saihaj' },
-  tuval: { name: 'Tuval Simha', github: 'TuvalSimha' },
-  uri: { name: 'Uri Goldshtein', github: 'urigo' },
-  valentin: { name: 'Valentin Cocaud', github: 'EmrysMyrddin' },
-  jason: { name: 'Jason Kuhrt', github: 'jasonkuhrt' },
-  arda: { name: 'Arda Tanrikulu', github: 'ardatan' },
-  jdolle: { name: 'Jesse Dolle', github: 'jdolle' },
+  arda: { github: 'ardatan', name: 'Arda Tanrikulu' },
+  denis: { github: 'enisdenjo', name: 'Denis Badurina' },
+  dotan: { github: 'dotansimha', name: 'Dotan Simha' },
+  gil: { github: 'gilgardosh', name: 'Gil Kaufman' },
+  jason: { github: 'jasonkuhrt', name: 'Jason Kuhrt' },
+  jdolle: { github: 'jdolle', name: 'Jesse Dolle' },
+  kamil: { github: 'kamilkisiela', name: 'Kamil Kisiela' },
+  laurin: { github: 'n1ru4l', name: 'Laurin Quast' },
+  saihaj: { github: 'saihaj', name: 'Saihajpreet Singh' },
+  tuval: { github: 'TuvalSimha', name: 'Tuval Simha' },
+  uri: { github: 'urigo', name: 'Uri Goldshtein' },
+  valentin: { github: 'EmrysMyrddin', name: 'Valentin Cocaud' },
 };

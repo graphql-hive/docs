@@ -1,9 +1,10 @@
 import { Image } from '@unpic/react';
-import { CallToAction } from '../guild-components/components/call-to-action';
+
 import { cn } from '../guild-components/cn';
+import { CallToAction } from '../guild-components/components/call-to-action';
 import { Heading } from '../guild-components/components/heading';
-import { Author, authors } from './authors';
 import { ArrowIcon } from './arrow-icon';
+import { Author, authors } from './authors';
 
 export function TeamSection({ className }: { className?: string }) {
   return (
@@ -14,7 +15,7 @@ export function TeamSection({ className }: { className?: string }) {
       )}
     >
       <div className="mx-auto flex max-w-full flex-col flex-wrap justify-center gap-x-2 lg:max-xl:w-max xl:h-[476px]">
-        <Heading as="h3" size="md" className="text-green-1000 max-w-full text-balance xl:w-[468px]">
+        <Heading as="h3" className="text-green-1000 max-w-full text-balance xl:w-[468px]" size="md">
           Built by The Guild. Industry Veterans.
         </Heading>
 
@@ -25,11 +26,11 @@ export function TeamSection({ className }: { className?: string }) {
         </p>
 
         <CallToAction
-          variant="secondary-inverted"
-          href="https://the-guild.dev/"
-          target="_blank"
-          rel="noreferrer"
           className="max-xl:order-1 max-md:w-full xl:mt-12"
+          href="https://the-guild.dev/"
+          rel="noreferrer"
+          target="_blank"
+          variant="secondary-inverted"
         >
           Visit The Guild
           <ArrowIcon />
@@ -84,26 +85,26 @@ function TeamGallery(props: React.HTMLAttributes<HTMLElement>) {
   );
 }
 
-function TeamAvatar({ data: { name, avatar, link, github } }: { data: Author }) {
+function TeamAvatar({ data: { avatar, github, link, name } }: { data: Author }) {
   return (
     <a
       className="group relative flex flex-col focus-visible:outline-none focus-visible:ring-transparent focus-visible:ring-offset-transparent"
       href={link}
-      target="_blank"
       rel="noreferrer"
+      target="_blank"
     >
       <div className="relative aspect-square min-h-[var(--size)] w-auto min-w-[var(--size)] flex-1 overflow-hidden rounded-2xl mix-blend-multiply ring-blue-500/0 ring-offset-2 transition-all hover:ring-4 hover:ring-blue-500/15 group-focus:ring-blue-500/40 group-focus-visible:ring-4 xl:w-[var(--size)]">
         <div className="firefox:hidden absolute inset-0 size-full bg-blue-100" />
         <Image
           alt=""
           className="firefox:bg-blend-multiply firefox:![filter:grayscale(1)] rounded-2xl bg-black brightness-100 grayscale transition-all duration-500 group-hover:scale-[1.03] group-hover:brightness-110"
-          {...(!avatar
-            ? { src: `https://avatars.githubusercontent.com/${github}?v=4&s=180` }
-            : typeof avatar === 'string'
+          {...(avatar
+            ? typeof avatar === 'string'
               ? { src: avatar }
-              : { blurDataURL: avatar.blurDataURL, src: avatar.src })}
-          width={180}
+              : { blurDataURL: avatar.blurDataURL, src: avatar.src }
+            : { src: `https://avatars.githubusercontent.com/${github}?v=4&s=180` })}
           height={180}
+          width={180}
         />
         <div className="absolute inset-0 size-full bg-blue-500 opacity-10 transition-all group-hover:opacity-20" />
       </div>

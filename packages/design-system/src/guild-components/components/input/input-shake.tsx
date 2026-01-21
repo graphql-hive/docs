@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+
 import { Severity } from '../../types/severity';
 
 interface InputShakeProps {
@@ -27,5 +28,5 @@ export function InputShake({ severity }: InputShakeProps) {
     }
   }, [severity]);
 
-  return <div ref={ref} className="hidden" />;
+  return <div className="hidden" ref={ref} />;
 }

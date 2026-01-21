@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useSyncExternalStore } from 'react';
 
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+const useIsomorphicLayoutEffect = globalThis.window === undefined ? useEffect : useLayoutEffect;
 export function OpenAccordionItemWhenLinkedTo() {
   const hash = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
@@ -16,7 +16,7 @@ export function OpenAccordionItemWhenLinkedTo() {
         button.click();
         // in the case where user scrolls up and clicks the same link again,
         // we couldn't rely on hash change, so we just consume it here
-        window.history.replaceState({}, '', window.location.pathname);
+        globalThis.history.replaceState({}, '', globalThis.location.pathname);
       }
     }
   }, [hash]);
@@ -29,18 +29,18 @@ const subscribe = (onStoreChange: () => void) => {
     onStoreChange();
   };
 
-  window.addEventListener('hashchange', handler);
-  return () => void window.removeEventListener('hashchange', handler);
+  globalThis.addEventListener('hashchange', handler);
+  return () => void globalThis.removeEventListener('hashchange', handler);
 };
 
 const getSnapshot = () => {
-  const hash = window.location.hash;
+  const {hash} = globalThis.location;
   if (hash.startsWith('#faq')) {
     return hash.slice(1);
   }
-  return undefined;
+  return;
 };
 
 const getServerSnapshot = () => {
-  return undefined;
+  return;
 };

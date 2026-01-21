@@ -1,25 +1,26 @@
 import { Image } from '@unpic/react';
-import { Anchor } from '../guild-components/components/anchor';
+
 import { cn } from '../guild-components/cn';
+import { Anchor } from '../guild-components/components/anchor';
 
 // Type for static image imports (Vite/webpack)
-type StaticImageData = { src: string; width: number; height: number; blurDataURL?: string };
+type StaticImageData = { blurDataURL?: string; height: number; src: string; width: number; };
 
 export interface LinkCardProps extends React.HTMLAttributes<HTMLAnchorElement> {
+  alt?: string;
   description?: string;
   href: string;
-  src: string | StaticImageData;
+  src: StaticImageData | string;
   title?: string;
-  alt?: string;
 }
 
 export function LinkCard({
-  description,
-  src,
-  href,
-  title,
   alt,
   className,
+  description,
+  href,
+  src,
+  title,
   ...rest
 }: LinkCardProps) {
   const imgSrc = typeof src === 'string' ? src : src.src;
@@ -27,21 +28,21 @@ export function LinkCard({
   if (!title && !description) {
     return (
       <Anchor
-        href={href}
         className="border-beige-200 mt-6 block overflow-hidden rounded-2xl border dark:border-neutral-800"
+        href={href}
       >
-        <Image src={imgSrc} alt={alt || ''} layout="fullWidth" />
+        <Image alt={alt || ''} layout="fullWidth" src={imgSrc} />
       </Anchor>
     );
   }
 
   return (
     <a
-      href={href}
       className={cn(
         'bg-beige-100 mt-6 flex gap-2 overflow-hidden rounded-2xl dark:bg-neutral-900',
         className,
       )}
+      href={href}
       {...rest}
     >
       <span className="flex flex-col gap-1 p-6">
@@ -49,12 +50,12 @@ export function LinkCard({
         <p className="text-sm">{description}</p>
       </span>
       <Image
-        src={imgSrc}
         alt={alt || ''}
-        role="presentation"
-        width={286}
-        height={160}
         className="rounded-none"
+        height={160}
+        role="presentation"
+        src={imgSrc}
+        width={286}
       />
     </a>
   );

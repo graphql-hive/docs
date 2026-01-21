@@ -1,10 +1,11 @@
-import { Children, ComponentPropsWithoutRef, ReactElement, ReactNode } from 'react';
 import { Accordion } from '@base-ui-components/react/accordion';
-import { ChevronDownIcon } from '../ui/icons';
-import { Anchor } from '../../guild-components/components/anchor';
+import { Children, ComponentPropsWithoutRef, ReactElement, ReactNode } from 'react';
+
 import { cn } from '../../guild-components/cn';
-import { Heading } from '../../guild-components/components/heading';
+import { Anchor } from '../../guild-components/components/anchor';
 import { AttachPageFAQSchema } from '../../guild-components/components/faq/attach-page-faq-schema';
+import { Heading } from '../../guild-components/components/heading';
+import { ChevronDownIcon } from '../ui/icons';
 import FederationQuestions from './federation-questions.mdx';
 import HomeQuestions from './home-questions.mdx';
 import { OpenAccordionItemWhenLinkedTo } from './open-accordion-item-when-linked-to';
@@ -22,7 +23,7 @@ const a = (props: ComponentPropsWithoutRef<'a'>) => (
 );
 
 const h2 = (props: ComponentPropsWithoutRef<'h2'>) => (
-  <Heading as="h2" size="md" className="basis-1/2" {...props} />
+  <Heading as="h2" className="basis-1/2" size="md" {...props} />
 );
 
 const UnwrapChild = (props: { children?: ReactNode }) => props.children as unknown as ReactElement;
@@ -61,14 +62,14 @@ const AccordionItem = (props: ComponentPropsWithoutRef<'li'>) => {
 
   return (
     <Accordion.Item
-      value={question}
       className="data-[open]:pb-4 relative pb-0 focus-within:z-10"
+      value={question}
     >
       <div
-        itemScope
-        itemProp="mainEntity"
-        itemType="https://schema.org/Question"
         id={questionToId(question)}
+        itemProp="mainEntity"
+        itemScope
+        itemType="https://schema.org/Question"
       >
         <Accordion.Header>
           <Accordion.Trigger className="hive-focus hover:bg-beige-100/80 -mx-2 my-1 flex w-[calc(100%+1rem)] items-center justify-between rounded-xl bg-white px-2 py-3 text-left font-medium transition-colors duration-[.8s] md:my-2 md:py-4">
@@ -77,15 +78,15 @@ const AccordionItem = (props: ComponentPropsWithoutRef<'li'>) => {
           </Accordion.Trigger>
         </Accordion.Header>
         <Accordion.Panel
-          keepMounted
           className="overflow-hidden bg-white text-green-800 data-[closed]:hidden"
+          keepMounted
         >
           <div
-            itemScope
             itemProp="acceptedAnswer"
+            itemScope
             itemType="https://schema.org/Answer"
           >
-            <div itemProp="text" className="space-y-2">
+            <div className="space-y-2" itemProp="text">
               {answers.map((answer, i) => (
                 <p key={i}>{answer}</p>
               ))}
@@ -111,9 +112,9 @@ export function FrequentlyAskedQuestions({ className }: { className?: string }) 
           components={{
             a,
             h2,
+            li: AccordionItem,
             p: UnwrapChild,
             ul: AccordionWrapper,
-            li: AccordionItem,
           }}
         />
       </section>
@@ -142,17 +143,17 @@ const federationLI = (props: ComponentPropsWithoutRef<'li'>) => {
   if (!question) return null;
 
   return (
-    <li itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
+    <li itemProp="mainEntity" itemScope itemType="https://schema.org/Question">
       <h3 className="pb-2 text-left font-medium" itemProp="name">
         {question}
       </h3>
       <div
         className="mx-4 overflow-hidden bg-white text-green-800"
-        itemScope
         itemProp="acceptedAnswer"
+        itemScope
         itemType="https://schema.org/Answer"
       >
-        <div itemProp="text" className="max-w-[700px] space-y-2">
+        <div className="max-w-[700px] space-y-2" itemProp="text">
           {answers.map((answer, i) => (
             <p key={i}>{answer}</p>
           ))}
@@ -176,9 +177,9 @@ export function FrequentlyAskedFederationQuestions({ className }: { className?: 
           components={{
             a,
             h2,
+            li: federationLI,
             p: UnwrapChild,
             ul: federationUL,
-            li: federationLI,
           }}
         />
       </section>
@@ -198,9 +199,9 @@ export function FrequentlyAskedPartnersQuestions({ className }: { className?: st
         components={{
           a,
           h2,
+          li: AccordionItem,
           p: UnwrapChild,
           ul: AccordionWrapper,
-          li: AccordionItem,
         }}
       />
     </section>

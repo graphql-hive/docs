@@ -3,11 +3,11 @@ import { Severity } from '../../types/severity';
 import { InputShake } from './input-shake';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  severity?: Severity;
   message?: string;
+  severity?: Severity;
 }
 
-export function Input({ severity = 'neutral', message, ...props }: InputProps) {
+export function Input({ message, severity = 'neutral', ...props }: InputProps) {
   return (
     <div
       // todo: discuss colors with designers.
@@ -34,7 +34,6 @@ export function Input({ severity = 'neutral', message, ...props }: InputProps) {
         {...props}
       />
       <div
-        style={{ height: message ? '25px' : '0px' }}
         className={cn(
           'overflow-hidden rounded-b-lg pl-4 pr-1 text-sm transition-all *:animate-in *:fade-in',
           severity === 'critical' && 'bg-critical-dark/10 dark:bg-critical-bright/20',
@@ -42,6 +41,7 @@ export function Input({ severity = 'neutral', message, ...props }: InputProps) {
           severity === 'positive' && 'bg-positive-dark/10',
           severity === 'neutral' && 'bg-blue-100 dark:bg-neutral-800',
         )}
+        style={{ height: message ? '25px' : '0px' }}
       >
         {message &&
           (severity === 'critical' ? (

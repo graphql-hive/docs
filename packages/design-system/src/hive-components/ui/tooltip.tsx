@@ -2,7 +2,8 @@
 
 // Native Tooltip component to replace @radix-ui/react-tooltip
 // TODO: Migrate to Base UI Tooltip when available
-import { createContext, useContext, useState, ReactNode, HTMLAttributes, useRef, useEffect } from 'react';
+import { createContext, HTMLAttributes, ReactNode, useContext, useEffect, useRef, useState } from 'react';
+
 import { cn } from '../../guild-components/cn';
 
 interface TooltipContextValue {
@@ -32,13 +33,13 @@ function Provider({ children }: ProviderProps) {
 
 interface RootProps {
   children: ReactNode;
-  open?: boolean;
   defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
   delayDuration?: number;
+  onOpenChange?: (open: boolean) => void;
+  open?: boolean;
 }
 
-function Root({ children, open: controlledOpen, defaultOpen = false, onOpenChange, delayDuration = 700 }: RootProps) {
+function Root({ children, defaultOpen = false, delayDuration = 700, onOpenChange, open: controlledOpen }: RootProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const triggerRef = useRef<HTMLElement | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -81,11 +82,11 @@ function Root({ children, open: controlledOpen, defaultOpen = false, onOpenChang
 }
 
 interface TriggerProps extends HTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
   asChild?: boolean;
+  children: ReactNode;
 }
 
-function Trigger({ children, asChild, className, ...props }: TriggerProps) {
+function Trigger({ asChild, children, className, ...props }: TriggerProps) {
   const { setOpen, triggerRef } = useTooltipContext();
 
   const handleMouseEnter = () => setOpen(true);
@@ -97,12 +98,12 @@ function Trigger({ children, asChild, className, ...props }: TriggerProps) {
     // For asChild, we'd need to clone the element - simplified version just wraps
     return (
       <span
-        ref={triggerRef as React.RefObject<HTMLSpanElement>}
+        className={className}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        className={className}
+        ref={triggerRef as React.RefObject<HTMLSpanElement>}
       >
         {children}
       </span>
@@ -111,13 +112,13 @@ function Trigger({ children, asChild, className, ...props }: TriggerProps) {
 
   return (
     <button
-      ref={triggerRef as React.RefObject<HTMLButtonElement>}
-      type="button"
+      className={className}
+      onBlur={handleBlur}
+      onFocus={handleFocus}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-      className={className}
+      ref={triggerRef as React.RefObject<HTMLButtonElement>}
+      type="button"
       {...props}
     >
       {children}
@@ -126,11 +127,11 @@ function Trigger({ children, asChild, className, ...props }: TriggerProps) {
 }
 
 interface ContentProps extends HTMLAttributes<HTMLDivElement> {
-  children: ReactNode;
-  side?: 'top' | 'right' | 'bottom' | 'left';
-  align?: 'start' | 'center' | 'end';
-  sideOffset?: number;
+  align?: 'center' | 'end' | 'start';
   avoidCollisions?: boolean;
+  children: ReactNode;
+  side?: 'bottom' | 'left' | 'right' | 'top';
+  sideOffset?: number;
 }
 
 function Content({ children, className, side = 'top', ...props }: ContentProps) {
@@ -142,8 +143,6 @@ function Content({ children, className, side = 'top', ...props }: ContentProps) 
 
   return (
     <div
-      role="tooltip"
-      data-side={side}
       className={cn(
         'absolute z-50 animate-in fade-in-0 zoom-in-95',
         side === 'top' && 'bottom-full mb-2',
@@ -152,6 +151,8 @@ function Content({ children, className, side = 'top', ...props }: ContentProps) 
         side === 'right' && 'left-full ml-2',
         className
       )}
+      data-side={side}
+      role="tooltip"
       {...props}
     >
       {children}
@@ -160,12 +161,12 @@ function Content({ children, className, side = 'top', ...props }: ContentProps) 
 }
 
 export const Tooltip = {
+  Content,
   Provider,
   Root,
   Trigger,
-  Content,
 };
 
 // Also export individual parts for destructuring imports
-export { Provider, Root, Trigger, Content };
+export { Content, Provider, Root, Trigger };
 export default Tooltip;

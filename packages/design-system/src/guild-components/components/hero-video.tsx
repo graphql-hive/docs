@@ -1,7 +1,8 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
+import { FC, useEffect, useState } from 'react';
+
 import { IHeroVideoProps } from '../types/components';
 import { Anchor } from './anchor';
 
@@ -19,12 +20,12 @@ function getYouTubeId(url: string): string | null {
 }
 
 export const HeroVideo: FC<IHeroVideoProps> = ({
-  title,
-  description,
-  link,
-  video,
-  flipped,
   className,
+  description,
+  flipped,
+  link,
+  title,
+  video,
 }) => {
   const mounted = useMounted();
   const youtubeId = getYouTubeId(video.src);
@@ -62,19 +63,19 @@ export const HeroVideo: FC<IHeroVideoProps> = ({
         >
           {mounted && youtubeId && (
             <iframe
-              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0`}
-              title={typeof title === 'string' ? title : 'Video'}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               className="size-full border-0"
+              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0`}
+              title={typeof title === 'string' ? title : 'Video'}
             />
           )}
           {mounted && !youtubeId && (
             <video
-              src={video.src}
-              poster={video.placeholder}
-              controls
               className="size-full object-cover"
+              controls
+              poster={video.placeholder}
+              src={video.src}
             />
           )}
         </div>

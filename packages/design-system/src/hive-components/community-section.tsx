@@ -1,17 +1,9 @@
 import { Image } from '@unpic/react';
-import { GlobeIcon } from './ui/icons';
-import { CallToAction } from '../guild-components/components/call-to-action';
-import { cn } from '../guild-components/cn';
-import { DiscordIcon, GitHubIcon, TwitterIcon } from '../guild-components/components/icons';
-import { Heading } from '../guild-components/components/heading';
 
-interface StaticImageData {
-  src: string;
-  height: number;
-  width: number;
-  blurDataURL?: string;
-}
-import { MaskingScrollview } from './masking-scrollview';
+import { cn } from '../guild-components/cn';
+import { CallToAction } from '../guild-components/components/call-to-action';
+import { Heading } from '../guild-components/components/heading';
+import { DiscordIcon, GitHubIcon, TwitterIcon } from '../guild-components/components/icons';
 import Achrafash from './community-section/achrafash_.png';
 import ChimameRt from './community-section/chimame_rt.png';
 import Daniel2Color from './community-section/daniel2color.jpg';
@@ -24,13 +16,22 @@ import ReardenQL from './community-section/ReardenQL.jpg';
 import ScottBolinger from './community-section/scottboilinger.png';
 import TheWritingDev from './community-section/thewritingdev.png';
 import WhereIsCharly from './community-section/whereischarly.jpg';
+import { MaskingScrollview } from './masking-scrollview';
+import { GlobeIcon } from './ui/icons';
+
+interface StaticImageData {
+  blurDataURL?: string;
+  height: number;
+  src: string;
+  width: number;
+}
 
 export function CommunitySection({ className }: { className?: string }) {
   return (
     <section
       className={cn('bg-green-1000 rounded-3xl px-4 py-6 lg:px-8 lg:py-16 xl:p-24', className)}
     >
-      <Heading as="h2" size="sm" className="text-balance text-white lg:text-center">
+      <Heading as="h2" className="text-balance text-white lg:text-center" size="sm">
         Community-Driven Open Source
       </Heading>
       <p className="mt-4 text-white/80 lg:text-center">
@@ -38,61 +39,61 @@ export function CommunitySection({ className }: { className?: string }) {
       </p>
       <div className="my-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:my-24 lg:grid-cols-4">
         <CommunityCard
-          title="GitHub Integration"
           description="Our CLI integrates smoothly with GitHub Actions / repositories."
+          title="GitHub Integration"
         >
           <CallToAction
-            variant="primary-inverted"
             href="https://github.com/graphql-hive/platform/discussions"
-            target="_blank"
             rel="noreferrer"
+            target="_blank"
+            variant="primary-inverted"
           >
-            <GitHubIcon className="size-6" />
+            <GitHubIcon className="size-6 shrink-0" style={{ height: 24, width: 24 }} />
             GitHub Discussions
           </CallToAction>
         </CommunityCard>
         <CommunityCard
-          title="Impactful Community"
           description="Implement your own features with our help"
+          title="Impactful Community"
         >
           <CallToAction
-            variant="secondary"
             href="https://discord.com/invite/xud7bH9"
-            target="_blank"
             rel="noreferrer"
+            target="_blank"
+            variant="secondary"
           >
-            <DiscordIcon className="size-6" />
+            <DiscordIcon className="size-6 shrink-0" style={{ height: 24, width: 24 }} />
             Discord
           </CallToAction>
         </CommunityCard>
-        <CommunityCard title="Public Roadmap" description="Influence the future of Hive">
+        <CommunityCard description="Influence the future of Hive" title="Public Roadmap">
           <CallToAction
-            variant="secondary-inverted"
             href="https://the-guild.dev/graphql/hive/product-updates"
-            target="_blank"
             rel="noreferrer"
+            target="_blank"
+            variant="secondary-inverted"
           >
             Product Updates
           </CallToAction>
         </CommunityCard>
         <CommunityCard
-          title="Available for Free"
           description="Free Hobby plan that fits perfectly for most side projects."
+          title="Available for Free"
         >
-          <CallToAction variant="secondary-inverted" href="/pricing">
+          <CallToAction href="/pricing" variant="secondary-inverted">
             Check Pricing
           </CallToAction>
         </CommunityCard>
       </div>
       <MaskingScrollview
-        outerClassName="max-sm:-mx-4 max-sm:px-4 "
         className="nextra-scrollbar relative -m-4 flex flex-row gap-6 p-4 [scrollbar-width:auto] max-sm:overflow-x-auto sm:grid sm:h-[600px] sm:grid-cols-2 sm:overflow-y-auto lg:grid-cols-4"
         fade="y"
+        outerClassName="max-sm:-mx-4 max-sm:px-4 "
       >
         {Array.from({ length: 4 }).map((_, i) => (
           <div className="contents flex-col gap-6 sm:flex max-lg:[&>:last-child]:flex-1" key={i}>
             {socialPosts.map((post, j) =>
-              j % 4 === i ? <SocialPostCard post={post} key={j} /> : null,
+              j % 4 === i ? <SocialPostCard key={j} post={post} /> : null,
             )}
           </div>
         ))}
@@ -111,7 +112,7 @@ export function CommunitySection({ className }: { className?: string }) {
   );
 }
 
-function CommunityCard(props: { title: string; description: string; children: React.ReactNode }) {
+function CommunityCard(props: { children: React.ReactNode; description: string; title: string; }) {
   return (
     <div className="flex flex-col">
       <p className="font-medium text-white">{props.title}</p>
@@ -122,10 +123,10 @@ function CommunityCard(props: { title: string; description: string; children: Re
 }
 
 type SocialPost = {
-  name: string;
   avatar: string;
-  text: string;
   href: string;
+  name: string;
+  text: string;
 };
 
 const SocialPost = {
@@ -133,8 +134,8 @@ const SocialPost = {
     // https://x.com/scottbolinger/status/1623466404610719744
     const handle = href.split('/')[3];
     return {
-      href,
       avatar: typeof avatar === 'string' ? avatar : avatar.src,
+      href,
       name: `@${handle}`,
       text,
     };
@@ -241,21 +242,21 @@ https://the-guild.dev/blog/graphql-yoga-worker`,
 // one could consider storing the posts in MDX and handling it with components
 for (const post of socialPosts) {
   // wrap backticked `code` with monospace spans
-  post.text = post.text.replace(/`([^`]+)`/g, '<span class="code">$1</span>');
+  post.text = post.text.replaceAll(/`([^`]+)`/g, '<span class="code">$1</span>');
 
   // replace URLs in text with anchors
-  post.text = post.text.replace(
+  post.text = post.text.replaceAll(
     /(\s)https?:\/\/(\S+)/g,
     '$1<a href="https://$2" target="_blank" rel="noopener noreferrer">$2</a>',
   );
 
   // replace markdown links with HTML links
-  post.text = post.text.replace(
+  post.text = post.text.replaceAll(
     /\[(.*?)\]\((.*?)\)/g,
     '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
   );
   // replace @mentions with links
-  post.text = post.text.replace(
+  post.text = post.text.replaceAll(
     /([\s(.])@(\w+)/g,
     '$1<a href="https://x.com/$2" target="_blank" rel="noopener noreferrer">@$2</a>',
   );
@@ -273,28 +274,28 @@ function SocialPostCard({ post }: { post: SocialPost }) {
           <a
             className="hive-focus absolute -left-1.5 -top-1.5 z-10 rounded-full border-2 border-transparent p-[5px] text-white hover:border-white focus-visible:ring-offset-0 focus-visible:ring-offset-green-900"
             href={post.href}
-            target="_blank"
             rel="noopener noreferrer"
             style={{
               backgroundColor: isDiscordLink ? '#5865F2' : '#222530',
             }}
+            target="_blank"
           >
             {isGitHubLink ? (
-              <GitHubIcon className="size-[14px]" />
+              <GitHubIcon className="size-[14px]" style={{ height: 14, width: 14 }} />
             ) : isDiscordLink ? (
-              <DiscordIcon className="size-[14px]" />
+              <DiscordIcon className="size-[14px]" style={{ height: 14, width: 14 }} />
             ) : isTwitterLink ? (
-              <TwitterIcon className="size-[14px]" />
+              <TwitterIcon className="size-[14px]" style={{ height: 14, width: 14 }} />
             ) : (
-              <GlobeIcon className="size-[14px]" />
+              <GlobeIcon className="size-[14px]" style={{ height: 14, width: 14 }} />
             )}
           </a>
           <Image
-            src={post.avatar.toString()}
             alt={post.name}
-            width={52}
-            height={52}
             className="rounded-full opacity-85"
+            height={52}
+            src={post.avatar.toString()}
+            width={52}
           />
         </div>
         <p className="text-sm">{post.name}</p>
@@ -310,23 +311,23 @@ function SocialPostCard({ post }: { post: SocialPost }) {
 function TheGraphCombomark() {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="124"
+      fill="none"
       height="24"
       viewBox="0 0 124 24"
-      fill="none"
+      width="124"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <g clipPath="url(#clip0_1079_4499)">
         <path
-          fillRule="evenodd"
           clipRule="evenodd"
           d="M1.19482 8.33735C1.19482 12.6549 4.93615 16.1637 9.52949 16.1637C14.1228 16.1637 17.8641 12.6549 17.8641 8.33735C17.8641 4.01975 14.1228 0.51088 9.52949 0.51088C4.93615 0.51088 1.19482 4.01975 1.19482 8.33735ZM3.97304 8.33735C3.97304 5.45895 6.46418 3.1197 9.52949 3.1197C12.5948 3.1197 15.0859 5.45895 15.0859 8.33735C15.0859 11.2157 12.5948 13.5549 9.52949 13.5549C6.46418 13.5549 3.97304 11.2157 3.97304 8.33735ZM17.4566 18.3899L11.9002 23.6076C11.6317 23.8641 11.2751 23.9902 10.9186 23.9902C10.562 23.9902 10.2101 23.8641 9.93693 23.6076C9.3952 23.0989 9.3952 22.2727 9.93693 21.764L15.4934 16.5464C16.0352 16.0377 16.9149 16.0377 17.4566 16.5464C17.9984 17.0551 17.9984 17.8813 17.4566 18.3899ZM17.5863 1.81529C17.5863 0.95438 18.3364 0.25 19.2532 0.25C20.1701 0.25 20.9202 0.95438 20.9202 1.81529C20.9202 2.6762 20.1701 3.38058 19.2532 3.38058C18.3364 3.38058 17.5863 2.6762 17.5863 1.81529ZM35.6193 7.2175V17.5911H32.7996V7.2175H29.1494V4.7148H39.3082V7.2175H35.6193ZM43.4606 13.166V17.5911H40.8146V3.98935H43.4606V9.557C43.9627 8.8316 44.967 8.3238 46.2224 8.3238C48.5593 8.3238 49.9498 9.91975 49.9498 12.2774V17.5911H47.3039V12.6945C47.3039 11.3887 46.7052 10.5907 45.6043 10.5907C44.3876 10.5907 43.4606 11.425 43.4606 13.166ZM61.7694 14.635C61.1901 16.4667 59.278 17.7906 56.8254 17.7906C53.8702 17.7906 51.7652 15.7957 51.7652 13.0391C51.7652 10.3369 53.9091 8.3238 56.8446 8.3238C59.6837 8.3238 62.0207 10.2281 61.8855 13.6376H54.3532C54.4693 14.7076 55.3191 15.6325 56.9607 15.6325C57.8877 15.6325 58.6987 15.2516 59.008 14.635H61.7694ZM54.4496 12.0054H58.9883C58.6603 10.7902 57.6753 10.3369 56.7674 10.3369C55.5507 10.3369 54.7009 11.0078 54.4496 12.0054ZM81.6624 9.88345C82.28 15.179 78.9777 17.8088 74.9027 17.8088C70.7117 17.8088 67.6793 14.8889 67.6793 11.153C67.6793 7.417 70.7117 4.49715 74.8638 4.49715C77.7418 4.49715 80.4068 6.0931 81.3339 8.5233H78.1279C77.4522 7.58025 76.1774 7.03615 74.8638 7.03615C72.2372 7.03615 70.4992 8.8497 70.4992 11.153C70.4992 13.4562 72.2372 15.2697 74.9027 15.2697C77.1236 15.2697 78.4564 14.1272 78.7652 12.3499H74.5742V9.88345H81.6624ZM86.2783 13.2567V17.5911H83.632V8.5233H86.2783V9.97415C86.6063 9.0855 87.5914 8.41445 88.6729 8.41445C88.9433 8.41445 89.233 8.4326 89.5615 8.5233V11.0442C89.1558 10.9172 88.7889 10.8447 88.364 10.8447C87.1085 10.8447 86.2783 11.7695 86.2783 13.2567ZM97.6151 16.5755C97.1902 17.1559 96.1668 17.7906 94.834 17.7906C92.2654 17.7906 90.2953 15.6325 90.2953 13.0572C90.2953 10.482 92.2654 8.3238 94.834 8.3238C96.1668 8.3238 97.1902 8.95855 97.6151 9.5389V8.5233H100.261V17.5911H97.6151V16.5755ZM92.9608 13.0572C92.9608 14.4718 93.9453 15.5237 95.3942 15.5237C96.8425 15.5237 97.8276 14.4718 97.8276 13.0572C97.8276 11.6426 96.8425 10.5907 95.3942 10.5907C93.9453 10.5907 92.9608 11.6426 92.9608 13.0572ZM105.475 16.5755V21.3815H102.83V8.5233H105.475V9.5389C105.92 8.95855 106.943 8.3238 108.276 8.3238C110.845 8.3238 112.814 10.482 112.814 13.0572C112.814 15.6325 110.845 17.7906 108.276 17.7906C106.943 17.7906 105.92 17.1559 105.475 16.5755ZM105.263 13.0572C105.263 14.4718 106.248 15.5237 107.697 15.5237C109.145 15.5237 110.13 14.4718 110.13 13.0572C110.13 11.6426 109.145 10.5907 107.697 10.5907C106.248 10.5907 105.263 11.6426 105.263 13.0572ZM117.392 13.166V17.5911H114.746V3.98935H117.392V9.557C117.894 8.8316 118.898 8.3238 120.154 8.3238C122.49 8.3238 123.881 9.91975 123.881 12.2774V17.5911H121.235V12.6945C121.235 11.3887 120.636 10.5907 119.536 10.5907C118.319 10.5907 117.392 11.425 117.392 13.166Z"
           fill="#CAE4DE"
+          fillRule="evenodd"
         />
       </g>
       <defs>
         <clipPath id="clip0_1079_4499">
-          <rect width="123" height="24" fill="white" transform="translate(0.928589)" />
+          <rect fill="white" height="24" transform="translate(0.928589)" width="123" />
         </clipPath>
       </defs>
     </svg>
@@ -335,7 +336,7 @@ function TheGraphCombomark() {
 
 function ParseCombomark() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="67" height="24" viewBox="0 0 67 24" fill="none">
+    <svg fill="none" height="24" viewBox="0 0 67 24" width="67" xmlns="http://www.w3.org/2000/svg">
       <g clipPath="url(#clip0_1079_4501)">
         <path
           d="M65.6225 17.18V15.6C64.8544 16.02 64.0064 16.19 63.2782 16.19C61.7918 16.19 60.7643 15.44 60.6944 13.73H65.9717C66.0415 13.27 66.0615 12.79 66.0615 12.41C66.0615 10.5 64.9442 9.05 62.949 9.03C60.5149 9.01 58.9885 10.79 58.9885 13.53V13.57C58.9885 16.16 60.6545 17.69 63.1286 17.69C63.9566 17.68 64.8943 17.53 65.6225 17.18ZM62.8891 10.4C63.9566 10.4 64.4853 11.15 64.4853 12.31V12.4H60.8042C61.0436 11.1 61.7718 10.4 62.8891 10.4ZM54.8286 13.95L55.0081 14.02C56.2152 14.46 56.4946 14.72 56.4946 15.27C56.4946 15.91 56.0157 16.26 55.0081 16.26C54.2001 16.26 53.2524 16 52.2947 15.54V17.2C53.1027 17.51 54.0904 17.68 54.9383 17.68C57.0632 17.68 58.1506 16.67 58.1506 15.24C58.1506 13.99 57.562 13.22 55.8062 12.59L55.6266 12.52C54.2899 12.04 54.0305 11.77 54.0305 11.29C54.0305 10.76 54.4694 10.37 55.4271 10.37C56.1753 10.37 56.9335 10.63 57.7515 11.01V9.46C57.0532 9.2 56.305 9.02 55.477 9.02C53.6015 9.02 52.4244 10.05 52.4244 11.5C52.4244 12.66 53.013 13.29 54.8286 13.95ZM48.5238 11.87C49.0525 11.06 49.8107 10.62 50.7384 10.62C51.0477 10.62 51.3969 10.66 51.6562 10.75V9.26C51.3969 9.17 51.0676 9.11 50.7384 9.11C49.7708 9.11 49.0525 9.53 48.3941 10.38L48.3143 9.21H46.8877V17.52H48.5038V11.87H48.5238ZM43.9149 17.53H45.3415V11.93C45.3415 9.96 44.3538 9.01 42.2988 9.01C41.3112 9.01 40.2837 9.32 39.5155 9.73V11.33C40.4333 10.78 41.4209 10.45 42.209 10.45C43.3064 10.45 43.7453 10.93 43.7453 11.81V12.47C41.4907 12.56 40.134 12.93 39.4357 13.63C38.9369 14.11 38.6875 14.79 38.6875 15.47C38.6875 16.9 39.735 17.71 41.1615 17.71C42.0793 17.71 42.9971 17.34 43.8052 16.57L43.9149 17.53ZM41.5007 16.34C40.8024 16.34 40.3236 15.97 40.3236 15.35C40.3236 14.38 41.1316 13.84 43.7353 13.75V15.2C43.1268 15.88 42.3986 16.34 41.5007 16.34ZM32.2231 12.44V8.16H34.348C35.7945 8.16 36.6225 8.84 36.6225 10.27V10.29C36.6225 11.74 35.7945 12.42 34.348 12.42H32.2231V12.44ZM30.5172 17.53H32.2231V13.97H34.2183C36.7821 13.97 38.2885 12.61 38.2885 10.31V10.29C38.2885 8.01 36.7522 6.65 34.2183 6.65H30.5172V17.53ZM14.8949 14.92H9.0091C8.15117 14.92 7.65237 15.45 7.65237 16.21C7.65237 16.89 8.11126 17.37 8.76967 17.37C9.53782 17.37 9.97676 16.84 10.0167 16.08H11.7226C11.6328 17.94 10.4756 18.93 8.74972 18.93C7.13362 18.93 5.92653 17.83 5.92653 16.19C5.92653 14.48 7.19348 13.29 9.09888 13.29H14.9248C16.8901 13.29 18.3865 11.84 18.3865 9.89C18.3865 7.92 17.0497 6.53 15.1443 6.53C13.2588 6.53 11.7325 7.91 11.7325 10.46V12.13H10.0067V10.46C10.0067 7.08 12.1715 4.89 15.1742 4.89C18.0373 4.89 20.1223 6.95 20.1223 9.87C20.1422 12.79 17.9076 14.92 14.8949 14.92ZM12.8997 24C19.5936 24 24.8708 18.69 24.8708 12C24.8708 5.31 19.5936 0 12.8997 0C6.20586 0 0.928589 5.33 0.928589 12C0.928589 18.69 6.20586 24 12.8997 24Z"
@@ -344,7 +345,7 @@ function ParseCombomark() {
       </g>
       <defs>
         <clipPath id="clip0_1079_4501">
-          <rect width="65.1429" height="24" fill="white" transform="translate(0.928589)" />
+          <rect fill="white" height="24" transform="translate(0.928589)" width="65.1429" />
         </clipPath>
       </defs>
     </svg>
@@ -354,11 +355,11 @@ function ParseCombomark() {
 function SequenceCombomark() {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="138"
+      fill="none"
       height="24"
       viewBox="0 0 138 24"
-      fill="none"
+      width="138"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <g clipPath="url(#clip0_1079_4517)">
         <path
@@ -400,7 +401,7 @@ function SequenceCombomark() {
       </g>
       <defs>
         <clipPath id="clip0_1079_4517">
-          <rect width="138" height="24" fill="white" />
+          <rect fill="white" height="24" width="138" />
         </clipPath>
       </defs>
     </svg>
@@ -409,7 +410,7 @@ function SequenceCombomark() {
 
 function DaletCombomark() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="72" height="24" viewBox="0 0 72 24" fill="none">
+    <svg fill="none" height="24" viewBox="0 0 72 24" width="72" xmlns="http://www.w3.org/2000/svg">
       <g clipPath="url(#clip0_1079_4527)">
         <path
           d="M44.6088 17.5934C43.6324 19.0263 42.1719 19.7427 40.2274 19.7427C39.4188 19.7696 38.6141 19.6192 37.87 19.3024C37.126 18.9855 36.4606 18.5098 35.9209 17.9087C34.8327 16.6793 34.2541 15.0831 34.3023 13.444C34.2534 11.8035 34.8321 10.2058 35.9209 8.97511C36.4821 8.36536 37.1703 7.88556 37.9373 7.56943C38.7043 7.2533 39.5314 7.10851 40.3606 7.14523C41.1974 7.11049 42.0291 7.29204 42.7749 7.67227C43.5207 8.0525 44.1553 8.6185 44.6171 9.31536V7.34025H46.4563V19.5477H44.6171L44.6088 17.5934ZM40.4729 18.083C41.0654 18.1095 41.6562 17.9998 42.1994 17.7623C42.7427 17.5249 43.224 17.1661 43.606 16.7137C44.3619 15.7948 44.7541 14.6316 44.7087 13.444C44.754 12.2551 44.3618 11.0907 43.606 10.1701C43.2231 9.71893 42.7416 9.36127 42.1985 9.12462C41.6553 8.88796 41.065 8.77862 40.4729 8.80498C39.8743 8.78519 39.2787 8.89727 38.7285 9.13322C38.1784 9.36918 37.6871 9.72322 37.2898 10.1701C36.5077 11.0785 36.0976 12.2475 36.1414 13.444C36.0975 14.6392 36.5076 15.807 37.2898 16.7137C37.6864 17.1618 38.1774 17.5169 38.7277 17.7537C39.2779 17.9904 39.8739 18.1028 40.4729 18.083Z"
@@ -439,7 +440,7 @@ function DaletCombomark() {
       </g>
       <defs>
         <clipPath id="clip0_1079_4527">
-          <rect width="72" height="24" fill="white" />
+          <rect fill="white" height="24" width="72" />
         </clipPath>
       </defs>
     </svg>
@@ -449,23 +450,23 @@ function DaletCombomark() {
 function OutreachCombomark() {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="130"
+      fill="none"
       height="24"
       viewBox="0 0 130 24"
-      fill="none"
+      width="130"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <g clipPath="url(#clip0_1079_4503)">
         <mask
+          height="24"
           id="mask0_1079_4503"
+          maskUnits="userSpaceOnUse"
           style={{
             maskType: 'luminance',
           }}
-          maskUnits="userSpaceOnUse"
+          width="130"
           x="0"
           y="0"
-          width="130"
-          height="24"
         >
           <path d="M129.379 0.00439453H0.619019V23.987H129.379V0.00439453Z" fill="white" />
         </mask>
@@ -510,7 +511,7 @@ function OutreachCombomark() {
       </g>
       <defs>
         <clipPath id="clip0_1079_4503">
-          <rect width="128.762" height="24" fill="white" transform="translate(0.619019)" />
+          <rect fill="white" height="24" transform="translate(0.619019)" width="128.762" />
         </clipPath>
       </defs>
     </svg>

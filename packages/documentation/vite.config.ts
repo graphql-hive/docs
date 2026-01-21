@@ -6,6 +6,7 @@ import mdx from "fumadocs-mdx/vite";
 import { nitro } from "nitro/vite";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
+import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
@@ -14,6 +15,28 @@ export default defineConfig({
     nitro({ preset: "vercel" }),
     mdx(await import("./source.config")),
     tailwindcss(),
+    svgr({
+      include: "**/*.svg?svgr",
+      svgrOptions: {
+        svgoConfig: {
+          plugins: [
+            {
+              name: "preset-default",
+              params: {
+                overrides: {
+                  minifyStyles: false,
+                  removeViewBox: false,
+                  removeTitle: false,
+                },
+              },
+            },
+            "removeXMLNS",
+            "removeXlink",
+            "prefixIds",
+          ],
+        },
+      },
+    }),
     tsConfigPaths({
       projects: ["./tsconfig.json"],
     }),

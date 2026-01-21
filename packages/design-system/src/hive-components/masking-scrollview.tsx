@@ -11,16 +11,16 @@ function useMounted() {
 }
 
 export interface MaskingScrollviewProps {
-  fade: 'x' | 'y';
   children: React.ReactNode;
   className?: string;
+  fade: 'x' | 'y';
   outerClassName?: string;
 }
 
 export function MaskingScrollview({
-  fade,
   children,
   className,
+  fade,
   outerClassName,
   ...rest
 }: MaskingScrollviewProps) {
@@ -48,14 +48,14 @@ export function MaskingScrollview({
                     ? 'none'
                     : `linear-gradient(to bottom, transparent, black 128px 25%, black 50%, transparent 50%),
                linear-gradient(to top, transparent, black 128px 25%, black 50%, transparent 50%)`,
-              maskSize:
-                fade === 'x'
-                  ? 'calc(100% + 128px) 100%, calc(100% + 128px) 100%'
-                  : '100% calc(100% + 128px), 100% calc(100% + 128px)',
               maskPosition:
                 fade === 'x'
                   ? `${scrolledSides.right ? '0px' : '-128px'} 0%, ${scrolledSides.left ? '0px' : '-128px'} 0%`
                   : `0% ${scrolledSides.top ? '-128px' : '0px'}, 0% ${scrolledSides.bottom ? '0px' : '-128px'}`,
+              maskSize:
+                fade === 'x'
+                  ? 'calc(100% + 128px) 100%, calc(100% + 128px) 100%'
+                  : '100% calc(100% + 128px), 100% calc(100% + 128px)',
               transition: shouldTransition
                 ? 'mask-position 0.5s ease, -webkit-mask-position 0.5s ease'
                 : '',
@@ -63,29 +63,29 @@ export function MaskingScrollview({
           : {}
       }
     >
-      <div ref={scrollviewRef} className={className}>
+      <div className={className} ref={scrollviewRef}>
         {children}
       </div>
     </div>
   );
 }
 
-const useClientsideEffect = typeof window === 'undefined' ? () => {} : useLayoutEffect;
+const useClientsideEffect = globalThis.window === undefined ? () => {} : useLayoutEffect;
 
 export function useScrolledSides(
   scrollviewRef: React.MutableRefObject<HTMLElement | null>,
   options: {
-    thresholdPx?: number;
     disabled?: boolean;
+    thresholdPx?: number;
   } = {},
 ) {
-  const { thresholdPx = 8, disabled = false } = options;
+  const { disabled = false, thresholdPx = 8 } = options;
 
   const [scrolledSides, setScrolledSides] = useState({
-    top: false,
-    right: false,
     bottom: false,
     left: false,
+    right: false,
+    top: false,
   });
   const [transitionsAllowed, allowTransitions] = useReducer(() => true, false);
 
@@ -99,13 +99,13 @@ export function useScrolledSides(
 
       if (!scrollview) return;
 
-      const { scrollWidth, clientWidth, scrollLeft, scrollTop, scrollHeight, clientHeight } =
+      const { clientHeight, clientWidth, scrollHeight, scrollLeft, scrollTop, scrollWidth } =
         scrollview;
       const newState = {
-        top: scrollTop <= thresholdPx,
-        right: scrollLeft >= scrollWidth - clientWidth - thresholdPx,
         bottom: scrollTop >= scrollHeight - clientHeight - thresholdPx,
         left: scrollLeft <= thresholdPx,
+        right: scrollLeft >= scrollWidth - clientWidth - thresholdPx,
+        top: scrollTop <= thresholdPx,
       };
 
       if (JSON.stringify(scrolledSides) !== JSON.stringify(newState)) {
@@ -118,11 +118,11 @@ export function useScrolledSides(
       const scrollview = scrollviewRef.current;
 
       if (scrollview) {
-        if (timeout != null) window.clearTimeout(timeout);
+        if (timeout != null) globalThis.clearTimeout(timeout);
 
         scrollview.addEventListener('scroll', handleScroll, { passive: true });
       } else {
-        timeout = window.setTimeout(() => addListener(), 1000);
+        timeout = globalThis.setTimeout(() => addListener(), 1000);
       }
     };
 
@@ -130,7 +130,7 @@ export function useScrolledSides(
 
     return () => {
       const scrollview = scrollviewRef.current;
-      if (timeout != null) window.clearTimeout(timeout);
+      if (timeout != null) globalThis.clearTimeout(timeout);
       if (scrollview) scrollview.removeEventListener('scroll', handleScroll);
     };
   }, [scrolledSides, scrollviewRef, thresholdPx, transitionsAllowed, disabled]);
@@ -146,10 +146,10 @@ export function useScrolledSides(
     const childHeight = child?.clientHeight || scrollview.clientHeight;
 
     const newState = {
-      top: scrollview.scrollTop <= thresholdPx,
-      right: Math.abs(scrollview.clientWidth - childWidth) < thresholdPx,
       bottom: Math.abs(scrollview.clientHeight - childHeight) < thresholdPx,
       left: scrollview.scrollLeft <= thresholdPx,
+      right: Math.abs(scrollview.clientWidth - childWidth) < thresholdPx,
+      top: scrollview.scrollTop <= thresholdPx,
     };
 
     if (JSON.stringify(scrolledSides) !== JSON.stringify(newState)) {
