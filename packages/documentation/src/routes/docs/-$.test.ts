@@ -1,12 +1,42 @@
 /**
  * Integration tests for AI/LLM features.
  *
- * Run with: bun test src/routes/docs/-llm.test.ts
- * Requires dev server running: bun run dev
+ * Run with: bun test src/routes/docs/-$.test.ts
  */
-import { describe, expect, test } from "bun:test";
+import { type Subprocess, spawn } from "bun";
+import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 
-const BASE_URL = process.env["TEST_URL"] || "http://localhost:1440";
+const TEST_PORT = 14401;
+const BASE_URL = process.env["TEST_URL"] || `http://localhost:${TEST_PORT}`;
+
+let devServer: Subprocess | null = null;
+
+async function waitForServer(maxAttempts = 30): Promise<void> {
+  for (let i = 0; i < maxAttempts; i++) {
+    try {
+      const res = await fetch(BASE_URL, { signal: AbortSignal.timeout(1000) });
+      if (res.ok || res.status < 500) return;
+    } catch {}
+    await new Promise((r) => setTimeout(r, 1000));
+  }
+  throw new Error(`Server not ready after ${maxAttempts}s`);
+}
+
+beforeAll(async () => {
+  if (process.env["TEST_URL"]) return; // user-provided server
+
+  devServer = spawn(["bun", "--bun", "vite", "dev", "--port", String(TEST_PORT)], {
+    cwd: import.meta.dir + "/../../..",
+    stdout: "ignore",
+    stderr: "ignore",
+  });
+
+  await waitForServer();
+}, 60_000);
+
+afterAll(() => {
+  devServer?.kill();
+});
 
 describe("llms.txt", () => {
   test("returns index of docs", async () => {
