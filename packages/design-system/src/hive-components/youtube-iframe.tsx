@@ -1,4 +1,4 @@
-import { cn } from '../guild-components/cn';
+import { cn } from '../cn';
 
 export function YoutubeIframe({
   className,

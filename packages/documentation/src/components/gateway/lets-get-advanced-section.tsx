@@ -1,4 +1,4 @@
-import { CallToAction, cn, Heading, InfoCard, TargetIcon } from '@hive/design-system/guild-components';
+import { CallToAction, cn, Heading, InfoCard, TargetIcon } from '@hive/design-system';
 
 export function LetsGetAdvancedSection({ className, ...rest }: React.HTMLAttributes<HTMLElement>) {
   return (

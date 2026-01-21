@@ -1,6 +1,7 @@
 import { PageActions } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
 import { source } from "@/lib/source";
+import { Navigation, Footer } from "@/components/navigation";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { isMarkdownPreferred } from "fumadocs-core/negotiation";
@@ -120,12 +121,16 @@ function Page() {
   const data = useFumadocsLoader(Route.useLoaderData());
 
   return (
-    <DocsLayout {...baseOptions()} tree={data.pageTree}>
-      {clientLoader.useContent(data.path, {
-        className: "",
-        githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,
-        markdownUrl: `${data.url}.mdx`,
-      })}
-    </DocsLayout>
+    <div className="flex min-h-screen flex-col">
+      <Navigation />
+      <DocsLayout {...baseOptions()} tree={data.pageTree}>
+        {clientLoader.useContent(data.path, {
+          className: "",
+          githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,
+          markdownUrl: `${data.url}.mdx`,
+        })}
+      </DocsLayout>
+      <Footer />
+    </div>
   );
 }

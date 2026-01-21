@@ -1,7 +1,7 @@
 import { Image } from '@unpic/react';
 
-import { cn } from '../guild-components/cn';
-import { Anchor } from '../guild-components/components/anchor';
+import { Anchor } from '../anchor';
+import { cn } from '../cn';
 
 // Type for static image imports (Vite/webpack)
 type StaticImageData = { blurDataURL?: string; height: number; src: string; width: number; };

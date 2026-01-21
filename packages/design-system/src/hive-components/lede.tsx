@@ -1,4 +1,4 @@
-import { cn } from '../guild-components/cn';
+import { cn } from '../cn';
 
 export interface LedeProps extends React.HTMLAttributes<HTMLParagraphElement> {}
 

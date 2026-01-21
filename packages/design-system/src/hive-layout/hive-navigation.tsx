@@ -12,10 +12,11 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 
-import { cn } from '../guild-components/cn';
-import { Anchor } from '../guild-components/components/anchor';
-import { CallToAction } from '../guild-components/components/call-to-action';
-import { __LANDING_WIDTHS_ID } from '../guild-components/components/hive-layout-config';
+import { Anchor } from '../anchor';
+import { CallToAction } from '../call-to-action';
+import { cn } from '../cn';
+import { siteOrigin } from '../constants';
+import { __LANDING_WIDTHS_ID } from '../hive-layout-config';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -23,7 +24,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from '../guild-components/components/hive-navigation/navigation-menu';
+} from '../hive-navigation/navigation-menu';
 import {
   AccountBox,
   AppsIcon,
@@ -33,12 +34,11 @@ import {
   HiveIcon,
   HonourIcon,
   ShieldFlashIcon,
-} from '../guild-components/components/icons';
-import { siteOrigin } from '../guild-components/constants';
-import { GraphQLFoundationLogo, GuildLogo, HiveCombinationMark, TheGuild } from '../guild-components/logos';
-import { PRODUCTS, SIX_HIGHLIGHTED_PRODUCTS } from '../guild-components/products';
+} from '../icons';
+import { GraphQLFoundationLogo, GuildLogo, HiveCombinationMark, TheGuild } from '../logos';
+import { PRODUCTS, SIX_HIGHLIGHTED_PRODUCTS } from '../products';
 
-export * from '../guild-components/components/hive-navigation/graphql-conf-card';
+export * from '../hive-navigation/graphql-conf-card';
 
 const ENTERPRISE_MENU_HIDDEN = true;
 

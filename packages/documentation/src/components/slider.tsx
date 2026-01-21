@@ -2,7 +2,7 @@
 
 import { InputHTMLAttributes } from 'react';
 
-import { cn } from '@hive/design-system/guild-components/cn';
+import { cn } from '@hive/design-system/cn';
 
 const svgHref = new URL('code-icon-white.svg', import.meta.url).toString();
 

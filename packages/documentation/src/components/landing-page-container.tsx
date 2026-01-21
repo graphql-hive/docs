@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
-import { cn } from '@hive/design-system/guild-components/cn';
-import { CookiesConsent } from '@hive/design-system/guild-components/components/cookies-consent';
+import { cn } from '@hive/design-system/cn';
+import { CookiesConsent } from '@hive/design-system/cookies-consent';
 
 /**
  * Adds styles and cookie consent banner.

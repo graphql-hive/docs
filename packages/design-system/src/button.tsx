@@ -1,20 +1,30 @@
-"use client";
+import clsx from 'clsx';
+import { ReactElement } from 'react';
 
-import { ReactNode } from "react";
+import { Anchor, AnchorProps } from './anchor';
 
-interface ButtonProps {
-  appName: string;
-  children: ReactNode;
-  className?: string;
+export interface ButtonProps extends AnchorProps {
+  variant?: 'primary' | 'secondary';
 }
 
-export const Button = ({ appName, children, className }: ButtonProps) => {
+export const Button = ({
+  children,
+  className,
+  variant = 'primary',
+  ...props
+}: ButtonProps): ReactElement => {
   return (
-    <button
-      className={className}
-      onClick={() => alert(`Hello from your ${appName} app!`)}
+    <Anchor
+      className={clsx(
+        'flex-none rounded-md p-3 text-center text-xs font-medium hover:shadow-lg md:px-5',
+        variant === 'primary'
+          ? 'bg-cyan-400 text-white hover:shadow-cyan-400/40'
+          : 'bg-white text-black hover:shadow-white/40',
+        className,
+      )}
+      {...props}
     >
       {children}
-    </button>
+    </Anchor>
   );
 };

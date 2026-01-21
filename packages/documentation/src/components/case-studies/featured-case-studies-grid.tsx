@@ -1,4 +1,4 @@
-import { cn, Heading } from '@hive/design-system/guild-components';
+import { cn, Heading } from '@hive/design-system';
 import { CaseStudiesArchDecoration, CaseStudiesGradientDefs } from './case-studies-arch-decoration';
 import { CaseStudyCard } from './case-study-card';
 import { CaseStudyFile } from './case-study-types';

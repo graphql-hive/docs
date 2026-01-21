@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from 'react';
 
-import { cn } from '../guild-components/cn';
+import { cn } from '../cn';
 
 /**
  * This is used in MDX blog posts.

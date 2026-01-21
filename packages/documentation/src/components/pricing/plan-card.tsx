@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
 
-import { cn } from '@hive/design-system/guild-components/cn';
+import { cn } from '@hive/design-system/cn';
 import { ChevronDownIcon, Cross2Icon } from '../ui/icons';
 
 export interface PlanCardProps extends React.HTMLAttributes<HTMLDivElement> {

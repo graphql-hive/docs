@@ -1,4 +1,4 @@
-import { DecorationIsolation, Heading, ProductCard, PRODUCTS } from '@hive/design-system/guild-components';
+import { DecorationIsolation, Heading, ProductCard, PRODUCTS } from '@hive/design-system';
 import EcosystemPageContent from './content.mdx';
 import { EcosystemPageNavH2 } from './ecosystem-page-nav-h2';
 

@@ -1,11 +1,11 @@
 import { ReactElement, ReactNode } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { Anchor } from '@hive/design-system/guild-components/components/anchor';
-import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
-import { ContactButton } from '@hive/design-system/guild-components/components/contact-us';
-import { Heading } from '@hive/design-system/guild-components/components/heading';
-import { InfoCard } from '@hive/design-system/guild-components/components/info-card';
-import { cn } from '@hive/design-system/guild-components/cn';
+import { Anchor } from '@hive/design-system/anchor';
+import { CallToAction } from '@hive/design-system/call-to-action';
+import { ContactButton } from '@hive/design-system/contact-us';
+import { Heading } from '@hive/design-system/heading';
+import { InfoCard } from '@hive/design-system/info-card';
+import { cn } from '@hive/design-system/cn';
 import { ArrowIcon } from '../../../components/arrow-icon';
 import { FrequentlyAskedFederationQuestions } from '../../../components/frequently-asked-questions';
 import { Hero, HeroLinks } from '../../../components/hero';

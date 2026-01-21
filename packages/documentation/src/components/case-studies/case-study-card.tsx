@@ -1,4 +1,4 @@
-import { Anchor, ArrowIcon, cn } from '@hive/design-system/guild-components';
+import { Anchor, ArrowIcon, cn } from '@hive/design-system';
 
 export interface CaseStudyCardProps extends React.HTMLAttributes<HTMLAnchorElement> {
   href: string;

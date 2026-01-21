@@ -2,11 +2,11 @@
 
 import { ReactNode, useState } from 'react';
 
-import { cn } from '@hive/design-system/guild-components/cn';
-import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
-import { ComparisonTable as Table } from '@hive/design-system/guild-components/components/comparison-table';
-import { Heading } from '@hive/design-system/guild-components/components/heading';
-import { TextLink } from '@hive/design-system/guild-components/components/text-link';
+import { cn } from '@hive/design-system/cn';
+import { CallToAction } from '@hive/design-system/call-to-action';
+import { ComparisonTable as Table } from '@hive/design-system/comparison-table';
+import { Heading } from '@hive/design-system/heading';
+import { TextLink } from '@hive/design-system/text-link';
 import { GatewayIcon } from '../icons';
 import { NestedSticky } from '../nested-sticky';
 import {

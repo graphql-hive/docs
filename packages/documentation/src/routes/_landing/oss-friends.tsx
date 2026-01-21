@@ -7,9 +7,9 @@ import {
   DecorationIsolation,
   HighlightDecoration,
   LargeHiveIconDecoration,
-} from '@hive/design-system/guild-components/components/decorations';
-import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
-import { Heading } from '@hive/design-system/guild-components/components/heading';
+} from '@hive/design-system/decorations';
+import { CallToAction } from '@hive/design-system/call-to-action';
+import { Heading } from '@hive/design-system/heading';
 import { LandingPageContainer } from '../../components/landing-page-container';
 
 export const Route = createFileRoute('/_landing/oss-friends')({

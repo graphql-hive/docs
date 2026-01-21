@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
-import { DecorationIsolation } from '@hive/design-system/guild-components/components/decorations';
-import { ExploreMainProductCards } from '@hive/design-system/guild-components/components/explore-main-product-cards';
-import { FrequentlyAskedQuestions } from '@hive/design-system/guild-components/components/faq';
-import { HiveGatewayIcon } from '@hive/design-system/guild-components/components/icons';
-import { Hero, HeroLogo } from '@hive/design-system/guild-components/components/hero';
+import { CallToAction } from '@hive/design-system/call-to-action';
+import { DecorationIsolation } from '@hive/design-system/decorations';
+import { ExploreMainProductCards } from '@hive/design-system/explore-main-product-cards';
+import { FrequentlyAskedQuestions } from '@hive/design-system/faq';
+import { HiveGatewayIcon } from '@hive/design-system/icons';
+import { Hero, HeroLogo } from '@hive/design-system/hero';
 import { ErrorBoundary } from '../../components/error-boundary';
 import { CloudNativeSection } from '../../components/gateway/cloud-native-section';
 import { FederationCompatibleBenchmarksSection } from '../../components/gateway/federation-compatible-benchmarks';

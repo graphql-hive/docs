@@ -1,6 +1,6 @@
 import { Image } from '@unpic/react';
 
-import { cn } from '../guild-components/cn';
+import { cn } from '../cn';
 
 export interface SmallAvatarProps {
   alt?: string;

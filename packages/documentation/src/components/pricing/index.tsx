@@ -2,12 +2,12 @@
 
 import { HTMLAttributes, ReactElement, ReactNode, useRef, useState } from 'react';
 
-import { cn } from '@hive/design-system/guild-components/cn';
-import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
-import { ContactButton, ContactTextLink } from '@hive/design-system/guild-components/components/contact-us';
-import { Heading } from '@hive/design-system/guild-components/components/heading';
-import { ShieldFlashIcon } from '@hive/design-system/guild-components/components/icons';
-import { TextLink } from '@hive/design-system/guild-components/components/text-link';
+import { cn } from '@hive/design-system/cn';
+import { CallToAction } from '@hive/design-system/call-to-action';
+import { ContactButton, ContactTextLink } from '@hive/design-system/contact-us';
+import { Heading } from '@hive/design-system/heading';
+import { ShieldFlashIcon } from '@hive/design-system/icons';
+import { TextLink } from '@hive/design-system/text-link';
 import { Tooltip } from '../tooltip';
 import {
   AvailabilityIcon,

@@ -2,10 +2,10 @@
 
 import { Suspense, use } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
-import { ContactButton } from '@hive/design-system/guild-components/components/contact-us';
-import { DecorationIsolation } from '@hive/design-system/guild-components/components/decorations';
-import { Heading } from '@hive/design-system/guild-components/components/heading';
+import { CallToAction } from '@hive/design-system/call-to-action';
+import { ContactButton } from '@hive/design-system/contact-us';
+import { DecorationIsolation } from '@hive/design-system/decorations';
+import { Heading } from '@hive/design-system/heading';
 import {
   CaseStudiesArchDecoration,
   CaseStudiesGradientDefs,

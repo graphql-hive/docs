@@ -2,8 +2,8 @@
 
 import { useRef, useState } from 'react';
 
-import { cn } from '@hive/design-system/guild-components/cn';
-import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
+import { cn } from '@hive/design-system/cn';
+import { CallToAction } from '@hive/design-system/call-to-action';
 import { BookIcon } from '../book-icon';
 import { Slider } from '../slider';
 

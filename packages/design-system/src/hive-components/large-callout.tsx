@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { cn } from '../guild-components/cn';
+import { cn } from '../cn';
 
 export interface LargeCalloutProps extends React.HTMLAttributes<HTMLDivElement> {
   cta?: ReactNode;

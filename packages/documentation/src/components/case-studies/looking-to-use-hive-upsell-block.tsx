@@ -1,4 +1,4 @@
-import { cn, ContactButton, DecorationIsolation, Heading } from '@hive/design-system/guild-components';
+import { cn, ContactButton, DecorationIsolation, Heading } from '@hive/design-system';
 
 export function LookingToUseHiveUpsellBlock({ className }: { className?: string }) {
   return (

@@ -1,4 +1,4 @@
-import { Anchor, cn, MarqueeRows } from '@hive/design-system/guild-components';
+import { Anchor, cn, MarqueeRows } from '@hive/design-system';
 
 // todo: a test that checks if none of the links here are 404
 const terms = new Map<string[], string /* href */>([

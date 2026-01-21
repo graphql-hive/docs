@@ -2,7 +2,7 @@
 
 import { ReactElement, ReactNode } from 'react';
 
-import { cn } from '../guild-components/cn';
+import { cn } from '../cn';
 
 export interface HiveLayoutProps {
   children: ReactNode;

@@ -4,9 +4,9 @@ import { Tabs } from '@base-ui-components/react/tabs';
 import { Image } from '@unpic/react';
 import React, { Fragment, useRef } from 'react';
 
-import { cn } from '@hive/design-system/guild-components/cn';
-import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
-import { Heading } from '@hive/design-system/guild-components/components/heading';
+import { cn } from '@hive/design-system/cn';
+import { CallToAction } from '@hive/design-system/call-to-action';
+import { Heading } from '@hive/design-system/heading';
 import { ArrowIcon } from '../arrow-icon';
 import {
   KarrotLogo,

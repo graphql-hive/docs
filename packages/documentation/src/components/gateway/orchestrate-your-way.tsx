@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Anchor, Heading, InfoCard } from '@hive/design-system/guild-components';
+import { Anchor, Heading, InfoCard } from '@hive/design-system';
 
 export function OrchestrateYourWay({ className, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
   return (

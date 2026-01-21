@@ -2,7 +2,7 @@
 import { FC, HTMLAttributes, ReactNode } from 'react';
 
 // Re-export local Tabs
-export { Tabs } from '../guild-components/components/tabs';
+export { Tabs } from '../tabs';
 
 // Pre component stub
 export interface PreProps extends HTMLAttributes<HTMLPreElement> {

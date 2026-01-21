@@ -2,7 +2,7 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 @import 'fumadocs-twoslash/twoslash.css';
-@import '@hive/design-system/guild-components/style.css';
+@import '@hive/design-system/style.css';
 
 /* PP Neue Montreal font family */
 @font-face {

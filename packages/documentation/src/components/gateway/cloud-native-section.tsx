@@ -1,4 +1,4 @@
-import { cn, DecorationIsolation, Heading } from '@hive/design-system/guild-components';
+import { cn, DecorationIsolation, Heading } from '@hive/design-system';
 
 export function CloudNativeSection({ className, ...rest }: React.HTMLAttributes<HTMLElement>) {
   return (

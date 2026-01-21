@@ -1,5 +1,5 @@
 import { FeatureTab, FeatureTabs, Highlight } from '../feature-tabs';
-import { cn } from '@hive/design-system/guild-components';
+import { cn } from '@hive/design-system';
 import { GatewayMarqueeRows } from './gateway-marquee-rows';
 
 // TODO: the long values here will be bad for mobiles

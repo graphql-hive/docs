@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { CodeIcon, LockOpen2Icon, RocketIcon } from '@radix-ui/react-icons';
-import { Anchor } from '@hive/design-system/guild-components/components/anchor';
-import { cn } from '@hive/design-system/guild-components/cn';
-import { ContactButton } from '@hive/design-system/guild-components/components/contact-us';
-import { GetYourAPIGameRightSection } from '@hive/design-system/guild-components/components/get-your-api-game-right-section';
-import { Heading } from '@hive/design-system/guild-components/components/heading';
-import { InfoCard } from '@hive/design-system/guild-components/components/info-card';
+import { Anchor } from '@hive/design-system/anchor';
+import { cn } from '@hive/design-system/cn';
+import { ContactButton } from '@hive/design-system/contact-us';
+import { GetYourAPIGameRightSection } from '@hive/design-system/get-your-api-game-right-section';
+import { Heading } from '@hive/design-system/heading';
+import { InfoCard } from '@hive/design-system/info-card';
 import { FrequentlyAskedPartnersQuestions } from '../../components/frequently-asked-questions';
 import { Hero, HeroLinks } from '../../components/hero';
 import { LandingPageContainer } from '../../components/landing-page-container';

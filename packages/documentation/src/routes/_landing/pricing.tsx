@@ -4,8 +4,8 @@ import {
   DecorationIsolation,
   GetYourAPIGameRightSection,
   Heading,
-} from '@hive/design-system/guild-components';
-import { cn } from '@hive/design-system/guild-components/cn';
+} from '@hive/design-system';
+import { cn } from '@hive/design-system/cn';
 import { CompanyTestimonialsSection } from '../../components/company-testimonials';
 import { FrequentlyAskedQuestions } from '../../components/frequently-asked-questions';
 import { LandingPageContainer } from '../../components/landing-page-container';

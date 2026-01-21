@@ -1,10 +1,10 @@
 import { Accordion } from '@base-ui-components/react/accordion';
 import { Children, ComponentPropsWithoutRef, ReactElement, ReactNode } from 'react';
 
-import { cn } from '@hive/design-system/guild-components/cn';
-import { Anchor } from '@hive/design-system/guild-components/components/anchor';
-import { AttachPageFAQSchema } from '@hive/design-system/guild-components/components/faq/attach-page-faq-schema';
-import { Heading } from '@hive/design-system/guild-components/components/heading';
+import { cn } from '@hive/design-system/cn';
+import { Anchor } from '@hive/design-system/anchor';
+import { AttachPageFAQSchema } from '@hive/design-system/faq/attach-page-faq-schema';
+import { Heading } from '@hive/design-system/heading';
 import { ChevronDownIcon } from '../ui/icons';
 import FederationQuestions from './federation-questions.mdx';
 import HomeQuestions from './home-questions.mdx';

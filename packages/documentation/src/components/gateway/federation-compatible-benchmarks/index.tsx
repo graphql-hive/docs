@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { CallToAction, cn, Heading, ComparisonTable as Table } from '@hive/design-system/guild-components';
+import { CallToAction, cn, Heading, ComparisonTable as Table } from '@hive/design-system';
 import { BenchmarkTableBody } from './benchmark-table-body';
 import { CheckmarkIcon, XIcon } from './icons';
 

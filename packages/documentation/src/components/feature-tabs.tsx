@@ -5,9 +5,9 @@ import { Link } from '@tanstack/react-router';
 import { Image } from '@unpic/react';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
-import { cn } from '@hive/design-system/guild-components/cn';
-import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
-import { Heading } from '@hive/design-system/guild-components/components/heading';
+import { cn } from '@hive/design-system/cn';
+import { CallToAction } from '@hive/design-system/call-to-action';
+import { Heading } from '@hive/design-system/heading';
 import { ArrowIcon } from './arrow-icon';
 import { ChevronDownIcon } from './ui/icons';
 

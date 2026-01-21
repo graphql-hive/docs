@@ -1,18 +1,18 @@
 import { ReactElement } from 'react';
 // Guild components (reusable across Hive-branded sites)
-import { Anchor } from '@hive/design-system/guild-components/components/anchor';
+import { Anchor } from '@hive/design-system/anchor';
 import {
   ArchDecoration,
   DecorationIsolation,
   HighlightDecoration,
   LargeHiveIconDecoration,
-} from '@hive/design-system/guild-components/components/decorations';
-import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
-import { GetYourAPIGameRightSection } from '@hive/design-system/guild-components/components/get-your-api-game-right-section';
-import { Heading } from '@hive/design-system/guild-components/components/heading';
-import { InfoCard } from '@hive/design-system/guild-components/components/info-card';
-import { ToolsAndLibrariesCards } from '@hive/design-system/guild-components/components/tools-and-libraries-cards';
-import { cn } from '@hive/design-system/guild-components/cn';
+} from '@hive/design-system/decorations';
+import { CallToAction } from '@hive/design-system/call-to-action';
+import { GetYourAPIGameRightSection } from '@hive/design-system/get-your-api-game-right-section';
+import { Heading } from '@hive/design-system/heading';
+import { InfoCard } from '@hive/design-system/info-card';
+import { ToolsAndLibrariesCards } from '@hive/design-system/tools-and-libraries-cards';
+import { cn } from '@hive/design-system/cn';
 // Hive landing page specific components
 import { CheckIcon } from './check-icon';
 import { CommunitySection } from './community-section';

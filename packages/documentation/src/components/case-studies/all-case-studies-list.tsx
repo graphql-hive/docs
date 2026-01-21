@@ -1,4 +1,4 @@
-import { Heading } from '@hive/design-system/guild-components';
+import { Heading } from '@hive/design-system';
 import { CaseStudyCard } from './case-study-card';
 import { CaseStudyFile } from './case-study-types';
 import { getCompanyLogo } from './company-logos';

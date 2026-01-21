@@ -1,7 +1,7 @@
 'use client';
 
 import { use } from 'react';
-import { cn, ComparisonTable as Table } from '@hive/design-system/guild-components';
+import { cn, ComparisonTable as Table } from '@hive/design-system';
 import { CheckmarkIcon, XIcon } from './icons';
 
 interface BenchmarkDatum {
