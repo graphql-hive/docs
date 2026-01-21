@@ -301,7 +301,7 @@ function SocialPostCard({ post }: { post: SocialPost }) {
         <p className="text-sm">{post.name}</p>
       </div>
       <blockquote
-        className="mt-4 min-w-[220px] max-w-full whitespace-pre-line [&_.code]:font-mono [&_.code]:text-[0.9em] [&_a:focus-visible]:[outline-style:solid] [&_a:focus]:outline-[hsl(var(--nextra-primary-hue)_var(--nextra-primary-saturation)_86%)] [&_a:hover]:underline [&_a]:rounded-sm [&_a]:text-blue-500 [&_a]:outline-2 [&_a]:outline-offset-2"
+        className="mt-4 min-w-[220px] max-w-full whitespace-pre-line [&_.code]:font-mono [&_.code]:text-[0.9em] [&_a:focus-visible]:[outline-style:solid] [&_a:focus-visible]:outline-[hsl(var(--nextra-primary-hue)_var(--nextra-primary-saturation)_86%)] [&_a:hover]:underline [&_a]:rounded-sm [&_a]:text-blue-500 [&_a]:outline-2 [&_a]:outline-offset-2"
         dangerouslySetInnerHTML={{ __html: post.text }}
       />
     </div>

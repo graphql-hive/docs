@@ -6,18 +6,18 @@ import { ContactButton } from '@hive/design-system/guild-components/components/c
 import { Heading } from '@hive/design-system/guild-components/components/heading';
 import { InfoCard } from '@hive/design-system/guild-components/components/info-card';
 import { cn } from '@hive/design-system/guild-components/cn';
-import { ArrowIcon } from '../components/arrow-icon';
-import { FrequentlyAskedFederationQuestions } from '../components/frequently-asked-questions';
-import { Hero, HeroLinks } from '../components/hero';
-import { LandingPageContainer } from '../components/landing-page-container';
-import federationDiagram from '../../public/federation-diagram.png';
-import queryResultImage from '../../public/federation/query-result.png';
-import queryImage from '../../public/federation/query.png';
-import subgraphsProductsImage from '../../public/federation/subgraphs-products.png';
-import subgraphsReviewsImage from '../../public/federation/subgraphs-reviews.png';
-import supergraphSchemaImage from '../../public/federation/supergraph-schema.png';
+import { ArrowIcon } from '../../components/arrow-icon';
+import { FrequentlyAskedFederationQuestions } from '../../components/frequently-asked-questions';
+import { Hero, HeroLinks } from '../../components/hero';
+import { LandingPageContainer } from '../../components/landing-page-container';
+import federationDiagram from '../../../public/federation-diagram.png';
+import queryResultImage from '../../../public/federation/query-result.png';
+import queryImage from '../../../public/federation/query.png';
+import subgraphsProductsImage from '../../../public/federation/subgraphs-products.png';
+import subgraphsReviewsImage from '../../../public/federation/subgraphs-reviews.png';
+import supergraphSchemaImage from '../../../public/federation/supergraph-schema.png';
 
-export const Route = createFileRoute('/federation')({
+export const Route = createFileRoute('/_landing/federation')({
   component: FederationPage,
 });
 

@@ -2,6 +2,40 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 @import 'fumadocs-twoslash/twoslash.css';
+@import '@hive/design-system/guild-components/style.css';
+
+/* PP Neue Montreal font family */
+@font-face {
+  font-family: 'PP Neue Montreal';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/PPNeueMontreal-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/PPNeueMontreal-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/PPNeueMontreal-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'PP Neue Montreal';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/PPNeueMontreal-SemiBold.woff2') format('woff2');
+}
 
 /* Source files to scan for Tailwind classes */
 @source "../../**/*.tsx";
@@ -13,9 +47,20 @@
 
 /* Nextra primary color HSL variables (used by @theguild/components) */
 :root {
-  --nextra-primary-hue: 0deg;
-  --nextra-primary-saturation: 0%;
-  --nextra-primary-lightness: 50%;
+  --nextra-primary-hue: 164deg;
+  --nextra-primary-saturation: 70%;
+  --nextra-primary-lightness: 40%;
+  --nextra-bg: 252 251 250;
+}
+
+/* Landing pages light mode background */
+.light {
+  background-color: rgb(var(--nextra-bg));
+}
+
+/* Tailwind 4 compatibility: ensure cursor-pointer on interactive elements */
+a, button, [role="button"] {
+  cursor: pointer;
 }
 
 /* Hive colors migrated from @theguild/tailwind-config */

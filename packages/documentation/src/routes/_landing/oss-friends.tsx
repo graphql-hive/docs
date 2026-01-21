@@ -10,9 +10,9 @@ import {
 } from '@hive/design-system/guild-components/components/decorations';
 import { CallToAction } from '@hive/design-system/guild-components/components/call-to-action';
 import { Heading } from '@hive/design-system/guild-components/components/heading';
-import { LandingPageContainer } from '../components/landing-page-container';
+import { LandingPageContainer } from '../../components/landing-page-container';
 
-export const Route = createFileRoute('/oss-friends')({
+export const Route = createFileRoute('/_landing/oss-friends')({
   component: OSSFriendsPage,
 });
 

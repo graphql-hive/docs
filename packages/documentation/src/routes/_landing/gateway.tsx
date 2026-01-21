@@ -5,17 +5,17 @@ import { ExploreMainProductCards } from '@hive/design-system/guild-components/co
 import { FrequentlyAskedQuestions } from '@hive/design-system/guild-components/components/faq';
 import { HiveGatewayIcon } from '@hive/design-system/guild-components/components/icons';
 import { Hero, HeroLogo } from '@hive/design-system/guild-components/components/hero';
-import { ErrorBoundary } from '../components/error-boundary';
-import { CloudNativeSection } from '../components/gateway/cloud-native-section';
-import { FederationCompatibleBenchmarksSection } from '../components/gateway/federation-compatible-benchmarks';
-import { GatewayFeatureTabs } from '../components/gateway/gateway-feature-tabs';
-import GatewayLandingFAQ from '../components/gateway/gateway-landing-faq.mdx';
-import { LetsGetAdvancedSection } from '../components/gateway/lets-get-advanced-section';
-import { OrchestrateYourWay } from '../components/gateway/orchestrate-your-way';
-import { GetYourAPIGameRightList } from '../components/get-your-api-game-right-list';
-import { LandingPageContainer } from '../components/landing-page-container';
+import { ErrorBoundary } from '../../components/error-boundary';
+import { CloudNativeSection } from '../../components/gateway/cloud-native-section';
+import { FederationCompatibleBenchmarksSection } from '../../components/gateway/federation-compatible-benchmarks';
+import { GatewayFeatureTabs } from '../../components/gateway/gateway-feature-tabs';
+import GatewayLandingFAQ from '../../components/gateway/gateway-landing-faq.mdx';
+import { LetsGetAdvancedSection } from '../../components/gateway/lets-get-advanced-section';
+import { OrchestrateYourWay } from '../../components/gateway/orchestrate-your-way';
+import { GetYourAPIGameRightList } from '../../components/get-your-api-game-right-list';
+import { LandingPageContainer } from '../../components/landing-page-container';
 
-export const Route = createFileRoute('/gateway')({
+export const Route = createFileRoute('/_landing/gateway')({
   component: HiveGatewayPage,
 });
 

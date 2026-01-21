@@ -6,14 +6,14 @@ import {
   Heading,
 } from '@hive/design-system/guild-components';
 import { cn } from '@hive/design-system/guild-components/cn';
-import { CompanyTestimonialsSection } from '../components/company-testimonials';
-import { FrequentlyAskedQuestions } from '../components/frequently-asked-questions';
-import { LandingPageContainer } from '../components/landing-page-container';
-import { PlanComparison } from '../components/plan-comparison';
-import { Pricing } from '../components/pricing';
-import { PlansTable } from '../components/pricing/plans-table';
+import { CompanyTestimonialsSection } from '../../components/company-testimonials';
+import { FrequentlyAskedQuestions } from '../../components/frequently-asked-questions';
+import { LandingPageContainer } from '../../components/landing-page-container';
+import { PlanComparison } from '../../components/plan-comparison';
+import { Pricing } from '../../components/pricing';
+import { PlansTable } from '../../components/pricing/plans-table';
 
-export const Route = createFileRoute('/pricing')({
+export const Route = createFileRoute('/_landing/pricing')({
   component: PricingPage,
 });
 

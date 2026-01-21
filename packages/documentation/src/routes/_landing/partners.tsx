@@ -6,11 +6,11 @@ import { ContactButton } from '@hive/design-system/guild-components/components/c
 import { GetYourAPIGameRightSection } from '@hive/design-system/guild-components/components/get-your-api-game-right-section';
 import { Heading } from '@hive/design-system/guild-components/components/heading';
 import { InfoCard } from '@hive/design-system/guild-components/components/info-card';
-import { FrequentlyAskedPartnersQuestions } from '../components/frequently-asked-questions';
-import { Hero, HeroLinks } from '../components/hero';
-import { LandingPageContainer } from '../components/landing-page-container';
+import { FrequentlyAskedPartnersQuestions } from '../../components/frequently-asked-questions';
+import { Hero, HeroLinks } from '../../components/hero';
+import { LandingPageContainer } from '../../components/landing-page-container';
 
-export const Route = createFileRoute('/partners')({
+export const Route = createFileRoute('/_landing/partners')({
   component: PartnersPage,
 });
 

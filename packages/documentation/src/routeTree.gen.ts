@@ -9,35 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as PartnersRouteImport } from './routes/partners'
-import { Route as OssFriendsRouteImport } from './routes/oss-friends'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
-import { Route as GatewayRouteImport } from './routes/gateway'
-import { Route as FederationRouteImport } from './routes/federation'
-import { Route as EcosystemRouteImport } from './routes/ecosystem'
-import { Route as CaseStudiesRouteImport } from './routes/case-studies'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as LandingRouteImport } from './routes/_landing'
+import { Route as LandingIndexRouteImport } from './routes/_landing/index'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
+import { Route as LandingPricingRouteImport } from './routes/_landing/pricing'
+import { Route as LandingPartnersRouteImport } from './routes/_landing/partners'
+import { Route as LandingOssFriendsRouteImport } from './routes/_landing/oss-friends'
+import { Route as LandingGatewayRouteImport } from './routes/_landing/gateway'
+import { Route as LandingFederationRouteImport } from './routes/_landing/federation'
+import { Route as LandingEcosystemRouteImport } from './routes/_landing/ecosystem'
+import { Route as LandingCaseStudiesRouteImport } from './routes/_landing/case-studies'
 import { Route as LlmsDotmdxDocsSplatRouteImport } from './routes/llms[.]mdx.docs.$'
 
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PartnersRoute = PartnersRouteImport.update({
-  id: '/partners',
-  path: '/partners',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OssFriendsRoute = OssFriendsRouteImport.update({
-  id: '/oss-friends',
-  path: '/oss-friends',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   id: '/llms.txt',
   path: '/llms.txt',
@@ -48,30 +34,14 @@ const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
   path: '/llms-full.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GatewayRoute = GatewayRouteImport.update({
-  id: '/gateway',
-  path: '/gateway',
+const LandingRoute = LandingRouteImport.update({
+  id: '/_landing',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FederationRoute = FederationRouteImport.update({
-  id: '/federation',
-  path: '/federation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EcosystemRoute = EcosystemRouteImport.update({
-  id: '/ecosystem',
-  path: '/ecosystem',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CaseStudiesRoute = CaseStudiesRouteImport.update({
-  id: '/case-studies',
-  path: '/case-studies',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
+const LandingIndexRoute = LandingIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LandingRoute,
 } as any)
 const DocsSplatRoute = DocsSplatRouteImport.update({
   id: '/docs/$',
@@ -83,6 +53,41 @@ const ApiSearchRoute = ApiSearchRouteImport.update({
   path: '/api/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LandingPricingRoute = LandingPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => LandingRoute,
+} as any)
+const LandingPartnersRoute = LandingPartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
+  getParentRoute: () => LandingRoute,
+} as any)
+const LandingOssFriendsRoute = LandingOssFriendsRouteImport.update({
+  id: '/oss-friends',
+  path: '/oss-friends',
+  getParentRoute: () => LandingRoute,
+} as any)
+const LandingGatewayRoute = LandingGatewayRouteImport.update({
+  id: '/gateway',
+  path: '/gateway',
+  getParentRoute: () => LandingRoute,
+} as any)
+const LandingFederationRoute = LandingFederationRouteImport.update({
+  id: '/federation',
+  path: '/federation',
+  getParentRoute: () => LandingRoute,
+} as any)
+const LandingEcosystemRoute = LandingEcosystemRouteImport.update({
+  id: '/ecosystem',
+  path: '/ecosystem',
+  getParentRoute: () => LandingRoute,
+} as any)
+const LandingCaseStudiesRoute = LandingCaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
+  getParentRoute: () => LandingRoute,
+} as any)
 const LlmsDotmdxDocsSplatRoute = LlmsDotmdxDocsSplatRouteImport.update({
   id: '/llms.mdx/docs/$',
   path: '/llms.mdx/docs/$',
@@ -90,110 +95,105 @@ const LlmsDotmdxDocsSplatRoute = LlmsDotmdxDocsSplatRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/case-studies': typeof CaseStudiesRoute
-  '/ecosystem': typeof EcosystemRoute
-  '/federation': typeof FederationRoute
-  '/gateway': typeof GatewayRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
-  '/oss-friends': typeof OssFriendsRoute
-  '/partners': typeof PartnersRoute
-  '/pricing': typeof PricingRoute
+  '/case-studies': typeof LandingCaseStudiesRoute
+  '/ecosystem': typeof LandingEcosystemRoute
+  '/federation': typeof LandingFederationRoute
+  '/gateway': typeof LandingGatewayRoute
+  '/oss-friends': typeof LandingOssFriendsRoute
+  '/partners': typeof LandingPartnersRoute
+  '/pricing': typeof LandingPricingRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
+  '/': typeof LandingIndexRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/case-studies': typeof CaseStudiesRoute
-  '/ecosystem': typeof EcosystemRoute
-  '/federation': typeof FederationRoute
-  '/gateway': typeof GatewayRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
-  '/oss-friends': typeof OssFriendsRoute
-  '/partners': typeof PartnersRoute
-  '/pricing': typeof PricingRoute
+  '/case-studies': typeof LandingCaseStudiesRoute
+  '/ecosystem': typeof LandingEcosystemRoute
+  '/federation': typeof LandingFederationRoute
+  '/gateway': typeof LandingGatewayRoute
+  '/oss-friends': typeof LandingOssFriendsRoute
+  '/partners': typeof LandingPartnersRoute
+  '/pricing': typeof LandingPricingRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
+  '/': typeof LandingIndexRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/case-studies': typeof CaseStudiesRoute
-  '/ecosystem': typeof EcosystemRoute
-  '/federation': typeof FederationRoute
-  '/gateway': typeof GatewayRoute
+  '/_landing': typeof LandingRouteWithChildren
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
-  '/oss-friends': typeof OssFriendsRoute
-  '/partners': typeof PartnersRoute
-  '/pricing': typeof PricingRoute
+  '/_landing/case-studies': typeof LandingCaseStudiesRoute
+  '/_landing/ecosystem': typeof LandingEcosystemRoute
+  '/_landing/federation': typeof LandingFederationRoute
+  '/_landing/gateway': typeof LandingGatewayRoute
+  '/_landing/oss-friends': typeof LandingOssFriendsRoute
+  '/_landing/partners': typeof LandingPartnersRoute
+  '/_landing/pricing': typeof LandingPricingRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
+  '/_landing/': typeof LandingIndexRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
+    | '/llms-full.txt'
+    | '/llms.txt'
     | '/case-studies'
     | '/ecosystem'
     | '/federation'
     | '/gateway'
-    | '/llms-full.txt'
-    | '/llms.txt'
     | '/oss-friends'
     | '/partners'
     | '/pricing'
     | '/api/search'
     | '/docs/$'
+    | '/'
     | '/llms.mdx/docs/$'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
+    | '/llms-full.txt'
+    | '/llms.txt'
     | '/case-studies'
     | '/ecosystem'
     | '/federation'
     | '/gateway'
-    | '/llms-full.txt'
-    | '/llms.txt'
     | '/oss-friends'
     | '/partners'
     | '/pricing'
     | '/api/search'
     | '/docs/$'
+    | '/'
     | '/llms.mdx/docs/$'
   id:
     | '__root__'
-    | '/'
-    | '/case-studies'
-    | '/ecosystem'
-    | '/federation'
-    | '/gateway'
+    | '/_landing'
     | '/llms-full.txt'
     | '/llms.txt'
-    | '/oss-friends'
-    | '/partners'
-    | '/pricing'
+    | '/_landing/case-studies'
+    | '/_landing/ecosystem'
+    | '/_landing/federation'
+    | '/_landing/gateway'
+    | '/_landing/oss-friends'
+    | '/_landing/partners'
+    | '/_landing/pricing'
     | '/api/search'
     | '/docs/$'
+    | '/_landing/'
     | '/llms.mdx/docs/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  CaseStudiesRoute: typeof CaseStudiesRoute
-  EcosystemRoute: typeof EcosystemRoute
-  FederationRoute: typeof FederationRoute
-  GatewayRoute: typeof GatewayRoute
+  LandingRoute: typeof LandingRouteWithChildren
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
-  OssFriendsRoute: typeof OssFriendsRoute
-  PartnersRoute: typeof PartnersRoute
-  PricingRoute: typeof PricingRoute
   ApiSearchRoute: typeof ApiSearchRoute
   DocsSplatRoute: typeof DocsSplatRoute
   LlmsDotmdxDocsSplatRoute: typeof LlmsDotmdxDocsSplatRoute
@@ -201,27 +201,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/partners': {
-      id: '/partners'
-      path: '/partners'
-      fullPath: '/partners'
-      preLoaderRoute: typeof PartnersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/oss-friends': {
-      id: '/oss-friends'
-      path: '/oss-friends'
-      fullPath: '/oss-friends'
-      preLoaderRoute: typeof OssFriendsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/llms.txt': {
       id: '/llms.txt'
       path: '/llms.txt'
@@ -236,40 +215,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsFullDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/gateway': {
-      id: '/gateway'
-      path: '/gateway'
-      fullPath: '/gateway'
-      preLoaderRoute: typeof GatewayRouteImport
+    '/_landing': {
+      id: '/_landing'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LandingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/federation': {
-      id: '/federation'
-      path: '/federation'
-      fullPath: '/federation'
-      preLoaderRoute: typeof FederationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ecosystem': {
-      id: '/ecosystem'
-      path: '/ecosystem'
-      fullPath: '/ecosystem'
-      preLoaderRoute: typeof EcosystemRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/case-studies': {
-      id: '/case-studies'
-      path: '/case-studies'
-      fullPath: '/case-studies'
-      preLoaderRoute: typeof CaseStudiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
+    '/_landing/': {
+      id: '/_landing/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof LandingIndexRouteImport
+      parentRoute: typeof LandingRoute
     }
     '/docs/$': {
       id: '/docs/$'
@@ -285,6 +243,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_landing/pricing': {
+      id: '/_landing/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof LandingPricingRouteImport
+      parentRoute: typeof LandingRoute
+    }
+    '/_landing/partners': {
+      id: '/_landing/partners'
+      path: '/partners'
+      fullPath: '/partners'
+      preLoaderRoute: typeof LandingPartnersRouteImport
+      parentRoute: typeof LandingRoute
+    }
+    '/_landing/oss-friends': {
+      id: '/_landing/oss-friends'
+      path: '/oss-friends'
+      fullPath: '/oss-friends'
+      preLoaderRoute: typeof LandingOssFriendsRouteImport
+      parentRoute: typeof LandingRoute
+    }
+    '/_landing/gateway': {
+      id: '/_landing/gateway'
+      path: '/gateway'
+      fullPath: '/gateway'
+      preLoaderRoute: typeof LandingGatewayRouteImport
+      parentRoute: typeof LandingRoute
+    }
+    '/_landing/federation': {
+      id: '/_landing/federation'
+      path: '/federation'
+      fullPath: '/federation'
+      preLoaderRoute: typeof LandingFederationRouteImport
+      parentRoute: typeof LandingRoute
+    }
+    '/_landing/ecosystem': {
+      id: '/_landing/ecosystem'
+      path: '/ecosystem'
+      fullPath: '/ecosystem'
+      preLoaderRoute: typeof LandingEcosystemRouteImport
+      parentRoute: typeof LandingRoute
+    }
+    '/_landing/case-studies': {
+      id: '/_landing/case-studies'
+      path: '/case-studies'
+      fullPath: '/case-studies'
+      preLoaderRoute: typeof LandingCaseStudiesRouteImport
+      parentRoute: typeof LandingRoute
+    }
     '/llms.mdx/docs/$': {
       id: '/llms.mdx/docs/$'
       path: '/llms.mdx/docs/$'
@@ -295,17 +302,35 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface LandingRouteChildren {
+  LandingCaseStudiesRoute: typeof LandingCaseStudiesRoute
+  LandingEcosystemRoute: typeof LandingEcosystemRoute
+  LandingFederationRoute: typeof LandingFederationRoute
+  LandingGatewayRoute: typeof LandingGatewayRoute
+  LandingOssFriendsRoute: typeof LandingOssFriendsRoute
+  LandingPartnersRoute: typeof LandingPartnersRoute
+  LandingPricingRoute: typeof LandingPricingRoute
+  LandingIndexRoute: typeof LandingIndexRoute
+}
+
+const LandingRouteChildren: LandingRouteChildren = {
+  LandingCaseStudiesRoute: LandingCaseStudiesRoute,
+  LandingEcosystemRoute: LandingEcosystemRoute,
+  LandingFederationRoute: LandingFederationRoute,
+  LandingGatewayRoute: LandingGatewayRoute,
+  LandingOssFriendsRoute: LandingOssFriendsRoute,
+  LandingPartnersRoute: LandingPartnersRoute,
+  LandingPricingRoute: LandingPricingRoute,
+  LandingIndexRoute: LandingIndexRoute,
+}
+
+const LandingRouteWithChildren =
+  LandingRoute._addFileChildren(LandingRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  CaseStudiesRoute: CaseStudiesRoute,
-  EcosystemRoute: EcosystemRoute,
-  FederationRoute: FederationRoute,
-  GatewayRoute: GatewayRoute,
+  LandingRoute: LandingRouteWithChildren,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
-  OssFriendsRoute: OssFriendsRoute,
-  PartnersRoute: PartnersRoute,
-  PricingRoute: PricingRoute,
   ApiSearchRoute: ApiSearchRoute,
   DocsSplatRoute: DocsSplatRoute,
   LlmsDotmdxDocsSplatRoute: LlmsDotmdxDocsSplatRoute,

@@ -9,16 +9,16 @@ import { Heading } from '@hive/design-system/guild-components/components/heading
 import {
   CaseStudiesArchDecoration,
   CaseStudiesGradientDefs,
-} from '../components/case-studies/case-studies-arch-decoration';
-import { AllCaseStudiesList } from '../components/case-studies/all-case-studies-list';
-import { FeaturedCaseStudiesGrid } from '../components/case-studies/featured-case-studies-grid';
-import { getCaseStudies } from '../components/case-studies/get-case-studies';
-import { GetYourAPIGameWhite } from '../components/get-your-api-game-white';
-import { HeroLinks } from '../components/hero';
-import { LandingPageContainer } from '../components/landing-page-container';
-import { TrustedBySection } from '../components/trusted-by-section';
+} from '../../components/case-studies/case-studies-arch-decoration';
+import { AllCaseStudiesList } from '../../components/case-studies/all-case-studies-list';
+import { FeaturedCaseStudiesGrid } from '../../components/case-studies/featured-case-studies-grid';
+import { getCaseStudies } from '../../components/case-studies/get-case-studies';
+import { GetYourAPIGameWhite } from '../../components/get-your-api-game-white';
+import { HeroLinks } from '../../components/hero';
+import { LandingPageContainer } from '../../components/landing-page-container';
+import { TrustedBySection } from '../../components/trusted-by-section';
 
-export const Route = createFileRoute('/case-studies')({
+export const Route = createFileRoute('/_landing/case-studies')({
   component: CaseStudiesPage,
 });
 
