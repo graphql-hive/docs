@@ -88,12 +88,12 @@ function TeamGallery(props: React.HTMLAttributes<HTMLElement>) {
 function TeamAvatar({ data: { avatar, github, link, name } }: { data: Author }) {
   return (
     <a
-      className="group relative flex flex-col focus-visible:outline-none focus-visible:ring-transparent focus-visible:ring-offset-transparent"
+      className="group relative flex flex-col focus-visible:outline-hidden focus-visible:ring-transparent focus-visible:ring-offset-transparent"
       href={link}
       rel="noreferrer"
       target="_blank"
     >
-      <div className="relative aspect-square min-h-[var(--size)] w-auto min-w-[var(--size)] flex-1 overflow-hidden rounded-2xl mix-blend-multiply ring-blue-500/0 ring-offset-2 transition-all hover:ring-4 hover:ring-blue-500/15 group-focus:ring-blue-500/40 group-focus-visible:ring-4 xl:w-[var(--size)]">
+      <div className="relative aspect-square min-h-(--size) w-auto min-w-(--size) flex-1 overflow-hidden rounded-2xl mix-blend-multiply ring-blue-500/0 ring-offset-2 transition-all hover:ring-4 hover:ring-blue-500/15 group-focus:ring-blue-500/40 group-focus-visible:ring-4 xl:w-(--size)">
         <div className="firefox:hidden absolute inset-0 size-full bg-blue-100" />
         <Image
           alt=""

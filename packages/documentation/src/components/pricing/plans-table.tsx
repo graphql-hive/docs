@@ -93,7 +93,7 @@ export function PlansTable({ className }: { className?: string }) {
         <NestedSticky offsetBottom={90} offsetTop={80}>
           <div
             aria-hidden
-            className="bg-beige-100 [[data-sticky]>&]:border-beige-200 relative flex items-center rounded-3xl border border-transparent *:text-left max-md:hidden md:*:w-1/4 [[data-sticky]>&]:rounded-t-none [[data-sticky]>&]:shadow-sm"
+            className="bg-beige-100 [[data-sticky]>&]:border-beige-200 relative flex items-center rounded-3xl border border-transparent *:text-left max-md:hidden md:*:w-1/4 [[data-sticky]>&]:rounded-t-none [[data-sticky]>&]:shadow-xs"
           >
             <div className="z-10 flex rounded-l-3xl p-6 pr-[0.5px] text-xl/6 font-normal lg:w-[28%]">
               <span className="border-beige-400 w-full border-r">Features</span>
@@ -874,12 +874,12 @@ function MobileNavbar({
         64
       }
     >
-      <div className="bg-beige-100 before:bg-beige-100 before:border-b-beige-400 relative top-0 z-10 w-full rounded-2xl p-2 duration-100 ease-[var(--hive-ease-overshoot-a-bit)] before:absolute before:inset-0 before:opacity-0 before:transition md:hidden [[data-sticky]>&:before]:scale-x-125 [[data-sticky]>&:before]:border-b [[data-sticky]>&:before]:opacity-100 [[data-sticky]>&:before]:shadow-sm">
+      <div className="bg-beige-100 before:bg-beige-100 before:border-b-beige-400 relative top-0 z-10 w-full rounded-2xl p-2 duration-100 ease-(--hive-ease-overshoot-a-bit) before:absolute before:inset-0 before:opacity-0 before:transition md:hidden [[data-sticky]>&:before]:scale-x-125 [[data-sticky]>&:before]:border-b [[data-sticky]>&:before]:opacity-100 [[data-sticky]>&:before]:shadow-xs">
         <div className="relative flex w-full">
           {pricingTiers.map(tier => (
             <button
               className={cn(
-                'hive-focus bg-beige-100 flex-1 rounded-xl px-3 py-2 text-center text-sm font-medium leading-5 transition hover:z-10 hover:ring hover:ring-inset focus:z-10',
+                'hive-focus bg-beige-100 flex-1 rounded-xl px-3 py-2 text-center text-sm font-medium leading-5 transition hover:z-10 hover:ring-3 hover:ring-inset focus:z-10',
                 activePlan === tier.name && 'bg-white',
               )}
               key={tier.name}
@@ -897,7 +897,7 @@ function MobileNavbar({
               <div
                 aria-hidden={!isActive}
                 className={cn(
-                  'absolute inset-0 z-10 flex items-center justify-center rounded-lg *:!w-full aria-hidden:pointer-events-none aria-hidden:z-0',
+                  'absolute inset-0 z-10 flex items-center justify-center rounded-lg *:w-full! aria-hidden:pointer-events-none aria-hidden:z-0',
                   i === 0 && 'bg-beige-100',
                 )}
                 key={plan.name}

@@ -168,7 +168,7 @@ export function CompanyTestimonialsSection({ className }: { className?: string }
                 return (
                   <Tabs.Panel
                     className={cn(
-                      'relative flex w-full shrink-0 snap-center flex-col outline-none',
+                      'relative flex w-full shrink-0 snap-center flex-col outline-hidden',
                       'gap-6 md:flex-row lg:gap-12',
                       'lg:data-[hidden]:hidden',
                       caseStudyHref

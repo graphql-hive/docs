@@ -39,7 +39,7 @@ export function BenchmarkTableBody() {
             <Table.Cell
               className={cn(
                 // todo: this is a bug in Components: we diverged from design
-                row.name === 'Hive Gateway' ? '!bg-green-100' : '',
+                row.name === 'Hive Gateway' ? 'bg-green-100!' : '',
                 'pl-5', // yes, the dot cuts in to the left per design
                 'max-sm:pr-1.5',
               )}

@@ -28,7 +28,7 @@ export function SearchTrigger() {
   return (
     <button
       aria-label="Search documentation"
-      className="nextra-search ml-3 hidden h-12 w-64 cursor-pointer items-center justify-between rounded-lg border border-green-200 bg-white px-4 text-sm text-green-700 transition-none hover:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-500/50 md:flex dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300"
+      className="nextra-search ml-3 hidden h-12 w-64 cursor-pointer items-center justify-between rounded-lg border border-green-200 bg-white px-4 text-sm text-green-700 transition-none hover:border-green-300 focus:outline-hidden focus:ring-2 focus:ring-green-500/50 md:flex dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300"
       onClick={handleClick}
       type="button"
     >

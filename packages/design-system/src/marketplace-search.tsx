@@ -78,12 +78,12 @@ export const MarketplaceSearch = ({
         // --bg and --fg are defined in style.css under .MarketplaceSearch
         'MarketplaceSearch',
         colorScheme,
-        'bg-[--bg]',
+        'bg-(--bg)',
         className,
       )}
     >
       <div className="container max-w-[90rem] py-12">
-        <Heading as="h1" className="mb-4 text-[32px] text-[--fg]" size="sm">
+        <Heading as="h1" className="mb-4 text-[32px] text-(--fg)" size="sm">
           {title}
         </Heading>
         {tagsFilter && (
@@ -139,11 +139,11 @@ function MarketplaceSearchInput({
   value: string;
 }) {
   return (
-    <div className="border-b border-[--fg-60]">
+    <div className="border-b border-(--fg-60)">
       <div className={cn('hive-focus-within flex items-center rounded px-2', className)}>
-        <SearchIcon className="text-[--fg-80]" />
+        <SearchIcon className="text-(--fg-80)" />
         <input
-          className="ml-2 w-full border-0 bg-transparent py-2 font-medium text-[--fg] outline-none placeholder:text-[--fg-60] [&::-webkit-search-cancel-button]:hidden"
+          className="ml-2 w-full border-0 bg-transparent py-2 font-medium text-(--fg) outline-hidden placeholder:text-(--fg-60) [&::-webkit-search-cancel-button]:hidden"
           onChange={event => onChange(event.currentTarget.value)}
           placeholder={placeholder}
           type="search"
@@ -151,12 +151,12 @@ function MarketplaceSearchInput({
         />
         <button
           aria-label="Clear input"
-          className="flex size-6 items-center justify-center rounded-sm [input:placeholder-shown+&]:hidden"
+          className="flex size-6 items-center justify-center rounded-xs [input:placeholder-shown+&]:hidden"
           onClick={() => onChange('')}
           // A builtin clear-button can't be tabbed to. A keyboard user can cmd+A and delete.
           tabIndex={-1}
         >
-          <CloseIcon className="size-5 text-[--fg-80]" />
+          <CloseIcon className="size-5 text-(--fg-80)" />
         </button>
       </div>
     </div>
@@ -179,10 +179,10 @@ function MarketplaceSearchTabs({
   return (
     <div className={className}>
       <Tabs
-        className="grid grid-cols-2 gap-1 rounded-2xl border-none bg-neutral-800 [.green_&]:!bg-green-900 [.light_&]:bg-neutral-100 [.light_&]:text-green-200"
+        className="grid grid-cols-2 gap-1 rounded-2xl border-none bg-neutral-800 [.green_&]:bg-green-900! [.light_&]:bg-neutral-100 [.light_&]:text-green-200"
         items={items.map(list => list.title)}
         tabClassName={cn(
-          'rounded-2xl border-none p-3 text-sm font-medium text-neutral-200 hover:bg-neutral-700/50 hover:text-white aria-selected:!cursor-default aria-selected:!bg-[--fg] aria-selected:!text-[--bg] sm:p-4 sm:text-base [.green_&]:!bg-green-900 [.green_&]:!text-green-200 [.green_&]:hover:!bg-green-700/25 [.green_&]:hover:!text-green-100 [.green_&]:aria-selected:!bg-green-300 [.green_&]:aria-selected:!text-green-800 [.light_&]:bg-neutral-100 [.light_&]:text-neutral-800 [.light_&]:hover:bg-neutral-200/80 [.light_&]:hover:text-neutral-900',
+          'rounded-2xl border-none p-3 text-sm font-medium text-neutral-200 hover:bg-neutral-700/50 hover:text-white aria-selected:cursor-default! aria-selected:!bg-[--fg] aria-selected:!text-[--bg] sm:p-4 sm:text-base [.green_&]:bg-green-900! [.green_&]:text-green-200! [.green_&]:hover:bg-green-700/25! [.green_&]:hover:text-green-100! [.green_&]:aria-selected:bg-green-300! [.green_&]:aria-selected:text-green-800! [.light_&]:bg-neutral-100 [.light_&]:text-neutral-800 [.light_&]:hover:bg-neutral-200/80 [.light_&]:hover:text-neutral-900',
         )}
       >
         {items.map((list, i) => (

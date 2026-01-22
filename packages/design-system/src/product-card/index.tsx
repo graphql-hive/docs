@@ -33,7 +33,7 @@ export function MainProductCard({ as: Root, className, product, ...rest }: Produ
       {...rest}
     >
       <a
-        className="relative z-10 flex h-full flex-1 flex-col justify-between p-8 outline-none focus-visible:outline-none"
+        className="relative z-10 flex h-full flex-1 flex-col justify-between p-8 outline-hidden focus-visible:outline-hidden"
         href={product.href}
       >
         <p className="font-medium">{product.name}</p>
@@ -95,7 +95,7 @@ export function AncillaryProductCard({ as: Root, className, product, ...rest }: 
       {...rest}
     >
       <a
-        className="relative flex h-full flex-col justify-between rounded-[inherit] p-8 focus:outline-none focus-visible:outline-none"
+        className="relative flex h-full flex-col justify-between rounded-[inherit] p-8 focus:outline-hidden focus-visible:outline-hidden"
         href={product.href}
       >
         <div>

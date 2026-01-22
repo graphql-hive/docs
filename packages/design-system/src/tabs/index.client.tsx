@@ -164,7 +164,7 @@ export const Tabs = ({
                 'rounded-t p-2 font-medium leading-5 transition-colors',
                 '-mb-0.5 select-none border-b-2',
                 selected
-                  ? 'border-current outline-none'
+                  ? 'border-current outline-hidden'
                   : hover
                     ? 'border-beige-200 dark:border-neutral-800'
                     : 'border-transparent',

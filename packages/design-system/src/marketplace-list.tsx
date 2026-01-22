@@ -75,7 +75,7 @@ export const MarketplaceList = ({
       {title && (
         <Heading
           as="h2"
-          className="mb-6 mt-4 text-2xl/8 font-medium text-[--fg,theme(colors.neutral.900)] dark:text-white"
+          className="mb-6 mt-4 text-2xl/8 font-medium text-(--fg,theme(colors.neutral.900)] dark:text-white"
           size="sm"
         >
           {title}
@@ -111,8 +111,8 @@ export const MarketplaceList = ({
           </ul>
           {pageCount > 1 && (
             <ReactPaginate
-              activeLinkClassName="text-[--bg] dark:!text-[--bg] bg-[--fg] [.green_&]:bg-green-300 [.green_&]:text-green-800"
-              breakLinkClassName="hive-focus rounded text-[--fg-80] [.green_&]:text-green-200"
+              activeLinkClassName="text-(--bg) dark:!text-(--bg) bg-(--fg) [.green_&]:bg-green-300 [.green_&]:text-green-800"
+              breakLinkClassName="hive-focus rounded text-(--fg-80) [.green_&]:text-green-200"
               containerClassName="flex justify-center gap-2 mt-6"
               forcePage={currentPage}
               marginPagesDisplayed={1}
@@ -148,7 +148,7 @@ export function MarketplaceListItem({ item, ...rest }: MarketplaceListItemProps)
     >
       <div
         className={cn(
-          'size-16 shrink-0 rounded-lg bg-[--bg] @lg:size-16 @2xl:size-[92px] [.green_&]:[background:linear-gradient(135deg,_#68A8B6_0%,_#3B736A_100%)]',
+          'size-16 shrink-0 rounded-lg bg-(--bg) @lg:size-16 @2xl:size-[92px] [.green_&]:[background:linear-gradient(135deg,_#68A8B6_0%,_#3B736A_100%)]',
         )}
       >
         <Image
@@ -159,8 +159,8 @@ export function MarketplaceListItem({ item, ...rest }: MarketplaceListItemProps)
         />
       </div>
       <div className="flex flex-col">
-        <h3 className="m-0 line-clamp-2 font-medium text-[--fg] @lg:text-2xl">{item.title}</h3>
-        <div className="mb-2 line-clamp-3 text-sm text-[--fg-80] @lg:text-base">
+        <h3 className="m-0 line-clamp-2 font-medium text-(--fg) @lg:text-2xl">{item.title}</h3>
+        <div className="mb-2 line-clamp-3 text-sm text-(--fg-80) @lg:text-base">
           {item.description}
         </div>
         {item.tags && item.tags.length > 0 && (
@@ -170,7 +170,7 @@ export function MarketplaceListItem({ item, ...rest }: MarketplaceListItemProps)
             ))}
           </TagsContainer>
         )}
-        <div className="flex flex-wrap gap-x-4 text-xs text-[--fg-80] @lg:text-sm">
+        <div className="flex flex-wrap gap-x-4 text-xs text-(--fg-80) @lg:text-sm">
           <span>
             Updated <time dateTime={item.update}>{formatDate(item.update)}</time>
           </span>

@@ -126,7 +126,7 @@ function FriendsList() {
         <a
           href={friend.href}
           key={i}
-          className="hover:bg-beige-200 bg-beige-100 relative block rounded-lg p-4 shadow-sm"
+          className="hover:bg-beige-200 bg-beige-100 relative block rounded-lg p-4 shadow-xs"
         >
           <dt className="text-green-1000 font-medium">{friend.name}</dt>
           <dd className="mt-2 text-sm leading-5 text-green-800">{friend.description}</dd>

@@ -307,7 +307,7 @@ export const PRODUCTS_MENU_LIST = Object.fromEntries<
             <div
               className={cn(
                 'flex translate-y-[0.25px]',
-                i > 6 && 'rounded-sm bg-gray-500 text-white dark:bg-white/10',
+                i > 6 && 'rounded-xs bg-gray-500 text-white dark:bg-white/10',
               )}
             >
               <item.logo className="size-4 text-[8px]" />

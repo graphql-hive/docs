@@ -50,14 +50,14 @@ export function InfoCard({
         scheme === 'green' &&
           'bg-green-900 [--color-h:theme(colors.white)] [--color-text:theme(colors.white)] [--hover-bg:theme(colors.green.800)]',
         Root === Anchor &&
-          'hive-focus block cursor-pointer duration-300 hover:bg-[--hover-bg] focus-visible:bg-[--hover-bg]',
+          'hive-focus block cursor-pointer duration-300 hover:bg-(--hover-bg) focus-visible:bg-(--hover-bg)',
         className,
       )}
       {...(rest as UnionToIntersection<InfoCardProps>)}
     >
       <Stud>{icon}</Stud>
-      <h3 className="mt-4 text-xl font-medium leading-[1.4] text-[--color-h] md:mt-6">{heading}</h3>
-      <div className="mt-2 space-y-2 text-[--color-text] md:mt-4">{children}</div>
+      <h3 className="mt-4 text-xl font-medium leading-[1.4] text-(--color-h) md:mt-6">{heading}</h3>
+      <div className="mt-2 space-y-2 text-(--color-text) md:mt-4">{children}</div>
     </Root>
   );
 }

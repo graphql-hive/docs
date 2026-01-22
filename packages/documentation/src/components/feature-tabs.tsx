@@ -1,13 +1,13 @@
 'use client';
 
 import { Tabs } from '@base-ui-components/react/tabs';
+import { CallToAction } from '@hive/design-system/call-to-action';
+import { cn } from '@hive/design-system/cn';
+import { Heading } from '@hive/design-system/heading';
 import { Link } from '@tanstack/react-router';
 import { Image } from '@unpic/react';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
-import { cn } from '@hive/design-system/cn';
-import { CallToAction } from '@hive/design-system/call-to-action';
-import { Heading } from '@hive/design-system/heading';
 import { ArrowIcon } from './arrow-icon';
 import { ChevronDownIcon } from './ui/icons';
 
@@ -54,8 +54,8 @@ export function FeatureTabs<T extends string>({
   return (
     <section
       className={cn(
-        'border-beige-400 isolate mx-auto w-[1248px] max-w-full rounded-3xl bg-white',
-        '[--tab-bg-dark:theme(colors.beige.600)] [--tab-bg:theme(colors.beige.200)] sm:max-w-[calc(100%-4rem)] sm:border md:p-6',
+        'border-beige-400 isolate mx-auto w-312 max-w-full rounded-3xl bg-white',
+        '[--tab-bg-dark:var(--color-beige-600)] [--tab-bg:var(--color-beige-200)] sm:max-w-[calc(100%-4rem)] sm:border md:p-6',
         className,
       )}
     >
@@ -70,11 +70,11 @@ export function FeatureTabs<T extends string>({
           }}
           value={currentTab}
         >
-          <Tabs.List className='group relative z-10 mx-4 my-6 flex flex-col overflow-hidden focus-within:overflow-visible max-sm:h-[58px] max-sm:focus-within:pointer-events-none max-sm:focus-within:rounded-b-none max-sm:focus-within:has-[>:nth-child(2)[aria-selected=true]]:translate-y-[-100%] max-sm:focus-within:has-[>:nth-child(3)[aria-selected=true]]:translate-y-[-200%] sm:flex-row sm:rounded-2xl sm:bg-[var(--tab-bg)] md:mx-0 md:mb-12 md:mt-0'>
+          <Tabs.List activateOnFocus className='group relative z-10 mx-4 my-6 flex flex-col overflow-hidden focus-within:overflow-visible max-sm:h-14.5 max-sm:focus-within:pointer-events-none max-sm:focus-within:rounded-b-none max-sm:focus-within:has-[>:nth-child(2)[aria-selected=true]]:-translate-y-full max-sm:focus-within:has-[>:nth-child(3)[aria-selected=true]]:translate-y-[-200%] sm:flex-row sm:rounded-2xl sm:bg-(--tab-bg) md:mx-0 md:mb-12 md:mt-0'>
             {tabs.map((tab, i) => {
               return (
                 <Tabs.Tab
-                  className='hive-focus aria-selected:text-green-1000 aria-selected:border-[var(--tab-bg-dark)] aria-selected:bg-white max-sm:aria-[selected=false]:hidden group-focus-within:aria-[selected=false]:flex max-sm:aria-[selected=false]:rounded-none max-sm:group-focus-within:aria-[selected=false]:border-y-[var(--tab-bg)] max-sm:group-focus-within:[&:nth-child(2)]:aria-selected:rounded-none max-sm:group-focus-within:[&:nth-child(2)]:aria-selected:border-y-[var(--tab-bg)] max-sm:group-focus-within:first:aria-selected:border-b-[var(--tab-bg)] max-sm:group-focus-within:first:aria-selected:rounded-b-none max-sm:aria-[selected=false]:pointer-events-none max-sm:aria-[selected=false]:group-focus-within:pointer-events-auto z-10 flex flex-1 items-center justify-center gap-2.5 rounded-lg border-transparent p-4 text-base font-medium leading-6 text-green-800 max-sm:border max-sm:border-[var(--tab-bg-dark)] max-sm:bg-[var(--tab-bg)] max-sm:group-focus-within:aria-selected:z-20 max-sm:group-focus-within:aria-selected:ring-4 sm:rounded-[15px] sm:border sm:text-xs sm:max-lg:p-3 sm:max-[721px]:p-2 md:text-sm lg:text-base max-sm:group-focus-within:[&:last-child]:border-t-[var(--tab-bg)] max-sm:group-focus-within:[&:nth-child(3)]:rounded-t-none [&>svg]:shrink-0 max-sm:group-focus-within:[&:not([aria-selected=true])]:first-child:rounded-t-lg max-sm:group-focus-within:[&:not([aria-selected=true])]:first-child:border-t-[var(--tab-bg-dark)] [&:not([aria-selected=true])>:last-child]:invisible max-sm:group-focus-within:[[aria-selected=true]+&:last-child]:rounded-b-lg max-sm:group-focus-within:[[aria-selected=true]+&:last-child]:border-b-[var(--tab-bg-dark)] max-sm:group-focus-within:[[:not([aria-selected=true])]+&:last-child:not([aria-selected=true])]:rounded-b-lg max-sm:group-focus-within:[[:not([aria-selected=true])]+&:last-child:not([aria-selected=true])]:border-b-[var(--tab-bg-dark)]'
+                  className='hive-focus aria-selected:text-green-1000 aria-selected:border-(--tab-bg-dark) aria-selected:bg-white max-sm:aria-[selected=false]:hidden group-focus-within:aria-[selected=false]:flex max-sm:aria-[selected=false]:rounded-none max-sm:group-focus-within:aria-[selected=false]:border-y-(--tab-bg) max-sm:group-focus-within:nth-2:aria-selected:rounded-none max-sm:group-focus-within:nth-2:aria-selected:border-y-(--tab-bg) max-sm:group-focus-within:first:aria-selected:border-b-(--tab-bg) max-sm:group-focus-within:first:aria-selected:rounded-b-none max-sm:aria-[selected=false]:pointer-events-none max-sm:aria-[selected=false]:group-focus-within:pointer-events-auto z-10 flex flex-1 items-center justify-center gap-2.5 rounded-lg border-transparent p-4 text-base font-medium leading-6 text-green-800 max-sm:border max-sm:border-(--tab-bg-dark) max-sm:bg-(--tab-bg) max-sm:group-focus-within:aria-selected:z-20 max-sm:group-focus-within:aria-selected:ring-4 sm:rounded-[15px] sm:border sm:text-xs sm:max-lg:p-3 sm:max-[721px]:p-2 md:text-sm lg:text-base max-sm:group-focus-within:last:border-t-(--tab-bg) max-sm:group-focus-within:nth-3:rounded-t-none [&>svg]:shrink-0 max-sm:group-focus-within:[&:not([aria-selected=true])]:first-child:rounded-t-lg max-sm:group-focus-within:[&:not([aria-selected=true])]:first-child:border-t-(--tab-bg-dark) [&:not([aria-selected=true])>:last-child]:invisible max-sm:group-focus-within:[[aria-selected=true]+&:last-child]:rounded-b-lg max-sm:group-focus-within:[[aria-selected=true]+&:last-child]:border-b-(--tab-bg-dark) max-sm:group-focus-within:[[:not([aria-selected=true])]+&:last-child:not([aria-selected=true])]:rounded-b-lg max-sm:group-focus-within:[[:not([aria-selected=true])]+&:last-child:not([aria-selected=true])]:border-b-(--tab-bg-dark)'
                   key={tab}
                   value={tab}
                 >
@@ -169,8 +169,9 @@ function Feature({
   );
 }
 
+const isSmallScreen = () => window.innerWidth < 640;
+
 function useSmallScreenTabsHandlers() {
-  const isSmallScreen = () => window.innerWidth < 640;
   return {
     onBlur: (event: React.FocusEvent<HTMLDivElement>) => {
       const tabs = event.currentTarget.querySelectorAll('[role="tablist"] > [role="tab"]');
@@ -255,7 +256,7 @@ export function FeatureTab({ description, documentationLink, highlights, title }
 
   return (
     <Tabs.Panel
-      className="data-[hidden]:hidden"
+      className="data-hidden:hidden"
       // Make it accessible to crawlers, otherwise there's no DOM element to index
       keepMounted
       tabIndex={-1}
@@ -293,7 +294,7 @@ export function ActiveHighlightImage() {
   const allHighlights = Object.values<Highlight[]>(highlights).flat();
 
   return (
-    <div className="relative mx-4 h-full flex-1 overflow-hidden rounded-3xl bg-blue-400 max-sm:h-[290px] sm:min-h-[400px] md:ml-6 md:mr-0">
+    <div className="relative mx-4 h-full flex-1 overflow-hidden rounded-3xl bg-blue-400 max-sm:h-72.5 sm:min-h-100 md:ml-6 md:mr-0">
       {allHighlights.map(
         (highlight, i) =>
           highlight.image && (
@@ -305,7 +306,7 @@ export function ActiveHighlightImage() {
               <Image
                 alt=""
                 background={typeof highlight.image === 'object' ? highlight.image.blurDataURL : undefined}
-                className="absolute left-6 top-[24px] h-[calc(100%-24px)] rounded-tl-3xl object-cover object-left lg:left-[55px] lg:top-[108px] lg:h-[calc(100%-108px)]"
+                className="absolute left-6 top-6 h-[calc(100%-24px)] rounded-tl-3xl object-cover object-left lg:left-13.75 lg:top-27 lg:h-[calc(100%-108px)]"
                 height={578} // max rendered height is 618px, and the usual is 554px
                 role="presentation"
                 src={typeof highlight.image === 'string' ? highlight.image : highlight.image.src}

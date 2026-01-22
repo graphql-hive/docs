@@ -8,7 +8,7 @@ export const ThemeSwitcherButton: FC<{ children: ReactNode }> = ({ children }) =
 
   return (
     <button
-      className="self-center rounded-sm p-2 outline-none focus-visible:ring"
+      className="self-center rounded-xs p-2 outline-hidden focus-visible:ring-3"
       onClick={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
     >
       {children}

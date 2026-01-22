@@ -9,7 +9,7 @@ export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(function Anchor
   { children, className, href = '', newWindow, ...props },
   forwardedRef,
 ): ReactElement {
-  const classes = cn('outline-none focus-visible:ring', className);
+  const classes = cn('outline-hidden focus-visible:ring-3', className);
   const hrefString = typeof href === 'string' ? href : href?.pathname ?? '';
 
   // Hash links

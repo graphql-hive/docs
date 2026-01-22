@@ -27,7 +27,7 @@ export function Input({ message, severity = 'neutral', ...props }: InputProps) {
       <input
         aria-invalid={severity === 'critical' ? true : undefined}
         className={cn(
-          'w-full rounded-lg bg-white py-3 indent-4 font-medium transition-[background-color,padding] placeholder:text-green-800 placeholder-shown:bg-blue-100 autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)] autofill:[-webkit-text-fill-color:theme(colors.green.1000)] autofill:first-line:font-sans hover:bg-white focus:bg-white focus-visible:outline-none focus-visible:ring-0 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-300 dark:placeholder-shown:bg-neutral-900 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800',
+          'w-full rounded-lg bg-white py-3 indent-4 font-medium transition-[background-color,padding] placeholder:text-green-800 placeholder-shown:bg-blue-100 autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)] autofill:[-webkit-text-fill-color:theme(colors.green.1000)] autofill:first-line:font-sans hover:bg-white focus:bg-white focus-visible:outline-hidden focus-visible:ring-0 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-300 dark:placeholder-shown:bg-neutral-900 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800',
           message && 'rounded-b-none py-2',
           props.className,
         )}
