@@ -111,7 +111,7 @@ export function EcosystemIllustration(props: { className?: string }) {
 
         <div className="z-20 flex justify-center">
           <Node
-            className="h-[--stellate-height] max-md:px-6"
+            className="h-[var(--stellate-height)] max-md:px-6"
             description={
               <>
                 GraphQL Edge Security
@@ -129,7 +129,7 @@ export function EcosystemIllustration(props: { className?: string }) {
 
         <div className="z-20 flex justify-center">
           <Node
-            className="h-[--gateway-height] flex-row gap-2 px-8"
+            className="h-[var(--gateway-height)] flex-row gap-2 px-8"
             description={null}
             title={null}
           >
@@ -222,7 +222,7 @@ function Node({ children, className, description, title, ...rest }: NodeProps) {
 }
 
 function VerticalEdge() {
-  return <div className="h-[--edge] w-[3px] bg-green-700" />;
+  return <div className="h-[var(--edge)] w-[3px] bg-green-700" />;
 }
 
 function LeftConnections() {

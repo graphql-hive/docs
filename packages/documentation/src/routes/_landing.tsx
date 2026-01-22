@@ -13,7 +13,10 @@ export const Route = createFileRoute('/_landing')({
  */
 function LandingLayout() {
   return (
-    <div className="flex min-h-screen flex-col bg-white light">
+    <div
+      className="flex min-h-screen flex-col bg-white light"
+      style={{ '--nextra-bg': '255 255 255' } as React.CSSProperties}
+    >
       <Navigation />
       <main className="flex-1">
         <Outlet />

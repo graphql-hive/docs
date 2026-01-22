@@ -37,6 +37,16 @@
   src: url('../fonts/PPNeueMontreal-SemiBold.woff2') format('woff2');
 }
 
+/* Set --font-sans CSS variable for components using font-sans class */
+:root {
+  --font-sans: 'PP Neue Montreal', system-ui, sans-serif;
+}
+
+/* Override Tailwind's font-sans to use our font */
+@theme {
+  --font-sans: 'PP Neue Montreal', system-ui, sans-serif;
+}
+
 /* Source files to scan for Tailwind classes */
 @source "../../**/*.tsx";
 @source "../../../design-system/src/**/*.tsx";
@@ -53,9 +63,9 @@
   --nextra-bg: 252 251 250;
 }
 
-/* Landing pages light mode background */
+/* Landing pages light mode background - pure white for visual parity with prod */
 .light {
-  background-color: rgb(var(--nextra-bg));
+  background-color: #fff;
 }
 
 /* Tailwind 4 compatibility: ensure cursor-pointer on interactive elements */

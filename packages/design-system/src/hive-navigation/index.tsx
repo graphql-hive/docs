@@ -157,12 +157,12 @@ export function HiveNavigation({
     <div
       className="sticky top-0 z-20 border-b border-beige-400/[var(--border-opacity)] bg-[rgb(var(--nextra-bg))] px-6 py-4 text-green-1000 transition-[border-color] duration-500 md:mb-[7px] md:mt-2 dark:border-neutral-700/[var(--border-opacity)] dark:text-neutral-200"
       ref={containerRef}
-      style={{ '--border-opacity': 0 }}
+      style={{ '--border-opacity': '0%' }}
     >
       <TopOfSiteMarker
         onChange={scrolled => {
           const container = containerRef.current;
-          container.style.setProperty('--border-opacity', scrolled ? '1' : '0');
+          container.style.setProperty('--border-opacity', scrolled ? '100%' : '0%');
         }}
       />
 

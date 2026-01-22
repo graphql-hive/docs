@@ -63,7 +63,7 @@ export function GatewayMarqueeRows({
           labels.map((label, i) => (
             <Anchor
               key={`${j}-${i}`}
-              className="hive-focus rounded-lg border border-transparent bg-[--pill-bg] px-2 py-1.5 text-[10px] text-[--pill-text] transition duration-500 hover:border-[--pill-hover-text] hover:bg-[--pill-bg-hover] hover:text-[--pill-text-hover] sm:px-4 sm:py-3 sm:text-sm"
+              className="hive-focus rounded-lg border border-transparent bg-[var(--pill-bg)] px-2 py-1.5 text-[10px] text-[var(--pill-text)] transition duration-500 hover:border-[var(--pill-hover-text)] hover:bg-[var(--pill-bg-hover)] hover:text-[var(--pill-text-hover)] sm:px-4 sm:py-3 sm:text-sm"
               href={href}
             >
               {label}

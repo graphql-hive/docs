@@ -45,7 +45,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="flex flex-col min-h-screen" style={{ fontFamily: "'PP Neue Montreal', system-ui, sans-serif" }}>
+      <body className="flex flex-col min-h-screen antialiased" style={{ fontFamily: "'PP Neue Montreal', system-ui, sans-serif" }}>
         <RootProvider>{children}</RootProvider>
         <Scripts />
       </body>
