@@ -92,7 +92,9 @@ describe(".txt extension", () => {
   });
 
   test("/docs/test.txt returns markdown for nested page", async () => {
-    const res = await fetch(`${BASE_URL}/docs/test.txt`, { redirect: "follow" });
+    const res = await fetch(`${BASE_URL}/docs/test.txt`, {
+      redirect: "follow",
+    });
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("text/markdown");
     const text = await res.text();
