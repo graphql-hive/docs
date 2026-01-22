@@ -4,6 +4,7 @@ import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
 const TEXT_FILE_REGEX = /\.(txt|md|mdx)$/;
+const TEXT_FILE_ROUTES = new Set(['/llms-full.txt', '/llms.txt']);
 
 export function getRouter() {
   return createRouter({
@@ -17,7 +18,7 @@ export function getRouter() {
        * but we handle paths here to make sure accessing the raw text is foolproof.
        */
       input: ({ url }) => {
-        if (TEXT_FILE_REGEX.test(url.pathname)) {
+        if (TEXT_FILE_REGEX.test(url.pathname) && !TEXT_FILE_ROUTES.has(url.pathname)) {
           url.pathname = `/llms.mdx${url.pathname.slice(0, url.pathname.lastIndexOf("."))}`;
         }
         return url;
