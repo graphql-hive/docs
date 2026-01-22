@@ -19,7 +19,7 @@ export default defineConfig({
     }),
     tanstackStart({
       prerender: {
-        enabled: false,
+        enabled: false, // todo: enable this
       },
     }),
     react(),

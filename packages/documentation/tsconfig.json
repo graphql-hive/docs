@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src/**/*.ts", "src/**/*.tsx", ".source/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", ".source/**/*.ts", "*.ts"],
   "compilerOptions": {
     "types": ["vite/client", "bun"],
     "rootDir": ".",
