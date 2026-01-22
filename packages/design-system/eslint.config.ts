@@ -1,7 +1,9 @@
-import config from "@hasparus/eslint-config/the-guild";
+import type { Linter } from "eslint";
 
-export default [
-  ...config,
+import baseConfig from "@hasparus/eslint-config/the-guild";
+
+const config: Linter.Config[] = [
+  ...baseConfig,
   {
     files: ["src/routes/**/*.tsx"],
     rules: {
@@ -19,3 +21,5 @@ export default [
     },
   },
 ];
+
+export default config;
