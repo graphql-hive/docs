@@ -1,10 +1,7 @@
 'use client';
 
-// Native Tooltip component to replace @radix-ui/react-tooltip
-// TODO: Migrate to Base UI Tooltip when available
-import { createContext, HTMLAttributes, ReactNode, useContext, useEffect, useRef, useState } from 'react';
-
 import { cn } from '@hive/design-system/cn';
+import { createContext, HTMLAttributes, ReactNode, useContext, useEffect, useRef, useState } from 'react';
 
 interface TooltipContextValue {
   open: boolean;
@@ -86,6 +83,9 @@ interface TriggerProps extends HTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 
+/**
+ * TODO: Migrate to Base UI Tooltip
+ */
 function Trigger({ asChild, children, className, ...props }: TriggerProps) {
   const { setOpen, triggerRef } = useTooltipContext();
 

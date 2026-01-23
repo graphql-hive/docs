@@ -2,9 +2,9 @@
 
 import { ReactNode, useState } from 'react';
 
-// Native Tooltip component to replace @radix-ui/react-tooltip
-// TODO: Migrate to Base UI Tooltip when available
-
+/**
+ * TODO: Migrate to Base UI Tooltip
+ */
 export function Tooltip({ children, content }: { children: ReactNode; content: string; }) {
   const [isOpen, setIsOpen] = useState(false);
 

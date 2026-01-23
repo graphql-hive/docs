@@ -21,7 +21,7 @@ export const Route = createRootRoute({
         name: "viewport",
       },
       {
-        title: "Hive - Open-Source GraphQL Federation Platform",
+        title: "Open-Source GraphQL Federation Platform",
       },
     ],
   }),

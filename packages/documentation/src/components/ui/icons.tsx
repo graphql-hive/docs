@@ -1,4 +1,3 @@
-// Native SVG icons to replace @radix-ui/react-icons
 import { SVGProps } from 'react';
 
 export function ChevronDownIcon(props: SVGProps<SVGSVGElement>) {

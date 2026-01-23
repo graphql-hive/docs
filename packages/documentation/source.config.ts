@@ -14,7 +14,6 @@ export const docs = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
-    // mermaid must run before shiki (rehypeCode) to find raw code blocks
     rehypeCodeOptions: {
       langs: ["js", "jsx", "ts", "tsx"],
       themes: {
@@ -26,7 +25,13 @@ export default defineConfig({
         transformerTwoslash(),
       ],
     },
-    rehypePlugins: (plugins) => [mermaidConfig(), ...plugins],
+    rehypePlugins: (plugins) => [
+      /**
+       * Mermaid must run before Shiki to find unprocessed code blocks.
+       */
+      mermaidConfig(),
+      ...plugins,
+    ],
   },
 });
 

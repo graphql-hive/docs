@@ -20,6 +20,5 @@
     "dist",
     "**/*.stories.ts",
     "**/*.stories.tsx",
-    "src/guild-components/server"
   ]
 }

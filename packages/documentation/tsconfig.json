@@ -9,6 +9,9 @@
       "@hive/design-system/*": ["../design-system/src/*"],
       "fumadocs-mdx:collections/*": ["./.source/*"]
     },
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "composite": true,
+    "noEmit": false,
+    "outDir": "dist"
   }
 }

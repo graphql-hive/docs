@@ -1,6 +1,6 @@
-import { clsx } from 'clsx';
+import { cx } from 'class-variance-authority';
 import { twMerge } from 'tailwind-merge';
 
-export const cn: typeof clsx = (...args) => {
-  return twMerge(clsx(args));
+export const cn: typeof cx = (...args) => {
+  return twMerge(cx(args));
 };

@@ -1,0 +1,20 @@
+on:
+  workflow_call:
+
+jobs:
+  unit:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 2
+
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+  
+      - name: install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: run integration and unit tests
+        run: bun run test:bun

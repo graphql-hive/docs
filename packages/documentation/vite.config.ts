@@ -25,8 +25,8 @@ export default defineConfig({
               params: {
                 overrides: {
                   minifyStyles: false,
-                  removeViewBox: false,
                   removeTitle: false,
+                  removeViewBox: false,
                 },
               },
             },
@@ -43,7 +43,7 @@ export default defineConfig({
     tanstackStart({
       prerender: {
         // TanStack Start prerender has path bug with Vercel preset
-        enabled: false,
+        enabled: false, // todo: enable this
       },
     }),
     react(),
@@ -60,7 +60,6 @@ export default defineConfig({
     port: 1440,
   },
   ssr: {
-    // Ensure workspace packages and their deps are bundled
-    noExternal: ["@hive/design-system", "clsx", "tailwind-merge"],
+    noExternal: ["@hive/design-system", "tailwind-merge"],
   },
 });

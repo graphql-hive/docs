@@ -1,7 +1,7 @@
+import { Footer, Navigation } from "@/components/navigation";
 import { PageActions } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
 import { source } from "@/lib/source";
-import { Navigation, Footer } from "@/components/navigation";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { isMarkdownPreferred } from "fumadocs-core/negotiation";
@@ -20,7 +20,7 @@ import defaultMdxComponents from "fumadocs-ui/mdx";
 export const Route = createFileRoute("/docs/$")({
   component: Page,
   loader: async ({ params }) => {
-    const slugs = params._splat?.split("/") ?? [];
+    const slugs = params._splat?.split("/").filter(Boolean) ?? [];
     const data = await serverLoader({ data: slugs });
     await clientLoader.preload(data.path);
     return data;
