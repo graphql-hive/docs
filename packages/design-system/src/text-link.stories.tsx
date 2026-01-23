@@ -1,20 +1,20 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { hiveThemeDecorator } from '../../../../.storybook/hive-theme-decorator';
-import { ArrowIcon } from './icons';
-import { TextLink, TextLinkProps } from './text-link';
+import { Meta, StoryObj } from "@storybook/react";
+import { hiveThemeDecorator } from "./__storybook__/hive-theme-decorator";
+import { ArrowIcon } from "./icons";
+import { TextLink, TextLinkProps } from "./text-link";
 
 export default {
-  title: 'Components/TextLink',
+  title: "Components/TextLink",
   component: TextLink,
   decorators: [hiveThemeDecorator],
   args: {
-    href: '#',
+    href: "#",
   },
 } satisfies Meta;
 
 export const WithUnderline: StoryObj<TextLinkProps> = {
   args: {
-    children: 'The Guild',
+    children: "The Guild",
   },
 };
 

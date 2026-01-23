@@ -1,4 +1,4 @@
-import { UnionToIntersection } from './types/utility';
+import { UnionToIntersection } from "./types/utility";
 
 /**
  * Next.js page props type.
@@ -12,7 +12,10 @@ export interface NextPageProps<
   params: Promise<
     UnionToIntersection<
       {
-        [K in TParams]: Record<K extends `...${infer U}` ? U : K, K extends `...${string}` ? string[] : string>;
+        [K in TParams]: Record<
+          K extends `...${infer U}` ? U : K,
+          K extends `...${string}` ? string[] : string
+        >;
       }[TParams]
     >
   >;

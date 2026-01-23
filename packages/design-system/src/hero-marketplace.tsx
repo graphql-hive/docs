@@ -1,32 +1,38 @@
-import clsx from 'clsx';
-import { ReactElement } from 'react';
+import clsx from "clsx";
+import { ReactElement } from "react";
 
-import { IHeroMarketplaceProps } from '../types/components';
-import { Button } from './button';
-import { Image, StaticImageData } from './image';
-import CubeBL from './static/illustrations/marketplace-cube-bl.png';
-import CubeBR from './static/illustrations/marketplace-cube-br.png';
-import CubeTL from './static/illustrations/marketplace-cube-tl.png';
-import CubeTR from './static/illustrations/marketplace-cube-tr.png';
-import IllustrationDesktop from './static/illustrations/marketplace-desktop.png';
-import IllustrationMobile from './static/illustrations/marketplace-mobile.png';
+import { IHeroMarketplaceProps } from "../types/components";
+import { Button } from "./button";
+import { Image, StaticImageData } from "./image";
+import CubeBL from "./static/illustrations/marketplace-cube-bl.png";
+import CubeBR from "./static/illustrations/marketplace-cube-br.png";
+import CubeTL from "./static/illustrations/marketplace-cube-tl.png";
+import CubeTR from "./static/illustrations/marketplace-cube-tr.png";
+import IllustrationDesktop from "./static/illustrations/marketplace-desktop.png";
+import IllustrationMobile from "./static/illustrations/marketplace-mobile.png";
 
 const Shadow = ({ className }: { className: string }): ReactElement => {
   return (
     <span
       className={clsx(
-        'absolute size-[750px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl',
+        "absolute size-[750px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl",
         className,
       )}
     />
   );
 };
 
-const Cube = ({ className, src }: { className: string; src: StaticImageData }): ReactElement => {
+const Cube = ({
+  className,
+  src,
+}: {
+  className: string;
+  src: StaticImageData;
+}): ReactElement => {
   return (
     <Image
       alt="Cube"
-      className={clsx('absolute -translate-x-1/2 -translate-y-1/2', className)}
+      className={clsx("absolute -translate-x-1/2 -translate-y-1/2", className)}
       src={src}
     />
   );
@@ -39,11 +45,11 @@ export const HeroMarketplace = ({
   link,
   title,
 }: IHeroMarketplaceProps): ReactElement => (
-  <section className={clsx('overflow-hidden bg-white dark:bg-dark', className)}>
+  <section className={clsx("overflow-hidden bg-white dark:bg-dark", className)}>
     <div className="relative">
       <div
         className="absolute inset-0 overflow-hidden bg-black dark:bg-dark"
-        style={{ '--colorA': '#ff34ae', '--colorB': '#1cc8ee' }}
+        style={{ "--colorA": "#ff34ae", "--colorB": "#1cc8ee" }}
       >
         <Shadow className="left-[-30px] top-[-175px] [background:var(--colorA)] md:left-[-60px] md:top-[-150px]" />
         <Shadow className="bottom-[-800px] right-[-700px] hidden [background:var(--colorA)] md:block" />
@@ -51,7 +57,10 @@ export const HeroMarketplace = ({
       </div>
       <div>
         <Cube className="-top-2.5 left-6 md:left-10 md:top-6" src={CubeTL} />
-        <Cube className="-bottom-60 -right-52 top-auto md:bottom-auto md:top-20" src={CubeTR} />
+        <Cube
+          className="-bottom-60 -right-52 top-auto md:bottom-auto md:top-20"
+          src={CubeTR}
+        />
         <Cube className="-bottom-32 -right-20 hidden md:block" src={CubeBR} />
         <Cube className="-bottom-40 left-10 hidden md:block" src={CubeBL} />
       </div>
@@ -61,13 +70,19 @@ export const HeroMarketplace = ({
           {...image}
         >
           <source media="(min-width:768px)" srcSet={IllustrationDesktop} />
-          <Image alt="Products List" className="mx-auto w-auto" src={IllustrationMobile} />
+          <Image
+            alt="Products List"
+            className="mx-auto w-auto"
+            src={IllustrationMobile}
+          />
         </picture>
         <div className="relative z-[1]">
           <h2 className="mb-2.5 max-w-lg text-2xl font-bold text-white md:text-3xl dark:text-gray-50">
             {title}
           </h2>
-          <p className="max-w-lg text-base text-gray-300 opacity-70">{description}</p>
+          <p className="max-w-lg text-base text-gray-300 opacity-70">
+            {description}
+          </p>
           {link && (
             <div className="relative z-[1] mt-4 hidden items-center text-xs md:mt-9 md:flex">
               <Button {...link} />

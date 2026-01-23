@@ -20,7 +20,10 @@ export interface NormalizedResult {
   topLevelNavbarItems?: PageItem[];
 }
 
-export function normalizePages(_opts: { list: PageItem[]; route: string }): NormalizedResult {
+export function normalizePages(_opts: {
+  list: PageItem[];
+  route: string;
+}): NormalizedResult {
   return {
     directories: [],
     docsDirectories: [],

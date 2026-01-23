@@ -1,5 +1,10 @@
-import { GraphQLConfCard, HiveNavigation } from '@hive/design-system/hive-navigation';
-import { HiveFooter } from '@hive/design-system/hive-footer';
+import type { StaticImageData } from "@hive/design-system/image";
+
+import { HiveFooter } from "@hive/design-system/hive-footer";
+import {
+  GraphQLConfCard,
+  HiveNavigation,
+} from "@hive/design-system/hive-navigation";
 import {
   AccountBox,
   GitHubIcon,
@@ -7,40 +12,52 @@ import {
   PencilIcon,
   RightCornerIcon,
   TargetIcon,
-} from '@hive/design-system/icons';
-import { PRODUCTS } from '@hive/design-system/products';
-import type { StaticImageData } from '@hive/design-system/image';
-import graphQLConfImageSrc from './graphql-conf-image.webp';
-import { SearchTrigger } from './search-placeholder';
+} from "@hive/design-system/icons";
+import { PRODUCTS } from "@hive/design-system/products";
+
+import graphQLConfImageSrc from "./graphql-conf-image.webp";
+import { SearchTrigger } from "./search-placeholder";
 
 const graphQLConfImage: StaticImageData = {
+  height: 200,
   src: graphQLConfImageSrc,
   width: 358,
-  height: 200,
 };
 
 const developerMenu = [
-  { href: '/docs', icon: <PaperIcon />, children: 'Documentation' },
-  { href: 'https://status.graphql-hive.com/', icon: <TargetIcon />, children: 'Status' },
-  { href: '/product-updates', icon: <RightCornerIcon />, children: 'Product Updates' },
-  { href: '/case-studies', icon: <AccountBox />, children: 'Case Studies' },
-  { href: '/blog', icon: <PencilIcon />, children: 'Blog' },
-  { href: 'https://github.com/graphql-hive/console', icon: <GitHubIcon />, children: 'GitHub' },
+  { children: "Documentation", href: "/docs", icon: <PaperIcon /> },
+  {
+    children: "Status",
+    href: "https://status.graphql-hive.com/",
+    icon: <TargetIcon />,
+  },
+  {
+    children: "Product Updates",
+    href: "/product-updates",
+    icon: <RightCornerIcon />,
+  },
+  { children: "Case Studies", href: "/case-studies", icon: <AccountBox /> },
+  { children: "Blog", href: "/blog", icon: <PencilIcon /> },
+  {
+    children: "GitHub",
+    href: "https://github.com/graphql-hive/console",
+    icon: <GitHubIcon />,
+  },
 ];
 
 const footerItems = {
   resources: [
     {
-      children: 'Privacy Policy',
-      href: 'https://the-guild.dev/graphql/hive/privacy-policy.html',
-      title: 'Privacy Policy',
+      children: "Privacy Policy",
+      href: "https://the-guild.dev/graphql/hive/privacy-policy.html",
+      title: "Privacy Policy",
     },
     {
-      children: 'Terms of Use',
-      href: 'https://the-guild.dev/graphql/hive/terms-of-use.pdf',
-      title: 'Terms of Use',
+      children: "Terms of Use",
+      href: "https://the-guild.dev/graphql/hive/terms-of-use.pdf",
+      title: "Terms of Use",
     },
-    { children: 'Partners', href: '/partners', title: 'Partners' },
+    { children: "Partners", href: "/partners", title: "Partners" },
   ],
 };
 
@@ -48,13 +65,13 @@ export function Navigation() {
   return (
     <HiveNavigation
       companyMenuChildren={<GraphQLConfCard image={graphQLConfImage} />}
+      developerMenu={developerMenu}
       productName={PRODUCTS.HIVE.name}
       search={<SearchTrigger />}
-      developerMenu={developerMenu}
     />
   );
 }
 
 export function Footer() {
-  return <HiveFooter showSecurityBadges items={footerItems} />;
+  return <HiveFooter items={footerItems} showSecurityBadges />;
 }

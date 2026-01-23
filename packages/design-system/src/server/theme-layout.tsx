@@ -1,45 +1,51 @@
-import { Metadata } from 'next';
-import { PageMapItem } from 'nextra';
-import { Layout, Navbar } from 'nextra-theme-docs';
-import { Head } from 'nextra/components';
-import { getPageMap } from 'nextra/page-map';
-import { ComponentProps, FC, ReactElement, ReactNode } from 'react';
+import { Metadata } from "next";
+import { PageMapItem } from "nextra";
+import { Layout, Navbar } from "nextra-theme-docs";
+import { Head } from "nextra/components";
+import { getPageMap } from "nextra/page-map";
+import { ComponentProps, FC, ReactElement, ReactNode } from "react";
 
-import { Anchor } from '../components';
-import { HiveFooter } from '../components/hive-footer';
-import { HiveNavigation } from '../components/hive-navigation';
-import { siteOrigin, siteUrl } from '../constants';
-import { PRODUCTS } from '../products';
-import { Body } from './body.client';
+import { Anchor } from "../components";
+import { HiveFooter } from "../components/hive-footer";
+import { HiveNavigation } from "../components/hive-navigation";
+import { siteOrigin } from "../constants";
+import { PRODUCTS } from "../products";
+import { Body } from "./body.client";
 
 type LP = ComponentProps<typeof Layout>;
 
-type LayoutProps = Omit<LP, 'children' | 'docsRepositoryBase' | 'footer' | 'navbar' | 'pageMap'> &
-  Partial<Pick<LP, 'footer' | 'navbar' | 'pageMap'>> &
-  Required<Pick<LP, 'docsRepositoryBase'>>;
+type LayoutProps = Omit<
+  LP,
+  "children" | "docsRepositoryBase" | "footer" | "navbar" | "pageMap"
+> &
+  Partial<Pick<LP, "footer" | "navbar" | "pageMap">> &
+  Required<Pick<LP, "docsRepositoryBase">>;
 
 type NP = ComponentProps<typeof HiveNavigation>;
 
-type NavbarProps = Omit<NP, 'productName'> & Partial<Pick<NP, 'productName'>>;
+type NavbarProps = Omit<NP, "productName"> & Partial<Pick<NP, "productName">>;
 
 const companyItem = {
   items: {
-    about: { href: `${siteOrigin}/about-us`, title: 'About' },
-    blog: { href: `${siteOrigin}/blog`, title: 'Blog' },
-    contact: { href: `${siteOrigin}/#get-in-touch`, title: 'Contact' },
+    about: { href: `${siteOrigin}/about-us`, title: "About" },
+    blog: { href: `${siteOrigin}/blog`, title: "Blog" },
+    contact: { href: `${siteOrigin}/#get-in-touch`, title: "Contact" },
   },
-  title: 'Company',
-  type: 'menu',
+  title: "Company",
+  type: "menu",
 };
 
 const productsItems = {
   items: Object.fromEntries(
-    Object.values(PRODUCTS).map(product => [
+    Object.values(PRODUCTS).map((product) => [
       product.name,
       {
         href: product.href,
         title: (
-          <span className="inline-flex items-center gap-2" title={product.title}>
+          <span
+            className="inline-flex items-center gap-2"
+            title={product.title}
+          >
             <product.logo className="size-7 shrink-0" />
             {product.name}
           </span>
@@ -47,8 +53,8 @@ const productsItems = {
       },
     ]),
   ),
-  title: 'Products',
-  type: 'menu',
+  title: "Products",
+  type: "menu",
 };
 
 export const GuildLayout: FC<{
@@ -58,7 +64,7 @@ export const GuildLayout: FC<{
   /**
    * In case you want to pass the html props, like overriding default `class`
    */
-  htmlProps?: ComponentProps<'html'>;
+  htmlProps?: ComponentProps<"html">;
   /**
    * Nextra's `<Head>` component props
    */
@@ -66,7 +72,7 @@ export const GuildLayout: FC<{
   /**
    * Navbar logo, `null` is used in The Guild Blog
    */
-  logo: ComponentProps<typeof Navbar>['logo'] | null;
+  logo: ComponentProps<typeof Navbar>["logo"] | null;
   /**
    * Nextra's Docs Theme `<Layout>` component props
    */
@@ -74,7 +80,7 @@ export const GuildLayout: FC<{
   /**
    * Nextra's Docs Theme `<Navbar>` component props
    */
-  lightOnlyPages: ComponentProps<typeof Body>['lightOnlyPages'];
+  lightOnlyPages: ComponentProps<typeof Body>["lightOnlyPages"];
   navbarProps: NavbarProps;
   pageMap?: PageMapItem[];
   search?: ReactElement;
@@ -99,13 +105,13 @@ export const GuildLayout: FC<{
         // Add for every website except The Guild Blog
         ...(siteOrigin && { company: companyItem }),
         products: productsItems,
-        // @ts-expect-error -- fixme
+        // @ts-expect-error -- meta.data type is inferred as {} but contains arbitrary keys
         ...meta.data,
       },
     },
     // Add for every website except The Guild Blog
-    ...(siteOrigin ? [{ name: 'company', route: '#', ...companyItem }] : []),
-    { name: 'products', route: '#', ...productsItems },
+    ...(siteOrigin ? [{ name: "company", route: "#", ...companyItem }] : []),
+    { name: "products", route: "#", ...productsItems },
     ...pageMap,
   ];
 
@@ -119,7 +125,7 @@ export const GuildLayout: FC<{
       {...htmlProps}
     >
       <Head
-        backgroundColor={{ dark: '#111', light: '#fff' }}
+        backgroundColor={{ dark: "#111", light: "#fff" }}
         color={{
           hue: { dark: 67, light: 171 },
           lightness: { dark: 50, light: 24 },
@@ -172,7 +178,9 @@ export const GuildLayout: FC<{
                   href="/"
                 >
                   {logo}
-                  <span className="text-2xl font-medium tracking-[-0.16px]">{websiteName}</span>
+                  <span className="text-2xl font-medium tracking-[-0.16px]">
+                    {websiteName}
+                  </span>
                 </Anchor>
               }
             />
@@ -180,7 +188,7 @@ export const GuildLayout: FC<{
           search={search}
           {...layoutProps}
           feedback={{
-            labels: 'kind/docs',
+            labels: "kind/docs",
             ...layoutProps.feedback,
           }}
           pageMap={pageMapWithCompanyMenu}
@@ -209,14 +217,14 @@ export function getDefaultMetadata({
   return {
     alternates: {
       // https://github.com/vercel/next.js/discussions/50189#discussioncomment-10826632
-      canonical: './',
+      canonical: "./",
     },
     appleWebApp: {
       title: websiteName,
     },
     applicationName: websiteName,
     description,
-    metadataBase: new URL(siteUrl!),
+    metadataBase: new URL(process.env["SITE_URL"]!),
     robots: {
       follow: true,
       index: true,
@@ -227,18 +235,18 @@ export function getDefaultMetadata({
       template: `%s | ${websiteName}`,
     },
     twitter: {
-      card: 'summary_large_image',
-      creator: '@TheGuildDev',
-      site: 'https://the-guild.dev',
+      card: "summary_large_image",
+      creator: "@TheGuildDev",
+      site: "https://the-guild.dev",
     },
     ...additionalMetadata,
     openGraph: {
       images: `https://og-image.the-guild.dev/?product=${productName}`,
       siteName: websiteName,
-      type: 'website',
+      type: "website",
       // https://github.com/vercel/next.js/discussions/50189#discussioncomment-10826632
-      locale: 'en_US',
-      url: './',
+      locale: "en_US",
+      url: "./",
       ...additionalMetadata.openGraph,
     },
   };

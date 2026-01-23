@@ -1,10 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { GotAnIdeaSection } from '../../components/got-an-idea-section';
-import { LandingPageContainer } from '../../components/landing-page-container';
-import { components } from '../../components/ecosystem/components';
-import EcosystemPageContent from '../../components/ecosystem/content.mdx';
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/_landing/ecosystem')({
+import { components } from "../../components/ecosystem/components";
+import EcosystemPageContent from "../../components/ecosystem/content.mdx";
+import { GotAnIdeaSection } from "../../components/got-an-idea-section";
+import { LandingPageContainer } from "../../components/landing-page-container";
+
+export const Route = createFileRoute("/_landing/ecosystem")({
   component: EcosystemPage,
 });
 

@@ -1,16 +1,16 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { hiveThemeDecorator } from '../../../../.storybook/hive-theme-decorator';
-import { RightCornerIcon } from './icons';
-import { Stud, StudProps } from './stud';
+import { Meta, StoryObj } from "@storybook/react";
+import { hiveThemeDecorator } from "./__storybook__/hive-theme-decorator";
+import { RightCornerIcon } from "./icons";
+import { Stud, StudProps } from "./stud";
 
 export default {
-  title: 'Components/Stud',
+  title: "Components/Stud",
   component: Stud,
   decorators: [hiveThemeDecorator],
 } satisfies Meta<StudProps>;
 
 export const Default: StoryObj<StudProps> = {
-  name: 'Stud',
+  name: "Stud",
   args: {
     children: <RightCornerIcon />,
   },

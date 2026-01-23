@@ -1,95 +1,123 @@
-import { Menu } from '@base-ui-components/react/menu';
-import {
-  ComponentPropsWithoutRef,
-  createContext,
-  forwardRef,
-  useState,
-} from 'react';
+import { NavigationMenu as BaseNavigationMenu } from "@base-ui-components/react/navigation-menu";
+import { ComponentPropsWithoutRef, forwardRef, ReactNode } from "react";
 
-import { Anchor } from '../anchor';
-import { cn } from '../cn';
-import { ArrowIcon } from '../icons';
+import { Anchor } from "../anchor";
+import { cn } from "../cn";
+import { ArrowIcon } from "../icons";
 
-// Base UI NavigationMenu implementation
-// Using Base UI Menu components as the foundation
+const CONTAINER_ID = "h-navmenu-container";
 
-const CONTAINER_ID = 'h-navmenu-container';
-
-interface NavigationMenuContextValue {
-  activeValue: string | null;
-  setActiveValue: (value: string | null) => void;
-}
-
-const NavigationMenuContext = createContext<NavigationMenuContextValue>({
-  activeValue: null,
-  setActiveValue: () => {},
-});
-
-export interface NavigationMenuProps extends ComponentPropsWithoutRef<'nav'> {
+export interface NavigationMenuProps extends ComponentPropsWithoutRef<"nav"> {
   delayDuration?: number;
   forceMount?: true;
 }
 
 export const NavigationMenu = forwardRef<HTMLElement, NavigationMenuProps>(
-  ({ children, className, delayDuration: _delayDuration, forceMount: _forceMount, ...rest }, ref) => {
-    const [activeValue, setActiveValue] = useState<string | null>(null);
-
+  (
+    { children, className, delayDuration, forceMount: _forceMount, ...rest },
+    ref,
+  ) => {
     return (
-      <NavigationMenuContext.Provider value={{ activeValue, setActiveValue }}>
-        <nav
-          aria-label="Navigation Menu"
-          className={cn('relative z-10 flex flex-1 items-center', className)}
-          id={CONTAINER_ID}
-          ref={ref}
-          {...rest}
-        >
-          {children}
-          <RemoveMotionIfPreferred />
-        </nav>
-      </NavigationMenuContext.Provider>
+      <BaseNavigationMenu.Root
+        aria-label="Navigation Menu"
+        className={cn("relative z-10 flex flex-1 items-center", className)}
+        delay={delayDuration}
+        id={CONTAINER_ID}
+        ref={ref}
+        {...rest}
+      >
+        {children}
+        <BaseNavigationMenu.Portal keepMounted>
+          <BaseNavigationMenu.Positioner
+            className={cn(
+              "box-border",
+              "h-[var(--positioner-height)] w-[var(--positioner-width)] max-w-[var(--available-width)]",
+              "transition-[top,left,right,bottom] duration-[var(--duration)] ease-[var(--easing)]",
+              "data-[instant]:transition-none",
+              // Safe area for pointer to move to popup
+              "before:absolute before:content-['']",
+              "data-[side=bottom]:before:top-[-10px] data-[side=bottom]:before:right-0 data-[side=bottom]:before:left-0 data-[side=bottom]:before:h-2.5",
+            )}
+            sideOffset={6}
+            style={
+              {
+                "--duration": "0.35s",
+                "--easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+              } as React.CSSProperties
+            }
+          >
+            <BaseNavigationMenu.Popup
+              className={cn(
+                "relative origin-[var(--transform-origin)]",
+                "h-[var(--popup-height)] w-[var(--popup-width)]",
+                "rounded-xl border border-beige-200 bg-white shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)]",
+                "dark:border-neutral-800 dark:bg-neutral-900",
+                "transition-[opacity,transform,width,height] duration-[var(--duration)] ease-[var(--easing)]",
+                "data-[starting-style]:scale-95 data-[starting-style]:opacity-0",
+                "data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[ending-style]:duration-150",
+              )}
+            >
+              <BaseNavigationMenu.Viewport className="relative h-full w-full overflow-hidden" />
+            </BaseNavigationMenu.Popup>
+          </BaseNavigationMenu.Positioner>
+        </BaseNavigationMenu.Portal>
+        <RemoveMotionIfPreferred />
+      </BaseNavigationMenu.Root>
     );
   },
 );
-NavigationMenu.displayName = 'NavigationMenu';
+NavigationMenu.displayName = "NavigationMenu";
+
+interface NavigationMenuListProps {
+  children?: ReactNode;
+  className?: string;
+}
 
 export const NavigationMenuList = forwardRef<
   HTMLDivElement,
-  ComponentPropsWithoutRef<'div'>
->(({ className, ...rest }, ref) => (
-  <div
+  NavigationMenuListProps
+>(({ children, className }, ref) => (
+  <BaseNavigationMenu.List
     className={cn(
-      'group flex flex-1 list-none items-center rounded-lg border-beige-200 px-1.5 lg:border lg:px-3 dark:border-neutral-700',
+      "group flex flex-1 list-none items-center rounded-lg border-beige-200 px-1.5 lg:border lg:px-3 dark:border-neutral-700",
       className,
     )}
     ref={ref}
-    {...rest}
-  />
+  >
+    {children}
+  </BaseNavigationMenu.List>
 ));
-NavigationMenuList.displayName = 'NavigationMenuList';
+NavigationMenuList.displayName = "NavigationMenuList";
+
+interface NavigationMenuItemProps {
+  children?: ReactNode;
+  className?: string;
+  value?: string;
+}
 
 export const NavigationMenuItem = forwardRef<
   HTMLDivElement,
-  ComponentPropsWithoutRef<'div'> & { value?: string }
->(({ children, className, value: _value, ...rest }, ref) => {
-  const [open, setOpen] = useState(false);
-
+  NavigationMenuItemProps
+>(({ children, className, value }, ref) => {
   return (
-    <Menu.Root onOpenChange={setOpen} open={open}>
-      <div className={cn('relative', className)} ref={ref} {...rest}>
-        {children}
-      </div>
-    </Menu.Root>
+    <BaseNavigationMenu.Item
+      className={cn("relative", className)}
+      ref={ref}
+      value={value}
+    >
+      {children}
+    </BaseNavigationMenu.Item>
   );
 });
-NavigationMenuItem.displayName = 'NavigationMenuItem';
+NavigationMenuItem.displayName = "NavigationMenuItem";
 
 export const NavigationMenuTrigger = forwardRef<
   HTMLButtonElement,
-  ComponentPropsWithoutRef<'button'>
+  ComponentPropsWithoutRef<"button">
 >(({ children, className, disabled, ...rest }, ref) => (
-  <Menu.Trigger
+  <BaseNavigationMenu.Trigger
     className={cn(
-      'hive-focus cursor-default rounded p-3 font-medium leading-normal text-green-800 aria-expanded:text-green-1000 dark:text-neutral-300 dark:aria-expanded:text-neutral-100',
+      "hive-focus cursor-default rounded p-3 font-medium leading-normal text-green-800 data-[popup-open]:text-green-1000 dark:text-neutral-300 dark:data-[popup-open]:text-neutral-100",
       className,
     )}
     disabled={disabled ?? false}
@@ -97,78 +125,92 @@ export const NavigationMenuTrigger = forwardRef<
     {...rest}
   >
     {children}
-  </Menu.Trigger>
+  </BaseNavigationMenu.Trigger>
 ));
-NavigationMenuTrigger.displayName = 'NavigationMenuTrigger';
+NavigationMenuTrigger.displayName = "NavigationMenuTrigger";
 
 export const NavigationMenuContent = forwardRef<
   HTMLDivElement,
-  ComponentPropsWithoutRef<'div'>
->(({ children, className, id, ...rest }, ref) => (
-  <Menu.Portal>
-    <Menu.Positioner sideOffset={8}>
-      <Menu.Popup
-        className={cn(
-          'absolute left-0 top-0 w-auto rounded-xl border border-beige-200 bg-white p-6 shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] dark:border-neutral-800 dark:bg-neutral-900',
-          'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 transition-opacity',
-          className,
-        )}
-        id={id ?? undefined}
-        ref={ref}
-        {...rest}
-      >
-        {children}
-      </Menu.Popup>
-    </Menu.Positioner>
-  </Menu.Portal>
+  ComponentPropsWithoutRef<"div">
+>(({ children, className, ...rest }, ref) => (
+  <BaseNavigationMenu.Content
+    className={cn(
+      "h-full w-auto bg-white p-6 dark:bg-neutral-900",
+      // Sliding animation between menus
+      "transition-[opacity,transform] duration-[var(--duration)] ease-[var(--easing)]",
+      "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
+      "data-[starting-style]:data-[activation-direction=left]:-translate-x-12",
+      "data-[starting-style]:data-[activation-direction=right]:translate-x-12",
+      "data-[ending-style]:data-[activation-direction=left]:translate-x-12",
+      "data-[ending-style]:data-[activation-direction=right]:-translate-x-12",
+      className,
+    )}
+    ref={ref}
+    {...rest}
+  >
+    {children}
+  </BaseNavigationMenu.Content>
 ));
-NavigationMenuContent.displayName = 'NavigationMenuContent';
+NavigationMenuContent.displayName = "NavigationMenuContent";
 
-export interface NavigationMenuLinkProps
-  extends Omit<ComponentPropsWithoutRef<'a'>, 'href'> {
+export interface NavigationMenuLinkProps extends Omit<
+  ComponentPropsWithoutRef<"a">,
+  "href"
+> {
   arrow?: boolean;
   href: string;
 }
 
-export const NavigationMenuLink = forwardRef<HTMLAnchorElement, NavigationMenuLinkProps>(
-  ({ arrow, children, className, href, ...rest }, ref) => {
-    return (
-      <Anchor
-        className={cn(
-          'hive-focus rounded p-3 leading-normal text-green-800 transition-colors hover:bg-beige-100 hover:text-green-1000 dark:text-neutral-300 dark:hover:bg-neutral-800/50 dark:hover:text-neutral-100',
-          arrow && 'flex items-center',
-          className,
-        )}
-        href={href}
-        ref={ref}
-        {...(href.startsWith('http') ? { rel: 'noopener noreferrer', target: '_blank' } : {})}
-        {...rest}
-      >
-        {children}
-        {arrow && <ArrowIcon className="ml-auto size-6 shrink-0 opacity-0 transition-all" />}
-      </Anchor>
-    );
-  },
-);
-NavigationMenuLink.displayName = 'NavigationMenuLink';
+export const NavigationMenuLink = forwardRef<
+  HTMLAnchorElement,
+  NavigationMenuLinkProps
+>(({ arrow, children, className, href, ...rest }, ref) => {
+  return (
+    <BaseNavigationMenu.Link
+      className={cn(
+        "hive-focus rounded p-3 leading-normal text-green-800 transition-colors hover:bg-beige-100 hover:text-green-1000 dark:text-neutral-300 dark:hover:bg-neutral-800/50 dark:hover:text-neutral-100",
+        arrow && "flex items-center",
+        className,
+      )}
+      ref={ref}
+      render={
+        <Anchor
+          href={href}
+          {...(href.startsWith("http")
+            ? { rel: "noopener noreferrer", target: "_blank" }
+            : {})}
+        />
+      }
+      {...rest}
+    >
+      {children}
+      {arrow && (
+        <ArrowIcon className="ml-auto size-6 shrink-0 opacity-0 transition-all" />
+      )}
+    </BaseNavigationMenu.Link>
+  );
+});
+NavigationMenuLink.displayName = "NavigationMenuLink";
 
+// Viewport is now rendered inside NavigationMenu.Root automatically
+// This is kept for API compatibility
 export const NavigationMenuViewport = forwardRef<
   HTMLDivElement,
-  ComponentPropsWithoutRef<'div'>
+  ComponentPropsWithoutRef<"div">
 >(function NavigationMenuViewport() {
-  // Viewport is handled by Menu.Portal/Positioner now
-  // This is kept for API compatibility but doesn't render anything
   return null;
 });
-NavigationMenuViewport.displayName = 'NavigationMenuViewport';
+NavigationMenuViewport.displayName = "NavigationMenuViewport";
 
+// Indicator is not used with Base UI NavigationMenu
+// Kept for API compatibility
 export const NavigationMenuIndicator = forwardRef<
   HTMLDivElement,
-  ComponentPropsWithoutRef<'div'>
+  ComponentPropsWithoutRef<"div"> & { children?: ReactNode }
 >(({ className, ...rest }, ref) => (
   <div
     className={cn(
-      'top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden',
+      "top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden",
       className,
     )}
     ref={ref}
@@ -177,7 +219,7 @@ export const NavigationMenuIndicator = forwardRef<
     <div className="relative top-[60%] size-2 rotate-45 rounded-tl-sm bg-beige-200 shadow-md" />
   </div>
 ));
-NavigationMenuIndicator.displayName = 'NavigationMenuIndicator';
+NavigationMenuIndicator.displayName = "NavigationMenuIndicator";
 
 // We're removing fade-in and fade-out too, because without the slide animations they make the content less readable.
 function RemoveMotionIfPreferred() {

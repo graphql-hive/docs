@@ -1,16 +1,16 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { dummyInfoList } from '../helpers/dummy';
-import { InfoList } from './info-list';
+import { Meta, StoryObj } from "@storybook/react";
+import { dummyInfoList } from "../helpers/dummy";
+import { InfoList } from "./info-list";
 
 export default {
-  title: 'Components/Lists/InfoList',
+  title: "Components/Lists/InfoList",
   component: InfoList,
   argTypes: {
     title: {
-      name: 'Title',
+      name: "Title",
     },
     items: {
-      name: 'Items',
+      name: "Items",
     },
   },
 } satisfies Meta<typeof InfoList>;

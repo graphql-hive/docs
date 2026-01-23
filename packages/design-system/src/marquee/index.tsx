@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from "react";
 
-import { cn } from '../cn';
-import { useTweenPlaybackRate } from './use-tween-playback-rate';
+import { cn } from "../cn";
+import { useTweenPlaybackRate } from "./use-tween-playback-rate";
 
 const PresetSpeedToMs = {
   fast: 20_000,
@@ -13,7 +13,7 @@ const PresetSpeedToMs = {
 
 export interface MarqueeProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
-  direction?: 'left' | 'right';
+  direction?: "left" | "right";
   /**
    * Seconds to stop the animation
    */
@@ -25,14 +25,16 @@ export interface MarqueeProps extends React.HTMLAttributes<HTMLDivElement> {
 export function Marquee({
   children,
   className,
-  direction = 'left',
+  direction = "left",
   pauseDurationSeconds = 1,
   pauseOnHover = false,
-  speed = 'normal',
+  speed = "normal",
   ...rest
 }: MarqueeProps) {
   const animationDuration =
-    typeof speed === 'number' ? speed : PresetSpeedToMs[speed as keyof typeof PresetSpeedToMs];
+    typeof speed === "number"
+      ? speed
+      : PresetSpeedToMs[speed as keyof typeof PresetSpeedToMs];
 
   const tweenPlaybackRate = useTweenPlaybackRate();
 
@@ -41,18 +43,18 @@ export function Marquee({
   return (
     <div
       className={cn(
-        '[mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]',
+        "[mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className,
       )}
       {...rest}
     >
       <div
         className={cn(
-          'flex w-max animate-[marquee_var(--animation-duration)_var(--animation-direction)_linear_infinite] gap-1 py-0.5 sm:gap-2 sm:py-1',
+          "flex w-max animate-[marquee_var(--animation-duration)_var(--animation-direction)_linear_infinite] gap-1 py-0.5 sm:gap-2 sm:py-1",
         )}
         onMouseEnter={
           pauseOnHover
-            ? event => {
+            ? (event) => {
                 const animation = event.currentTarget.getAnimations()[0];
                 if (animation) tweenPlaybackRate(animation, -STEP);
               }
@@ -60,7 +62,7 @@ export function Marquee({
         }
         onMouseLeave={
           pauseOnHover
-            ? event => {
+            ? (event) => {
                 const animation = event.currentTarget.getAnimations()[0];
                 if (animation) tweenPlaybackRate(animation, STEP);
               }
@@ -68,9 +70,9 @@ export function Marquee({
         }
         style={
           {
-            '--animation-direction': direction === 'left' ? 'forwards' : 'reverse',
-            '--animation-duration': `${animationDuration}ms`,
-             
+            "--animation-direction":
+              direction === "left" ? "forwards" : "reverse",
+            "--animation-duration": `${animationDuration}ms`,
           } as {}
         }
       >
@@ -93,8 +95,9 @@ export function Marquee({
 }
 
 export interface MarqueeRowsProps
-  extends React.HTMLAttributes<HTMLElement>,
-    Pick<MarqueeProps, 'pauseOnHover' | 'speed'> {
+  extends
+    React.HTMLAttributes<HTMLElement>,
+    Pick<MarqueeProps, "pauseOnHover" | "speed"> {
   children: ReactElement[];
   rows: number;
 }
@@ -119,10 +122,10 @@ export function MarqueeRows({
   }
 
   return (
-    <div className={cn('overflow-hidden', className)} {...rest}>
+    <div className={cn("overflow-hidden", className)} {...rest}>
       {chunks.map((chunk, index) => (
         <Marquee
-          direction={index % 2 ? 'left' : 'right'}
+          direction={index % 2 ? "left" : "right"}
           key={index}
           pauseOnHover={pauseOnHover}
           speed={speed}

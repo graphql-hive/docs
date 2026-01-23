@@ -1,9 +1,9 @@
-import { Meta } from '@storybook/react';
-import { hiveThemeDecorator } from '../../../../.storybook/hive-theme-decorator';
-import { GetYourAPIGameRightSection } from './get-your-api-game-right-section';
+import { Meta } from "@storybook/react";
+import { hiveThemeDecorator } from "./__storybook__/hive-theme-decorator";
+import { GetYourAPIGameRightSection } from "./get-your-api-game-right-section";
 
 export default {
-  title: 'Hive/GetYourAPIGameRightSection',
+  title: "Hive/GetYourAPIGameRightSection",
   component: GetYourAPIGameRightSection,
   decorators: [hiveThemeDecorator],
   parameters: {

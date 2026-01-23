@@ -1,9 +1,9 @@
-import clsx from 'clsx';
-import { ReactElement } from 'react';
+import clsx from "clsx";
+import { ReactElement } from "react";
 
-import { IFeatureListProps } from '../types/components';
-import { Anchor } from './anchor';
-import { Image } from './image';
+import { IFeatureListProps } from "../types/components";
+import { Anchor } from "./anchor";
+import { Image } from "./image";
 
 export const FeatureList = ({
   className,
@@ -12,7 +12,7 @@ export const FeatureList = ({
   link,
   title,
 }: IFeatureListProps): ReactElement => (
-  <section className={clsx('bg-white dark:bg-dark', className)}>
+  <section className={clsx("bg-white dark:bg-dark", className)}>
     <div className="container py-14">
       {title && (
         <div className="mb-6 flex flex-col items-center">
@@ -27,16 +27,24 @@ export const FeatureList = ({
           {link && (
             <Anchor
               {...link}
-              className={clsx('w-max text-sm text-cyan-400 hover:text-cyan-300', link.className)}
+              className={clsx(
+                "w-max text-sm text-cyan-400 hover:text-cyan-300",
+                link.className,
+              )}
             />
           )}
         </div>
       )}
       <div className="flex flex-wrap justify-center gap-12">
-        {items.map(item => (
+        {items.map((item) => (
           <div className="flex w-56 flex-col items-center" key={item.title}>
-            <Image {...item.image} className={clsx('w-28', item.image.className)} />
-            <h3 className="m-0 text-lg font-bold text-black dark:text-gray-50">{item.title}</h3>
+            <Image
+              {...item.image}
+              className={clsx("w-28", item.image.className)}
+            />
+            <h3 className="m-0 text-lg font-bold text-black dark:text-gray-50">
+              {item.title}
+            </h3>
             <div className="text-center text-sm text-gray-500 dark:text-gray-400">
               {item.description}
             </div>
@@ -44,7 +52,7 @@ export const FeatureList = ({
               <Anchor
                 {...item.link}
                 className={clsx(
-                  'mt-2 w-max text-sm text-cyan-400 hover:text-cyan-300',
+                  "mt-2 w-max text-sm text-cyan-400 hover:text-cyan-300",
                   item.link.className,
                 )}
               />

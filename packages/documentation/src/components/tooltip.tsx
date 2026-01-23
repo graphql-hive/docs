@@ -1,11 +1,17 @@
-'use client';
+"use client";
 
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState } from "react";
 
 /**
  * TODO: Migrate to Base UI Tooltip
  */
-export function Tooltip({ children, content }: { children: ReactNode; content: string; }) {
+export function Tooltip({
+  children,
+  content,
+}: {
+  children: ReactNode;
+  content: string;
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

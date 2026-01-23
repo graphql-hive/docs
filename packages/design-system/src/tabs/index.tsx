@@ -1,10 +1,10 @@
-'use no memo';
+"use no memo";
 
-import { ComponentProps } from 'react';
+import { ComponentProps } from "react";
 
-import { Tabs as _Tabs, Tab } from './index.client';
+import { Tabs as _Tabs, Tab } from "./index.client";
 
-export type { TabsProps } from './index.client';
+export type { TabsProps } from "./index.client";
 
 // Workaround to fix
 // Error: Cannot access Tab.propTypes on the server. You cannot dot into a client module from a
@@ -51,6 +51,9 @@ export type { TabsProps } from './index.client';
  *   <Tabs.Tab>**Yarn** is a software packaging system.</Tabs.Tab>
  * </Tabs>
  */
-export const Tabs = Object.assign((props: ComponentProps<typeof _Tabs>) => <_Tabs {...props} />, {
-  Tab,
-});
+export const Tabs = Object.assign(
+  (props: ComponentProps<typeof _Tabs>) => <_Tabs {...props} />,
+  {
+    Tab,
+  },
+);

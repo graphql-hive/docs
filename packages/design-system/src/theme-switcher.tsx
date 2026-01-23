@@ -1,15 +1,17 @@
-'use client';
+"use client";
 
-import { useTheme } from 'nextra-theme-docs';
-import { FC, ReactNode } from 'react';
+import { useTheme } from "nextra-theme-docs";
+import { FC, ReactNode } from "react";
 
-export const ThemeSwitcherButton: FC<{ children: ReactNode }> = ({ children }) => {
+export const ThemeSwitcherButton: FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const { resolvedTheme, setTheme } = useTheme();
 
   return (
     <button
       className="self-center rounded-xs p-2 outline-hidden focus-visible:ring-3"
-      onClick={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
+      onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
     >
       {children}
     </button>

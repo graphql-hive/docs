@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Tab as HeadlessTab,
@@ -11,9 +11,9 @@ import {
   TabPanelProps,
   TabPanels,
   // this component is almost verbatim copied from Nextra, so we keep @headlessui/react to guarantee it works the same
-} from '@headlessui/react';
-import { useLocation } from '@tanstack/react-router';
-import cn from 'clsx';
+} from "@headlessui/react";
+import { useLocation } from "@tanstack/react-router";
+import cn from "clsx";
 import {
   FC,
   Fragment,
@@ -24,9 +24,9 @@ import {
   useLayoutEffect,
   useRef,
   useState,
-} from 'react';
+} from "react";
 
-import { useHash } from '../use-hash';
+import { useHash } from "../use-hash";
 
 type TabItem = ReactElement | string;
 
@@ -37,14 +37,16 @@ type TabObjectItem = {
 };
 
 function isTabObjectItem(item: unknown): item is TabObjectItem {
-  return !!item && typeof item === 'object' && 'label' in item;
+  return !!item && typeof item === "object" && "label" in item;
 }
 
-export interface TabsProps
-  extends Pick<TabGroupProps, 'defaultIndex' | 'onChange' | 'selectedIndex'> {
+export interface TabsProps extends Pick<
+  TabGroupProps,
+  "defaultIndex" | "onChange" | "selectedIndex"
+> {
   children: ReactNode;
   /** Tabs CSS class name. */
-  className?: TabListProps['className'];
+  className?: TabListProps["className"];
   items: (TabItem | TabObjectItem)[];
   /**
    * URLSearchParams key for persisting the selected tab.
@@ -59,7 +61,7 @@ export interface TabsProps
    */
   storageKey?: true | string | null;
   /** Tab CSS class name. */
-  tabClassName?: HeadlessTabProps['className'];
+  tabClassName?: HeadlessTabProps["className"];
 }
 
 export const Tabs = ({
@@ -68,7 +70,7 @@ export const Tabs = ({
   defaultIndex = 0,
   items,
   onChange,
-  searchParamKey = 'tab',
+  searchParamKey = "tab",
   selectedIndex: _selectedIndex,
   storageKey = null,
   tabClassName,
@@ -94,7 +96,13 @@ export const Tabs = ({
     id,
   );
 
-  useActiveTabFromStorage(storageKey, items, setSelectedIndex, tabIndexFromSearchParams !== -1, id);
+  useActiveTabFromStorage(
+    storageKey,
+    items,
+    setSelectedIndex,
+    tabIndexFromSearchParams !== -1,
+    id,
+  );
 
   const handleChange = (index: number) => {
     onChange?.(index);
@@ -105,7 +113,9 @@ export const Tabs = ({
 
       // the storage event only get picked up (by the listener) if the localStorage was changed in
       // another browser's tab/window (of the same app), but not within the context of the current tab.
-      globalThis.dispatchEvent(new StorageEvent('storage', { key: storageKey, newValue }));
+      globalThis.dispatchEvent(
+        new StorageEvent("storage", { key: storageKey, newValue }),
+      );
     } else {
       setSelectedIndex(index);
     }
@@ -131,7 +141,7 @@ export const Tabs = ({
 
       globalThis.history.replaceState(
         null,
-        '',
+        "",
         `${globalThis.location.pathname}?${searchParams.toString()}`,
       );
     }
@@ -145,37 +155,39 @@ export const Tabs = ({
       selectedIndex={selectedIndex}
     >
       <TabList
-        className={args =>
+        className={(args) =>
           cn(
-            'nextra-scrollbar overflow-x-auto overflow-y-hidden overscroll-x-contain',
-            'mt-4 flex w-full gap-2 border-b border-beige-200 pb-px dark:border-neutral-800',
-            'focus-visible:hive-focus',
-            typeof className === 'function' ? className(args) : className,
+            "nextra-scrollbar overflow-x-auto overflow-y-hidden overscroll-x-contain",
+            "mt-4 flex w-full gap-2 border-b border-beige-200 pb-px dark:border-neutral-800",
+            "focus-visible:hive-focus",
+            typeof className === "function" ? className(args) : className,
           )
         }
       >
         {items.map((item, index) => (
           <HeadlessTab
-            className={args => {
+            className={(args) => {
               const { disabled, focus, hover, selected } = args;
               return cn(
-                focus && 'hive-focus ring-inset',
-                'cursor-pointer whitespace-nowrap',
-                'rounded-t p-2 font-medium leading-5 transition-colors',
-                '-mb-0.5 select-none border-b-2',
+                focus && "hive-focus ring-inset",
+                "cursor-pointer whitespace-nowrap",
+                "rounded-t p-2 font-medium leading-5 transition-colors",
+                "-mb-0.5 select-none border-b-2",
                 selected
-                  ? 'border-current outline-hidden'
+                  ? "border-current outline-hidden"
                   : hover
-                    ? 'border-beige-200 dark:border-neutral-800'
-                    : 'border-transparent',
+                    ? "border-beige-200 dark:border-neutral-800"
+                    : "border-transparent",
                 selected
-                  ? 'text-green-900 dark:text-primary'
+                  ? "text-green-900 dark:text-primary"
                   : disabled
-                    ? 'pointer-events-none text-beige-400 dark:text-neutral-600'
+                    ? "pointer-events-none text-beige-400 dark:text-neutral-600"
                     : hover
-                      ? 'text-black dark:text-white'
-                      : 'text-beige-600 dark:text-beige-200',
-                typeof tabClassName === 'function' ? tabClassName(args) : tabClassName,
+                      ? "text-black dark:text-white"
+                      : "text-beige-600 dark:text-beige-200",
+                typeof tabClassName === "function"
+                  ? tabClassName(args)
+                  : tabClassName,
               );
             }}
             disabled={isTabObjectItem(item) && item.disabled}
@@ -200,11 +212,11 @@ export const Tab: FC<TabPanelProps> = ({
   return (
     <TabPanel
       {...props}
-      className={args =>
+      className={(args) =>
         cn(
-          'mt-[1.25em] rounded',
-          args.focus && 'hive-focus',
-          typeof className === 'function' ? className(args) : className,
+          "mt-[1.25em] rounded",
+          args.focus && "hive-focus",
+          typeof className === "function" ? className(args) : className,
         )
       }
       unmount={unmount}
@@ -232,7 +244,9 @@ function useActiveTabFromURL(
 
   useIsomorphicLayoutEffect(() => {
     const tabPanel = hash
-      ? tabPanelsRef.current?.querySelector(`[role=tabpanel]:has([id="${hash}"])`)
+      ? tabPanelsRef.current?.querySelector(
+          `[role=tabpanel]:has([id="${hash}"])`,
+        )
       : null;
 
     if (tabPanel) {
@@ -246,9 +260,12 @@ function useActiveTabFromURL(
           //   a hashchange event, but we don't look for a tab panel if there is no hash.
 
           // Clear hash first, otherwise page isn't scrolled
-          location.hash = '';
+          // eslint-disable-next-line react-hooks/immutability -- updating URL hash is intentional side effect
+          globalThis.location.hash = "";
           // Execute on next tick after `selectedIndex` update
-          requestAnimationFrame(() => (location.hash = `#${hash}`));
+          requestAnimationFrame(() => {
+            globalThis.location.hash = `#${hash}`;
+          });
         }
         index++;
       }
@@ -262,12 +279,12 @@ function useActiveTabFromURL(
       newSearchParams.delete(searchParamKey);
       globalThis.history.replaceState(
         null,
-        '',
+        "",
         `${globalThis.location.pathname}?${newSearchParams.toString()}`,
       );
     };
     // tabPanelsRef is a ref, so it's not a dependency
-  }, [hash, tabsInSearchParams.join(',')]);
+  }, [hash, tabsInSearchParams.join(",")]);
 
   return tabIndexFromSearchParams;
 }
@@ -285,6 +302,7 @@ function useActiveTabFromStorage(
       return;
     }
 
+    // eslint-disable-next-line unicorn/consistent-function-scoping -- needs closure over items, id, setSelectedIndex
     const setSelectedTab = (key: string) => {
       const index = items.findIndex((_, i) => getTabKey(items, i, id) === key);
       if (index !== -1) {
@@ -306,16 +324,20 @@ function useActiveTabFromStorage(
       setSelectedTab(value);
     }
 
-    globalThis.addEventListener('storage', onStorageChange);
+    globalThis.addEventListener("storage", onStorageChange);
     return () => {
-      globalThis.removeEventListener('storage', onStorageChange);
+      globalThis.removeEventListener("storage", onStorageChange);
     };
-  }, [storageKey]);
+  }, [storageKey, items, setSelectedIndex, id]);
 }
 
-type TabKey = string & { __brand: 'TabKey' };
+type TabKey = string & { __brand: "TabKey" };
 
-function getTabKey(items: (TabItem | TabObjectItem)[], index: number, prefix: string): TabKey {
+function getTabKey(
+  items: (TabItem | TabObjectItem)[],
+  index: number,
+  prefix: string,
+): TabKey {
   const item = items[index];
   const isObject = isTabObjectItem(item);
   // if the key is defined by user, we use it
@@ -325,17 +347,21 @@ function getTabKey(items: (TabItem | TabObjectItem)[], index: number, prefix: st
   const label = isObject ? item.label : item;
   // otherwise we use the slugified label prefixed by the tab group id, if the label is a string
   // or the index of the item in the items array prefixed by the tab group id if the label is a ReactElement
-  const key = typeof label === 'string' ? slugify(label) : `${prefix}-${index.toString()}`;
+  const key =
+    typeof label === "string"
+      ? slugify(label)
+      : `${prefix}-${index.toString()}`;
   return key as TabKey;
 }
 
 function slugify(label: string) {
   return label
     .toLowerCase()
-    .normalize('NFD')
-    .replaceAll(/[\u0300-\u036F]/g, '') // strip accents
-    .replaceAll(/[^a-z0-9]+/g, '-')
-    .replaceAll(/^-+|-+$/g, '');
+    .normalize("NFD")
+    .replaceAll(/[\u0300-\u036F]/g, "") // strip accents
+    .replaceAll(/[^a-z0-9]+/g, "-")
+    .replaceAll(/^-+|-+$/g, "");
 }
 
-const useIsomorphicLayoutEffect = globalThis.window === undefined ? useEffect : useLayoutEffect;
+const useIsomorphicLayoutEffect =
+  globalThis.window === undefined ? useEffect : useLayoutEffect;

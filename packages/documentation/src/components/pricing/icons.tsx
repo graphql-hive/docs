@@ -64,7 +64,13 @@ export function EnterpriseSupportIcon() {
 
 export function ShortCheckmarkIcon(props: React.SVGAttributes<SVGSVGElement>) {
   return (
-    <svg fill="currentColor" height="16" viewBox="0 0 16 16" width="16" {...props}>
+    <svg
+      fill="currentColor"
+      height="16"
+      viewBox="0 0 16 16"
+      width="16"
+      {...props}
+    >
       <path d="M6.66674 10.1134L12.7947 3.98602L13.7374 4.92869L6.66674 11.9994L2.42407 7.75669L3.36674 6.81402L6.66674 10.1134Z" />
     </svg>
   );
@@ -73,7 +79,17 @@ export function ShortCheckmarkIcon(props: React.SVGAttributes<SVGSVGElement>) {
 // Icons from react-icons/lu (Lucide) - replaced with native implementations
 export function GlobeLockIcon(props: React.SVGAttributes<SVGSVGElement>) {
   return (
-    <svg fill="none" height="16" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="16" {...props}>
+    <svg
+      fill="none"
+      height="16"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="16"
+      {...props}
+    >
       <path d="M15.686 15A14.5 14.5 0 0 1 12 22a14.5 14.5 0 0 1 0-20 10 10 0 1 0 9.542 13" />
       <path d="M2 12h8.5" />
       <path d="M20 6V4a2 2 0 1 0-4 0v2" />
@@ -84,7 +100,17 @@ export function GlobeLockIcon(props: React.SVGAttributes<SVGSVGElement>) {
 
 export function PackageIcon(props: React.SVGAttributes<SVGSVGElement>) {
   return (
-    <svg fill="none" height="16" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="16" {...props}>
+    <svg
+      fill="none"
+      height="16"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="16"
+      {...props}
+    >
       <path d="m7.5 4.27 9 5.15" />
       <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
       <path d="m3.3 7 8.7 5 8.7-5" />
@@ -95,7 +121,17 @@ export function PackageIcon(props: React.SVGAttributes<SVGSVGElement>) {
 
 export function UserRoundIcon(props: React.SVGAttributes<SVGSVGElement>) {
   return (
-    <svg fill="none" height="16" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="16" {...props}>
+    <svg
+      fill="none"
+      height="16"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="16"
+      {...props}
+    >
       <circle cx="12" cy="8" r="5" />
       <path d="M20 21a8 8 0 0 0-16 0" />
     </svg>
@@ -105,16 +141,36 @@ export function UserRoundIcon(props: React.SVGAttributes<SVGSVGElement>) {
 // Checkmark and X icons for comparison table
 export function CheckmarkIcon(props: React.SVGAttributes<SVGSVGElement>) {
   return (
-    <svg fill="currentColor" height="20" viewBox="0 0 20 20" width="20" {...props}>
-      <path clipRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fillRule="evenodd" />
+    <svg
+      fill="currentColor"
+      height="20"
+      viewBox="0 0 20 20"
+      width="20"
+      {...props}
+    >
+      <path
+        clipRule="evenodd"
+        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+        fillRule="evenodd"
+      />
     </svg>
   );
 }
 
 export function XIcon(props: React.SVGAttributes<SVGSVGElement>) {
   return (
-    <svg fill="currentColor" height="20" viewBox="0 0 20 20" width="20" {...props}>
-      <path clipRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" fillRule="evenodd" />
+    <svg
+      fill="currentColor"
+      height="20"
+      viewBox="0 0 20 20"
+      width="20"
+      {...props}
+    >
+      <path
+        clipRule="evenodd"
+        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+        fillRule="evenodd"
+      />
     </svg>
   );
 }

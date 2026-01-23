@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import { Anchor, AnchorProps } from './anchor';
-import { cn } from './cn';
-import { ArrowIcon } from './icons';
+import { Anchor, AnchorProps } from "./anchor";
+import { cn } from "./cn";
+import { ArrowIcon } from "./icons";
 
 export type TextLinkProps = AnchorProps;
 
@@ -10,14 +10,18 @@ export function TextLink({ children, className, ...rest }: TextLinkProps) {
   const hasArrow =
     children &&
     flattenFragments(children).some(
-      child => typeof child === 'object' && child && 'type' in child && child.type === ArrowIcon,
+      (child) =>
+        typeof child === "object" &&
+        child &&
+        "type" in child &&
+        child.type === ArrowIcon,
     );
 
   return (
     <Anchor
       className={cn(
-        'hive-focus -mx-1 -my-0.5 rounded px-1 py-0.5 hover:text-blue-700 dark:hover:text-blue-500',
-        hasArrow ? 'inline-flex items-center gap-2' : 'underline',
+        "hive-focus -mx-1 -my-0.5 rounded px-1 py-0.5 hover:text-blue-700 dark:hover:text-blue-500",
+        hasArrow ? "inline-flex items-center gap-2" : "underline",
         className,
       )}
       {...rest}
@@ -28,9 +32,12 @@ export function TextLink({ children, className, ...rest }: TextLinkProps) {
 }
 
 function flattenFragments(children: React.ReactNode): React.ReactNode[] {
-  return React.Children.toArray(children).flatMap(child =>
-    typeof child === 'object' && 'type' in child && child.type === React.Fragment
-      ? ((child as React.ReactElement<{ children?: React.ReactNode[] }>).props.children ?? [])
+  return React.Children.toArray(children).flatMap((child) =>
+    typeof child === "object" &&
+    "type" in child &&
+    child.type === React.Fragment
+      ? ((child as React.ReactElement<{ children?: React.ReactNode[] }>).props
+          .children ?? [])
       : child,
   );
 }

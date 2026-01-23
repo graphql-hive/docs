@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode } from "react";
 
-import { cn } from '../cn';
+import { cn } from "../cn";
 
 export interface HiveLayoutProps {
   children: ReactNode;
@@ -24,7 +24,7 @@ export function HiveLayout({
   navbar,
 }: HiveLayoutProps) {
   return (
-    <div className={cn('flex min-h-screen flex-col', className)}>
+    <div className={cn("flex min-h-screen flex-col", className)}>
       {navbar}
       <main className="flex-1">{children}</main>
       {footer}

@@ -1,10 +1,13 @@
-import { cn, DecorationIsolation, Heading } from '@hive/design-system';
+import { cn, DecorationIsolation, Heading } from "@hive/design-system";
 
-export function CloudNativeSection({ className, ...rest }: React.HTMLAttributes<HTMLElement>) {
+export function CloudNativeSection({
+  className,
+  ...rest
+}: React.HTMLAttributes<HTMLElement>) {
   return (
     <section
       className={cn(
-        'bg-green-1000 relative rounded-3xl px-4 py-6 text-white md:px-8 md:py-16 xl:p-24',
+        "bg-green-1000 relative rounded-3xl px-4 py-6 text-white md:px-8 md:py-16 xl:p-24",
         className,
       )}
       {...rest}
@@ -14,25 +17,26 @@ export function CloudNativeSection({ className, ...rest }: React.HTMLAttributes<
           Cloud Native Nature
         </Heading>
         <p className="mt-6 text-white/80">
-          As modern teams expect their tools to work seamlessly in serverless environments, Hive
-          Gateway is highly versatile and cloud-ready.
+          As modern teams expect their tools to work seamlessly in serverless
+          environments, Hive Gateway is highly versatile and cloud-ready.
         </p>
         <div className="mt-8 flex gap-2 max-sm:flex-col max-sm:border-t max-sm:border-green-700 max-sm:pt-4 sm:mt-12 sm:gap-12">
           <strong className="block basis-1/2 font-medium md:text-xl/7">
             Cloud-Native & Serverless Support
           </strong>
           <p className="basis-1/2 text-white/80">
-            Optimized for deployment in modern cloud and serverless environments such as AWS Lambda
-            and Cloudflare Workers, demonstrating high scalability and flexibility.
+            Optimized for deployment in modern cloud and serverless environments
+            such as AWS Lambda and Cloudflare Workers, demonstrating high
+            scalability and flexibility.
           </p>
         </div>
       </div>
       <DecorationIsolation className="max-lg:hidden">
         <svg
-          width="642"
-          height="709"
-          fill="none"
           className="absolute right-0 top-1/2 size-[709px] -translate-y-1/2"
+          fill="none"
+          height="709"
+          width="642"
         >
           <path
             d="M203.098 554.406h344.1c17.726.082 35.289-3.387 51.654-10.201 16.364-6.814 31.198-16.836 43.628-29.474 12.43-12.638 22.203-27.637 28.744-44.113 6.541-16.475 9.717-34.093 9.341-51.816-.376-17.722-4.297-35.19-11.531-51.373-7.234-16.183-17.635-30.754-30.59-42.853-12.955-12.1-28.201-21.483-44.84-27.596-16.485-6.057-34.005-8.783-51.547-8.023-2.533-40.625-20.424-78.773-50.055-106.698-29.751-28.037-69.089-43.68-109.969-43.677-56.531 0-106.159 29.263-134.697 73.365-23.813-6.223-48.677-7.325-72.95-3.232-24.392 4.113-47.627 13.378-68.157 27.177-20.5297 13.799-37.8824 31.816-50.9014 52.849-13.019 21.034-21.4053 44.6-24.5998 69.13-3.1946 24.529-1.1241 49.457 6.0734 73.124 7.1976 23.666 19.3569 45.526 35.6675 64.123 16.3105 18.597 36.3973 33.504 58.9223 43.728 22.525 10.223 46.971 15.528 71.707 15.56Z"
@@ -44,23 +48,23 @@ export function CloudNativeSection({ className, ...rest }: React.HTMLAttributes<
           />
           <defs>
             <linearGradient
+              gradientUnits="userSpaceOnUse"
               id="a"
               x1="29.7701"
-              y1="139.082"
               x2="405.93"
+              y1="139.082"
               y2="728.791"
-              gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#fff" stopOpacity=".1" />
               <stop offset="1" stopColor="#fff" stopOpacity=".4" />
             </linearGradient>
             <linearGradient
+              gradientUnits="userSpaceOnUse"
               id="b"
               x1="232"
-              y1="242"
               x2="475.998"
+              y1="242"
               y2="486.998"
-              gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#fff" stopOpacity=".1" />
               <stop offset="1" stopColor="#fff" stopOpacity=".4" />

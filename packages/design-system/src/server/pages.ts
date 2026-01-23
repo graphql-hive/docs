@@ -1,1 +1,1 @@
-export { generateStaticParamsFor, importPage } from 'nextra/pages';
+export { generateStaticParamsFor, importPage } from "nextra/pages";

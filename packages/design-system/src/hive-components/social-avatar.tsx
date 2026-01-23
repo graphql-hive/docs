@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Image } from '@unpic/react';
-import { ReactElement } from 'react';
+import { Image } from "@unpic/react";
+import { ReactElement } from "react";
 
 /**
  * TODO: We should drop this and use the avatars defined in authors/index.ts
@@ -22,9 +22,9 @@ export const SocialAvatar = ({
   if (!avatarUrl) {
     // Fallback to initials
     const initials = author.name
-      .split(' ')
-      .map(n => n[0])
-      .join('')
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
       .slice(0, 2);
     return (
       <div

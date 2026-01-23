@@ -1,24 +1,30 @@
-import { ComponentType, ReactNode } from 'react';
+import { ComponentType, ReactNode } from "react";
 
-import { ILink } from '../../types/components';
-import { Anchor } from '../anchor';
-import { cn } from '../cn';
-import { siteOrigin } from '../constants';
-import { ContactTextLink } from '../contact-us';
-import { __LANDING_WIDTHS_ID } from '../hive-layout-config';
-import { DiscordIcon, GitHubIcon, LinkedInIcon, TwitterIcon, YouTubeIcon } from '../icons/index';
-import { HiveCombinationMark } from '../logos';
-import { FOUR_MAIN_PRODUCTS, SIX_HIGHLIGHTED_PRODUCTS } from '../products';
-import { SecurityBadges } from './security-badges';
+import { ILink } from "../../types/components";
+import { Anchor } from "../anchor";
+import { cn } from "../cn";
+import { siteOrigin } from "../constants";
+import { ContactTextLink } from "../contact-us";
+import { __LANDING_WIDTHS_ID } from "../hive-layout-config";
+import {
+  DiscordIcon,
+  GitHubIcon,
+  LinkedInIcon,
+  TwitterIcon,
+  YouTubeIcon,
+} from "../icons/index";
+import { HiveCombinationMark } from "../logos";
+import { FOUR_MAIN_PRODUCTS, SIX_HIGHLIGHTED_PRODUCTS } from "../products";
+import { SecurityBadges } from "./security-badges";
 
 const INNER_BOX_WIDTH_STYLE =
-  'max-w-[90rem] [body:has(#hive-l-widths)_&]:max-w-[75rem] [body:has(#hive-l-widths)_&]:mx-4';
+  "max-w-[90rem] [body:has(#hive-l-widths)_&]:max-w-[75rem] [body:has(#hive-l-widths)_&]:mx-4";
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
   // eslint-disable-next-line no-console
   console.assert(
-    __LANDING_WIDTHS_ID === 'hive-l-widths',
-    '__LANDING_WIDTHS_ID diverged from the className used in HiveFooter.',
+    __LANDING_WIDTHS_ID === "hive-l-widths",
+    "__LANDING_WIDTHS_ID diverged from the className used in HiveFooter.",
   );
 }
 
@@ -36,7 +42,7 @@ export type HiveFooterProps = {
 
 export function HiveFooter({
   className,
-  description = 'Open-source GraphQL management platform',
+  description = "Open-source GraphQL management platform",
   href = `${siteOrigin}/`,
   items,
   logo = <HiveCombinationMark className="h-8 w-auto" />,
@@ -46,11 +52,14 @@ export function HiveFooter({
 
   return (
     <footer
-      className={cn('relative flex justify-center px-4 pb-6 pt-[72px] xl:px-[120px]', className)}
+      className={cn(
+        "relative flex justify-center px-4 pb-6 pt-[72px] xl:px-[120px]",
+        className,
+      )}
     >
       <div
         className={cn(
-          'grid w-full grid-cols-1 gap-x-6 text-green-800 max-lg:gap-y-16 sm:grid-cols-4 lg:gap-x-8 xl:gap-x-10 dark:text-neutral-400',
+          "grid w-full grid-cols-1 gap-x-6 text-green-800 max-lg:gap-y-16 sm:grid-cols-4 lg:gap-x-8 xl:gap-x-10 dark:text-neutral-400",
           INNER_BOX_WIDTH_STYLE,
         )}
       >
@@ -120,7 +129,9 @@ function List({
   if (!links?.length) return null;
 
   return (
-    <div className={cn('flex flex-col gap-y-3 text-nowrap lg:gap-y-4', className)}>
+    <div
+      className={cn("flex flex-col gap-y-3 text-nowrap lg:gap-y-4", className)}
+    >
       <h3 className="font-medium dark:text-white">{heading}</h3>
       <ul className="contents">
         {links.map((link, i) => (
@@ -146,51 +157,51 @@ export interface HiveFooterItems {
 const DEFAULT_ITEMS: HiveFooterItems = {
   company: [
     {
-      children: 'About',
-      href: 'https://the-guild.dev/about-us',
-      title: 'Learn more about us',
+      children: "About",
+      href: "https://the-guild.dev/about-us",
+      title: "Learn more about us",
     },
     {
-      children: 'Brand Assets',
-      href: 'https://the-guild.dev/logos',
-      title: 'Brand Assets',
+      children: "Brand Assets",
+      href: "https://the-guild.dev/logos",
+      title: "Brand Assets",
     },
     {
-      children: 'Newsletter',
-      href: 'https://the-guild.dev/newsletter',
-      title: 'Newsletter',
+      children: "Newsletter",
+      href: "https://the-guild.dev/newsletter",
+      title: "Newsletter",
     },
   ],
   developer: [
     {
-      children: 'Documentation',
-      href: '/docs',
-      title: 'Read the docs',
+      children: "Documentation",
+      href: "/docs",
+      title: "Read the docs",
     },
     {
-      children: 'Hive Status',
-      href: 'https://status.graphql-hive.com/',
-      title: 'Check Hive status',
+      children: "Hive Status",
+      href: "https://status.graphql-hive.com/",
+      title: "Check Hive status",
     },
     {
-      children: 'Hive Updates',
-      href: 'https://the-guild.dev/graphql/hive/product-updates',
-      title: 'Read most recent developments from Hive',
+      children: "Hive Updates",
+      href: "https://the-guild.dev/graphql/hive/product-updates",
+      title: "Read most recent developments from Hive",
     },
     {
-      children: 'Blog',
-      href: 'https://the-guild.dev/graphql/hive/blog',
-      title: 'Read our blog',
+      children: "Blog",
+      href: "https://the-guild.dev/graphql/hive/blog",
+      title: "Read our blog",
     },
   ],
   links: [
     {
-      children: 'OSS Friends',
-      href: 'https://the-guild.dev/graphql/hive/oss-friends',
+      children: "OSS Friends",
+      href: "https://the-guild.dev/graphql/hive/oss-friends",
     },
     {
-      children: 'Pricing',
-      href: 'https://the-guild.dev/graphql/hive/pricing',
+      children: "Pricing",
+      href: "https://the-guild.dev/graphql/hive/pricing",
     },
   ],
   resources: [],
@@ -198,35 +209,35 @@ const DEFAULT_ITEMS: HiveFooterItems = {
 
 HiveFooter.DEFAULT_ITEMS = DEFAULT_ITEMS;
 
-interface SocialLink extends Omit<ILink, 'children'> {
+interface SocialLink extends Omit<ILink, "children"> {
   icon: ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
 const SOCIAL_ICONS: SocialLink[] = [
   {
-    href: 'https://github.com/the-guild-org',
+    href: "https://github.com/the-guild-org",
     icon: GitHubIcon,
-    title: 'Check our GitHub account',
+    title: "Check our GitHub account",
   },
   {
-    href: 'https://twitter.com/TheGuildDev',
+    href: "https://twitter.com/TheGuildDev",
     icon: TwitterIcon,
-    title: 'Visit our Twitter',
+    title: "Visit our Twitter",
   },
   {
-    href: 'https://linkedin.com/company/the-guild-software',
+    href: "https://linkedin.com/company/the-guild-software",
     icon: LinkedInIcon,
-    title: 'Visit our LinkedIn',
+    title: "Visit our LinkedIn",
   },
   {
-    href: 'https://discord.com/invite/xud7bH9',
+    href: "https://discord.com/invite/xud7bH9",
     icon: DiscordIcon,
-    title: 'Reach us on Discord',
+    title: "Reach us on Discord",
   },
   {
-    href: 'https://youtube.com/watch?v=d_GBgH-L5c4&list=PLhCf3AUOg4PgQoY_A6xWDQ70yaNtPYtZd',
+    href: "https://youtube.com/watch?v=d_GBgH-L5c4&list=PLhCf3AUOg4PgQoY_A6xWDQ70yaNtPYtZd",
     icon: YouTubeIcon,
-    title: 'Watch Our Videos',
+    title: "Watch Our Videos",
   },
 ];
 

@@ -1,3 +1,3 @@
-'use client';
+"use client";
 
-export { Accordion } from '@base-ui-components/react/accordion';
+export { Accordion } from "@base-ui-components/react/accordion";

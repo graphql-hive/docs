@@ -1,12 +1,12 @@
-import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, userEvent, within } from '@storybook/test';
-import { hiveThemeDecorator } from '../../../../../.storybook/hive-theme-decorator';
-import { CallToAction } from '../call-to-action';
-import { Tabs, TabsProps } from './index';
+import React from "react";
+import { Meta, StoryObj } from "@storybook/react";
+import { expect, fn, userEvent, within } from "@storybook/test";
+import { hiveThemeDecorator } from "../__storybook__/hive-theme-decorator";
+import { CallToAction } from "../call-to-action";
+import { Tabs, TabsProps } from "./index";
 
 export default {
-  title: 'Components/Tabs',
+  title: "Components/Tabs",
   component: Tabs,
   decorators: [hiveThemeDecorator],
   parameters: {
@@ -15,23 +15,23 @@ export default {
       appDirectory: true,
       navigation: {
         query: {
-          tab: '',
+          tab: "",
         },
       },
     },
   },
   argTypes: {
     items: {
-      control: 'object',
-      description: 'Array of tab labels (strings or React elements)',
+      control: "object",
+      description: "Array of tab labels (strings or React elements)",
     },
     defaultIndex: {
-      control: 'number',
-      description: 'Default selected tab index',
+      control: "number",
+      description: "Default selected tab index",
     },
     storageKey: {
-      control: 'text',
-      description: 'localStorage key for persisting the selected tab',
+      control: "text",
+      description: "localStorage key for persisting the selected tab",
     },
   },
 } satisfies Meta<TabsProps>;
@@ -43,7 +43,7 @@ type Story = StoryObj<TabsProps>;
  */
 export const Basic: Story = {
   args: {
-    items: ['pnpm', 'npm', 'yarn'],
+    items: ["pnpm", "npm", "yarn"],
     children: (
       <>
         <Tabs.Tab>
@@ -53,13 +53,15 @@ export const Basic: Story = {
           </pre>
         </Tabs.Tab>
         <Tabs.Tab>
-          <strong>npm</strong> is a package manager for the JavaScript programming language.
+          <strong>npm</strong> is a package manager for the JavaScript
+          programming language.
           <pre>
             <code>npm install</code>
           </pre>
         </Tabs.Tab>
         <Tabs.Tab>
-          <strong>Yarn</strong> used to have funny emojis and then it had a lot of major versions.
+          <strong>Yarn</strong> used to have funny emojis and then it had a lot
+          of major versions.
           <pre>
             <code>yarn install</code>
           </pre>
@@ -74,7 +76,7 @@ export const Basic: Story = {
  */
 export const WithDefaultIndex: Story = {
   args: {
-    items: ['pnpm', 'npm', 'yarn'],
+    items: ["pnpm", "npm", "yarn"],
     defaultIndex: 1,
     children: (
       <>
@@ -88,11 +90,11 @@ export const WithDefaultIndex: Story = {
     const canvas = within(canvasElement);
 
     // Check that the second tab is selected by default
-    const npmTab = canvas.getByRole('tab', { name: 'npm' });
-    await expect(npmTab).toHaveAttribute('aria-selected', 'true');
+    const npmTab = canvas.getByRole("tab", { name: "npm" });
+    await expect(npmTab).toHaveAttribute("aria-selected", "true");
 
     // Check that the npm content is visible
-    const npmContent = canvas.getByText('npm content (default selected)');
+    const npmContent = canvas.getByText("npm content (default selected)");
     await expect(npmContent).toBeVisible();
   },
 };
@@ -102,7 +104,11 @@ export const WithDefaultIndex: Story = {
  */
 export const WithDisabledTabs: Story = {
   args: {
-    items: ['Active Tab', { label: 'Disabled Tab', disabled: true }, 'Another Active Tab'],
+    items: [
+      "Active Tab",
+      { label: "Disabled Tab", disabled: true },
+      "Another Active Tab",
+    ],
     children: (
       <>
         <Tabs.Tab>Content for active tab</Tabs.Tab>
@@ -115,13 +121,13 @@ export const WithDisabledTabs: Story = {
     const canvas = within(canvasElement);
 
     // Check that the disabled tab has the correct attribute
-    const disabledTab = canvas.getByRole('tab', { name: 'Disabled Tab' });
-    await expect(disabledTab).toHaveAttribute('disabled', '');
+    const disabledTab = canvas.getByRole("tab", { name: "Disabled Tab" });
+    await expect(disabledTab).toHaveAttribute("disabled", "");
 
     // Try to click the disabled tab - it should not become selected
 
-    const activeTab = canvas.getByRole('tab', { name: 'Active Tab' });
-    await expect(activeTab).toHaveAttribute('aria-selected', 'true');
+    const activeTab = canvas.getByRole("tab", { name: "Active Tab" });
+    await expect(activeTab).toHaveAttribute("aria-selected", "true");
   },
 };
 
@@ -130,7 +136,7 @@ export const WithDisabledTabs: Story = {
  */
 export const TabSwitching: Story = {
   args: {
-    items: ['First', 'Second', 'Third'],
+    items: ["First", "Second", "Third"],
     onChange: fn(),
     children: (
       <>
@@ -143,18 +149,18 @@ export const TabSwitching: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const secondTab = canvas.getByRole('tab', { name: 'Second' });
+    const secondTab = canvas.getByRole("tab", { name: "Second" });
     await userEvent.click(secondTab);
 
     await expect(args.onChange).toHaveBeenCalledWith(1);
-    await expect(secondTab).toHaveAttribute('aria-selected', 'true');
+    await expect(secondTab).toHaveAttribute("aria-selected", "true");
 
-    const thirdTab = canvas.getByRole('tab', { name: 'Third' });
+    const thirdTab = canvas.getByRole("tab", { name: "Third" });
     await userEvent.click(thirdTab);
 
     await expect(args.onChange).toHaveBeenCalledWith(2);
-    await expect(canvas.getByText('Third panel content')).toBeVisible();
-    await expect(thirdTab).toHaveAttribute('aria-selected', 'true');
+    await expect(canvas.getByText("Third panel content")).toBeVisible();
+    await expect(thirdTab).toHaveAttribute("aria-selected", "true");
   },
 };
 
@@ -164,13 +170,18 @@ export const TabSwitching: Story = {
  */
 export const URLSearchParamsSync: Story = {
   args: {
-    items: ['react', 'vue', 'angular'],
-    searchParamKey: 'framework',
+    items: ["react", "vue", "angular"],
+    searchParamKey: "framework",
     children: (
       <>
-        <Tabs.Tab>React is a JavaScript library for building user interfaces.</Tabs.Tab>
+        <Tabs.Tab>
+          React is a JavaScript library for building user interfaces.
+        </Tabs.Tab>
         <Tabs.Tab>Vue.js is a progressive JavaScript framework.</Tabs.Tab>
-        <Tabs.Tab>Angular is a platform for building mobile and desktop web applications.</Tabs.Tab>
+        <Tabs.Tab>
+          Angular is a platform for building mobile and desktop web
+          applications.
+        </Tabs.Tab>
       </>
     ),
   },
@@ -179,7 +190,7 @@ export const URLSearchParamsSync: Story = {
       appDirectory: true,
       navigation: {
         query: {
-          framework: 'vue',
+          framework: "vue",
         },
       },
     },
@@ -192,8 +203,8 @@ export const URLSearchParamsSync: Story = {
  */
 export const LocalStoragePersistence: Story = {
   args: {
-    items: ['Tab 1', 'Tab 2', 'Tab 3'],
-    storageKey: 'test-tabs-storage',
+    items: ["Tab 1", "Tab 2", "Tab 3"],
+    storageKey: "test-tabs-storage",
     children: (
       <>
         <Tabs.Tab>Content 1</Tabs.Tab>
@@ -206,33 +217,33 @@ export const LocalStoragePersistence: Story = {
     const canvas = within(canvasElement);
 
     // Clear localStorage first
-    localStorage.removeItem('test-tabs-storage');
+    localStorage.removeItem("test-tabs-storage");
 
     // Click on Tab 2
-    const tab2 = canvas.getByRole('tab', { name: 'Tab 2' });
+    const tab2 = canvas.getByRole("tab", { name: "Tab 2" });
     await userEvent.click(tab2);
 
     // Check that the value was stored in localStorage (slugified key)
-    const storedValue = localStorage.getItem('test-tabs-storage');
-    await expect(storedValue).toBe('tab-2');
+    const storedValue = localStorage.getItem("test-tabs-storage");
+    await expect(storedValue).toBe("tab-2");
 
     // Simulate storage event from another tab/window
     window.dispatchEvent(
-      new StorageEvent('storage', {
-        key: 'test-tabs-storage',
-        newValue: 'tab-3',
+      new StorageEvent("storage", {
+        key: "test-tabs-storage",
+        newValue: "tab-3",
       }),
     );
 
     // Wait a bit for the effect to trigger
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Tab 3 should now be selected
-    const tab3 = canvas.getByRole('tab', { name: 'Tab 3' });
-    await expect(tab3).toHaveAttribute('aria-selected', 'true');
+    const tab3 = canvas.getByRole("tab", { name: "Tab 3" });
+    await expect(tab3).toHaveAttribute("aria-selected", "true");
 
     // Clean up
-    localStorage.removeItem('test-tabs-storage');
+    localStorage.removeItem("test-tabs-storage");
   },
 };
 
@@ -243,11 +254,11 @@ export const LocalStoragePersistence: Story = {
 export const WithCustomKeys: Story = {
   args: {
     items: [
-      { label: 'Getting Started', key: 'intro', disabled: false },
-      { label: 'API Reference', key: 'api', disabled: false },
-      { label: 'Examples', key: 'examples', disabled: false },
+      { label: "Getting Started", key: "intro", disabled: false },
+      { label: "API Reference", key: "api", disabled: false },
+      { label: "Examples", key: "examples", disabled: false },
     ],
-    searchParamKey: 'section',
+    searchParamKey: "section",
     children: (
       <>
         <Tabs.Tab>Introduction and getting started guide</Tabs.Tab>
@@ -261,21 +272,21 @@ export const WithCustomKeys: Story = {
 
     // Clear search params
     const url = new URL(window.location.href);
-    url.searchParams.delete('section');
-    window.history.replaceState(null, '', url.toString());
+    url.searchParams.delete("section");
+    window.history.replaceState(null, "", url.toString());
 
     // Click on API Reference
-    const apiTab = canvas.getByRole('tab', { name: 'API Reference' });
+    const apiTab = canvas.getByRole("tab", { name: "API Reference" });
     await userEvent.click(apiTab);
 
     // URL should use the custom key 'api' instead of slugified label
-    await expect(window.location.search).toContain('section=api');
+    await expect(window.location.search).toContain("section=api");
 
     // Click on Examples
-    const examplesTab = canvas.getByRole('tab', { name: 'Examples' });
+    const examplesTab = canvas.getByRole("tab", { name: "Examples" });
     await userEvent.click(examplesTab);
 
-    await expect(window.location.search).toContain('section=examples');
+    await expect(window.location.search).toContain("section=examples");
   },
 };
 
@@ -301,7 +312,7 @@ export const ControlledMode: Story = {
           </CallToAction>
         </div>
         <Tabs
-          items={['Tab 1', 'Tab 2', 'Tab 3']}
+          items={["Tab 1", "Tab 2", "Tab 3"]}
           selectedIndex={selectedIndex}
           onChange={setSelectedIndex}
         >
@@ -316,29 +327,33 @@ export const ControlledMode: Story = {
     const canvas = within(canvasElement);
 
     // Initially Tab 1 should be selected
-    const tab1 = canvas.getByRole('tab', { name: 'Tab 1' });
-    await expect(tab1).toHaveAttribute('aria-selected', 'true');
+    const tab1 = canvas.getByRole("tab", { name: "Tab 1" });
+    await expect(tab1).toHaveAttribute("aria-selected", "true");
 
     // Click external button to select Tab 2
-    const selectTab2Button = canvas.getByRole('button', { name: 'Select Tab 2' });
+    const selectTab2Button = canvas.getByRole("button", {
+      name: "Select Tab 2",
+    });
     await userEvent.click(selectTab2Button);
 
     // Tab 2 should now be selected
-    const tab2 = canvas.getByRole('tab', { name: 'Tab 2' });
-    await expect(tab2).toHaveAttribute('aria-selected', 'true');
+    const tab2 = canvas.getByRole("tab", { name: "Tab 2" });
+    await expect(tab2).toHaveAttribute("aria-selected", "true");
 
     // Click on Tab 3 directly
-    const tab3 = canvas.getByRole('tab', { name: 'Tab 3' });
+    const tab3 = canvas.getByRole("tab", { name: "Tab 3" });
     await userEvent.click(tab3);
 
     // Tab 3 should now be selected
-    await expect(tab3).toHaveAttribute('aria-selected', 'true');
+    await expect(tab3).toHaveAttribute("aria-selected", "true");
 
     // Use external button to go back to Tab 1
-    const selectTab1Button = canvas.getByRole('button', { name: 'Select Tab 1' });
+    const selectTab1Button = canvas.getByRole("button", {
+      name: "Select Tab 1",
+    });
     await userEvent.click(selectTab1Button);
 
-    await expect(tab1).toHaveAttribute('aria-selected', 'true');
+    await expect(tab1).toHaveAttribute("aria-selected", "true");
   },
 };
 
@@ -347,7 +362,7 @@ export const ControlledMode: Story = {
  */
 export const WithReactElementLabels: Story = {
   args: {
-    searchParamKey: 'benefit',
+    searchParamKey: "benefit",
     items: [
       <span key="1" className="flex items-center gap-2">
         🚀 Fast
@@ -372,7 +387,7 @@ export const WithReactElementLabels: Story = {
       appDirectory: true,
       navigation: {
         query: {
-          benefit: ':r0:-2',
+          benefit: ":r0:-2",
         },
       },
     },
@@ -385,16 +400,16 @@ export const WithReactElementLabels: Story = {
 export const ManyTabs: Story = {
   args: {
     items: [
-      'JavaScript',
-      'TypeScript',
-      'Python',
-      'Rust',
-      'Go',
-      'Java',
-      'C++',
-      'Ruby',
-      'PHP',
-      'Swift',
+      "JavaScript",
+      "TypeScript",
+      "Python",
+      "Rust",
+      "Go",
+      "Java",
+      "C++",
+      "Ruby",
+      "PHP",
+      "Swift",
     ],
     defaultIndex: 4,
     children: (
@@ -419,12 +434,12 @@ export const ManyTabs: Story = {
  */
 export const CustomStyling: Story = {
   args: {
-    items: ['Design', 'Develop', 'Deploy'],
-    className: 'border-b-4 gap-0.5 border-green-800',
-    tabClassName: args =>
+    items: ["Design", "Develop", "Deploy"],
+    className: "border-b-4 gap-0.5 border-green-800",
+    tabClassName: (args) =>
       args.selected
-        ? 'bg-green-800 text-white rounded-t-none'
-        : 'bg-gray-100 text-gray-700 rounded-t-none',
+        ? "bg-green-800 text-white rounded-t-none"
+        : "bg-gray-100 text-gray-700 rounded-t-none",
     children: (
       <>
         <Tabs.Tab>Design your application</Tabs.Tab>
@@ -437,27 +452,27 @@ export const CustomStyling: Story = {
 
 export const TabsSyncedWithStorageEvents: Story = {
   args: {
-    items: ['Tab 1', 'Tab 2', 'Tab 3'],
-    storageKey: 'test-tabs-storage',
-    searchParamKey: 'package-manager',
+    items: ["Tab 1", "Tab 2", "Tab 3"],
+    storageKey: "test-tabs-storage",
+    searchParamKey: "package-manager",
   },
   render() {
     return (
       <div>
-        <Tabs items={['pnpm', 'npm', 'yarn']} storageKey="packageManager">
-          {['pnpm', 'npm', 'yarn'].map(item => (
+        <Tabs items={["pnpm", "npm", "yarn"]} storageKey="packageManager">
+          {["pnpm", "npm", "yarn"].map((item) => (
             <Tabs.Tab key={item}>{item}</Tabs.Tab>
           ))}
         </Tabs>
-        <Tabs items={['pnpm', 'npm', 'yarn']} storageKey="packageManager">
-          {['pnpm', 'npm', 'yarn'].map(item => (
+        <Tabs items={["pnpm", "npm", "yarn"]} storageKey="packageManager">
+          {["pnpm", "npm", "yarn"].map((item) => (
             <Tabs.Tab key={item}>{item}</Tabs.Tab>
           ))}
         </Tabs>
         <hr className="my-8" />
         This one doesn't have a `storageKey`, so it's not connected:
-        <Tabs items={['pnpm', 'npm', 'yarn']}>
-          {['pnpm', 'npm', 'yarn'].map(item => (
+        <Tabs items={["pnpm", "npm", "yarn"]}>
+          {["pnpm", "npm", "yarn"].map((item) => (
             <Tabs.Tab key={item}>{item}</Tabs.Tab>
           ))}
         </Tabs>
@@ -468,11 +483,14 @@ export const TabsSyncedWithStorageEvents: Story = {
 
 export const ContentInHiddenPanelOpensByHash: Story = {
   args: {
-    items: ['Docker', 'Binary'],
+    items: ["Docker", "Binary"],
     children: (
       <>
         <Tabs.Tab>
-          <CallToAction href={`${window.location.href}#binary`} variant="tertiary">
+          <CallToAction
+            href={`${window.location.href}#binary`}
+            variant="tertiary"
+          >
             Navigate to #binary
           </CallToAction>
         </Tabs.Tab>
@@ -489,7 +507,7 @@ export const MultipleTabsInParams: Story = {
     nextjs: {
       appDirectory: true,
       navigation: {
-        query: 'tab=shrimp&tab=brown-rice&tab=mango&tab=ponzu',
+        query: "tab=shrimp&tab=brown-rice&tab=mango&tab=ponzu",
       },
     },
   },
@@ -498,7 +516,7 @@ export const MultipleTabsInParams: Story = {
       <div className="grid gap-4 lg:grid-cols-2">
         <div>
           <span className="text-sm font-medium">Protein</span>
-          <Tabs storageKey={null} items={['Salmon', 'Tuna', 'Tofu', 'Shrimp']}>
+          <Tabs storageKey={null} items={["Salmon", "Tuna", "Tofu", "Shrimp"]}>
             <Tabs.Tab>🐟</Tabs.Tab>
             <Tabs.Tab>🐠</Tabs.Tab>
             <Tabs.Tab>🧈</Tabs.Tab>
@@ -510,7 +528,12 @@ export const MultipleTabsInParams: Story = {
           <span className="text-sm font-medium">Base</span>
           <Tabs
             storageKey={null}
-            items={['White Rice', 'Brown Rice', 'Mixed Greens', 'Zucchini Noodles']}
+            items={[
+              "White Rice",
+              "Brown Rice",
+              "Mixed Greens",
+              "Zucchini Noodles",
+            ]}
           >
             <Tabs.Tab>🍚</Tabs.Tab>
             <Tabs.Tab>🍘</Tabs.Tab>
@@ -521,7 +544,10 @@ export const MultipleTabsInParams: Story = {
 
         <div>
           <span className="text-sm font-medium">Toppings</span>
-          <Tabs storageKey={null} items={['Edamame', 'Avocado', 'Cucumber', 'Mango']}>
+          <Tabs
+            storageKey={null}
+            items={["Edamame", "Avocado", "Cucumber", "Mango"]}
+          >
             <Tabs.Tab>🫘</Tabs.Tab>
             <Tabs.Tab>🥑</Tabs.Tab>
             <Tabs.Tab>🥒</Tabs.Tab>
@@ -531,7 +557,10 @@ export const MultipleTabsInParams: Story = {
 
         <div>
           <span className="text-sm font-medium">Sauce</span>
-          <Tabs storageKey={null} items={['Soy Sauce', 'Ponzu', 'Spicy Mayo', 'Sesame Ginger']}>
+          <Tabs
+            storageKey={null}
+            items={["Soy Sauce", "Ponzu", "Spicy Mayo", "Sesame Ginger"]}
+          >
             <Tabs.Tab>🍶</Tabs.Tab>
             <Tabs.Tab>🍋</Tabs.Tab>
             <Tabs.Tab>🌶️</Tabs.Tab>

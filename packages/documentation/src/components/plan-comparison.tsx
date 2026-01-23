@@ -1,10 +1,13 @@
-import { cn } from '@hive/design-system/cn';
-import { Heading } from '@hive/design-system/heading';
+import { cn } from "@hive/design-system/cn";
+import { Heading } from "@hive/design-system/heading";
 
 export function PlanComparison({ className }: { className?: string }) {
   return (
     <section
-      className={cn('bg-blueish-green rounded-3xl px-4 py-12 text-center md:p-24', className)}
+      className={cn(
+        "bg-blueish-green rounded-3xl px-4 py-12 text-center md:p-24",
+        className,
+      )}
     >
       <Heading
         as="h2"
@@ -17,8 +20,8 @@ export function PlanComparison({ className }: { className?: string }) {
         </span>
       </Heading>
       <p className="mt-8 font-medium text-white/80">
-        We do not gate any features. All our plans are fully-featured, with access to the community.
-        We only charge a premium for support.
+        We do not gate any features. All our plans are fully-featured, with
+        access to the community. We only charge a premium for support.
       </p>
     </section>
   );

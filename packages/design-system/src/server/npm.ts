@@ -1,5 +1,5 @@
 /* eslint-disable no-console -- show errors and debug */
-import semver from 'semver';
+import semver from "semver";
 
 type Package = {
   createdAt: string;
@@ -12,19 +12,19 @@ type Package = {
 const cache: Record<string, Package> = {};
 
 export function withoutStartingSlash(v: string) {
-  if (v === '/') return v;
-  if (v.startsWith('/')) return v.slice(1);
+  if (v === "/") return v;
+  if (v.startsWith("/")) return v.slice(1);
   return v;
 }
 
 export function withoutTrailingSlash(v: string) {
-  if (v === '/') return v;
-  if (v.endsWith('/')) return v.slice(0, - 1);
+  if (v === "/") return v;
+  if (v.endsWith("/")) return v.slice(0, -1);
   return v;
 }
 
 export function withStartingSlash(v: string) {
-  if (v.startsWith('/')) return v;
+  if (v.startsWith("/")) return v;
   return `/${v}`;
 }
 
@@ -35,7 +35,7 @@ async function tryRemoteReadme(repo: string, path: string) {
 
   try {
     const response = await fetch(fetchPath, {
-      method: 'GET',
+      method: "GET",
     });
 
     if (response.status === 404) {
@@ -53,7 +53,7 @@ async function tryRemoteReadme(repo: string, path: string) {
   }
 }
 
-const NO_NPM_README_PLACEHOLDER = 'ERROR: No README data found!';
+const NO_NPM_README_PLACEHOLDER = "ERROR: No README data found!";
 
 export const fetchPackageInfo = async (
   packageName: string,
@@ -63,7 +63,9 @@ export const fetchPackageInfo = async (
   },
 ): Promise<Package> => {
   // cache since we fetch same data on /plugins and /plugins/:name pages
-  const cacheKey = githubReadme ? `${githubReadme.repo}${githubReadme.path}` : packageName;
+  const cacheKey = githubReadme
+    ? `${githubReadme.repo}${githubReadme.path}`
+    : packageName;
 
   const cachedData = cache[cacheKey];
   if (cachedData) {
@@ -73,16 +75,19 @@ export const fetchPackageInfo = async (
   const encodedName = encodeURIComponent(packageName);
   console.debug(`Loading NPM package info: ${packageName}`);
   const [packageInfo, { downloads }] = await Promise.all([
-    fetch(`https://registry.npmjs.org/${encodedName}`).then(response => response.json()),
-    fetch(`https://api.npmjs.org/downloads/point/last-week/${encodedName}`).then(response =>
+    fetch(`https://registry.npmjs.org/${encodedName}`).then((response) =>
       response.json(),
     ),
+    fetch(
+      `https://api.npmjs.org/downloads/point/last-week/${encodedName}`,
+    ).then((response) => response.json()),
   ]);
 
   const { description, readme, time } = packageInfo;
-  const latestVersion = packageInfo['dist-tags'].latest;
+  const latestVersion = packageInfo["dist-tags"].latest;
   const readmeContent =
-    githubReadme && (await tryRemoteReadme(githubReadme.repo, githubReadme.path));
+    githubReadme &&
+    (await tryRemoteReadme(githubReadme.repo, githubReadme.path));
 
   cache[cacheKey] = {
     createdAt: time.created,
@@ -91,15 +96,18 @@ export const fetchPackageInfo = async (
       readmeContent ||
       (readme !== NO_NPM_README_PLACEHOLDER && readme) ||
       // for some reason top level "readme" can be empty string, so we get the latest version readme
-      Object.values(packageInfo.versions as { readme?: string; version: string }[])
-        .reverse()
-        .find(curr => {
-          const isReadmeExist = curr.readme && curr.readme !== NO_NPM_README_PLACEHOLDER;
+      Object.values(
+        packageInfo.versions as { readme?: string; version: string }[],
+      )
+        .toReversed()
+        .find((curr) => {
+          const isReadmeExist =
+            curr.readme && curr.readme !== NO_NPM_README_PLACEHOLDER;
           if (isReadmeExist) {
             return semver.lte(curr.version, latestVersion);
           }
         })?.readme ||
-      '',
+      "",
     updatedAt: time.modified,
     weeklyNPMDownloads: downloads,
   };

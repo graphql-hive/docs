@@ -1,28 +1,28 @@
-import { ComponentProps } from 'react';
-import { GitHubIcon } from 'nextra/icons';
-import { Meta, StoryObj } from '@storybook/react';
-import { hiveThemeDecorator } from '../../../../../.storybook/hive-theme-decorator';
-import { ModulesLogo } from '../logos';
-import { CallToAction } from '../call-to-action';
-import { HiveGatewayIcon } from '../icons';
-import { Hero, HeroDecorationFromLogo, HeroLogo } from './index';
+import { ComponentProps } from "react";
+import { GitHubIcon } from "nextra/icons";
+import { Meta, StoryObj } from "@storybook/react";
+import { hiveThemeDecorator } from "../__storybook__/hive-theme-decorator";
+import { ModulesLogo } from "../logos";
+import { CallToAction } from "../call-to-action";
+import { HiveGatewayIcon } from "../icons";
+import { Hero, HeroDecorationFromLogo, HeroLogo } from "./index";
 
 export default {
-  title: 'Hive/Hero',
+  title: "Hive/Hero",
   component: Hero,
   decorators: [hiveThemeDecorator],
   argTypes: {
     className: {
-      name: 'className',
+      name: "className",
     },
     heading: {
-      name: 'Heading text',
+      name: "Heading text",
     },
     checkmarks: {
-      name: 'Checkmarks text',
+      name: "Checkmarks text",
     },
     text: {
-      name: 'Hero text',
+      name: "Hero text",
     },
   },
   parameters: {
@@ -33,14 +33,14 @@ export default {
 
 export const Default: StoryObj<ComponentProps<typeof Hero>> = {
   args: {
-    heading: 'Enterprise Grade Tooling for Your GraphQL Server',
-    text: 'GraphQL Modules is a toolset of libraries and guidelines dedicated to create reusable, maintainable, testable and extendable modules out of your GraphQL server.',
+    heading: "Enterprise Grade Tooling for Your GraphQL Server",
+    text: "GraphQL Modules is a toolset of libraries and guidelines dedicated to create reusable, maintainable, testable and extendable modules out of your GraphQL server.",
     top: (
       <HeroLogo>
         <HiveGatewayIcon />
       </HeroLogo>
     ),
-    checkmarks: ['Fully open source', 'No vendor lock'],
+    checkmarks: ["Fully open source", "No vendor lock"],
     children: (
       <>
         <CallToAction variant="primary-inverted" href="/docs">
@@ -49,7 +49,10 @@ export const Default: StoryObj<ComponentProps<typeof Hero>> = {
         <CallToAction variant="secondary-inverted" href="/changelog">
           Changelog
         </CallToAction>
-        <CallToAction variant="tertiary" href="https://github.com/Urigo/graphql-modules">
+        <CallToAction
+          variant="tertiary"
+          href="https://github.com/Urigo/graphql-modules"
+        >
           <GitHubIcon className="size-6" />
           GitHub
         </CallToAction>

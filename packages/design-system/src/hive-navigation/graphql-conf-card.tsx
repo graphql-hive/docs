@@ -1,6 +1,6 @@
-import { ArrowIcon } from '../icons';
-import { Image, StaticImageData } from '../image';
-import { NavigationMenuLink } from './navigation-menu';
+import { ArrowIcon } from "../icons";
+import { Image, StaticImageData } from "../image";
+import { NavigationMenuLink } from "./navigation-menu";
 
 export interface GraphQLConfCardProps {
   callToAction?: string;
@@ -11,12 +11,12 @@ export interface GraphQLConfCardProps {
   title?: string;
 }
 export function GraphQLConfCard({
-  callToAction = 'Watch The Guild at GraphQLConf 2025',
-  description = 'The official GraphQL conference hosted by GraphQL Foundation.',
-  details = 'September 08-10 | Amsterdam, NL',
-  href = 'https://youtube.com/playlist?list=PL43V96KpNj7MKvDbnyOUrRv0k1gCODtjW&si=nOiETn8J21mYA9pm',
+  callToAction = "Watch The Guild at GraphQLConf 2025",
+  description = "The official GraphQL conference hosted by GraphQL Foundation.",
+  details = "September 08-10 | Amsterdam, NL",
+  href = "https://youtube.com/playlist?list=PL43V96KpNj7MKvDbnyOUrRv0k1gCODtjW&si=nOiETn8J21mYA9pm",
   image,
-  title = 'GraphQLConf 2025',
+  title = "GraphQLConf 2025",
 }: GraphQLConfCardProps) {
   return (
     <NavigationMenuLink className="group w-[358px]" href={href}>

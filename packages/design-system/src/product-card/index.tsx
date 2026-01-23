@@ -1,13 +1,13 @@
-import { useId } from 'react';
+import { useId } from "react";
 
-import { cn } from '../cn';
-import { DecorationIsolation, HighlightDecoration } from '../decorations';
-import { ArrowIcon } from '../icons';
-import { FOUR_MAIN_PRODUCTS, ProductInfo, PRODUCTS } from '../products';
-import HiveDecoration from './hive-decoration.svg?svgr';
-import HiveGatewayDecoration from './hive-gateway-decoration.svg?svgr';
-import MeshDecoration from './mesh-decoration.svg?svgr';
-import YogaDecoration from './yoga-decoration.svg?svgr';
+import { cn } from "../cn";
+import { DecorationIsolation, HighlightDecoration } from "../decorations";
+import { ArrowIcon } from "../icons";
+import { FOUR_MAIN_PRODUCTS, ProductInfo, PRODUCTS } from "../products";
+import HiveDecoration from "./hive-decoration.svg?svgr";
+import HiveGatewayDecoration from "./hive-gateway-decoration.svg?svgr";
+import MeshDecoration from "./mesh-decoration.svg?svgr";
+import YogaDecoration from "./yoga-decoration.svg?svgr";
 
 const cardDecorations = {
   [PRODUCTS.HIVE.name]: HiveDecoration,
@@ -16,7 +16,12 @@ const cardDecorations = {
   [PRODUCTS.YOGA.name]: YogaDecoration,
 };
 
-export function MainProductCard({ as: Root, className, product, ...rest }: ProductCardProps) {
+export function MainProductCard({
+  as: Root,
+  className,
+  product,
+  ...rest
+}: ProductCardProps) {
   const Decoration = cardDecorations[product.name];
   const Icon = product.logo;
 
@@ -26,8 +31,8 @@ export function MainProductCard({ as: Root, className, product, ...rest }: Produ
   return (
     <Root
       className={cn(
-        'hive-focus-within group relative flex-1 shrink-0 basis-[283.5px] overflow-hidden rounded-2xl max-md:min-w-[283.5px]',
-        isHive ? 'bg-green-1000 text-white' : 'bg-blue-400 text-green-1000',
+        "hive-focus-within group relative flex-1 shrink-0 basis-[283.5px] overflow-hidden rounded-2xl max-md:min-w-[283.5px]",
+        isHive ? "bg-green-1000 text-white" : "bg-blue-400 text-green-1000",
         className,
       )}
       {...rest}
@@ -43,8 +48,8 @@ export function MainProductCard({ as: Root, className, product, ...rest }: Produ
           {Decoration && (
             <Decoration
               className={cn(
-                'stroke-white/70',
-                'pointer-events-none absolute bottom-0 right-0 h-full opacity-0 transition-opacity duration-500 group-focus-within:opacity-100 group-hover:opacity-100',
+                "stroke-white/70",
+                "pointer-events-none absolute bottom-0 right-0 h-full opacity-0 transition-opacity duration-500 group-focus-within:opacity-100 group-hover:opacity-100",
               )}
               fill={`url(#${id})`}
               strokeWidth="0.5px"
@@ -84,12 +89,17 @@ export function MainProductCard({ as: Root, className, product, ...rest }: Produ
   );
 }
 
-export function AncillaryProductCard({ as: Root, className, product, ...rest }: ProductCardProps) {
+export function AncillaryProductCard({
+  as: Root,
+  className,
+  product,
+  ...rest
+}: ProductCardProps) {
   const Logo = product.logo;
   return (
     <Root
       className={cn(
-        'hive-focus-within shrink-0 basis-[283.5px] rounded-2xl bg-beige-200 text-green-1000 transition-colors duration-500 hover:bg-beige-400 max-sm:min-w-[283.5px]',
+        "hive-focus-within shrink-0 basis-[283.5px] rounded-2xl bg-beige-200 text-green-1000 transition-colors duration-500 hover:bg-beige-400 max-sm:min-w-[283.5px]",
         className,
       )}
       {...rest}
@@ -115,12 +125,18 @@ export function AncillaryProductCard({ as: Root, className, product, ...rest }: 
 }
 
 export interface ProductCardProps extends React.HTMLAttributes<HTMLElement> {
-  as: 'div' | 'li';
+  as: "div" | "li";
   product: ProductInfo;
 }
 
 export function ProductCard(props: ProductCardProps) {
-  const isMainProduct = FOUR_MAIN_PRODUCTS.some(p => p.name === props.product.name);
+  const isMainProduct = FOUR_MAIN_PRODUCTS.some(
+    (p) => p.name === props.product.name,
+  );
 
-  return isMainProduct ? <MainProductCard {...props} /> : <AncillaryProductCard {...props} />;
+  return isMainProduct ? (
+    <MainProductCard {...props} />
+  ) : (
+    <AncillaryProductCard {...props} />
+  );
 }

@@ -1,6 +1,6 @@
-import { SVGProps } from 'react';
+import { SVGProps } from "react";
 
-import { cn } from '../cn';
+import { cn } from "../cn";
 
 export type DecorationIsolationProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -11,14 +11,23 @@ export function DecorationIsolation(props: DecorationIsolationProps) {
   return (
     <div
       {...props}
-      className={cn('pointer-events-none absolute inset-0 overflow-hidden', props.className)}
+      className={cn(
+        "pointer-events-none absolute inset-0 overflow-hidden",
+        props.className,
+      )}
     />
   );
 }
 
 export function ArchDecorationGradientDefs(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg className="absolute -z-10" height="432" viewBox="0 0 432 432" width="432" {...props}>
+    <svg
+      className="absolute -z-10"
+      height="432"
+      viewBox="0 0 432 432"
+      width="432"
+      {...props}
+    >
       <defs>
         <linearGradient
           gradientUnits="userSpaceOnUse"
@@ -124,8 +133,7 @@ export function LargeHiveIconDecoration(props: SVGProps<SVGSVGElement>) {
 export function HighlightDecoration(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      // eslint-disable-next-line tailwindcss/no-custom-classname
-      className={cn('firefox-highlight-fix', props.className)}
+      className={cn("firefox-highlight-fix", props.className)}
       fill="#86B6C1"
       height="674"
       viewBox="0 0 895 674"
@@ -146,8 +154,16 @@ export function HighlightDecoration(props: SVGProps<SVGSVGElement>) {
           y="-372"
         >
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape" />
-          <feGaussianBlur result="effect1_foregroundBlur_711_1774" stdDeviation="175" />
+          <feBlend
+            in="SourceGraphic"
+            in2="BackgroundImageFix"
+            mode="normal"
+            result="shape"
+          />
+          <feGaussianBlur
+            result="effect1_foregroundBlur_711_1774"
+            stdDeviation="175"
+          />
         </filter>
       </defs>
       <style>

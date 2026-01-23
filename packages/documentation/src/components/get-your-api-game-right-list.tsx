@@ -1,10 +1,9 @@
-import { useId } from 'react';
-
-import { cn } from '@hive/design-system/cn';
-import { CallToAction } from '@hive/design-system/call-to-action';
-import { ContactButton } from '@hive/design-system/contact-us';
-import { DecorationIsolation } from '@hive/design-system/decorations';
-import { Heading } from '@hive/design-system/heading';
+import { CallToAction } from "@hive/design-system/call-to-action";
+import { cn } from "@hive/design-system/cn";
+import { ContactButton } from "@hive/design-system/contact-us";
+import { DecorationIsolation } from "@hive/design-system/decorations";
+import { Heading } from "@hive/design-system/heading";
+import { useId } from "react";
 
 /**
  * This component differs from the `GetYourAPIGameRightSection`
@@ -12,7 +11,12 @@ import { Heading } from '@hive/design-system/heading';
  */
 export function GetYourAPIGameRightList({ className }: { className?: string }) {
   return (
-    <section className={cn(className, 'bg-primary relative overflow-hidden rounded-3xl')}>
+    <section
+      className={cn(
+        className,
+        "bg-primary relative overflow-hidden rounded-3xl",
+      )}
+    >
       <DecorationIsolation>
         <StrokeDecoration className="absolute right-0 top-[-184px] max-md:size-[312px] max-md:rotate-90 max-md:-scale-y-100 md:bottom-0 lg:right-[696px]" />
       </DecorationIsolation>
@@ -41,7 +45,10 @@ export function GetYourAPIGameRightList({ className }: { className?: string }) {
             </li>
           </ul>
           <div className="mt-8 flex gap-x-4 gap-y-2 whitespace-pre max-sm:flex-col">
-            <CallToAction href="https://app.graphql-hive.com/" variant="secondary-inverted">
+            <CallToAction
+              href="https://app.graphql-hive.com/"
+              variant="secondary-inverted"
+            >
               Get started for free
             </CallToAction>
             <ContactButton variant="tertiary">Talk to us</ContactButton>

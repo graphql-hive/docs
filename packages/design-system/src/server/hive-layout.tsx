@@ -1,14 +1,24 @@
-import { Layout } from 'nextra-theme-docs';
-import { Head } from 'nextra/components';
-import { getPageMap } from 'nextra/page-map';
-import { DetailedHTMLProps, HtmlHTMLAttributes, ReactElement, ReactNode } from 'react';
+import { Layout } from "nextra-theme-docs";
+import { Head } from "nextra/components";
+import { getPageMap } from "nextra/page-map";
+import {
+  DetailedHTMLProps,
+  HtmlHTMLAttributes,
+  ReactElement,
+  ReactNode,
+} from "react";
 
-import { cn } from '../cn';
-import { Body } from './body.client';
+import { cn } from "../cn";
+import { Body } from "./body.client";
 
-export interface HiveLayoutProps
-  extends DetailedHTMLProps<HtmlHTMLAttributes<HTMLHtmlElement>, HTMLHtmlElement> {
-  bodyProps?: DetailedHTMLProps<HtmlHTMLAttributes<HTMLBodyElement>, HTMLBodyElement>;
+export interface HiveLayoutProps extends DetailedHTMLProps<
+  HtmlHTMLAttributes<HTMLHtmlElement>,
+  HTMLHtmlElement
+> {
+  bodyProps?: DetailedHTMLProps<
+    HtmlHTMLAttributes<HTMLBodyElement>,
+    HTMLBodyElement
+  >;
   children: ReactNode;
   docsRepositoryBase: string;
   fontFamily: string;
@@ -70,7 +80,7 @@ export const HiveLayout = async ({
   const pageMap = await getPageMap();
   return (
     <html
-      className={cn('font-sans', className)}
+      className={cn("font-sans", className)}
       // Required to be set for `nextra-theme-docs` styles
       dir="ltr"
       lang="en"
@@ -128,7 +138,7 @@ export const HiveLayout = async ({
           docsRepositoryBase={docsRepositoryBase}
           editLink="Edit this page on GitHub"
           feedback={{
-            labels: 'kind/docs',
+            labels: "kind/docs",
           }}
           footer={footer}
           navbar={navbar}

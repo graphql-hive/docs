@@ -1,17 +1,19 @@
-'use client';
+"use client";
 
-import { CallToAction, CallToActionProps } from './call-to-action';
-import { cn } from './cn';
+import { CallToAction, CallToActionProps } from "./call-to-action";
+import { cn } from "./cn";
 
 const openCrisp = (event: React.MouseEvent<HTMLAnchorElement>) => {
   if (globalThis.$crisp) {
-    globalThis.$crisp.push(['do', 'chat:open']);
+    globalThis.$crisp.push(["do", "chat:open"]);
     event.preventDefault();
   }
 };
 
-export interface ContactTextLinkProps
-  extends Omit<React.HTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick'> {
+export interface ContactTextLinkProps extends Omit<
+  React.HTMLAttributes<HTMLAnchorElement>,
+  "href" | "onClick"
+> {
   children?: React.ReactNode;
 }
 
@@ -20,26 +22,32 @@ export function ContactTextLink(props: ContactTextLinkProps) {
     <a
       {...props}
       className={cn(
-        'hive-focus -m-2 rounded p-2 font-medium hover:text-blue-700 hover:underline dark:hover:text-blue-100',
+        "hive-focus -m-2 rounded p-2 font-medium hover:text-blue-700 hover:underline dark:hover:text-blue-100",
         props.className,
       )}
       href="https://the-guild.dev/contact"
       onClick={openCrisp}
     >
-      {props.children || 'Contact Us'}
+      {props.children || "Contact Us"}
     </a>
   );
 }
 
-export interface ContactButtonProps
-  extends Omit<CallToActionProps.AnchorProps, 'children' | 'href' | 'onClick'> {
+export interface ContactButtonProps extends Omit<
+  CallToActionProps.AnchorProps,
+  "children" | "href" | "onClick"
+> {
   children?: React.ReactNode;
 }
 
 export function ContactButton(props: ContactButtonProps) {
   return (
-    <CallToAction href="https://the-guild.dev/contact" onClick={openCrisp} {...props}>
-      {props.children || 'Contact Us'}
+    <CallToAction
+      href="https://the-guild.dev/contact"
+      onClick={openCrisp}
+      {...props}
+    >
+      {props.children || "Contact Us"}
     </CallToAction>
   );
 }

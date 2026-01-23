@@ -1,4 +1,4 @@
-import { cn } from '../cn';
+import { cn } from "../cn";
 
 export function YoutubeIframe({
   className,
@@ -18,7 +18,7 @@ export function YoutubeIframe({
     <iframe
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowFullScreen
-      className={cn('mt-6 h-[400px] w-full', className)}
+      className={cn("mt-6 h-[400px] w-full", className)}
       sandbox="allow-scripts allow-presentation allow-same-origin allow-popups"
       src={src || `https://www.youtube.com/embed/${id}`}
       title={title}

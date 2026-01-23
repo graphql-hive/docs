@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
 /**
  * Search trigger component for HiveNavigation.
@@ -11,16 +11,16 @@ export function SearchTrigger() {
   const [isMac, setIsMac] = useState(false);
 
   useEffect(() => {
-    setIsMac(navigator.platform.toUpperCase().indexOf('MAC') >= 0);
+    setIsMac(navigator.platform.toUpperCase().includes("MAC"));
   }, []);
 
   const handleClick = useCallback(() => {
     // Fumadocs search uses ⌘K / Ctrl+K to open
-    const event = new KeyboardEvent('keydown', {
-      key: 'k',
-      metaKey: isMac,
-      ctrlKey: !isMac,
+    const event = new KeyboardEvent("keydown", {
       bubbles: true,
+      ctrlKey: !isMac,
+      key: "k",
+      metaKey: isMac,
     });
     document.dispatchEvent(event);
   }, [isMac]);
@@ -32,9 +32,11 @@ export function SearchTrigger() {
       onClick={handleClick}
       type="button"
     >
-      <span className="text-green-700/70 dark:text-neutral-400">Search documentation...</span>
+      <span className="text-green-700/70 dark:text-neutral-400">
+        Search documentation...
+      </span>
       <kbd className="rounded border-none bg-green-200 px-1.5 py-0.5 text-xs font-medium text-green-800 dark:bg-neutral-700 dark:text-neutral-300">
-        {isMac ? '⌘' : 'Ctrl '}K
+        {isMac ? "⌘" : "Ctrl "}K
       </kbd>
     </button>
   );

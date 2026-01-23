@@ -1,7 +1,15 @@
-'use client';
+"use client";
 
-import { cn } from '@hive/design-system/cn';
-import { createContext, HTMLAttributes, ReactNode, useContext, useEffect, useRef, useState } from 'react';
+import { cn } from "@hive/design-system/cn";
+import {
+  createContext,
+  HTMLAttributes,
+  ReactNode,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 interface TooltipContextValue {
   open: boolean;
@@ -14,7 +22,7 @@ const TooltipContext = createContext<TooltipContextValue | null>(null);
 function useTooltipContext() {
   const context = useContext(TooltipContext);
   if (!context) {
-    throw new Error('Tooltip components must be used within a Tooltip.Root');
+    throw new Error("Tooltip components must be used within a Tooltip.Root");
   }
   return context;
 }
@@ -36,10 +44,18 @@ interface RootProps {
   open?: boolean;
 }
 
-function Root({ children, defaultOpen = false, delayDuration = 700, onOpenChange, open: controlledOpen }: RootProps) {
+function Root({
+  children,
+  defaultOpen = false,
+  delayDuration = 700,
+  onOpenChange,
+  open: controlledOpen,
+}: RootProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const triggerRef = useRef<HTMLElement | null>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
 
   const open = controlledOpen ?? uncontrolledOpen;
 
@@ -127,14 +143,19 @@ function Trigger({ asChild, children, className, ...props }: TriggerProps) {
 }
 
 interface ContentProps extends HTMLAttributes<HTMLDivElement> {
-  align?: 'center' | 'end' | 'start';
+  align?: "center" | "end" | "start";
   avoidCollisions?: boolean;
   children: ReactNode;
-  side?: 'bottom' | 'left' | 'right' | 'top';
+  side?: "bottom" | "left" | "right" | "top";
   sideOffset?: number;
 }
 
-function Content({ children, className, side = 'top', ...props }: ContentProps) {
+function Content({
+  children,
+  className,
+  side = "top",
+  ...props
+}: ContentProps) {
   const { open } = useTooltipContext();
 
   if (!open) {
@@ -144,12 +165,12 @@ function Content({ children, className, side = 'top', ...props }: ContentProps) 
   return (
     <div
       className={cn(
-        'absolute z-50 animate-in fade-in-0 zoom-in-95',
-        side === 'top' && 'bottom-full mb-2',
-        side === 'bottom' && 'top-full mt-2',
-        side === 'left' && 'right-full mr-2',
-        side === 'right' && 'left-full ml-2',
-        className
+        "absolute z-50 animate-in fade-in-0 zoom-in-95",
+        side === "top" && "bottom-full mb-2",
+        side === "bottom" && "top-full mt-2",
+        side === "left" && "right-full mr-2",
+        side === "right" && "left-full ml-2",
+        className,
       )}
       data-side={side}
       role="tooltip"

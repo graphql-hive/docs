@@ -1,28 +1,28 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { dummyHeroGradient } from '../helpers/dummy';
-import { HeroGradient } from './hero-gradient';
+import { Meta, StoryObj } from "@storybook/react";
+import { dummyHeroGradient } from "../helpers/dummy";
+import { HeroGradient } from "./hero-gradient";
 
 export default {
-  title: 'Components/Heroes/Gradient',
+  title: "Components/Heroes/Gradient",
   component: HeroGradient,
   argTypes: {
     title: {
-      name: 'Title',
+      name: "Title",
     },
     description: {
-      name: 'Description',
+      name: "Description",
     },
     image: {
-      name: 'Illustration',
+      name: "Illustration",
     },
     link: {
-      name: 'Call to Action',
+      name: "Call to Action",
     },
     version: {
-      name: 'Library Version',
+      name: "Library Version",
     },
     colors: {
-      name: 'Background Glow Colors',
+      name: "Background Glow Colors",
     },
   },
 } satisfies Meta<typeof HeroGradient>;
@@ -36,14 +36,14 @@ export const MultiLinks = {
     ...dummyHeroGradient,
     link: [
       {
-        children: 'Start Learning',
-        title: 'Start Learning',
-        href: '#',
+        children: "Start Learning",
+        title: "Start Learning",
+        href: "#",
       },
       {
-        children: 'Docs',
-        title: 'Docs',
-        href: '#2',
+        children: "Docs",
+        title: "Docs",
+        href: "#2",
       },
     ],
   },

@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
-import { cn } from '../cn';
-import CSAStarLevelOneIcon from '../icons/csa-star-level-one.svg?svgr';
+import { cn } from "../cn";
+import CSAStarLevelOneIcon from "../icons/csa-star-level-one.svg?svgr";
 
 function SecurityBadge({
   children,
@@ -15,7 +15,7 @@ function SecurityBadge({
   return (
     <a
       className={cn(
-        'hive-focus size-fit rounded-full p-1 hover:bg-blue-200 focus-visible:outline-hidden focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(var(--nextra-bg))] dark:hover:bg-white/20 dark:hover:*:opacity-100',
+        "hive-focus size-fit rounded-full p-1 hover:bg-blue-200 focus-visible:outline-hidden focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(var(--nextra-bg))] dark:hover:bg-white/20 dark:hover:*:opacity-100",
         className,
       )}
       href={href}

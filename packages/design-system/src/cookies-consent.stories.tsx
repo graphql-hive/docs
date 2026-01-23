@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import { hiveThemeDecorator } from '../../../../.storybook/hive-theme-decorator';
-import { CallToAction } from './call-to-action';
-import { CookiesConsent, CookiesConsentProps } from './cookies-consent';
+import { useState } from "react";
+import { Meta, StoryObj } from "@storybook/react";
+import { hiveThemeDecorator } from "./__storybook__/hive-theme-decorator";
+import { CallToAction } from "./call-to-action";
+import { CookiesConsent, CookiesConsentProps } from "./cookies-consent";
 
 const meta: Meta<CookiesConsentProps> = {
-  title: 'Components/CookiesConsent',
+  title: "Components/CookiesConsent",
   component: CookiesConsent,
   decorators: [
     hiveThemeDecorator,
-    Story => {
+    (Story) => {
       const [key, setKey] = useState(0);
       const remount = () => setKey(Math.random());
 
@@ -18,7 +18,7 @@ const meta: Meta<CookiesConsentProps> = {
           <CallToAction
             className="m-2"
             onClick={() => {
-              localStorage.removeItem('cookies');
+              localStorage.removeItem("cookies");
               remount();
             }}
             variant="secondary"
@@ -35,5 +35,5 @@ const meta: Meta<CookiesConsentProps> = {
 export default meta;
 
 export const Default: StoryObj<CookiesConsentProps> = {
-  name: 'CookiesConsent',
+  name: "CookiesConsent",
 };

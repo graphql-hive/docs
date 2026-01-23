@@ -1,9 +1,16 @@
-'use client';
+"use client";
 
-import { Link as NextLink } from '@tanstack/react-router';
-import { createContext, useContext, useEffect, useId, useRef, useState } from 'react';
+import { Link as NextLink } from "@tanstack/react-router";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 
-import { cn } from './cn';
+import { cn } from "./cn";
 
 interface DropdownContextValue {
   buttonId: string;
@@ -21,17 +28,22 @@ const DropdownContext = createContext<DropdownContextValue | null>(null);
 function useDropdownContext() {
   const context = useContext(DropdownContext);
   if (!context) {
-    throw new Error('Dropdown components must be used within a Dropdown');
+    throw new Error("Dropdown components must be used within a Dropdown");
   }
   return context;
 }
 
-interface DropdownProps extends React.ComponentPropsWithoutRef<'div'> {
+interface DropdownProps extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode;
-  type: 'click' | 'hover';
+  type: "click" | "hover";
 }
 
-export function Dropdown({ children, className, type, ...props }: DropdownProps) {
+export function Dropdown({
+  children,
+  className,
+  type,
+  ...props
+}: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
@@ -51,7 +63,7 @@ export function Dropdown({ children, className, type, ...props }: DropdownProps)
     };
 
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         setIsOpen(false);
         buttonRef.current?.focus();
       }
@@ -67,29 +79,40 @@ export function Dropdown({ children, className, type, ...props }: DropdownProps)
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('keydown', handleEscape);
-      document.addEventListener('focus', handleFocusElsewhere);
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleEscape);
+      document.addEventListener("focus", handleFocusElsewhere);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleEscape);
-      document.removeEventListener('focus', handleFocusElsewhere);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+      document.removeEventListener("focus", handleFocusElsewhere);
     };
   }, [isOpen]);
 
   const dismissDelayMs = 200;
   const isHoveringRef = useRef(isHovering);
-  isHoveringRef.current = isHovering;
+  useEffect(() => {
+    isHoveringRef.current = isHovering;
+  }, [isHovering]);
 
   return (
     <DropdownContext.Provider
-      value={{ buttonId, buttonRef, isHovering, isOpen, menuId, menuRef, setIsHovering, setIsOpen }}
+      value={{
+        buttonId,
+        buttonRef,
+        isHovering,
+        isOpen,
+        menuId,
+        menuRef,
+        setIsHovering,
+        setIsOpen,
+      }}
     >
       <div
-        className={cn('relative', className)}
-        {...(type === 'hover' && {
+        className={cn("relative", className)}
+        {...(type === "hover" && {
           onPointerEnter: () => {
             setIsOpen(true);
             setIsHovering(true);
@@ -113,19 +136,24 @@ export function Dropdown({ children, className, type, ...props }: DropdownProps)
   );
 }
 
-interface DropdownTriggerProps extends React.ComponentPropsWithoutRef<'button'> {
+interface DropdownTriggerProps extends React.ComponentPropsWithoutRef<"button"> {
   children: React.ReactNode;
 }
 
-export function DropdownTrigger({ children, className, ...props }: DropdownTriggerProps) {
-  const { buttonId, buttonRef, isOpen, menuId, setIsHovering, setIsOpen } = useDropdownContext();
+export function DropdownTrigger({
+  children,
+  className,
+  ...props
+}: DropdownTriggerProps) {
+  const { buttonId, buttonRef, isOpen, menuId, setIsHovering, setIsOpen } =
+    useDropdownContext();
 
   return (
     <button
       aria-controls={menuId}
       aria-expanded={isOpen}
       aria-haspopup="true"
-      className={cn('cursor-pointer', className)}
+      className={cn("cursor-pointer", className)}
       id={buttonId}
       onClick={() => {
         setIsOpen(true);
@@ -139,18 +167,22 @@ export function DropdownTrigger({ children, className, ...props }: DropdownTrigg
   );
 }
 
-interface DropdownContentProps extends React.ComponentPropsWithoutRef<'div'> {
+interface DropdownContentProps extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode;
 }
 
-export function DropdownContent({ children, className, ...props }: DropdownContentProps) {
+export function DropdownContent({
+  children,
+  className,
+  ...props
+}: DropdownContentProps) {
   const { buttonId, isOpen, menuId, menuRef } = useDropdownContext();
 
   return (
     <div
       aria-labelledby={buttonId}
       className={cn(className)}
-      data-state={isOpen ? 'open' : 'closed'}
+      data-state={isOpen ? "open" : "closed"}
       id={menuId}
       ref={menuRef}
       role="menu"
@@ -168,19 +200,39 @@ interface DropdownItemProps extends React.HTMLAttributes<HTMLElement> {
   onClick?: () => void;
 }
 
-export function DropdownItem({ children, className, href, onClick, ...props }: DropdownItemProps) {
+export function DropdownItem({
+  children,
+  className,
+  href,
+  onClick,
+  ...props
+}: DropdownItemProps) {
   if (href) {
     // For external links, use anchor tag
-    if (href.startsWith('http') || href.startsWith('mailto:')) {
+    if (href.startsWith("http") || href.startsWith("mailto:")) {
       return (
-        <a className={className} href={href} onClick={onClick} rel="noreferrer" role="menuitem" target="_blank" {...props}>
+        <a
+          className={className}
+          href={href}
+          onClick={onClick}
+          rel="noreferrer"
+          role="menuitem"
+          target="_blank"
+          {...props}
+        >
           {children}
         </a>
       );
     }
     // For internal links, use TanStack Router
     return (
-      <NextLink className={className} onClick={onClick} role="menuitem" to={href} {...props}>
+      <NextLink
+        className={className}
+        onClick={onClick}
+        role="menuitem"
+        to={href}
+        {...props}
+      >
         {children}
       </NextLink>
     );
@@ -190,8 +242,8 @@ export function DropdownItem({ children, className, href, onClick, ...props }: D
     <button
       className={className}
       onClick={onClick}
-      onKeyDown={e => {
-        if (e.key === 'Enter' || e.key === 'Space') {
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === "Space") {
           onClick?.();
         }
       }}

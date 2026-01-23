@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useRef, useState } from 'react';
+import { CallToAction } from "@hive/design-system/call-to-action";
+import { cn } from "@hive/design-system/cn";
+import { useRef, useState } from "react";
 
-import { cn } from '@hive/design-system/cn';
-import { CallToAction } from '@hive/design-system/call-to-action';
-import { BookIcon } from '../book-icon';
-import { Slider } from '../slider';
+import { BookIcon } from "../book-icon";
+import { Slider } from "../slider";
 
 export function PricingSlider({
   className,
@@ -24,12 +24,17 @@ export function PricingSlider({
   return (
     <div
       className={cn(
-        'relative isolate block select-none rounded-3xl border border-green-400 p-4 [counter-set:ops_calc(var(--ops))] sm:p-8',
+        "relative isolate block select-none rounded-3xl border border-green-400 p-4 [counter-set:ops_calc(var(--ops))] sm:p-8",
         className,
       )}
       ref={rootRef}
       // 10$ base price + 10$ per 1M
-      style={{ '--ops': min, '--price': 'calc(10 + var(--ops) * 10)' } as React.CSSProperties}
+      style={
+        {
+          "--ops": min,
+          "--price": "calc(10 + var(--ops) * 10)",
+        } as React.CSSProperties
+      }
       {...rest}
     >
       <div
@@ -45,7 +50,9 @@ export function PricingSlider({
           </div>
         </div>
         <div className="shrink-0 whitespace-pre"> operations </div>
-        <div className="whitespace-pre [@media(width<900px)]:hidden">per month </div>
+        <div className="whitespace-pre [@media(width<900px)]:hidden">
+          per month{" "}
+        </div>
         <div className="whitespace-pre opacity-[calc(2-var(--ops))] [transition-duration:350ms] motion-safe:transition">
           do you need?
         </div>
@@ -60,9 +67,9 @@ export function PricingSlider({
           defaultValue={min}
           max={max}
           min={min}
-          onChange={event => {
+          onChange={(event) => {
             const value = event.currentTarget.valueAsNumber;
-            rootRef.current!.style.setProperty('--ops', `${value}`);
+            rootRef.current!.style.setProperty("--ops", `${value}`);
             onChange(value);
           }}
           step={1}
@@ -82,12 +89,11 @@ export function PricingSlider({
           <BookIcon /> Learn about operations
         </CallToAction>
         {popoverOpen && (
-          <div
-            className="border-beige-400 bg-beige-100 text-green-1000 absolute bottom-full left-1/2 z-50 mb-2 max-w-[328px] -translate-x-1/2 overflow-visible rounded-2xl border px-4 py-3 shadow-md sm:max-w-[420px]"
-          >
-            Every GraphQL request that is processed by your GraphQL API and reported to GraphQL Hive.
-            If your server receives 1M GraphQL requests, all of them will be reported to Hive
-            (assuming no sampling).
+          <div className="border-beige-400 bg-beige-100 text-green-1000 absolute bottom-full left-1/2 z-50 mb-2 max-w-[328px] -translate-x-1/2 overflow-visible rounded-2xl border px-4 py-3 shadow-md sm:max-w-[420px]">
+            Every GraphQL request that is processed by your GraphQL API and
+            reported to GraphQL Hive. If your server receives 1M GraphQL
+            requests, all of them will be reported to Hive (assuming no
+            sampling).
           </div>
         )}
       </div>

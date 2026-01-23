@@ -1,88 +1,102 @@
-import { ActiveHighlightImage, FeatureTab, FeatureTabs, Highlight } from '../feature-tabs';
-import { GatewayIcon } from '../icons';
-import auditImage from './audit.png';
-import observabilityClientsImage from './clients.webp';
-import observabilityOperationsImage from './operations.webp';
-import observabilityOverallImage from './overall.webp';
-import registryExplorerImage from './explorer.webp';
-import registrySchemaChecksImage from './schema-checks.webp';
-import registryVersionControlSystemImage from './version-control-system.webp';
+import {
+  ActiveHighlightImage,
+  FeatureTab,
+  FeatureTabs,
+  Highlight,
+} from "../feature-tabs";
+import { GatewayIcon } from "../icons";
+import auditImage from "./audit.png";
+import observabilityClientsImage from "./clients.webp";
+import registryExplorerImage from "./explorer.webp";
+import observabilityOperationsImage from "./operations.webp";
+import observabilityOverallImage from "./overall.webp";
+import registrySchemaChecksImage from "./schema-checks.webp";
+import registryVersionControlSystemImage from "./version-control-system.webp";
 
-const tabs = ['Schema Registry', 'GraphQL Observability', 'GraphQL Gateway'] as const;
+const tabs = [
+  "Schema Registry",
+  "GraphQL Observability",
+  "GraphQL Gateway",
+] as const;
 type Tab = (typeof tabs)[number];
 
 export const highlights: Record<Tab, Highlight[]> = {
-  'GraphQL Gateway': [
+  "GraphQL Gateway": [
     {
       description:
-        'Best in class support for Apollo Federation. Scores 100% in the Federation audit.',
+        "Best in class support for Apollo Federation. Scores 100% in the Federation audit.",
       image: auditImage,
-      link: '/federation-gateway-audit',
-      title: 'Federation v1 and v2',
+      link: "/federation-gateway-audit",
+      title: "Federation v1 and v2",
     },
     {
-      description: 'Contribute data from subgraphs to a GraphQL subscription seamlessly.',
+      description:
+        "Contribute data from subgraphs to a GraphQL subscription seamlessly.",
       image: auditImage,
-      link: '/docs/gateway/subscriptions',
-      title: 'Real-time features',
+      link: "/docs/gateway/subscriptions",
+      title: "Real-time features",
       // TODO: show entities and Subscription type (code)
     },
     {
       description:
-        'Access control with role-based access control (RBAC), JSON Web Tokens (JWT) and Persisted Operations.',
+        "Access control with role-based access control (RBAC), JSON Web Tokens (JWT) and Persisted Operations.",
       image: auditImage,
-      link: '/docs/gateway/authorization-authentication',
-      title: 'Security and Compliance',
+      link: "/docs/gateway/authorization-authentication",
+      title: "Security and Compliance",
       // TODO: show directives and auth roles
     },
     {
       description:
-        'Out-of-the-box support for OpenTelemetry and Prometheus metrics to fit your observability stack.',
+        "Out-of-the-box support for OpenTelemetry and Prometheus metrics to fit your observability stack.",
       image: auditImage,
-      link: '/docs/gateway/monitoring-tracing',
-      title: 'OTEL & Prometheus',
+      link: "/docs/gateway/monitoring-tracing",
+      title: "OTEL & Prometheus",
       // TODO: image
     },
   ],
-  'GraphQL Observability': [
+  "GraphQL Observability": [
     {
-      description: 'Track GraphQL requests to see how API is utilized and by what applications.',
+      description:
+        "Track GraphQL requests to see how API is utilized and by what applications.",
       image: observabilityClientsImage,
-      title: 'GraphQL consumers',
+      title: "GraphQL consumers",
     },
     {
-      description: 'Observe and analyze performance of your GraphQL API.',
+      description: "Observe and analyze performance of your GraphQL API.",
       image: observabilityOverallImage,
-      title: 'Overall performance',
+      title: "Overall performance",
     },
     {
-      description: 'Identify slow GraphQL operations to pinpoint performance bottlenecks.',
+      description:
+        "Identify slow GraphQL operations to pinpoint performance bottlenecks.",
       image: observabilityOperationsImage,
-      title: 'Query performance',
+      title: "Query performance",
     },
   ],
-  'Schema Registry': [
+  "Schema Registry": [
     {
       description:
-        'Track schema modifications across multiple environments from development to production.',
+        "Track schema modifications across multiple environments from development to production.",
       image: registryVersionControlSystemImage,
-      title: 'Version Control System',
+      title: "Version Control System",
     },
     {
       description:
-        'Identify and breaking changes before they reach production. Evolve your API with confidence.',
+        "Identify and breaking changes before they reach production. Evolve your API with confidence.",
       image: registrySchemaChecksImage,
-      title: 'Schema Checks',
+      title: "Schema Checks",
     },
     {
-      description: 'Avoid runtime errors by validating compatibility of all your subgraphs.',
+      description:
+        "Avoid runtime errors by validating compatibility of all your subgraphs.",
       image: registrySchemaChecksImage,
-      title: 'Composition Error Prevention',
+      title: "Composition Error Prevention",
     },
     {
-      description: 'Navigate through your GraphQL schema and check ownership and usage of types.',
+      description:
+        "Navigate through your GraphQL schema and check ownership and usage of types.",
       image: registryExplorerImage,
-      title: 'Schema Explorer',
+      title: "Schema Explorer",
     },
   ],
 };
@@ -91,7 +105,9 @@ export interface LandingPageFeatureTabsProps {
   className?: string;
 }
 
-export function LandingPageFeatureTabs({ className }: LandingPageFeatureTabsProps) {
+export function LandingPageFeatureTabs({
+  className,
+}: LandingPageFeatureTabsProps) {
   const icons = [
     // The keys here are redundant, but Next.js started false positive linting them even if the ESLint integration is disabled.
     <SchemaRegistryIcon key="schema-registry-icon" />,
@@ -99,23 +115,28 @@ export function LandingPageFeatureTabs({ className }: LandingPageFeatureTabsProp
     <GatewayIcon key="gateway-icon" />,
   ];
   return (
-    <FeatureTabs className={className} highlights={highlights} icons={icons} tabs={tabs}>
+    <FeatureTabs
+      className={className}
+      highlights={highlights}
+      icons={icons}
+      tabs={tabs}
+    >
       <FeatureTab
         description="Publish schemas, compose federated GraphQL api, and detect backward-incompatible changes with ease."
         documentationLink="/docs/schema-registry"
-        highlights={highlights['Schema Registry']!}
+        highlights={highlights["Schema Registry"]!}
         title="Schema Registry"
       />
       <FeatureTab
         description="Insights into API usage and user experience metrics."
         documentationLink="/docs/schema-registry/usage-reporting"
-        highlights={highlights['GraphQL Observability']!}
+        highlights={highlights["GraphQL Observability"]!}
         title="GraphQL Observability"
       />
       <FeatureTab
         description="Entry point to your distributed data graph."
         documentationLink="/docs/gateway"
-        highlights={highlights['GraphQL Gateway']!}
+        highlights={highlights["GraphQL Gateway"]!}
         title="GraphQL Gateway"
       />
       <ActiveHighlightImage />

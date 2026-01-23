@@ -1,13 +1,20 @@
-import { CallToAction } from './call-to-action';
-import { cn } from './cn';
-import { ContactButton } from './contact-us';
-import { DecorationIsolation } from './decorations';
-import { Heading } from './heading';
+import { CallToAction } from "./call-to-action";
+import { cn } from "./cn";
+import { ContactButton } from "./contact-us";
+import { DecorationIsolation } from "./decorations";
+import { Heading } from "./heading";
 
-export function GetYourAPIGameRightSection({ className }: { className?: string }) {
+export function GetYourAPIGameRightSection({
+  className,
+}: {
+  className?: string;
+}) {
   return (
     <section
-      className={cn(className, 'relative overflow-hidden rounded-3xl bg-primary md:h-[308px]')}
+      className={cn(
+        className,
+        "relative overflow-hidden rounded-3xl bg-primary md:h-[308px]",
+      )}
     >
       <DecorationIsolation>
         <GreenArchDecoration className="absolute inset-y-0 right-0 hidden opacity-10 md:block [@media(min-width:1300px)]:opacity-100" />
@@ -22,7 +29,10 @@ export function GetYourAPIGameRightSection({ className }: { className?: string }
           Get your API game right.
         </Heading>
         <div className="flex gap-x-4 gap-y-2 whitespace-pre max-sm:flex-col">
-          <CallToAction href="https://app.graphql-hive.com/" variant="secondary-inverted">
+          <CallToAction
+            href="https://app.graphql-hive.com/"
+            variant="secondary-inverted"
+          >
             Get started for free
           </CallToAction>
           <ContactButton variant="tertiary">Talk to us</ContactButton>

@@ -1,15 +1,17 @@
-import { ComponentPropsWithoutRef } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import * as icons from './index';
+import { ComponentPropsWithoutRef } from "react";
+import { Meta, StoryObj } from "@storybook/react";
+import * as icons from "./index";
 
 const meta: Meta = {
-  title: 'Components/Icons',
+  title: "Components/Icons",
   component: () => null,
 };
 
 export default meta;
 
-export const IconsGallery: StoryObj<ComponentPropsWithoutRef<typeof icons.CheckIcon>> = {
+export const IconsGallery: StoryObj<
+  ComponentPropsWithoutRef<typeof icons.CheckIcon>
+> = {
   render() {
     return (
       <ul className="columns-[160px] space-y-2 p-4 [column-gap:0.5rem]">

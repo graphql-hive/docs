@@ -1,27 +1,35 @@
-import { cn } from '@hive/design-system/cn';
-import { CallToAction } from '@hive/design-system/call-to-action';
-import { ContactButton } from '@hive/design-system/contact-us';
-import { DecorationIsolation } from '@hive/design-system/decorations';
-import { Heading } from '@hive/design-system/heading';
+import { CallToAction } from "@hive/design-system/call-to-action";
+import { cn } from "@hive/design-system/cn";
+import { ContactButton } from "@hive/design-system/contact-us";
+import { DecorationIsolation } from "@hive/design-system/decorations";
+import { Heading } from "@hive/design-system/heading";
 
-const GRADIENT_ID = 'arch-gradient-g7x9p2';
+const GRADIENT_ID = "arch-gradient-g7x9p2";
 
 /**
  * This could be a `colorScheme="white"` or `variant="tertiary"` version of GetYourAPIGameRight
  * in an ideal world, but their decorations are different enough to warrant a separate one.
  */
-export function GetYourAPIGameWhite(props: React.HTMLAttributes<HTMLDivElement>) {
+export function GetYourAPIGameWhite(
+  props: React.HTMLAttributes<HTMLDivElement>,
+) {
   return (
     <section
       {...props}
-      className={cn('relative mx-auto my-24 h-[348px] w-full max-w-[90rem]', props.className)}
+      className={cn(
+        "relative mx-auto my-24 h-[348px] w-full max-w-[90rem]",
+        props.className,
+      )}
     >
       <div className="flex h-full flex-col items-center justify-center gap-10">
         <Heading as="h2" className="text-green-1000 dark:text-white" size="lg">
           Get your API game right.
         </Heading>
         <div className="flex gap-4">
-          <CallToAction href="https://app.graphql-hive.com/" variant="secondary-inverted">
+          <CallToAction
+            href="https://app.graphql-hive.com/"
+            variant="secondary-inverted"
+          >
             Get started for free
           </CallToAction>
           <ContactButton variant="tertiary">Talk to us</ContactButton>
@@ -39,7 +47,7 @@ export function GetYourAPIGameWhite(props: React.HTMLAttributes<HTMLDivElement>)
 function ArchDecoration({ className }: { className?: string }) {
   return (
     <svg
-      className={cn('absolute', className)}
+      className={cn("absolute", className)}
       fill="none"
       height="301"
       viewBox="0 0 348 301"
@@ -55,7 +63,13 @@ function ArchDecoration({ className }: { className?: string }) {
 
 export function GradientDefs() {
   return (
-    <svg className="size-0" fill="none" height="301" viewBox="0 0 348 301" width="348">
+    <svg
+      className="size-0"
+      fill="none"
+      height="301"
+      viewBox="0 0 348 301"
+      width="348"
+    >
       <defs>
         <linearGradient
           gradientUnits="userSpaceOnUse"

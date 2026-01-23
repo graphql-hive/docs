@@ -1,14 +1,14 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { hiveThemeDecorator } from '../../../../.storybook/hive-theme-decorator';
+import { Meta, StoryObj } from "@storybook/react";
+import { hiveThemeDecorator } from "./__storybook__/hive-theme-decorator";
 import {
   ContactButton,
   ContactButtonProps,
   ContactTextLink,
   ContactTextLinkProps,
-} from './contact-us';
+} from "./contact-us";
 
 export default {
-  title: 'Components/ContactUs',
+  title: "Components/ContactUs",
   component: ContactButton,
   decorators: [hiveThemeDecorator],
   parameters: {
@@ -17,18 +17,18 @@ export default {
 } satisfies Meta<ContactButtonProps>;
 
 export const Default: StoryObj<ContactButtonProps> = {
-  name: 'ContactButton',
+  name: "ContactButton",
   args: {
     // `children` is optional
-    children: 'Contact us',
-    variant: 'secondary-inverted',
+    children: "Contact us",
+    variant: "secondary-inverted",
   },
 };
 
 export const TextLink: StoryObj<ContactTextLinkProps> = {
-  name: 'ContactTextLink',
-  render: args => <ContactTextLink {...args} />,
+  name: "ContactTextLink",
+  render: (args) => <ContactTextLink {...args} />,
   args: {
-    children: 'Reach out to us about the Enterprise plan',
+    children: "Reach out to us about the Enterprise plan",
   },
 };

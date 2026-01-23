@@ -1,11 +1,11 @@
-import { Link } from '@tanstack/react-router';
-import { ReactElement } from 'react';
+import { Link } from "@tanstack/react-router";
+import { ReactElement } from "react";
 
 // TODO: getPageMap needs to be implemented for TanStack Start
 // For now using a stub implementation
 async function getPageMap(_path: string): Promise<PageMapItem[]> {
   // This should be implemented to fetch the page map from Fumadocs or similar
-  console.warn('getPageMap not yet implemented for TanStack Start');
+  console.warn("getPageMap not yet implemented for TanStack Start");
   return [];
 }
 
@@ -25,18 +25,22 @@ type PageMapItem = {
 function formatDate(date: Date): string {
   const day = date.getDate();
   const suffix = getOrdinalSuffix(day);
-  const month = date.toLocaleDateString('en-US', { month: 'long' });
+  const month = date.toLocaleDateString("en-US", { month: "long" });
   const year = date.getFullYear();
   return `${day}${suffix} ${month} ${year}`;
 }
 
 function getOrdinalSuffix(day: number): string {
-  if (day > 3 && day < 21) return 'th';
+  if (day > 3 && day < 21) return "th";
   switch (day % 10) {
-    case 1: return 'st';
-    case 2: return 'nd';
-    case 3: return 'rd';
-    default: return 'th';
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
   }
 }
 
@@ -52,7 +56,7 @@ export async function ProductUpdatesPage() {
 
   return (
     <ol className="relative mt-12 border-l border-gray-200 dark:border-gray-700">
-      {changelogs.map(item => (
+      {changelogs.map((item) => (
         <ProductUpdateTeaser key={item.route} {...item} />
       ))}
     </ol>
@@ -80,25 +84,29 @@ function ProductUpdateTeaser(props: Changelog): ReactElement {
 }
 
 export async function getChangelogs(): Promise<Changelog[]> {
-  const [_meta, _indexPage, ...pageMap] = await getPageMap('/product-updates');
+  const [_meta, _indexPage, ...pageMap] = await getPageMap("/product-updates");
 
   return pageMap
-    .map(item => {
-      if ('data' in item || 'children' in item) {
-        throw new Error('Incorrect page map');
+    .map((item) => {
+      if ("data" in item || "children" in item) {
+        throw new Error("Incorrect page map");
       }
       const { frontMatter = {}, route } = item;
       let date: string;
 
       try {
-        date = new Date(frontMatter.date || item.name.slice(0, 10)).toISOString();
+        date = new Date(
+          frontMatter.date || item.name.slice(0, 10),
+        ).toISOString();
       } catch (error) {
-        console.error(`Error parsing date \`${frontMatter.date}\` for ${item.name}: ${error}`);
+        console.error(
+          `Error parsing date \`${frontMatter.date}\` for ${item.name}: ${error}`,
+        );
         throw error;
       }
       return {
         date,
-        description: frontMatter.description ?? '',
+        description: frontMatter.description ?? "",
         route,
         title: frontMatter.title ?? item.name,
       };

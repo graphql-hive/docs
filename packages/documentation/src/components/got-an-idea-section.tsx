@@ -1,13 +1,13 @@
-import { cn } from '@hive/design-system/cn';
-import { ContactButton } from '@hive/design-system/contact-us';
-import { DecorationIsolation } from '@hive/design-system/decorations';
-import { Heading } from '@hive/design-system/heading';
+import { cn } from "@hive/design-system/cn";
+import { ContactButton } from "@hive/design-system/contact-us";
+import { DecorationIsolation } from "@hive/design-system/decorations";
+import { Heading } from "@hive/design-system/heading";
 
 export function GotAnIdeaSection({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'bg-blueish-green relative flex flex-col items-center rounded-3xl px-4 py-6 lg:px-8 lg:py-16 xl:p-24',
+        "bg-blueish-green relative flex flex-col items-center rounded-3xl px-4 py-6 lg:px-8 lg:py-16 xl:p-24",
         className,
       )}
     >
@@ -36,8 +36,16 @@ export function GotAnIdeaSection({ className }: { className?: string }) {
               y="-279"
             >
               <feFlood floodOpacity="0" result="BackgroundImageFix" />
-              <feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape" />
-              <feGaussianBlur result="effect1_foregroundBlur_2003_9852" stdDeviation="125" />
+              <feBlend
+                in="SourceGraphic"
+                in2="BackgroundImageFix"
+                mode="normal"
+                result="shape"
+              />
+              <feGaussianBlur
+                result="effect1_foregroundBlur_2003_9852"
+                stdDeviation="125"
+              />
             </filter>
           </defs>
         </svg>

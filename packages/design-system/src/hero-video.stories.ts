@@ -1,25 +1,25 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { dummyHeroVideo } from '../helpers/dummy';
-import { HeroVideo } from './hero-video';
+import { Meta, StoryObj } from "@storybook/react";
+import { dummyHeroVideo } from "../helpers/dummy";
+import { HeroVideo } from "./hero-video";
 
 export default {
-  title: 'Components/Heroes/Video',
+  title: "Components/Heroes/Video",
   component: HeroVideo,
   argTypes: {
     title: {
-      name: 'Title',
+      name: "Title",
     },
     description: {
-      name: 'Description',
+      name: "Description",
     },
     video: {
-      name: 'Video',
+      name: "Video",
     },
     flipped: {
-      name: 'Flip Orientation',
+      name: "Flip Orientation",
     },
     link: {
-      name: 'Link',
+      name: "Link",
     },
   },
 } satisfies Meta<typeof HeroVideo>;

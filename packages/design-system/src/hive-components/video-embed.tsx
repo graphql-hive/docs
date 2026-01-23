@@ -1,4 +1,4 @@
-import { cn } from '../cn';
+import { cn } from "../cn";
 
 export function VideoEmbed({
   className,
@@ -12,14 +12,14 @@ export function VideoEmbed({
   return (
     <video
       autoPlay
-      className={cn('mx-auto mt-6', className)}
+      className={cn("mx-auto mt-6", className)}
       controls
       loop
       muted
       playsInline
       title={title}
     >
-      <source src={src} type={`video/${src.slice(src.lastIndexOf('.') + 1)}`} />
+      <source src={src} type={`video/${src.slice(src.lastIndexOf(".") + 1)}`} />
       Your browser does not support the video tag.
     </video>
   );

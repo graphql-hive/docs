@@ -17,9 +17,7 @@ export const config: CompareConfig = {
   baseUrl: "http://localhost:1440",
   diffColor: "#cd2cc9",
   odiffThreshold: 0.1,
-  pages: [
-    { name: "landing", path: "/" },
-  ],
+  pages: [{ name: "landing", path: "/" }],
   productionUrl: "https://the-guild.dev/graphql/hive",
   screenshotsDir: new URL("../screenshots", import.meta.url).pathname,
   viewport: { height: 900, width: 1440 },

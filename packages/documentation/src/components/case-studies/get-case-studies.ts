@@ -1,4 +1,4 @@
-import { CaseStudyFile } from './case-study-types';
+import { CaseStudyFile } from "./case-study-types";
 
 // TODO: Migrate case studies MDX content and implement proper data fetching
 // For now, return an empty array as placeholder

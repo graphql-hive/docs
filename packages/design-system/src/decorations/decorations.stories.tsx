@@ -1,17 +1,17 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from "@storybook/react";
 import {
   ArchDecoration,
   ArchDecorationGradientDefs,
   DecorationIsolation,
   HighlightDecoration,
   LargeHiveIconDecoration,
-} from './index';
+} from "./index";
 
 const meta: Meta = {
-  title: 'Components/Decorations',
+  title: "Components/Decorations",
   component: ArchDecoration,
   decorators: [
-    Story => (
+    (Story) => (
       <div className="h-screen bg-green-1000">
         <DecorationIsolation>
           <Story />
@@ -24,7 +24,7 @@ const meta: Meta = {
 export default meta;
 
 export const ArchDecorationStory: StoryObj<typeof ArchDecoration> = {
-  name: 'ArchDecoration',
+  name: "ArchDecoration",
   render(args) {
     return (
       <>

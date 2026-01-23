@@ -1,46 +1,73 @@
-import { Anchor, cn, MarqueeRows } from '@hive/design-system';
+import { Anchor, cn, MarqueeRows } from "@hive/design-system";
 
 // todo: a test that checks if none of the links here are 404
 const terms = new Map<string[], string /* href */>([
+  [["@stream", "@defer", "Incremental Delivery"], "/docs/gateway/defer-stream"],
   [
-    ['authenticated', 'requiresScopes', 'policy'],
-    '/docs/gateway/authorization-authentication#granular-protection-using-auth-directives-authenticated-requiresscopes-and-policy',
+    ["APQ", "Automatic Persisted Queries"],
+    "/docs/gateway/other-features/performance/automatic-persisted-queries",
   ],
-  [['Usage Reporting'], 'https://the-guild.dev/graphql/hive/docs/gateway/usage-reporting'],
-  [['Monitoring', 'Tracing'], '/docs/gateway/monitoring-tracing'],
-  [['@stream', '@defer', 'Incremental Delivery'], '/docs/gateway/defer-stream'],
-  [['Persisted Documents'], '/docs/gateway/persisted-documents'],
-  [['Response Caching'], '/docs/gateway/other-features/performance/response-caching'],
-  [['Content-Encoding'], '/docs/gateway/other-features/performance/compression'],
   [
-    ['parserAndValidationCache'],
-    '/docs/gateway/other-features/performance/parsing-and-validation-caching',
+    ["authenticated", "requiresScopes", "policy"],
+    "/docs/gateway/authorization-authentication#granular-protection-using-auth-directives-authenticated-requiresscopes-and-policy",
   ],
-  [['executionCancellation'], '/docs/gateway/other-features/performance/execution-cancellation'],
-  [['Upstream Cancellation'], '/docs/gateway/other-features/performance/upstream-cancellation'],
-  [['documentCache', 'errorCache', 'validationCache'], '/docs/gateway/other-features/performance'],
-  [['HTTP Caching'], '/docs/gateway/other-features/performance/http-caching'],
-  [['useRequestDeduplication'], '/docs/gateway/other-features/performance/deduplicate-request'],
   [
-    ['APQ', 'Automatic Persisted Queries'],
-    '/docs/gateway/other-features/performance/automatic-persisted-queries',
+    ["Authorization", "Authentication"],
+    "/docs/gateway/authorization-authentication",
   ],
-  [['Persisted Documents'], '/docs/gateway/persisted-documents'],
   [
-    ['batching', 'Request Batching'],
-    'https://the-guild.dev/graphql/hive/docs/gateway/other-features/performance/request-batching',
+    ["batching", "Request Batching"],
+    "https://the-guild.dev/graphql/hive/docs/gateway/other-features/performance/request-batching",
   ],
-  [['Supergraph', 'Proxy'], '/docs/gateway/supergraph-proxy-source'],
-  [['Authorization', 'Authentication'], '/docs/gateway/authorization-authentication'],
-  [['Header Propagation'], '/docs/gateway/other-features/header-propagation'],
-  [['Subscriptions'], '/docs/gateway/subscriptions'],
-  [['useMock', 'Mocking'], '/docs/gateway/other-features/testing/mocking'],
-  [['Snapshots'], '/docs/gateway/other-features/testing/snapshot'],
-  [['CSRF Prevention'], '/docs/gateway/other-features/security/csrf-prevention'],
-  [['Rate Limiting'], '/docs/gateway/other-features/security/rate-limiting'],
-  [['Cost Limit'], '/docs/gateway/other-features/security/cost-limit'],
-  [['Security'], '/docs/gateway/other-features/security'],
-  [['maskedErrors'], '/docs/gateway/logging-and-error-handling'],
+  [
+    ["Content-Encoding"],
+    "/docs/gateway/other-features/performance/compression",
+  ],
+  [["Cost Limit"], "/docs/gateway/other-features/security/cost-limit"],
+  [
+    ["CSRF Prevention"],
+    "/docs/gateway/other-features/security/csrf-prevention",
+  ],
+  [
+    ["documentCache", "errorCache", "validationCache"],
+    "/docs/gateway/other-features/performance",
+  ],
+  [
+    ["executionCancellation"],
+    "/docs/gateway/other-features/performance/execution-cancellation",
+  ],
+  [["Header Propagation"], "/docs/gateway/other-features/header-propagation"],
+  [["HTTP Caching"], "/docs/gateway/other-features/performance/http-caching"],
+  [["maskedErrors"], "/docs/gateway/logging-and-error-handling"],
+  [["Monitoring", "Tracing"], "/docs/gateway/monitoring-tracing"],
+  [
+    ["parserAndValidationCache"],
+    "/docs/gateway/other-features/performance/parsing-and-validation-caching",
+  ],
+  [["Persisted Documents"], "/docs/gateway/persisted-documents"],
+  [["Persisted Documents"], "/docs/gateway/persisted-documents"],
+  [["Rate Limiting"], "/docs/gateway/other-features/security/rate-limiting"],
+  [
+    ["Response Caching"],
+    "/docs/gateway/other-features/performance/response-caching",
+  ],
+  [["Security"], "/docs/gateway/other-features/security"],
+  [["Snapshots"], "/docs/gateway/other-features/testing/snapshot"],
+  [["Subscriptions"], "/docs/gateway/subscriptions"],
+  [["Supergraph", "Proxy"], "/docs/gateway/supergraph-proxy-source"],
+  [
+    ["Upstream Cancellation"],
+    "/docs/gateway/other-features/performance/upstream-cancellation",
+  ],
+  [
+    ["Usage Reporting"],
+    "https://the-guild.dev/graphql/hive/docs/gateway/usage-reporting",
+  ],
+  [["useMock", "Mocking"], "/docs/gateway/other-features/testing/mocking"],
+  [
+    ["useRequestDeduplication"],
+    "/docs/gateway/other-features/performance/deduplicate-request",
+  ],
 ]);
 
 export function GatewayMarqueeRows({
@@ -52,19 +79,22 @@ export function GatewayMarqueeRows({
 }) {
   return (
     <MarqueeRows
+      className={cn(
+        "flex max-w-full flex-col justify-center rounded-2xl p-4 pb-28",
+        className,
+      )}
       pauseOnHover
-      speed="slow"
       rows={9}
-      className={cn('flex max-w-full flex-col justify-center rounded-2xl p-4 pb-28', className)}
+      speed="slow"
       {...rest}
     >
       {inPlaceShuffle(
-        Array.from(terms.entries()).flatMap(([labels, href], j) =>
+        [...terms.entries()].flatMap(([labels, href], j) =>
           labels.map((label, i) => (
             <Anchor
-              key={`${j}-${i}`}
               className="hive-focus rounded-lg border border-transparent bg-(--pill-bg) px-2 py-1.5 text-[10px] text-(--pill-text) transition duration-500 hover:border-(--pill-hover-text) hover:bg-(--pill-bg-hover) hover:text-(--pill-text-hover) sm:px-4 sm:py-3 sm:text-sm"
               href={href}
+              key={`${j}-${i}`}
             >
               {label}
             </Anchor>

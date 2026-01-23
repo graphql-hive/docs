@@ -52,7 +52,7 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("src", import.meta.url)),
       "@hive/design-system": fileURLToPath(
-        new URL("../design-system/src", import.meta.url)
+        new URL("../design-system/src", import.meta.url),
       ),
     },
   },

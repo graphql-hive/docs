@@ -1,24 +1,29 @@
-'use client';
+"use client";
 
-import { InputHTMLAttributes } from 'react';
+import { cn } from "@hive/design-system/cn";
+import { InputHTMLAttributes } from "react";
 
-import { cn } from '@hive/design-system/cn';
-
-const svgHref = new URL('code-icon-white.svg', import.meta.url).toString();
+const svgHref = new URL("code-icon-white.svg", import.meta.url).toString();
 
 export interface SliderProps extends InputHTMLAttributes<HTMLInputElement> {
   counter: string;
   deadZone?: string;
 }
-export function Slider({ className, counter, deadZone, style, ...rest }: SliderProps) {
+export function Slider({
+  className,
+  counter,
+  deadZone,
+  style,
+  ...rest
+}: SliderProps) {
   const sliderProper = (
     <div
       className={cn(
-        'hive-slider relative h-10 flex-1 select-none [container-type:inline-size]',
+        "hive-slider relative h-10 flex-1 select-none [container-type:inline-size]",
         className,
       )}
-      ref={ref => {
-        if (ref) polyfillSlider(ref, '--val');
+      ref={(ref) => {
+        if (ref) polyfillSlider(ref, "--val");
       }}
       style={style}
     >
@@ -39,14 +44,14 @@ export function Slider({ className, counter, deadZone, style, ...rest }: SliderP
 
       <div // indicator
         className={cn(
-          'after:text-green-1000 pointer-events-none absolute left-0 top-0 z-20 flex size-10 select-none items-center justify-center rounded-full bg-blue-600 text-center after:pointer-events-auto after:absolute after:top-[calc(-100%+3px)] after:whitespace-nowrap after:rounded-full after:bg-blue-200 after:px-3 after:py-1 after:font-medium',
+          "after:text-green-1000 pointer-events-none absolute left-0 top-0 z-20 flex size-10 select-none items-center justify-center rounded-full bg-blue-600 text-center after:pointer-events-auto after:absolute after:top-[calc(-100%+3px)] after:whitespace-nowrap after:rounded-full after:bg-blue-200 after:px-3 after:py-1 after:font-medium",
           counter,
         )}
         style={{
           // Tailwind 4 doesn't allow to write this in a class, because
           // --tw-translate-x has syntax: <length> | <percentage>, and this
           // mixes units, so I don't know what CSS type that is.
-          transform: 'translateX(calc(var(--val) * (100cqi - 100%) / 100))',
+          transform: "translateX(calc(var(--val) * (100cqi - 100%) / 100))",
         }}
       >
         <svg
@@ -110,13 +115,13 @@ export function Slider({ className, counter, deadZone, style, ...rest }: SliderP
     <div className="flex w-full">
       <button
         className="z-10 my-3"
-        onClick={event => {
+        onClick={(event) => {
           const input = event.currentTarget.parentElement!.querySelector(
-            'input',
+            "input",
           ) as HTMLInputElement;
 
-          input.value = '0';
-          input.dispatchEvent(new Event('input', { bubbles: true }));
+          input.value = "0";
+          input.dispatchEvent(new Event("input", { bubbles: true }));
         }}
         style={{ width: deadZone }}
         tabIndex={-1}
@@ -137,21 +142,25 @@ export function Slider({ className, counter, deadZone, style, ...rest }: SliderP
  * https://caniuse.com/?search=scroll()
  */
 function polyfillSlider(element: HTMLElement, cssProperty: `--${string}`) {
-  if (CSS.supports('(animation-timeline: view()) and (animation-range: 0 100%)')) {
+  if (
+    CSS.supports("(animation-timeline: view()) and (animation-range: 0 100%)")
+  ) {
     return;
   }
 
-  const input = element.querySelector('[type=range]') as HTMLInputElement;
+  const input = element.querySelector("[type=range]") as HTMLInputElement;
 
   const sync = () => {
-    const val = (Number(input.value) - Number(input.min)) / (Number(input.max) - Number(input.min));
+    const val =
+      (Number(input.value) - Number(input.min)) /
+      (Number(input.max) - Number(input.min));
 
     element.style.setProperty(cssProperty, Math.round(val * 100).toString());
   };
 
-  input.addEventListener('input', sync);
+  input.addEventListener("input", sync);
 
-  input.addEventListener('pointerdown', ({ x, y }) => {
+  input.addEventListener("pointerdown", ({ x, y }) => {
     const { height, left, top, width } = input.getBoundingClientRect();
     const vertical = height > width;
     const range = Number(input.max) - Number(input.min);

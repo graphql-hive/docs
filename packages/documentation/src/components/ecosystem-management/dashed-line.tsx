@@ -1,5 +1,6 @@
-import { cn } from '@hive/design-system/cn';
-import css from './ecosystem-management.module.css';
+import { cn } from "@hive/design-system/cn";
+
+import css from "./ecosystem-management.module.css";
 
 export interface DashedLineProps extends React.SVGProps<SVGSVGElement> {
   short?: boolean;
@@ -7,10 +8,10 @@ export interface DashedLineProps extends React.SVGProps<SVGSVGElement> {
 
 export function DashedLine({ className, short, ...rest }: DashedLineProps) {
   const commonProps: React.SVGProps<SVGSVGElement> = {
-    fill: 'none',
-    preserveAspectRatio: 'none',
-    stroke: 'currentColor',
-    vectorEffect: 'non-scaling-stroke',
+    fill: "none",
+    preserveAspectRatio: "none",
+    stroke: "currentColor",
+    vectorEffect: "non-scaling-stroke",
     ...rest,
   };
 
@@ -18,7 +19,11 @@ export function DashedLine({ className, short, ...rest }: DashedLineProps) {
     return (
       <svg
         {...commonProps}
-        className={cn('h-full overflow-visible', css['animate-dash-reverse'], className)}
+        className={cn(
+          "h-full overflow-visible",
+          css["animate-dash-reverse"],
+          className,
+        )}
         viewBox="0 0 111 114"
         width="111"
       >
@@ -34,7 +39,7 @@ export function DashedLine({ className, short, ...rest }: DashedLineProps) {
   return (
     <svg
       {...commonProps}
-      className={cn('h-full overflow-visible', css['animate-dash'], className)}
+      className={cn("h-full overflow-visible", css["animate-dash"], className)}
       viewBox="0 0 107 326"
       width="107"
     >

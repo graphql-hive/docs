@@ -1,8 +1,8 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { hiveThemeDecorator } from '../../../../../.storybook/hive-theme-decorator';
-import { siteOrigin } from '../constants';
-import { PRODUCTS } from '../products';
-import { Anchor } from '../anchor';
+import { Meta, StoryObj } from "@storybook/react";
+import { hiveThemeDecorator } from "../__storybook__/hive-theme-decorator";
+import { siteOrigin } from "../constants";
+import { PRODUCTS } from "../products";
+import { Anchor } from "../anchor";
 import {
   CodegenIcon,
   GitHubIcon,
@@ -10,9 +10,9 @@ import {
   PencilIcon,
   RightCornerIcon,
   TargetIcon,
-} from '../icons';
-import { VersionDropdown } from '../version-dropdown';
-import { GraphQLConfCard } from './graphql-conf-card';
+} from "../icons";
+import { VersionDropdown } from "../version-dropdown";
+import { GraphQLConfCard } from "./graphql-conf-card";
 import {
   CompanyMenu,
   DeveloperMenu,
@@ -20,51 +20,59 @@ import {
   HiveNavigation,
   HiveNavigationProps,
   ProductsMenu,
-} from './index';
+} from "./index";
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from './navigation-menu';
-import graphQLConfLocalImage from './local-image-for-stories.png';
+} from "./navigation-menu";
+import graphQLConfLocalImage from "./local-image-for-stories.png";
 
-const HIVE_DEVELOPER_MENU: HiveNavigationProps['developerMenu'] = [
+const HIVE_DEVELOPER_MENU: HiveNavigationProps["developerMenu"] = [
   {
-    href: '/docs',
+    href: "/docs",
     icon: <PaperIcon />,
-    children: 'Documentation',
+    children: "Documentation",
   },
-  { href: 'https://status.graphql-hive.com/', icon: <TargetIcon />, children: 'Status' },
   {
-    href: '/product-updates',
+    href: "https://status.graphql-hive.com/",
+    icon: <TargetIcon />,
+    children: "Status",
+  },
+  {
+    href: "/product-updates",
     icon: <RightCornerIcon />,
-    children: 'Product Updates',
+    children: "Product Updates",
   },
-  { href: `${siteOrigin}/graphql/hive/blog`, icon: <PencilIcon />, children: 'Blog' },
   {
-    href: 'https://github.com/dotansimha/graphql-code-generator',
+    href: `${siteOrigin}/graphql/hive/blog`,
+    icon: <PencilIcon />,
+    children: "Blog",
+  },
+  {
+    href: "https://github.com/dotansimha/graphql-code-generator",
     icon: <GitHubIcon />,
-    children: 'GitHub',
+    children: "GitHub",
   },
 ];
 
 export default {
-  title: 'Hive/HiveNavigation',
+  title: "Hive/HiveNavigation",
   component: HiveNavigation,
   decorators: [hiveThemeDecorator],
   args: {
-    productName: 'Hive',
+    productName: "Hive",
     developerMenu: HIVE_DEVELOPER_MENU,
   },
 } satisfies Meta<HiveNavigationProps>;
 
 export const Default: StoryObj = {
-  name: 'HiveNavigation',
+  name: "HiveNavigation",
   decorators: [
     // to test sticky header
-    Story => (
+    (Story) => (
       <div className="h-[120vh] bg-gradient-to-b from-beige-500/15 to-transparent">
         <Story />
       </div>
@@ -76,8 +84,8 @@ export const Default: StoryObj = {
       <VersionDropdown
         currentVersion="1.x"
         versions={[
-          { label: 'Hive v1 Docs', href: '#v1', value: '1.x' },
-          { label: 'Hive v2 Docs', href: '#v2', value: '2.x' },
+          { label: "Hive v1 Docs", href: "#v1", value: "1.x" },
+          { label: "Hive v2 Docs", href: "#v2", value: "2.x" },
         ]}
       />
     ),
@@ -87,15 +95,15 @@ export const Default: StoryObj = {
 export const NarrowMaxWidth: StoryObj = {
   ...Default,
   args: {
-    className: 'max-w-[75rem]',
+    className: "max-w-[75rem]",
   },
 };
 
 export const ForcedLightMode: StoryObj = {
   ...Default,
   decorators: [
-    Story => (
-      <div className="light" style={{ '--nextra-bg': '255 255 255' }}>
+    (Story) => (
+      <div className="light" style={{ "--nextra-bg": "255 255 255" }}>
         <Story />
       </div>
     ),
@@ -105,7 +113,7 @@ export const ForcedLightMode: StoryObj = {
 export const BackgroundFromCSSProperty: StoryObj = {
   ...Default,
   decorators: [
-    Story => (
+    (Story) => (
       // eslint-disable-next-line tailwindcss/no-custom-classname
       <div className="background-vars">
         <style>{`
@@ -138,7 +146,7 @@ export const Viewport: StoryObj = {
     );
   },
   play(ctx) {
-    ctx.canvasElement?.querySelector('button')?.click();
+    ctx.canvasElement?.querySelector("button")?.click();
   },
 };
 
@@ -189,30 +197,33 @@ export const CodegenNavmenu: StoryObj<HiveNavigationProps> = {
   args: {
     navLinks: [
       {
-        href: '/plugins',
-        children: 'Plugins',
+        href: "/plugins",
+        children: "Plugins",
       },
     ],
     developerMenu: [
       {
-        href: '/docs',
+        href: "/docs",
         icon: <PaperIcon />,
-        children: 'Documentation',
+        children: "Documentation",
       },
       {
-        href: 'https://the-guild.dev/graphql/hive/blog',
+        href: "https://the-guild.dev/graphql/hive/blog",
         icon: <PencilIcon />,
-        children: 'Blog',
+        children: "Blog",
       },
       {
-        href: 'https://github.com/dotansimha/graphql-code-generator',
+        href: "https://github.com/dotansimha/graphql-code-generator",
         icon: <GitHubIcon />,
-        children: 'GitHub',
+        children: "GitHub",
       },
     ],
     productName: PRODUCTS.CODEGEN.name,
     logo: (
-      <Anchor href="/" className="hive-focus -m-2 flex items-center gap-3 rounded-md p-2">
+      <Anchor
+        href="/"
+        className="hive-focus -m-2 flex items-center gap-3 rounded-md p-2"
+      >
         <CodegenIcon className="size-8" />
         <span className="text-2xl font-medium tracking-[-0.16px]">Codegen</span>
       </Anchor>

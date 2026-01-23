@@ -1,19 +1,20 @@
-import { createFileRoute } from '@tanstack/react-router';
 import {
   ArchDecoration,
   DecorationIsolation,
   GetYourAPIGameRightSection,
   Heading,
-} from '@hive/design-system';
-import { cn } from '@hive/design-system/cn';
-import { CompanyTestimonialsSection } from '../../components/company-testimonials';
-import { FrequentlyAskedQuestions } from '../../components/frequently-asked-questions';
-import { LandingPageContainer } from '../../components/landing-page-container';
-import { PlanComparison } from '../../components/plan-comparison';
-import { Pricing } from '../../components/pricing';
-import { PlansTable } from '../../components/pricing/plans-table';
+} from "@hive/design-system";
+import { cn } from "@hive/design-system/cn";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/_landing/pricing')({
+import { CompanyTestimonialsSection } from "../../components/company-testimonials";
+import { FrequentlyAskedQuestions } from "../../components/frequently-asked-questions";
+import { LandingPageContainer } from "../../components/landing-page-container";
+import { PlanComparison } from "../../components/plan-comparison";
+import { Pricing } from "../../components/pricing";
+import { PlansTable } from "../../components/pricing/plans-table";
+
+export const Route = createFileRoute("/_landing/pricing")({
   component: PricingPage,
 });
 
@@ -35,33 +36,38 @@ function PricingPageHero({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'bg-beige-100 relative isolate flex max-w-[90rem] flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 sm:py-12 md:gap-8 lg:py-24',
+        "bg-beige-100 relative isolate flex max-w-[90rem] flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 sm:py-12 md:gap-8 lg:py-24",
         className,
       )}
     >
       <DecorationIsolation>
         <ArchDecoration className="pointer-events-none absolute left-[-46px] top-[-20px] size-[200px] rotate-180 md:left-[-60px] md:top-[-188px] md:size-auto" />
         <ArchDecoration className="pointer-events-none absolute bottom-0 right-[-53px] size-[200px] md:-bottom-32 md:size-auto lg:bottom-[-188px] lg:right-0" />
-        <svg width="432" height="432" viewBox="0 0 432 432" className="absolute -z-10">
+        <svg
+          className="absolute -z-10"
+          height="432"
+          viewBox="0 0 432 432"
+          width="432"
+        >
           <defs>
             <linearGradient
+              gradientUnits="userSpaceOnUse"
               id="arch-decoration-a"
               x1="48.5"
-              y1="53.5"
               x2="302.5"
+              y1="53.5"
               y2="341"
-              gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#fff" stopOpacity="0.3" />
               <stop offset="1" stopColor="#fff" stopOpacity="1" />
             </linearGradient>
             <linearGradient
+              gradientUnits="userSpaceOnUse"
               id="arch-decoration-b"
               x1="1"
-              y1="1"
               x2="431"
+              y1="1"
               y2="431"
-              gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#fff" stopOpacity="0.1" />
               <stop offset="1" stopColor="#fff" stopOpacity="0.4" />
@@ -69,11 +75,16 @@ function PricingPageHero({ className }: { className?: string }) {
           </defs>
         </svg>
       </DecorationIsolation>
-      <Heading as="h1" size="xl" className="text-green-1000 z-0 mx-auto max-w-3xl text-center">
+      <Heading
+        as="h1"
+        className="text-green-1000 z-0 mx-auto max-w-3xl text-center"
+        size="xl"
+      >
         Honest pricing plans for your API management
       </Heading>
       <p className="z-0 mx-auto max-w-[80%] text-center leading-6 text-green-800">
-        From hobbyists to enterprises — enjoy all features and usage-based pricing.
+        From hobbyists to enterprises — enjoy all features and usage-based
+        pricing.
       </p>
     </div>
   );

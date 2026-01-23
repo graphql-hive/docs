@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { ReactNode } from "react";
+import { Meta, StoryObj } from "@storybook/react";
 import {
   dummyCardsColorful,
   dummyFeatureList,
@@ -8,17 +8,17 @@ import {
   dummyHeroMarketplace,
   dummyHeroVideo,
   dummyInfoList,
-} from '../../helpers/dummy';
-import { CardsColorful } from '../cards-colorful';
-import { FeatureList } from '../feature-list';
-import { HeroGradient } from '../hero-gradient';
-import { HeroIllustration } from '../hero-illustration';
-import { HeroMarketplace } from '../hero-marketplace';
-import { HeroVideo } from '../hero-video';
-import { InfoList } from '../info-list';
+} from "../../helpers/dummy";
+import { CardsColorful } from "../cards-colorful";
+import { FeatureList } from "../feature-list";
+import { HeroGradient } from "../hero-gradient";
+import { HeroIllustration } from "../hero-illustration";
+import { HeroMarketplace } from "../hero-marketplace";
+import { HeroVideo } from "../hero-video";
+import { InfoList } from "../info-list";
 
 export default {
-  title: 'Products/Envelop',
+  title: "Products/Envelop",
   component: Template,
 } satisfies Meta<typeof Template>;
 

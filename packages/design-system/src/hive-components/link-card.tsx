@@ -1,10 +1,15 @@
-import { Image } from '@unpic/react';
+import { Image } from "@unpic/react";
 
-import { Anchor } from '../anchor';
-import { cn } from '../cn';
+import { Anchor } from "../anchor";
+import { cn } from "../cn";
 
 // Type for static image imports (Vite/webpack)
-type StaticImageData = { blurDataURL?: string; height: number; src: string; width: number; };
+type StaticImageData = {
+  blurDataURL?: string;
+  height: number;
+  src: string;
+  width: number;
+};
 
 export interface LinkCardProps extends React.HTMLAttributes<HTMLAnchorElement> {
   alt?: string;
@@ -23,7 +28,7 @@ export function LinkCard({
   title,
   ...rest
 }: LinkCardProps) {
-  const imgSrc = typeof src === 'string' ? src : src.src;
+  const imgSrc = typeof src === "string" ? src : src.src;
 
   if (!title && !description) {
     return (
@@ -31,7 +36,7 @@ export function LinkCard({
         className="border-beige-200 mt-6 block overflow-hidden rounded-2xl border dark:border-neutral-800"
         href={href}
       >
-        <Image alt={alt || ''} layout="fullWidth" src={imgSrc} />
+        <Image alt={alt || ""} layout="fullWidth" src={imgSrc} />
       </Anchor>
     );
   }
@@ -39,7 +44,7 @@ export function LinkCard({
   return (
     <a
       className={cn(
-        'bg-beige-100 mt-6 flex gap-2 overflow-hidden rounded-2xl dark:bg-neutral-900',
+        "bg-beige-100 mt-6 flex gap-2 overflow-hidden rounded-2xl dark:bg-neutral-900",
         className,
       )}
       href={href}
@@ -50,7 +55,7 @@ export function LinkCard({
         <p className="text-sm">{description}</p>
       </span>
       <Image
-        alt={alt || ''}
+        alt={alt || ""}
         className="rounded-none"
         height={160}
         role="presentation"

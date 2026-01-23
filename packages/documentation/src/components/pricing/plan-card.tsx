@@ -1,7 +1,7 @@
-import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
+import { cn } from "@hive/design-system/cn";
+import { ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 
-import { cn } from '@hive/design-system/cn';
-import { ChevronDownIcon, Cross2Icon } from '../ui/icons';
+import { ChevronDownIcon, Cross2Icon } from "../ui/icons";
 
 export interface PlanCardProps extends React.HTMLAttributes<HTMLDivElement> {
   adjustable: boolean;
@@ -39,7 +39,7 @@ export function PlanCard({
     setTransitioning(true);
 
     const first = cardRef.current.getBoundingClientRect();
-    const ul = cardRef.current.querySelector('ul');
+    const ul = cardRef.current.querySelector("ul");
 
     if (!ul) {
       setCollapsed(newCollapsed);
@@ -50,7 +50,7 @@ export function PlanCard({
     const initialHeight = ul.offsetHeight;
 
     ul.style.height = `${initialHeight}px`;
-    ul.style.overflow = 'hidden';
+    ul.style.overflow = "hidden";
 
     setCollapsed(newCollapsed);
 
@@ -68,89 +68,93 @@ export function PlanCard({
         const prevHeight = ul.style.height;
         const prevOverflow = ul.style.overflow;
 
-        ul.style.position = 'absolute';
-        ul.style.visibility = 'hidden';
-        ul.style.height = 'auto';
-        ul.style.opacity = newCollapsed ? '1' : '0';
+        ul.style.position = "absolute";
+        ul.style.visibility = "hidden";
+        ul.style.height = "auto";
+        ul.style.opacity = newCollapsed ? "1" : "0";
 
         const targetHeight = ul.scrollHeight + (newCollapsed ? 0 : 24);
 
-        ul.style.position = '';
-        ul.style.visibility = '';
+        ul.style.position = "";
+        ul.style.visibility = "";
         ul.style.height = prevHeight;
         ul.style.overflow = prevOverflow;
 
         // Force reflow
         void ul.offsetHeight;
 
-        cardRef.current.style.transition = 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
+        cardRef.current.style.transition =
+          "transform 1s cubic-bezier(0.16, 1, 0.3, 1)";
         ul.style.transition =
-          'height 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+          "height 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1)";
 
         requestAnimationFrame(() => {
           if (!cardRef.current || !ul) return;
 
-          cardRef.current.style.transform = 'none';
-          ul.style.height = newCollapsed ? '0px' : `${targetHeight}px`;
-          ul.style.opacity = newCollapsed ? '0' : '1';
+          cardRef.current.style.transform = "none";
+          ul.style.height = newCollapsed ? "0px" : `${targetHeight}px`;
+          ul.style.opacity = newCollapsed ? "0" : "1";
           const onTransitionEnd = (e: TransitionEvent) => {
-            console.log('transitionend', e.target);
+            console.log("transitionend", e.target);
             if (e.target !== cardRef.current) return;
 
             if (!cardRef.current) return;
-            cardRef.current.style.transition = '';
-            cardRef.current.removeEventListener('transitionend', onTransitionEnd);
+            cardRef.current.style.transition = "";
+            cardRef.current.removeEventListener(
+              "transitionend",
+              onTransitionEnd,
+            );
 
             if (!newCollapsed) {
-              ul.style.height = 'auto';
-              ul.style.overflow = '';
+              ul.style.height = "auto";
+              ul.style.overflow = "";
             }
 
-            ul.style.transition = '';
+            ul.style.transition = "";
 
             setTransitioning(false);
           };
 
-          cardRef.current.addEventListener('transitionend', onTransitionEnd, {
+          cardRef.current.addEventListener("transitionend", onTransitionEnd, {
             signal: transitionAbortController.current?.signal,
           });
         });
       } else {
         // Clean up any inline styles if we're not on mobile
-        ul.style.height = '';
-        ul.style.overflow = '';
-        ul.style.opacity = '';
+        ul.style.height = "";
+        ul.style.overflow = "";
+        ul.style.opacity = "";
         setTransitioning(false);
       }
     });
   };
 
   useEffect(() => {
-    document.body.classList.toggle('max-sm:overflow-hidden', !collapsed);
+    document.body.classList.toggle("max-sm:overflow-hidden", !collapsed);
 
     const abortController = new AbortController();
 
     if (!collapsed) {
       // rotating the phone closes the modal
       window.addEventListener(
-        'resize',
+        "resize",
         function onResize() {
           if (window.innerWidth > 640) {
             collapse(true);
-            window.removeEventListener('resize', onResize);
+            window.removeEventListener("resize", onResize);
           }
         },
         { signal: abortController.signal },
       );
 
       globalThis.addEventListener(
-        'keydown',
+        "keydown",
         function onEscape(e) {
-          if (e.key === 'Escape') {
+          if (e.key === "Escape") {
             // in case somebody presses escape befoere the opening transition finishes
             transitionAbortController.current?.abort();
             collapse(true);
-            globalThis.removeEventListener('keydown', onEscape);
+            globalThis.removeEventListener("keydown", onEscape);
           }
         },
         { signal: abortController.signal },
@@ -158,7 +162,7 @@ export function PlanCard({
     }
 
     return () => {
-      document.body.classList.remove('max-sm:overflow-hidden');
+      document.body.classList.remove("max-sm:overflow-hidden");
       abortController.abort();
     };
   }, [collapsed]);
@@ -167,22 +171,22 @@ export function PlanCard({
     <>
       <div
         className={cn(
-          'fixed inset-0 z-40 bg-black/30 backdrop-blur-2xl transition-opacity duration-500 sm:hidden',
-          collapsed ? 'pointer-events-none opacity-0' : 'opacity-100',
+          "fixed inset-0 z-40 bg-black/30 backdrop-blur-2xl transition-opacity duration-500 sm:hidden",
+          collapsed ? "pointer-events-none opacity-0" : "opacity-100",
         )}
         onClick={() => collapse(true)}
       />
       <article
         className={cn(
-          'relative isolate rounded-3xl bg-white shadow-[inset_0_0_0_1px_theme(colors.green.400)]',
+          "relative isolate rounded-3xl bg-white shadow-[inset_0_0_0_1px_theme(colors.green.400)]",
           'duration-200 before:absolute before:inset-0 before:-z-10 before:rounded-3xl before:bg-[linear-gradient(#fff,#fff),linear-gradient(to_bottom,#68A8B6,#DEDACF,#E1FF00)] before:p-[4px] before:opacity-0 before:transition-[opacity,top,height] before:content-[""] before:[background-clip:content-box,padding-box] before:[transition-duration:50ms,25ms,25ms] sm:mt-[52px] sm:before:top-[-40px]',
-          (highlighted || !collapsed) && 'before:opacity-100',
-          'max-sm:transition-[width,height,border-radius] max-sm:duration-700 max-sm:ease-in-out',
+          (highlighted || !collapsed) && "before:opacity-100",
+          "max-sm:transition-[width,height,border-radius] max-sm:duration-700 max-sm:ease-in-out",
           !collapsed &&
-            'max-sm:fixed max-sm:inset-2 max-sm:z-50 max-sm:m-0 max-sm:h-[calc(100vh-16px)] max-sm:bg-white',
-          transitioning && 'z-50',
+            "max-sm:fixed max-sm:inset-2 max-sm:z-50 max-sm:m-0 max-sm:h-[calc(100vh-16px)] max-sm:bg-white",
+          transitioning && "z-50",
           highlighted && // delay is 29ms so fast swipes don't blink needlessly
-            'sm:before:top-[-52px] sm:before:h-[calc(100%+52px)] sm:before:pt-[50px] sm:before:delay-[29ms] sm:before:[transition-duration:150ms,75ms,75ms]',
+            "sm:before:top-[-52px] sm:before:h-[calc(100%+52px)] sm:before:pt-[50px] sm:before:delay-[29ms] sm:before:[transition-duration:150ms,75ms,75ms]",
           className,
         )}
         ref={cardRef}
@@ -191,15 +195,15 @@ export function PlanCard({
         <div
           /* scrollview for mobiles */
           className={cn(
-            'p-4 max-sm:pb-0 sm:p-8',
-            !collapsed && 'nextra-scrollbar h-full max-sm:overflow-auto',
+            "p-4 max-sm:pb-0 sm:p-8",
+            !collapsed && "nextra-scrollbar h-full max-sm:overflow-auto",
           )}
         >
           <div
             aria-hidden={!highlighted}
             className={cn(
-              'absolute -top-9 left-0 w-full text-center font-medium text-white transition-opacity max-sm:hidden',
-              highlighted ? 'opacity-100' : 'opacity-0',
+              "absolute -top-9 left-0 w-full text-center font-medium text-white transition-opacity max-sm:hidden",
+              highlighted ? "opacity-100" : "opacity-0",
             )}
           >
             Recommended
@@ -209,7 +213,8 @@ export function PlanCard({
               <h2 className="text-2xl font-medium">{name}</h2>
               {adjustable && (
                 <span className="whitespace-nowrap rounded-full bg-green-100 px-3 py-1 text-sm font-medium leading-5">
-                  Adjust <span className="hidden sm:inline">your plan</span> at any time
+                  Adjust <span className="hidden sm:inline">your plan</span> at
+                  any time
                 </span>
               )}
             </div>
@@ -225,18 +230,27 @@ export function PlanCard({
               </button>
             )}
           </header>
-          <div className={cn('mt-4 h-6 text-[#4F6C6A]', !startingFrom && 'max-sm:h-0')}>
-            {startingFrom && 'Starting from'}
+          <div
+            className={cn(
+              "mt-4 h-6 text-[#4F6C6A]",
+              !startingFrom && "max-sm:h-0",
+            )}
+          >
+            {startingFrom && "Starting from"}
           </div>
-          <div className="text-5xl font-medium leading-[56px] tracking-[-0.48px]">{price}</div>
+          <div className="text-5xl font-medium leading-[56px] tracking-[-0.48px]">
+            {price}
+          </div>
           <div className="mt-4 flex *:grow">{callToAction}</div>
 
           <ul
             className={cn(
               // !important here is not super elegant, but it's cheaper than installing an animation library
-              'text-green-800 sm:mt-6 sm:block sm:h-auto! sm:opacity-100!',
-              'max-sm:transition-none', // Prevent any transitions on first load
-              collapsed ? 'max-sm:h-0 max-sm:overflow-hidden max-sm:opacity-0' : '',
+              "text-green-800 sm:mt-6 sm:block sm:h-auto! sm:opacity-100!",
+              "max-sm:transition-none", // Prevent any transitions on first load
+              collapsed
+                ? "max-sm:h-0 max-sm:overflow-hidden max-sm:opacity-0"
+                : "",
             )}
             data-open={!collapsed}
           >

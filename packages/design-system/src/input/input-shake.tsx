@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
-import { Severity } from '../../types/severity';
+import { Severity } from "../../types/severity";
 
 interface InputShakeProps {
   severity?: Severity;
@@ -17,14 +17,15 @@ export function InputShake({ severity }: InputShakeProps) {
   const prevSeverityRef = useRef<Severity | undefined>(severity);
 
   useEffect(() => {
-    const shouldShake = prevSeverityRef.current !== 'critical' && severity === 'critical';
+    const shouldShake =
+      prevSeverityRef.current !== "critical" && severity === "critical";
 
     prevSeverityRef.current = severity;
     const container = ref.current?.parentElement;
     if (container && shouldShake) {
-      container.classList.add('animate-shake');
-      const cleanUp = () => container.classList.remove('animate-shake');
-      container.addEventListener('animationend', cleanUp, { once: true });
+      container.classList.add("animate-shake");
+      const cleanUp = () => container.classList.remove("animate-shake");
+      container.addEventListener("animationend", cleanUp, { once: true });
     }
   }, [severity]);
 

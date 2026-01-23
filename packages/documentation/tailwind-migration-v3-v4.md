@@ -39,33 +39,33 @@ export default defineConfig({
 
 ### Renamed utilities
 
-| v3 | v4 |
-|---|---|
-| shadow-sm | shadow-xs |
-| shadow | shadow-sm |
-| blur-sm | blur-xs |
-| blur | blur-sm |
-| rounded-sm | rounded-xs |
-| rounded | rounded-sm |
+| v3           | v4             |
+| ------------ | -------------- |
+| shadow-sm    | shadow-xs      |
+| shadow       | shadow-sm      |
+| blur-sm      | blur-xs        |
+| blur         | blur-sm        |
+| rounded-sm   | rounded-xs     |
+| rounded      | rounded-sm     |
 | outline-none | outline-hidden |
-| ring | ring-3 |
+| ring         | ring-3         |
 
 ### Removed deprecated utilities
 
-| Deprecated | Replacement |
-|---|---|
-| bg-opacity-* | Use opacity modifiers like `bg-black/50` |
-| text-opacity-* | Use opacity modifiers like `text-black/50` |
-| border-opacity-* | Use opacity modifiers like `border-black/50` |
-| flex-shrink-* | shrink-* |
-| flex-grow-* | grow-* |
+| Deprecated        | Replacement                                  |
+| ----------------- | -------------------------------------------- |
+| bg-opacity-\*     | Use opacity modifiers like `bg-black/50`     |
+| text-opacity-\*   | Use opacity modifiers like `text-black/50`   |
+| border-opacity-\* | Use opacity modifiers like `border-black/50` |
+| flex-shrink-\*    | shrink-\*                                    |
+| flex-grow-\*      | grow-\*                                      |
 
 ### Default border color
 
 Changed from `gray-200` to `currentColor`. Add explicit colors:
 
 ```html
-<div class="border border-gray-200 px-2 py-3">
+<div class="border border-gray-200 px-2 py-3"></div>
 ```
 
 ### Default ring width
@@ -73,7 +73,7 @@ Changed from `gray-200` to `currentColor`. Add explicit colors:
 Changed from 3px to 1px. Replace `ring` with `ring-3`:
 
 ```html
-<button class="focus:ring-3 focus:ring-blue-500">
+<button class="focus:ring-3 focus:ring-blue-500"></button>
 ```
 
 ### Adding custom utilities
@@ -99,9 +99,9 @@ v4 applies left to right (like CSS):
 ```html
 <!-- v3 -->
 <ul class="first:*:pt-0 last:*:pb-0">
-
-<!-- v4 -->
-<ul class="*:first:pt-0 *:last:pb-0">
+  <!-- v4 -->
+  <ul class="*:first:pt-0 *:last:pb-0"></ul>
+</ul>
 ```
 
 ### Variables in arbitrary values
@@ -134,10 +134,12 @@ For media queries:
 
 ```css
 /* v3 */
-@media (width >= theme(screens.xl)) {}
+@media (width >= theme(screens.xl)) {
+}
 
 /* v4 */
-@media (width >= theme(--breakpoint-xl)) {}
+@media (width >= theme(--breakpoint-xl)) {
+}
 ```
 
 ### JavaScript config
@@ -154,10 +156,10 @@ Use `@reference` to import definitions:
 
 ```vue
 <style>
-  @reference "../../app.css";
-  h1 {
-    @apply text-2xl font-bold text-red-500;
-  }
+@reference "../../app.css";
+h1 {
+  @apply text-2xl font-bold text-red-500;
+}
 </style>
 ```
 
@@ -165,9 +167,9 @@ Or use CSS variables directly:
 
 ```vue
 <style>
-  h1 {
-    color: var(--text-red-500);
-  }
+h1 {
+  color: var(--text-red-500);
+}
 </style>
 ```
 

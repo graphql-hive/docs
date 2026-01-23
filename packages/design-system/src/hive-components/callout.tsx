@@ -1,4 +1,4 @@
-type CalloutType = 'critical' | 'info' | 'note' | 'success' | 'tip' | 'warning';
+type CalloutType = "critical" | "info" | "note" | "success" | "tip" | "warning";
 
 interface CalloutProps {
   children: React.ReactNode;
@@ -16,40 +16,40 @@ const calloutConfig: Record<
   }
 > = {
   critical: {
-    bgColor: 'bg-red-50 dark:bg-red-950/30',
-    borderColor: 'border-red-500 dark:border-red-400',
-    title: 'Critical',
-    titleColor: 'text-red-700 dark:text-red-400',
+    bgColor: "bg-red-50 dark:bg-red-950/30",
+    borderColor: "border-red-500 dark:border-red-400",
+    title: "Critical",
+    titleColor: "text-red-700 dark:text-red-400",
   },
   info: {
-    bgColor: 'bg-cyan-50 dark:bg-cyan-950/30',
-    borderColor: 'border-cyan-500 dark:border-cyan-400',
-    title: 'Info',
-    titleColor: 'text-cyan-700 dark:text-cyan-400',
+    bgColor: "bg-cyan-50 dark:bg-cyan-950/30",
+    borderColor: "border-cyan-500 dark:border-cyan-400",
+    title: "Info",
+    titleColor: "text-cyan-700 dark:text-cyan-400",
   },
   note: {
-    bgColor: 'bg-blue-50 dark:bg-blue-950/30',
-    borderColor: 'border-blue-500 dark:border-blue-400',
-    title: 'Note',
-    titleColor: 'text-blue-700 dark:text-blue-400',
+    bgColor: "bg-blue-50 dark:bg-blue-950/30",
+    borderColor: "border-blue-500 dark:border-blue-400",
+    title: "Note",
+    titleColor: "text-blue-700 dark:text-blue-400",
   },
   success: {
-    bgColor: 'bg-green-50 dark:bg-green-950/30',
-    borderColor: 'border-green-500 dark:border-green-400',
-    title: 'Success',
-    titleColor: 'text-green-700 dark:text-green-400',
+    bgColor: "bg-green-50 dark:bg-green-950/30",
+    borderColor: "border-green-500 dark:border-green-400",
+    title: "Success",
+    titleColor: "text-green-700 dark:text-green-400",
   },
   tip: {
-    bgColor: 'bg-purple-50 dark:bg-purple-950/30',
-    borderColor: 'border-purple-500 dark:border-purple-400',
-    title: 'Tip',
-    titleColor: 'text-purple-700 dark:text-purple-400',
+    bgColor: "bg-purple-50 dark:bg-purple-950/30",
+    borderColor: "border-purple-500 dark:border-purple-400",
+    title: "Tip",
+    titleColor: "text-purple-700 dark:text-purple-400",
   },
   warning: {
-    bgColor: 'bg-yellow-50 dark:bg-yellow-950/30',
-    borderColor: 'border-yellow-500 dark:border-yellow-400',
-    title: 'Warning',
-    titleColor: 'text-yellow-700 dark:text-yellow-400',
+    bgColor: "bg-yellow-50 dark:bg-yellow-950/30",
+    borderColor: "border-yellow-500 dark:border-yellow-400",
+    title: "Warning",
+    titleColor: "text-yellow-700 dark:text-yellow-400",
   },
 };
 
@@ -61,12 +61,14 @@ export function Callout({ children, title, type }: CalloutProps) {
   }
 
   return (
-    <div className={`${config.bgColor} ${config.borderColor} mt-6 rounded-r-lg border-l-2 p-4`}>
+    <div
+      className={`${config.bgColor} ${config.borderColor} mt-6 rounded-r-lg border-l-2 p-4`}
+    >
       <div className="min-w-0 flex-1 dark:text-white">
         <div
           className={`mb-2 font-mono text-sm font-medium uppercase ${config.titleColor}`}
           style={{
-            letterSpacing: '0.05em',
+            letterSpacing: "0.05em",
           }}
         >
           {title ?? config.title}

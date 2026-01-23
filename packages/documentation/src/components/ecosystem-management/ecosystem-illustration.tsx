@@ -1,23 +1,23 @@
-import { ReactNode } from 'react';
-
-import { cn } from '@hive/design-system/cn';
+import { cn } from "@hive/design-system/cn";
 import {
   CodegenIcon,
   HiveGatewayIcon,
   HiveIcon,
   HiveRouterIcon,
   StellateIcon,
-} from '@hive/design-system/icons';
-import { DashedLine } from './dashed-line';
-import styles from './ecosystem-management.module.css';
-import { GraphQLLogo } from './graphql-logo';
-import { IconGradientDefs } from './icon-gradient-defs';
-import { AndroidLogo } from './logos/android';
-import { AppleLogo } from './logos/apple';
-import { GrpcLogo } from './logos/grpc';
-import { McpLogo } from './logos/mcp';
-import { OpenAPILogo } from './logos/openapi';
-import { ReactLogo } from './logos/react';
+} from "@hive/design-system/icons";
+import { ReactNode } from "react";
+
+import { DashedLine } from "./dashed-line";
+import styles from "./ecosystem-management.module.css";
+import { GraphQLLogo } from "./graphql-logo";
+import { IconGradientDefs } from "./icon-gradient-defs";
+import { AndroidLogo } from "./logos/android";
+import { AppleLogo } from "./logos/apple";
+import { GrpcLogo } from "./logos/grpc";
+import { McpLogo } from "./logos/mcp";
+import { OpenAPILogo } from "./logos/openapi";
+import { ReactLogo } from "./logos/react";
 
 const boxHeight = 66;
 const halfBoxHeight = boxHeight / 2;
@@ -64,15 +64,15 @@ export function EcosystemIllustration(props: { className?: string }) {
   return (
     <div
       className={cn(
-        'grid h-min flex-1 grid-cols-1 items-center gap-y-0 overflow-visible md:grid-cols-[auto_minmax(2rem,1fr)_min-content_minmax(2rem,1fr)_auto]',
+        "grid h-min flex-1 grid-cols-1 items-center gap-y-0 overflow-visible md:grid-cols-[auto_minmax(2rem,1fr)_min-content_minmax(2rem,1fr)_auto]",
         props.className,
-        styles['container'],
-        '[--edge:32px] sm:[--edge:48px] md:[--edge:96px]',
+        styles["container"],
+        "[--edge:32px] sm:[--edge:48px] md:[--edge:96px]",
       )}
       style={
         {
-          '--gateway-height': `${gatewayHeight}px`,
-          '--stellate-height': `${stellateHeight}px`,
+          "--gateway-height": `${gatewayHeight}px`,
+          "--stellate-height": `${stellateHeight}px`,
         } as React.CSSProperties
       }
     >
@@ -179,7 +179,7 @@ export function EcosystemIllustration(props: { className?: string }) {
           }
           title={
             <>
-              <span className={styles['smHidden']}>Hive</span> Console
+              <span className={styles["smHidden"]}>Hive</span> Console
             </>
           }
         >
@@ -190,7 +190,7 @@ export function EcosystemIllustration(props: { className?: string }) {
   );
 }
 
-interface NodeProps extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
+interface NodeProps extends Omit<React.HTMLAttributes<HTMLElement>, "title"> {
   description?: ReactNode;
   title: ReactNode;
 }
@@ -199,9 +199,9 @@ function Node({ children, className, description, title, ...rest }: NodeProps) {
   return (
     <div
       className={cn(
-        styles['node'],
-        'firefox:[backdrop-filter:blur(12px)] relative z-10 flex min-h-[96px] items-center gap-4 rounded-2xl bg-[linear-gradient(135deg,rgb(255_255_255/0.10),rgb(255_255_255/0.20))] p-4 backdrop-blur-md xl:p-[22px] [&>svg]:shrink-0',
-        description && 'flex-row',
+        styles["node"],
+        "firefox:[backdrop-filter:blur(12px)] relative z-10 flex min-h-[96px] items-center gap-4 rounded-2xl bg-[linear-gradient(135deg,rgb(255_255_255/0.10),rgb(255_255_255/0.20))] p-4 backdrop-blur-md xl:p-[22px] [&>svg]:shrink-0",
+        description && "flex-row",
         className,
       )}
       {...rest}
@@ -211,7 +211,12 @@ function Node({ children, className, description, title, ...rest }: NodeProps) {
         <div className="flex flex-col text-left">
           <div className="font-medium text-green-100">{title}</div>
           {description && (
-            <div className={cn('mt-0.5 text-sm leading-5 text-green-200', styles['desc'])}>
+            <div
+              className={cn(
+                "mt-0.5 text-sm leading-5 text-green-200",
+                styles["desc"],
+              )}
+            >
               {description}
             </div>
           )}

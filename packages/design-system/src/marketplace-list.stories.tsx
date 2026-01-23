@@ -1,34 +1,34 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { hiveThemeDecorator } from '../../../../.storybook/hive-theme-decorator';
-import { MarketplaceList } from './marketplace-list';
-import { Default as MarketplaceSearchDefaultStory } from './marketplace-search.stories';
+import { Meta, StoryObj } from "@storybook/react";
+import { hiveThemeDecorator } from "./__storybook__/hive-theme-decorator";
+import { MarketplaceList } from "./marketplace-list";
+import { Default as MarketplaceSearchDefaultStory } from "./marketplace-search.stories";
 
 const meta: Meta<typeof MarketplaceList> = {
-  title: 'Components/MarketplaceList',
+  title: "Components/MarketplaceList",
   component: MarketplaceList,
   argTypes: {
     title: {
-      name: 'Title',
+      name: "Title",
     },
     placeholder: {
-      name: 'No Results Placeholder',
+      name: "No Results Placeholder",
     },
     pagination: {
-      name: 'Products / Page',
+      name: "Products / Page",
     },
     items: {
-      name: 'Items',
+      name: "Items",
     },
     colorScheme: {
       control: {
-        type: 'select',
+        type: "select",
       },
-      options: ['green', 'black'],
+      options: ["green", "black"],
     },
   },
   decorators: [
     hiveThemeDecorator,
-    Story => (
+    (Story) => (
       <div className="p-2">
         <Story />
       </div>
@@ -41,16 +41,16 @@ export default meta;
 type Story = StoryObj<typeof MarketplaceList>;
 
 export const Default: Story = {
-  name: 'MarketplaceList',
+  name: "MarketplaceList",
   args: {
-    title: 'Trending & Last Update',
-    placeholder: 'There are no items available...',
+    title: "Trending & Last Update",
+    placeholder: "There are no items available...",
     pagination: 4,
     items: MarketplaceSearchDefaultStory.args?.primaryList?.items ?? [],
   },
 };
 
 export const Green: Story = {
-  name: 'MarketplaceList Green',
-  args: { ...Default.args, colorScheme: 'green' },
+  name: "MarketplaceList Green",
+  args: { ...Default.args, colorScheme: "green" },
 };

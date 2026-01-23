@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import type { Type } from 'arktype';
+import type { Type } from "arktype";
 
 /**
  * Hook for client components to access frontmatter.
@@ -28,5 +28,5 @@ export function useFrontmatter<T>(schema: Type<T>): T {
   // return result
 
   void schema; // suppress unused warning
-  throw new Error('useFrontmatter not yet implemented for TanStack Start');
+  throw new Error("useFrontmatter not yet implemented for TanStack Start");
 }

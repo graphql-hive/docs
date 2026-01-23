@@ -1,21 +1,27 @@
-'use client';
+"use client";
 
-import fuzzy from 'fuzzy';
-import { isValidElement, ReactElement, useMemo, useState } from 'react';
+import fuzzy from "fuzzy";
+import { isValidElement, ReactElement, useMemo, useState } from "react";
 
-import { IMarketplaceListProps, IMarketplaceSearchProps } from '../types/components';
-import { cn } from './cn';
-import { Heading } from './heading';
-import { CloseIcon, SearchIcon } from './icons';
-import { MarketplaceList } from './marketplace-list';
-import { Tabs } from './tabs';
-import { Tag, TagsContainer } from './tag';
+import {
+  IMarketplaceListProps,
+  IMarketplaceSearchProps,
+} from "../types/components";
+import { cn } from "./cn";
+import { Heading } from "./heading";
+import { CloseIcon, SearchIcon } from "./icons";
+import { MarketplaceList } from "./marketplace-list";
+import { Tabs } from "./tabs";
+import { Tag, TagsContainer } from "./tag";
 
-const renderQueryPlaceholder = (placeholder: ReactElement | string, query: string) => {
+const renderQueryPlaceholder = (
+  placeholder: ReactElement | string,
+  query: string,
+) => {
   if (!query || isValidElement(placeholder)) {
     return placeholder;
   }
-  const subStrings = (placeholder as string).split('{query}');
+  const subStrings = (placeholder as string).split("{query}");
   return (
     <>
       {subStrings[0]} <strong>"{query}"</strong> {subStrings[1]}
@@ -25,7 +31,7 @@ const renderQueryPlaceholder = (placeholder: ReactElement | string, query: strin
 
 export const MarketplaceSearch = ({
   className,
-  colorScheme = 'neutral',
+  colorScheme = "neutral",
   placeholder,
   primaryList,
   queryList,
@@ -33,13 +39,13 @@ export const MarketplaceSearch = ({
   tagsFilter,
   title,
 }: IMarketplaceSearchProps): ReactElement => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   const handleTagClick = (tagName: string) => {
     if (query.includes(`#${tagName}`)) {
-      setQuery(query.replace(`#${tagName}`, '').trim());
+      setQuery(query.replace(`#${tagName}`, "").trim());
     } else {
-      setQuery(prev => `${prev} #${tagName}`);
+      setQuery((prev) => `${prev} #${tagName}`);
     }
   };
 
@@ -47,27 +53,33 @@ export const MarketplaceSearch = ({
     if (query && queryList) {
       const tags = query
         .split(/\s+/)
-        .filter(e => e.startsWith('#'))
-        .map(e => e.replace('#', ''));
+        .filter((e) => e.startsWith("#"))
+        .map((e) => e.replace("#", ""));
       // Filter by tags
       let filteredItems = queryList.items;
       if (tags.length > 0) {
-        filteredItems = queryList.items.filter(item => tags.every(e => item.tags?.includes(e)));
+        filteredItems = queryList.items.filter((item) =>
+          tags.every((e) => item.tags?.includes(e)),
+        );
       }
-      const matchedResults = new Set(fuzzy
-        .filter(
-          // Removes tags and all special characters from the query string for better fuzzy matching
-          // query
-          query
-            .replaceAll(/#\w+/gi, '')
-            .replaceAll(/[^\w\s]/gi, '')
-            .trim(),
-          // Mapping the queryList items into a list of strings including the titles
-          filteredItems.map(e => e.title),
-        )
-        .map(e => e.original.toLowerCase()));
+      const matchedResults = new Set(
+        fuzzy
+          .filter(
+            // Removes tags and all special characters from the query string for better fuzzy matching
+            // query
+            query
+              .replaceAll(/#\w+/gi, "")
+              .replaceAll(/[^\w\s]/gi, "")
+              .trim(),
+            // Mapping the queryList items into a list of strings including the titles
+            filteredItems.map((e) => e.title),
+          )
+          .map((e) => e.original.toLowerCase()),
+      );
 
-      return queryList.items.filter(e => matchedResults.has(e.title.toLowerCase()));
+      return queryList.items.filter((e) =>
+        matchedResults.has(e.title.toLowerCase()),
+      );
     }
     return;
   }, [query, queryList]);
@@ -76,9 +88,9 @@ export const MarketplaceSearch = ({
     <section
       className={cn(
         // --bg and --fg are defined in style.css under .MarketplaceSearch
-        'MarketplaceSearch',
+        "MarketplaceSearch",
         colorScheme,
-        'bg-(--bg)',
+        "bg-(--bg)",
         className,
       )}
     >
@@ -140,11 +152,16 @@ function MarketplaceSearchInput({
 }) {
   return (
     <div className="border-b border-(--fg-60)">
-      <div className={cn('hive-focus-within flex items-center rounded px-2', className)}>
+      <div
+        className={cn(
+          "hive-focus-within flex items-center rounded px-2",
+          className,
+        )}
+      >
         <SearchIcon className="text-(--fg-80)" />
         <input
           className="ml-2 w-full border-0 bg-transparent py-2 font-medium text-(--fg) outline-hidden placeholder:text-(--fg-60) [&::-webkit-search-cancel-button]:hidden"
-          onChange={event => onChange(event.currentTarget.value)}
+          onChange={(event) => onChange(event.currentTarget.value)}
           placeholder={placeholder}
           type="search"
           value={value}
@@ -152,7 +169,7 @@ function MarketplaceSearchInput({
         <button
           aria-label="Clear input"
           className="flex size-6 items-center justify-center rounded-xs [input:placeholder-shown+&]:hidden"
-          onClick={() => onChange('')}
+          onClick={() => onChange("")}
           // A builtin clear-button can't be tabbed to. A keyboard user can cmd+A and delete.
           tabIndex={-1}
         >
@@ -169,20 +186,21 @@ function MarketplaceSearchTabs({
   tabs: lists,
 }: {
   className?: string;
-  colorScheme: 'green' | 'neutral';
+  colorScheme: "green" | "neutral";
   tabs: (IMarketplaceListProps | undefined)[];
 }) {
   const items = lists.filter(
-    (list): list is IMarketplaceListProps & { title: string } => list?.title != null,
+    (list): list is IMarketplaceListProps & { title: string } =>
+      list?.title != null,
   );
 
   return (
     <div className={className}>
       <Tabs
         className="grid grid-cols-2 gap-1 rounded-2xl border-none bg-neutral-800 [.green_&]:bg-green-900! [.light_&]:bg-neutral-100 [.light_&]:text-green-200"
-        items={items.map(list => list.title)}
+        items={items.map((list) => list.title)}
         tabClassName={cn(
-          'rounded-2xl border-none p-3 text-sm font-medium text-neutral-200 hover:bg-neutral-700/50 hover:text-white aria-selected:cursor-default! aria-selected:!bg-[--fg] aria-selected:!text-[--bg] sm:p-4 sm:text-base [.green_&]:bg-green-900! [.green_&]:text-green-200! [.green_&]:hover:bg-green-700/25! [.green_&]:hover:text-green-100! [.green_&]:aria-selected:bg-green-300! [.green_&]:aria-selected:text-green-800! [.light_&]:bg-neutral-100 [.light_&]:text-neutral-800 [.light_&]:hover:bg-neutral-200/80 [.light_&]:hover:text-neutral-900',
+          "rounded-2xl border-none p-3 text-sm font-medium text-neutral-200 hover:bg-neutral-700/50 hover:text-white aria-selected:cursor-default! aria-selected:!bg-[--fg] aria-selected:!text-[--bg] sm:p-4 sm:text-base [.green_&]:bg-green-900! [.green_&]:text-green-200! [.green_&]:hover:bg-green-700/25! [.green_&]:hover:text-green-100! [.green_&]:aria-selected:bg-green-300! [.green_&]:aria-selected:text-green-800! [.light_&]:bg-neutral-100 [.light_&]:text-neutral-800 [.light_&]:hover:bg-neutral-200/80 [.light_&]:hover:text-neutral-900",
         )}
       >
         {items.map((list, i) => (

@@ -1,10 +1,10 @@
-import { cloneElement, ReactElement } from 'react';
+import { cloneElement, ReactElement } from "react";
 
-import { cn } from '../cn';
-import { GRADIENT_GREEN_ID, GRADIENT_WHITE_ID } from './hero-gradient-ids';
+import { cn } from "../cn";
+import { GRADIENT_GREEN_ID, GRADIENT_WHITE_ID } from "./hero-gradient-ids";
 
-const GRADIENT_BLUE = 'logo-blue-3028';
-const GRADIENT_WHITE_INVERTED = 'logo-white-3028';
+const GRADIENT_BLUE = "logo-blue-3028";
+const GRADIENT_WHITE_INVERTED = "logo-white-3028";
 
 export interface HeroLogoProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactElement<{
@@ -17,10 +17,10 @@ export interface HeroLogoProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function HeroLogo({ children, className, ...rest }: HeroLogoProps) {
   return (
-    <div className={cn('relative', className)} {...rest}>
+    <div className={cn("relative", className)} {...rest}>
       {cloneElement(children, {
         className: cn(
-          'absolute inset-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2',
+          "absolute inset-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2",
           children.props.className,
         ),
         fill: `url(#${GRADIENT_BLUE})`,
@@ -35,7 +35,12 @@ export function HeroLogo({ children, className, ...rest }: HeroLogoProps) {
 function LogoBadgeBackground() {
   return (
     <svg fill="none" height="96" viewBox="0 0 96 96" width="96">
-      <rect fill={`url(#${GRADIENT_GREEN_ID})`} height="96" rx="24" width="96" />
+      <rect
+        fill={`url(#${GRADIENT_GREEN_ID})`}
+        height="96"
+        rx="24"
+        width="96"
+      />
       <rect
         height="95"
         rx="23.5"

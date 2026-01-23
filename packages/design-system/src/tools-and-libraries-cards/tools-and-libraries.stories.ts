@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { ToolsAndLibrariesCards } from '.';
-import { hiveThemeDecorator } from '../../../../../.storybook/hive-theme-decorator';
+import { Meta, StoryObj } from "@storybook/react";
+import { ToolsAndLibrariesCards } from ".";
+import { hiveThemeDecorator } from "../__storybook__/hive-theme-decorator";
 
 export default {
-  title: 'Hive/ToolsAndLibrariesCards',
+  title: "Hive/ToolsAndLibrariesCards",
   component: ToolsAndLibrariesCards,
   decorators: [hiveThemeDecorator],
   parameters: {
@@ -12,5 +12,5 @@ export default {
 } satisfies Meta;
 
 export const Default: StoryObj<typeof ToolsAndLibrariesCards> = {
-  name: 'ToolsAndLibrariesCards',
+  name: "ToolsAndLibrariesCards",
 };

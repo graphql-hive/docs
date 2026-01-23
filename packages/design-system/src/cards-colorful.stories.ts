@@ -1,13 +1,13 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { dummyCardsColorful } from '../helpers/dummy';
-import { CardsColorful } from './cards-colorful';
+import { Meta, StoryObj } from "@storybook/react";
+import { dummyCardsColorful } from "./helpers/dummy";
+import { CardsColorful } from "./cards-colorful";
 
 export default {
-  title: 'Components/Cards/Colorful',
+  title: "Components/Cards/Colorful",
   component: CardsColorful,
   argTypes: {
     cards: {
-      name: 'Cards',
+      name: "Cards",
     },
   },
 } satisfies Meta<typeof CardsColorful>;

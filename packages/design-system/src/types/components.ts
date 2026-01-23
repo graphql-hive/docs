@@ -1,10 +1,11 @@
-import { ComponentProps, ReactElement, ReactNode } from 'react';
+import { ComponentProps, ReactElement, ReactNode } from "react";
 
-// Simplified image props (was next/image)
+// Image props compatible with @unpic/react
 export interface IImage {
   alt: string;
   className?: string;
   height?: number;
+  priority?: boolean;
   src: string;
   width?: number;
 }
@@ -25,10 +26,13 @@ export interface ReactPlayerProps {
   width?: number | string;
 }
 
-export type ILink = Pick<ComponentProps<'a'>, 'className' | 'onClick' | 'rel' | 'style' | 'target' | 'title'> & {
-    children: ReactNode;
-    newWindow?: boolean;
-  } & {
+export type ILink = Pick<
+  ComponentProps<"a">,
+  "className" | "onClick" | "rel" | "style" | "target" | "title"
+> & {
+  children: ReactNode;
+  newWindow?: boolean;
+} & {
   href: { pathname?: string } | string;
 };
 
@@ -95,7 +99,7 @@ export interface IHeroMarketplaceProps {
 export interface IMarketplaceItemProps {
   description: ReactNode | string;
   image: IImage;
-  link: Omit<ILink, 'children'>;
+  link: Omit<ILink, "children">;
   modal?: {
     content: (() => ReactNode) | ReactNode | string;
     header: {
@@ -115,7 +119,7 @@ export interface IMarketplaceItemsProps {
 
 export interface IMarketplaceListProps {
   className?: string;
-  colorScheme?: 'green' | 'neutral';
+  colorScheme?: "green" | "neutral";
   items: IMarketplaceItemProps[];
   pagination: number;
   placeholder: ReactElement | string;
@@ -124,7 +128,7 @@ export interface IMarketplaceListProps {
 
 export interface IMarketplaceSearchProps {
   className?: string;
-  colorScheme?: 'green' | 'neutral';
+  colorScheme?: "green" | "neutral";
   placeholder: string;
   primaryList: IMarketplaceListProps;
   queryList?: IMarketplaceListProps;
@@ -134,7 +138,7 @@ export interface IMarketplaceSearchProps {
 }
 
 export interface ISchemaPageProps {
-  editorData: Omit<IEditorProps, 'children' | 'icon'>[];
+  editorData: Omit<IEditorProps, "children" | "icon">[];
   schemaName: string;
   tags?: string[];
 }

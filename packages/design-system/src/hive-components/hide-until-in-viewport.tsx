@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 
 interface HideUntilInViewportProps {
   children: ReactNode;
@@ -26,7 +26,7 @@ export const HideUntilInViewport = ({
       },
       {
         root: null,
-        rootMargin: '0px',
+        rootMargin: "0px",
         threshold: 1,
       },
     );

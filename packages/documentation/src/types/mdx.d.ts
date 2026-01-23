@@ -1,6 +1,6 @@
 // MDX module declarations
-declare module '*.mdx' {
-  import { ComponentType, ReactNode } from 'react';
+declare module "*.mdx" {
+  import { ComponentType, ReactNode } from "react";
 
   export const frontmatter: Record<string, unknown>;
 

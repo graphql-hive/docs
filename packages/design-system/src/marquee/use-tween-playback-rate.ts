@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef } from "react";
 
 export function useTweenPlaybackRate() {
   const slowingHandle = useRef<number | null>(null);
@@ -20,13 +20,18 @@ export function useTweenPlaybackRate() {
       const deltaTime = now - time.current;
       const { playbackRate } = animation;
 
-      const newValue = Math.min(Math.max(playbackRate + step * deltaTime, 0), 1);
+      const newValue = Math.min(
+        Math.max(playbackRate + step * deltaTime, 0),
+        1,
+      );
       if (newValue === playbackRate) return;
 
       animation.updatePlaybackRate(newValue);
     }
 
     time.current = now;
-    currentHandle.current = requestAnimationFrame(() => tweenPlaybackRate(animation, step));
+    currentHandle.current = requestAnimationFrame(() =>
+      tweenPlaybackRate(animation, step),
+    );
   };
 }

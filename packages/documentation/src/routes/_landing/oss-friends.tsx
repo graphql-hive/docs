@@ -1,28 +1,29 @@
-'use client';
+"use client";
 
-import { Suspense, use } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
+import { CallToAction } from "@hive/design-system/call-to-action";
 import {
   ArchDecoration,
   DecorationIsolation,
   HighlightDecoration,
   LargeHiveIconDecoration,
-} from '@hive/design-system/decorations';
-import { CallToAction } from '@hive/design-system/call-to-action';
-import { Heading } from '@hive/design-system/heading';
-import { LandingPageContainer } from '../../components/landing-page-container';
+} from "@hive/design-system/decorations";
+import { Heading } from "@hive/design-system/heading";
+import { createFileRoute } from "@tanstack/react-router";
+import { Suspense, use } from "react";
 
-export const Route = createFileRoute('/_landing/oss-friends')({
+import { LandingPageContainer } from "../../components/landing-page-container";
+
+export const Route = createFileRoute("/_landing/oss-friends")({
   component: OSSFriendsPage,
 });
 
-const friendsPromise = fetch('https://formbricks.com/api/oss-friends').then(
-  res =>
+const friendsPromise = fetch("https://formbricks.com/api/oss-friends").then(
+  (res) =>
     res.json() as Promise<{
       data: {
-        name: string;
         description: string;
         href: string;
+        name: string;
       }[];
     }>,
 );
@@ -34,26 +35,31 @@ function OSSFriendsPage() {
         <DecorationIsolation>
           <ArchDecoration className="pointer-events-none absolute -top-5 left-[-46px] size-[200px] rotate-180 md:left-[-60px] md:top-[-188px] md:size-auto" />
           <ArchDecoration className="pointer-events-none absolute bottom-0 right-[-53px] size-[200px] md:-bottom-32 md:size-auto lg:bottom-[-188px] lg:right-0" />
-          <svg width="432" height="432" viewBox="0 0 432 432" className="absolute -z-10">
+          <svg
+            className="absolute -z-10"
+            height="432"
+            viewBox="0 0 432 432"
+            width="432"
+          >
             <defs>
               <linearGradient
+                gradientUnits="userSpaceOnUse"
                 id="arch-decoration-a"
                 x1="48.5"
-                y1="53.5"
                 x2="302.5"
+                y1="53.5"
                 y2="341"
-                gradientUnits="userSpaceOnUse"
               >
                 <stop stopColor="#fff" stopOpacity="0.3" />
                 <stop offset="1" stopColor="#fff" stopOpacity="1" />
               </linearGradient>
               <linearGradient
+                gradientUnits="userSpaceOnUse"
                 id="arch-decoration-b"
                 x1="1"
-                y1="1"
                 x2="431"
+                y1="1"
                 y2="431"
-                gradientUnits="userSpaceOnUse"
               >
                 <stop stopColor="#fff" stopOpacity="0.1" />
                 <stop offset="1" stopColor="#fff" stopOpacity="0.4" />
@@ -61,7 +67,11 @@ function OSSFriendsPage() {
             </defs>
           </svg>
         </DecorationIsolation>
-        <Heading as="h1" size="xl" className="text-green-1000 z-0 mx-auto max-w-3xl text-center">
+        <Heading
+          as="h1"
+          className="text-green-1000 z-0 mx-auto max-w-3xl text-center"
+          size="xl"
+        >
           Open Source Friends
         </Heading>
         <p className="z-0 mx-auto max-w-[80%] text-center leading-6 text-green-800">
@@ -76,10 +86,10 @@ function OSSFriendsPage() {
                 <Suspense
                   fallback={
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                      {[...Array(9)].map((_, i) => (
+                      {Array.from({ length: 9 }).map((_, i) => (
                         <div
-                          key={i}
                           className="bg-beige-100 h-[140px] animate-pulse rounded-lg p-4"
+                          key={i}
                         />
                       ))}
                     </div>
@@ -98,17 +108,17 @@ function OSSFriendsPage() {
           <HighlightDecoration className="absolute -left-1 -top-16 size-[600px] -scale-x-100 overflow-visible" />
           <LargeHiveIconDecoration className="absolute bottom-0 right-8 hidden lg:block" />
         </DecorationIsolation>
-        <Heading as="h3" size="md" className="text-white">
+        <Heading as="h3" className="text-white" size="md">
           Open Source GraphQL Platform
         </Heading>
         <p className="relative mt-4 text-white/80">
-          Start building your federated GraphQL API today, by following our guide, that will walk
-          you through the basics of Apollo Federation.
+          Start building your federated GraphQL API today, by following our
+          guide, that will walk you through the basics of Apollo Federation.
         </p>
         <CallToAction
-          variant="primary-inverted"
           className="mx-auto mt-8"
           href="/docs/get-started/apollo-federation"
+          variant="primary-inverted"
         >
           Start building now
         </CallToAction>
@@ -124,12 +134,14 @@ function FriendsList() {
     <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {friends.map((friend, i) => (
         <a
+          className="hover:bg-beige-200 bg-beige-100 relative block rounded-lg p-4 shadow-xs"
           href={friend.href}
           key={i}
-          className="hover:bg-beige-200 bg-beige-100 relative block rounded-lg p-4 shadow-xs"
         >
           <dt className="text-green-1000 font-medium">{friend.name}</dt>
-          <dd className="mt-2 text-sm leading-5 text-green-800">{friend.description}</dd>
+          <dd className="mt-2 text-sm leading-5 text-green-800">
+            {friend.description}
+          </dd>
           <Arrow className="absolute bottom-2 right-2 size-6 rotate-[135deg] opacity-20" />
         </a>
       ))}
@@ -141,11 +153,11 @@ function Arrow(props: { className: string }) {
   return (
     <svg
       className={props.className}
-      stroke="currentColor"
       fill="currentColor"
+      height="200px"
+      stroke="currentColor"
       strokeWidth="0"
       viewBox="0 0 512 512"
-      height="200px"
       width="200px"
       xmlns="http://www.w3.org/2000/svg"
     >

@@ -1,24 +1,24 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { hiveThemeDecorator } from '../../../../.storybook/hive-theme-decorator';
-import { Heading as _Heading, HeadingProps } from './heading';
+import { Meta, StoryObj } from "@storybook/react";
+import { hiveThemeDecorator } from "./__storybook__/hive-theme-decorator";
+import { Heading as _Heading, HeadingProps } from "./heading";
 
 export default {
-  title: 'Components/Heading',
+  title: "Components/Heading",
   component: _Heading,
   args: {
-    children: 'Open-source GraphQL management platform',
+    children: "Open-source GraphQL management platform",
   },
   argTypes: {
     as: {
-      control: { type: 'select' },
-      options: ['h1', 'h2', 'h3', 'div'],
+      control: { type: "select" },
+      options: ["h1", "h2", "h3", "div"],
     },
     size: {
-      control: { type: 'select' },
-      options: ['xl', 'lg', 'md', 'sm'],
+      control: { type: "select" },
+      options: ["xl", "lg", "md", "sm"],
     },
     children: {
-      control: 'text',
+      control: "text",
     },
   },
   parameters: {
@@ -29,15 +29,15 @@ export default {
 
 export const Heading: StoryObj<HeadingProps> = {
   args: {
-    as: 'h1',
-    size: 'xl',
+    as: "h1",
+    size: "xl",
   },
 };
 
 export const NoScrollingOnClick: StoryObj<HeadingProps> = {
-  args: { as: 'h2', size: 'lg' },
+  args: { as: "h2", size: "lg" },
   decorators: [
-    Story => (
+    (Story) => (
       <div className="relative h-[150vh]">
         <div className="absolute top-1/2">
           <Story />
@@ -46,13 +46,13 @@ export const NoScrollingOnClick: StoryObj<HeadingProps> = {
     ),
   ],
   play(ctx) {
-    const anchor = ctx.canvasElement.querySelector('a')!;
+    const anchor = ctx.canvasElement.querySelector("a")!;
     anchor.click();
-    if (window.location.hash !== '#open-source-graphql-management-platform') {
-      throw new Error('Expected hash to be set');
+    if (window.location.hash !== "#open-source-graphql-management-platform") {
+      throw new Error("Expected hash to be set");
     }
     if (window.scrollY !== 0) {
-      throw new Error('Expected scroll to be at top');
+      throw new Error("Expected scroll to be at top");
     }
   },
 };

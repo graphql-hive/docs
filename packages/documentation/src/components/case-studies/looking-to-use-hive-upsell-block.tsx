@@ -1,10 +1,19 @@
-import { cn, ContactButton, DecorationIsolation, Heading } from '@hive/design-system';
+import {
+  cn,
+  ContactButton,
+  DecorationIsolation,
+  Heading,
+} from "@hive/design-system";
 
-export function LookingToUseHiveUpsellBlock({ className }: { className?: string }) {
+export function LookingToUseHiveUpsellBlock({
+  className,
+}: {
+  className?: string;
+}) {
   return (
     <section
       className={cn(
-        'text-green-1000 light bg-primary dark:bg-primary/95 absolute rounded-2xl p-6',
+        "text-green-1000 light bg-primary dark:bg-primary/95 absolute rounded-2xl p-6",
         className,
       )}
     >
@@ -15,9 +24,9 @@ export function LookingToUseHiveUpsellBlock({ className }: { className?: string 
         <Decoration className="absolute bottom-0 right-0" />
       </DecorationIsolation>
       <ContactButton
-        variant="secondary-inverted"
         className="relative mt-[72px] dark:[&>div]:border-[#89A09E]"
-        style={{ width: '100%' }}
+        style={{ width: "100%" }}
+        variant="secondary-inverted"
       >
         Talk to us
       </ContactButton>
@@ -28,11 +37,11 @@ export function LookingToUseHiveUpsellBlock({ className }: { className?: string 
 function Decoration(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="160"
+      fill="none"
       height="160"
       viewBox="0 0 160 160"
-      fill="none"
+      width="160"
+      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
@@ -41,12 +50,12 @@ function Decoration(props: React.SVGProps<SVGSVGElement>) {
       />
       <defs>
         <linearGradient
+          gradientUnits="userSpaceOnUse"
           id="paint0_linear_3240_2323"
           x1="80"
-          y1="83.6842"
           x2="5.00002"
+          y1="83.6842"
           y2="2.63157"
-          gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#A2C1C4" stopOpacity="0" />
           <stop offset="1" stopColor="#A2C1C4" stopOpacity="0.8" />

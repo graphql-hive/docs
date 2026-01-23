@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
-import { ReactNode } from 'react';
-import CountUp from 'react-countup';
-
-import { cn } from '@hive/design-system/cn';
-import { Heading } from '@hive/design-system/heading';
+import { cn } from "@hive/design-system/cn";
+import { Heading } from "@hive/design-system/heading";
+import { ReactNode } from "react";
+import CountUp from "react-countup";
 
 export function StatsItem(props: {
   decimal?: boolean;
@@ -14,7 +13,11 @@ export function StatsItem(props: {
 }) {
   return (
     <div className="flex items-end justify-between gap-4 rounded-3xl border border-green-400 p-8 lg:flex-col lg:items-start lg:p-12">
-      <Heading as="div" className="text-green-1000 min-w-[120px] text-[48px] lg:text-6xl" size="xl">
+      <Heading
+        as="div"
+        className="text-green-1000 min-w-[120px] text-[48px] lg:text-6xl"
+        size="xl"
+      >
         <CountUp
           decimal="."
           decimals={props.decimal ? 1 : 0}
@@ -36,7 +39,9 @@ export function StatsItem(props: {
 
 export function StatsList(props: { children: ReactNode; className?: string }) {
   return (
-    <section className={cn('p-6 sm:py-20 md:py-24 xl:px-[120px]', props.className)}>
+    <section
+      className={cn("p-6 sm:py-20 md:py-24 xl:px-[120px]", props.className)}
+    >
       <Heading as="h2" className="text-center" size="md">
         Living and Breathing GraphQL Federation
       </Heading>

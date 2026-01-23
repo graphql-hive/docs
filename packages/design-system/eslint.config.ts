@@ -15,10 +15,19 @@ const config: Linter.Config[] = [
       parserOptions: {
         project: "./tsconfig.json",
         projectService: {
-          allowDefaultProject: ["*.config.ts"],
+          allowDefaultProject: [],
         },
       },
     },
+  },
+  {
+    ignores: [
+      ".storybook/**",
+      "**/*.stories.ts",
+      "**/*.stories.tsx",
+      "src/__storybook__/**",
+      "storybook-static/**",
+    ],
   },
 ];
 
