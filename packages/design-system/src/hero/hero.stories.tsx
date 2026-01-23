@@ -1,10 +1,9 @@
 import { ComponentProps } from "react";
-import { GitHubIcon } from "nextra/icons";
 import { Meta, StoryObj } from "@storybook/react";
 import { hiveThemeDecorator } from "../__storybook__/hive-theme-decorator";
 import { ModulesLogo } from "../logos";
 import { CallToAction } from "../call-to-action";
-import { HiveGatewayIcon } from "../icons";
+import { GitHubIcon, HiveGatewayIcon } from "../icons";
 import { Hero, HeroDecorationFromLogo, HeroLogo } from "./index";
 
 export default {

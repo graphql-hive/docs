@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { ReactElement } from "react";
 
-import { IInfoListProps } from "../types/components";
 import { Anchor } from "./anchor";
+import { IInfoListProps } from "./types/components";
 
 export const InfoList = ({
   className,

@@ -682,20 +682,21 @@ const TopOfSiteMarker: FC<{
   });
 
   useEffect(() => {
-    if (mounted && markerRef.current) {
-      const marker = markerRef.current;
-      const observer = new IntersectionObserver((entries) => {
-        const entry = entries[0];
-        if (entry) {
-          onScrollChange(entry.boundingClientRect.y < -1);
-        }
-      });
-      observer.observe(marker);
-
-      return () => {
-        observer.unobserve(marker);
-      };
+    if (!mounted || !markerRef.current) {
+      return;
     }
+    const marker = markerRef.current;
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (entry) {
+        onScrollChange(entry.boundingClientRect.y < -1);
+      }
+    });
+    observer.observe(marker);
+
+    return () => {
+      observer.unobserve(marker);
+    };
   }, [mounted]);
 
   // We can't create a portal to document.body if we are not in the browser.

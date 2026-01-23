@@ -4,10 +4,10 @@ import { ComponentProps, ReactElement, ReactNode } from "react";
 export interface IImage {
   alt: string;
   className?: string;
-  height?: number;
+  height: number;
   priority?: boolean;
   src: string;
-  width?: number;
+  width: number;
 }
 
 interface IVideo {
@@ -30,7 +30,7 @@ export type ILink = Pick<
   ComponentProps<"a">,
   "className" | "onClick" | "rel" | "style" | "target" | "title"
 > & {
-  children: ReactNode;
+  children?: ReactNode;
   newWindow?: boolean;
 } & {
   href: { pathname?: string } | string;

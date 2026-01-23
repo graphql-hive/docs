@@ -1,5 +1,5 @@
-import { Severity } from "../../types/severity";
 import { cn } from "../cn";
+import { Severity } from "../types/severity";
 import { InputShake } from "./input-shake";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {

@@ -1,5 +1,4 @@
 export { Anchor } from "./anchor";
-export { Button } from "./button";
 export * from "./call-to-action";
 export { CardsColorful } from "./cards-colorful";
 export { cn } from "./cn";
@@ -15,9 +14,6 @@ export { GetYourAPIGameRightSection } from "./get-your-api-game-right-section";
 export { Giscus } from "./giscus";
 export * from "./heading";
 export * from "./hero";
-export { HeroGradient } from "./hero-gradient";
-export { HeroIllustration } from "./hero-illustration";
-export { HeroMarketplace } from "./hero-marketplace";
 export { HeroVideo } from "./hero-video";
 export { HiveFooter } from "./hive-footer";
 export { HiveLayoutConfig } from "./hive-layout-config";

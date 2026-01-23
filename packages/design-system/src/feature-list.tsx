@@ -1,9 +1,9 @@
 import clsx from "clsx";
 import { ReactElement } from "react";
 
-import { IFeatureListProps } from "../types/components";
 import { Anchor } from "./anchor";
 import { Image } from "./image";
+import { IFeatureListProps } from "./types/components";
 
 export const FeatureList = ({
   className,

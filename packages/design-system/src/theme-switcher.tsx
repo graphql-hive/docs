@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "nextra-theme-docs";
+import { useTheme } from "next-themes";
 import { FC, ReactNode } from "react";
 
 export const ThemeSwitcherButton: FC<{ children: ReactNode }> = ({

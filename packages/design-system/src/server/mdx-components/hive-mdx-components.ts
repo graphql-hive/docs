@@ -1,7 +1,6 @@
-import { MDXComponents } from "nextra/mdx-components";
-
 import { useMDXComponents } from "./mdx-components";
 import { MDXLink } from "./mdx-link";
+import { MDXComponents } from "./types";
 
 /**
  * MDX components used in Hive-rebranded websites.

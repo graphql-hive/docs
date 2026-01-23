@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { forwardRef, ReactElement } from "react";
 
-import { ILink } from "../types/components";
 import { cn } from "./cn";
+import { ILink } from "./types/components";
 
 export type AnchorProps = ILink;
 export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-import { Severity } from "../../types/severity";
+import { Severity } from "../types/severity";
 
 interface InputShakeProps {
   severity?: Severity;

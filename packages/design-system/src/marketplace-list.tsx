@@ -3,15 +3,15 @@
 import { ReactElement, useEffect, useMemo, useState } from "react";
 import ReactPaginate from "react-paginate";
 
-import {
-  IMarketplaceItemProps,
-  IMarketplaceListProps,
-} from "../types/components";
 import { Anchor } from "./anchor";
 import { cn } from "./cn";
 import { Heading } from "./heading";
 import { Image } from "./image";
 import { Tag, TagsContainer } from "./tag";
+import {
+  IMarketplaceItemProps,
+  IMarketplaceListProps,
+} from "./types/components";
 
 const formatDate = (value: string): string => {
   const months = [

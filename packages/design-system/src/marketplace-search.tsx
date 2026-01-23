@@ -3,16 +3,16 @@
 import fuzzy from "fuzzy";
 import { isValidElement, ReactElement, useMemo, useState } from "react";
 
-import {
-  IMarketplaceListProps,
-  IMarketplaceSearchProps,
-} from "../types/components";
 import { cn } from "./cn";
 import { Heading } from "./heading";
 import { CloseIcon, SearchIcon } from "./icons";
 import { MarketplaceList } from "./marketplace-list";
 import { Tabs } from "./tabs";
 import { Tag, TagsContainer } from "./tag";
+import {
+  IMarketplaceListProps,
+  IMarketplaceSearchProps,
+} from "./types/components";
 
 const renderQueryPlaceholder = (
   placeholder: ReactElement | string,

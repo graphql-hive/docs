@@ -3,8 +3,8 @@
 import clsx from "clsx";
 import { FC, useEffect, useState } from "react";
 
-import { IHeroVideoProps } from "../types/components";
 import { Anchor } from "./anchor";
+import { IHeroVideoProps } from "./types/components";
 
 // Simple hook to check if component is mounted (replaces nextra/hooks useMounted)
 function useMounted() {

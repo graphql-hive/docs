@@ -20,7 +20,9 @@ export const dummyFeatureList: IFeatureListProps = {
       description: "Powerful plugin system",
       image: {
         alt: "Toy Brick Icon",
+        height: 112,
         src: featureListImage1,
+        width: 112,
       },
       link: {
         children: "GitHub",
@@ -33,7 +35,9 @@ export const dummyFeatureList: IFeatureListProps = {
       description: "Use any Node framework, use any execution",
       image: {
         alt: "Gauge Icon",
+        height: 112,
         src: featureListImage2,
+        width: 112,
       },
       title: "Performant",
     },
@@ -41,7 +45,9 @@ export const dummyFeatureList: IFeatureListProps = {
       description: "Use all the latest GraphQL Capabilities",
       image: {
         alt: "Toy Brick Icon",
+        height: 112,
         src: featureListImage3,
+        width: 112,
       },
       title: "Modern",
     },
@@ -112,7 +118,9 @@ export const dummyHeroIllustration: IHeroIllustrationProps = {
   flipped: true,
   image: {
     alt: "Illustration",
+    height: 400,
     src: heroIllustrationImage,
+    width: 400,
   },
   link: {
     children: "Documentation",
@@ -128,7 +136,9 @@ export const dummyHeroGradient: IHeroGradientProps = {
     "Use any Node framework and any GraphQL feature, with the easiest plugins system - A new framework by The Guild",
   image: {
     alt: "Illustration",
+    height: 300,
     src: yogaImage,
+    width: 300,
   },
   link: {
     children: "Get Started",

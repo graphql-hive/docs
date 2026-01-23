@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 
-import { UnionToIntersection } from "../types/utility";
 import { Anchor, AnchorProps } from "./anchor";
 import { cn } from "./cn";
 import { Stud } from "./stud";
+import { UnionToIntersection } from "./types/utility";
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export declare namespace InfoCardProps {

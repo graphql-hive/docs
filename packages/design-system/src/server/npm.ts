@@ -103,9 +103,7 @@ export const fetchPackageInfo = async (
         .find((curr) => {
           const isReadmeExist =
             curr.readme && curr.readme !== NO_NPM_README_PLACEHOLDER;
-          if (isReadmeExist) {
-            return semver.lte(curr.version, latestVersion);
-          }
+          return isReadmeExist && semver.lte(curr.version, latestVersion);
         })?.readme ||
       "",
     updatedAt: time.modified,

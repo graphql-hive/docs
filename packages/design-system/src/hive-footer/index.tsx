@@ -1,6 +1,5 @@
 import { ComponentType, ReactNode } from "react";
 
-import { ILink } from "../../types/components";
 import { Anchor } from "../anchor";
 import { cn } from "../cn";
 import { siteOrigin } from "../constants";
@@ -15,6 +14,7 @@ import {
 } from "../icons/index";
 import { HiveCombinationMark } from "../logos";
 import { FOUR_MAIN_PRODUCTS, SIX_HIGHLIGHTED_PRODUCTS } from "../products";
+import { ILink } from "../types/components";
 import { SecurityBadges } from "./security-badges";
 
 const INNER_BOX_WIDTH_STYLE =

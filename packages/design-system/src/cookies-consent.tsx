@@ -1,25 +1,36 @@
 "use client";
 
-import { ComponentProps, useLayoutEffect, useState } from "react";
+import { ComponentProps, useState, useSyncExternalStore } from "react";
 
 import { CallToAction } from "./call-to-action";
 import { cn } from "./cn";
 
 export type CookiesConsentProps = ComponentProps<"div">;
 
+const STORAGE_KEY = "cookies";
+
+function subscribe(callback: () => void) {
+  globalThis.addEventListener("storage", callback);
+  return () => globalThis.removeEventListener("storage", callback);
+}
+
+function getSnapshot() {
+  return localStorage.getItem(STORAGE_KEY) === "true";
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
 export function CookiesConsent(props: CookiesConsentProps) {
-  const [consented, setConsented] = useState<
-    "closing" | "no" | "unknown" | "yes"
-  >("unknown");
-
-  // eslint-disable-next-line react-hooks/set-state-in-effect -- synchronous read from localStorage before paint avoids flicker
-  useLayoutEffect(
-    () =>
-      setConsented(localStorage.getItem("cookies") === "true" ? "yes" : "no"),
-    [],
+  const hasConsented = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
   );
+  const [isClosing, setIsClosing] = useState(false);
 
-  if (consented === "unknown" || consented === "yes") {
+  if (hasConsented && !isClosing) {
     return null;
   }
 
@@ -30,10 +41,10 @@ export function CookiesConsent(props: CookiesConsentProps) {
         "ease fixed bottom-0 z-50 flex flex-wrap items-center justify-center gap-x-4 gap-y-3 rounded-lg border border-beige-200 bg-beige-100 p-4 text-sm text-green-800 shadow-xl duration-300 animate-in fade-in-0 slide-in-from-bottom-6 fill-mode-forwards data-[state=closing]:animate-out data-[state=closing]:fade-out data-[state=closing]:slide-out-to-bottom-6 lg:flex-nowrap lg:justify-between lg:text-left dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200",
         props.className,
       )}
-      data-state={consented}
+      data-state={isClosing ? "closing" : "open"}
       onAnimationEnd={() => {
-        if (consented === "closing") {
-          setConsented("yes");
+        if (isClosing) {
+          setIsClosing(false);
         }
       }}
     >
@@ -57,8 +68,8 @@ export function CookiesConsent(props: CookiesConsentProps) {
         <CallToAction
           className="px-4 py-2"
           onClick={() => {
-            setConsented("closing");
-            localStorage.setItem("cookies", "true");
+            setIsClosing(true);
+            localStorage.setItem(STORAGE_KEY, "true");
           }}
           variant="tertiary"
         >
