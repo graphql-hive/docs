@@ -26,7 +26,9 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
               // If we're rendering this page, we should definitely have Markdown for it.
               // eslint-disable-next-line no-console
               console.error(`Failed to fetch ${markdownUrl}`, res);
-              throw new Error(`${markdownUrl} is unexpectedly missing, try again later`);
+              throw new Error(
+                `${markdownUrl} is unexpectedly missing, try again later`,
+              );
             }
 
             cache.set(markdownUrl, content);
