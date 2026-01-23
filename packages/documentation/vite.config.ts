@@ -19,8 +19,7 @@ export default defineConfig({
     }),
     tanstackStart({
       prerender: {
-        // TanStack Start prerender has path bug with Vercel preset
-        enabled: false,
+        enabled: false, // todo: enable this
       },
     }),
     react(),
