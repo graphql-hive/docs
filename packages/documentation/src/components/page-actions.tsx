@@ -21,8 +21,15 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
         new ClipboardItem({
           "text/plain": fetch(markdownUrl).then(async (res) => {
             const content = await res.text();
-            cache.set(markdownUrl, content);
 
+            if (!res.ok) {
+              // If we're rendering this page, we should definitely have Markdown for it.
+              // eslint-disable-next-line no-console
+              console.error(`Failed to fetch ${markdownUrl}`, res);
+              throw new Error(`${markdownUrl} is unexpectedly missing, try again later`);
+            }
+
+            cache.set(markdownUrl, content);
             return content;
           }),
         }),
