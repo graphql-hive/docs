@@ -46,7 +46,7 @@ export function HeroFeatures(props: { children: ReactNode }) {
 
 export function HeroTitle(props: { children: ReactNode }) {
   return (
-    <h1 className="mx-auto max-w-screen-lg bg-gradient-to-r from-yellow-500 via-orange-400 to-yellow-500 bg-clip-text text-center text-5xl font-semibold text-transparent sm:text-5xl lg:text-6xl">
+    <h1 className="mx-auto max-w-screen-lg bg-linear-to-r from-yellow-500 via-orange-400 to-yellow-500 bg-clip-text text-center text-5xl font-semibold text-transparent sm:text-5xl lg:text-6xl">
       {props.children}
     </h1>
   );

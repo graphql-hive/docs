@@ -17,8 +17,17 @@ export const config: CompareConfig = {
   baseUrl: "http://localhost:1440",
   diffColor: "#cd2cc9",
   odiffThreshold: 0.1,
-  pages: [{ name: "landing", path: "/" }],
-  productionUrl: "https://the-guild.dev/graphql/hive",
+  pages: [
+    { name: "landing", path: "/" },
+    { name: "pricing", path: "/pricing" },
+    { name: "gateway", path: "/gateway" },
+    { name: "ecosystem", path: "/ecosystem" },
+    { name: "federation", path: "/federation" },
+    // { name: "case-studies", path: "/case-studies" }, // BROKEN - times out
+    { name: "oss-friends", path: "/oss-friends" },
+    { name: "partners", path: "/partners" },
+  ],
+  productionUrl: "http://localhost:3000",
   screenshotsDir: new URL("../screenshots", import.meta.url).pathname,
   viewport: { height: 900, width: 1440 },
 };
