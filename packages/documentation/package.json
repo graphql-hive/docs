@@ -36,7 +36,7 @@
     "lucide-react": "0.562.0",
     "nitro": "npm:nitro-nightly@latest",
     "playwright": "1.57.0",
-    "react": "19.2.3",
+    "react": "19.2.4",
     "react-dom": "19.2.3",
     "rehype-mermaid": "3.0.0",
     "tailwind-merge": "3.4.0",
