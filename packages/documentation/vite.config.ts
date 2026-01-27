@@ -12,7 +12,7 @@ import tsConfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [
     !process.env["CI"] && devtools(),
-    nitro({ preset: "vercel" }),
+    nitro({}),
     mdx(await import("./source.config")),
     tailwindcss(),
     svgr({
