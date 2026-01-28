@@ -31,7 +31,7 @@ export function ErrorDetails(props: CLIError): ReactElement {
   return (
     <>
       <h3
-        className="mt-8 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100"
+        className="mt-8 text-2xl font-semibold tracking-[-0.015em] text-slate-900 dark:text-slate-100"
         id={`errors-${props.code}`}
       >
         {props.code} "{props.title}"{" "}
@@ -41,14 +41,14 @@ export function ErrorDetails(props: CLIError): ReactElement {
           href={`#errors-${props.code}`}
         />
       </h3>
-      <h4 className="mt-8 text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+      <h4 className="mt-8 text-xl font-semibold tracking-[-0.015em] text-slate-900 dark:text-slate-100">
         Example: <Code>{props.example}</Code>
       </h4>
       <Callout emoji=">" type="default">
         <pre>{props.exampleOutput}</pre>
       </Callout>
       <h4
-        className="mt-8 text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100"
+        className="mt-8 text-xl font-semibold tracking-[-0.015em] text-slate-900 dark:text-slate-100"
         id={`errors-${props.code}-fix`}
       >
         Suggested Fix

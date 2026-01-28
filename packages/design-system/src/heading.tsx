@@ -34,7 +34,7 @@ export function Heading({
     //       an equivalent of `heading-sm lg:heading-xl.`
     case "xl":
       sizeStyle =
-        "text-4xl leading-[1.2] md:text-6xl md:leading-[1.1875] tracking-[-0.64px]";
+        "text-4xl leading-[1.2] md:text-[4rem] md:leading-[1.1875] tracking-[-0.64px]";
       break;
     case "xs":
       sizeStyle = "text-[32px]/[1.25] tracking-[-0.16px]";

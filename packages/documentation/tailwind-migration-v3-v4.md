@@ -1,178 +1,70 @@
-# Tailwind CSS v3 to v4 Migration Guide
+## Complete Migration Checklist (from codemod source)
 
-> Reference for migrating hive-docs tailwind config
+### Template Migrations (class renames)
 
-## Using the upgrade tool
+#### Simple Legacy Classes
 
-```bash
-npx @tailwindcss/upgrade
-```
+- [ ] `overflow-ellipsis` → `text-ellipsis`
+- [ ] `flex-grow` → `grow`
+- [ ] `flex-grow-0` → `grow-0`
+- [ ] `flex-shrink` → `shrink`
+- [ ] `flex-shrink-0` → `shrink-0`
+- [ ] `decoration-clone` → `box-decoration-clone`
+- [ ] `decoration-slice` → `box-decoration-slice`
+- [ ] `outline-none` → `outline-hidden` (v3→v4 only)
+- [ ] `bg-left-top` → `bg-top-left`
+- [ ] `bg-left-bottom` → `bg-bottom-left`
+- [ ] `bg-right-top` → `bg-top-right`
+- [ ] `bg-right-bottom` → `bg-bottom-right`
+- [ ] `object-left-top` → `object-top-left`
+- [ ] `object-left-bottom` → `object-bottom-left`
+- [ ] `object-right-top` → `object-top-right`
+- [ ] `object-right-bottom` → `object-bottom-right`
 
-Requires Node.js 20+.
+#### Scale-shifted Classes (values changed)
 
-## Manual Upgrade
+- [ ] `shadow` → `shadow-sm`
+- [ ] `shadow-sm` → `shadow-xs`
+- [ ] `shadow-xs` → `shadow-2xs`
+- [ ] `inset-shadow` → `inset-shadow-sm`
+- [ ] `inset-shadow-sm` → `inset-shadow-xs`
+- [ ] `inset-shadow-xs` → `inset-shadow-2xs`
+- [ ] `drop-shadow` → `drop-shadow-sm`
+- [ ] `drop-shadow-sm` → `drop-shadow-xs`
+- [ ] `rounded` → `rounded-sm`
+- [ ] `rounded-sm` → `rounded-xs`
+- [ ] `blur` → `blur-sm`
+- [ ] `blur-sm` → `blur-xs`
+- [ ] `backdrop-blur` → `backdrop-blur-sm`
+- [ ] `backdrop-blur-sm` → `backdrop-blur-xs`
+- [ ] `ring` → `ring-3`
+- [ ] `outline` → `outline-solid`
 
-### Using Vite
+### CSS Migrations
 
-```ts
-// vite.config.ts
-import { defineConfig } from "vite";
-import tailwindcss from "@tailwindcss/vite";
-export default defineConfig({
-  plugins: [tailwindcss()],
-});
-```
+#### Directives
 
-## Key Changes from v3
+- [ ] `@tailwind base/components/utilities` → `@import "tailwindcss"`
+- [ ] `@layer utilities { ... }` → `@utility name { ... }`
+- [ ] `@variants` directive → removed (use variant syntax in classes)
+- [ ] `theme()` function → `var(--theme-key)`
+- [ ] `@apply` in Vue/Svelte → needs `@reference`
 
-### Removed @tailwind directives
+#### Theme
 
-```css
-/* v3 */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+- [ ] `theme(colors.X)` → `var(--color-X)`
+- [ ] `theme(screens.X)` → `theme(--breakpoint-X)` in media queries
 
-/* v4 */
-@import "tailwindcss";
-```
+### NOT Handled by Codemod (Manual fixes needed)
 
-### Renamed utilities
+#### Default Value Changes
 
-| v3           | v4             |
-| ------------ | -------------- |
-| shadow-sm    | shadow-xs      |
-| shadow       | shadow-sm      |
-| blur-sm      | blur-xs        |
-| blur         | blur-sm        |
-| rounded-sm   | rounded-xs     |
-| rounded      | rounded-sm     |
-| outline-none | outline-hidden |
-| ring         | ring-3         |
+- Border color: `gray-200` → `currentColor` (add explicit colors)
+- Ring width: `3px` → `1px` (use `ring-3` for old behavior)
+- Colors now use OKLCH (may affect exact color matching)
 
-### Removed deprecated utilities
+### Verification
 
-| Deprecated        | Replacement                                  |
-| ----------------- | -------------------------------------------- |
-| bg-opacity-\*     | Use opacity modifiers like `bg-black/50`     |
-| text-opacity-\*   | Use opacity modifiers like `text-black/50`   |
-| border-opacity-\* | Use opacity modifiers like `border-black/50` |
-| flex-shrink-\*    | shrink-\*                                    |
-| flex-grow-\*      | grow-\*                                      |
+The scale-shifted classes (`shadow`→`shadow-sm`→`shadow-xs`) can't be verified by grep—no way to tell if `shadow-sm` is migrated or not.
 
-### Default border color
-
-Changed from `gray-200` to `currentColor`. Add explicit colors:
-
-```html
-<div class="border border-gray-200 px-2 py-3"></div>
-```
-
-### Default ring width
-
-Changed from 3px to 1px. Replace `ring` with `ring-3`:
-
-```html
-<button class="focus:ring-3 focus:ring-blue-500"></button>
-```
-
-### Adding custom utilities
-
-```css
-/* v3 */
-@layer utilities {
-  .tab-4 {
-    tab-size: 4;
-  }
-}
-
-/* v4 */
-@utility tab-4 {
-  tab-size: 4;
-}
-```
-
-### Variant stacking order
-
-v4 applies left to right (like CSS):
-
-```html
-<!-- v3 -->
-<ul class="first:*:pt-0 last:*:pb-0">
-  <!-- v4 -->
-  <ul class="*:first:pt-0 *:last:pb-0"></ul>
-</ul>
-```
-
-### Variables in arbitrary values
-
-```html
-<!-- v3 -->
-<div class="bg-[--brand-color]"></div>
-
-<!-- v4 -->
-<div class="bg-(--brand-color)"></div>
-```
-
-### theme() function
-
-Use CSS variables instead:
-
-```css
-/* v3 */
-.my-class {
-  background-color: theme(colors.red.500);
-}
-
-/* v4 */
-.my-class {
-  background-color: var(--color-red-500);
-}
-```
-
-For media queries:
-
-```css
-/* v3 */
-@media (width >= theme(screens.xl)) {
-}
-
-/* v4 */
-@media (width >= theme(--breakpoint-xl)) {
-}
-```
-
-### JavaScript config
-
-No longer auto-detected. Load explicitly:
-
-```css
-@config "../../tailwind.config.js";
-```
-
-### Using @apply with Vue, Svelte, or CSS modules
-
-Use `@reference` to import definitions:
-
-```vue
-<style>
-@reference "../../app.css";
-h1 {
-  @apply text-2xl font-bold text-red-500;
-}
-</style>
-```
-
-Or use CSS variables directly:
-
-```vue
-<style>
-h1 {
-  color: var(--text-red-500);
-}
-</style>
-```
-
-## Browser Requirements
-
-Safari 16.4+, Chrome 111+, Firefox 128+. Uses `@property` and `color-mix()`.
+Only the codemod knows (it checks if migrating from v3 and refuses to re-run).
