@@ -108,7 +108,7 @@ function TeamAvatar({
         <div className="firefox:hidden absolute inset-0 size-full bg-blue-100" />
         <Image
           alt=""
-          className="firefox:bg-blend-multiply firefox:![filter:grayscale(1)] rounded-2xl bg-black brightness-100 grayscale transition-all duration-500 group-hover:scale-[1.03] group-hover:brightness-110"
+          className="firefox:bg-blend-multiply firefox:filter-[grayscale(1)]! rounded-2xl bg-black brightness-100 grayscale transition-all duration-500 group-hover:scale-[1.03] group-hover:brightness-110"
           {...(avatar
             ? typeof avatar === "string"
               ? { src: avatar }

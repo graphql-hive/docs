@@ -28,7 +28,7 @@ const caseStudiesPromise = getCaseStudies();
 function CaseStudiesPage() {
   return (
     <LandingPageContainer className="mx-auto max-w-360 overflow-hidden px-6">
-      <header className="bg-primary dark:bg-primary/[0.01] dark:border-primary/5 relative isolate flex flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 max-sm:mt-2 sm:py-12 md:gap-8 lg:py-24">
+      <header className="bg-primary dark:bg-primary/1 dark:border-primary/5 relative isolate flex flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 max-sm:mt-2 sm:py-12 md:gap-8 lg:py-24">
         <Heading
           as="h1"
           className="relative z-10 mx-auto max-w-3xl text-balance text-center max-md:text-5xl"

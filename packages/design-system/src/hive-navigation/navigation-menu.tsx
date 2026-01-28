@@ -36,7 +36,7 @@ export const NavigationMenu = forwardRef<HTMLElement, NavigationMenuProps>(
               "data-instant:transition-none",
               // Safe area for pointer to move to popup
               "before:absolute before:content-['']",
-              "rdx-side-bottom:before:top-[-10px] rdx-side-bottom:before:right-0 rdx-side-bottom:before:left-0 rdx-side-bottom:before:h-2.5",
+              "data-[side=bottom]:before:top-[-10px] data-[side=bottom]:before:right-0 data-[side=bottom]:before:left-0 data-[side=bottom]:before:h-2.5",
             )}
             sideOffset={6}
             style={

@@ -42,7 +42,7 @@ export function OrchestrateYourWay({
           </InfoCard>
         </ul>
         <div className="nextra-scrollbar max-w-full basis-full overflow-auto rounded-3xl">
-          <ul className="grid w-fit grid-cols-[repeat(4,minmax(240px,1fr))] bg-[#F8F7F6] [background-image:linear-gradient(55deg,#F8F7F6_25%,var(--color-blue-700)_70%,#F8F7F6_94%)]/25 [&>:not(:first-child)]:border-l [&>:not(:first-child)]:border-blue-300">
+          <ul className="grid w-fit grid-cols-[repeat(4,minmax(240px,1fr))] bg-beige-100 [background-image:linear-gradient(55deg,#F8F7F6_25%,var(--color-blue-700)_70%,#F8F7F6_94%)]/25 [&>:not(:first-child)]:border-l [&>:not(:first-child)]:border-blue-300">
             <LinkCard
               href="/federation"
               logo={<ApolloLogo />}
@@ -109,7 +109,7 @@ function LinkCard({
       >
         {logo}
         <span className="whitespace-pre rounded-3xl border border-blue-400 px-3 py-1 text-sm">
-          <span className="mr-2.5 inline-block size-3 shrink-0 rounded-full bg-[#24D551]" />
+          <span className="mr-2.5 inline-block size-3 shrink-0 rounded-full bg-positive-bright" />
           {text}
         </span>
       </Anchor>

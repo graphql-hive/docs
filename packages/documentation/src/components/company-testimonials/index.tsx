@@ -162,7 +162,7 @@ export function CompanyTestimonialsSection({
             const Logo = testimonial.logo;
             return (
               <Tabs.Tab
-                className="hive-focus lg:data-selected:bg-white data-[selected]:text-green-1000 lg:data-[selected]:border-beige-600 flex flex-1 grow-0 items-center justify-center rounded-[15px] border-transparent p-0.5 font-medium leading-6 text-green-800 lg:grow lg:border lg:bg-transparent lg:p-4 [&[data-selected]>:first-child]:bg-blue-400"
+                className="hive-focus lg:data-selected:bg-white data-selected:text-green-1000 lg:data-selected:border-beige-600 flex flex-1 grow-0 items-center justify-center rounded-[15px] border-transparent p-0.5 font-medium leading-6 text-green-800 lg:grow lg:border lg:bg-transparent lg:p-4 [&[data-selected]>:first-child]:bg-blue-400"
                 key={testimonial.company}
                 value={testimonial.company}
               >

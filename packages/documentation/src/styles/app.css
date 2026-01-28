@@ -290,42 +290,6 @@ a, button, [role="button"] {
   }
 }
 
-/* Radix UI state variants (rdx- prefix) */
-@custom-variant rdx-state-open (&[data-state="open"]);
-@custom-variant rdx-state-closed (&[data-state="closed"]);
-@custom-variant rdx-state-checked (&[data-state="checked"]);
-@custom-variant rdx-state-unchecked (&[data-state="unchecked"]);
-@custom-variant rdx-state-indeterminate (&[data-state="indeterminate"]);
-@custom-variant rdx-state-on (&[data-state="on"]);
-@custom-variant rdx-state-off (&[data-state="off"]);
-@custom-variant rdx-state-active (&[data-state="active"]);
-@custom-variant rdx-state-inactive (&[data-state="inactive"]);
-@custom-variant rdx-state-instant-open (&[data-state="instant-open"]);
-@custom-variant rdx-state-delayed-open (&[data-state="delayed-open"]);
-@custom-variant rdx-disabled (&[data-disabled]);
-@custom-variant rdx-highlighted (&[data-highlighted]);
-@custom-variant rdx-placeholder (&[data-placeholder]);
-
-/* Group variants for Radix states */
-@custom-variant group-rdx-state-open (:merge(.group)[data-state="open"] &);
-@custom-variant group-rdx-state-closed (:merge(.group)[data-state="closed"] &);
-@custom-variant group-rdx-state-checked (:merge(.group)[data-state="checked"] &);
-@custom-variant group-rdx-state-unchecked (:merge(.group)[data-state="unchecked"] &);
-
-/* Peer variants for Radix states */
-@custom-variant peer-rdx-state-open (:merge(.peer)[data-state="open"] ~ &);
-@custom-variant peer-rdx-state-closed (:merge(.peer)[data-state="closed"] ~ &);
-@custom-variant peer-rdx-state-checked (:merge(.peer)[data-state="checked"] ~ &);
-@custom-variant peer-rdx-state-unchecked (:merge(.peer)[data-state="unchecked"] ~ &);
-
-/* Radix side/orientation variants */
-@custom-variant rdx-side-top (&[data-side="top"]);
-@custom-variant rdx-side-bottom (&[data-side="bottom"]);
-@custom-variant rdx-side-left (&[data-side="left"]);
-@custom-variant rdx-side-right (&[data-side="right"]);
-@custom-variant rdx-orientation-horizontal (&[data-orientation="horizontal"]);
-@custom-variant rdx-orientation-vertical (&[data-orientation="vertical"]);
-
 /* Utility: mask-image-none */
 @utility mask-image-none {
   mask-image: none;

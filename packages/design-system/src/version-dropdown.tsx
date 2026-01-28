@@ -32,7 +32,7 @@ export function VersionDropdown({
         {chevronPosition === "right" && <CaretSlimIcon className="size-3.5" />}
       </DropdownTrigger>
 
-      <DropdownContent className="absolute left-full min-w-16 -translate-x-full translate-y-2 rounded-xl border border-beige-200 bg-white p-1 shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] transition ease-in-out rdx-state-closed:pointer-events-none rdx-state-closed:translate-y-0 rdx-state-closed:scale-95 rdx-state-closed:opacity-0 rdx-state-open:fade-in-90 dark:border-neutral-800 dark:bg-neutral-900">
+      <DropdownContent className="absolute left-full min-w-16 -translate-x-full translate-y-2 rounded-xl border border-beige-200 bg-white p-1 shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] transition ease-in-out data-[state=closed]:pointer-events-none data-[state=closed]:translate-y-0 data-[state=closed]:scale-95 data-[state=closed]:opacity-0 data-[state=open]:fade-in-90 dark:border-neutral-800 dark:bg-neutral-900">
         {versions.map((version) => (
           <DropdownItem
             className={cn(
