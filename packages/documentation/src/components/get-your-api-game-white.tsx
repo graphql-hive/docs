@@ -17,7 +17,7 @@ export function GetYourAPIGameWhite(
     <section
       {...props}
       className={cn(
-        "relative mx-auto my-24 h-[348px] w-full max-w-[90rem]",
+        "relative mx-auto my-24 h-[348px] w-full max-w-360",
         props.className,
       )}
     >

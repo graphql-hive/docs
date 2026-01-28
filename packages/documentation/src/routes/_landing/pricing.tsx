@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_landing/pricing")({
 
 function PricingPage() {
   return (
-    <LandingPageContainer className="text-green-1000 light mx-auto max-w-[90rem] overflow-hidden">
+    <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">
       <PricingPageHero className="mx-4 max-sm:mt-2 md:mx-6" />
       <Pricing className="mx-4 md:mx-6" />
       <PlanComparison className="mx-4 md:mx-6" />
@@ -36,7 +36,7 @@ function PricingPageHero({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "bg-beige-100 relative isolate flex max-w-[90rem] flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 sm:py-12 md:gap-8 lg:py-24",
+        "bg-beige-100 relative isolate flex max-w-360 flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 sm:py-12 md:gap-8 lg:py-24",
         className,
       )}
     >

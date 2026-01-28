@@ -76,7 +76,7 @@ function ProductUpdateTeaser(props: Changelog): ReactElement {
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
         <Link to={props.route}>{props.title}</Link>
       </h3>
-      <div className="mb-4 mt-1 max-w-[600px] text-base font-normal leading-6 text-gray-500 dark:text-gray-400">
+      <div className="mb-4 mt-1 max-w-[600px] text-base/6 font-normal text-gray-500 dark:text-gray-400">
         {props.description}
       </div>
     </li>

@@ -40,7 +40,7 @@ export function LetsGetAdvancedSection({
               className="grow" /* we're using a spacer div here bcs mt-[min(20px,auto)] is not supported */
             />
             <CallToAction
-              className="!mt-5 xl:w-full"
+              className="mt-5! xl:w-full"
               href="/docs/gateway/deployment/node-frameworks/uwebsockets#subscriptions-with-websockets"
               variant="tertiary"
             >
@@ -56,7 +56,7 @@ export function LetsGetAdvancedSection({
             interface responsiveness and system performance.
             <div className="grow" />
             <CallToAction
-              className="!mt-5 xl:w-full"
+              className="mt-5! xl:w-full"
               href="/docs/gateway/defer-stream"
               variant="tertiary"
             >
@@ -68,7 +68,7 @@ export function LetsGetAdvancedSection({
             a single HTTP request, enhancing data retrieval efficiency.
             <div className="grow" />
             <CallToAction
-              className="!mt-5 xl:w-full"
+              className="mt-5! xl:w-full"
               href="/docs/gateway/other-features/performance/request-batching"
               variant="tertiary"
             >
@@ -81,7 +81,7 @@ export function LetsGetAdvancedSection({
             cloud environments.
             <div className="grow" />
             <CallToAction
-              className="!mt-5 xl:w-full"
+              className="mt-5! xl:w-full"
               href="/docs/gateway/other-features/security"
               variant="tertiary"
             >

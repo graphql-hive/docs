@@ -178,15 +178,15 @@ export function PlanCard({
       />
       <article
         className={cn(
-          "relative isolate rounded-3xl bg-white shadow-[inset_0_0_0_1px_theme(colors.green.400)]",
-          'duration-200 before:absolute before:inset-0 before:-z-10 before:rounded-3xl before:bg-[linear-gradient(#fff,#fff),linear-gradient(to_bottom,#68A8B6,#DEDACF,#E1FF00)] before:p-[4px] before:opacity-0 before:transition-[opacity,top,height] before:content-[""] before:[background-clip:content-box,padding-box] before:[transition-duration:50ms,25ms,25ms] sm:mt-[52px] sm:before:top-[-40px]',
+          "relative isolate rounded-3xl bg-white shadow-[inset_0_0_0_1px_var(--color-green-400)]",
+          'duration-200 before:absolute before:inset-0 before:-z-10 before:rounded-3xl before:bg-[linear-gradient(#fff,#fff),linear-gradient(to_bottom,#68A8B6,#DEDACF,#E1FF00)] before:p-[4px] before:opacity-0 before:transition-[opacity,top,height] before:content-[""] before:[background-clip:content-box,padding-box] before:duration-[50ms,25ms,25ms] sm:mt-[52px] sm:before:top-[-40px]',
           (highlighted || !collapsed) && "before:opacity-100",
           "max-sm:transition-[width,height,border-radius] max-sm:duration-700 max-sm:ease-in-out",
           !collapsed &&
             "max-sm:fixed max-sm:inset-2 max-sm:z-50 max-sm:m-0 max-sm:h-[calc(100vh-16px)] max-sm:bg-white",
           transitioning && "z-50",
           highlighted && // delay is 29ms so fast swipes don't blink needlessly
-            "sm:before:top-[-52px] sm:before:h-[calc(100%+52px)] sm:before:pt-[50px] sm:before:delay-[29ms] sm:before:[transition-duration:150ms,75ms,75ms]",
+            "sm:before:top-[-52px] sm:before:h-[calc(100%+52px)] sm:before:pt-[50px] sm:before:delay-29 sm:before:duration-[150ms,75ms,75ms]",
           className,
         )}
         ref={cardRef}
@@ -212,7 +212,7 @@ export function PlanCard({
             <div className="flex flex-row items-center gap-2">
               <h2 className="text-2xl font-medium">{name}</h2>
               {adjustable && (
-                <span className="whitespace-nowrap rounded-full bg-green-100 px-3 py-1 text-sm font-medium leading-5">
+                <span className="whitespace-nowrap rounded-full bg-green-100 px-3 py-1 text-sm/5 font-medium">
                   Adjust <span className="hidden sm:inline">your plan</span> at
                   any time
                 </span>

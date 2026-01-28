@@ -22,14 +22,14 @@ export const Route = createFileRoute("/_landing/gateway")({
 
 function HiveGatewayPage() {
   return (
-    <LandingPageContainer className="text-green-1000 light mx-auto max-w-[90rem] overflow-hidden">
+    <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">
       <Hero
         checkmarks={[
           "Fully open source",
           "No vendor lock-in",
           "Can be self-hosted!",
         ]}
-        className="mx-4 sm:!pb-28 md:mx-6 lg:!pb-[168px]"
+        className="mx-4 sm:pb-28! md:mx-6 lg:pb-[168px]!"
         heading="Hive Gateway"
         text="Unify and accelerate your data graph across diverse services with Hive Gateway, which seamlessly integrates with Apollo Federation."
         top={

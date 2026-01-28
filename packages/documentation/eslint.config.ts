@@ -5,16 +5,17 @@ import baseConfig from "@hasparus/eslint-config/the-guild";
 const config: Linter.Config[] = [
   ...baseConfig,
   {
-    files: ["./src/routes/**/*.ts", "./src/routes/**/*.tsx"],
-    rules: {
-      "unicorn/filename-case": "off",
+    files: ["**/*.tsx", "**/*.jsx"],
+    settings: {
+      "better-tailwindcss": {
+        entryPoint: "./src/styles/app.css",
+      },
     },
   },
   {
-    languageOptions: {
-      parserOptions: {
-        project: "./tsconfig.json",
-      },
+    files: ["./src/routes/**/*.ts", "./src/routes/**/*.tsx"],
+    rules: {
+      "unicorn/filename-case": "off",
     },
   },
 ];

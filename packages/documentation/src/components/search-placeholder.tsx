@@ -36,7 +36,7 @@ export function SearchTrigger() {
           Search documentation...
         </span>
         <kbd
-          className="rounded border-none bg-green-200 px-1.5 py-0.5 text-xs font-medium text-green-800 dark:bg-neutral-700 dark:text-neutral-300"
+          className="rounded-sm border-none bg-green-200 px-1.5 py-0.5 text-xs font-medium text-green-800 dark:bg-neutral-700 dark:text-neutral-300"
           id="search-kbd"
           suppressHydrationWarning
         >

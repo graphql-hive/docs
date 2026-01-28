@@ -213,7 +213,7 @@ function Node({ children, className, description, title, ...rest }: NodeProps) {
           {description && (
             <div
               className={cn(
-                "mt-0.5 text-sm leading-5 text-green-200",
+                "mt-0.5 text-sm/5 text-green-200",
                 styles["desc"],
               )}
             >
@@ -256,11 +256,11 @@ function RightConnections() {
       <DashedLine className="row-span-2 row-start-1 translate-x-[-1.5px] translate-y-[-1.5px] -scale-x-100 self-start text-green-700" />
       <DashedLine className="row-span-2 row-start-3 translate-x-[-1.5px] translate-y-[1.5px] -scale-100 self-end text-green-700" />
       <DashedLine
-        className="absolute top-0 row-span-1 row-start-3 translate-x-[-1.5px] translate-y-[-1.5px] -scale-100 self-end text-green-700 [mask-image:linear-gradient(to_bottom,black_30%,transparent_40%)]"
+        className="absolute top-0 row-span-1 row-start-3 translate-x-[-1.5px] translate-y-[-1.5px] -scale-100 self-end text-green-700 mask-[linear-gradient(to_bottom,black_30%,transparent_40%)]"
         short
       />
       <DashedLine
-        className="absolute row-span-1 row-start-2 translate-x-[-1.5px] translate-y-[1.5px] -scale-x-100 self-end text-green-700 [mask-image:linear-gradient(to_top,transparent_57%,black_75%)]"
+        className="absolute row-span-1 row-start-2 translate-x-[-1.5px] translate-y-[1.5px] -scale-x-100 self-end text-green-700 mask-[linear-gradient(to_top,transparent_57%,black_75%)]"
         short
       />
     </div>

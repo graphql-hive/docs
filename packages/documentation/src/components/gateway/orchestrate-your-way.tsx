@@ -23,7 +23,7 @@ export function OrchestrateYourWay({
         <ul className="flex grow basis-2/5 max-lg:flex-col md:p-12">
           <InfoCard
             as="li"
-            className="flex-1 bg-transparent !pl-0 max-lg:!pr-0 md:pt-0 lg:pb-0"
+            className="flex-1 bg-transparent pl-0! max-lg:pr-0! md:pt-0 lg:pb-0"
             heading="Apollo Federation v1 and v2 Support"
             icon={<CodeIcon />}
           >
@@ -33,7 +33,7 @@ export function OrchestrateYourWay({
           </InfoCard>
           <InfoCard
             as="li"
-            className="flex-1 basis-full border-blue-300 bg-transparent !pr-0 max-lg:border-t max-lg:!pl-0 md:pb-0 lg:basis-0 lg:border-l lg:pt-0"
+            className="flex-1 basis-full border-blue-300 bg-transparent pr-0! max-lg:border-t max-lg:pl-0! md:pb-0 lg:basis-0 lg:border-l lg:pt-0"
             heading="Plugin System"
             icon={<EditIcon />}
           >
@@ -42,7 +42,7 @@ export function OrchestrateYourWay({
           </InfoCard>
         </ul>
         <div className="nextra-scrollbar max-w-full basis-full overflow-auto rounded-3xl">
-          <ul className="grid w-fit grid-cols-[repeat(4,minmax(240px,1fr))] bg-[#F8F7F6] [background-image:linear-gradient(55deg,#F8F7F6_25%,theme(colors.blue.700/0.25)_70%,#F8F7F6_94%)] [&>:not(:first-child)]:border-l [&>:not(:first-child)]:border-blue-300">
+          <ul className="grid w-fit grid-cols-[repeat(4,minmax(240px,1fr))] bg-[#F8F7F6] [background-image:linear-gradient(55deg,#F8F7F6_25%,var(--color-blue-700)_70%,#F8F7F6_94%)]/25 [&>:not(:first-child)]:border-l [&>:not(:first-child)]:border-blue-300">
             <LinkCard
               href="/federation"
               logo={<ApolloLogo />}

@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_landing/federation/")({
 
 function FederationPage(): ReactElement {
   return (
-    <LandingPageContainer className="text-green-1000 light mx-auto max-w-[90rem] overflow-hidden">
+    <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">
       <Hero className="mx-4 max-sm:mt-2 md:mx-6">
         <Heading
           as="h1"

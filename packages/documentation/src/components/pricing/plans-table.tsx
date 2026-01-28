@@ -926,7 +926,7 @@ function MobileNavbar({
           {pricingTiers.map((tier) => (
             <button
               className={cn(
-                "hive-focus bg-beige-100 flex-1 rounded-xl px-3 py-2 text-center text-sm font-medium leading-5 transition hover:z-10 hover:ring-3 hover:ring-inset focus:z-10",
+                "hive-focus bg-beige-100 flex-1 rounded-xl px-3 py-2 text-center text-sm/5 font-medium transition hover:z-10 hover:ring-3 hover:ring-inset focus:z-10",
                 activePlan === tier.name && "bg-white",
               )}
               key={tier.name}
@@ -974,7 +974,7 @@ function PlansTableCell({
     <td
       aria-hidden={plan !== currentPlan}
       className={cn(
-        "border-beige-400 border-b border-r p-4 font-medium first:border-l first:font-medium max-md:w-1/2 max-sm:text-sm sm:py-6 md:w-1/4 lg:w-[23%] lg:first:w-[28%] lg:last:w-[26%] [&:not(:first-child)]:border-l-0 [&:not(:first-child)]:text-center [&:not(:first-child)]:text-sm [&:not(:first-child)]:text-green-800 md:[.subheader+tr>&:last-child]:rounded-tr-3xl max-md:[.subheader+tr>&:not(:first-child,:has(+td[aria-hidden=false]))]:rounded-tr-3xl [.subheader+tr>&]:border-t [.subheader+tr>&]:first:rounded-tl-3xl md:[tr:is(:has(+.subheader),:last-child)>&:last-child]:rounded-br-3xl max-md:[tr:is(:has(+.subheader),:last-child)>&:not(:first-child,:has(+td[aria-hidden=false]))]:rounded-br-3xl [tr:is(:last-child,:has(+.subheader))>&]:first:rounded-bl-3xl",
+        "border-beige-400 border-b border-r p-4 font-medium first:border-l first:font-medium max-md:w-1/2 max-sm:text-sm sm:py-6 md:w-1/4 lg:w-[23%] lg:first:w-[28%] lg:last:w-[26%] not-first:border-l-0 not-first:text-center not-first:text-sm not-first:text-green-800 md:[.subheader+tr>&:last-child]:rounded-tr-3xl max-md:[.subheader+tr>&:not(:first-child,:has(+td[aria-hidden=false]))]:rounded-tr-3xl [.subheader+tr>&]:border-t [.subheader+tr>&]:first:rounded-tl-3xl md:[tr:is(:has(+.subheader),:last-child)>&:last-child]:rounded-br-3xl max-md:[tr:is(:has(+.subheader),:last-child)>&:not(:first-child,:has(+td[aria-hidden=false]))]:rounded-br-3xl [tr:is(:last-child,:has(+.subheader))>&]:first:rounded-bl-3xl",
         plan && plan !== currentPlan && "max-md:hidden",
         className,
       )}

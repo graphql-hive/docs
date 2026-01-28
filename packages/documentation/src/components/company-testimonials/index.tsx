@@ -162,7 +162,7 @@ export function CompanyTestimonialsSection({
             const Logo = testimonial.logo;
             return (
               <Tabs.Tab
-                className="hive-focus lg:data-[selected]:bg-white data-[selected]:text-green-1000 lg:data-[selected]:border-beige-600 flex flex-1 grow-0 items-center justify-center rounded-[15px] border-transparent p-0.5 font-medium leading-6 text-green-800 lg:grow lg:border lg:bg-transparent lg:p-4 [&[data-selected]>:first-child]:bg-blue-400"
+                className="hive-focus lg:data-selected:bg-white data-[selected]:text-green-1000 lg:data-[selected]:border-beige-600 flex flex-1 grow-0 items-center justify-center rounded-[15px] border-transparent p-0.5 font-medium leading-6 text-green-800 lg:grow lg:border lg:bg-transparent lg:p-4 [&[data-selected]>:first-child]:bg-blue-400"
                 key={testimonial.company}
                 value={testimonial.company}
               >
@@ -197,9 +197,9 @@ export function CompanyTestimonialsSection({
                   className={cn(
                     "relative flex w-full shrink-0 snap-center flex-col outline-hidden",
                     "gap-6 md:flex-row lg:gap-12",
-                    "lg:data-[hidden]:hidden",
+                    "lg:data-hidden:hidden",
                     caseStudyHref
-                      ? "not-data-[hidden]:pb-[72px] lg:not-data-[hidden]:pb-0"
+                      ? "not-data-hidden:pb-[72px] lg:not-data-hidden:pb-0"
                       : "max-lg:pb-8",
                   )}
                   keepMounted // we mount everything, as we scroll through tabs on mobile
@@ -315,7 +315,7 @@ function TestimonialPerson({
           width={42}
         />
       )}
-      <p className="text-sm font-medium leading-5">{person.name}</p>
+      <p className="text-sm/5 font-medium">{person.name}</p>
       <p className="mt-1 text-xs text-green-800 md:text-sm">{person.title}</p>
     </div>
   );

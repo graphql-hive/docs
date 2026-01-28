@@ -36,7 +36,7 @@ export const metadata = {
 
 export default function IndexPage(): ReactElement {
   return (
-    <LandingPageContainer className="text-green-1000 light mx-auto max-w-[90rem] overflow-hidden">
+    <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">
       <Hero className="mx-4 max-sm:mt-2 md:mx-6">
         <Heading
           as="h1"
@@ -235,7 +235,7 @@ function LearnGraphQLFederationSection(props: { className?: string }) {
   return (
     <section
       className={cn(
-        "to-green-1000 from-blueish-green relative rounded-3xl bg-gradient-to-br p-8 sm:py-12 md:px-6 md:text-center lg:p-24",
+        "to-green-1000 from-blueish-green relative rounded-3xl bg-linear-to-br p-8 sm:py-12 md:px-6 md:text-center lg:p-24",
         props.className,
       )}
     >

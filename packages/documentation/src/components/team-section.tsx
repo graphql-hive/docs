@@ -121,7 +121,7 @@ function TeamAvatar({
         />
         <div className="absolute inset-0 size-full bg-blue-500 opacity-10 transition-all group-hover:opacity-20" />
       </div>
-      <span className="text-green-1000 mt-2 block text-sm font-medium leading-5 lg:max-xl:block lg:max-xl:text-base">
+      <span className="text-green-1000 mt-2 block text-sm/5 font-medium lg:max-xl:block lg:max-xl:text-base">
         {name}
       </span>
     </a>

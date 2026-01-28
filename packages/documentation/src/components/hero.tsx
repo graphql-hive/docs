@@ -11,7 +11,7 @@ export function Hero(props: { children: ReactNode; className?: string }) {
   return (
     <div
       className={cn(
-        "bg-green-1000 relative isolate flex max-w-[90rem] flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 sm:pb-28 sm:pt-12 md:gap-8 lg:pb-[168px] lg:pt-24",
+        "bg-green-1000 relative isolate flex max-w-360 flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 sm:pb-28 sm:pt-12 md:gap-8 lg:pb-[168px] lg:pt-24",
         props.className,
       )}
     >
@@ -46,7 +46,7 @@ export function HeroFeatures(props: { children: ReactNode }) {
 
 export function HeroTitle(props: { children: ReactNode }) {
   return (
-    <h1 className="mx-auto max-w-screen-lg bg-linear-to-r from-yellow-500 via-orange-400 to-yellow-500 bg-clip-text text-center text-5xl font-semibold text-transparent sm:text-5xl lg:text-6xl">
+    <h1 className="mx-auto max-w-5xl bg-linear-to-r from-yellow-500 via-orange-400 to-yellow-500 bg-clip-text text-center text-5xl font-semibold text-transparent sm:text-5xl lg:text-6xl">
       {props.children}
     </h1>
   );

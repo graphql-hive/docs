@@ -17,7 +17,7 @@ export const Route = createFileRoute("/_landing/partners")({
 
 function PartnersPage() {
   return (
-    <LandingPageContainer className="text-green-1000 light mx-auto max-w-[90rem] overflow-hidden">
+    <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">
       <Hero className="mx-4 h-[22%] max-sm:mt-2 md:mx-6 lg:py-24">
         <Heading
           as="h1"
@@ -48,7 +48,7 @@ function PartnersPage() {
       <WhyUs />
       <SolutionsPartner />
       <FrequentlyAskedPartnersQuestions />
-      <GetYourAPIGameRightSection className="mx-4 mt-6 !overflow-visible sm:mb-6 md:mx-6 md:mt-16" />
+      <GetYourAPIGameRightSection className="mx-4 mt-6 overflow-visible! sm:mb-6 md:mx-6 md:mt-16" />
     </LandingPageContainer>
   );
 }

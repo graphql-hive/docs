@@ -42,10 +42,10 @@ export function PricingSlider({
         className="text-green-1000 flex flex-wrap items-center text-2xl font-medium md:h-12 md:w-[calc(100%-260px)]"
       >
         <div className="relative min-w-[clamp(calc(60.95px+14.47px*round(down,log(max(var(--ops),1),10),1)),(2-var(--ops))*111px,111px)] max-w-[clamp(calc(60.95px+14.47px*round(down,log(max(var(--ops),1),10),1)),(2-var(--ops))*111px,111px)] shrink grow motion-safe:transition-all">
-          <div className="flex w-full whitespace-pre rounded-[40px] bg-blue-300 px-3 py-1 tabular-nums leading-8 opacity-[calc(var(--ops)-1)] [transition-duration:calc(clamp(0,var(--ops)-1,1)*350ms)] before:tracking-[-0.12em] before:content-[''_counter(ops)_'_'] motion-safe:transition-all">
+          <div className="flex w-full whitespace-pre rounded-[40px] bg-blue-300 px-3 py-1 tabular-nums leading-8 opacity-[calc(var(--ops)-1)] duration-[calc(clamp(0,var(--ops)-1,1)*350ms)] before:tracking-[-0.12em] before:content-[''_counter(ops)_'_'] motion-safe:transition-all">
             M
           </div>
-          <div className="absolute left-0 top-0 whitespace-pre leading-10 opacity-[calc(2-var(--ops))] [transition-duration:calc(clamp(0,2-var(--ops),1)*350ms)] motion-safe:transition">
+          <div className="absolute left-0 top-0 whitespace-pre leading-10 opacity-[calc(2-var(--ops))] duration-[calc(clamp(0,2-var(--ops),1)*350ms)] motion-safe:transition">
             How many
           </div>
         </div>
@@ -53,7 +53,7 @@ export function PricingSlider({
         <div className="whitespace-pre [@media(width<900px)]:hidden">
           per month{" "}
         </div>
-        <div className="whitespace-pre opacity-[calc(2-var(--ops))] [transition-duration:350ms] motion-safe:transition">
+        <div className="whitespace-pre opacity-[calc(2-var(--ops))] duration-350 motion-safe:transition">
           do you need?
         </div>
         <div className="grow-[1.5] ease-in motion-safe:transition-all" />

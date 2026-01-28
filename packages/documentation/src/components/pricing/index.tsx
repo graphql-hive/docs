@@ -59,7 +59,7 @@ function PlanFeaturesListItem({
   );
   return (
     <li
-      className="border-beige-200 flex flex-col px-1 py-2 text-sm text-[#4F6C6A] [&:not(:last-child)]:border-b"
+      className="border-beige-200 flex flex-col px-1 py-2 text-sm text-[#4F6C6A] not-last:border-b"
       {...rest}
     >
       {tooltip ? <Tooltip content={tooltip}>{content}</Tooltip> : content}
@@ -281,7 +281,7 @@ export function Pricing({ className }: { className?: string }): ReactElement {
             price={
               <Tooltip content="Base price charged monthly">
                 $20
-                <span className="text-base leading-normal text-green-800">
+                <span className="text-base/normal text-green-800">
                   {" "}
                   / month
                 </span>

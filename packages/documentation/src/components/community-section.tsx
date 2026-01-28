@@ -112,7 +112,7 @@ export function CommunitySection({ className }: { className?: string }) {
       >
         {Array.from({ length: 4 }).map((_, i) => (
           <div
-            className="contents flex-col gap-6 sm:flex max-lg:[&>:last-child]:flex-1"
+            className="contents flex-col gap-6 sm:flex max-lg:*:last:flex-1"
             key={i}
           >
             {socialPosts.map((post, j) =>

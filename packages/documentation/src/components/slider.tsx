@@ -19,7 +19,7 @@ export function Slider({
   const sliderProper = (
     <div
       className={cn(
-        "hive-slider relative h-10 flex-1 select-none [container-type:inline-size]",
+        "hive-slider relative h-10 flex-1 select-none @container",
         className,
       )}
       ref={(ref) => {

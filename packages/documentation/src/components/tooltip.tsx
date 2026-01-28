@@ -22,12 +22,12 @@ export function Tooltip({
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
-      <span className="hive-focus -mx-1 -my-0.5 rounded px-1 py-0.5 text-left cursor-help">
+      <span className="hive-focus -mx-1 -my-0.5 rounded-sm px-1 py-0.5 text-left cursor-help">
         {children}
       </span>
       {isOpen && (
         <span
-          className="bg-green-1000 absolute left-0 top-full z-20 mt-1 rounded px-2 py-[3px] text-sm font-normal text-white shadow whitespace-nowrap"
+          className="bg-green-1000 absolute left-0 top-full z-20 mt-1 rounded-sm px-2 py-[3px] text-sm font-normal text-white shadow-sm whitespace-nowrap"
           role="tooltip"
         >
           {content}

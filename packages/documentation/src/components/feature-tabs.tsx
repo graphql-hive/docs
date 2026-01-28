@@ -86,7 +86,7 @@ export function FeatureTabs<T extends string>({
             {tabs.map((tab, i) => {
               return (
                 <Tabs.Tab
-                  className="hive-focus aria-selected:text-green-1000 aria-selected:border-(--tab-bg-dark) aria-selected:bg-white max-sm:aria-[selected=false]:hidden group-focus-within:aria-[selected=false]:flex max-sm:aria-[selected=false]:rounded-none max-sm:group-focus-within:aria-[selected=false]:border-y-(--tab-bg) max-sm:group-focus-within:nth-2:aria-selected:rounded-none max-sm:group-focus-within:nth-2:aria-selected:border-y-(--tab-bg) max-sm:group-focus-within:first:aria-selected:border-b-(--tab-bg) max-sm:group-focus-within:first:aria-selected:rounded-b-none max-sm:aria-[selected=false]:pointer-events-none max-sm:aria-[selected=false]:group-focus-within:pointer-events-auto z-10 flex flex-1 items-center justify-center gap-2.5 rounded-lg border-transparent p-4 text-base font-medium leading-6 text-green-800 max-sm:border max-sm:border-(--tab-bg-dark) max-sm:bg-(--tab-bg) max-sm:group-focus-within:aria-selected:z-20 max-sm:group-focus-within:aria-selected:ring-4 sm:rounded-[15px] sm:border sm:text-xs sm:max-lg:p-3 sm:max-[721px]:p-2 md:text-sm lg:text-base max-sm:group-focus-within:last:border-t-(--tab-bg) max-sm:group-focus-within:nth-3:rounded-t-none [&>svg]:shrink-0 max-sm:group-focus-within:[&:not([aria-selected=true])]:first-child:rounded-t-lg max-sm:group-focus-within:[&:not([aria-selected=true])]:first-child:border-t-(--tab-bg-dark) [&:not([aria-selected=true])>:last-child]:invisible max-sm:group-focus-within:[[aria-selected=true]+&:last-child]:rounded-b-lg max-sm:group-focus-within:[[aria-selected=true]+&:last-child]:border-b-(--tab-bg-dark) max-sm:group-focus-within:[[:not([aria-selected=true])]+&:last-child:not([aria-selected=true])]:rounded-b-lg max-sm:group-focus-within:[[:not([aria-selected=true])]+&:last-child:not([aria-selected=true])]:border-b-(--tab-bg-dark)"
+                  className="hive-focus aria-selected:text-green-1000 aria-selected:border-(--tab-bg-dark) aria-selected:bg-white max-sm:aria-[selected=false]:hidden group-focus-within:aria-[selected=false]:flex max-sm:aria-[selected=false]:rounded-none max-sm:group-focus-within:aria-[selected=false]:border-y-(--tab-bg) max-sm:group-focus-within:nth-2:aria-selected:rounded-none max-sm:group-focus-within:nth-2:aria-selected:border-y-(--tab-bg) max-sm:group-focus-within:first:aria-selected:border-b-(--tab-bg) max-sm:group-focus-within:first:aria-selected:rounded-b-none max-sm:aria-[selected=false]:pointer-events-none max-sm:aria-[selected=false]:group-focus-within:pointer-events-auto z-10 flex flex-1 items-center justify-center gap-2.5 rounded-lg border-transparent p-4 text-base/6 font-medium text-green-800 max-sm:border max-sm:border-(--tab-bg-dark) max-sm:bg-(--tab-bg) max-sm:group-focus-within:aria-selected:z-20 max-sm:group-focus-within:aria-selected:ring-4 sm:rounded-[15px] sm:border sm:text-xs sm:max-lg:p-3 sm:max-[721px]:p-2 md:text-sm lg:text-base max-sm:group-focus-within:last:border-t-(--tab-bg) max-sm:group-focus-within:nth-3:rounded-t-none [&>svg]:shrink-0 max-sm:group-focus-within:[&:not([aria-selected=true])]:first-child:rounded-t-lg max-sm:group-focus-within:[&:not([aria-selected=true])]:first-child:border-t-(--tab-bg-dark) [&:not([aria-selected=true])>:last-child]:invisible max-sm:group-focus-within:[[aria-selected=true]+&:last-child]:rounded-b-lg max-sm:group-focus-within:[[aria-selected=true]+&:last-child]:border-b-(--tab-bg-dark) max-sm:group-focus-within:[[:not([aria-selected=true])]+&:last-child:not([aria-selected=true])]:rounded-b-lg max-sm:group-focus-within:[[:not([aria-selected=true])]+&:last-child:not([aria-selected=true])]:border-b-(--tab-bg-dark)"
                   key={tab}
                   value={tab}
                 >
@@ -136,7 +136,7 @@ function Feature({
       <header className="flex flex-wrap items-center gap-4 md:flex-col md:items-start md:gap-6">
         <Heading
           as="h2"
-          className="text-green-1000 max-sm:text-2xl max-sm:leading-8"
+          className="text-green-1000 max-sm:text-2xl/8"
           size="md"
         >
           {title}
@@ -159,7 +159,7 @@ function Feature({
                 <dt className="text-green-1000 font-medium">
                   {highlight.title}
                 </dt>
-                <dd className="mt-2 text-sm leading-5 text-green-800">
+                <dd className="mt-2 text-sm/5 text-green-800">
                   {highlight.description}
                 </dd>
               </Link>
@@ -173,7 +173,7 @@ function Feature({
               onPointerOver={() => setActiveHighlight(highlight.title)}
             >
               <dt className="text-green-1000 font-medium">{highlight.title}</dt>
-              <dd className="mt-2 text-sm leading-5 text-green-800">
+              <dd className="mt-2 text-sm/5 text-green-800">
                 {highlight.description}
               </dd>
             </div>

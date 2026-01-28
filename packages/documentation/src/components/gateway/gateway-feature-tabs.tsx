@@ -59,7 +59,7 @@ export function GatewayFeatureTabs(props: { className?: string }) {
   return (
     <FeatureTabs
       className={cn(
-        "border-blue-200 [--tab-bg-dark:theme(colors.blue.300)] [--tab-bg:theme(colors.blue.200)]",
+        "border-blue-200 [--tab-bg-dark:var(--color-blue-300)] [--tab-bg:var(--color-blue-200)]",
         props.className,
       )}
       highlights={highlights}
@@ -88,7 +88,7 @@ export function GatewayFeatureTabs(props: { className?: string }) {
         title="Security & Access Control"
       />
       {/* todo: these marquee rows should probably be draggable, and connected to one "timeline" */}
-      <GatewayMarqueeRows className="[--pill-bg-hover:#fff] [--pill-bg:#fff] [--pill-text-hover:theme(colors.blue.600)] [--pill-text:theme(colors.blue.400)] max-lg:hidden" />
+      <GatewayMarqueeRows className="[--pill-bg-hover:#fff] [--pill-bg:#fff] [--pill-text-hover:var(--color-blue-600)] [--pill-text:var(--color-blue-400)] max-lg:hidden" />
     </FeatureTabs>
   );
 }

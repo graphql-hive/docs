@@ -15,7 +15,7 @@ export function PlanComparison({ className }: { className?: string }) {
         size="md"
       >
         All plans include
-        <span className="text-green-1000 inline-block rounded-2xl bg-gradient-to-r from-blue-300 to-blue-500 px-3 py-2">
+        <span className="text-green-1000 inline-block rounded-2xl bg-linear-to-r from-blue-300 to-blue-500 px-3 py-2">
           every feature
         </span>
       </Heading>

@@ -30,7 +30,7 @@ const friendsPromise = fetch("https://formbricks.com/api/oss-friends").then(
 
 function OSSFriendsPage() {
   return (
-    <LandingPageContainer className="text-green-1000 light mx-auto max-w-[90rem] overflow-hidden">
+    <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">
       <div className="bg-beige-100 relative isolate mx-4 flex flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 max-sm:mt-2 sm:py-12 md:mx-6 md:gap-8 lg:py-24">
         <DecorationIsolation>
           <ArchDecoration className="pointer-events-none absolute -top-5 left-[-46px] size-[200px] rotate-180 md:left-[-60px] md:top-[-188px] md:size-auto" />
@@ -139,10 +139,10 @@ function FriendsList() {
           key={i}
         >
           <dt className="text-green-1000 font-medium">{friend.name}</dt>
-          <dd className="mt-2 text-sm leading-5 text-green-800">
+          <dd className="mt-2 text-sm/5 text-green-800">
             {friend.description}
           </dd>
-          <Arrow className="absolute bottom-2 right-2 size-6 rotate-[135deg] opacity-20" />
+          <Arrow className="absolute bottom-2 right-2 size-6 rotate-135 opacity-20" />
         </a>
       ))}
     </dl>
