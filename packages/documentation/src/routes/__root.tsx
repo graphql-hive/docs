@@ -4,6 +4,7 @@ import {
   HeadContent,
   Outlet,
   Scripts,
+  useMatches,
 } from "@tanstack/react-router";
 import { RootProvider } from "fumadocs-ui/provider/tanstack";
 
@@ -36,8 +37,15 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const matches = useMatches();
+  // Check if current route is under the /_landing layout
+  const isLandingPage = matches.some((match) =>
+    match.routeId.startsWith("/_landing"),
+  );
+
   return (
     <html
+      className={isLandingPage ? "light" : undefined}
       lang="en"
       // todo: investigate if this can be removed
       suppressHydrationWarning

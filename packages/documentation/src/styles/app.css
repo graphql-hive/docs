@@ -51,9 +51,8 @@
 @source "../../**/*.tsx";
 @source "../../../design-system/src/**/*.tsx";
 
-/* Dark mode with light-only sections support
-   Adding .light class to a container opts it out of dark mode */
-@custom-variant dark (&:where(.dark, .dark *):not(.light *));
+/* Dark mode: .light class on html opts out of dark mode */
+@variant dark (&:where(.dark, .dark *):not(:where(.light, .light *)));
 
 /* Nextra primary color HSL variables (used by @theguild/components) */
 :root {
@@ -269,6 +268,14 @@ a, button, [role="button"] {
 
 @utility slide-out-to-right-* {
   --tw-exit-translate-x: calc(--value(integer) * 0.25rem);
+}
+
+@utility zoom-in-* {
+  --tw-enter-scale: calc(--value(integer) / 100);
+}
+
+@utility zoom-out-* {
+  --tw-exit-scale: calc(--value(integer) / 100);
 }
 
 @utility fill-mode-forwards {

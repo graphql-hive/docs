@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const cache = new Map<string, string>();
 const actionClass =
-  "inline-flex items-center gap-2 text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-fd-ring-3 disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center gap-2 text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-green-500/50 disabled:pointer-events-none disabled:opacity-50";
 
 export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
   const [loading, setLoading] = useState(false);

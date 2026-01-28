@@ -3,13 +3,14 @@ import type { Linter } from "eslint";
 import baseConfig from "@hasparus/eslint-config/the-guild";
 
 const config: Linter.Config[] = [
+  { ignores: ["e2e/**"] },
   ...baseConfig,
   {
     files: ["**/*.tsx", "**/*.jsx"],
     rules: {
       "better-tailwindcss/no-unknown-classes": [
         "error",
-        { ignore: ["light", "nextra-scrollbar", "hive-focus"] },
+        { ignore: ["light", "nextra-scrollbar", "nextra-search", "hive-focus", "hive-slider", "no-scrollbar", "subheader"] },
       ],
     },
     settings: {

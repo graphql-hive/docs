@@ -17,6 +17,7 @@ export const Route = createFileRoute("/_landing/oss-friends")({
   component: OSSFriendsPage,
 });
 
+// eslint-disable-next-line unicorn/prefer-top-level-await -- intentional: start fetch without blocking module load
 const friendsPromise = fetch("https://formbricks.com/api/oss-friends").then(
   (res) =>
     res.json() as Promise<{

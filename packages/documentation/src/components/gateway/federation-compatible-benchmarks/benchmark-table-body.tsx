@@ -17,6 +17,7 @@ interface BenchmarkDatum {
   };
 }
 
+/* eslint-disable unicorn/prefer-top-level-await -- intentional: start fetch without blocking module load */
 const dataJson = fetch(
   "https://the-guild.dev/graphql/hive/federation-gateway-audit/data.json",
 ).then(

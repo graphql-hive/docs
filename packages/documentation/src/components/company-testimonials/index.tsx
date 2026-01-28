@@ -321,7 +321,7 @@ function TestimonialPerson({
   );
 }
 
-function debounce<T extends (...args: any[]) => any>(fn: T, delay = 100) {
+function debounce<T extends (...args: never[]) => void>(fn: T, delay = 100) {
   let timeout: NodeJS.Timeout;
   return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
     clearTimeout(timeout);

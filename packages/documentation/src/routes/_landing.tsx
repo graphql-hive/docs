@@ -10,12 +10,13 @@ export const Route = createFileRoute("/_landing")({
 
 /**
  * Pathless layout for landing pages (/, /pricing, /federation, etc.)
- * Includes HiveNavigation and HiveFooter with white background
+ * Includes HiveNavigation and HiveFooter with white background.
+ * Light mode is forced via .light class on <html> in __root.tsx
  */
 function LandingLayout() {
   return (
     <div
-      className="flex min-h-screen flex-col bg-white light"
+      className="flex min-h-screen flex-col bg-white"
       style={{ "--nextra-bg": "255 255 255" } as React.CSSProperties}
     >
       <Navigation />

@@ -170,6 +170,7 @@ export function PlanCard({
   return (
     <>
       <div
+        aria-hidden="true"
         className={cn(
           "fixed inset-0 z-40 bg-black/30 backdrop-blur-2xl transition-opacity duration-500 sm:hidden",
           collapsed ? "pointer-events-none opacity-0" : "opacity-100",

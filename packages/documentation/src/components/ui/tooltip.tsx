@@ -33,7 +33,7 @@ interface ProviderProps {
 }
 
 function Provider({ children }: ProviderProps) {
-  return <>{children}</>;
+  return children;
 }
 
 interface RootProps {

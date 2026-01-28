@@ -318,7 +318,8 @@ const MenuContentColumns = forwardRef(
   (props: MenuContentColumnsProps, ref: React.ForwardedRef<HTMLDivElement>) => {
     return (
       <div
-        className="flex gap-x-6 *:flex *:flex-col *:gap-4"
+        // shrink-0 on children prevents text reflow during popup resize animation
+        className="flex gap-x-6 *:flex *:shrink-0 *:flex-col *:gap-4"
         ref={ref}
         {...props}
       >

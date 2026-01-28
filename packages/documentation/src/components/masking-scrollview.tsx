@@ -1,23 +1,31 @@
 "use client";
 
-import * as React from "react";
+import type { ReactNode } from "react";
+
 import {
   useEffect,
   useLayoutEffect,
   useReducer,
   useRef,
   useState,
+  useSyncExternalStore,
 } from "react";
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {};
+const emptySubscribe = () => noop;
 
 // useMounted hook - returns true when component is mounted (client-side)
 function useMounted() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  return mounted;
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
 }
 
 export interface MaskingScrollviewProps {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   fade: "x" | "y";
   outerClassName?: string;
@@ -77,10 +85,10 @@ export function MaskingScrollview({
 }
 
 const useClientsideEffect =
-  globalThis.window === undefined ? () => {} : useLayoutEffect;
+  globalThis.window === undefined ? noop : useLayoutEffect;
 
 export function useScrolledSides(
-  scrollviewRef: React.MutableRefObject<HTMLElement | null>,
+  scrollviewRef: { current: HTMLElement | null },
   options: {
     disabled?: boolean;
     thresholdPx?: number;
@@ -141,10 +149,11 @@ export function useScrolledSides(
 
     addListener();
 
+    const scrollviewForCleanup = scrollviewRef.current;
     return () => {
-      const scrollview = scrollviewRef.current;
       if (timeout != null) globalThis.clearTimeout(timeout);
-      if (scrollview) scrollview.removeEventListener("scroll", handleScroll);
+      if (scrollviewForCleanup)
+        scrollviewForCleanup.removeEventListener("scroll", handleScroll);
     };
   }, [scrolledSides, scrollviewRef, thresholdPx, transitionsAllowed, disabled]);
 

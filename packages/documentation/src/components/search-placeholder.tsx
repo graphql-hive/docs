@@ -1,6 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {};
+const emptySubscribe = () => noop;
 
 /**
  * Search trigger component for HiveNavigation.
@@ -8,11 +12,11 @@ import { useCallback, useEffect, useState } from "react";
  * Opens fumadocs search dialog when clicked or when ⌘K is pressed.
  */
 export function SearchTrigger() {
-  const [isMac, setIsMac] = useState(true);
-
-  useEffect(() => {
-    setIsMac(!navigator.platform.includes("Win"));
-  }, []);
+  const isMac = useSyncExternalStore(
+    emptySubscribe,
+    () => !navigator.platform.includes("Win"),
+    () => true,
+  );
 
   const handleClick = useCallback(() => {
     const event = new KeyboardEvent("keydown", {
