@@ -18,7 +18,7 @@ const UnwrapChild: FC<{ children?: ReactNode }> = (props) => props.children;
 
 const a: FC<ComponentPropsWithoutRef<"a">> = (props) => (
   <Anchor
-    className="hive-focus rounded underline hover:text-blue-700"
+    className="hive-focus rounded-sm underline hover:text-blue-700"
     {...props}
     href={props.href!}
   >
@@ -94,7 +94,7 @@ const AccordionItem: FC<ComponentPropsWithoutRef<"li">> = (props) => {
 
   return (
     <Accordion.Item
-      className="data-[open]:pb-4 relative pb-0 focus-within:z-10"
+      className="data-open:pb-4 relative pb-0 focus-within:z-10"
       value={question}
     >
       <div
@@ -105,11 +105,11 @@ const AccordionItem: FC<ComponentPropsWithoutRef<"li">> = (props) => {
         <Accordion.Header>
           <Accordion.Trigger className="hive-focus duration-[.8s] -mx-2 my-1 flex w-[calc(100%+1rem)] items-center justify-between rounded-xl bg-white px-2 py-3 text-left font-medium transition-colors hover:bg-beige-100/80 md:my-2 md:py-4">
             <span itemProp="name">{question}</span>
-            <ChevronDownIcon className="size-5 [[data-open]_&]:[transform:rotateX(180deg)]" />
+            <ChevronDownIcon className="size-5 in-data-open:transform-[rotateX(180deg)]" />
           </Accordion.Trigger>
         </Accordion.Header>
         <Accordion.Panel
-          className="overflow-hidden bg-white text-green-800 data-[closed]:hidden"
+          className="overflow-hidden bg-white text-green-800 data-closed:hidden"
           keepMounted
         >
           <div

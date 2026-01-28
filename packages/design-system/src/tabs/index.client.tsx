@@ -214,7 +214,7 @@ export const Tab: FC<TabPanelProps> = ({
       {...props}
       className={(args) =>
         cn(
-          "mt-[1.25em] rounded",
+          "mt-[1.25em] rounded-sm",
           args.focus && "hive-focus",
           typeof className === "function" ? className(args) : className,
         )

@@ -31,12 +31,12 @@ export const NavigationMenu = forwardRef<HTMLElement, NavigationMenuProps>(
           <BaseNavigationMenu.Positioner
             className={cn(
               "box-border",
-              "h-[var(--positioner-height)] w-[var(--positioner-width)] max-w-[var(--available-width)]",
-              "transition-[top,left,right,bottom] duration-[var(--duration)] ease-[var(--easing)]",
-              "data-[instant]:transition-none",
+              "h-(--positioner-height) w-(--positioner-width) max-w-(--available-width)",
+              "transition-[top,left,right,bottom] duration-(--duration) ease-(--easing)",
+              "data-instant:transition-none",
               // Safe area for pointer to move to popup
               "before:absolute before:content-['']",
-              "data-[side=bottom]:before:top-[-10px] data-[side=bottom]:before:right-0 data-[side=bottom]:before:left-0 data-[side=bottom]:before:h-2.5",
+              "rdx-side-bottom:before:top-[-10px] rdx-side-bottom:before:right-0 rdx-side-bottom:before:left-0 rdx-side-bottom:before:h-2.5",
             )}
             sideOffset={6}
             style={
@@ -48,13 +48,13 @@ export const NavigationMenu = forwardRef<HTMLElement, NavigationMenuProps>(
           >
             <BaseNavigationMenu.Popup
               className={cn(
-                "relative origin-[var(--transform-origin)]",
-                "h-[var(--popup-height)] w-[var(--popup-width)]",
+                "relative origin-(--transform-origin)",
+                "h-(--popup-height) w-(--popup-width)",
                 "rounded-xl border border-beige-200 bg-white shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)]",
                 "dark:border-neutral-800 dark:bg-neutral-900",
-                "transition-[opacity,transform,width,height] duration-[var(--duration)] ease-[var(--easing)]",
-                "data-[starting-style]:scale-95 data-[starting-style]:opacity-0",
-                "data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[ending-style]:duration-150",
+                "transition-[opacity,transform,width,height] duration-(--duration) ease-(--easing)",
+                "data-starting-style:scale-95 data-starting-style:opacity-0",
+                "data-ending-style:scale-95 data-ending-style:opacity-0 data-ending-style:duration-150",
               )}
             >
               <BaseNavigationMenu.Viewport className="relative h-full w-full overflow-hidden" />
@@ -117,7 +117,7 @@ export const NavigationMenuTrigger = forwardRef<
 >(({ children, className, disabled, ...rest }, ref) => (
   <BaseNavigationMenu.Trigger
     className={cn(
-      "hive-focus cursor-default rounded p-3 font-medium leading-normal text-green-800 data-[popup-open]:text-green-1000 dark:text-neutral-300 dark:data-[popup-open]:text-neutral-100",
+      "hive-focus cursor-default rounded-sm p-3 font-medium leading-normal text-green-800 data-popup-open:text-green-1000 dark:text-neutral-300 dark:data-popup-open:text-neutral-100",
       className,
     )}
     disabled={disabled ?? false}
@@ -137,12 +137,12 @@ export const NavigationMenuContent = forwardRef<
     className={cn(
       "h-full w-auto bg-white p-6 dark:bg-neutral-900",
       // Sliding animation between menus
-      "transition-[opacity,transform] duration-[var(--duration)] ease-[var(--easing)]",
-      "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
-      "data-[starting-style]:data-[activation-direction=left]:-translate-x-12",
-      "data-[starting-style]:data-[activation-direction=right]:translate-x-12",
-      "data-[ending-style]:data-[activation-direction=left]:translate-x-12",
-      "data-[ending-style]:data-[activation-direction=right]:-translate-x-12",
+      "transition-[opacity,transform] duration-(--duration) ease-(--easing)",
+      "data-starting-style:opacity-0 data-ending-style:opacity-0",
+      "data-starting-style:data-[activation-direction=left]:-translate-x-12",
+      "data-starting-style:data-[activation-direction=right]:translate-x-12",
+      "data-ending-style:data-[activation-direction=left]:translate-x-12",
+      "data-ending-style:data-[activation-direction=right]:-translate-x-12",
       className,
     )}
     ref={ref}
@@ -168,7 +168,7 @@ export const NavigationMenuLink = forwardRef<
   return (
     <BaseNavigationMenu.Link
       className={cn(
-        "hive-focus rounded p-3 leading-normal text-green-800 transition-colors hover:bg-beige-100 hover:text-green-1000 dark:text-neutral-300 dark:hover:bg-neutral-800/50 dark:hover:text-neutral-100",
+        "hive-focus rounded-sm p-3 leading-normal text-green-800 transition-colors hover:bg-beige-100 hover:text-green-1000 dark:text-neutral-300 dark:hover:bg-neutral-800/50 dark:hover:text-neutral-100",
         arrow && "flex items-center",
         className,
       )}
@@ -210,7 +210,7 @@ export const NavigationMenuIndicator = forwardRef<
 >(({ className, ...rest }, ref) => (
   <div
     className={cn(
-      "top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden",
+      "top-full z-1 flex h-1.5 items-end justify-center overflow-hidden",
       className,
     )}
     ref={ref}

@@ -43,7 +43,7 @@ export function Marquee({
   return (
     <div
       className={cn(
-        "[mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        "mask-[linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className,
       )}
       {...rest}

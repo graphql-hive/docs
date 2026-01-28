@@ -65,7 +65,7 @@ export function HiveFooter({
       >
         <div className="max-lg:col-span-full">
           <Anchor
-            className="hive-focus -m-1.5 flex rounded p-1.5 text-green-1000 dark:text-white"
+            className="hive-focus -m-1.5 flex rounded-sm p-1.5 text-green-1000 dark:text-white"
             href={href}
           >
             {logo}
@@ -84,14 +84,14 @@ export function HiveFooter({
             <List heading="Company" links={items.company} />
             {items.links?.map((link, i) => (
               <Anchor
-                className="hive-focus -m-2 rounded p-2 font-medium hover:text-blue-700 hover:underline dark:hover:text-blue-100"
+                className="hive-focus -m-2 rounded-sm p-2 font-medium hover:text-blue-700 hover:underline dark:hover:text-blue-100"
                 key={i}
                 {...link}
               />
             ))}
             <ContactTextLink />
           </div>
-          <div className="sm:col-start-[-1] lg:col-start-[-2]">
+          <div className="sm:-col-start-1 lg:-col-start-2">
             {showSecurityBadges && <SecurityBadges />}
           </div>
         </div>
@@ -138,7 +138,7 @@ function List({
           <li key={i}>
             <Anchor
               {...link}
-              className="hive-focus -m-2 block rounded p-2 hover:text-blue-700 hover:underline dark:hover:text-blue-100"
+              className="hive-focus -m-2 block rounded-sm p-2 hover:text-blue-700 hover:underline dark:hover:text-blue-100"
             />
           </li>
         ))}

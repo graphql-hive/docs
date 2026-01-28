@@ -58,7 +58,7 @@ export function CookiesConsent(props: CookiesConsentProps) {
       </div>
       <div className="ml-auto flex w-auto items-center justify-end gap-4">
         <a
-          className="hive-focus whitespace-nowrap rounded p-1 hover:text-blue-700 hover:underline dark:hover:text-blue-100"
+          className="hive-focus whitespace-nowrap rounded-sm p-1 hover:text-blue-700 hover:underline dark:hover:text-blue-100"
           href="https://the-guild.dev/graphql/hive/privacy-policy.pdf"
           rel="noopener noreferrer"
           target="_blank"

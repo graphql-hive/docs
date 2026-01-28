@@ -22,7 +22,7 @@ export function LargeCallout({
       className={cn(
         "mt-10 flex gap-6 rounded-2xl border border-transparent p-8 max-sm:flex-col sm:items-start sm:gap-12",
         variant === "primary" &&
-          "bg-primary dark:bg-primary/[0.01] dark:border-primary/5",
+          "bg-primary dark:bg-primary/1 dark:border-primary/5",
         variant === "secondary" &&
           "border-green-400 bg-white dark:border-neutral-700 dark:bg-neutral-900",
       )}

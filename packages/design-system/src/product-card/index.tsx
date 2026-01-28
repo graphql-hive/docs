@@ -113,7 +113,7 @@ export function AncillaryProductCard({
           <p className="mt-2 text-sm text-green-800">{product.title}</p>
         </div>
         <div
-          className="mt-8 flex size-8 items-center justify-center rounded bg-green-1000 p-[5px] text-sm/5 font-medium text-white"
+          className="mt-8 flex size-8 items-center justify-center rounded-sm bg-green-1000 p-[5px] text-sm/5 font-medium text-white"
           role="presentation"
         >
           <Logo />

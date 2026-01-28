@@ -50,9 +50,9 @@ export function InfoCard({
       className={cn(
         "p-6 md:p-12",
         scheme === "neutral" &&
-          "bg-beige-100 [--color-h:theme(colors.green.1000)] [--color-text:theme(colors.green.800)] [--hover-bg:theme(colors.beige.200)] dark:bg-neutral-900 dark:[--color-h:theme(colors.white)] dark:[--color-text:theme(colors.white)] dark:[--hover-bg:theme(colors.neutral.800)]",
+          "bg-beige-100 [--color-h:var(--color-green-1000)] [--color-text:var(--color-green-800)] [--hover-bg:var(--color-beige-200)] dark:bg-neutral-900 dark:[--color-h:var(--color-white)] dark:[--color-text:var(--color-white)] dark:[--hover-bg:var(--color-neutral-800)]",
         scheme === "green" &&
-          "bg-green-900 [--color-h:theme(colors.white)] [--color-text:theme(colors.white)] [--hover-bg:theme(colors.green.800)]",
+          "bg-green-900 [--color-h:var(--color-white)] [--color-text:var(--color-white)] [--hover-bg:var(--color-green-800)]",
         Root === Anchor &&
           "hive-focus block cursor-pointer duration-300 hover:bg-(--hover-bg) focus-visible:bg-(--hover-bg)",
         className,

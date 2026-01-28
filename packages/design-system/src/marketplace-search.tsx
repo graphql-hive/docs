@@ -94,7 +94,7 @@ export const MarketplaceSearch = ({
         className,
       )}
     >
-      <div className="container max-w-[90rem] py-12">
+      <div className="container max-w-360 py-12">
         <Heading as="h1" className="mb-4 text-[32px] text-(--fg)" size="sm">
           {title}
         </Heading>
@@ -154,7 +154,7 @@ function MarketplaceSearchInput({
     <div className="border-b border-(--fg-60)">
       <div
         className={cn(
-          "hive-focus-within flex items-center rounded px-2",
+          "hive-focus-within flex items-center rounded-sm px-2",
           className,
         )}
       >
@@ -197,10 +197,10 @@ function MarketplaceSearchTabs({
   return (
     <div className={className}>
       <Tabs
-        className="grid grid-cols-2 gap-1 rounded-2xl border-none bg-neutral-800 [.green_&]:bg-green-900! [.light_&]:bg-neutral-100 [.light_&]:text-green-200"
+        className="grid grid-cols-2 gap-1 rounded-2xl border-none bg-neutral-800 in-[.green]:bg-green-900! in-[.light]:bg-neutral-100 in-[.light]:text-green-200"
         items={items.map((list) => list.title)}
         tabClassName={cn(
-          "rounded-2xl border-none p-3 text-sm font-medium text-neutral-200 hover:bg-neutral-700/50 hover:text-white aria-selected:cursor-default! aria-selected:!bg-[--fg] aria-selected:!text-[--bg] sm:p-4 sm:text-base [.green_&]:bg-green-900! [.green_&]:text-green-200! [.green_&]:hover:bg-green-700/25! [.green_&]:hover:text-green-100! [.green_&]:aria-selected:bg-green-300! [.green_&]:aria-selected:text-green-800! [.light_&]:bg-neutral-100 [.light_&]:text-neutral-800 [.light_&]:hover:bg-neutral-200/80 [.light_&]:hover:text-neutral-900",
+          "rounded-2xl border-none p-3 text-sm font-medium text-neutral-200 hover:bg-neutral-700/50 hover:text-white aria-selected:cursor-default! aria-selected:bg-[--fg]! aria-selected:text-[--bg]! sm:p-4 sm:text-base in-[.green]:bg-green-900! in-[.green]:text-green-200! in-[.green]:hover:bg-green-700/25! in-[.green]:hover:text-green-100! in-[.green]:aria-selected:bg-green-300! in-[.green]:aria-selected:text-green-800! in-[.light]:bg-neutral-100 in-[.light]:text-neutral-800 in-[.light]:hover:bg-neutral-200/80 in-[.light]:hover:text-neutral-900",
         )}
       >
         {items.map((list, i) => (

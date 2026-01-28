@@ -74,7 +74,7 @@ export function Callout({ children, title, type }: CalloutProps) {
           {title ?? config.title}
         </div>
         {/* I used [&_*]:!leading-[inherit] to override line-height forced by nextra */}
-        <div className="[&_*]:!leading-[inherit]">{children}</div>
+        <div className="**:leading-[inherit]!">{children}</div>
       </div>
     </div>
   );

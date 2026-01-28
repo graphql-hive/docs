@@ -21,13 +21,13 @@ export function GraphQLConfCard({
   return (
     <NavigationMenuLink className="group w-[358px]" href={href}>
       <Image alt="" height={200} src={image} width={358} />
-      <strong className="mt-6 block text-xl font-medium leading-7 text-green-1000 dark:text-neutral-100">
+      <strong className="mt-6 block text-xl/7 font-medium text-green-1000 dark:text-neutral-100">
         {title}
       </strong>
-      <p className="mt-4 text-sm font-medium leading-5 text-green-800 dark:text-neutral-200">
+      <p className="mt-4 text-sm/5 font-medium text-green-800 dark:text-neutral-200">
         {details}
       </p>
-      <p className="mt-2 text-sm font-normal leading-5 text-green-800 dark:text-neutral-200">
+      <p className="mt-2 text-sm/5 font-normal text-green-800 dark:text-neutral-200">
         {description}
       </p>
       <span className="mt-6 flex items-center gap-2 rounded-lg font-medium text-green-800 transition-colors group-hover:text-green-1000 dark:text-neutral-200 dark:group-hover:text-neutral-100">

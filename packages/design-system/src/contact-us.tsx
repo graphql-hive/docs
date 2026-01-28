@@ -22,7 +22,7 @@ export function ContactTextLink(props: ContactTextLinkProps) {
     <a
       {...props}
       className={cn(
-        "hive-focus -m-2 rounded p-2 font-medium hover:text-blue-700 hover:underline dark:hover:text-blue-100",
+        "hive-focus -m-2 rounded-sm p-2 font-medium hover:text-blue-700 hover:underline dark:hover:text-blue-100",
         props.className,
       )}
       href="https://the-guild.dev/contact"

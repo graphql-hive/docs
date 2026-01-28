@@ -92,12 +92,12 @@ function MenuIcon({
       {...props}
     >
       <path
-        className="origin-center transition-transform [.open_&]:translate-y-[5px] [.open_&]:rotate-45"
+        className="origin-center transition-transform in-[.open]:translate-y-[5px] in-[.open]:rotate-45"
         d="M4 7h16"
       />
-      <path className="transition-opacity [.open_&]:opacity-0" d="M4 12h16" />
+      <path className="transition-opacity in-[.open]:opacity-0" d="M4 12h16" />
       <path
-        className="origin-center transition-transform [.open_&]:-translate-y-[5px] [.open_&]:-rotate-45"
+        className="origin-center transition-transform in-[.open]:-translate-y-[5px] in-[.open]:-rotate-45"
         d="M4 17h16"
       />
     </svg>
@@ -300,10 +300,10 @@ export const ProductsMenu = React.forwardRef<HTMLDivElement, ProductsMenuProps>(
             <div className="w-fit rounded-lg bg-green-800 p-3 dark:bg-white/10">
               <HiveIcon className="size-10 text-white" />
             </div>
-            <p className="mt-4 text-base font-medium leading-normal text-green-1000 dark:text-neutral-200">
+            <p className="mt-4 text-base/normal font-medium text-green-1000 dark:text-neutral-200">
               Hive
             </p>
-            <p className="mt-1 text-sm leading-5 text-green-800 dark:text-neutral-400">
+            <p className="mt-1 text-sm/5 text-green-800 dark:text-neutral-400">
               GraphQL Federation Platform with Schema Registry and Analytics
             </p>
           </NavigationMenuLink>
@@ -337,10 +337,10 @@ export const ProductsMenu = React.forwardRef<HTMLDivElement, ProductsMenuProps>(
                       <Logo className="size-7 text-green-1000" />
                     </div>
                     <div>
-                      <p className="text-base font-medium leading-normal text-green-1000 dark:text-neutral-200">
+                      <p className="text-base/normal font-medium text-green-1000 dark:text-neutral-200">
                         {product.name}
                       </p>
-                      <p className="col-start-2 mt-1 text-sm leading-5 text-green-800 dark:text-neutral-300">
+                      <p className="col-start-2 mt-1 text-sm/5 text-green-800 dark:text-neutral-300">
                         {description}
                       </p>
                     </div>
@@ -362,11 +362,11 @@ export const ProductsMenu = React.forwardRef<HTMLDivElement, ProductsMenuProps>(
                     className="flex items-center gap-3 px-4 py-2"
                     href={bidirectionalProductLink(product)}
                   >
-                    <div className="flex size-8 items-center justify-center rounded bg-beige-200 p-[5px] dark:bg-white/5">
+                    <div className="flex size-8 items-center justify-center rounded-sm bg-beige-200 p-[5px] dark:bg-white/5">
                       <Logo className="size-8 text-green-1000 dark:text-neutral-300" />
                     </div>
                     <div>
-                      <p className="text-base font-medium leading-normal text-green-1000 dark:text-neutral-200">
+                      <p className="text-base/normal font-medium text-green-1000 dark:text-neutral-200">
                         {/* shortened to one word */}
                         {product.name === PRODUCTS.ESLINT.name
                           ? "ESLint"
@@ -501,7 +501,7 @@ function MenuColumnListItem({
         title={title}
       >
         {icon}
-        <p className="text-base font-medium leading-normal text-green-1000 dark:text-neutral-200">
+        <p className="text-base/normal font-medium text-green-1000 dark:text-neutral-200">
           {children}
         </p>
       </NavigationMenuLink>
@@ -511,7 +511,7 @@ function MenuColumnListItem({
 
 function ColumnLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="px-4 text-sm leading-5 text-green-700 dark:text-neutral-300">
+    <p className="px-4 text-sm/5 text-green-700 dark:text-neutral-300">
       {children}
     </p>
   );

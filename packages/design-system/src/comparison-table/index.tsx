@@ -15,9 +15,9 @@ const Table = ({
       className={cn(
         "x:block x:overflow-x-auto nextra-scrollbar overflow-x-auto rounded-2xl border border-(--border)",
         scheme === "green" &&
-          "[--border:theme(colors.green.200)] [--highlight-bg:theme(colors.green.100)]",
+          "[--border:var(--color-green-200)] [--highlight-bg:var(--color-green-100)]",
         scheme === "neutral" &&
-          "[--border:theme(colors.beige.400)] [--highlight-bg:theme(colors.beige.100)] dark:[--border:theme(colors.neutral.800)]",
+          "[--border:var(--color-beige-400)] [--highlight-bg:var(--color-beige-100)] dark:[--border:var(--color-neutral-800)]",
         className,
       )}
       {...props}
@@ -43,7 +43,7 @@ const TableRow: FC<ComponentProps<"tr"> & { highlight?: boolean }> = ({
 };
 
 const cellStyle = cn(
-  "border border-(--border) p-4 first:sticky first:left-0 first:border-l-0 first:bg-(--highlight,var(--highlight-bg)) last:border-r-0 max-sm:first:drop-shadow-2xl [tbody_&]:border-b-0 [thead_&]:border-t-0",
+  "border border-(--border) p-4 first:sticky first:left-0 first:border-l-0 first:bg-(--highlight,var(--highlight-bg)) last:border-r-0 max-sm:first:drop-shadow-2xl in-[tbody]:border-b-0 in-[thead]:border-t-0",
 );
 
 const TableHeader: FC<ComponentProps<"th">> = ({ className, ...props }) => {
