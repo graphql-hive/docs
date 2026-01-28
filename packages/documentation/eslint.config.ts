@@ -6,6 +6,12 @@ const config: Linter.Config[] = [
   ...baseConfig,
   {
     files: ["**/*.tsx", "**/*.jsx"],
+    rules: {
+      "better-tailwindcss/no-unknown-classes": [
+        "error",
+        { ignore: ["light", "nextra-scrollbar", "hive-focus"] },
+      ],
+    },
     settings: {
       "better-tailwindcss": {
         entryPoint: "./src/styles/app.css",
