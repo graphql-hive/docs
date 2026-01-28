@@ -11,9 +11,16 @@ const config: Linter.Config[] = [
     },
   },
   {
+    files: ["**/*.tsx", "**/*.jsx"],
+    settings: {
+      "better-tailwindcss": {
+        entryPoint: "../documentation/src/styles/app.css",
+      },
+    },
+  },
+  {
     languageOptions: {
       parserOptions: {
-        project: "./tsconfig.json",
         projectService: {
           allowDefaultProject: [],
         },

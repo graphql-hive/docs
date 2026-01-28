@@ -21,7 +21,6 @@
   "devDependencies": {
     "@fumadocs/cli": "^1.2.2",
     "@radix-ui/react-icons": "^1.3.2",
-    "@hasparus/eslint-config": "2.0.17",
     "@tsconfig/strictest": "2.0.8",
     "@types/bun": "latest",
     "docs": "workspace:*",
@@ -42,5 +41,8 @@
   },
   "overrides": {
     "nitro": "npm:nitro-nightly@latest"
+  },
+  "dependencies": {
+    "@hasparus/eslint-config": "link:@hasparus/eslint-config"
   }
 }
