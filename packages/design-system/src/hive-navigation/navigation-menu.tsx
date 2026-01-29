@@ -14,8 +14,9 @@ import { ArrowIcon } from "../icons";
 const CONTAINER_ID = "h-navmenu-container";
 const VIEWPORT_ID = "h-navmenu-viewport";
 
-export interface NavigationMenuProps
-  extends ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root> {
+export interface NavigationMenuProps extends ComponentPropsWithoutRef<
+  typeof NavigationMenuPrimitive.Root
+> {
   forceMount?: true;
 }
 export const NavigationMenu = forwardRef<
@@ -95,12 +96,10 @@ export const NavigationMenuContent = forwardRef<
       "absolute left-0 top-0 w-auto bg-white dark:bg-neutral-900 *:first:p-6",
       // Reset scale vars so Content doesn't inherit Viewport's zoom-in/zoom-out
       "[--tw-enter-scale:1] [--tw-exit-scale:1]",
+      // Blur exiting content for a smoother handoff
+      "transition-[filter] duration-150 data-[motion^=to-]:blur-[1px]",
       // Slide + fade animation between menus
-      "data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out",
-      "data-[motion^=from-]:fade-in-0 data-[motion^=to-]:fade-out-0",
-      "data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52",
-      "data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52",
-      "data-[motion^=to-]:animate-duration-250 data-[motion^=from-]:animate-duration-450",
+      "data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in-0 data-[motion^=to-]:fade-out-0 data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 data-[motion^=to-]:animate-duration-250 data-[motion^=from-]:animate-duration-450",
       className,
     )}
     ref={ref}
@@ -109,11 +108,10 @@ export const NavigationMenuContent = forwardRef<
 ));
 NavigationMenuContent.displayName = NavigationMenuPrimitive.Content.displayName;
 
-export interface NavigationMenuLinkProps
-  extends Omit<
-    React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Link>,
-    "asChild"
-  > {
+export interface NavigationMenuLinkProps extends Omit<
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Link>,
+  "asChild"
+> {
   arrow?: boolean;
   href: string;
 }
