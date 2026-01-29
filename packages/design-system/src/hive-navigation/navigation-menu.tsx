@@ -93,9 +93,11 @@ export const NavigationMenuContent = forwardRef<
   <NavigationMenuPrimitive.Content
     className={cn(
       "absolute left-0 top-0 w-auto bg-white dark:bg-neutral-900 *:first:p-6",
+      // Reset scale vars so Content doesn't inherit Viewport's zoom-in/zoom-out
+      "[--tw-enter-scale:1] [--tw-exit-scale:1]",
       // Slide + fade animation between menus
       "data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out",
-      "data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out",
+      "data-[motion^=from-]:fade-in-0 data-[motion^=to-]:fade-out-0",
       "data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52",
       "data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52",
       "data-[motion^=to-]:animate-duration-250 data-[motion^=from-]:animate-duration-450",
