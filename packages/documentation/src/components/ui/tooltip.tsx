@@ -190,4 +190,5 @@ export const Tooltip = {
 
 // Also export individual parts for destructuring imports
 export { Content, Provider, Root, Trigger };
+// eslint-disable-next-line import/no-default-export
 export default Tooltip;

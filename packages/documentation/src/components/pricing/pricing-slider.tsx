@@ -69,7 +69,7 @@ export function PricingSlider({
           min={min}
           onChange={(event) => {
             const value = event.currentTarget.valueAsNumber;
-            rootRef.current!.style.setProperty("--ops", `${value}`);
+            rootRef.current!.style.setProperty("--ops", String(value));
             onChange(value);
           }}
           step={1}

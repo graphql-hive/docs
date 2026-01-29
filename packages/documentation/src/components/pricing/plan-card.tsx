@@ -149,7 +149,7 @@ export function PlanCard({
 
       globalThis.addEventListener(
         "keydown",
-        function onEscape(e) {
+        function onEscape(e: KeyboardEvent) {
           if (e.key === "Escape") {
             // in case somebody presses escape befoere the opening transition finishes
             transitionAbortController.current?.abort();
