@@ -38,7 +38,7 @@ export function CookiesConsent(props: CookiesConsentProps) {
     <div
       {...props}
       className={cn(
-        "ease fixed bottom-0 z-50 flex flex-wrap items-center justify-center gap-x-4 gap-y-3 rounded-lg border border-beige-200 bg-beige-100 p-4 text-sm text-green-800 shadow-xl duration-300 animate-in fade-in-0 slide-in-from-bottom-6 fill-mode-forwards data-[state=closing]:animate-out data-[state=closing]:fade-out-0 data-[state=closing]:slide-out-to-bottom-6 lg:flex-nowrap lg:justify-between lg:text-left dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200",
+        "fixed bottom-0 z-50 flex flex-wrap items-center justify-center gap-x-4 gap-y-3 rounded-lg border border-beige-200 bg-beige-100 p-4 text-sm text-green-800 shadow-xl duration-300 animate-in fade-in-0 slide-in-from-bottom-6 fill-mode-forwards data-[state=closing]:animate-out data-[state=closing]:fade-out-0 data-[state=closing]:slide-out-to-bottom-6 lg:flex-nowrap lg:justify-between lg:text-left dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200",
         props.className,
       )}
       data-state={isClosing ? "closing" : "open"}
