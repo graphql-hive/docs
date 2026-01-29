@@ -12,9 +12,41 @@ const config: Linter.Config[] = [
   },
   {
     files: ["**/*.tsx", "**/*.jsx"],
+    rules: {
+      "better-tailwindcss/no-unknown-classes": [
+        "error",
+        {
+          ignore: [
+            "light",
+            "hive-focus",
+            "hive-label-separator",
+            "hive-slider",
+            "MarketplaceSearch",
+            "nextra-banner",
+            "nextra-bleed",
+            "nextra-callout",
+            "nextra-cards",
+            "nextra-collapse",
+            "nextra-filetree",
+            "nextra-focus",
+            "nextra-hamburger",
+            "nextra-mermaid",
+            "nextra-scrollbar",
+            "nextra-search",
+            "nextra-steps",
+            "no-scrollbar",
+            "subheader",
+            "subheading-anchor",
+          ],
+        },
+      ],
+    },
     settings: {
       "better-tailwindcss": {
-        entryPoint: "../documentation/src/styles/app.css",
+        entryPoint: new URL(
+          "../documentation/src/styles/app.css",
+          import.meta.url,
+        ).pathname,
       },
     },
   },

@@ -35,7 +35,7 @@ export function Input({ message, severity = "neutral", ...props }: InputProps) {
       />
       <div
         className={cn(
-          "overflow-hidden rounded-b-lg pl-4 pr-1 text-sm transition-all *:animate-in *:fade-in",
+          "overflow-hidden rounded-b-lg pl-4 pr-1 text-sm transition-all *:animate-in *:fade-in-0",
           severity === "critical" &&
             "bg-critical-dark/10 dark:bg-critical-bright/20",
           severity === "warning" && "bg-warning-bright/10",

@@ -76,7 +76,7 @@ export const MarketplaceList = ({
       {title && (
         <Heading
           as="h2"
-          className="mb-6 mt-4 text-2xl/8 font-medium text-(--fg,theme(colors.neutral.900)] dark:text-white"
+          className="mb-6 mt-4 text-2xl/8 font-medium text-(--fg,var(--color-neutral-900)) dark:text-white"
           size="sm"
         >
           {title}

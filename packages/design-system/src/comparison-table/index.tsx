@@ -13,7 +13,7 @@ const Table = ({
   return (
     <table
       className={cn(
-        "x:block x:overflow-x-auto nextra-scrollbar overflow-x-auto rounded-2xl border border-(--border)",
+        "block overflow-x-auto nextra-scrollbar rounded-2xl border border-(--border)",
         scheme === "green" &&
           "[--border:var(--color-green-200)] [--highlight-bg:var(--color-green-100)]",
         scheme === "neutral" &&
