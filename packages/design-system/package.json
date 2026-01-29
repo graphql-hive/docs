@@ -38,6 +38,7 @@
   "dependencies": {
     "@base-ui-components/react": "^1.0.0-rc.0",
     "@headlessui/react": "2.2.9",
+    "@radix-ui/react-navigation-menu": "^1.2.14",
     "@tanstack/react-router": "1.153.2",
     "@unpic/react": "1.0.2",
     "arktype": "2.1.29",
