@@ -4,9 +4,20 @@ import {
   HeadContent,
   Outlet,
   Scripts,
-  useMatches,
+  useRouterState,
 } from "@tanstack/react-router";
 import { RootProvider } from "fumadocs-ui/provider/tanstack";
+
+const lightOnlyPages = new Set([
+  "/",
+  "/case-studies",
+  "/ecosystem",
+  "/federation",
+  "/gateway",
+  "/oss-friends",
+  "/partners",
+  "/pricing",
+]);
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -37,15 +48,12 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const matches = useMatches();
-  // Check if current route is under the /_landing layout
-  const isLandingPage = matches.some((match) =>
-    match.routeId.startsWith("/_landing"),
-  );
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isLightOnlyPage = lightOnlyPages.has(pathname);
 
   return (
     <html
-      className={isLandingPage ? "light" : undefined}
+      className={isLightOnlyPage ? "light" : undefined}
       lang="en"
       // todo: investigate if this can be removed
       suppressHydrationWarning
@@ -57,7 +65,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         className="flex flex-col min-h-screen antialiased"
         style={{ fontFamily: "'PP Neue Montreal', system-ui, sans-serif" }}
       >
-        <RootProvider>{children}</RootProvider>
+        <RootProvider
+          theme={isLightOnlyPage ? { forcedTheme: "light" } : undefined}
+        >
+          {children}
+        </RootProvider>
         <Scripts />
       </body>
     </html>
