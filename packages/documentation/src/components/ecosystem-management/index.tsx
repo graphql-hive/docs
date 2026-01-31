@@ -43,7 +43,7 @@ export function EcosystemManagementSection({
                   Best in class{" "}
                   <Link
                     className="underline underline-offset-2"
-                    to="/federation-gateway-audit"
+                    to={"/federation-gateway-audit" as string}
                   >
                     compatibility with Apollo Federation spec
                   </Link>

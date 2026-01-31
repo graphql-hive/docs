@@ -169,7 +169,7 @@ export function HiveNavigation({
     <div
       className="sticky top-0 z-20 border-b border-beige-400/(--border-opacity) bg-[rgb(var(--nextra-bg))] px-6 py-4 text-green-1000 transition-[border-color] duration-500 md:mb-[7px] md:mt-2 dark:border-neutral-700/(--border-opacity) dark:text-neutral-200"
       ref={containerRef}
-      style={{ "--border-opacity": "0%" }}
+      style={{ "--border-opacity": "0%" } as React.CSSProperties}
     >
       <TopOfSiteMarker
         onChange={(scrolled) => {
@@ -239,8 +239,8 @@ export function HiveNavigation({
           className="ml-4 max-lg:hidden"
           href={`${siteOrigin}/contact`}
           onClick={(event) => {
-            if (globalThis.$crisp) {
-              globalThis.$crisp.push(["do", "chat:open"]);
+            if ((globalThis as unknown as { $crisp?: { push(args: unknown[]): void } }).$crisp) {
+              (globalThis as unknown as { $crisp: { push(args: unknown[]): void } }).$crisp.push(["do", "chat:open"]);
               event.preventDefault();
             }
           }}

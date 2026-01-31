@@ -116,12 +116,12 @@ export function CompanyTestimonialsSection({
     const { scrollWidth } = scrollview;
     const index = Math.round((scrollLeft / scrollWidth) * testimonials.length);
 
-    const tabs = tabsList.querySelectorAll('[role="tab"]');
+    const tabs = tabsList.querySelectorAll<HTMLElement>('[role="tab"]');
     for (const [i, tab] of tabs.entries()) {
       if (i === index) {
-        tab.dataset.selected = "";
+        tab.dataset["selected"] = "";
       } else {
-        delete tab.dataset.selected;
+        delete tab.dataset["selected"];
       }
     }
   }, 50);

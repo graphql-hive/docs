@@ -34,14 +34,14 @@ const subscribe = (onStoreChange: () => void) => {
   return () => void globalThis.removeEventListener("hashchange", handler);
 };
 
-const getSnapshot = () => {
+const getSnapshot = (): string | undefined => {
   const { hash } = globalThis.location;
   if (hash.startsWith("#faq")) {
     return hash.slice(1);
   }
-  return;
+  return undefined;
 };
 
-const getServerSnapshot = () => {
-  return;
+const getServerSnapshot = (): string | undefined => {
+  return undefined;
 };

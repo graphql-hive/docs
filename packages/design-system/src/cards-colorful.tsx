@@ -25,7 +25,7 @@ export const CardsColorful = ({
         <Anchor
           className="relative min-h-[200px] w-full rounded-3xl p-8 text-white [background:var(--color)] after:absolute after:right-0 after:top-0 after:h-full after:w-[calc(30%-1rem)] after:rounded-3xl after:bg-white/10 after:content-[''] md:h-72 md:w-1/2 md:hover:scale-105 md:hover:shadow-xl lg:after:w-[calc(50%-1rem)]"
           key={card.title}
-          style={{ "--color": card.color }}
+          style={{ "--color": card.color } as React.CSSProperties}
           {...card.link}
         >
           <div className="w-3/4 lg:w-1/2">

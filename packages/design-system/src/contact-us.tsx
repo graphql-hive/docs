@@ -4,8 +4,8 @@ import { CallToAction, CallToActionProps } from "./call-to-action";
 import { cn } from "./cn";
 
 const openCrisp = (event: React.MouseEvent<HTMLAnchorElement>) => {
-  if (globalThis.$crisp) {
-    globalThis.$crisp.push(["do", "chat:open"]);
+  if ((globalThis as unknown as { $crisp?: { push(args: unknown[]): void } }).$crisp) {
+    (globalThis as unknown as { $crisp: { push(args: unknown[]): void } }).$crisp.push(["do", "chat:open"]);
     event.preventDefault();
   }
 };

@@ -111,8 +111,8 @@ export function GatewayMarqueeRows({
 function inPlaceShuffle<T>(xs: T[]): T[] {
   for (let i = xs.length - 1; i >= 1; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    const temp = xs[i];
-    xs[i] = xs[j];
+    const temp = xs[i]!;
+    xs[i] = xs[j]!;
     xs[j] = temp;
   }
 

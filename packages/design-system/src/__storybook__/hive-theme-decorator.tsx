@@ -12,14 +12,14 @@ export const hiveThemeDecorator = (
       <div
         className={cn(
           "text-green-1000",
-          ctx.parameters.forcedLightMode ? "light" : "dark:text-white",
+          ctx.parameters["forcedLightMode"] ? "light" : "dark:text-white",
         )}
         data-hive-theme-decorator
         style={{
-          backgroundColor: ctx.parameters.forcedLightMode ? "white" : "",
+          backgroundColor: ctx.parameters["forcedLightMode"] ? "white" : "",
           fontFamily: "var(--font-sans)",
           padding:
-            ctx.parameters.padding === true ? "2rem" : ctx.parameters.padding,
+            ctx.parameters["padding"] === true ? "2rem" : ctx.parameters["padding"],
         }}
       >
         <Story />
@@ -36,7 +36,7 @@ export const hiveThemeDecorator = (
         }
       `}</style>
       </div>
-      {ctx.parameters.forcedLightMode && (
+      {ctx.parameters["forcedLightMode"] && (
         <small className="absolute right-2 top-2 hidden text-[10px] text-black dark:block">
           forced light mode
         </small>

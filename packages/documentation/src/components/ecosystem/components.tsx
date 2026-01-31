@@ -35,7 +35,7 @@ export const components = {
 
     const product = PRODUCTS[productName];
     if (!product) {
-      throw new Error(`Product ${productName} is missing`);
+      throw new Error(`Product ${String(productName)} is missing`);
     }
 
     return (
@@ -65,7 +65,7 @@ export const components = {
  */
 const ecosystemPageNav = {
   ...Object.fromEntries(
-    Object.keys(components).map((key) => [key, () => null]),
+    (Object.keys(components) as string[]).map((key) => [key, () => null]),
   ),
   h2: EcosystemPageNavH2,
 };

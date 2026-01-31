@@ -1,7 +1,9 @@
+
+
 declare global {
-  interface Window {
-    $crisp?: {
-      push: (args: unknown[]) => void;
-    };
-  }
+  var $crisp:
+    | {
+        push: (args: unknown[]) => void;
+      }
+    | undefined;
 }
