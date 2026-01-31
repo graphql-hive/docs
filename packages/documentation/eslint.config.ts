@@ -25,6 +25,15 @@ const config: Linter.Config[] = [
       "unicorn/filename-case": "off",
     },
   },
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ["*.mjs", "*.js"],
+        },
+      },
+    },
+  },
 ];
 
 export default config;
