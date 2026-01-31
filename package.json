@@ -43,6 +43,6 @@
     "nitro": "npm:nitro-nightly@latest"
   },
   "dependencies": {
-    "@hasparus/eslint-config": "link:@hasparus/eslint-config"
+    "@hasparus/eslint-config": "^2.1.1"
   }
 }
