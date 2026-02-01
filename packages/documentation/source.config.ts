@@ -1,3 +1,4 @@
+import { type } from "arktype";
 import { rehypeCodeDefaultOptions } from "fumadocs-core/mdx-plugins";
 import {
   defineCollections,
@@ -6,7 +7,6 @@ import {
 } from "fumadocs-mdx/config";
 import { transformerTwoslash } from "fumadocs-twoslash";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
-import { z } from "zod";
 
 export const docs = defineDocs({
   dir: "content/docs",
@@ -17,43 +17,37 @@ export const docs = defineDocs({
   },
 });
 
+/** Product updates use shorthand `authors: [laurin]`, case studies use full objects. */
+const author = type("string | object").pipe((v) =>
+  typeof v === "string" ? { name: v } : (v as { name: string }),
+);
+
+/** YAML parses unquoted `date: 2025-01-27` as a Date object. Accept both. */
+const dateString = type("string | Date").pipe((v) =>
+  typeof v === "string" ? v : v.toISOString().split("T")[0]!,
+);
+
 export const caseStudies = defineCollections({
   dir: "content/case-studies",
-  type: "doc",
-  schema: z.object({
-    authors: z
-      .array(
-        z.object({
-          avatar: z.string().optional(),
-          name: z.string(),
-          position: z.string().optional(),
-        }),
-      )
-      .default([]),
-    category: z.string(),
-    date: z.string(),
-    excerpt: z.string(),
-    title: z.string(),
+  schema: type({
+    authors: author.array().default(() => []),
+    category: "string",
+    date: dateString,
+    excerpt: "string",
+    title: "string",
   }),
+  type: "doc",
 });
 
 export const productUpdates = defineCollections({
   dir: "content/product-updates",
-  type: "doc",
-  schema: z.object({
-    authors: z
-      .array(
-        z.object({
-          avatar: z.string().optional(),
-          name: z.string(),
-          position: z.string().optional(),
-        }),
-      )
-      .default([]),
-    date: z.string(),
-    description: z.string(),
-    title: z.string(),
+  schema: type({
+    authors: author.array().default(() => []),
+    date: dateString,
+    description: "string",
+    title: "string",
   }),
+  type: "doc",
 });
 
 export default defineConfig({

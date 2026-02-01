@@ -1,26 +1,27 @@
-import { z } from "zod";
+import { type } from "arktype";
 
-import { MdxFile } from "../../mdx-types";
-
-export const CaseStudyAuthor = z.object({
-  avatar: z.string().optional(),
-  name: z.string(),
-  position: z.string().optional(),
+export const CaseStudyAuthor = type({
+  "avatar?": "string",
+  name: "string",
+  "position?": "string",
 });
 
-export type CaseStudyAuthor = z.infer<typeof CaseStudyAuthor>;
+export type CaseStudyAuthor = typeof CaseStudyAuthor.infer;
 
-export const CaseStudyFrontmatter = z.object({
-  authors: z.array(CaseStudyAuthor).default([]),
-  category: z.string(),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) as unknown as z.ZodType<
-    `${number}-${number}-${number}`
-  >,
-  excerpt: z.string(),
-  title: z.string(),
+export const CaseStudyFrontmatter = type({
+  "authors?": CaseStudyAuthor.array(),
+  category: "string",
+  date: /^\d{4}-\d{2}-\d{2}$/ as type.cast<`${number}-${number}-${number}`>,
+  excerpt: "string",
+  title: "string",
 });
 
-export type CaseStudyFrontmatter = z.infer<typeof CaseStudyFrontmatter>;
+export type CaseStudyFrontmatter = typeof CaseStudyFrontmatter.infer;
 
-export const CaseStudyFile = MdxFile(CaseStudyFrontmatter);
-export type CaseStudyFile = z.infer<typeof CaseStudyFile>;
+export const CaseStudyFile = type({
+  frontMatter: CaseStudyFrontmatter,
+  name: "string",
+  route: "string",
+});
+
+export type CaseStudyFile = typeof CaseStudyFile.infer;
