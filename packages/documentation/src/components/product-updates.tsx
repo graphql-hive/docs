@@ -1,26 +1,14 @@
 import { productUpdates } from "fumadocs-mdx:collections/server";
 import { ReactElement } from "react";
 
-function formatDate(date: Date): string {
-  const day = date.getDate();
-  const suffix = getOrdinalSuffix(day);
-  const month = date.toLocaleDateString("en-US", { month: "long" });
-  const year = date.getFullYear();
-  return `${day}${suffix} ${month} ${year}`;
-}
+const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
 
-function getOrdinalSuffix(day: number): string {
-  if (day > 3 && day < 21) return "th";
-  switch (day % 10) {
-    case 1:
-      return "st";
-    case 2:
-      return "nd";
-    case 3:
-      return "rd";
-    default:
-      return "th";
-  }
+function formatDate(date: Date): string {
+  return dateFormat.format(date);
 }
 
 type Changelog = {
@@ -35,11 +23,10 @@ export function getChangelogs(): Changelog[] {
     .map((entry) => {
       const slug = entry.info.path.replace(/^\//, "").replace(/\/$/, "");
       return {
-        date: (entry as Record<string, unknown>)["date"] as string,
-        description:
-          ((entry as Record<string, unknown>)["description"] as string) ?? "",
+        date: entry.date,
+        description: entry.description ?? "",
         route: `/product-updates/${slug}`,
-        title: ((entry as Record<string, unknown>)["title"] as string) ?? slug,
+        title: entry.title ?? slug,
       };
     })
     .sort((a, b) => (a.date < b.date ? 1 : -1));
