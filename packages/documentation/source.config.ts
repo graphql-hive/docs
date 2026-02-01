@@ -1,7 +1,12 @@
 import { rehypeCodeDefaultOptions } from "fumadocs-core/mdx-plugins";
-import { defineConfig, defineDocs } from "fumadocs-mdx/config";
+import {
+  defineCollections,
+  defineConfig,
+  defineDocs,
+} from "fumadocs-mdx/config";
 import { transformerTwoslash } from "fumadocs-twoslash";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
+import { z } from "zod";
 
 export const docs = defineDocs({
   dir: "content/docs",
@@ -10,6 +15,45 @@ export const docs = defineDocs({
       includeProcessedMarkdown: true,
     },
   },
+});
+
+export const caseStudies = defineCollections({
+  dir: "content/case-studies",
+  type: "doc",
+  schema: z.object({
+    authors: z
+      .array(
+        z.object({
+          avatar: z.string().optional(),
+          name: z.string(),
+          position: z.string().optional(),
+        }),
+      )
+      .default([]),
+    category: z.string(),
+    date: z.string(),
+    excerpt: z.string(),
+    title: z.string(),
+  }),
+});
+
+export const productUpdates = defineCollections({
+  dir: "content/product-updates",
+  type: "doc",
+  schema: z.object({
+    authors: z
+      .array(
+        z.object({
+          avatar: z.string().optional(),
+          name: z.string(),
+          position: z.string().optional(),
+        }),
+      )
+      .default([]),
+    date: z.string(),
+    description: z.string(),
+    title: z.string(),
+  }),
 });
 
 export default defineConfig({

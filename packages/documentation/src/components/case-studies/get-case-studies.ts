@@ -1,12 +1,17 @@
-import { CaseStudyFile } from "./case-study-types";
+import { caseStudies } from "fumadocs-mdx:collections/server";
 
-// TODO: Migrate case studies MDX content and implement proper data fetching
-// For now, return an empty array as placeholder
+import { CaseStudyFile, CaseStudyFrontmatter } from "./case-study-types";
+
 export async function getCaseStudies(): Promise<CaseStudyFile[]> {
-  // When case studies are migrated, implement the data fetching here
-  // You could use:
-  // - Static JSON file with case study metadata
-  // - CMS integration
-  // - MDX file parsing with fumadocs
-  return [];
+  return caseStudies
+    .map((entry) => {
+      const frontMatter = CaseStudyFrontmatter.parse(entry);
+      const slug = entry.info.path.replace(/^\//, "").replace(/\/$/, "");
+      return {
+        frontMatter,
+        name: slug,
+        route: `/case-studies/${slug}`,
+      };
+    })
+    .sort((a, b) => (a.frontMatter.date < b.frontMatter.date ? 1 : -1));
 }

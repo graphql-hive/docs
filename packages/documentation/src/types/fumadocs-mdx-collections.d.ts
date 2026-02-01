@@ -1,7 +1,12 @@
 declare module "fumadocs-mdx:collections/server" {
-  import type { DocsCollectionEntry } from "fumadocs-mdx/runtime/server";
+  import type {
+    DocCollectionEntry,
+    DocsCollectionEntry,
+  } from "fumadocs-mdx/runtime/server";
 
   export const docs: DocsCollectionEntry;
+  export const caseStudies: DocCollectionEntry[];
+  export const productUpdates: DocCollectionEntry[];
 }
 
 declare module "fumadocs-mdx:collections/browser" {

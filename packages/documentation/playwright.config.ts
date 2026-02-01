@@ -11,10 +11,15 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
+    {
+      name: "mobile",
+      use: { ...devices["iPhone 13"], defaultBrowserType: "webkit" },
+    },
   ],
   reporter: "html",
   retries: process.env["CI"] ? 2 : 0,
   testDir: "./e2e",
+  testMatch: "**/*.{spec,e2e}.ts",
   use: {
     baseURL,
     trace: "on-first-retry",

@@ -15,6 +15,7 @@ import { Route as LandingRouteImport } from './routes/_landing'
 import { Route as LandingIndexRouteImport } from './routes/_landing/index'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
+import { Route as LandingProductUpdatesRouteImport } from './routes/_landing/product-updates'
 import { Route as LandingPricingRouteImport } from './routes/_landing/pricing'
 import { Route as LandingPartnersRouteImport } from './routes/_landing/partners'
 import { Route as LandingOssFriendsRouteImport } from './routes/_landing/oss-friends'
@@ -52,6 +53,11 @@ const ApiSearchRoute = ApiSearchRouteImport.update({
   id: '/api/search',
   path: '/api/search',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LandingProductUpdatesRoute = LandingProductUpdatesRouteImport.update({
+  id: '/product-updates',
+  path: '/product-updates',
+  getParentRoute: () => LandingRoute,
 } as any)
 const LandingPricingRoute = LandingPricingRouteImport.update({
   id: '/pricing',
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/oss-friends': typeof LandingOssFriendsRoute
   '/partners': typeof LandingPartnersRoute
   '/pricing': typeof LandingPricingRoute
+  '/product-updates': typeof LandingProductUpdatesRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/': typeof LandingIndexRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/oss-friends': typeof LandingOssFriendsRoute
   '/partners': typeof LandingPartnersRoute
   '/pricing': typeof LandingPricingRoute
+  '/product-updates': typeof LandingProductUpdatesRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/': typeof LandingIndexRoute
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/_landing/oss-friends': typeof LandingOssFriendsRoute
   '/_landing/partners': typeof LandingPartnersRoute
   '/_landing/pricing': typeof LandingPricingRoute
+  '/_landing/product-updates': typeof LandingProductUpdatesRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/_landing/': typeof LandingIndexRoute
@@ -152,6 +161,7 @@ export interface FileRouteTypes {
     | '/oss-friends'
     | '/partners'
     | '/pricing'
+    | '/product-updates'
     | '/api/search'
     | '/docs/$'
     | '/'
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/oss-friends'
     | '/partners'
     | '/pricing'
+    | '/product-updates'
     | '/api/search'
     | '/docs/$'
     | '/'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '/_landing/oss-friends'
     | '/_landing/partners'
     | '/_landing/pricing'
+    | '/_landing/product-updates'
     | '/api/search'
     | '/docs/$'
     | '/_landing/'
@@ -242,6 +254,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/search'
       preLoaderRoute: typeof ApiSearchRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_landing/product-updates': {
+      id: '/_landing/product-updates'
+      path: '/product-updates'
+      fullPath: '/product-updates'
+      preLoaderRoute: typeof LandingProductUpdatesRouteImport
+      parentRoute: typeof LandingRoute
     }
     '/_landing/pricing': {
       id: '/_landing/pricing'
@@ -309,6 +328,7 @@ interface LandingRouteChildren {
   LandingOssFriendsRoute: typeof LandingOssFriendsRoute
   LandingPartnersRoute: typeof LandingPartnersRoute
   LandingPricingRoute: typeof LandingPricingRoute
+  LandingProductUpdatesRoute: typeof LandingProductUpdatesRoute
   LandingIndexRoute: typeof LandingIndexRoute
   LandingFederationIndexRoute: typeof LandingFederationIndexRoute
 }
@@ -320,6 +340,7 @@ const LandingRouteChildren: LandingRouteChildren = {
   LandingOssFriendsRoute: LandingOssFriendsRoute,
   LandingPartnersRoute: LandingPartnersRoute,
   LandingPricingRoute: LandingPricingRoute,
+  LandingProductUpdatesRoute: LandingProductUpdatesRoute,
   LandingIndexRoute: LandingIndexRoute,
   LandingFederationIndexRoute: LandingFederationIndexRoute,
 }
