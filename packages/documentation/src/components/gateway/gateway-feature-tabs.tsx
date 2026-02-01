@@ -3,7 +3,6 @@ import { cn } from "@hive/design-system";
 import { FeatureTab, FeatureTabs, Highlight } from "../feature-tabs";
 import { GatewayMarqueeRows } from "./gateway-marquee-rows";
 
-// TODO: the long values here will be bad for mobiles
 type Tab =
   | "Observability & Performance Monitoring"
   | "Security & Access Control";
@@ -87,7 +86,6 @@ export function GatewayFeatureTabs(props: { className?: string }) {
         highlights={highlights["Security & Access Control"]}
         title="Security & Access Control"
       />
-      {/* todo: these marquee rows should probably be draggable, and connected to one "timeline" */}
       <GatewayMarqueeRows className="[--pill-bg-hover:#fff] [--pill-bg:#fff] [--pill-text-hover:var(--color-blue-600)] [--pill-text:var(--color-blue-400)] max-lg:hidden" />
     </FeatureTabs>
   );

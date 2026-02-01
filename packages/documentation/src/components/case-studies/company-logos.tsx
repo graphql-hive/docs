@@ -14,7 +14,6 @@ export function getCompanyLogo(company: string) {
     return companyLogos[company as keyof typeof companyLogos];
   }
 
-  console.dir({ companyLogos }, { depth: 9 });
   throw new Error(
     `No logo found for ${company}. We have the following: (${Object.keys(companyLogos).join(", ")})`,
   );

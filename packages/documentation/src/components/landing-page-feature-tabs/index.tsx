@@ -35,7 +35,6 @@ export const highlights: Record<Tab, Highlight[]> = {
       image: auditImage,
       link: "/docs/gateway/subscriptions",
       title: "Real-time features",
-      // TODO: show entities and Subscription type (code)
     },
     {
       description:
@@ -43,7 +42,6 @@ export const highlights: Record<Tab, Highlight[]> = {
       image: auditImage,
       link: "/docs/gateway/authorization-authentication",
       title: "Security and Compliance",
-      // TODO: show directives and auth roles
     },
     {
       description:
@@ -51,7 +49,6 @@ export const highlights: Record<Tab, Highlight[]> = {
       image: auditImage,
       link: "/docs/gateway/monitoring-tracing",
       title: "OTEL & Prometheus",
-      // TODO: image
     },
   ],
   "GraphQL Observability": [
@@ -109,7 +106,6 @@ export function LandingPageFeatureTabs({
   className,
 }: LandingPageFeatureTabsProps) {
   const icons = [
-    // The keys here are redundant, but Next.js started false positive linting them even if the ESLint integration is disabled.
     <SchemaRegistryIcon key="schema-registry-icon" />,
     <GraphQLObservabilityIcon key="graphql-observability-icon" />,
     <GatewayIcon key="gateway-icon" />,

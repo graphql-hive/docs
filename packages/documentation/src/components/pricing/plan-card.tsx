@@ -95,7 +95,6 @@ export function PlanCard({
           ul.style.height = newCollapsed ? "0px" : `${targetHeight}px`;
           ul.style.opacity = newCollapsed ? "0" : "1";
           const onTransitionEnd = (e: TransitionEvent) => {
-            console.log("transitionend", e.target);
             if (e.target !== cardRef.current) return;
 
             if (!cardRef.current) return;

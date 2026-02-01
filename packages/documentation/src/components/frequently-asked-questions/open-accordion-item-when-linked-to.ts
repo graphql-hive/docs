@@ -8,7 +8,6 @@ export function OpenAccordionItemWhenLinkedTo() {
   const hash = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   useIsomorphicLayoutEffect(() => {
-    console.log("hash", hash);
     if (hash) {
       const button = document.querySelector<HTMLButtonElement>(
         `#${hash} button[aria-expanded="false"]`,
