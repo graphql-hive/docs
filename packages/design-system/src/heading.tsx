@@ -110,7 +110,7 @@ function CopyLinkButton({ id }: { id: string }) {
             className="pointer-events-none tracking-[0.01em] absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-sm bg-white px-2 py-1 text-xs font-normal text-green-1000 shadow-sm ring-1 ring-beige-500/35 dark:bg-green-900 dark:text-beige-100 dark:ring-green-800 animate-pop-up"
             data-popover
           >
-            Copied the link to this section
+            Copied the link
           </span>
         )}
       </button>
