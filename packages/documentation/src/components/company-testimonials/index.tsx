@@ -5,7 +5,7 @@ import { CallToAction } from "@hive/design-system/call-to-action";
 import { cn } from "@hive/design-system/cn";
 import { Heading } from "@hive/design-system/heading";
 import { Image } from "@unpic/react";
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, useRef, useState } from "react";
 
 import { ArrowIcon } from "../arrow-icon";
 import {
@@ -105,25 +105,16 @@ export function CompanyTestimonialsSection({
 }: {
   className?: string;
 }) {
-  const tabsListRef = useRef<HTMLDivElement>(null);
+  const [currentTab, setCurrentTab] = useState(testimonials[0]?.company);
   const scrollviewRef = React.useRef<HTMLDivElement>(null);
-  const updateDotsOnScroll = useRef<() => void>(undefined);
-  updateDotsOnScroll.current ||= debounce(() => {
+  const updateTabOnScroll = useRef<() => void>(undefined);
+  updateTabOnScroll.current ||= debounce(() => {
     const scrollview = scrollviewRef.current;
-    const tabsList = tabsListRef.current;
-    if (!scrollview || !tabsList) return;
-    const { scrollLeft } = scrollview;
-    const { scrollWidth } = scrollview;
+    if (!scrollview) return;
+    const { scrollLeft, scrollWidth } = scrollview;
     const index = Math.round((scrollLeft / scrollWidth) * testimonials.length);
-
-    const tabs = tabsList.querySelectorAll<HTMLElement>('[role="tab"]');
-    for (const [i, tab] of tabs.entries()) {
-      if (i === index) {
-        tab.dataset["selected"] = "";
-      } else {
-        delete tab.dataset["selected"];
-      }
-    }
+    const company = testimonials[index]?.company;
+    if (company) setCurrentTab(company);
   }, 50);
 
   return (
@@ -138,9 +129,9 @@ export function CompanyTestimonialsSection({
       </Heading>
       <Tabs.Root
         className="flex flex-col overflow-hidden"
-        defaultValue={testimonials[0]?.company}
         // we need scrolling for mobile, so this can't be changed to a state-driven opacity transition
         onValueChange={(value) => {
+          setCurrentTab(value as string);
           const id = getTestimonialId(value as string);
           const element = document.getElementById(id)?.parentElement;
           const scrollview = scrollviewRef.current;
@@ -153,16 +144,14 @@ export function CompanyTestimonialsSection({
             left: element.offsetLeft,
           });
         }}
+        value={currentTab}
       >
-        <Tabs.List
-          className="lg:bg-beige-200 z-10 order-1 mt-4 flex flex-row justify-center rounded-2xl lg:order-first lg:my-16"
-          ref={tabsListRef}
-        >
+        <Tabs.List className="lg:bg-beige-200 z-10 order-1 mt-4 flex flex-row justify-center rounded-2xl lg:order-first lg:my-16">
           {testimonials.map((testimonial) => {
             const Logo = testimonial.logo;
             return (
               <Tabs.Tab
-                className="hive-focus lg:data-selected:bg-white data-selected:text-green-1000 lg:data-selected:border-beige-600 flex flex-1 grow-0 items-center justify-center rounded-[15px] border-transparent p-0.5 font-medium leading-6 text-green-800 lg:grow lg:border lg:bg-transparent lg:p-4 [&[data-selected]>:first-child]:bg-blue-400"
+                className="hive-focus lg:aria-selected:bg-white aria-selected:text-green-1000 lg:aria-selected:border-beige-600 flex flex-1 grow-0 items-center justify-center rounded-[15px] border-transparent p-0.5 font-medium leading-6 text-green-800 lg:grow lg:border lg:bg-transparent lg:p-4 [&[aria-selected=true]>:first-child]:bg-blue-400"
                 key={testimonial.company}
                 value={testimonial.company}
               >
@@ -178,7 +167,7 @@ export function CompanyTestimonialsSection({
         </Tabs.List>
         <div
           className="no-scrollbar -m-2 -mb-10 flex snap-x snap-mandatory gap-4 overflow-auto p-2 lg:pb-10"
-          onScroll={updateDotsOnScroll.current}
+          onScroll={updateTabOnScroll.current}
           /* mobile scrollview */
           ref={scrollviewRef}
         >
