@@ -4,6 +4,12 @@
 @import 'fumadocs-twoslash/twoslash.css';
 @import '@hive/design-system/style.css';
 
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 /* PP Neue Montreal font family */
 @font-face {
   font-family: 'PP Neue Montreal';
@@ -70,6 +76,16 @@
 /* Tailwind 4 compatibility: ensure cursor-pointer on interactive elements */
 a, button, [role="button"] {
   cursor: pointer;
+}
+
+/* Tailwind v4 preflight sets [hidden] { display: none !important } in @layer base.
+   Base UI Tabs.Panel with keepMounted sets `hidden` on inactive panels.
+   We need all panels visible in horizontal scroll containers on mobile. */
+@media (max-width: 1023px) {
+  .snap-x > [hidden] {
+    display: flex !important;
+    flex-direction: column;
+  }
 }
 
 /* Hive colors migrated from @theguild/tailwind-config */

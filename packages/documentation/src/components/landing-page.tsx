@@ -34,6 +34,7 @@ export const metadata = {
   title: "Open-Source GraphQL Federation Platform",
 };
 
+// eslint-disable-next-line import/no-default-export
 export default function IndexPage(): ReactElement {
   return (
     <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">
@@ -45,7 +46,7 @@ export default function IndexPage(): ReactElement {
         >
           Open-Source GraphQL Federation Platform
         </Heading>
-        <p className="mx-auto w-[512px] max-w-[80%] text-center leading-6 text-white/80">
+        <p className="mx-auto w-lg max-w-[80%] text-center leading-6 text-white/80">
           Fully open-source schema registry, analytics, metrics and{" "}
           <Anchor
             className="underline decoration-white/30 underline-offset-2 hover:decoration-white/80"
@@ -90,7 +91,7 @@ export default function IndexPage(): ReactElement {
           </CallToAction>
         </HeroLinks>
       </Hero>
-      <LandingPageFeatureTabs className="relative mt-6 sm:mt-[-72px]" />
+      <LandingPageFeatureTabs className="relative mt-6 sm:-mt-18" />
       <TrustedBySection className="mx-auto my-8 md:my-16 lg:my-24" />
       <EcosystemManagementSection className="max-sm:rounded-none sm:mx-4 md:mx-6" />
       <StatsList className="mt-6 md:mt-0">
@@ -118,12 +119,12 @@ function GetStartedTodaySection({ className }: { className?: string }) {
     <section
       className={cn(
         "bg-blueish-green relative overflow-hidden rounded-3xl p-12 text-center sm:p-24",
-        className,
+        className
       )}
     >
       <DecorationIsolation>
-        <ArchDecoration className="absolute -left-1/2 -top-1/2 rotate-180 sm:-left-1/4 md:left-[-105px] md:top-[-109px] [&>path]:fill-none" />
-        <HighlightDecoration className="absolute -left-1 -top-16 size-[600px] -scale-x-100 overflow-visible" />
+        <ArchDecoration className="absolute -left-1/2 -top-1/2 rotate-180 sm:-left-1/4 md:-left-26.25 md:-top-27.25 [&>path]:fill-none" />
+        <HighlightDecoration className="absolute -left-1 -top-16 size-150 -scale-x-100 overflow-visible" />
         <LargeHiveIconDecoration className="absolute bottom-0 right-8 hidden lg:block" />
       </DecorationIsolation>
       <Heading as="h3" className="text-white" size="md">
@@ -147,10 +148,7 @@ function GetStartedTodaySection({ className }: { className?: string }) {
 function EnterpriseFocusedCards({ className }: { className?: string }) {
   return (
     <section
-      className={cn(
-        "px-4 py-6 sm:py-12 md:px-6 lg:py-16 xl:px-[120px]",
-        className,
-      )}
+      className={cn("px-4 py-6 sm:py-12 md:px-6 lg:py-16 xl:px-30", className)}
     >
       <Heading
         as="h2"
@@ -194,7 +192,7 @@ function EnterpriseFocusedCards({ className }: { className?: string }) {
 
 function UltimatePerformanceCards() {
   return (
-    <section className="px-4 py-6 sm:py-12 md:px-6 xl:px-[120px]">
+    <section className="px-4 py-6 sm:py-12 md:px-6 xl:px-30">
       <Heading as="h2" className="text-balance text-center" size="md">
         GraphQL Federation for the Ultimate Performance
       </Heading>
@@ -236,12 +234,12 @@ function LearnGraphQLFederationSection(props: { className?: string }) {
     <section
       className={cn(
         "to-green-1000 from-blueish-green relative rounded-3xl bg-linear-to-br p-8 sm:py-12 md:px-6 md:text-center lg:p-24",
-        props.className,
+        props.className
       )}
     >
       <DecorationIsolation className="opacity-80">
-        <ArchDecoration className="absolute -right-1/2 top-1/2 sm:-right-1/4 md:right-[-105px] md:top-[120px] [&>path]:fill-none [&>path]:stroke-white/30" />
-        <HighlightDecoration className="absolute -bottom-16 -right-1 size-[600px] rotate-180 -scale-x-100 overflow-visible" />
+        <ArchDecoration className="absolute -right-1/2 top-1/2 sm:-right-1/4 md:-right-26.25 md:top-30 [&>path]:fill-none [&>path]:stroke-white/30" />
+        <HighlightDecoration className="absolute -bottom-16 -right-1 size-150 rotate-180 -scale-x-100 overflow-visible" />
       </DecorationIsolation>
       <Heading
         as="h2"

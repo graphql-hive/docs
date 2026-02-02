@@ -4,9 +4,16 @@ import { Anchor, AnchorProps } from "./anchor";
 import { cn } from "./cn";
 import { ArrowIcon } from "./icons";
 
-export type TextLinkProps = AnchorProps;
+export type TextLinkProps = AnchorProps & {
+  variant?: "dark" | "default";
+};
 
-export function TextLink({ children, className, ...rest }: TextLinkProps) {
+export function TextLink({
+  children,
+  className,
+  variant = "default",
+  ...rest
+}: TextLinkProps) {
   const hasArrow =
     children &&
     flattenFragments(children).some(
@@ -20,8 +27,15 @@ export function TextLink({ children, className, ...rest }: TextLinkProps) {
   return (
     <Anchor
       className={cn(
-        "hive-focus -mx-1 -my-0.5 rounded-sm px-1 py-0.5 hover:text-blue-700 dark:hover:text-blue-500",
-        hasArrow ? "inline-flex items-center gap-2" : "underline",
+        variant === "default"
+          ? cn(
+              "hive-focus -mx-1 -my-0.5 rounded-sm px-1 py-0.5 hover:text-blue-700 dark:hover:text-blue-500",
+              hasArrow ? "inline-flex items-center gap-2" : "underline",
+            )
+          : cn(
+              "underline decoration-white/30 underline-offset-2 hover:decoration-white/80",
+              hasArrow && "inline-flex items-center gap-2",
+            ),
         className,
       )}
       {...rest}

@@ -34,7 +34,7 @@ export const Heading: StoryObj<HeadingProps> = {
   },
 };
 
-export const NoScrollingOnClick: StoryObj<HeadingProps> = {
+export const CopyLinkButton: StoryObj<HeadingProps> = {
   args: { as: "h2", size: "lg" },
   decorators: [
     (Story) => (
@@ -46,11 +46,9 @@ export const NoScrollingOnClick: StoryObj<HeadingProps> = {
     ),
   ],
   play(ctx) {
-    const anchor = ctx.canvasElement.querySelector("a")!;
-    anchor.click();
-    if (window.location.hash !== "#open-source-graphql-management-platform") {
-      throw new Error("Expected hash to be set");
-    }
+    const button =
+      ctx.canvasElement.querySelector<HTMLButtonElement>("button")!;
+    button.click();
     if (window.scrollY !== 0) {
       throw new Error("Expected scroll to be at top");
     }

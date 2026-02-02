@@ -13,7 +13,9 @@
     "fix": "bun lint:fix && bun format",
     "typecheck": "turbo run typecheck",
     "postinstall": "node scripts/fix-nitro-nightly.mjs",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "storybook": "cd packages/design-system && bun run storybook",
+    "storybook:build": "cd packages/design-system && bun run storybook:build"
   },
   "workspaces": [
     "packages/*"

@@ -5,7 +5,7 @@ import {
   HighlightDecoration,
 } from "@hive/design-system/decorations";
 import { Heading } from "@hive/design-system/heading";
-import { Link } from "@tanstack/react-router";
+import { TextLink } from "@hive/design-system/text-link";
 
 import { ArrowIcon } from "../arrow-icon";
 import { BookIcon } from "../book-icon";
@@ -41,23 +41,17 @@ export function EcosystemManagementSection({
                 </div>
                 <div>
                   Best in class{" "}
-                  <Link
-                    className="underline underline-offset-2"
-                    to={"/federation-gateway-audit" as string}
-                  >
+                  <TextLink href="/federation-gateway-audit" variant="dark">
                     compatibility with Apollo Federation spec
-                  </Link>
+                  </TextLink>
                 </div>
               </>,
               <>
                 <div className="font-medium text-white">
                   Powerful and flexible{" "}
-                  <Link
-                    className="underline decoration-1 underline-offset-2"
-                    to="/gateway"
-                  >
+                  <TextLink href="/gateway" variant="dark">
                     GraphQL Gateway (Router)
-                  </Link>
+                  </TextLink>
                 </div>
                 <div>
                   GraphQL Subscriptions support and built-in security features
@@ -68,28 +62,13 @@ export function EcosystemManagementSection({
                 <span className="font-medium text-white">No vendor-lock</span> —
                 dive into our full GraphQL ecosystem, or&nbsp;build your own
                 stack, connecting{" "}
-                <Link
-                  className="underline decoration-1 underline-offset-2"
-                  to="/federation"
-                >
-                  GraphQL federation
-                </Link>
+                <TextLink href="/federation" variant="dark">GraphQL federation</TextLink>
                 ,{" "}
-                <Link
-                  className="underline decoration-1 underline-offset-2"
-                  to="/gateway"
-                >
-                  Hive Gateway
-                </Link>
+                <TextLink href="/gateway" variant="dark">Hive Gateway</TextLink>
                 ,{" "}
-                <a
-                  className="underline decoration-1 underline-offset-2"
-                  href="https://the-guild.dev/graphql/mesh"
-                  rel="noreferrer"
-                  target="_blank"
-                >
+                <TextLink href="https://the-guild.dev/graphql/mesh" variant="dark">
                   GraphQL Mesh
-                </a>{" "}
+                </TextLink>{" "}
                 and more.
               </>,
               <>
