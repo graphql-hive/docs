@@ -101,7 +101,7 @@ export function PlanCard({
             cardRef.current.style.transition = "";
             cardRef.current.removeEventListener(
               "transitionend",
-              onTransitionEnd,
+              onTransitionEnd
             );
 
             if (!newCollapsed) {
@@ -143,7 +143,7 @@ export function PlanCard({
             window.removeEventListener("resize", onResize);
           }
         },
-        { signal: abortController.signal },
+        { signal: abortController.signal }
       );
 
       globalThis.addEventListener(
@@ -156,7 +156,7 @@ export function PlanCard({
             globalThis.removeEventListener("keydown", onEscape);
           }
         },
-        { signal: abortController.signal },
+        { signal: abortController.signal }
       );
     }
 
@@ -172,22 +172,22 @@ export function PlanCard({
         aria-hidden="true"
         className={cn(
           "fixed inset-0 z-40 bg-black/30 backdrop-blur-2xl transition-opacity duration-500 sm:hidden",
-          collapsed ? "pointer-events-none opacity-0" : "opacity-100",
+          collapsed ? "pointer-events-none opacity-0" : "opacity-100"
         )}
         onClick={() => collapse(true)}
       />
       <article
         className={cn(
           "relative isolate rounded-3xl bg-white shadow-[inset_0_0_0_1px_var(--color-green-400)]",
-          'duration-200 before:absolute before:inset-0 before:-z-10 before:rounded-3xl before:bg-[linear-gradient(#fff,#fff),linear-gradient(to_bottom,#68A8B6,#DEDACF,#E1FF00)] before:p-[4px] before:opacity-0 before:transition-[opacity,top,height] before:content-[""] before:[background-clip:content-box,padding-box] before:duration-[50ms,25ms,25ms] sm:mt-[52px] sm:before:top-[-40px]',
+          'duration-200 before:absolute before:inset-0 before:-z-10 before:rounded-3xl before:bg-[linear-gradient(#fff,#fff),linear-gradient(to_bottom,#68A8B6,#DEDACF,#E1FF00)] before:p-1 before:opacity-0 before:transition-[opacity,top,height] before:content-[""] before:[background-clip:content-box,padding-box] before:duration-[50ms,25ms,25ms] sm:mt-13 sm:before:-top-10',
           (highlighted || !collapsed) && "before:opacity-100",
           "max-sm:transition-[width,height,border-radius] max-sm:duration-700 max-sm:ease-in-out",
           !collapsed &&
             "max-sm:fixed max-sm:inset-2 max-sm:z-50 max-sm:m-0 max-sm:h-[calc(100vh-16px)] max-sm:bg-white",
           transitioning && "z-50",
           highlighted && // delay is 29ms so fast swipes don't blink needlessly
-            "sm:before:top-[-52px] sm:before:h-[calc(100%+52px)] sm:before:pt-[50px] sm:before:delay-29 sm:before:duration-[150ms,75ms,75ms]",
-          className,
+            "sm:before:-top-13 sm:before:h-[calc(100%+52px)] sm:before:pt-12.5 sm:before:delay-29 sm:before:duration-[150ms,75ms,75ms]",
+          className
         )}
         ref={cardRef}
         {...rest}
@@ -196,14 +196,14 @@ export function PlanCard({
           /* scrollview for mobiles */
           className={cn(
             "p-4 max-sm:pb-0 sm:p-8",
-            !collapsed && "nextra-scrollbar h-full max-sm:overflow-auto",
+            !collapsed && "nextra-scrollbar h-full max-sm:overflow-auto"
           )}
         >
           <div
             aria-hidden={!highlighted}
             className={cn(
               "absolute -top-9 left-0 w-full text-center font-medium text-white transition-opacity max-sm:hidden",
-              highlighted ? "opacity-100" : "opacity-0",
+              highlighted ? "opacity-100" : "opacity-0"
             )}
           >
             Recommended
@@ -233,12 +233,12 @@ export function PlanCard({
           <div
             className={cn(
               "mt-4 h-6 text-[#4F6C6A]",
-              !startingFrom && "max-sm:h-0",
+              !startingFrom && "max-sm:h-0"
             )}
           >
             {startingFrom && "Starting from"}
           </div>
-          <div className="text-5xl font-medium leading-[56px] tracking-[-0.48px]">
+          <div className="text-5xl/14 font-medium tracking-[-0.48px]">
             {price}
           </div>
           <div className="mt-4 flex *:grow">{callToAction}</div>
@@ -250,7 +250,7 @@ export function PlanCard({
               "max-sm:transition-none", // Prevent any transitions on first load
               collapsed
                 ? "max-sm:h-0 max-sm:overflow-hidden max-sm:opacity-0"
-                : "",
+                : ""
             )}
             data-open={!collapsed}
           >

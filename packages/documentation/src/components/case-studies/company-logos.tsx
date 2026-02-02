@@ -15,6 +15,6 @@ export function getCompanyLogo(company: string) {
   }
 
   throw new Error(
-    `No logo found for ${company}. We have the following: (${Object.keys(companyLogos).join(", ")})`,
+    `No logo found for ${company}. We have the following: (${Object.keys(companyLogos).join(", ")})`
   );
 }

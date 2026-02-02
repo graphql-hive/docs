@@ -9,11 +9,13 @@ export class ErrorBoundary extends Component<{
   override state = { hasError: false };
 
   static getDerivedStateFromError(error: Error) {
+    // eslint-disable-next-line no-console
     console.error(error);
     return { hasError: true };
   }
 
   override componentDidCatch(error: Error, info: { componentStack: string }) {
+    // eslint-disable-next-line no-console
     console.error(error, info);
   }
 
