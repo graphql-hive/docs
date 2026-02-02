@@ -5,7 +5,10 @@ import { CaseStudyFile } from "./case-study-types";
 export async function getCaseStudies(): Promise<CaseStudyFile[]> {
   return caseStudies
     .map((entry) => {
-      const slug = entry.info.path.replace(/^\//, "").replace(/\/$/, "");
+      const slug = entry.info.path
+        .replace(/^\//, "")
+        .replace(/\/$/, "")
+        .replace(/\.mdx?$/, "");
       return {
         frontMatter: {
           authors: entry.authors,

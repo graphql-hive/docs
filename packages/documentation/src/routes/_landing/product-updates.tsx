@@ -1,14 +1,23 @@
 import { Heading } from "@hive/design-system/heading";
 import { createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
 
+import { getChangelogs } from "../../components/get-changelogs";
 import { LandingPageContainer } from "../../components/landing-page-container";
 import { ProductUpdatesPage } from "../../components/product-updates";
 
+const serverGetChangelogs = createServerFn({ method: "GET" }).handler(
+  async () => getChangelogs(),
+);
+
 export const Route = createFileRoute("/_landing/product-updates")({
   component: ProductUpdatesRoute,
+  loader: () => serverGetChangelogs(),
 });
 
 function ProductUpdatesRoute() {
+  const changelogs = Route.useLoaderData();
+
   return (
     <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">
       <div className="mx-4 max-sm:mt-2 md:mx-6">
@@ -24,7 +33,7 @@ function ProductUpdatesRoute() {
         </p>
       </div>
       <div className="mx-4 md:mx-6">
-        <ProductUpdatesPage />
+        <ProductUpdatesPage changelogs={changelogs} />
       </div>
     </LandingPageContainer>
   );

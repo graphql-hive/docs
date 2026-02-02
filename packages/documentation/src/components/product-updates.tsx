@@ -1,4 +1,3 @@
-import { productUpdates } from "fumadocs-mdx:collections/server";
 import { ReactElement } from "react";
 
 const dateFormat = new Intl.DateTimeFormat("en-GB", {
@@ -11,30 +10,18 @@ function formatDate(date: Date): string {
   return dateFormat.format(date);
 }
 
-type Changelog = {
+export type Changelog = {
   date: string;
   description: string;
   route: string;
   title: string;
 };
 
-export function getChangelogs(): Changelog[] {
-  return productUpdates
-    .map((entry) => {
-      const slug = entry.info.path.replace(/^\//, "").replace(/\/$/, "");
-      return {
-        date: entry.date,
-        description: entry.description ?? "",
-        route: `/product-updates/${slug}`,
-        title: entry.title ?? slug,
-      };
-    })
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
-}
-
-export function ProductUpdatesPage() {
-  const changelogs = getChangelogs();
-
+export function ProductUpdatesPage({
+  changelogs,
+}: {
+  changelogs: Changelog[];
+}) {
   return (
     <ol className="relative mt-12 border-l border-gray-200 dark:border-gray-700">
       {changelogs.map((item) => (

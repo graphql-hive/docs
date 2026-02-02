@@ -1,11 +1,9 @@
-"use client";
-
 import { CallToAction } from "@hive/design-system/call-to-action";
 import { ContactButton } from "@hive/design-system/contact-us";
 import { DecorationIsolation } from "@hive/design-system/decorations";
 import { Heading } from "@hive/design-system/heading";
 import { createFileRoute } from "@tanstack/react-router";
-import { Suspense, use } from "react";
+import { createServerFn } from "@tanstack/react-start";
 
 import { AllCaseStudiesList } from "../../components/case-studies/all-case-studies-list";
 import {
@@ -19,13 +17,18 @@ import { HeroLinks } from "../../components/hero";
 import { LandingPageContainer } from "../../components/landing-page-container";
 import { TrustedBySection } from "../../components/trusted-by-section";
 
+const serverGetCaseStudies = createServerFn({ method: "GET" }).handler(
+  async () => getCaseStudies(),
+);
+
 export const Route = createFileRoute("/_landing/case-studies")({
   component: CaseStudiesPage,
+  loader: () => serverGetCaseStudies(),
 });
 
-const caseStudiesPromise = getCaseStudies();
-
 function CaseStudiesPage() {
+  const caseStudies = Route.useLoaderData();
+
   return (
     <LandingPageContainer className="mx-auto max-w-360 overflow-hidden px-6">
       <header className="bg-primary dark:bg-primary/1 dark:border-primary/5 relative isolate flex flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 max-sm:mt-2 sm:py-12 md:gap-8 lg:py-24">
@@ -65,25 +68,6 @@ function CaseStudiesPage() {
           />
         </DecorationIsolation>
       </header>
-      <Suspense
-        fallback={
-          <div className="mt-6 flex animate-pulse items-center justify-center py-24">
-            Loading case studies...
-          </div>
-        }
-      >
-        <CaseStudiesContent />
-      </Suspense>
-      <GetYourAPIGameWhite />
-    </LandingPageContainer>
-  );
-}
-
-function CaseStudiesContent() {
-  const caseStudies = use(caseStudiesPromise);
-
-  return (
-    <>
       {(caseStudies.length >= 6 || process.env.NODE_ENV === "development") && (
         <>
           <FeaturedCaseStudiesGrid
@@ -94,6 +78,7 @@ function CaseStudiesContent() {
         </>
       )}
       <AllCaseStudiesList caseStudies={caseStudies} />
-    </>
+      <GetYourAPIGameWhite />
+    </LandingPageContainer>
   );
 }

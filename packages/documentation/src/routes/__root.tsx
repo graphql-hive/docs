@@ -1,6 +1,7 @@
 import appCss from "@/styles/app.css?url";
 import {
   createRootRoute,
+  type ErrorComponentProps,
   HeadContent,
   Outlet,
   Scripts,
@@ -21,6 +22,7 @@ const lightOnlyPages = new Set([
 
 export const Route = createRootRoute({
   component: RootComponent,
+  errorComponent: RootErrorComponent,
   head: () => ({
     links: [{ href: appCss, rel: "stylesheet" }],
     meta: [
@@ -43,6 +45,26 @@ function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
+    </RootDocument>
+  );
+}
+
+function RootErrorComponent({ error, reset }: ErrorComponentProps) {
+  return (
+    <RootDocument>
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
+        <h1 className="text-2xl font-semibold">Something went wrong</h1>
+        <p className="max-w-md text-gray-600">
+          {error.message || "An unexpected error occurred."}
+        </p>
+        <button
+          className="rounded-lg bg-green-800 px-4 py-2 text-sm text-white hover:bg-green-900"
+          onClick={reset}
+          type="button"
+        >
+          Try again
+        </button>
+      </div>
     </RootDocument>
   );
 }
