@@ -19,16 +19,16 @@ function ProductUpdatesRoute() {
   const changelogs = Route.useLoaderData();
 
   return (
-    <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">
+    <LandingPageContainer className="text-green-1000 mx-auto max-w-360 overflow-hidden dark:text-neutral-200">
       <div className="mx-4 max-sm:mt-2 md:mx-6">
         <Heading
           as="h1"
-          className="text-green-1000 mx-auto max-w-3xl text-center"
+          className="text-green-1000 mx-auto max-w-3xl text-center dark:text-white"
           size="xl"
         >
           Product Updates
         </Heading>
-        <p className="mx-auto mt-4 max-w-[80%] text-center leading-6 text-green-800">
+        <p className="mx-auto mt-4 max-w-[80%] text-center leading-6 text-green-800 dark:text-neutral-400">
           Stay up to date with the latest features and improvements.
         </p>
       </div>

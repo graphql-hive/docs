@@ -7,11 +7,11 @@ import { InfoCard } from "@hive/design-system/info-card";
 import { CodeIcon, LockOpen2Icon, RocketIcon } from "@radix-ui/react-icons";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { FrequentlyAskedPartnersQuestions } from "../../components/frequently-asked-questions";
-import { Hero, HeroLinks } from "../../components/hero";
-import { LandingPageContainer } from "../../components/landing-page-container";
+import { FrequentlyAskedPartnersQuestions } from "../../../components/frequently-asked-questions";
+import { Hero, HeroLinks } from "../../../components/hero";
+import { LandingPageContainer } from "../../../components/landing-page-container";
 
-export const Route = createFileRoute("/_landing/partners")({
+export const Route = createFileRoute("/_landing/_light-only/partners")({
   component: PartnersPage,
 });
 

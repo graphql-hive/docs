@@ -68,6 +68,10 @@
   --nextra-bg: 252 251 250;
 }
 
+.dark {
+  --nextra-bg: 17 17 17;
+}
+
 /* Landing pages light mode background - pure white for visual parity with prod */
 .light {
   background-color: #fff;

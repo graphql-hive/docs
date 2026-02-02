@@ -11,9 +11,9 @@ import { Heading } from "@hive/design-system/heading";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense, use } from "react";
 
-import { LandingPageContainer } from "../../components/landing-page-container";
+import { LandingPageContainer } from "../../../components/landing-page-container";
 
-export const Route = createFileRoute("/_landing/oss-friends")({
+export const Route = createFileRoute("/_landing/_light-only/oss-friends")({
   component: OSSFriendsPage,
 });
 

@@ -11,7 +11,6 @@ import { RootProvider } from "fumadocs-ui/provider/tanstack";
 
 const lightOnlyPages = new Set([
   "/",
-  "/case-studies",
   "/ecosystem",
   "/federation",
   "/gateway",

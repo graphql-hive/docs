@@ -9,16 +9,12 @@ export const Route = createFileRoute("/_landing")({
 });
 
 /**
- * Pathless layout for landing pages (/, /pricing, /federation, etc.)
- * Includes HiveNavigation and HiveFooter with white background.
- * Light mode is forced via .light class on <html> in __root.tsx
+ * Pathless layout for landing pages and product updates.
+ * Includes HiveNavigation and HiveFooter.
  */
 function LandingLayout() {
   return (
-    <div
-      className="flex min-h-screen flex-col bg-white overflow-visible"
-      style={{ "--nextra-bg": "255 255 255" } as React.CSSProperties}
-    >
+    <div className="flex min-h-screen flex-col overflow-visible">
       <Navigation />
       <main className="flex-1">
         <Outlet />

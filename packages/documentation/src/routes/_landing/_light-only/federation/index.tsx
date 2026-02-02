@@ -7,10 +7,10 @@ import { InfoCard } from "@hive/design-system/info-card";
 import { createFileRoute } from "@tanstack/react-router";
 import { ReactElement, ReactNode } from "react";
 
-import { ArrowIcon } from "../../../components/arrow-icon";
-import { FrequentlyAskedFederationQuestions } from "../../../components/frequently-asked-questions";
-import { Hero, HeroLinks } from "../../../components/hero";
-import { LandingPageContainer } from "../../../components/landing-page-container";
+import { ArrowIcon } from "../../../../components/arrow-icon";
+import { FrequentlyAskedFederationQuestions } from "../../../../components/frequently-asked-questions";
+import { Hero, HeroLinks } from "../../../../components/hero";
+import { LandingPageContainer } from "../../../../components/landing-page-container";
 import federationDiagram from "./federation-diagram.png";
 import queryResultImage from "./query-result.png";
 import queryImage from "./query.png";
@@ -18,7 +18,7 @@ import subgraphsProductsImage from "./subgraphs-products.png";
 import subgraphsReviewsImage from "./subgraphs-reviews.png";
 import supergraphSchemaImage from "./supergraph-schema.png";
 
-export const Route = createFileRoute("/_landing/federation/")({
+export const Route = createFileRoute("/_landing/_light-only/federation/")({
   component: FederationPage,
 });
 
