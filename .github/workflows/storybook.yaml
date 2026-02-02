@@ -1,31 +1,54 @@
+name: Storybook
+
 on: [push, pull_request]
 
 jobs:
   deployment:
     runs-on: ubuntu-24.04
     steps:
-      - name: checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 2
 
       - uses: the-guild-org/shared-config/setup@main
         name: setup env
         with:
-          nodeVersion: 20
-          packageManager: pnpm
+          packageManager: bun
 
-      - uses: the-guild-org/shared-config/website-cf@main
-        name: build and deploy storybook
+      - name: build storybook
+        run: bun run storybook:build
+        working-directory: packages/documentation
+
+      - name: push to cloudflare pages
+        uses: cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65 # v3.14.1
+        id: deploy
         with:
-          cloudflareApiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          cloudflareAccountId: ${{ secrets.CF_ACCOUNT_ID }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          projectName: the-guild-docs-storybook
-          prId: ${{ github.event.pull_request.number }}
-          mainBranch: main
-          websiteDirectory: ./
-          buildScript: pnpm build-storybook
-          artifactDir: storybook-static
-          commentId: storybook-deployment
-          commentTitle: 📚 Storybook Deployment
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: |
+            pages deploy packages/documentation/storybook-static --project-name=the-guild-docs-storybook --branch=${{ github.event.pull_request.number != '' && format('pr-{0}', github.event.pull_request.number) || 'main' }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: find pr comment
+        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
+        id: fc
+        if: ${{ github.event.pull_request.number != '' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: <!--- storybook-deployment --->
+
+      - name: create/update comment
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
+        if: ${{ github.event.pull_request.number != '' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            <!--- storybook-deployment --->
+            ### 📚 Storybook Deployment
+
+            The latest changes are available as preview in: [${{ steps.deploy.outputs.pages-deployment-alias-url }}](${{ steps.deploy.outputs.pages-deployment-alias-url }})
+          edit-mode: replace
