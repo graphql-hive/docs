@@ -56,6 +56,7 @@ export function Heading({
 
 function CopyLinkButton({ id }: { id: string }) {
   const [copied, setCopied] = useState(false);
+  const containerRef = useRef<HTMLSpanElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const copyLink = useCallback(() => {
@@ -64,22 +65,52 @@ function CopyLinkButton({ id }: { id: string }) {
     void navigator.clipboard.writeText(url.toString());
     setCopied(true);
     clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => setCopied(false), 1500);
+    timeoutRef.current = setTimeout(() => {
+      const popover =
+        containerRef.current?.querySelector<HTMLElement>("[data-popover]");
+      if (popover) {
+        const animation = popover.animate(
+          [
+            { opacity: 1, scale: 1 },
+            { opacity: 0, scale: 0.9 },
+          ],
+          {
+            duration: 150,
+            easing: "ease-in",
+            fill: "forwards",
+          }
+        );
+        animation.finished.then(() => {
+          setCopied(false);
+          setTimeout(() => {
+            animation.cancel();
+          }, 150);
+        });
+      } else {
+        setCopied(false);
+      }
+    }, 1500);
   }, [id]);
 
   return (
-    <span className="inline-block w-0 overflow-visible align-top">
+    <span
+      className="inline-block w-0 overflow-visible align-top"
+      ref={containerRef}
+    >
       <button
         aria-label="Copy link to this section"
-        className="relative -ml-[calc(0.6em+0.25rem)] mr-1 opacity-0 transition-opacity group-hover:opacity-70"
+        className="relative -ml-[0.8em] -mt-1 mr-1 before:transition-opacity hover:before:duration-50 before:duration-150 before:bg-current before:absolute before:inset-0 before:rounded-md before:opacity-0 hover:before:opacity-5 before:saturate-50 hive-focus rounded-md"
+        data-copied={copied}
         onClick={copyLink}
-        tabIndex={-1}
         type="button"
       >
-        <LinkIcon className="size-[0.6em]" />
+        <LinkIcon className="size-[0.7em] opacity-0 group-hover:opacity-70 [:active>&]:opacity-100 transition group-hover:duration-100 duration-300 [:active>&]:scale-96 [[data-copied=true]>&]:opacity-100 [:focus-visible>&]:opacity-70" />
         {copied && (
-          <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-beige-100 px-2 py-1 text-xs font-normal text-green-1000 shadow-sm ring-1 ring-beige-300 dark:bg-green-900 dark:text-beige-100 dark:ring-green-800">
-            Copied to clipboard
+          <span
+            className="pointer-events-none tracking-[0.01em] absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-sm bg-white px-2 py-1 text-xs font-normal text-green-1000 shadow-sm ring-1 ring-beige-500/35 dark:bg-green-900 dark:text-beige-100 dark:ring-green-800 animate-pop-up"
+            data-popover
+          >
+            Copied the link to this section
           </span>
         )}
       </button>

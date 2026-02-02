@@ -120,7 +120,7 @@ export function CompanyTestimonialsSection({
   return (
     <section
       className={cn(
-        "bg-beige-100 text-green-1000 relative overflow-hidden rounded-3xl px-4 py-6 md:p-10 lg:p-18",
+        "bg-beige-100 text-green-1000 relative rounded-3xl px-4 py-6 md:p-10 lg:p-18",
         className
       )}
     >

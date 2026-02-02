@@ -37,7 +37,7 @@ export const metadata = {
 // eslint-disable-next-line import/no-default-export
 export default function IndexPage(): ReactElement {
   return (
-    <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">
+    <LandingPageContainer className="text-green-1000 light mx-auto max-w-360">
       <Hero className="mx-4 max-sm:mt-2 md:mx-6">
         <Heading
           as="h1"
@@ -243,7 +243,7 @@ function LearnGraphQLFederationSection(props: { className?: string }) {
       </DecorationIsolation>
       <Heading
         as="h2"
-        className="flex items-center justify-center gap-4 text-pretty text-white"
+        className="flex items-center justify-center text-pretty text-white"
         size="md"
       >
         What Is GraphQL Federation?
