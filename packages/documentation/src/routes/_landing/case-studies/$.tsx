@@ -42,7 +42,7 @@ export const Route = createFileRoute("/_landing/case-studies/$")({
 const clientLoader = browserCollections.caseStudies.createClientLoader<{
   slug: string;
 }>({
-  component(loaded, props) {
+  component(loaded, _props) {
     const { default: MDX } = loaded;
 
     return (

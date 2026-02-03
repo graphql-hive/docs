@@ -53,7 +53,6 @@ const AccordionItem = (props: ComponentPropsWithoutRef<"li">) => {
   }
 
   if (texts.length < 2) {
-    console.error(texts);
     throw new Error(
       `Expected a question and an answer, got ${texts.length} items`,
     );
@@ -150,7 +149,6 @@ const federationLI = (props: ComponentPropsWithoutRef<"li">) => {
   }
 
   if (texts.length < 2) {
-    console.error(texts);
     throw new Error(
       `Expected a question and an answer, got ${texts.length} items`,
     );

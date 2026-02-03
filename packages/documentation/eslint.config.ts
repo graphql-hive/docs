@@ -10,7 +10,7 @@ const config: Linter.Config[] = [
     rules: {
       "better-tailwindcss/no-unknown-classes": [
         "error",
-        { ignore: ["light", "nextra-scrollbar", "nextra-search", "hive-focus", "hive-slider", "no-scrollbar", "subheader"] },
+        { ignore: ["light", "nextra-scrollbar", "nextra-search", "hive-focus", "hive-slider", "no-scrollbar", "prose-invert", "subheader"] },
       ],
     },
     settings: {
