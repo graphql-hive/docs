@@ -13,7 +13,6 @@ import {
   // this component is almost verbatim copied from Nextra, so we keep @headlessui/react to guarantee it works the same
 } from "@headlessui/react";
 import { useLocation } from "@tanstack/react-router";
-import cn from "clsx";
 import {
   FC,
   Fragment,
@@ -26,6 +25,7 @@ import {
   useState,
 } from "react";
 
+import { cn } from "../cn";
 import { useHash } from "../use-hash";
 
 type TabItem = ReactElement | string;

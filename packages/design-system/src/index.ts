@@ -1,6 +1,5 @@
 export { Anchor } from "./anchor";
 export * from "./call-to-action";
-export { CardsColorful } from "./cards-colorful";
 export { cn } from "./cn";
 export { ComparisonTable } from "./comparison-table";
 export * from "./contact-us";

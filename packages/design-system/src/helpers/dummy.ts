@@ -1,4 +1,3 @@
-import { CardsColorfulProps } from "../cards-colorful";
 import heroIllustrationImage from "../static/dummy/envelop/communication.png";
 import featureListImage3 from "../static/dummy/envelop/features-modern.png";
 import featureListImage2 from "../static/dummy/envelop/features-performant.png";
@@ -158,29 +157,4 @@ export const dummyHeroMarketplace: IHeroMarketplaceProps = {
     title: "Learn more about the ",
   },
   title: "Marketplace",
-};
-
-export const dummyCardsColorful: CardsColorfulProps = {
-  cards: [
-    {
-      category: "New release by the guild",
-      color: "#3547e5",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      link: {
-        href: "#",
-        title: "Learn more",
-      },
-      title: "GraphQL Modules",
-    },
-    {
-      category: "Pro tip",
-      color: "#0b0d11",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      link: {
-        href: "#",
-        title: "Learn more",
-      },
-      title: "Clean up your code!",
-    },
-  ],
 };
