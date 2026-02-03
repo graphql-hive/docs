@@ -1,3 +1,4 @@
+import React from "react";
 import { ThemeProvider } from "next-themes";
 import { useDarkMode } from "storybook-dark-mode";
 import { Preview } from "@storybook/react";
@@ -13,10 +14,8 @@ export const parameters: Preview["parameters"] = {
     },
   },
   darkMode: {
-    // Override the default dark theme
-    dark: { ...themes.normal, appBg: "white" },
-    // Override the default light theme
-    light: { ...themes.normal, appBg: "white" },
+    dark: themes.dark,
+    light: themes.light,
     classTarget: "html",
   },
   // Remove padding from storybook in mobile
