@@ -5,14 +5,7 @@
     "composite": true,
     "noEmit": false,
     "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "nextra-theme-docs": ["./src/nextra-stubs/theme-docs.ts"],
-      "nextra/components": ["./src/nextra-stubs/components.tsx"],
-      "nextra/hooks": ["./src/nextra-stubs/hooks.ts"],
-      "nextra/icons": ["./src/nextra-stubs/icons.tsx"],
-      "nextra/normalize-pages": ["./src/nextra-stubs/normalize-pages.ts"]
-    }
+    "baseUrl": "."
   },
   "include": ["src", "eslint.config.ts"],
   "exclude": [
