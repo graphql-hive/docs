@@ -65,16 +65,12 @@
   --nextra-primary-hue: 164deg;
   --nextra-primary-saturation: 70%;
   --nextra-primary-lightness: 40%;
-  --nextra-bg: 252 251 250;
+  --nextra-bg: 255 255 255;
+  --color-fd-background: hsl(0, 0%, 100%);
 }
 
 .dark {
   --nextra-bg: 17 17 17;
-}
-
-/* Landing pages light mode background - pure white for visual parity with prod */
-.light {
-  background-color: #fff;
 }
 
 /* Tailwind 4 compatibility: ensure cursor-pointer on interactive elements */

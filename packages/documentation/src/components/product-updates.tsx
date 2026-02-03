@@ -20,7 +20,7 @@ export function ProductUpdatesPage({
   changelogs: Changelog[];
 }) {
   return (
-    <ol className="relative mt-12 border-l border-gray-200 dark:border-gray-700">
+    <ol className="relative mx-auto mt-12 max-w-[700px] border-l border-gray-200 dark:border-gray-700">
       {changelogs.map((item) => (
         <ProductUpdateTeaser key={item.route} {...item} />
       ))}
