@@ -1,3 +1,4 @@
+import { Anchor } from "@hive/design-system/anchor";
 import { ReactElement } from "react";
 
 const dateFormat = new Intl.DateTimeFormat("en-GB", {
@@ -5,10 +6,6 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
   month: "long",
   year: "numeric",
 });
-
-function formatDate(date: Date): string {
-  return dateFormat.format(date);
-}
 
 export type Changelog = {
   date: string;
@@ -39,10 +36,10 @@ function ProductUpdateTeaser(props: Changelog): ReactElement {
         className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
         dateTime={props.date}
       >
-        {formatDate(new Date(props.date))}
+        {dateFormat.format(new Date(props.date))}
       </time>
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-        <a href={props.route}>{props.title}</a>
+        <Anchor href={props.route}>{props.title}</Anchor>
       </h3>
       <div className="mb-4 mt-1 max-w-[600px] text-base/6 font-normal text-gray-500 dark:text-gray-400">
         {props.description}

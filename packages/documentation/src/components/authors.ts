@@ -9,6 +9,16 @@ export interface Author {
 }
 
 export const authors: Record<string, Author> = {
+  adam: {
+    github: "adambenhassen",
+    link: "https://github.com/adambenhassen",
+    name: "Adam Benhassen",
+  },
+  aleksandra: {
+    github: "beerose",
+    link: "https://x.com/aleksandrasays",
+    name: "Aleksandra Sikora",
+  },
   arda: {
     github: "ardatan",
     link: "https://twitter.com/ardatanrikulu",
@@ -19,10 +29,20 @@ export const authors: Record<string, Author> = {
     link: "https://github.com/enisdenjo",
     name: "Denis Badurina",
   },
+  dimitri: {
+    github: "dimaMachina",
+    link: "https://x.com/dimaMachina_",
+    name: "Dimitri Postolov",
+  },
   dotan: {
     github: "dotansimha",
     link: "https://github.com/dotansimha",
     name: "Dotan Simha",
+  },
+  enisdenjo: {
+    github: "enisdenjo",
+    link: "https://twitter.com/enisdenjo",
+    name: "Denis Badurina",
   },
   gil: {
     github: "gilgardosh",
@@ -38,6 +58,11 @@ export const authors: Record<string, Author> = {
     github: "jdolle",
     link: "https://github.com/jdolle",
     name: "Jeff Dolle",
+  },
+  jiri: {
+    github: "capaj",
+    link: "https://x.com/capajj",
+    name: "Jiri Spac",
   },
   kamil: {
     github: "kamilkisiela",

@@ -5,23 +5,23 @@ import { Heading } from "@hive/design-system/heading";
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 
-import { AllCaseStudiesList } from "../../components/case-studies/all-case-studies-list";
+import { AllCaseStudiesList } from "../../../components/case-studies/all-case-studies-list";
 import {
   CaseStudiesArchDecoration,
   CaseStudiesGradientDefs,
-} from "../../components/case-studies/case-studies-arch-decoration";
-import { FeaturedCaseStudiesGrid } from "../../components/case-studies/featured-case-studies-grid";
-import { getCaseStudies } from "../../components/case-studies/get-case-studies";
-import { GetYourAPIGameWhite } from "../../components/get-your-api-game-white";
-import { HeroLinks } from "../../components/hero";
-import { LandingPageContainer } from "../../components/landing-page-container";
-import { TrustedBySection } from "../../components/trusted-by-section";
+} from "../../../components/case-studies/case-studies-arch-decoration";
+import { FeaturedCaseStudiesGrid } from "../../../components/case-studies/featured-case-studies-grid";
+import { getCaseStudies } from "../../../components/case-studies/get-case-studies";
+import { GetYourAPIGameWhite } from "../../../components/get-your-api-game-white";
+import { HeroLinks } from "../../../components/hero";
+import { LandingPageContainer } from "../../../components/landing-page-container";
+import { TrustedBySection } from "../../../components/trusted-by-section";
 
 const serverGetCaseStudies = createServerFn({ method: "GET" }).handler(
   async () => getCaseStudies(),
 );
 
-export const Route = createFileRoute("/_landing/case-studies")({
+export const Route = createFileRoute("/_landing/case-studies/")({
   component: CaseStudiesPage,
   loader: () => serverGetCaseStudies(),
 });

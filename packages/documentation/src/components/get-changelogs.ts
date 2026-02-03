@@ -10,7 +10,7 @@ type Changelog = {
 export function getChangelogs(): Changelog[] {
   return productUpdates
     .map((entry) => {
-      const slug = entry.info.path.replace(/^\//, "").replace(/\/$/, "");
+      const slug = entry.info.path.replace(/\.mdx?$/, "");
       return {
         date: entry.date,
         description: entry.description ?? "",

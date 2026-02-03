@@ -2,15 +2,15 @@ import { Heading } from "@hive/design-system/heading";
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 
-import { getChangelogs } from "../../components/get-changelogs";
-import { LandingPageContainer } from "../../components/landing-page-container";
-import { ProductUpdatesPage } from "../../components/product-updates";
+import { getChangelogs } from "../../../components/get-changelogs";
+import { LandingPageContainer } from "../../../components/landing-page-container";
+import { ProductUpdatesPage } from "../../../components/product-updates";
 
 const serverGetChangelogs = createServerFn({ method: "GET" }).handler(
   async () => getChangelogs(),
 );
 
-export const Route = createFileRoute("/_landing/product-updates")({
+export const Route = createFileRoute("/_landing/product-updates/")({
   component: ProductUpdatesRoute,
   loader: () => serverGetChangelogs(),
 });

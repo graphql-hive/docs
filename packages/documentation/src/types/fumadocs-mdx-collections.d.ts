@@ -40,7 +40,9 @@ declare module "fumadocs-mdx:collections/browser" {
   import type { DocCollectionEntry } from "fumadocs-mdx/runtime/browser";
 
   const browserCollections: {
+    caseStudies: DocCollectionEntry;
     docs: DocCollectionEntry;
+    productUpdates: DocCollectionEntry;
   };
 
   export default browserCollections;
