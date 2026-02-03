@@ -32,3 +32,6 @@ npm-debug.log*
 
 .tldr
 .context
+
+# Playwriter screenshots
+packages/documentation/tmp/

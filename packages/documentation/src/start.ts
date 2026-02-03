@@ -1,4 +1,3 @@
-import { redirect } from "@tanstack/react-router";
 import { createMiddleware, createStart } from "@tanstack/react-start";
 import { isMarkdownPreferred, rewritePath } from "fumadocs-core/negotiation";
 
@@ -24,7 +23,9 @@ const llmMiddleware = createMiddleware().server(({ next, request }) => {
   if (isMarkdownPreferred(request)) {
     const acceptPath = tryRewrite(url.pathname, acceptRewrites);
     if (acceptPath) {
-      throw redirect({ href: new URL(acceptPath, url).href });
+      const nextUrl = new URL(acceptPath, url);
+      const nextRequest = new Request(nextUrl, request);
+      return fetch(nextRequest);
     }
   }
 

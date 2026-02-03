@@ -71,6 +71,11 @@ function RootErrorComponent({ error, reset }: ErrorComponentProps) {
 function RootDocument({ children }: { children: React.ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isLightOnlyPage = lightOnlyPages.has(pathname);
+  const themeConfig = {
+    attribute: "class",
+    defaultTheme: "system",
+    enableSystem: true,
+  } as const;
 
   return (
     <html
@@ -87,7 +92,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         style={{ fontFamily: "'PP Neue Montreal', system-ui, sans-serif" }}
       >
         <RootProvider
-          theme={isLightOnlyPage ? { forcedTheme: "light" } : undefined}
+          theme={
+            isLightOnlyPage
+              ? { ...themeConfig, forcedTheme: "light" }
+              : themeConfig
+          }
         >
           {children}
         </RootProvider>
