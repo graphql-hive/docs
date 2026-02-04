@@ -121,7 +121,7 @@ export function CompanyTestimonialsSection({
     <section
       className={cn(
         "bg-beige-100 text-green-1000 relative rounded-3xl px-4 py-6 md:p-10 lg:p-18",
-        className
+        className,
       )}
     >
       <Heading as="h2" size="md">
@@ -192,7 +192,7 @@ export function CompanyTestimonialsSection({
                     "lg:data-hidden:hidden",
                     caseStudyHref
                       ? "not-data-hidden:pb-[72px] lg:not-data-hidden:pb-0"
-                      : "max-lg:pb-8"
+                      : "max-lg:pb-8",
                   )}
                   keepMounted // we mount everything, as we scroll through tabs on mobile
                   key={company}
@@ -204,7 +204,7 @@ export function CompanyTestimonialsSection({
                       alt=""
                       className={cn(
                         "hidden size-[300px] shrink-0 rounded-3xl object-cover mix-blend-multiply max-lg:mt-6 md:block",
-                        picture.className
+                        picture.className,
                       )}
                       height={300}
                       role="presentation"
@@ -228,7 +228,7 @@ export function CompanyTestimonialsSection({
                     <blockquote
                       className={cn(
                         "sm:blockquote-beige-500 lg:text-xl xl:text-2xl xl:leading-[32px] [&_code]:font-mono [&_code]:text-[0.9em]",
-                        data && "lg:text-lg"
+                        data && "lg:text-lg",
                       )}
                     >
                       {text}
@@ -274,7 +274,7 @@ export function CompanyTestimonialsSection({
                   )}
                 </Tabs.Panel>
               );
-            }
+            },
           )}
         </div>
       </Tabs.Root>

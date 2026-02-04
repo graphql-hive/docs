@@ -25,9 +25,9 @@ test.describe("Search User Journeys", () => {
     const results = page.getByRole("option");
     const errorMessage = page.getByText("Failed to load search index");
     const noResults = page.getByText("No results found");
-    await expect(
-      results.first().or(errorMessage).or(noResults),
-    ).toBeVisible({ timeout: 30_000 });
+    await expect(results.first().or(errorMessage).or(noResults)).toBeVisible({
+      timeout: 30_000,
+    });
   });
 
   test("user opens search with keyboard shortcut", async ({
@@ -51,9 +51,9 @@ test.describe("Search User Journeys", () => {
     const results = page.getByRole("option");
     const errorMessage = page.getByText("Failed to load search index");
     const noResults = page.getByText("No results found");
-    await expect(
-      results.first().or(errorMessage).or(noResults),
-    ).toBeVisible({ timeout: 30_000 });
+    await expect(results.first().or(errorMessage).or(noResults)).toBeVisible({
+      timeout: 30_000,
+    });
   });
 
   test("search results navigate to docs", async ({ page, isMobile }) => {

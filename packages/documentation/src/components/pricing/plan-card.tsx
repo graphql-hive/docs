@@ -101,7 +101,7 @@ export function PlanCard({
             cardRef.current.style.transition = "";
             cardRef.current.removeEventListener(
               "transitionend",
-              onTransitionEnd
+              onTransitionEnd,
             );
 
             if (!newCollapsed) {
@@ -143,7 +143,7 @@ export function PlanCard({
             window.removeEventListener("resize", onResize);
           }
         },
-        { signal: abortController.signal }
+        { signal: abortController.signal },
       );
 
       globalThis.addEventListener(
@@ -156,7 +156,7 @@ export function PlanCard({
             globalThis.removeEventListener("keydown", onEscape);
           }
         },
-        { signal: abortController.signal }
+        { signal: abortController.signal },
       );
     }
 
@@ -172,7 +172,7 @@ export function PlanCard({
         aria-hidden="true"
         className={cn(
           "fixed inset-0 z-40 bg-black/30 backdrop-blur-2xl transition-opacity duration-500 sm:hidden",
-          collapsed ? "pointer-events-none opacity-0" : "opacity-100"
+          collapsed ? "pointer-events-none opacity-0" : "opacity-100",
         )}
         onClick={() => collapse(true)}
       />
@@ -187,7 +187,7 @@ export function PlanCard({
           transitioning && "z-50",
           highlighted && // delay is 29ms so fast swipes don't blink needlessly
             "sm:before:-top-13 sm:before:h-[calc(100%+52px)] sm:before:pt-12.5 sm:before:delay-29 sm:before:duration-[150ms,75ms,75ms]",
-          className
+          className,
         )}
         ref={cardRef}
         {...rest}
@@ -196,14 +196,14 @@ export function PlanCard({
           /* scrollview for mobiles */
           className={cn(
             "p-4 max-sm:pb-0 sm:p-8",
-            !collapsed && "nextra-scrollbar h-full max-sm:overflow-auto"
+            !collapsed && "nextra-scrollbar h-full max-sm:overflow-auto",
           )}
         >
           <div
             aria-hidden={!highlighted}
             className={cn(
               "absolute -top-9 left-0 w-full text-center font-medium text-white transition-opacity max-sm:hidden",
-              highlighted ? "opacity-100" : "opacity-0"
+              highlighted ? "opacity-100" : "opacity-0",
             )}
           >
             Recommended
@@ -233,7 +233,7 @@ export function PlanCard({
           <div
             className={cn(
               "mt-4 h-6 text-[#4F6C6A]",
-              !startingFrom && "max-sm:h-0"
+              !startingFrom && "max-sm:h-0",
             )}
           >
             {startingFrom && "Starting from"}
@@ -250,7 +250,7 @@ export function PlanCard({
               "max-sm:transition-none", // Prevent any transitions on first load
               collapsed
                 ? "max-sm:h-0 max-sm:overflow-hidden max-sm:opacity-0"
-                : ""
+                : "",
             )}
             data-open={!collapsed}
           >

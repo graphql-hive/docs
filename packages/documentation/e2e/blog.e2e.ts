@@ -13,9 +13,7 @@ test.describe("Content User Journeys", () => {
     const storiesSection = page.locator("section", {
       has: page.getByRole("heading", { name: "Explore customer stories" }),
     });
-    const caseStudyLinks = storiesSection.locator(
-      'a[href^="/case-studies/"]',
-    );
+    const caseStudyLinks = storiesSection.locator('a[href^="/case-studies/"]');
     await caseStudyLinks.first().scrollIntoViewIfNeeded();
     await expect(caseStudyLinks.first()).toBeVisible();
   });

@@ -143,7 +143,10 @@ export function useScrolledSides(
 
         scrollview.addEventListener("scroll", handleScroll, { passive: true });
       } else {
-        timeout = globalThis.setTimeout(() => addListener(), 1000) as unknown as number;
+        timeout = globalThis.setTimeout(
+          () => addListener(),
+          1000,
+        ) as unknown as number;
       }
     };
 

@@ -36,7 +36,7 @@ const REPLACEMENTS: [RegExp, string][] = [
 
 async function migrateFile(
   filePath: string,
-  dryRun: boolean
+  dryRun: boolean,
 ): Promise<{ changed: boolean; changes: string[] }> {
   const content = await Bun.file(filePath).text();
   let newContent = content;
@@ -92,7 +92,9 @@ async function main() {
     }
   }
 
-  console.log(`\n${totalChanges} replacement(s) ${dryRun ? "would be made" : "made"}.`);
+  console.log(
+    `\n${totalChanges} replacement(s) ${dryRun ? "would be made" : "made"}.`,
+  );
 
   if (dryRun && totalChanges > 0) {
     console.log("\nRun without --dry-run to apply changes.");

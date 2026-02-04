@@ -212,10 +212,7 @@ function Node({ children, className, description, title, ...rest }: NodeProps) {
           <div className="font-medium text-green-100">{title}</div>
           {description && (
             <div
-              className={cn(
-                "mt-0.5 text-sm/5 text-green-200",
-                styles["desc"],
-              )}
+              className={cn("mt-0.5 text-sm/5 text-green-200", styles["desc"])}
             >
               {description}
             </div>

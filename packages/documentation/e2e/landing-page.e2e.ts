@@ -29,9 +29,7 @@ test.describe("Landing Page User Journeys", () => {
     await tabs.nth(1).click();
     await expect(page.getByRole("tabpanel").first()).toBeVisible();
 
-    const signUpCta = page
-      .getByRole("link", { name: /get started/i })
-      .first();
+    const signUpCta = page.getByRole("link", { name: /get started/i }).first();
     await expect(signUpCta).toHaveAttribute("href", /app\.graphql-hive\.com/);
   });
 
@@ -56,9 +54,7 @@ test.describe("Landing Page User Journeys", () => {
     await page.waitForURL("/gateway");
 
     await expect(page).toHaveURL("/gateway");
-    await expect(
-      page.getByRole("heading", { level: 1 }).first(),
-    ).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
   });
 
   test("user navigates to pricing via nav", async ({ page, isMobile }) => {
@@ -84,18 +80,14 @@ test.describe("Landing Page User Journeys", () => {
     await page.goto("/");
 
     // Find FAQ section by its accordion structure (Radix UI)
-    const faqAccordion = page
-      .locator('[data-orientation="vertical"]')
-      .first();
+    const faqAccordion = page.locator('[data-orientation="vertical"]').first();
     await faqAccordion.scrollIntoViewIfNeeded();
 
     const faqTrigger = faqAccordion.getByRole("button").first();
     await expect(faqTrigger).toBeVisible();
     await faqTrigger.click();
 
-    await expect(
-      page.locator('[data-state="open"]').first(),
-    ).toBeVisible();
+    await expect(page.locator('[data-state="open"]').first()).toBeVisible();
   });
 
   test("testimonials section shows company tabs", async ({ page }) => {
@@ -126,9 +118,7 @@ test.describe("Landing Page User Journeys", () => {
       const nav = page.getByRole("navigation").first();
       await expect(nav).toBeVisible();
       await expect(nav.getByRole("button").first()).toBeVisible();
-      await expect(
-        nav.getByRole("link", { name: /pricing/i }),
-      ).toBeVisible();
+      await expect(nav.getByRole("link", { name: /pricing/i })).toBeVisible();
     }
   });
 });

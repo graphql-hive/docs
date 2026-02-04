@@ -1,7 +1,6 @@
 import { cn } from "@hive/design-system/cn";
 
-export interface SmallAvatarProps
-  extends React.ImgHTMLAttributes<HTMLImageElement> {}
+export interface SmallAvatarProps extends React.ImgHTMLAttributes<HTMLImageElement> {}
 
 export function SmallAvatar({ className, ...rest }: SmallAvatarProps) {
   return (

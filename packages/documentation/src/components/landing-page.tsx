@@ -119,7 +119,7 @@ function GetStartedTodaySection({ className }: { className?: string }) {
     <section
       className={cn(
         "bg-blueish-green relative overflow-hidden rounded-3xl p-12 text-center sm:p-24",
-        className
+        className,
       )}
     >
       <DecorationIsolation>
@@ -234,7 +234,7 @@ function LearnGraphQLFederationSection(props: { className?: string }) {
     <section
       className={cn(
         "to-green-1000 from-blueish-green relative rounded-3xl bg-linear-to-br p-8 sm:py-12 md:px-6 md:text-center lg:p-24",
-        props.className
+        props.className,
       )}
     >
       <DecorationIsolation className="opacity-80">

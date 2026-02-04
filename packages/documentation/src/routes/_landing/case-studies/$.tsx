@@ -53,13 +53,7 @@ const clientLoader = browserCollections.caseStudies.createClientLoader<{
   },
 });
 
-function CaseStudyHeader({
-  slug,
-  title,
-}: {
-  slug: string;
-  title: string;
-}) {
+function CaseStudyHeader({ slug, title }: { slug: string; title: string }) {
   let logo: React.ReactNode = null;
   try {
     logo = getCompanyLogo(slug);
@@ -87,9 +81,7 @@ function CaseStudyDetail() {
   const data = Route.useLoaderData();
 
   return (
-    <div
-      className="mx-auto box-content max-w-360 dark:text-white [--content-width:1208px]"
-    >
+    <div className="mx-auto box-content max-w-360 dark:text-white [--content-width:1208px]">
       <CaseStudyHeader slug={data.slug} title={data.title} />
       <div className="mx-auto flex max-w-[--content-width]">
         <div className="ml-0 pl-6 max-sm:pr-6 md:pl-12">

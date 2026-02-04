@@ -33,25 +33,24 @@ export const Route = createFileRoute("/_landing/product-updates/$")({
   },
 });
 
-const clientLoader =
-  browserCollections.productUpdates.createClientLoader({
-    component(loaded) {
-      const { default: MDX, toc } = loaded;
+const clientLoader = browserCollections.productUpdates.createClientLoader({
+  component(loaded) {
+    const { default: MDX, toc } = loaded;
 
-      return (
-        <DocsPage
-          breadcrumb={{ enabled: false }}
-          footer={{ enabled: false }}
-          tableOfContentPopover={{ enabled: false }}
-          toc={toc}
-        >
-          <DocsBody>
-            <MDX components={defaultMdxComponents} />
-          </DocsBody>
-        </DocsPage>
-      );
-    },
-  });
+    return (
+      <DocsPage
+        breadcrumb={{ enabled: false }}
+        footer={{ enabled: false }}
+        tableOfContentPopover={{ enabled: false }}
+        toc={toc}
+      >
+        <DocsBody>
+          <MDX components={defaultMdxComponents} />
+        </DocsBody>
+      </DocsPage>
+    );
+  },
+});
 
 function ProductUpdateDetail() {
   const data = Route.useLoaderData();

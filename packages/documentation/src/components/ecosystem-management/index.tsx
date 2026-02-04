@@ -21,7 +21,7 @@ export function EcosystemManagementSection({
     <section
       className={cn(
         "bg-green-1000 relative isolate rounded-3xl p-8 px-4 pb-[180px] text-white sm:pb-[128px] md:p-[72px] md:pb-[128px] md:pr-8 lg:pb-[72px]",
-        className
+        className,
       )}
     >
       <div className="relative mx-auto flex w-[1392px] max-w-full flex-col gap-x-4 gap-y-6 md:gap-x-6 md:gap-y-12 lg:flex-row">

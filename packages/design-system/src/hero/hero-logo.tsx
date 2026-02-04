@@ -21,7 +21,7 @@ export function HeroLogo({ children, className, ...rest }: HeroLogoProps) {
       {cloneElement(children, {
         className: cn(
           "absolute inset-1/2 size-1/2 -translate-1/2",
-          children.props.className
+          children.props.className,
         ),
         fill: `url(#${GRADIENT_BLUE})`,
         stroke: `url(#${GRADIENT_WHITE_INVERTED})`,

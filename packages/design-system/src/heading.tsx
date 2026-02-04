@@ -78,7 +78,7 @@ function CopyLinkButton({ id }: { id: string }) {
             duration: 150,
             easing: "ease-in",
             fill: "forwards",
-          }
+          },
         );
         animation.finished.then(() => {
           setCopied(false);

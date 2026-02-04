@@ -21,11 +21,7 @@ function ProductUpdatesRoute() {
   return (
     <LandingPageContainer className="text-green-1000 mx-auto max-w-360 overflow-hidden dark:text-neutral-200">
       <div className="mx-auto max-w-[700px] pt-16 max-sm:mt-2">
-        <Heading
-          as="h1"
-          className="text-green-1000 dark:text-white"
-          size="lg"
-        >
+        <Heading as="h1" className="text-green-1000 dark:text-white" size="lg">
           Product Updates
         </Heading>
         <p className="mt-4 leading-6 text-green-800 dark:text-neutral-400">

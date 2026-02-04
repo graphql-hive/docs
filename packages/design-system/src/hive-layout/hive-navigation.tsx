@@ -160,8 +160,18 @@ export function HiveNavigation({
           className="ml-4 max-lg:hidden"
           href={`${siteOrigin}/contact`}
           onClick={(event: React.MouseEvent) => {
-            if ((globalThis as unknown as { $crisp?: { push(args: unknown[]): void } }).$crisp) {
-              (globalThis as unknown as { $crisp: { push(args: unknown[]): void } }).$crisp.push(["do", "chat:open"]);
+            if (
+              (
+                globalThis as unknown as {
+                  $crisp?: { push(args: unknown[]): void };
+                }
+              ).$crisp
+            ) {
+              (
+                globalThis as unknown as {
+                  $crisp: { push(args: unknown[]): void };
+                }
+              ).$crisp.push(["do", "chat:open"]);
               event.preventDefault();
             }
           }}

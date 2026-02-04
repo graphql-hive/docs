@@ -19,7 +19,9 @@ export const hiveThemeDecorator = (
           backgroundColor: ctx.parameters["forcedLightMode"] ? "white" : "",
           fontFamily: "var(--font-sans)",
           padding:
-            ctx.parameters["padding"] === true ? "2rem" : ctx.parameters["padding"],
+            ctx.parameters["padding"] === true
+              ? "2rem"
+              : ctx.parameters["padding"],
         }}
       >
         <Story />
