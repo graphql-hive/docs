@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "sourceRepo": ".context/hive-console",
+  "sourceBranch": "main",
+  "targetSubdirectory": "temporary",
+  "lastSyncedCommit": null,
+  "migrations": [],
+  "_note": "Starting from scratch - all 86 commits in worktree are after #7450 (ecosystem illustration fixes) which was last manually migrated"
+}
