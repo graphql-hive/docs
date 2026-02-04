@@ -47,6 +47,7 @@ const SOURCE_REPO = ".context/hive-console";
 const FILTERED_REMOTE = "hive-console-filtered";
 const FILTERED_BRANCH = "filtered-for-migration";
 const DEFAULT_SUBDIRECTORY = "temporary";
+const DEFAULT_FILTER_PATHS = ["packages/web/docs"] as const;
 
 const colors = {
   reset: "\x1b[0m",
@@ -107,14 +108,22 @@ function checkGitFilterRepo(): boolean {
   }
 }
 
+function getFilterPaths(): readonly string[] {
+  return DEFAULT_FILTER_PATHS;
+}
+
 function setupFilteredRemote(state: MigrationState): void {
   const sourcePath = resolve(SOURCE_REPO);
   const subdirectory = state.targetSubdirectory;
+  const filterPaths = getFilterPaths();
 
   console.log(`${colors.cyan}Setting up filtered remote...${colors.reset}`);
   console.log(`  Source: ${colors.yellow}${sourcePath}${colors.reset}`);
   console.log(
     `  Target subdirectory: ${colors.yellow}${subdirectory}${colors.reset}\n`,
+  );
+  console.log(
+    `  Filter paths: ${colors.yellow}${filterPaths.join(", ")}${colors.reset}\n`,
   );
 
   const tempDir = `/tmp/hive-console-filtered-${Date.now()}`;
@@ -128,8 +137,9 @@ function setupFilteredRemote(state: MigrationState): void {
     console.log(
       `${colors.dim}Using git-filter-repo to rewrite history...${colors.reset}`,
     );
+    const pathArgs = filterPaths.map((p) => `--path "${p}"`).join(" ");
     exec(
-      `git filter-repo --force --to-subdirectory-filter "${subdirectory}"`,
+      `git filter-repo --force ${pathArgs} --to-subdirectory-filter "${subdirectory}"`,
       tempDir,
     );
   } else {
@@ -168,7 +178,9 @@ function setupFilteredRemote(state: MigrationState): void {
   exec(`git remote add ${FILTERED_REMOTE} "${tempDir}"`);
 
   console.log(`${colors.dim}Fetching from filtered remote...${colors.reset}`);
-  exec(`git fetch ${FILTERED_REMOTE} ${state.sourceBranch}:${FILTERED_BRANCH}`);
+  exec(
+    `git fetch ${FILTERED_REMOTE} +${state.sourceBranch}:${FILTERED_BRANCH}`,
+  );
 
   console.log(`${colors.green}✓ Filtered remote configured${colors.reset}\n`);
   console.log(`${colors.dim}Temporary clone at: ${tempDir}${colors.reset}`);
@@ -201,17 +213,20 @@ function updateFilteredRemote(state: MigrationState): void {
   console.log(
     `${colors.dim}Fetching updated filtered branch...${colors.reset}`,
   );
-  exec(`git fetch ${FILTERED_REMOTE} ${state.sourceBranch}:${FILTERED_BRANCH}`);
+  exec(
+    `git fetch ${FILTERED_REMOTE} +${state.sourceBranch}:${FILTERED_BRANCH}`,
+  );
 
   console.log(`${colors.green}✓ Filtered remote updated${colors.reset}\n`);
 }
 
 function getCommitsToSync(state: MigrationState, limit?: number): CommitInfo[] {
-  const since = state.lastSyncedCommit ? `^${state.lastSyncedCommit}` : "";
-  const limitFlag = limit ? `-n ${limit}` : "";
+  const range = state.lastSyncedCommit
+    ? `${state.lastSyncedCommit}..${FILTERED_BRANCH}`
+    : FILTERED_BRANCH;
 
   const format = "%H|%ai|%s|%an";
-  const logCmd = `git log ${FILTERED_BRANCH} ${since} ${limitFlag} --format="${format}"`;
+  const logCmd = `git log ${range} --reverse --format="${format}"`;
 
   let output: string;
   try {
@@ -235,7 +250,7 @@ function getCommitsToSync(state: MigrationState, limit?: number): CommitInfo[] {
     commits.push({ hash, date, message, author });
   }
 
-  return commits.reverse();
+  return limit ? commits.slice(0, limit) : commits;
 }
 
 function performMerge(commitHash: string): string {

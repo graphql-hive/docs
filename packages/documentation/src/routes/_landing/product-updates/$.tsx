@@ -1,8 +1,11 @@
+import type { Root } from "fumadocs-core/page-tree";
+
 import { ProductUpdateAuthors } from "@/components/product-update-header";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import browserCollections from "fumadocs-mdx:collections/browser";
 import { productUpdates } from "fumadocs-mdx:collections/server";
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { DocsBody, DocsPage } from "fumadocs-ui/layouts/docs/page";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 
@@ -33,8 +36,14 @@ export const Route = createFileRoute("/_landing/product-updates/$")({
   },
 });
 
-const clientLoader = browserCollections.productUpdates.createClientLoader({
-  component(loaded) {
+const emptyTree: Root = { children: [], name: "" };
+
+const clientLoader = browserCollections.productUpdates.createClientLoader<{
+  authors: ({ name: string } | string)[];
+  date: string;
+  title: string;
+}>({
+  component(loaded, props) {
     const { default: MDX, toc } = loaded;
 
     return (
@@ -44,6 +53,10 @@ const clientLoader = browserCollections.productUpdates.createClientLoader({
         tableOfContentPopover={{ enabled: false }}
         toc={toc}
       >
+        <h1 className="mb-0 text-center text-4xl dark:text-neutral-200">
+          {props.title}
+        </h1>
+        <ProductUpdateAuthors authors={props.authors} date={props.date} />
         <DocsBody>
           <MDX components={defaultMdxComponents} />
         </DocsBody>
@@ -56,17 +69,16 @@ function ProductUpdateDetail() {
   const data = Route.useLoaderData();
 
   return (
-    <div className="mx-auto max-w-360 dark:text-neutral-200">
-      <h1 className="mt-12 mb-0 text-center text-4xl">{data.title}</h1>
-      <ProductUpdateAuthors authors={data.authors} date={data.date} />
-      <div
-        className="mx-auto grid w-full [--fd-toc-width:268px] [--fd-docs-height:100dvh] [--fd-docs-row-1:var(--nextra-navbar-height)]"
-        style={{
-          gridTemplate: `"main toc" 1fr / minmax(0, 1fr) var(--fd-toc-width)`,
-        }}
-      >
-        {clientLoader.useContent(data.path)}
-      </div>
-    </div>
+    <DocsLayout
+      nav={{ enabled: false }}
+      sidebar={{ enabled: false }}
+      tree={emptyTree}
+    >
+      {clientLoader.useContent(data.path, {
+        authors: data.authors,
+        date: data.date,
+        title: data.title,
+      })}
+    </DocsLayout>
   );
 }

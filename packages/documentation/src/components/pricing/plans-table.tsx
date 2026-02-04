@@ -917,7 +917,7 @@ function MobileNavbar({
     <NestedSticky
       offsetBottom={482}
       offsetTop={
-        // --nextra-navbar-height
+        // --fd-banner-height
         64
       }
     >

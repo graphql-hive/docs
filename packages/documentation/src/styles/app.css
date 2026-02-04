@@ -67,12 +67,13 @@
   --nextra-primary-lightness: 40%;
   --nextra-bg: 255 255 255;
   --color-fd-background: hsl(0, 0%, 100%);
-  --color-fd-muted-foreground: var(--color-green-700);
+  --color-fd-muted-foreground: var(--color-beige-700);
   --color-fd-primary: var(--color-green-1000);
 }
 
 .dark {
   --nextra-bg: 17 17 17;
+  --color-fd-background: hsl(0, 0%, 7.04%);
 }
 
 /* Tailwind 4 compatibility: ensure cursor-pointer on interactive elements */
