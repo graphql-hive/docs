@@ -1,6 +1,7 @@
 import type { Root } from "fumadocs-core/page-tree";
 
 import { ProductUpdateAuthors } from "@/components/product-update-header";
+import { Heading } from "@hive/design-system";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import browserCollections from "fumadocs-mdx:collections/browser";
@@ -53,10 +54,18 @@ const clientLoader = browserCollections.productUpdates.createClientLoader<{
         tableOfContentPopover={{ enabled: false }}
         toc={toc}
       >
-        <h1 className="mb-0 text-center text-4xl dark:text-neutral-200">
+        <Heading
+          as="h1"
+          className="mb-0 text-4xl dark:text-neutral-200"
+          size="md"
+        >
           {props.title}
-        </h1>
-        <ProductUpdateAuthors authors={props.authors} date={props.date} />
+        </Heading>
+        <ProductUpdateAuthors
+          authors={props.authors}
+          className="mb-4"
+          date={props.date}
+        />
         <DocsBody>
           <MDX components={defaultMdxComponents} />
         </DocsBody>

@@ -74,6 +74,7 @@
 .dark {
   --nextra-bg: 17 17 17;
   --color-fd-background: hsl(0, 0%, 7.04%);
+  --color-fd-primary: var(--color-neutral-100);
 }
 
 /* Tailwind 4 compatibility: ensure cursor-pointer on interactive elements */

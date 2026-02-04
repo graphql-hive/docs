@@ -32,7 +32,7 @@ function ProductUpdateTeaser(props: Changelog): ReactElement {
   return (
     <li className="mb-10 ml-4">
       <a className="group" href={props.route}>
-        <div className="absolute -left-1.5 translate-x-[-.5px] mt-1.5 size-3 rounded-full border border-white bg-blue-300 dark:border-neutral-900 dark:bg-neutral-700 group-hover:bg-blue-400" />
+        <div className="absolute -left-1.5 translate-x-[-.5px] mt-1.5 size-3 rounded-full border border-white bg-blue-300 dark:border-neutral-900 dark:bg-neutral-700 group-hover:bg-blue-400 dark:group-hover:bg-neutral-200" />
         <time
           className="mb-1 text-sm font-normal leading-none text-green-800 dark:text-neutral-400"
           dateTime={props.date}

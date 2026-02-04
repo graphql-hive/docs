@@ -49,7 +49,7 @@ export function ProductUpdateAuthors({
     return (
       <div
         className={cn(
-          "my-4 -mb-1 flex flex-row items-center justify-center rounded-xl py-1 pl-1 pr-3",
+          "my-4 -mb-1 flex flex-row items-center w-fit rounded-sm py-1 pl-1 pr-3",
           "has-[a:hover]:bg-beige-900/5 dark:has-[a:hover]:bg-neutral-50/5",
           className,
         )}
