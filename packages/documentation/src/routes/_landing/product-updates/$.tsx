@@ -60,7 +60,7 @@ function ProductUpdateDetail() {
       <h1 className="mt-12 mb-0 text-center text-4xl">{data.title}</h1>
       <ProductUpdateAuthors authors={data.authors} date={data.date} />
       <div
-        className="mx-auto grid w-full [--fd-toc-width:268px]"
+        className="mx-auto grid w-full [--fd-toc-width:268px] [--fd-docs-height:100dvh] [--fd-docs-row-1:var(--nextra-navbar-height)]"
         style={{
           gridTemplate: `"main toc" 1fr / minmax(0, 1fr) var(--fd-toc-width)`,
         }}
