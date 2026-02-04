@@ -65,7 +65,7 @@ function ProductUpdateDetail() {
           gridTemplate: `"main toc" 1fr / minmax(0, 1fr) var(--fd-toc-width)`,
         }}
       >
-        {clientLoader.useContent(data.path, {})}
+        {clientLoader.useContent(data.path)}
       </div>
     </div>
   );

@@ -81,7 +81,7 @@ const AccordionItem = (props: ComponentPropsWithoutRef<"li">) => {
         itemType="https://schema.org/Question"
       >
         <Accordion.Header>
-          <Accordion.Trigger className="hive-focus hover:bg-beige-100/80 -mx-2 my-1 flex w-[calc(100%+1rem)] items-center justify-between rounded-xl bg-white px-2 py-3 text-left font-medium transition-colors duration-[.8s] md:my-2 md:py-4">
+          <Accordion.Trigger className="hive-focus hover:bg-beige-100/80 -mx-2 my-1 flex w-[calc(100%+1rem)] items-center justify-between rounded-xl bg-white px-2 py-3 text-left font-medium transition-colors duration-100 md:my-2 md:py-4">
             <span itemProp="name">{question}</span>
             <ChevronDownIcon className="size-5 in-data-open:transform-[rotateX(180deg)]" />
           </Accordion.Trigger>

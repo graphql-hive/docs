@@ -20,11 +20,11 @@ function ProductUpdatesRoute() {
 
   return (
     <LandingPageContainer className="text-green-1000 mx-auto max-w-360 overflow-hidden dark:text-neutral-200">
-      <div className="mx-auto max-w-[700px] pt-16 max-sm:mt-2">
-        <Heading as="h1" className="text-green-1000 dark:text-white" size="lg">
+      <div className="mx-auto w-[872px] max-w-full pt-16 max-sm:mt-2">
+        <Heading as="h1" className="text-green-1000 dark:text-white" size="md">
           Product Updates
         </Heading>
-        <p className="mt-4 leading-6 text-green-800 dark:text-neutral-400">
+        <p className="leading-6 text-green-800 dark:text-neutral-400 mt-2">
           The most recent developments from GraphQL Hive.
         </p>
         <ProductUpdatesPage changelogs={changelogs} />

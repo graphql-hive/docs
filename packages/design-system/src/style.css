@@ -98,12 +98,6 @@
   animation: hive-shake 0.3s ease;
 }
 
-/* Light mode specific styles for landing pages */
-.light {
-  --nextra-bg: 252 251 250;
-  background-color: rgb(var(--nextra-bg));
-}
-
 /* Fix font smoothing for Neue Montreal */
 .x\:subpixel-antialiased {
   -webkit-font-smoothing: unset;
