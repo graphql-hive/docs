@@ -6,12 +6,13 @@ date: 2026-01-28
 authors: [michael]
 ---
 
-import NextImage from 'next/image'
-import { YoutubeIframe } from '#components/youtube-iframe'
-import operationImage from '../../../../../public/docs/pages/new-laboratory/operation.png'
-import preflightImage from '../../../../../public/docs/pages/new-laboratory/preflight.png'
+import { Image } from '@hive/design-system/image'
+import { YoutubeIframe } from '@hive/design-system/youtube-iframe'
 
-We’re introducing a new Hive Laboratory, which replaces the existing GraphQL Playground.
+import operationImage from './2026-01-28-new-laboratory/operation.png'
+import preflightImage from './2026-01-28-new-laboratory/preflight.png'
+
+We're introducing a new Hive Laboratory, which replaces the existing GraphQL Playground.
 
 This update focuses primarily on the user experience. The new Laboratory is designed around
 interaction patterns developers already know from modern code editors, with the goal of making
@@ -49,8 +50,7 @@ The new Laboratory is structured around common development workflows:
 The interface borrows heavily from modern editors so that navigation, editing, and execution feel
 natural without additional learning.
 
-<br />
-<NextImage src={operationImage} alt="Operation" />
+<Image alt="Operation" src={operationImage} />
 
 ## Configuration That Matches Real Environments
 
@@ -64,8 +64,7 @@ The Laboratory includes tools to reflect real-world setups more accurately:
 This helps position the Laboratory as a practical workspace rather than a standalone testing
 surface.
 
-<br />
-<NextImage src={preflightImage} alt="Preflight Scripts" />
+<Image alt="Preflight Scripts" src={preflightImage} />
 
 ---
 
