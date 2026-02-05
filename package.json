@@ -14,6 +14,8 @@
     "typecheck": "turbo run typecheck",
     "postinstall": "node scripts/fix-nitro-nightly.mjs",
     "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "test:bun": "turbo run test:bun",
     "storybook": "cd packages/design-system && bun run storybook",
     "storybook:build": "cd packages/design-system && bun run storybook:build"
   },
