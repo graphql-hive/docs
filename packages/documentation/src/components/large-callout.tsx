@@ -19,7 +19,7 @@ export function LargeCallout({
   return (
     <article
       className={cn(
-        "mt-10 flex gap-6 rounded-2xl border border-transparent p-8 max-sm:flex-col sm:items-start sm:gap-12",
+        "not-prose mt-10 flex gap-6 rounded-2xl border border-transparent p-8 max-sm:flex-col sm:items-start sm:gap-12",
         variant === "primary" &&
           "bg-primary dark:bg-primary/1 dark:border-primary/5",
         variant === "secondary" &&

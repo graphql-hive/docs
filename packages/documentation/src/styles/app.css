@@ -57,8 +57,7 @@
 @source "../../**/*.tsx";
 @source "../../../design-system/src/**/*.tsx";
 
-/* Dark mode: .light class on html opts out of dark mode */
-@variant dark (&:where(.dark, .dark *):not(:where(.light, .light *)));
+@variant dark &:not(:where(.light, .light *));
 
 /* Nextra primary color HSL variables (used by @theguild/components) */
 :root {
