@@ -18,9 +18,7 @@ const config: Linter.Config[] = [
         {
           ignore: [
             "light",
-            "hive-focus",
-            "hive-label-separator",
-            "hive-slider",
+            "hive-*",
             "MarketplaceSearch",
             "nextra-banner",
             "nextra-bleed",
