@@ -1,3 +1,5 @@
+@reference "./app.css";
+
 .hive-prose {
   --nextra-content-width: 1208px;
   --article-max-width: 640px;
