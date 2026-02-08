@@ -18,7 +18,8 @@ export function YoutubeIframe({
     <iframe
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowFullScreen
-      className={cn("mt-6 h-[400px] w-full", className)}
+      className={cn("mt-6 h-100 w-full", className)}
+      referrerPolicy="strict-origin-when-cross-origin"
       sandbox="allow-scripts allow-presentation allow-same-origin allow-popups"
       src={src || `https://www.youtube.com/embed/${id}`}
       title={title}
