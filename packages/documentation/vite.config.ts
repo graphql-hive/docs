@@ -13,7 +13,11 @@ export default defineConfig({
   plugins: [
     !process.env["CI"] && devtools(),
     nitro({
-      preset: process.env["NITRO_PRESET"],
+      preset: process.env["WORKERS_CI"]
+        ? "cloudflare-module"
+        : process.env["VERCEL"]
+          ? "vercel"
+          : undefined,
     }),
     mdx(await import("./source.config")),
     tailwindcss(),
