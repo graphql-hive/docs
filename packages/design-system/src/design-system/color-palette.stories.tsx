@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "../cn";
 import { Meta, StoryObj } from "@storybook/react";
 import { designSystemDocsDecorator } from "../__storybook__/design-system-docs-decorator";
 
@@ -251,7 +251,7 @@ function ColorRow({
 }) {
   return (
     <article
-      className={clsx(
+      className={cn(
         className,
         "-mx-6 flex flex-col gap-4 px-6 pb-4 xl:gap-6 xl:pb-6",
       )}
@@ -278,7 +278,7 @@ function ColorSwatch({
 }) {
   return (
     <div
-      className={clsx(
+      className={cn(
         "rounded-2xl p-4 text-sm xl:p-6 dark:ring-1 dark:ring-white/5",
         className,
         dark ? "text-white" : "text-green-1000",
