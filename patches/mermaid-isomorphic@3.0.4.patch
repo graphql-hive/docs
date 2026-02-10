@@ -2,7 +2,7 @@ diff --git a/dist/mermaid-isomorphic.js b/dist/mermaid-isomorphic.js
 index aa5dc09a5dfb58a98d3f12cd2fc473caddd97b0d..7092adb582d3f0de1dd4edec532274654b786234 100644
 --- a/dist/mermaid-isomorphic.js
 +++ b/dist/mermaid-isomorphic.js
-@@ -1,12 +1,16 @@
+@@ -1,12 +1,17 @@
 -import { chromium } from 'playwright';
 +import { chromium as playwright } from 'playwright';
 +import chromium from '@sparticuz/chromium';
@@ -17,11 +17,12 @@ index aa5dc09a5dfb58a98d3f12cd2fc473caddd97b0d..7092adb582d3f0de1dd4edec53227465
  };
 +
 +chromium.setGraphicsMode = false;
++const executablePathPromise = process.env.CI ? chromium.executablePath() : undefined;
 +
  /* c8 ignore start */
  /**
   * Render mermaid diagrams in the browser.
-@@ -122,7 +126,21 @@ async function getBrowser(browserType, launchOptions) {
+@@ -122,7 +127,21 @@ async function getBrowser(browserType, launchOptions) {
   *   A function that renders Mermaid diagrams in the browser.
   */
  export function createMermaidRenderer(options = {}) {
@@ -36,7 +37,7 @@ index aa5dc09a5dfb58a98d3f12cd2fc473caddd97b0d..7092adb582d3f0de1dd4edec53227465
 +            launch: async () => playwright.launch({
 +                ...launchOptions,
 +                args: chromium.args,
-+                executablePath: await chromium.executablePath(),
++                executablePath: await executablePathPromise,
 +            })
 +        }
 +    }
