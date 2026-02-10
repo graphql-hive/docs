@@ -19,7 +19,7 @@ jobs:
 
       - name: build storybook
         run: bun run storybook:build
-        working-directory: packages/documentation
+        working-directory: packages/design-system
 
       - name: push to cloudflare pages
         uses: cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65 # v3.14.1
@@ -28,7 +28,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           command: |
-            pages deploy packages/documentation/storybook-static --project-name=the-guild-docs-storybook --branch=${{ github.event.pull_request.number != '' && format('pr-{0}', github.event.pull_request.number) || 'main' }}
+            pages deploy packages/design-system/storybook-static --project-name=the-guild-docs-storybook --branch=${{ github.event.pull_request.number != '' && format('pr-{0}', github.event.pull_request.number) || 'main' }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: find pr comment

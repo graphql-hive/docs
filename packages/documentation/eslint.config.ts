@@ -3,7 +3,7 @@ import type { Linter } from "eslint";
 import baseConfig from "@hasparus/eslint-config/the-guild";
 
 const config: Linter.Config[] = [
-  { ignores: ["e2e/**"] },
+  { ignores: ["e2e/**", "storybook-static/**"] },
   ...baseConfig,
   {
     files: ["**/*.tsx", "**/*.jsx"],
