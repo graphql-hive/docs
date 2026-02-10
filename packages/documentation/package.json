@@ -11,7 +11,7 @@
     "build": "vite build",
 "start": "bun .output/server/index.mjs",
     "typecheck": "bun --bun fumadocs-mdx && bun --bun tsc --noEmit",
-    "postinstall": "bun --bun fumadocs-mdx && bun playwright install chromium",
+    "postinstall": "bun --bun fumadocs-mdx && [ -z \"$WORKERS_CI\" ] && bun playwright install chromium || true",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:e2e": "bunx playwright test",
@@ -19,8 +19,8 @@
     "test:headed": "bunx playwright test --headed",
     "test:bun": "bun test src",
     "test": "bun test:e2e && bun test:bun",
-    "deploy": "wrangler deploy --cwd .output/",
-    "versions-upload": "wrangler versions upload --cwd .output/"
+    "deploy": "wrangler deploy",
+    "versions-upload": "wrangler versions upload"
   },
   "dependencies": {
     "@base-ui-components/react": "^1.0.0-rc.0",
