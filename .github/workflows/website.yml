@@ -14,33 +14,18 @@ jobs:
       - name: install dependencies
         run: bun install --frozen-lockfile
 
-      - name: "temporary deploy to Piotr's Vercel account"
+      - name: build
+        run: bun run build
+        working-directory: packages/documentation
         env:
-          VERCEL: "1"
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: team_yDNaxOv70B1OWKrLECwUJo5H
-          VERCEL_PROJECT_ID: prj_ISkyItJ2df8zZAS564zOrYQYxCxG
-        run: |
-          cd packages/documentation
-          bun i -g vercel
+          NITRO_PRESET: cloudflare-module
 
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            PROD_FLAG="--prod"
-          else
-            PROD_FLAG=""
-          fi
-
-          vercel pull --yes --token=$VERCEL_TOKEN
-          vercel build $PROD_FLAG
-          vercel deploy --prebuilt --token=$VERCEL_TOKEN $PROD_FLAG
-
-      # TODO: Deploy to Vercel or CloudFlare
-      # - uses: the-guild-org/shared-config/website-cf@main
-      #   name: build and deploy website
-      #   with:
-      #     cloudflareApiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      #     cloudflareAccountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      #     githubToken: ${{ secrets.GITHUB_TOKEN }}
-      #     projectName: hive-docs
-      #     prId: ${{ github.event.pull_request.number }}
-      #     mainBranch: main
+      - name: deploy to cloudflare workers
+        uses: cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65 # v3.14.1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          workingDirectory: packages/documentation
+          command: |
+            ${{ github.ref == 'refs/heads/main' && 'deploy' || 'versions upload' }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
