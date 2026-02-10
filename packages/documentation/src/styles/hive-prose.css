@@ -4,17 +4,26 @@
   --nextra-content-width: 1208px;
   --article-max-width: 640px;
 
-  @apply text-green-1000 dark:text-white;
+  @apply text-green-1000;
+  &:not(:where(.light, .light *)) {
+    @apply text-white;
+  }
 
   & img {
     @apply rounded-2xl;
   }
 
   & div:has(> blockquote) {
-    @apply bg-beige-100 mt-10 rounded-2xl p-6 dark:bg-neutral-800;
+    @apply bg-beige-100 mt-10 rounded-2xl p-6;
+    &:not(:where(.light, .light *)) {
+      @apply bg-neutral-800;
+    }
 
     & blockquote {
-      @apply text-green-1000 flex gap-6 border-none p-0 not-italic max-sm:flex-col sm:text-xl dark:text-white;
+      @apply text-green-1000 flex gap-6 border-none p-0 not-italic max-sm:flex-col sm:text-xl;
+      &:not(:where(.light, .light *)) {
+        @apply text-white;
+      }
 
       &::before {
         @apply bg-primary flex size-12 shrink-0 items-center justify-center rounded-2xl pt-2;
