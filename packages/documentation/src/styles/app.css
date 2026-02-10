@@ -48,11 +48,6 @@
   --font-sans: "PP Neue Montreal", system-ui, sans-serif;
 }
 
-/* Override Tailwind's font-sans to use our font */
-@theme {
-  --font-sans: "PP Neue Montreal", system-ui, sans-serif;
-}
-
 /* Source files to scan for Tailwind classes */
 @source "../../**/*.tsx";
 @source "../../../design-system/src/**/*.tsx";
@@ -93,65 +88,8 @@ button,
   }
 }
 
-/* Hive colors migrated from @theguild/tailwind-config */
+/* Docs-specific theme extensions */
 @theme {
-  --color-hive-yellow: #e1ff00;
-  --color-primary: #e1ff00;
-
-  --color-blue-100: #f4f5f5;
-  --color-blue-200: #dce3e4;
-  --color-blue-300: #c1d3d7;
-  --color-blue-400: #a4c4cb;
-  --color-blue-500: #86b6c1;
-  --color-blue-600: #68a8b6;
-  --color-blue-700: #4f96a6;
-  --color-blue-800: #437c89;
-  --color-blue-900: #39616a;
-  --color-blue-1000: #2e474c;
-
-  --color-green-100: #ecf6f3;
-  --color-green-200: #cae4de;
-  --color-green-300: #a7d5ca;
-  --color-green-400: #8cbeb3;
-  --color-green-500: #6aac9e;
-  --color-green-600: #55998d;
-  --color-green-700: #3b736a;
-  --color-green-800: #245850;
-  --color-green-900: #15433c;
-  --color-green-1000: #00342c;
-
-  --color-beige-100: #f8f7f6;
-  --color-beige-200: #f1eee4;
-  --color-beige-300: #e9e5da;
-  --color-beige-400: #dedacf;
-  --color-beige-500: #cfcabf;
-  --color-beige-600: #b9b4a9;
-  --color-beige-700: #a29e93;
-  --color-beige-800: #86827a;
-  --color-beige-900: #6d6a63;
-  --color-beige-1000: #4d4b46;
-
-  /* Functional colors */
-  --color-critical-bright: #fd3325;
-  --color-critical-dark: #f81202;
-  --color-warning-bright: #fe8830;
-  --color-positive-bright: #24d551;
-  --color-positive-dark: #1ba13d;
-
-  /* Subtle functional tones (for callouts) */
-  --color-warning-100: #fbf8cb;
-  --color-warning-500: #e7de62;
-  --color-warning-800: #7d7204;
-  --color-critical-100: #fff0e8;
-  --color-critical-500: #ffc6bb;
-  --color-critical-800: #932d47;
-  --color-info-100: #e7f7ff;
-  --color-info-500: #9fc9dc;
-  --color-info-800: #205b75;
-  --color-positive-100: #f3fbd7;
-  --color-positive-500: #afd563;
-  --color-positive-800: #406b10;
-
   /* Custom docs colors */
   --color-blueish-green: #003834;
   --color-dark: #111;
