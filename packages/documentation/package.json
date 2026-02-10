@@ -8,10 +8,10 @@
   "sideEffects": false,
   "scripts": {
     "dev": "bun --bun vite dev",
-    "build": "vite build",
+    "build": "node -e \"import('@sparticuz/chromium').then(m => m.default.executablePath())\" && vite build",
 "start": "bun .output/server/index.mjs",
     "typecheck": "bun --bun fumadocs-mdx && bun --bun tsc --noEmit",
-    "postinstall": "bun --bun fumadocs-mdx && [ -z \"$WORKERS_CI\" ] && bun playwright install chromium || true",
+    "postinstall": "bun --bun fumadocs-mdx && bun playwright install chromium",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:e2e": "bunx playwright test",
