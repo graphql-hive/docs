@@ -19,8 +19,8 @@
     "test:headed": "bunx playwright test --headed",
     "test:bun": "bun test src",
     "test": "bun test:e2e && bun test:bun",
-    "deploy": "wrangler deploy",
-    "versions-upload": "wrangler versions upload"
+    "deploy": "wrangler deploy --cwd .output/",
+    "versions-upload": "wrangler versions upload --cwd .output/"
   },
   "dependencies": {
     "@base-ui-components/react": "^1.0.0-rc.0",
