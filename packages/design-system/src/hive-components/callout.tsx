@@ -53,7 +53,7 @@ const calloutConfig: Record<
   },
 };
 
-export function Callout({ children, title, type }: CalloutProps) {
+export function Callout({ children, title, type = "info" }: CalloutProps) {
   const config = calloutConfig[type];
 
   if (!config) {
