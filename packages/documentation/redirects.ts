@@ -4,10 +4,7 @@ import type { NitroRouteRules } from "nitro/types";
  * Redirects ported from the old hive-console Next.js docs setup.
  * Preserves old URLs so bookmarks and external links don't break.
  */
-function redirect(
-  destination: string,
-  code: 301 | 302 = 301,
-): NitroRouteRules {
+function redirect(destination: string, code: 301 | 302 = 301): NitroRouteRules {
   return { redirect: { status: code, to: destination } };
 }
 
@@ -130,12 +127,12 @@ export const routeRules: Record<string, NitroRouteRules> = {
   "/docs/integrations/**": redirect("/docs/other-integrations"),
 
   // API reference
-  "/docs/api-reference/gateway/cli": redirect("/docs/api-reference/gateway-cli"),
+  "/docs/api-reference/gateway/cli": redirect(
+    "/docs/api-reference/gateway-cli",
+  ),
 
   // Use cases
-  "/docs/use-cases/apollo-studio": redirect(
-    "/docs/use-cases/apollo-graphos",
-  ),
+  "/docs/use-cases/apollo-studio": redirect("/docs/use-cases/apollo-graphos"),
 
   // Gateway
   "/docs/gateway/deployment/node-frameworks": redirect(

@@ -1,5 +1,5 @@
 export default {
-  probes: 'Probes',
-  usage_reporting: 'Usage Reporting',
-  tracing: 'OpenTelemetry Tracing',
+  probes: "Probes",
+  usage_reporting: "Usage Reporting",
+  tracing: "OpenTelemetry Tracing",
 };

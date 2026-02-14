@@ -41,7 +41,10 @@ export function EcosystemManagementSection({
                 </div>
                 <div>
                   Best in class{" "}
-                  <TextLink href="https://the-guild.dev/graphql/hive/federation-gateway-audit" variant="dark">
+                  <TextLink
+                    href="https://the-guild.dev/graphql/hive/federation-gateway-audit"
+                    variant="dark"
+                  >
                     compatibility with Apollo Federation spec
                   </TextLink>
                 </div>

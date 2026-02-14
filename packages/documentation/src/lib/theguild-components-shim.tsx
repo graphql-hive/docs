@@ -29,15 +29,25 @@ function Card({
       <span className="flex items-center gap-2 p-4 font-semibold text-gray-700 hover:text-gray-900 dark:text-neutral-200 dark:hover:text-neutral-50">
         {icon}
         {title}
-        {arrow && <span className="ml-auto transition-transform group-hover:translate-x-1">→</span>}
+        {arrow && (
+          <span className="ml-auto transition-transform group-hover:translate-x-1">
+            →
+          </span>
+        )}
       </span>
-      {children && <span className="px-4 pb-4 text-sm text-gray-500 dark:text-neutral-400">{children}</span>}
+      {children && (
+        <span className="px-4 pb-4 text-sm text-gray-500 dark:text-neutral-400">
+          {children}
+        </span>
+      )}
     </a>
   );
 }
 
 export function Cards({ children }: { children: React.ReactNode }) {
-  return <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">{children}</div>;
+  return (
+    <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">{children}</div>
+  );
 }
 Cards.Card = Card;
 

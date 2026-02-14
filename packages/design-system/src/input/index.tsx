@@ -14,7 +14,7 @@ export function Input({ message, severity = "neutral", ...props }: InputProps) {
       //       dark mode colors are kinda bad, but we don't really need
       //       them just yet as this is used on yellow backgrounds
       className={cn(
-        "rounded-[9px] border border-blue-400 bg-white outline-offset-2 focus-within:outline focus-within:outline-2 dark:border-neutral-400 dark:bg-neutral-800",
+        "rounded-[9px] border border-blue-400 bg-white outline-offset-2 focus-within:outline-2 dark:border-neutral-400 dark:bg-neutral-800",
         "focus-visible:outline-green-800/40",
         "[&:focus-within:has([aria-invalid],:invalid)]:outline-critical-dark [&:has([aria-invalid],:invalid)]:border-critical-dark/50",
         severity === "warning" &&

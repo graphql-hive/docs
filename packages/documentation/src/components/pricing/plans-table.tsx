@@ -198,7 +198,10 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink href="/docs/api-reference/graphql-api" target="_blank">
+                <TextLink
+                  href="/docs/api-reference/graphql-api"
+                  target="_blank"
+                >
                   GraphQL Management API
                 </TextLink>
               </PlansTableCell>
@@ -885,7 +888,10 @@ export function PlansTable({ className }: { className?: string }) {
             </tr>
             <tr>
               <PlansTableCell>
-                <TextLink href="/docs/schema-registry/management/audit-logs" target="_blank">
+                <TextLink
+                  href="/docs/schema-registry/management/audit-logs"
+                  target="_blank"
+                >
                   Audit logs
                 </TextLink>
               </PlansTableCell>

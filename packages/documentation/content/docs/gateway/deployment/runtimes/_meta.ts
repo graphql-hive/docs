@@ -1,5 +1,5 @@
 export default {
-  nodejs: 'Node.js',
-  bun: 'Bun',
-  deno: 'Deno',
+  nodejs: "Node.js",
+  bun: "Bun",
+  deno: "Deno",
 };
