@@ -1,12 +1,23 @@
 // Author data for team section
+import { type } from "arktype";
+
 import saihajPhoto from "./saihaj.webp";
 
-export interface Author {
-  avatar?: { blurDataURL?: string; src: string } | string;
-  github?: string;
-  link: string;
-  name: string;
-}
+const StaticImageData = type({
+  "blurDataURL?": "string",
+  "height?": "number",
+  src: "string",
+  "width?": "number",
+});
+
+export const Author = type({
+  "avatar?": type("string").or(StaticImageData),
+  "github?": "string",
+  link: "string",
+  name: "string",
+});
+
+export type Author = typeof Author.infer;
 
 export const authors: Record<string, Author> = {
   adam: {
@@ -73,6 +84,11 @@ export const authors: Record<string, Author> = {
     github: "n1ru4l",
     link: "https://twitter.com/n1rual",
     name: "Laurin Quast",
+  },
+  michael: {
+    github: "mskorokhodov",
+    link: "https://github.com/mskorokhodov",
+    name: "Michael Skorokhodov",
   },
   saihaj: {
     avatar: saihajPhoto,

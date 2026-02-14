@@ -41,7 +41,8 @@
   },
   "packageManager": "bun@1.3.5",
   "patchedDependencies": {
-    "mermaid-isomorphic@3.0.4": "patches/mermaid-isomorphic@3.0.4.patch"
+    "mermaid-isomorphic@3.0.4": "patches/mermaid-isomorphic@3.0.4.patch",
+    "@tanstack/start-plugin-core@1.147.1": "patches/@tanstack%2Fstart-plugin-core@1.147.1.patch"
   },
   "overrides": {
     "nitro": "npm:nitro-nightly@latest"

@@ -26,7 +26,8 @@ export const highlights: Record<Tab, Highlight[]> = {
       description:
         "Best in class support for Apollo Federation. Scores 100% in the Federation audit.",
       image: auditImage,
-      link: "/federation-gateway-audit",
+      // Deployed by https://github.com/graphql-hive/graphql-gateways-benchmark, routed on Cloudflare level
+      link: "https://the-guild.dev/graphql/hive/federation-gateway-audit",
       title: "Federation v1 and v2",
     },
     {

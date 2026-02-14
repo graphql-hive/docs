@@ -544,9 +544,10 @@ function HowFederationWorks(props: { className?: string }) {
                 - covering throughput (RPS), latency (p95/p99.9), CPU, memory
                 and resilience to failures.
                 <br />
+                {/* Deployed by https://github.com/graphql-hive/graphql-gateways-benchmark, routed on Cloudflare level */}
                 <a
                   aria-label="Open the GraphQL federation gateway performance benchmark"
-                  href="/graphql/hive/federation-gateway-performance"
+                  href="https://the-guild.dev/graphql/hive/federation-gateway-performance"
                   title="GraphQL federation gateway performance benchmark: methodology and results"
                 >
                   See results and methodology

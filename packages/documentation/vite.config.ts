@@ -10,6 +10,14 @@ import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      onwarn(warning, defaultHandler) {
+        if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
+        defaultHandler(warning);
+      },
+    },
+  },
   plugins: [
     !process.env["CI"] && devtools(),
     nitro({
@@ -48,8 +56,18 @@ export default defineConfig({
     }),
     tanstackStart({
       prerender: {
-        // TanStack Start prerender has path bug with Vercel preset
-        enabled: false, // todo: enable this
+        crawlLinks: true,
+        enabled: true,
+      },
+      sitemap: {
+        enabled: true,
+        host: "https://the-guild.dev/graphql/hive",
+      },
+      spa: {
+        enabled: true,
+        prerender: {
+          crawlLinks: true,
+        },
       },
     }),
     react(),

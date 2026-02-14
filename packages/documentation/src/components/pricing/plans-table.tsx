@@ -321,7 +321,7 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  href=" /docs/schema-registry/usage-reporting"
+                  href="/docs/schema-registry/usage-reporting"
                   target="_blank"
                 >
                   Operation usage reporting and insights
@@ -426,7 +426,7 @@ export function PlansTable({ className }: { className?: string }) {
                 <br />
                 <TextLink
                   className="text-sm text-green-800"
-                  href="/federation-gateway-audit"
+                  href="https://the-guild.dev/graphql/hive/federation-gateway-audit"
                   target="_blank"
                 >
                   Check out the federation audit
@@ -449,7 +449,7 @@ export function PlansTable({ className }: { className?: string }) {
                 <br />
                 <TextLink
                   className="text-sm text-green-800"
-                  href="/federation-gateway-audit"
+                  href="https://the-guild.dev/graphql/hive/federation-gateway-audit"
                   target="_blank"
                 >
                   Check out the federation audit
@@ -506,7 +506,7 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  href="docs/gateway/authorization-authentication#rolescope-based-authentication-rbac-with-requiresscope-directive"
+                  href="/docs/gateway/authorization-authentication#rolescope-based-authentication-rbac-with-requiresscope-directive"
                   target="_blank"
                 >
                   Role-based Access Control (RBAC)

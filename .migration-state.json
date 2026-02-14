@@ -3,7 +3,7 @@
   "sourceRepo": ".context/hive-console",
   "sourceBranch": "main",
   "targetSubdirectory": "temporary",
-  "lastSyncedCommit": "67e555651ecc7dae255a72b9587a82d1226b1420",
+  "lastSyncedCommit": "350c74f9848a60f49635e9bae71d89c709f6f45b",
   "migrations": [
     {
       "commit": "f09052749e7ec7a5f759566fac8e13eb3f833067",
@@ -220,6 +220,54 @@
       "author": "Piotr Monwid-Olechnowicz",
       "syncedAt": "2026-02-10T01:11:15.590Z",
       "mergeCommit": "a3d8b6cfbd97c8a2e0639dc441228a3b40c569e0"
+    },
+    {
+      "commit": "233c9b9d27ccf60f6a691c83dc8f43c02e07e2e0",
+      "date": "2026-02-10 10:54:18 +0100",
+      "message": "add Grafbase announcement blog post (#7663)",
+      "author": "Piotr Monwid-Olechnowicz",
+      "syncedAt": "2026-02-13T15:38:23.064Z",
+      "mergeCommit": "0d687d89fa6148b50cef47e89a20f71bd7a21b01"
+    },
+    {
+      "commit": "b03d318c4f3ba53eb723d23acfa9c558b7a5281b",
+      "date": "2026-02-10 13:23:10 +0200",
+      "message": "Upcoming Release Changes (#7668)",
+      "author": "TheGuildBot",
+      "syncedAt": "2026-02-13T15:38:23.309Z",
+      "mergeCommit": "2409f82b568096ed7727b38a3de9eb9ec8956c03"
+    },
+    {
+      "commit": "700e6a35a481c9e2221bdb49d774795c194d83ad",
+      "date": "2026-02-11 12:48:28 +0100",
+      "message": "docs: add dem linkz (#7679)",
+      "author": "Laurin",
+      "syncedAt": "2026-02-13T15:38:23.551Z",
+      "mergeCommit": "b3aff3ff41ea239799176d7da263cfce6e987351"
+    },
+    {
+      "commit": "6e9f9c66d2985283cd9a37e29cd1b6a5b430413f",
+      "date": "2026-02-11 14:49:00 +0100",
+      "message": "docs(router): document `telemetry` (#7658)",
+      "author": "Kamil Kisiela",
+      "syncedAt": "2026-02-13T15:38:23.784Z",
+      "mergeCommit": "7be266ecb1672bdea5c737afc0512d8860593ec7"
+    },
+    {
+      "commit": "e2fba097b3f1f0bac992dd29cb81eca97eb2ba5d",
+      "date": "2026-02-11 15:11:49 +0100",
+      "message": "Add a blog post header image and OG image to Grafbase post (#7680)",
+      "author": "Piotr Monwid-Olechnowicz",
+      "syncedAt": "2026-02-13T15:38:24.025Z",
+      "mergeCommit": "84a697241d04f64fa9e81e98b77ca7fc1177d0ad"
+    },
+    {
+      "commit": "350c74f9848a60f49635e9bae71d89c709f6f45b",
+      "date": "2026-02-12 15:29:28 +0200",
+      "message": "docs: add l2 cache documentation for persisted documents (#7463)",
+      "author": "Adam Benhassen",
+      "syncedAt": "2026-02-13T15:38:24.256Z",
+      "mergeCommit": "b30a12206574bc74d5d20298751c9dd963c049cc"
     }
   ]
 }
