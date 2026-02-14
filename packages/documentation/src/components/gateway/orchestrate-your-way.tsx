@@ -54,12 +54,12 @@ export function OrchestrateYourWay({
               text="Apollo Federation V2"
             />
             <LinkCard
-              href="/docs/get-started/first-steps#create-hive-project"
+              href="/docs/schema-registry/get-started/first-steps#create-hive-project"
               logo={<StitchingLogo />}
               text="Schema Stitching"
             />
             <LinkCard
-              href="/docs/get-started/schema-stitching"
+              href="/docs/schema-registry/get-started/schema-stitching"
               logo={<MonolithLogo />}
               text="Monolith/Single Schema"
             />

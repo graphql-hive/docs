@@ -118,7 +118,7 @@ function OSSFriendsPage() {
         </p>
         <CallToAction
           className="mx-auto mt-8"
-          href="/docs/get-started/apollo-federation"
+          href="/docs/schema-registry/get-started/apollo-federation"
           variant="primary-inverted"
         >
           Start building now

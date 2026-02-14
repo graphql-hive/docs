@@ -23,7 +23,7 @@ const terms = new Map<string[], string /* href */>([
     ["Content-Encoding"],
     "/docs/gateway/other-features/performance/compression",
   ],
-  [["Cost Limit"], "/docs/gateway/other-features/security/cost-limit"],
+  [["Cost Limit"], "/docs/gateway/other-features/security/demand-control"],
   [
     ["CSRF Prevention"],
     "/docs/gateway/other-features/security/csrf-prevention",
@@ -66,7 +66,7 @@ const terms = new Map<string[], string /* href */>([
   [["useMock", "Mocking"], "/docs/gateway/other-features/testing/mocking"],
   [
     ["useRequestDeduplication"],
-    "/docs/gateway/other-features/performance/deduplicate-request",
+    "/docs/gateway/other-features/performance/deduplicate-inflight-requests",
   ],
 ]);
 

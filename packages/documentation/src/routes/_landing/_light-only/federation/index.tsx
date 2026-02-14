@@ -309,7 +309,7 @@ function HowFederationWorks(props: { className?: string }) {
       <div className="mt-6 md:mt-16">
         <HowFederationWorksSection
           callToAction="How to publish subgraphs"
-          callToActionLink="/docs/get-started/apollo-federation#publish-subgraphs"
+          callToActionLink="/docs/schema-registry/get-started/apollo-federation#publish-subgraphs"
           callToActionTitle="Start by publishing your subgraphs to Hive"
           description={
             <>
@@ -756,7 +756,7 @@ function GetStarted(props: { className?: string }) {
       </p>
       <CallToAction
         className="mx-auto mt-8"
-        href="/docs/get-started/apollo-federation"
+        href="/docs/schema-registry/get-started/apollo-federation"
         title="Step by step guide to Apollo Federation"
         variant="primary"
       >

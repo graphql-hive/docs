@@ -159,7 +159,7 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  href="/docs/management/sso-oidc-provider"
+                  href="/docs/schema-registry/management/sso-oidc-provider"
                   target="_blank"
                 >
                   Single Sign-On (SSO)
@@ -179,7 +179,7 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  href="/docs/management/members-roles-permissions"
+                  href="/docs/schema-registry/management/members-roles-permissions"
                   target="_blank"
                 >
                   Role-based Access Control (RBAC)
@@ -198,7 +198,7 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink href="/docs/graphql-api" target="_blank">
+                <TextLink href="/docs/api-reference/graphql-api" target="_blank">
                   GraphQL Management API
                 </TextLink>
               </PlansTableCell>
@@ -371,7 +371,7 @@ export function PlansTable({ className }: { className?: string }) {
             <tr>
               <PlansTableCell>
                 <TextLink
-                  href="/docs/management/targets#conditional-breaking-changes"
+                  href="/docs/schema-registry/management/targets#conditional-breaking-changes"
                   target="_blank"
                 >
                   Traffic-based breaking change detection
@@ -885,7 +885,7 @@ export function PlansTable({ className }: { className?: string }) {
             </tr>
             <tr>
               <PlansTableCell>
-                <TextLink href="/docs/management/audit-logs" target="_blank">
+                <TextLink href="/docs/schema-registry/management/audit-logs" target="_blank">
                   Audit logs
                 </TextLink>
               </PlansTableCell>
