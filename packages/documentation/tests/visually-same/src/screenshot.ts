@@ -32,6 +32,23 @@ export async function setupBrowser(): Promise<{
   return { browser, context, page };
 }
 
+export async function navigateAndScreenshot(
+  page: Page,
+  url: string,
+  outputPath: string,
+  waitMs = 2000,
+): Promise<void> {
+  await page.goto(url, {
+    timeout: 30_000,
+    waitUntil: "load",
+  });
+
+  // Wait for any dynamic content to settle
+  await page.waitForTimeout(waitMs);
+
+  await captureScreenshot(page, outputPath);
+}
+
 export async function takeScreenshot(
   url: string,
   outputPath: string,
@@ -40,15 +57,7 @@ export async function takeScreenshot(
   const { browser, context, page } = await setupBrowser();
 
   try {
-    await page.goto(url, {
-      timeout: 30_000,
-      waitUntil: "load",
-    });
-
-    // Wait for any dynamic content to settle
-    await page.waitForTimeout(waitMs);
-
-    await captureScreenshot(page, outputPath);
+    await navigateAndScreenshot(page, url, outputPath, waitMs);
   } catch (error: unknown) {
     if (
       error instanceof Error &&
@@ -70,20 +79,26 @@ export async function takeAllScreenshots(
   onProgress?: (current: number, total: number, page: string) => void,
 ): Promise<void> {
   const { baseUrl, pages, productionUrl, screenshotsDir } = config;
+  const { browser, context, page } = await setupBrowser();
 
   // Determine which URL to use
   const useProduction = suffix === "production";
   const baseUrlToUse = useProduction ? productionUrl : baseUrl;
 
-  for (let i = 0; i < pages.length; i++) {
-    const page = pages[i];
-    const url = `${baseUrlToUse}${page.path}`;
-    const outputPath = `${screenshotsDir}/${page.name}-${suffix}.png`;
+  try {
+    for (let i = 0; i < pages.length; i++) {
+      const pageConfig = pages[i];
+      const url = `${baseUrlToUse}${pageConfig.path}`;
+      const outputPath = `${screenshotsDir}/${pageConfig.name}-${suffix}.png`;
 
-    if (onProgress) {
-      onProgress(i + 1, pages.length, page.name);
+      if (onProgress) {
+        onProgress(i + 1, pages.length, pageConfig.name);
+      }
+
+      await navigateAndScreenshot(page, url, outputPath);
     }
-
-    await takeScreenshot(url, outputPath);
+  } finally {
+    await context.close();
+    await browser.close();
   }
 }
