@@ -53,7 +53,29 @@ export const productUpdates = defineCollections({
 export default defineConfig({
   mdxOptions: {
     rehypeCodeOptions: {
-      langs: ["js", "jsx", "ts", "tsx"],
+      langs: [
+            "bash",
+            "diff",
+            "dockerfile",
+            "go",
+            "graphql",
+            "javascript",
+            "js",
+            "json",
+            "json5",
+            "jsonc",
+            "jsx",
+            "php",
+            "python",
+            "ruby",
+            "rust",
+            "sh",
+            "toml",
+            "ts",
+            "tsx",
+            "typescript",
+            "yaml",
+          ],
       themes: {
         dark: "github-dark",
         light: "github-light",
@@ -70,6 +92,13 @@ export default defineConfig({
       mermaidConfig(),
       ...plugins,
     ],
+    remarkImageOptions: {
+      // Allow external images (e.g. GitHub user-attachments) to render without
+      // explicit dimensions when fetching their size fails.
+      onError(e) {
+        console.warn(e);
+      },
+    },
   },
 });
 
