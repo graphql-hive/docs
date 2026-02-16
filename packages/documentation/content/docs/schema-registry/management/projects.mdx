@@ -2,8 +2,8 @@
 title: Project Management
 ---
 
-import { Callout } from '@theguild/components'
-import NextImage from 'next/image'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Image } from '@hive/design-system/image'
 
 import projectImage from '../../../../public/docs/pages/first-steps/project.png'
 import slackIntegrationImage from '../../../../public/docs/pages/management/org-slack-integration.png'
@@ -36,7 +36,7 @@ Hive supports the following project types:
 
 To create a new project, click on **Create Project +** button from your organization's main page:
 
-<NextImage
+<Image
   alt="Create Project Form"
   className="mt-10 max-w-lg rounded-lg drop-shadow-md"
   src={projectImage}
@@ -72,7 +72,7 @@ Having a Project connected with your GitHub repositories gives you the following
 - Have direct connection between a schema version and a Git commit in your repository in Hive
   dashboard.
 
-<NextImage
+<Image
   alt="Associated Git"
   className="mt-6 max-w-lg rounded-lg drop-shadow-md"
   src={projectGitLinkImage}
@@ -125,7 +125,7 @@ At the moment, Hive supports the following transports to ship your alerts and no
 Integrating your project with a Slack channel will allow you to receive alerts and notifications
 shipped directly to a Slack channel.
 
-<NextImage
+<Image
   alt="Hive Slack Message"
   className="mt-6 max-w-lg rounded-lg drop-shadow-md"
   src={slackIntegrationImage}
@@ -137,7 +137,7 @@ To integrate your **project** with a Slack channel, you first need to
 Once you have activated the Slack integration, you can configure a Slack channel to connect to your
 Hive project:
 
-<NextImage
+<Image
   alt="Hive and Slack Configuration"
   className="mt-6 max-w-sm rounded-lg drop-shadow-md"
   src={slackAlertFormImage}
@@ -164,7 +164,7 @@ https://USERNAME.webhook.office.com/webhookb2/XXXXX/IncomingWebhook/YYYY/ZZZZZ
 You can find more information on how to set up a webhook in MS Teams in the
 [official documentation - Create Incoming Webhooks](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=newteams%2Cdotnet).
 
-<NextImage
+<Image
   alt="MS Teams Alert Configuration"
   className="mt-6 max-w-sm rounded-lg drop-shadow-md"
   src={msteamsFormImage}
@@ -190,7 +190,7 @@ a notification is triggered.
   address must contain a valid hostname (not an IP address), and the port must be standard.
 </Callout>
 
-<NextImage
+<Image
   alt="HTTP Alert Configuration"
   className="mt-6 max-w-sm rounded-lg drop-shadow-md"
   src={projectHttpAlertImage}

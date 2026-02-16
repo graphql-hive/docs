@@ -29,6 +29,7 @@ const dateString = type("string | Date").pipe((v) =>
 );
 
 export const caseStudies = defineCollections({
+  async: true,
   dir: "content/case-studies",
   schema: type({
     authors: author.array().default(() => []),
@@ -38,10 +39,10 @@ export const caseStudies = defineCollections({
     title: "string",
   }),
   type: "doc",
-  async: true,
 });
 
 export const productUpdates = defineCollections({
+  async: true,
   dir: "content/product-updates",
   schema: type({
     authors: author.array().default(() => []),
@@ -50,7 +51,6 @@ export const productUpdates = defineCollections({
     title: "string",
   }),
   type: "doc",
-  async: true,
 });
 
 export default defineConfig({

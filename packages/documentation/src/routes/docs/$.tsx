@@ -1,7 +1,7 @@
-import { Footer, Navigation } from "@/components/navigation";
+import { Footer } from "@/components/navigation";
 import { PageActions } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
-import { source } from "@/lib/source";
+import { getSource } from "@/lib/source";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
@@ -31,6 +31,7 @@ const serverLoader = createServerFn({
 })
   .inputValidator((slugs: string[]) => slugs)
   .handler(async ({ data: slugs }) => {
+    const source = await getSource();
     const page = source.getPage(slugs);
     if (!page) throw notFound();
 
@@ -85,8 +86,7 @@ function Page() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navigation mobileHidden />
-      <DocsLayout {...baseOptions()} tree={data.pageTree}>
+      <DocsLayout {...baseOptions(data.pageTree)} searchToggle={{ enabled: false }}>
         {clientLoader.useContent(data.path, {
           className: "",
           githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,

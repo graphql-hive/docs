@@ -2,8 +2,10 @@
 title: Organization Management
 ---
 
-import { Callout, ContactTextLink, Tabs } from '@theguild/components'
-import NextImage from 'next/image'
+import { ContactTextLink } from '@hive/design-system/contact-us'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Image } from '@hive/design-system/image'
+import { Tabs } from '@hive/design-system/tabs'
 
 import orgImage from '../../../../public/docs/pages/first-steps/org.png'
 import newOrgImage from '../../../../public/docs/pages/management/create-an-organization-button.png'
@@ -27,7 +29,7 @@ To create a new organization, [you use this page directly](https://app.graphql-h
 Alternatively, you can create a new Hive organization by clicking on your user profile and selecting
 **Switch organization**. From there, click on the **Create an organization** button.
 
-<NextImage
+<Image
   alt="Creating an organization"
   className="mt-8 max-w-sm rounded-lg drop-shadow-md"
   src={newOrgImage}
@@ -35,7 +37,7 @@ Alternatively, you can create a new Hive organization by clicking on your user p
 
 Follow the instructions and choose a unique slug for your organization:
 
-<NextImage
+<Image
   alt="Create Organization Form"
   className="mt-8 max-w-lg rounded-lg drop-shadow-md"
   src={orgImage}
@@ -56,7 +58,7 @@ your GraphQL schemas.
 Additionally, this integration can help you to collaborate more effectively with your team members,
 as you can share information and updates in real-time, ensuring that everyone is on the same page.
 
-<NextImage
+<Image
   alt="Hive and Slack Integration"
   className="mt-8 max-w-2xl rounded-lg drop-shadow-md"
   src={slackIntegrationImage}

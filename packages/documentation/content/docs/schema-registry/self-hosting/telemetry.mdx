@@ -2,7 +2,7 @@
 title: Telemetry / Error Handling
 ---
 
-import { Steps } from '@theguild/components'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
 
 # Telemetry / Error Handling
 
@@ -16,7 +16,7 @@ how we can improve it. Telemetry is disabled by default.
 ## OpenTelemetry Traces
 
 <Steps>
-
+<Step>
 ### Prepare your OpenTelemetry Backend
 
 To enable [OpenTelemetry](https://opentelemetry.io/) traces for your Hive instance, start by running
@@ -70,7 +70,9 @@ Alternatively, you can use
 [these following instructions for running a Grafana with Tempo service locally using Docker](https://grafana.com/docs/tempo/latest/getting-started/docker-example/).
 In that case, use `OPENTELEMETRY_COLLECTOR_ENDPOINT="http://localhost:4318/v1/traces"` as the OTLP
 endpoint.
+</Step>
 
+<Step>
 ### Configure Hive to send traces to the OTLP Collector
 
 To instruct Hive to send traces to the OTLP Collector, you need to set the following environment
@@ -79,7 +81,7 @@ variable:
 ```
 OPENTELEMETRY_COLLECTOR_ENDPOINT="http://localhost:4318"
 ```
-
+</Step>
 </Steps>
 
 ## OpenTelemetry Metrics

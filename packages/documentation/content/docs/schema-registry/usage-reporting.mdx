@@ -2,8 +2,8 @@
 title: GraphQL Schema Usage Insights
 ---
 
-import { Callout } from '@theguild/components'
-import NextImage from 'next/image'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Image } from '@hive/design-system/image'
 
 import usageClientsImage from '../../../public/docs/pages/features/usage-clients.png'
 import usageLatencyImage from '../../../public/docs/pages/features/usage-latency-over-time.png'
@@ -65,7 +65,7 @@ have an unacceptable error rate.
 By clicking on a specific query, you'll be able to see the full list of fields and arguments used in
 the operation.
 
-<NextImage
+<Image
   alt="Insights"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={usageOperationsImage}
@@ -82,7 +82,7 @@ From Insights, you'll be able to see the following metrics of your GraphQL API:
 5. Error-rate of the executed operations
 6. Latency (`p99`, `p95` and `p90`)
 
-<NextImage
+<Image
   alt="Usage Statistics View"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={usageStatsImage}
@@ -93,7 +93,7 @@ From Insights, you'll be able to see the following metrics of your GraphQL API:
 A breakdown of the clients who are using your GraphQL gateway, and the amount of operations executed
 by each client.
 
-<NextImage
+<Image
   alt="Clients Overview"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={usageClientsImage}
@@ -106,7 +106,7 @@ performance:
 
 1. **Operations time**: the amount of GraphQL operations executed over time.
 
-<NextImage
+<Image
   alt="Operations Over Time"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={usageOperationsOverTimeImage}
@@ -114,7 +114,7 @@ performance:
 
 2. **RPM over time**: the amount of GraphQL operations executed per minute over time.
 
-<NextImage
+<Image
   alt="RPM Over Time"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={usageRpmImage}
@@ -122,7 +122,7 @@ performance:
 
 3. **Latency over time**: the latency of GraphQL operations over time.
 
-<NextImage
+<Image
   alt="Latency Over Time"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={usageLatencyImage}

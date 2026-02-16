@@ -2,8 +2,10 @@
 title: External Schema Composition
 ---
 
-import { Callout, Steps, Tabs } from '@theguild/components'
-import NextImage from 'next/image'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Image } from '@hive/design-system/image'
+import { Tabs } from '@hive/design-system/tabs'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
 
 import externalCompositionInvalid from '../../../public/docs/pages/management/external-composition-invalid.png'
 import externalCompositionValid from '../../../public/docs/pages/management/external-composition-valid.png'
@@ -48,7 +50,9 @@ address must contain a valid hostname (not an IP address), and the port must be 
 ## Integration Guide
 
 <Steps>
+<Step>
 
+<Step>
 ### Deploy External Composition Service
 
 <Tabs items={['One-click Deployment', 'Pre-built Docker Image', 'JavaScript Library']}>
@@ -217,13 +221,18 @@ function verifyRequest(input) {
 
   </Tabs.Tab>
 </Tabs>
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Connect to Hive
 
 Start by enabling the **External Composition** for your project. To do that, go to your Hive project
 page, and click the **Settings** tab. You'll notice a **"External Composition"** section.
 
-<NextImage
+<Image
   alt="External Composition section in the project settings"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
   src={externalCompositionOff}
@@ -232,7 +241,7 @@ page, and click the **Settings** tab. You'll notice a **"External Composition"**
 Next, provide the URL of your deployed endpoint, and also set the secret you set for your service.
 Click **Save**.
 
-<NextImage
+<Image
   alt="External Composition section in the project settings"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
   src={externalCompositionOn}
@@ -241,7 +250,7 @@ Click **Save**.
 If your service is available publicly and the secret matches, you should see a green checkmark next
 to the URL:
 
-<NextImage
+<Image
   alt="Valid External Composition"
   className="mt-6 max-w-xl rounded-lg drop-shadow-md"
   src={externalCompositionValid}
@@ -249,7 +258,7 @@ to the URL:
 
 In case of a failure, you'll see a red cross with the reason of the failure:
 
-<NextImage
+<Image
   alt="Valid External Composition"
   className="mt-6 max-w-xl rounded-lg drop-shadow-md"
   src={externalCompositionInvalid}
@@ -258,7 +267,8 @@ In case of a failure, you'll see a red cross with the reason of the failure:
 Now you should be able to use the **External Composition** feature in your project.
 [Publish a GraphQL schema](/docs/schema-registry#publish-a-schema) or perform a
 [GraphQL schema check](/docs/schema-registry#check-a-schema) to validate your setup.
-
+</Step>
+</Step>
 </Steps>
 
 ## Protocol Specification

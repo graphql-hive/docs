@@ -1,9 +1,11 @@
 import type { StaticImageData } from "@hive/design-system/image";
 
+import { cn } from "@hive/design-system";
 import { HiveFooter } from "@hive/design-system/hive-footer";
 import {
   GraphQLConfCard,
   HiveNavigation,
+  HiveNavigationMenuIcon,
 } from "@hive/design-system/hive-navigation";
 import {
   AccountBox,
@@ -14,6 +16,7 @@ import {
   TargetIcon,
 } from "@hive/design-system/icons";
 import { PRODUCTS } from "@hive/design-system/products";
+import { SidebarTrigger } from "fumadocs-ui/components/sidebar/base";
 
 import graphQLConfImageSrc from "./graphql-conf-image.webp";
 import { SearchTrigger } from "./search-placeholder";
@@ -61,21 +64,26 @@ const footerItems = {
   ],
 };
 
-export function Navigation({
-  className,
-  mobileHidden,
-}: {
-  className?: string;
-  mobileHidden?: boolean;
-}) {
+export function Navigation({ className }: { className?: string }) {
   return (
     <HiveNavigation
       className={className}
       companyMenuChildren={<GraphQLConfCard image={graphQLConfImage} />}
       developerMenu={developerMenu}
-      mobileHidden={mobileHidden}
       productName={PRODUCTS.HIVE.name}
       search={<SearchTrigger />}
+      sidebarTrigger={
+        <SidebarTrigger
+          className="-m-1 rounded-lg bg-transparent p-1 text-green-1000 focus-visible:outline-hidden focus-visible:ring-3 active:bg-beige-200 md:hidden dark:text-neutral-200 dark:active:bg-neutral-800"
+          type="button"
+        >
+          <HiveNavigationMenuIcon
+            className={cn(
+              "size-6 stroke-current [&_path]:[stroke-linecap:square]",
+            )}
+          />
+        </SidebarTrigger>
+      }
     />
   );
 }

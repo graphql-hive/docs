@@ -2,8 +2,9 @@
 title: Get started with a Single Schema / Monorepo
 ---
 
-import NextImage from 'next/image'
-import { Callout, Steps } from '@theguild/components'
+import { Image } from '@hive/design-system/image'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
 import cdnTokenImage from '../../../../public/docs/pages/guides/cdn_token.png'
 import historyImage from '../../../../public/docs/pages/guides/history.png'
 import tokenImage from '../../../../public/docs/pages/guides/token.png'
@@ -19,7 +20,9 @@ schema to the registry. This guide will guide you through the basics of schema p
 fetching.
 
 <Steps>
+<Step>
 
+<Step>
 ### Your GraphQL Schema
 
 If you already have a GraphQL schema from your project, you can use it directly. The Hive CLI can
@@ -58,7 +61,12 @@ enum UserRole {
   ADMIN
 }
 ```
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Create Access Token
 
 In order to publish our subgraph schemas to the schema registry, we first need to create an access
@@ -70,7 +78,7 @@ Click `Create new access token` and enter a name for the access token.
 
 import accessTokensCreateNewImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-create-new.png'
 
-<NextImage
+<Image
   src={accessTokensCreateNewImage}
   alt="Create new access token button within the organization settings access token section"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
@@ -81,7 +89,7 @@ Click `Next` and select `Allowed` for `Check schema/service subgraph`,
 
 import accessTokensPermissionsImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-permissions.png'
 
-<NextImage
+<Image
   src={accessTokensPermissionsImage}
   alt="Grant the permissions required for publishing and checking schemas"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
@@ -92,7 +100,7 @@ purpose of this guide there is no need to further restirct the resources.
 
 import accessTokensResourcesImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-resources.png'
 
-<NextImage
+<Image
   src={accessTokensResourcesImage}
   alt="Grant full access on all resources"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
@@ -102,7 +110,7 @@ One last time click `Next` and review the access token.
 
 import accessTokensConfirmImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-confirm.png'
 
-<NextImage
+<Image
   src={accessTokensConfirmImage}
   alt="Review the permissions"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
@@ -113,14 +121,19 @@ generated token.
 
 import accessTokensSuccessImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-success.png'
 
-<NextImage
+<Image
   src={accessTokensSuccessImage}
   alt="Successful access token creation"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
 />
 
 Make sure to copy your token and keep it safe. **You won't be able to see it again.**
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Publish your first schema
 
 As you may have noticed, Hive has created three targets under your project: `development`,
@@ -129,7 +142,7 @@ Hive offers.
 
 import targetOverview from '../../../../public/docs/pages/get-started/apollo-federation/target-overview.png'
 
-<NextImage
+<Image
   src={targetOverview}
   alt="Project overview showing the available targets"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
@@ -170,7 +183,12 @@ new schema you just published 🎉
   You should also check out the **Explorer** tab: you can see the schema you just published, and
   explore the API types, fields, and arguments.
 </Callout>
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Schema Checks
 
 Hive can perform several checks on your schema before publishing it to the registry. You can use
@@ -280,7 +298,12 @@ that the schema check failed:
 - Type Viewer was added
 - Field location was added to object type User
 ```
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Evolve your schema
 
 Now that you have your schema published, you can evolve it over time. You can add new types, fields,
@@ -313,12 +336,17 @@ You should see now that Hive accepted your published schema and updated the regi
 It's a good timing to check the **History** tab of your Hive target. You should see that a new
 schema is published now, and you can see the changes you made:
 
-<NextImage
+<Image
   alt="Schema History"
   src={historyImage}
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
 />
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Fetch your schema
 
 Now that your GraphQL schema is stored in the Hive registry, you can access and fetch it through
@@ -352,7 +380,7 @@ To use your access token, go to your target's page on Hive's dashboard and click
 CDN** button. You will see a screen with instructions on how to obtain different types of artifacts
 from the CDN. For this guide, you can pick the **GraphQL SDL** artifact.
 
-<NextImage
+<Image
   alt="CDN Token Form"
   src={cdnTokenImage}
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
@@ -366,7 +394,12 @@ curl -L -H "X-Hive-CDN-Key: YOUR_HIVE_CDN_TOKEN" CDN_ENDPOINT_HERE
 ```
 
 You should see that Hive CDN returns your full GraphQL schema as an output for that command.
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Next Steps
 
 Now that you use the basic functionality of Hive as a schema registry, we recommend following other
@@ -377,5 +410,6 @@ powerful features of Hive:
 - [Conditional Breaking Changes](/docs/schema-registry/management/targets#conditional-breaking-changes)
 - [Alerts and Notifications](/docs/schema-registry/management/projects#alerts-and-notifications)
 - [Schema Policies](/docs/schema-registry/schema-policy)
-
+</Step>
+</Step>
 </Steps>

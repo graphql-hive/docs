@@ -2,8 +2,9 @@
 title: Access Tokens
 ---
 
-import NextImage from 'next/image'
-import { Callout, Steps } from '@theguild/components'
+import { Image } from '@hive/design-system/image'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
 
 # Access Tokens
 
@@ -92,18 +93,25 @@ Depending on the type of access token you are creating, navigate either to the o
 `Access Tokens` subpage for creating `Project Access Tokens`
 
 <Steps>
+<Step>
 
+<Step>
 ### Ensure sufficient permissions
 
 To create an Access Token in GraphQL Hive, you must have the `Manage Access Token` permission at the
 organization level. Tokens are created at the **organization level** and can be managed (created or
 deleted) by any user with sufficient permissions.
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Navigate to Access Token Settings
 
 import accessTokensTabImage from '../../../../public/docs/pages/management/access-tokens/access-tokens-tab-settings.png'
 
-<NextImage
+<Image
   alt="Organization Access Tokens Section"
   src={accessTokensTabImage}
   className="mt-8 rounded-lg drop-shadow-md"
@@ -113,19 +121,24 @@ Go to the `Settings` tab of your organization and open the `Access Tokens` secti
 
 import accessTokenCreateButtonImage from '../../../../public/docs/pages/management/access-tokens/access-token-create-button.png'
 
-<NextImage
+<Image
   alt="Create access token button"
   src={accessTokenCreateButtonImage}
   className="mt-8 rounded-lg drop-shadow-md"
 />
 
 Click `Create new access token`.
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Enter General Information
 
 import accessTokenEnterGeneralImage from '../../../../public/docs/pages/management/access-tokens/access-token-enter-general.png'
 
-<NextImage
+<Image
   alt="Enter general access token information"
   src={accessTokenEnterGeneralImage}
   className="mt-8 rounded-lg drop-shadow-md"
@@ -134,12 +147,17 @@ import accessTokenEnterGeneralImage from '../../../../public/docs/pages/manageme
 Provide a clear **title** and **description** to help your team understand the token’s purpose.
 
 Confirm your selection by clicking `Next`.
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Select Permission Scopes
 
 import accessTokenPermissionsImage from '../../../../public/docs/pages/management/access-tokens/access-token-permissions.png'
 
-<NextImage
+<Image
   alt="Select permission scopes for the access token"
   src={accessTokenPermissionsImage}
   className="mt-8 rounded-lg drop-shadow-md"
@@ -153,7 +171,12 @@ Choose the permissions the token should have.
 </Callout>
 
 Confirm your selection by clicking `Next`.
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Select Resources
 
 Decide if the token should have access to:
@@ -163,28 +186,38 @@ Decide if the token should have access to:
 
 import accessTokenResourcesImage from '../../../../public/docs/pages/management/access-tokens/access-token-resources.png'
 
-<NextImage
+<Image
   alt="Select resources for the access token"
   src={accessTokenResourcesImage}
   className="mt-8 rounded-lg drop-shadow-md"
 />
 
 Confirm your selection by clicking `Next`.
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Review and Create
 
 Carefully review all the details—title, description, scopes, and resource assignments.
 
 import accessTokenConfirmImage from '../../../../public/docs/pages/management/access-tokens/access-token-confirm.png'
 
-<NextImage
+<Image
   alt="Confirm permissions and scopes on the access token"
   src={accessTokenConfirmImage}
   className="mt-8 rounded-lg drop-shadow-md"
 />
 
 When you're ready, click `Create Access Token`.
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Save your Token
 
 After creation, your **access token key** will be displayed once.
@@ -196,12 +229,13 @@ After creation, your **access token key** will be displayed once.
 
 import accessTokenCreateSuccessImage from '../../../../public/docs/pages/management/access-tokens/access-token-create-success.png'
 
-<NextImage
+<Image
   alt="Confirm permissions and scopes on the access token"
   src={accessTokenCreateSuccessImage}
   className="mt-8 rounded-lg drop-shadow-md"
 />
-
+</Step>
+</Step>
 </Steps>
 
 ## Deleting Access Tokens
@@ -210,7 +244,7 @@ Within the Access Token overview, click the three dots icon for opening the cont
 
 import accessTokenMoreMenuImage from '../../../../public/docs/pages/management/access-tokens/access-token-more-menu.png'
 
-<NextImage
+<Image
   alt="Open the actions for the access token by pressing the three dot icon on the end of the row."
   src={accessTokenMoreMenuImage}
   className="mt-8 rounded-lg drop-shadow-md"
@@ -220,7 +254,7 @@ Within that menu, click the `Delete` menu item.
 
 import accessTokenDeleteActionImage from '../../../../public/docs/pages/management/access-tokens/access-token-delete-action.png'
 
-<NextImage
+<Image
   alt="Delete the access token by selection the delete action in the menu."
   src={accessTokenDeleteActionImage}
   className="mt-8 rounded-lg drop-shadow-md"
@@ -230,7 +264,7 @@ Confirm the deletion within the dialog.
 
 import accessTokenDeleteConfirmImage from '../../../../public/docs/pages/management/access-tokens/access-token-delete-confirm.png'
 
-<NextImage
+<Image
   alt="Confirm the deletion within the dialogue."
   src={accessTokenDeleteConfirmImage}
   className="mt-8 rounded-lg drop-shadow-md"

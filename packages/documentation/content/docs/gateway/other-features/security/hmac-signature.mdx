@@ -4,7 +4,8 @@ title: HMAC Signature
 searchable: false
 ---
 
-import { Callout, Steps } from '@theguild/components'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
 
 # HMAC Signature
 
@@ -47,14 +48,16 @@ flowchart LR
 ## How to use?
 
 <Steps>
-
+<Step>
 ### Step 1: Gather your secret key
 
 Before you start, you need to have a secret key that will be used for HMAC signing and verification.
 
 The secret key should be a random, opaque string, that will be shared between the Hive Gateway and
 the subgraphs validating the HMAC signature.
+</Step>
 
+<Step>
 ### Step 2: HMAC Signing in Hive Gateway
 
 ```ts
@@ -72,7 +75,9 @@ Now, every GraphQL request sent to the upstream GraphQL subgraphs will be signed
 the `extensions` of the upstream request will contain the HMAC signature.
 
 To configure the subgraph verification of the HMAC signature, please follow the next step.
+</Step>
 
+<Step>
 ### Step 3: HMAC Verification in Subgraph services
 
 The next step is to perform a verification over the sent HMAC signature in the subgraph services:
@@ -192,7 +197,7 @@ Here's an example of an incoming subgraph request with the HMAC signature:
 
 > The signature is produced by the Hive Gateway using the shared secret key, and the serialized
 > request (query and variables).
-
+</Step>
 </Steps>
 
 ## Configuration

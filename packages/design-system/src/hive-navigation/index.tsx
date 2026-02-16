@@ -3,13 +3,11 @@
 import { useLocation } from "@tanstack/react-router";
 import React, {
   ComponentProps,
-  createContext,
   FC,
   forwardRef,
   Fragment,
   ReactElement,
   ReactNode,
-  useContext,
   useEffect,
   useEffectEvent,
   useRef,
@@ -50,22 +48,6 @@ import {
 
 export * from "./graphql-conf-card";
 
-// Menu context for hamburger menu state (replaces nextra-theme-docs useMenu/setMenu)
-const MenuContext = createContext<{
-  menu: boolean;
-  setMenu: React.Dispatch<React.SetStateAction<boolean>>;
-  // eslint-disable-next-line @typescript-eslint/no-empty-function -- context default
-}>({ menu: false, setMenu: () => {} });
-
-function useMenu() {
-  return useContext(MenuContext).menu;
-}
-
-function useSetMenu() {
-  return useContext(MenuContext).setMenu;
-}
-
-// useMounted hook (replaces nextra/hooks useMounted)
 function useMounted() {
   const [mounted, setMounted] = useState(false);
   // eslint-disable-next-line react-hooks/set-state-in-effect -- standard useMounted pattern
@@ -73,8 +55,7 @@ function useMounted() {
   return mounted;
 }
 
-// MenuIcon component (replaces nextra/icons MenuIcon)
-function SidebarIcon({
+export function HiveNavigationMenuIcon({
   className,
   ...props
 }: React.SVGProps<SVGSVGElement> & { className?: string }) {
@@ -92,8 +73,15 @@ function SidebarIcon({
       width="24"
       {...props}
     >
-      <rect height="18" rx="2" width="18" x="3" y="3" />
-      <path d="M9 3v18" />
+      <path
+        className="origin-center transition-transform in-[.open]:translate-y-1.25 in-[.open]:rotate-45"
+        d="M4 7h16"
+      />
+      <path className="transition-opacity in-[.open]:opacity-0" d="M4 12h16" />
+      <path
+        className="origin-center transition-transform in-[.open]:-translate-y-1.25 in-[.open]:-rotate-45"
+        d="M4 17h16"
+      />
     </svg>
   );
 }
@@ -119,12 +107,10 @@ export type HiveNavigationProps = {
    */
   developerMenu: DeveloperMenuProps["developerMenu"];
   logo?: ReactNode;
-  mobileActions?: ReactNode;
-  /** Hide the entire navigation on mobile viewports. */
-  mobileHidden?: boolean;
   navLinks?: { children: ReactNode; href: string }[];
   productName: string;
   search?: ReactElement;
+  sidebarTrigger?: ReactElement;
 };
 
 /**
@@ -145,11 +131,10 @@ export function HiveNavigation({
   companyMenuChildren,
   developerMenu,
   logo,
-  mobileActions,
-  mobileHidden,
   navLinks,
   productName,
   search,
+  sidebarTrigger,
 }: HiveNavigationProps) {
   // Default values that depend on productName need to be set here
   const resolvedLogo = logo ?? <HiveLogoLink isHive={productName === "Hive"} />;
@@ -166,7 +151,7 @@ export function HiveNavigation({
 
   return (
     <div
-      className="sticky top-0 z-20 border-b border-beige-400/(--border-opacity) bg-[rgb(var(--nextra-bg))] px-6 py-4 text-green-1000 transition-[border-color] duration-500 md:mb-[7px] md:mt-2 dark:border-neutral-700/(--border-opacity) dark:text-neutral-200"
+      className="sticky top-0 z-20 border-b border-beige-400/(--border-opacity) bg-[rgb(var(--nextra-bg))] px-6 py-4 text-green-1000 transition-[border-color] duration-500 md:mb-1.75 md:mt-2 dark:border-neutral-700/(--border-opacity) dark:text-neutral-200"
       ref={containerRef}
       style={{ "--border-opacity": "0%" } as React.CSSProperties}
     >
@@ -180,16 +165,13 @@ export function HiveNavigation({
         }}
       />
 
-      {/* mobile menu */}
-      {!mobileHidden && (
-        <div className="flex items-center justify-between md:hidden">
-          {resolvedLogo}
-          <div className="flex items-center gap-1">
-            {mobileActions}
-            <SidebarToggleButton />
-          </div>
+      <div className="flex items-center justify-between md:hidden">
+        {resolvedLogo}
+        <div className="flex items-center gap-1">
+          {search}
+          {sidebarTrigger}
         </div>
-      )}
+      </div>
 
       {/* desktop menu */}
       <NavigationMenu
@@ -671,26 +653,6 @@ function HiveLogoLink({ isHive }: { isHive: boolean }) {
     >
       <HiveCombinationMark className="text-green-1000 dark:text-neutral-200" />
     </Anchor>
-  );
-}
-
-function SidebarToggleButton() {
-  const menu = useMenu();
-  const setMenu = useSetMenu();
-  return (
-    <button
-      aria-label="Open sidebar"
-      className="nextra-hamburger -m-1 rounded-lg bg-transparent p-1 text-green-1000 focus-visible:outline-hidden focus-visible:ring-3 active:bg-beige-200 md:hidden dark:text-neutral-200 dark:active:bg-neutral-800"
-      onClick={() => setMenu((prev) => !prev)}
-      type="button"
-    >
-      <SidebarIcon
-        className={cn(
-          { open: menu },
-          "size-6 stroke-current [&_path]:[stroke-linecap:square]",
-        )}
-      />
-    </button>
   );
 }
 

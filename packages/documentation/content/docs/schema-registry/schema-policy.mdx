@@ -2,8 +2,8 @@
 title: Schema Policies (linting)
 ---
 
-import { Callout } from '@theguild/components'
-import NextImage from 'next/image'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Image } from '@hive/design-system/image'
 
 import cliPolicyErrorImage from '../../../public/docs/pages/features/policy/policy-cli-error.png'
 import cliPolicyWarningImage from '../../../public/docs/pages/features/policy/policy-cli-warning.png'
@@ -38,7 +38,7 @@ To find the list of all available rules, go to your **organization** or **projec
 **Policy** tab. You will see the list of all available rules, with the ability to enable/disable
 rule by using the corresponding checkbox.
 
-<NextImage
+<Image
   alt="Schema Policy Overview"
   className="mt-6 max-w-2xl rounded-lg drop-shadow-md"
   src={policyOverviewImage}
@@ -50,7 +50,7 @@ Once a rule is activated, you may configure the following options:
 
 You can set the severity of the rule to `warning` or `error`. The default severity is `warning`.
 
-<NextImage
+<Image
   alt="Schema Policy Severity"
   className="w-sm mt-6 rounded-lg drop-shadow-md"
   src={policySeverityImage}
@@ -66,7 +66,7 @@ Every rule activated in the policy can be configured with the corresponding opti
 might only have the severity option, but some rule can be configured with additional options to
 ensure flexibility.
 
-<NextImage
+<Image
   alt="Policy Per-rule Configuration"
   className="mt-6 max-w-2xl rounded-lg drop-shadow-md"
   src={policyRulesConfigImage}
@@ -86,7 +86,7 @@ being merged**.
 When a policy is defined for the organization, you'll see an indicator on the project page, near
 every rule that you override:
 
-<NextImage
+<Image
   alt="Override Policy Configuration"
   className="mt-6 max-w-2xl rounded-lg drop-shadow-md"
   src={policyOverrideConfigImage}
@@ -95,7 +95,7 @@ every rule that you override:
 In addition to the ability to override rules configuration or severity, you can disable rules that
 were defined at the organization level by setting the rule severity to `off`.
 
-<NextImage
+<Image
   alt="Override Policy Severity"
   className="mt-6 max-w-2xl rounded-lg drop-shadow-md"
   src={policyOverrideSeverityImage}
@@ -118,13 +118,13 @@ page.
 Schema Policies is fully integrated into the Hive CLI, and you'll see both warnings and error coming
 from the schema policies:
 
-<NextImage
+<Image
   alt="Hive CLI and Policy Warnings"
   className="mt-6 max-w-2xl rounded-lg drop-shadow-md"
   src={cliPolicyWarningImage}
 />
 
-<NextImage
+<Image
   alt="Hive CLI and Policy Errors"
   className="mt-6 max-w-2xl rounded-lg drop-shadow-md"
   src={cliPolicyErrorImage}

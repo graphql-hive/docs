@@ -21,6 +21,7 @@ export type CaseStudyFrontmatter = typeof CaseStudyFrontmatter.infer;
 export const CaseStudyFile = type({
   frontMatter: CaseStudyFrontmatter,
   name: "string",
+  path: "string",
   route: "string",
 });
 

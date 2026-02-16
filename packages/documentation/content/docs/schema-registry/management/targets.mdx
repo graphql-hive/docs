@@ -2,8 +2,8 @@
 title: Target Management
 ---
 
-import { Callout } from '@theguild/components'
-import NextImage from 'next/image'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Image } from '@hive/design-system/image'
 
 import tokenImage from '../../../../public/docs/pages/guides/token.png'
 import newTargetFormImage from '../../../../public/docs/pages/management/new-target-form.png'
@@ -28,7 +28,7 @@ use.
 From your Hive **project** page, you can see the list of targets created under the project. You can
 also use the **New Target** button to create a new target.
 
-<NextImage
+<Image
   alt="Create Target Form"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
   src={newTargetFormImage}
@@ -45,7 +45,7 @@ schemas as safe based on real-life data and traffic reported to Hive. This is do
 When running a schema check, Hive uses the data collected from your API gateway to identify whether
 the change in your schema actually affects consumers.
 
-<NextImage
+<Image
   alt="Conditional Breaking Changes"
   className="mt-10 max-w-3xl rounded-lg drop-shadow-md"
   src={targetConditionalBreakingChangesImage}
@@ -220,7 +220,7 @@ Under the **Registry Access Tokens** section, click the **Generate new token** b
 access token a either select a predefined preset for your token (under **Simple** view), or create a
 token with custom permissions (under **Advanced** view).
 
-<NextImage
+<Image
   alt="Create Registry Token Form"
   className="mt-10 max-w-md rounded-lg drop-shadow-md"
   src={tokenImage}
@@ -229,7 +229,7 @@ token with custom permissions (under **Advanced** view).
 Click on **Generate Token** button and you should get your CLI token created, with permissions to
 publish GraphQL schemas.
 
-<NextImage
+<Image
   alt="Created Token"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
   src={tokenCreateSuccess}

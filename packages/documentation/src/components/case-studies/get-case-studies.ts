@@ -1,8 +1,7 @@
-import { caseStudies } from "fumadocs-mdx:collections/server";
-
 import { CaseStudyFile } from "./case-study-types";
 
 export async function getCaseStudies(): Promise<CaseStudyFile[]> {
+  const { caseStudies } = await import("fumadocs-mdx:collections/server");
   return caseStudies
     .map((entry) => {
       const slug = entry.info.path
@@ -18,6 +17,7 @@ export async function getCaseStudies(): Promise<CaseStudyFile[]> {
           title: entry.title,
         },
         name: slug,
+        path: entry.info.path,
         route: `/case-studies/${slug}`,
       };
     })

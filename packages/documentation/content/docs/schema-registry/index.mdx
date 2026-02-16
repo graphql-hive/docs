@@ -2,8 +2,9 @@
 title: Hive Console
 ---
 
-import { Callout, Cards } from '@theguild/components'
-import NextImage from 'next/image'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Image } from '@hive/design-system/image'
+import { Card, Cards } from 'fumadocs-ui/components/card'
 
 import schemaHistoryDiffImage from '../../../public/docs/pages/features/history-diff.png'
 import schemaHistoryImage from '../../../public/docs/pages/guides/history.png'
@@ -99,9 +100,9 @@ If you wish to learn more about how to use Hive with each of these project types
 the following guides:
 
 <Cards>
-  <Cards.Card arrow href="/docs/schema-registry/get-started/single-project" title="Single Schema" />
-  <Cards.Card arrow href="/docs/schema-registry/get-started/schema-stitching" title="Schema-Stitching" />
-  <Cards.Card arrow href="/docs/schema-registry/get-started/apollo-federation" title="GraphQL Federation" />
+  <Card href="/docs/schema-registry/get-started/single-project" title="Single Schema" />
+  <Card href="/docs/schema-registry/get-started/schema-stitching" title="Schema-Stitching" />
+  <Card href="/docs/schema-registry/get-started/apollo-federation" title="GraphQL Federation" />
 </Cards>
 
 ## Actions on schemas
@@ -243,7 +244,7 @@ In the list of schema versions of changes, you'll be able to see the following i
 You can inspect a change in your GraphQL schema using the Changelog view. This view provides you an
 overview of the changes, and their respective impact on your GraphQL schema:
 
-<NextImage
+<Image
   alt="Schema History Changelog"
   className="mt-6 max-w-2xl rounded-lg drop-shadow-md"
   src={schemaHistoryImage}
@@ -253,7 +254,7 @@ overview of the changes, and their respective impact on your GraphQL schema:
 
 If you wish to have a more technical view of the changes, you can use the `diff` view:
 
-<NextImage
+<Image
   alt="Schema History Diff"
   className="mt-6 max-w-2xl rounded-lg drop-shadow-md"
   src={schemaHistoryDiffImage}

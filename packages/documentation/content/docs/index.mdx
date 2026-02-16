@@ -2,7 +2,8 @@
 title: Introduction to Hive
 ---
 
-import { Callout, Cards } from '@theguild/components'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Card, Cards } from 'fumadocs-ui/components/card'
 
 # Introduction to Hive
 
@@ -28,8 +29,7 @@ solutions. For most cases, the hosted solution is significantly simpler and very
 [Pricing](/pricing) for details.
 
 <Cards>
-  <Cards.Card
-    arrow
+  <Card
     href="/docs/schema-registry/get-started/first-steps"
     icon={
       <svg
@@ -49,7 +49,7 @@ solutions. For most cases, the hosted solution is significantly simpler and very
     }
     title="Hosted"
   />
-  <Cards.Card arrow href="/docs/schema-registry/self-hosting/get-started" title="Self-Hosted" />
+  <Card href="/docs/schema-registry/self-hosting/get-started" title="Self-Hosted" />
 </Cards>
 
 ## Hive Gateway
@@ -60,7 +60,7 @@ JavaScript package with minimal configuration, or
 [customized](/docs/gateway/other-features/custom-plugins) to meet your needs.
 
 <Cards>
-  <Cards.Card arrow href="/docs/gateway" title="Get Started" />
+  <Card href="/docs/gateway" title="Get Started" />
 </Cards>
 
 ## Hive Router
@@ -71,7 +71,7 @@ across your distributed subgraph services. It can be ran as a Docker image or bi
 configuration.
 
 <Cards>
-  <Cards.Card arrow href="/docs/router" title="Get Started" />
+  <Card href="/docs/router" title="Get Started" />
 </Cards>
 
 ## Hive Logger
@@ -81,5 +81,5 @@ Hive ecosystem. It works seamlessly in all JavaScript environments, including No
 serverless platforms.
 
 <Cards>
-  <Cards.Card arrow href="/docs/logger" title="Improve Your Logs" />
+  <Card href="/docs/logger" title="Improve Your Logs" />
 </Cards>

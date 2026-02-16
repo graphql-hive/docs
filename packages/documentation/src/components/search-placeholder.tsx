@@ -1,5 +1,6 @@
 "use client";
 
+import { SearchIcon } from "@hive/design-system/icons";
 import { useCallback, useSyncExternalStore } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -36,11 +37,12 @@ export function SearchTrigger() {
         onClick={handleClick}
         type="button"
       >
-        <span className="text-green-700/70 dark:text-neutral-400">
+        <SearchIcon className="size-5 sm:hidden" />
+        <span className="text-green-700/70 dark:text-neutral-400 max-sm:hidden">
           Search documentation...
         </span>
         <kbd
-          className="rounded-sm border-none bg-green-200 px-1.5 py-0.5 text-xs font-medium text-green-800 dark:bg-neutral-700 dark:text-neutral-300"
+          className="rounded-sm border-none bg-green-200 px-1.5 py-0.5 text-xs font-medium text-green-800 dark:bg-neutral-700 dark:text-neutral-300 max-sm:hidden"
           id="search-kbd"
           suppressHydrationWarning
         >

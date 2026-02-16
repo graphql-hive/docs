@@ -1,11 +1,12 @@
-import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+import type { Root } from "fumadocs-core/page-tree";
+import type { DocsLayoutProps } from "fumadocs-ui/layouts/docs";
 
-import { DocsSubnav } from "@/components/docs-subnav";
+import { Navigation } from "@/components/navigation";
 
-export function baseOptions(): BaseLayoutProps {
+export function baseOptions(tree: Root): DocsLayoutProps {
   return {
     nav: {
-      component: <DocsSubnav />,
+      component: <Navigation />,
     },
     searchToggle: {
       components: {
@@ -15,5 +16,6 @@ export function baseOptions(): BaseLayoutProps {
     themeSwitch: {
       mode: "light-dark-system",
     },
+    tree,
   };
 }

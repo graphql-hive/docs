@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "organizations",
+    "members-roles-permissions",
+    "access-tokens",
+    "sso-oidc-provider",
+    "projects",
+    "targets",
+    "audit-logs"
+  ]
+}

@@ -3,7 +3,6 @@ import { Heading } from "@hive/design-system/heading";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import browserCollections from "fumadocs-mdx:collections/browser";
-import { caseStudies } from "fumadocs-mdx:collections/server";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 
 import { CaseStudyCard } from "../../../components/case-studies/case-study-card";
@@ -17,29 +16,23 @@ import "../../../styles/hive-prose.css";
 const serverLoader = createServerFn({ method: "GET" })
   .inputValidator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
-    const entry = caseStudies.find(
-      (e) =>
-        e.info.path
-          .replace(/^\//, "")
-          .replace(/\/$/, "")
-          .replace(/\.mdx?$/, "") === slug,
-    );
+    const allCaseStudies = await getCaseStudies();
+    const entry = allCaseStudies.find((cs) => cs.name === slug);
     if (!entry) throw notFound();
 
-    const allCaseStudies = await getCaseStudies();
     const otherCaseStudies = allCaseStudies
       .filter((cs) => cs.name !== slug)
       .slice(0, 3);
 
     return {
-      authors: entry.authors ?? [],
-      category: entry.category,
-      date: entry.date,
-      excerpt: entry.excerpt ?? "",
+      authors: entry.frontMatter.authors ?? [],
+      category: entry.frontMatter.category,
+      date: entry.frontMatter.date,
+      excerpt: entry.frontMatter.excerpt ?? "",
       otherCaseStudies,
-      path: entry.info.path,
+      path: entry.path,
       slug,
-      title: entry.title ?? slug,
+      title: entry.frontMatter.title ?? slug,
     };
   });
 

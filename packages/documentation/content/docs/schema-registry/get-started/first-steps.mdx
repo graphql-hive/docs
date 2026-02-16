@@ -2,13 +2,16 @@
 title: First Steps with Hive Console
 ---
 
+import { Callout } from '@hive/design-system/hive-components/callout'
 import { Screenshot } from '@hive/design-system/hive-components/screenshot'
-import { Callout, Cards, Steps, Tabs } from '@theguild/components'
+import { Tabs } from '@hive/design-system/tabs'
+import { Card, Cards } from 'fumadocs-ui/components/card'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
 
 # First Steps with Hive Console
 
 <Steps>
-
+<Step>
 ### Create Hive Account
 
 To get started with Hive, first sign up and create your Hive account if you haven't already.
@@ -22,7 +25,9 @@ To get started with Hive, first sign up and create your Hive account if you have
 </Callout>
 
 Once you have your Hive account, you can create your Hive organization.
+</Step>
 
+<Step>
 ### Create Hive Organization
 
 A Hive organization is a group of users who share a common set of permissions, or who collaborate on
@@ -40,7 +45,9 @@ inviting other members to join and collaborate on projects.
 You can create as many organizations as you want, and you can be a member of multiple organizations.
 
 </Callout>
+</Step>
 
+<Step>
 ### Install Hive CLI
 
 Hive CLI is a command-line tool for managing your Hive projects and schemas from the terminal. It
@@ -112,7 +119,9 @@ docker run --name graphql-hive-cli --rm ghcr.io/graphql-hive/cli --version
 </Tabs.Tab>
 
 </Tabs>
+</Step>
 
+<Step>
 ### Create Hive Project
 
 A Hive **project** represents a GraphQL API project running a GraphQL schema, created under an
@@ -141,9 +150,9 @@ organization's main page:
 Continue with one of the following guide based on the type of project you selected.
 
 <Cards>
-  <Cards.Card arrow href="/docs/schema-registry/get-started/apollo-federation" title="Apollo Federation" />
-  <Cards.Card arrow href="/docs/schema-registry/get-started/single-project" title="Single Schema" />
-  <Cards.Card arrow href="/docs/schema-registry/get-started/schema-stitching" title="Schema-Stitching" />
+  <Card href="/docs/schema-registry/get-started/apollo-federation" title="Apollo Federation" />
+  <Card href="/docs/schema-registry/get-started/single-project" title="Single Schema" />
+  <Card href="/docs/schema-registry/get-started/schema-stitching" title="Schema-Stitching" />
 </Cards>
-
+</Step>
 </Steps>

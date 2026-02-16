@@ -75,21 +75,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "#components/callout": fileURLToPath(
-        new URL("src/lib/theguild-components-shim.tsx", import.meta.url),
-      ),
       "@": fileURLToPath(new URL("src", import.meta.url)),
       "@hive/design-system": fileURLToPath(
         new URL("../design-system/src", import.meta.url),
-      ),
-      "@theguild/components": fileURLToPath(
-        new URL("src/lib/theguild-components-shim.tsx", import.meta.url),
-      ),
-      "next/image": fileURLToPath(
-        new URL("src/lib/next-image-shim.tsx", import.meta.url),
-      ),
-      "nextra/components": fileURLToPath(
-        new URL("src/lib/theguild-components-shim.tsx", import.meta.url),
       ),
     },
   },

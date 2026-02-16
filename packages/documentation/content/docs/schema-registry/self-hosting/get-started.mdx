@@ -2,8 +2,10 @@
 title: Self-Hosting Hive Console
 ---
 
-import { Callout, Cards, Tabs } from '@theguild/components'
-import NextImage from 'next/image'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Image } from '@hive/design-system/image'
+import { Tabs } from '@hive/design-system/tabs'
+import { Card, Cards } from 'fumadocs-ui/components/card'
 
 import diagram from '../../../../public/docs/pages/self-hosting/diagram.png'
 
@@ -67,7 +69,7 @@ ClickHouse) and storage (S3) with managed database/storage (Cloud-based or in-ho
 
 The following diagram shows the architecture of a self-hosted Hive Console instance:
 
-<NextImage
+<Image
   alt="Self-hosting diagram"
   className="mt-10 w-full rounded-lg drop-shadow-md"
   src={diagram}
@@ -325,8 +327,8 @@ Now that you've your project setup, start by installing the Hive CLI which we're
 interact with Hive's server.
 
 <Cards>
-  <Cards.Card arrow href="/docs/api-reference/cli#binary" title="Install Hive CLI as a binary" />
-  <Cards.Card arrow href="/docs/api-reference/cli#nodejs" title="Install Hive CLI from NPM" />
+  <Card href="/docs/api-reference/cli#binary" title="Install Hive CLI as a binary" />
+  <Card href="/docs/api-reference/cli#nodejs" title="Install Hive CLI from NPM" />
 </Cards>
 
 After installing it, you can check the version of the CLI, to make sure it's installed correctly.

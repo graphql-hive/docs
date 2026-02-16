@@ -2,10 +2,12 @@
 title: Get started with GraphQL Federation
 ---
 
-import { Cards, FileTree, Steps, Tabs } from '@theguild/components'
-import NextImage from 'next/image'
-
-import { Callout } from '#components/callout'
+import { Callout } from '@hive/design-system/hive-components/callout'
+import { Image } from '@hive/design-system/image'
+import { Tabs } from '@hive/design-system/tabs'
+import { Card, Cards } from 'fumadocs-ui/components/card'
+import { File, Files, Folder } from 'fumadocs-ui/components/files'
+import { Step, Steps } from 'fumadocs-ui/components/steps'
 
 import accessTokensConfirmImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-confirm.png'
 import accessTokensCreateNewImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-create-new.png'
@@ -36,20 +38,22 @@ This guide will walk you through the basics of schema pushing, checking, and spi
 Gateway serving the federated GraphQL schema.
 
 <Steps>
+<Step>
 
+<Step>
 ### Prerequisites
 
 For this guide, we are going to use the following Subgraphs that we are going to publish to Hive.
 
 > **Note**: If you want you can also use your own subgraphs instead of the ones we provide.
 
-<FileTree>
-  <FileTree.Folder defaultOpen name="subgraphs">
-    <FileTree.File name="users.graphql" />
-    <FileTree.File name="products.graphql" />
-    <FileTree.File name="reviews.graphql" />
-  </FileTree.Folder>
-</FileTree>
+<Files>
+  <Folder defaultOpen name="subgraphs">
+    <File name="users.graphql" />
+    <File name="products.graphql" />
+    <File name="reviews.graphql" />
+  </Folder>
+</Files>
 
 We provide the actual URLs for these running subgraphs, so we can later on send some real GraphQL
 requests with our federation gateway.
@@ -122,7 +126,12 @@ extend type Product @key(fields: "upc") {
 </Tabs.Tab>
 
 </Tabs>
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Create Access Token
 
 In order to publish our subgraph schemas to the schema registry, we first need to create an access
@@ -132,7 +141,7 @@ Within your organization, open the `Settings` tab and select the `Access Token` 
 
 Click `Create new access token` and enter a name for the access token.
 
-<NextImage
+<Image
   alt="Create new access token button within the organization settings access token section"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
   src={accessTokensCreateNewImage}
@@ -141,7 +150,7 @@ Click `Create new access token` and enter a name for the access token.
 Click `Next` and select `Allowed` for `Check schema/service subgraph`,
 `Publish schema/service/subgraph`, and `Report usage data`.
 
-<NextImage
+<Image
   alt="Grant the permissions required for publishing and checking schemas"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
   src={accessTokensPermissionsImage}
@@ -150,7 +159,7 @@ Click `Next` and select `Allowed` for `Check schema/service subgraph`,
 Click `Next` and in the next step keep the `Full Access` selection for the resources. For the
 purpose of this guide there is no need to further restirct the resources.
 
-<NextImage
+<Image
   alt="Grant full access on all resources"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
   src={accessTokensResourcesImage}
@@ -158,7 +167,7 @@ purpose of this guide there is no need to further restirct the resources.
 
 One last time click `Next` and review the access token.
 
-<NextImage
+<Image
   alt="Review the permissions"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
   src={accessTokensConfirmImage}
@@ -167,21 +176,26 @@ One last time click `Next` and review the access token.
 Then click the `Create Access Token` button. A confirmation dialogue will open that shows the you
 generated token.
 
-<NextImage
+<Image
   alt="Successful access token creation"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
   src={accessTokensSuccessImage}
 />
 
 Make sure to copy your token and keep it safe. **You won't be able to see it again.**
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Publish subgraphs
 
 As you may have noticed, Hive has created three targets under your project: `development`,
 `staging`, and `production`. Each of these targets represent a different environment. You can remove
 or create new targets as needed, for modelling the different environments of your project.
 
-<NextImage
+<Image
   alt="Project overview showing the available targets"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
   src={targetOverview}
@@ -274,7 +288,7 @@ schema version on the Hive dashboard.
 If you'll get to your target's page on Hive dashboard, you should see that it was updated with the
 new schema you just published 🎉
 
-<NextImage
+<Image
   alt="First published schema version on the Hive dashboard"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={publishFirstSchemaVersionUi}
@@ -357,7 +371,7 @@ If everything goes well, you should see the following output:
 After the publish process, if we had over to the Hive dashboard, we can see our new schema version
 published.
 
-<NextImage
+<Image
   alt="Second published schema version on the Hive dashboard"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={publishSecondSchemaVersionUi}
@@ -436,14 +450,19 @@ Again, if everything goes well, you should see the following output:
 
 On your target's **Explorer** page now, you'll be able to see the schema of all three subgraphs 🎉
 
-<NextImage
+<Image
   alt="Third published schema version on the Hive dashboard"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={publishThirdSchemaVersionUi}
 />
 
 Congratulations on publishing and composing your first subgraphs with the Hive schema registry!
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Gateway
 
 The next step is to spin up our GraphQL gateway that will serve the federated GraphQL schema
@@ -485,7 +504,7 @@ For accessing the supergraph, we need to create the CDN access token from the Hi
 
 Navigate to your target's settings page and select the **CDN Tokens** tab.
 
-<NextImage
+<Image
   alt="CDN Token Form"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={cdnAccessTokenSettings}
@@ -493,7 +512,7 @@ Navigate to your target's settings page and select the **CDN Tokens** tab.
 
 Click the **Create new CDN token** button, give your token a name and click **Create**.
 
-<NextImage
+<Image
   alt="CDN Token Form"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={cdnAccessTokenCreate}
@@ -502,7 +521,7 @@ Click the **Create new CDN token** button, give your token a name and click **Cr
 There will be a confirmation screen showing the CDN token you just created. Make sure to copy it and
 keep it safe.
 
-<NextImage
+<Image
   alt="CDN Token Form"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={cdnAccessTokenCreated}
@@ -601,7 +620,7 @@ npx hive-gateway supergraph \
 If you now navigate to `http://localhost:4000`, you should see the Hive Gateway page with
 information about the supergraph and subgraphs.
 
-<NextImage
+<Image
   alt="Hive Gateway Landing Page"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={HiveGatewayLandingPageImage}
@@ -610,7 +629,7 @@ information about the supergraph and subgraphs.
 Now, if you navigate to `http://localhost:4000/graphql`, you should see the GraphiQL interface where
 you can write and execute queries against the supergraph.
 
-<NextImage
+<Image
   alt="Hive Gateway GraphiQL"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={HiveGatewayGraphiqlImage}
@@ -705,7 +724,7 @@ If you now navigate to `http://localhost:4000`, you should see the Hive Router d
 page points to `http://localhost:4000/graphql`, where you can access the GraphQL IDE to write and
 execute queries against the supergraph.
 
-<NextImage
+<Image
   alt="Hive Gateway GraphiQL"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={HiveGatewayGraphiqlImage}
@@ -918,14 +937,19 @@ query TopProductsWithReview {
 After executing the query, a few times, let's switch back to the Hive dashboard and navigate to the
 insights page.
 
-<NextImage
+<Image
   alt="Hive Gateway GraphiQL"
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
   src={HiveDashboardInsightsImage}
 />
 
 Here we can now see the GraphQL operations from our gateway being reported to the registry.
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Schema checks
 
 Hive can perform several checks on your schema before publishing it to the registry. You can use
@@ -1210,7 +1234,12 @@ Usually, you would run these checks in your subgraphs CI pipeline, to ensure tha
 schema integrates flawlessly with the other subgraphs in the federation project, where schema
 publishes are made within the Continious Deployment (CD) pipeline to actually publish the latest
 subgraph version to the schema registry.
+</Step>
 
+<Step>
+</Step>
+
+<Step>
 ### Next Steps
 
 Congratulations on publishing your first subgraph schemas to the Hive schema registry, composing
@@ -1221,16 +1250,16 @@ From here you can continue to explore the Hive dashboard, or dive deeper into th
 learn about all the features of the Hive platform.
 
 <Cards>
-  <Cards.Card arrow href="/docs/schema-registry" title="Learn about the Schema Registry" />
-  <Cards.Card arrow href="/docs/gateway" title="Learn about Hive Gateway (JavaScript)" />
-  <Cards.Card arrow href="/docs/router" title="Learn about Hive Router (Rust)" />
-  <Cards.Card
-    arrow
+  <Card href="/docs/schema-registry" title="Learn about the Schema Registry" />
+  <Card href="/docs/gateway" title="Learn about Hive Gateway (JavaScript)" />
+  <Card href="/docs/router" title="Learn about Hive Router (Rust)" />
+  <Card
     href="/docs/schema-registry/management/members-roles-permissions"
     title="Learn about Organization Members, Roles, and Permissions"
   />
-  <Cards.Card arrow href="/docs/schema-registry/management/access-tokens" title="Learn about Access Tokens" />
-  <Cards.Card arrow href="/docs/other-integrations/ci-cd" title="CI/CD Integration" />
+  <Card href="/docs/schema-registry/management/access-tokens" title="Learn about Access Tokens" />
+  <Card href="/docs/other-integrations/ci-cd" title="CI/CD Integration" />
 </Cards>
-
+</Step>
+</Step>
 </Steps>
