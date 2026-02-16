@@ -38,6 +38,7 @@ export const caseStudies = defineCollections({
     title: "string",
   }),
   type: "doc",
+  async: true,
 });
 
 export const productUpdates = defineCollections({
@@ -49,6 +50,7 @@ export const productUpdates = defineCollections({
     title: "string",
   }),
   type: "doc",
+  async: true,
 });
 
 export default defineConfig({

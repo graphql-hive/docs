@@ -85,7 +85,7 @@ function Page() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navigation />
+      <Navigation mobileHidden />
       <DocsLayout {...baseOptions()} tree={data.pageTree}>
         {clientLoader.useContent(data.path, {
           className: "",

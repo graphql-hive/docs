@@ -61,11 +61,19 @@ const footerItems = {
   ],
 };
 
-export function Navigation() {
+export function Navigation({
+  className,
+  mobileHidden,
+}: {
+  className?: string;
+  mobileHidden?: boolean;
+}) {
   return (
     <HiveNavigation
+      className={className}
       companyMenuChildren={<GraphQLConfCard image={graphQLConfImage} />}
       developerMenu={developerMenu}
+      mobileHidden={mobileHidden}
       productName={PRODUCTS.HIVE.name}
       search={<SearchTrigger />}
     />

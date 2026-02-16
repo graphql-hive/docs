@@ -74,12 +74,13 @@ function useMounted() {
 }
 
 // MenuIcon component (replaces nextra/icons MenuIcon)
-function MenuIcon({
+function SidebarIcon({
   className,
   ...props
 }: React.SVGProps<SVGSVGElement> & { className?: string }) {
   return (
     <svg
+      aria-hidden="true"
       className={className}
       fill="none"
       height="24"
@@ -91,15 +92,8 @@ function MenuIcon({
       width="24"
       {...props}
     >
-      <path
-        className="origin-center transition-transform in-[.open]:translate-y-[5px] in-[.open]:rotate-45"
-        d="M4 7h16"
-      />
-      <path className="transition-opacity in-[.open]:opacity-0" d="M4 12h16" />
-      <path
-        className="origin-center transition-transform in-[.open]:-translate-y-[5px] in-[.open]:-rotate-45"
-        d="M4 17h16"
-      />
+      <rect height="18" rx="2" width="18" x="3" y="3" />
+      <path d="M9 3v18" />
     </svg>
   );
 }
@@ -125,6 +119,9 @@ export type HiveNavigationProps = {
    */
   developerMenu: DeveloperMenuProps["developerMenu"];
   logo?: ReactNode;
+  mobileActions?: ReactNode;
+  /** Hide the entire navigation on mobile viewports. */
+  mobileHidden?: boolean;
   navLinks?: { children: ReactNode; href: string }[];
   productName: string;
   search?: ReactElement;
@@ -148,6 +145,8 @@ export function HiveNavigation({
   companyMenuChildren,
   developerMenu,
   logo,
+  mobileActions,
+  mobileHidden,
   navLinks,
   productName,
   search,
@@ -182,10 +181,15 @@ export function HiveNavigation({
       />
 
       {/* mobile menu */}
-      <div className="flex items-center justify-between md:hidden">
-        {resolvedLogo}
-        <HamburgerButton />
-      </div>
+      {!mobileHidden && (
+        <div className="flex items-center justify-between md:hidden">
+          {resolvedLogo}
+          <div className="flex items-center gap-1">
+            {mobileActions}
+            <SidebarToggleButton />
+          </div>
+        </div>
+      )}
 
       {/* desktop menu */}
       <NavigationMenu
@@ -220,8 +224,8 @@ export function HiveNavigation({
               <CompanyMenu>{companyMenuChildren}</CompanyMenu>
             </NavigationMenuContent>
           </NavigationMenuItem>
-          {resolvedNavLinks.map(({ children, href }, i) => (
-            <NavigationMenuItem className="flex" key={i}>
+          {resolvedNavLinks.map(({ children, href }) => (
+            <NavigationMenuItem className="flex" key={href}>
               <NavigationMenuLink className="font-medium" href={href}>
                 {children}
               </NavigationMenuLink>
@@ -418,8 +422,9 @@ const MenuContentColumns = forwardRef(
         {React.Children.toArray(props.children)
           .filter(Boolean)
           .map((child, index, array) => {
+            const childKey = React.isValidElement(child) ? child.key : null;
             return (
-              <Fragment key={index}>
+              <Fragment key={childKey ?? `column-${typeof child}`}>
                 {child}
                 {index < array.length - 1 && (
                   <div className="w-px bg-beige-200 dark:bg-neutral-800" />
@@ -454,8 +459,13 @@ export const DeveloperMenu = React.forwardRef<
       <div>
         <ColumnLabel>Developer</ColumnLabel>
         <ul>
-          {developerMenu.map(({ children, href, icon, title }, i) => (
-            <MenuColumnListItem href={href} icon={icon} key={i} title={title}>
+          {developerMenu.map(({ children, href, icon, title }) => (
+            <MenuColumnListItem
+              href={href}
+              icon={icon}
+              key={href}
+              title={title}
+            >
               {children}
             </MenuColumnListItem>
           ))}
@@ -479,8 +489,8 @@ export const DeveloperMenu = React.forwardRef<
               ],
               ["Discord", DiscordIcon, "https://discord.com/invite/xud7bH9"],
             ] as const
-          ).map(([text, Icon, href], i) => (
-            <MenuColumnListItem href={href} icon={<Icon />} key={i}>
+          ).map(([text, Icon, href]) => (
+            <MenuColumnListItem href={href} icon={<Icon />} key={href}>
               {text}
             </MenuColumnListItem>
           ))}
@@ -533,6 +543,7 @@ function ColumnLabel({ children }: { children: React.ReactNode }) {
 function YouTubeIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
+      aria-hidden="true"
       fill="currentColor"
       height="24"
       viewBox="0 0 24 24"
@@ -547,6 +558,7 @@ function YouTubeIcon(props: React.SVGProps<SVGSVGElement>) {
 function TwitterIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
+      aria-hidden="true"
       fill="currentColor"
       height="24"
       viewBox="0 0 24 24"
@@ -561,6 +573,7 @@ function TwitterIcon(props: React.SVGProps<SVGSVGElement>) {
 function LinkedInIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
+      aria-hidden="true"
       fill="currentColor"
       height="24"
       viewBox="0 0 24 24"
@@ -575,6 +588,7 @@ function LinkedInIcon(props: React.SVGProps<SVGSVGElement>) {
 function DiscordIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
+      aria-hidden="true"
       fill="currentColor"
       height="24"
       viewBox="0 0 24 24"
@@ -600,9 +614,9 @@ export function EnterpriseMenu() {
           [HonourIcon, "Professional Services", ""],
           [ShieldFlashIcon, "Commitment to Security", ""],
         ] as const
-      ).map(([Icon, text, href], i) => {
+      ).map(([Icon, text, href]) => {
         return (
-          <MenuColumnListItem href={href} icon={<Icon />} key={i}>
+          <MenuColumnListItem href={href} icon={<Icon />} key={text}>
             {text}
           </MenuColumnListItem>
         );
@@ -660,17 +674,17 @@ function HiveLogoLink({ isHive }: { isHive: boolean }) {
   );
 }
 
-function HamburgerButton() {
+function SidebarToggleButton() {
   const menu = useMenu();
   const setMenu = useSetMenu();
   return (
     <button
-      aria-label="Menu"
+      aria-label="Open sidebar"
       className="nextra-hamburger -m-1 rounded-lg bg-transparent p-1 text-green-1000 focus-visible:outline-hidden focus-visible:ring-3 active:bg-beige-200 md:hidden dark:text-neutral-200 dark:active:bg-neutral-800"
       onClick={() => setMenu((prev) => !prev)}
       type="button"
     >
-      <MenuIcon
+      <SidebarIcon
         className={cn(
           { open: menu },
           "size-6 stroke-current [&_path]:[stroke-linecap:square]",
