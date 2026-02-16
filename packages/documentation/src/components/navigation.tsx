@@ -64,12 +64,19 @@ const footerItems = {
   ],
 };
 
-export function Navigation({ className }: { className?: string }) {
+export function Navigation({
+  className,
+  noBorder,
+}: {
+  className?: string;
+  noBorder?: boolean;
+}) {
   return (
     <HiveNavigation
       className={className}
       companyMenuChildren={<GraphQLConfCard image={graphQLConfImage} />}
       developerMenu={developerMenu}
+      noBorder={noBorder}
       productName={PRODUCTS.HIVE.name}
       search={<SearchTrigger />}
       sidebarTrigger={

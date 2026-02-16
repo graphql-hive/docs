@@ -365,3 +365,11 @@ button,
   --mermaid-node-stroke: var(--color-neutral-100);
   --mermaid-arrow: var(--color-neutral-300);
 }
+
+#nd-sidebar-mobile div:has(+ [data-theme-toggle]) {
+  display: none;
+}
+
+#nd-sidebar-mobile [data-theme-toggle] {
+  margin-right: auto;
+}

@@ -1,0 +1,16 @@
+{
+  "root": true,
+  "pages": [
+    "./index.mdx",
+    "./supergraph-proxy-source.mdx",
+    "./usage-reporting.mdx",
+    "./persisted-documents.mdx",
+    "./authorization-authentication.mdx",
+    "./monitoring-tracing.mdx",
+    "./defer-stream.mdx",
+    "./subscriptions.mdx",
+    "./logging-and-error-handling.mdx",
+    "./other-features.mdx",
+    "./deployment.mdx"
+  ]
+}

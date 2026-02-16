@@ -14,7 +14,6 @@ const config: Linter.Config[] = [
           ignore: [
             "light",
             "nextra-scrollbar",
-            "nextra-search",
             "no-scrollbar",
             "prose-invert",
             "subheader",

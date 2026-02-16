@@ -30,7 +30,6 @@ const config: Linter.Config[] = [
             "nextra-hamburger",
             "nextra-mermaid",
             "nextra-scrollbar",
-            "nextra-search",
             "nextra-steps",
             "no-scrollbar",
             "subheader",

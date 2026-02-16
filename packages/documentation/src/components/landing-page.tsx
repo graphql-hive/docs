@@ -38,7 +38,7 @@ export const metadata = {
 export default function IndexPage(): ReactElement {
   return (
     <LandingPageContainer className="text-green-1000 light mx-auto max-w-360">
-      <Hero className="mx-4 max-sm:mt-2 md:mx-6">
+      <Hero className="max-sm:mt-2">
         <Heading
           as="h1"
           className="mx-auto max-w-3xl text-balance text-center text-white"
@@ -93,7 +93,7 @@ export default function IndexPage(): ReactElement {
       </Hero>
       <LandingPageFeatureTabs className="relative mt-6 sm:-mt-18" />
       <TrustedBySection className="mx-auto my-8 md:my-16 lg:my-24" />
-      <EcosystemManagementSection className="max-sm:rounded-none sm:mx-4 md:mx-6" />
+      <EcosystemManagementSection className="max-sm:rounded-none" />
       <StatsList className="mt-6 md:mt-0">
         <StatsItem decimal label="GitHub commits" suffix="K" value={7} />
         <StatsItem decimal label="Active developers" suffix="K" value={9.6} />
@@ -101,15 +101,15 @@ export default function IndexPage(): ReactElement {
         <StatsItem label="Collected operations" suffix="B" value={350} />
       </StatsList>
       <UltimatePerformanceCards />
-      <LearnGraphQLFederationSection className="mx-4 md:mx-6" />
-      <CompanyTestimonialsSection className="mx-4 mt-6 md:mx-6" />
-      <GetStartedTodaySection className="mx-4 mt-6 md:mx-6" />
-      <EnterpriseFocusedCards className="mx-4 my-6 md:mx-6" />
-      <TeamSection className="mx-4 md:mx-6" />
-      <CommunitySection className="mx-4 mt-6 md:mx-6" />
-      <ToolsAndLibrariesCards className="mx-4 mt-6 md:mx-6" isHive />
-      <FrequentlyAskedQuestions className="mx-4 md:mx-6" />
-      <GetYourAPIGameRightSection className="mx-4 sm:mb-6 md:mx-6" />
+      <LearnGraphQLFederationSection />
+      <CompanyTestimonialsSection className="mt-6" />
+      <GetStartedTodaySection className="mt-6" />
+      <EnterpriseFocusedCards className="my-6" />
+      <TeamSection />
+      <CommunitySection className="mt-6" />
+      <ToolsAndLibrariesCards isHive />
+      <FrequentlyAskedQuestions />
+      <GetYourAPIGameRightSection className="sm:mb-6" />
     </LandingPageContainer>
   );
 }

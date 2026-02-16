@@ -33,16 +33,16 @@ export function SearchTrigger() {
     <>
       <button
         aria-label="Search documentation"
-        className="nextra-search ml-3 hidden h-12 w-64 cursor-pointer items-center justify-between rounded-lg border border-green-200 bg-white px-4 text-sm text-green-700 transition-none hover:border-green-300 focus:outline-hidden focus:ring-2 focus:ring-green-500/50 md:flex dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300"
+        className="ml-3 h-12 md:w-64 cursor-pointer items-center rounded-lg border border-green-200 bg-white px-4 text-sm text-green-700 transition-none hover:border-green-300 focus:outline-hidden focus:ring-2 focus:ring-green-500/50 md:flex dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 max-md:border-none max-sm:p-2 flex justify-start max-md:text-current"
         onClick={handleClick}
         type="button"
       >
-        <SearchIcon className="size-5 sm:hidden" />
-        <span className="text-green-700/70 dark:text-neutral-400 max-sm:hidden">
-          Search documentation...
+        <SearchIcon className="size-4.5 md:hidden" />
+        <span className="text-green-700/70 dark:text-neutral-400 max-md:hidden">
+          Search<span className="max-lg:hidden"> documentation</span>...
         </span>
         <kbd
-          className="rounded-sm border-none bg-green-200 px-1.5 py-0.5 text-xs font-medium text-green-800 dark:bg-neutral-700 dark:text-neutral-300 max-sm:hidden"
+          className="rounded-sm border-none bg-green-200 px-1.5 py-0.5 text-xs font-medium text-green-800 dark:bg-neutral-700 dark:text-neutral-300 max-md:hidden ml-auto"
           id="search-kbd"
           suppressHydrationWarning
         >

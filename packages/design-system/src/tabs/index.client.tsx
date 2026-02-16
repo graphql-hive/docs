@@ -149,7 +149,6 @@ export const Tabs = ({
 
   return (
     <TabGroup
-      as={Fragment}
       defaultIndex={defaultIndex}
       onChange={handleChange}
       selectedIndex={selectedIndex}

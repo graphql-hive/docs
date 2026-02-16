@@ -1,4 +1,4 @@
-import { Footer } from "@/components/navigation";
+import { Footer, Navigation } from "@/components/navigation";
 import { PageActions } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
 import { getSource } from "@/lib/source";
@@ -88,8 +88,8 @@ function Page() {
     <div className="min-h-screen">
       <DocsLayout
         {...baseOptions(data.pageTree)}
+        nav={{ component: <Navigation noBorder /> }}
         searchToggle={{ enabled: false }}
-        sidebar={{ enabled: false }}
       >
         {clientLoader.useContent(data.path, {
           className: "",

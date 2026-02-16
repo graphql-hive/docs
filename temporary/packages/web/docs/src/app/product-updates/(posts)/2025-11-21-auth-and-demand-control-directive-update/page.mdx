@@ -37,7 +37,7 @@ from the object types that implement them. This reduces configuration overhead a
 consistent security policies across your schema.
 
 ```graphql filename="Authorization directives are not allowed on interfaces"
-# ❌ Raises `AUTH_REQUIREMENTS_APPLIED_ON_INTERFACE` error
+
 interface Node @authenticated {
   id: ID!
 }
