@@ -5,14 +5,16 @@ import { Heading } from "@hive/design-system";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import browserCollections from "fumadocs-mdx:collections/browser";
-import { productUpdates } from "fumadocs-mdx:collections/server";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { DocsBody, DocsPage } from "fumadocs-ui/layouts/docs/page";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 
 const findEntry = createServerFn({ method: "GET" })
   .inputValidator((slug: string) => slug)
-  .handler(({ data: slug }) => {
+  .handler(async ({ data: slug }) => {
+    const { productUpdates } = await import(
+      "fumadocs-mdx:collections/server"
+    );
     const entry = productUpdates.find(
       (e) => e.info.path.replace(/\.mdx?$/, "") === slug,
     );

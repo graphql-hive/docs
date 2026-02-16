@@ -1,5 +1,3 @@
-import { productUpdates } from "fumadocs-mdx:collections/server";
-
 type Changelog = {
   date: string;
   description: string;
@@ -7,7 +5,8 @@ type Changelog = {
   title: string;
 };
 
-export function getChangelogs(): Changelog[] {
+export async function getChangelogs(): Promise<Changelog[]> {
+  const { productUpdates } = await import("fumadocs-mdx:collections/server");
   return productUpdates
     .map((entry) => {
       const slug = entry.info.path.replace(/\.mdx?$/, "");

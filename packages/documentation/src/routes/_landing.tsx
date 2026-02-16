@@ -26,7 +26,7 @@ function LandingLayout() {
   const pageTree = deserializePageTree(Route.useLoaderData());
 
   return (
-    <div className="flex min-h-screen flex-col overflow-visible">
+    <div className="min-h-screen overflow-visible">
       <DocsLayout {...baseOptions(pageTree)}>
         <Outlet />
       </DocsLayout>

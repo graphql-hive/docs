@@ -85,8 +85,12 @@ function Page() {
   const data = useFumadocsLoader(Route.useLoaderData());
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <DocsLayout {...baseOptions(data.pageTree)} searchToggle={{ enabled: false }}>
+    <div className="min-h-screen">
+      <DocsLayout
+        {...baseOptions(data.pageTree)}
+        searchToggle={{ enabled: false }}
+        sidebar={{ enabled: false }}
+      >
         {clientLoader.useContent(data.path, {
           className: "",
           githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,
