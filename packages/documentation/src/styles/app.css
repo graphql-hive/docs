@@ -2,7 +2,21 @@
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 @import "fumadocs-twoslash/twoslash.css";
+
 @import "@hive/design-system/style.css";
+
+@import "../fonts/fonts.css";
+
+@source "../../**/*.tsx";
+@source "../../../design-system/src/**/*.tsx";
+
+@variant dark (&:where(.dark, .dark *):not(:where(.light, .light *)));
+
+@theme {
+  --font-sans:
+    "PP Neue Montreal", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
 
 @layer base {
   html {
@@ -10,58 +24,13 @@
   }
 }
 
-/* PP Neue Montreal font family */
-@font-face {
-  font-family: "PP Neue Montreal";
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/PPNeueMontreal-Regular.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "PP Neue Montreal";
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/PPNeueMontreal-Medium.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "PP Neue Montreal";
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/PPNeueMontreal-Medium.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "PP Neue Montreal";
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/PPNeueMontreal-SemiBold.woff2") format("woff2");
-}
-
-/* Set --font-sans CSS variable for components using font-sans class */
-:root {
-  --font-sans: "PP Neue Montreal", system-ui, sans-serif;
-}
-
-/* Source files to scan for Tailwind classes */
-@source "../../**/*.tsx";
-@source "../../../design-system/src/**/*.tsx";
-
-@variant dark &:not(:where(.light, .light *));
-
-/* Nextra primary color HSL variables (used by @theguild/components) */
 :root {
   --nextra-primary-hue: 164deg;
   --nextra-primary-saturation: 70%;
   --nextra-primary-lightness: 40%;
   --nextra-bg: 255 255 255;
   --color-fd-background: hsl(0, 0%, 100%);
-  --color-fd-muted-foreground: var(--color-beige-700);
+  --color-fd-muted-foreground: var(--color-beige-900);
   --color-fd-primary: var(--color-green-1000);
 }
 
@@ -69,9 +38,9 @@
   --nextra-bg: 17 17 17;
   --color-fd-background: hsl(0, 0%, 7.04%);
   --color-fd-primary: var(--color-neutral-100);
+  --color-fd-muted-foreground: var(--color-beige-800);
 }
 
-/* Tailwind 4 compatibility: ensure cursor-pointer on interactive elements */
 a,
 button,
 [role="button"] {

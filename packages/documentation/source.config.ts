@@ -11,6 +11,7 @@ import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 export const docs = defineDocs({
   dir: "content/docs",
   docs: {
+    async: true,
     postprocess: {
       includeProcessedMarkdown: true,
     },
@@ -82,7 +83,7 @@ export default defineConfig({
       },
       transformers: [
         ...(rehypeCodeDefaultOptions.transformers ?? []),
-        transformerTwoslash(),
+        transformerTwoslash({ explicitTrigger: true }),
       ],
     },
     rehypePlugins: (plugins) => [
