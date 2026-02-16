@@ -31,6 +31,7 @@ const config: Linter.Config[] = [
             "nextra-mermaid",
             "nextra-scrollbar",
             "nextra-steps",
+            "not-prose",
             "no-scrollbar",
             "subheader",
             "subheading-anchor",

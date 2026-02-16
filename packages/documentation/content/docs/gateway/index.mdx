@@ -1,14 +1,11 @@
 ---
 title: GraphQL Gateway
-description:
-  Hive Gateway is the GraphQL federation Gateway and/or Proxy Gateway for your GraphQL services.
+description: Hive Gateway is the GraphQL federation Gateway and/or Proxy Gateway for your GraphQL services.
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Tabs } from '@hive/design-system/tabs'
-import { Card, Cards } from 'fumadocs-ui/components/card'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
+import { Card, Cards } from "@hive/design-system/hive-components/card";
 
 Hive Gateway is a fully open-source, MIT-licensed GraphQL router that can act as a
 [GraphQL Federation](/federation) gateway, a subgraph or a proxy gateway for any GraphQL API
@@ -86,8 +83,8 @@ npm i @graphql-hive/gateway
 ```
 
 <Callout>
-  You can also use [Bun](https://bun.sh) as a runtime to run the JavaScript package with the same
-  installation steps.
+  You can also use [Bun](https://bun.sh) as a runtime to run the JavaScript
+  package with the same installation steps.
 </Callout>
 
 </Tabs.Tab>
@@ -233,20 +230,20 @@ We can provide the CLI configuration parameters, also via the configuration file
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   supergraph: {
-    type: 'hive',
+    type: "hive",
     // The endpoint of Hive's CDN
     endpoint: [
-      'https://cdn.graphql-hive.com/artifacts/v1/<target_id>',
-      'https://cdn-mirror.graphql-hive.com/artifacts/v1/<target_id>'
+      "https://cdn.graphql-hive.com/artifacts/v1/<target_id>",
+      "https://cdn-mirror.graphql-hive.com/artifacts/v1/<target_id>",
     ],
     // The CDN token provided by Hive Registry
-    key: '<cdn access token>'
-  }
-})
+    key: "<cdn access token>",
+  },
+});
 ```
 
 Hive Gateway will automatically load the default config file and apply the settings.
@@ -296,13 +293,13 @@ npx hive-gateway supergraph
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   proxy: {
-    endpoint: 'http://localhost:3000/graphql'
-  }
-})
+    endpoint: "http://localhost:3000/graphql",
+  },
+});
 ```
 
 Hive Gateway will automatically load the default config file and apply the settings.
@@ -357,5 +354,8 @@ After learning the first steps of Hive Gateway, you can explore the following to
 
 <Cards>
   <Card href="/docs/gateway/usage-reporting" title="Set up Usage Reporting" />
-  <Card href="/docs/gateway/persisted-documents" title="Set up Persisted Documents" />
+  <Card
+    href="/docs/gateway/persisted-documents"
+    title="Set up Persisted Documents"
+  />
 </Cards>

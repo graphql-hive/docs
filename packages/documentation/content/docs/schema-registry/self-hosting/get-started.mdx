@@ -2,14 +2,12 @@
 title: Self-Hosting Hive Console
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Image } from '@hive/design-system/image'
-import { Tabs } from '@hive/design-system/tabs'
-import { Card, Cards } from 'fumadocs-ui/components/card'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Image } from "@hive/design-system/image";
+import { Tabs } from "@hive/design-system/tabs";
+import { Card, Cards } from "@hive/design-system/hive-components/card";
 
-import diagram from '../../../../public/docs/pages/self-hosting/diagram.png'
-
-
+import diagram from "../../../../public/docs/pages/self-hosting/diagram.png";
 
 If you are not able to use the cloud provided Hive Console service, you can self-host it. The
 self-hosted version is free and open-source. You can find the full
@@ -87,8 +85,9 @@ The following diagram shows the architecture of a self-hosted Hive Console insta
   projects, targets, organizations and configurations.
 
 <Callout type="info">
-  We recommend using PostgreSQL version 16. While older versions (14, 15) may still work, we
-  recommend using 16 as this is the version we using for the cloud version of Hive.
+  We recommend using PostgreSQL version 16. While older versions (14, 15) may
+  still work, we recommend using 16 as this is the version we using for the
+  cloud version of Hive.
 </Callout>
 
 - **Redis**: deployed as in-cluster, used for mainly for short-term caching.
@@ -148,7 +147,8 @@ First download the `docker-compose.community.yml` file from the
 using `wget` or `curl`. This's going to download the latest version available.
 
 <Callout type="info">
-  Note: make sure you've Docker installed to be able to continue with the setup process.
+  Note: make sure you've Docker installed to be able to continue with the setup
+  process.
 </Callout>
 
 You can also download the file directly from GitHub, if you don't have `wget` or `curl` installed
@@ -327,8 +327,14 @@ Now that you've your project setup, start by installing the Hive CLI which we're
 interact with Hive's server.
 
 <Cards>
-  <Card href="/docs/api-reference/cli#binary" title="Install Hive CLI as a binary" />
-  <Card href="/docs/api-reference/cli#nodejs" title="Install Hive CLI from NPM" />
+  <Card
+    href="/docs/api-reference/cli#binary"
+    title="Install Hive CLI as a binary"
+  />
+  <Card
+    href="/docs/api-reference/cli#nodejs"
+    title="Install Hive CLI from NPM"
+  />
 </Cards>
 
 After installing it, you can check the version of the CLI, to make sure it's installed correctly.

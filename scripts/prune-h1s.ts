@@ -79,9 +79,11 @@ async function main() {
   }
 
   console.log(
-    `\n${dryRun ? "[DRY RUN] Would have modified" : "Modified"} ${filesModified} file(s)`
+    `\n${dryRun ? "[DRY RUN] Would have modified" : "Modified"} ${filesModified} file(s)`,
   );
-  console.log(`${dryRun ? "[DRY RUN] Would have removed" : "Removed"} ${h1sRemoved} first h1 heading(s)`);
+  console.log(
+    `${dryRun ? "[DRY RUN] Would have removed" : "Removed"} ${h1sRemoved} first h1 heading(s)`,
+  );
 
   if (dryRun) {
     console.log("\nTo apply changes, set 'dryRun = false' in the script");

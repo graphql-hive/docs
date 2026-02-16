@@ -36,6 +36,22 @@ const config: Linter.Config[] = [
     },
   },
   {
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "fumadocs-ui/components/card",
+              message:
+                "Use '@hive/design-system/hive-components/card' instead. The Hive card has the arrow style from the old site.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     languageOptions: {
       parserOptions: {
         projectService: {

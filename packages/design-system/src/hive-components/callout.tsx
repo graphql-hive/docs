@@ -1,7 +1,15 @@
+import { cn } from "../cn";
+import CalloutCriticalIcon from "../icons/callout-critical.svg?svgr";
+import CalloutInfoIcon from "../icons/callout-info.svg?svgr";
+import CalloutNeutralIcon from "../icons/callout-neutral.svg?svgr";
+import CalloutSuccessIcon from "../icons/callout-success.svg?svgr";
+import CalloutWarningIcon from "../icons/callout-warning.svg?svgr";
+
 type CalloutType = "critical" | "info" | "note" | "success" | "tip" | "warning";
 
 interface CalloutProps {
   children: React.ReactNode;
+  className?: string;
   title?: string;
   type: CalloutType;
 }
@@ -9,72 +17,93 @@ interface CalloutProps {
 const calloutConfig: Record<
   CalloutType,
   {
-    bgColor: string;
-    borderColor: string;
-    title: string;
-    titleColor: string;
+    bg: string;
+    border: string;
+    Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    text: string;
   }
 > = {
   critical: {
-    bgColor: "bg-red-50 dark:bg-red-950/30",
-    borderColor: "border-red-500 dark:border-red-400",
-    title: "Critical",
-    titleColor: "text-red-700 dark:text-red-400",
+    bg: "bg-critical-100 dark:bg-[rgba(255,240,232,0.2)]",
+    border: "border border-critical-500 dark:border-[rgba(255,198,187,0.2)]",
+    Icon: CalloutCriticalIcon,
+    text: "text-critical-800 dark:text-critical-500",
   },
   info: {
-    bgColor: "bg-cyan-50 dark:bg-cyan-950/30",
-    borderColor: "border-cyan-500 dark:border-cyan-400",
-    title: "Info",
-    titleColor: "text-cyan-700 dark:text-cyan-400",
+    bg: "bg-info-100 dark:bg-[rgba(231,247,255,0.2)]",
+    border: "border border-info-500 dark:border-[rgba(159,201,220,0.2)]",
+    Icon: CalloutInfoIcon,
+    text: "text-info-800 dark:text-[#215D93]",
   },
   note: {
-    bgColor: "bg-blue-50 dark:bg-blue-950/30",
-    borderColor: "border-blue-500 dark:border-blue-400",
-    title: "Note",
-    titleColor: "text-blue-700 dark:text-blue-400",
+    bg: "bg-beige-200 dark:bg-[rgba(77,75,70,0.4)]",
+    border: "border border-beige-500 dark:border-[rgba(109,106,99,0.4)]",
+    Icon: CalloutNeutralIcon,
+    text: "text-beige-900 dark:text-beige-400",
   },
   success: {
-    bgColor: "bg-green-50 dark:bg-green-950/30",
-    borderColor: "border-green-500 dark:border-green-400",
-    title: "Success",
-    titleColor: "text-green-700 dark:text-green-400",
+    bg: "bg-positive-100 dark:bg-[rgba(175,213,99,0.2)]",
+    border: "border border-positive-500 dark:border-[rgba(175,213,99,0.2)]",
+    Icon: CalloutSuccessIcon,
+    text: "text-positive-800 dark:text-positive-500",
   },
   tip: {
-    bgColor: "bg-purple-50 dark:bg-purple-950/30",
-    borderColor: "border-purple-500 dark:border-purple-400",
-    title: "Tip",
-    titleColor: "text-purple-700 dark:text-purple-400",
+    bg: "bg-beige-200 dark:bg-[rgba(77,75,70,0.4)]",
+    border: "border border-beige-500 dark:border-[rgba(109,106,99,0.4)]",
+    Icon: CalloutNeutralIcon,
+    text: "text-beige-900 dark:text-beige-400",
   },
   warning: {
-    bgColor: "bg-yellow-50 dark:bg-yellow-950/30",
-    borderColor: "border-yellow-500 dark:border-yellow-400",
-    title: "Warning",
-    titleColor: "text-yellow-700 dark:text-yellow-400",
+    bg: "bg-warning-100 dark:bg-[rgba(251,248,203,0.2)]",
+    border: "border border-warning-500 dark:border-[rgba(231,222,98,0.2)]",
+    Icon: CalloutWarningIcon,
+    text: "text-warning-800 dark:text-warning-500",
   },
 };
 
-export function Callout({ children, title, type = "info" }: CalloutProps) {
+export function Callout({
+  children,
+  className,
+  title,
+  type = "info",
+}: CalloutProps) {
   const config = calloutConfig[type];
 
   if (!config) {
     throw new Error(`Unknown callout type: ${type}`);
   }
 
+  const { Icon } = config;
+
   return (
     <div
-      className={`${config.bgColor} ${config.borderColor} mt-6 rounded-r-lg border-l-2 p-4`}
+      className={cn(
+        "mt-6 flex min-h-12 items-center gap-2 rounded-lg px-[13px] py-[9px]",
+        config.bg,
+        config.border,
+        className,
+      )}
     >
-      <div className="min-w-0 flex-1 dark:text-white">
-        <div
-          className={`mb-2 font-mono text-sm font-medium uppercase ${config.titleColor}`}
-          style={{
-            letterSpacing: "0.05em",
-          }}
-        >
-          {title ?? config.title}
+      <Icon
+        aria-hidden
+        className={cn("size-6 shrink-0", config.text)}
+        role="img"
+      />
+      <div className="min-w-0 flex-1">
+        {title && (
+          <div
+            className={cn(
+              "mb-1 font-mono text-sm font-medium uppercase",
+              config.text,
+            )}
+            style={{ letterSpacing: "0.05em" }}
+          >
+            {title}
+          </div>
+        )}
+        <div className="text-base leading-[1.75] text-neutral-900 dark:text-white **:leading-[inherit]!">
+          {children}
         </div>
-        {/* I used [&_*]:!leading-[inherit] to override line-height forced by nextra */}
-        <div className="**:leading-[inherit]!">{children}</div>
       </div>
     </div>
   );

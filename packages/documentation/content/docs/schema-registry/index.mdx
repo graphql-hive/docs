@@ -2,14 +2,12 @@
 title: Hive Console
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Image } from '@hive/design-system/image'
-import { Card, Cards } from 'fumadocs-ui/components/card'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Image } from "@hive/design-system/image";
+import { Card, Cards } from "@hive/design-system/hive-components/card";
 
-import schemaHistoryDiffImage from '../../../public/docs/pages/features/history-diff.png'
-import schemaHistoryImage from '../../../public/docs/pages/guides/history.png'
-
-
+import schemaHistoryDiffImage from "../../../public/docs/pages/features/history-diff.png";
+import schemaHistoryImage from "../../../public/docs/pages/guides/history.png";
 
 Hive Console, as a schema registry, serves the main purpose of preventing breaking changes. This
 ensures that your GraphQL API stays up-to-date and running smoothly. This allows you to plan ahead
@@ -100,9 +98,18 @@ If you wish to learn more about how to use Hive with each of these project types
 the following guides:
 
 <Cards>
-  <Card href="/docs/schema-registry/get-started/single-project" title="Single Schema" />
-  <Card href="/docs/schema-registry/get-started/schema-stitching" title="Schema-Stitching" />
-  <Card href="/docs/schema-registry/get-started/apollo-federation" title="GraphQL Federation" />
+  <Card
+    href="/docs/schema-registry/get-started/single-project"
+    title="Single Schema"
+  />
+  <Card
+    href="/docs/schema-registry/get-started/schema-stitching"
+    title="Schema-Stitching"
+  />
+  <Card
+    href="/docs/schema-registry/get-started/apollo-federation"
+    title="GraphQL Federation"
+  />
 </Cards>
 
 ## Actions on schemas
@@ -204,8 +211,10 @@ Sometimes it is useful to fetch a schema (SDL or Supergraph) from Hive, for exam
 local development. This can be done using the `schema:fetch` command.
 
 <Callout type="info">
-  Don't confuse this with the [high-availability CDN](/docs/schema-registry/high-availability-cdn.mdx). This command
-  is used to fetch a schema from the API where the CDN always represents the latest valid schema.
+  Don't confuse this with the [high-availability
+  CDN](/docs/schema-registry/high-availability-cdn.mdx). This command is used to
+  fetch a schema from the API where the CDN always represents the latest valid
+  schema.
 </Callout>
 
 - [Fetch a schema using Hive CLI](/docs/api-reference/cli#fetch-a-schema-from-the-registry)
@@ -215,7 +224,8 @@ local development. This can be done using the `schema:fetch` command.
 ### Delete a service
 
 <Callout type="info">
-  This action is only available for Schema-Stitching and GraphQL Federation projects.
+  This action is only available for Schema-Stitching and GraphQL Federation
+  projects.
 </Callout>
 
 Deleting a service is the form of removing a service from the multi-schema project.

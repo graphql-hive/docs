@@ -1,11 +1,9 @@
 ---
-title: 'Hive JavaScript Client Reference'
+title: "Hive JavaScript Client Reference"
 ---
 
-import { Tabs } from '@hive/design-system/tabs'
-import { Card, Cards } from 'fumadocs-ui/components/card'
-
-
+import { Tabs } from "@hive/design-system/tabs";
+import { Card, Cards } from "@hive/design-system/hive-components/card";
 
 The JavaScript SDK is a set of libraries and utilities for interacting with Hive, for
 [Usage Reporting](/docs/schema-registry/usage-reporting), supergraph polling and persisted
@@ -65,19 +63,25 @@ useHive({
   usage: {
     clientInfo(context /* Your GraphQL execution context */) {
       const name =
-        context?.headers?.['x-graphql-client-name'] || context?.headers?.['graphql-client-name']
+        context?.headers?.["x-graphql-client-name"] ||
+        context?.headers?.["graphql-client-name"];
       const version =
-        context?.headers?.['x-graphql-client-version'] ||
-        context?.headers?.['graphql-client-version']
+        context?.headers?.["x-graphql-client-version"] ||
+        context?.headers?.["graphql-client-version"];
 
-      if (name && version && typeof name === 'string' && typeof version === 'string') {
-        return { name, version }
+      if (
+        name &&
+        version &&
+        typeof name === "string" &&
+        typeof version === "string"
+      ) {
+        return { name, version };
       }
 
-      return null
-    }
-  }
-})
+      return null;
+    },
+  },
+});
 ```
 
 The context object is the context object as used within the GraphQL execution. Depending on your
@@ -93,9 +97,9 @@ being reported to Hive.
 ```ts
 useHive({
   usage: {
-    exclude: ['unwantedOperationName', 'anotherOperationName']
-  }
-})
+    exclude: ["unwantedOperationName", "anotherOperationName"],
+  },
+});
 ```
 
 #### Sampling
@@ -407,13 +411,13 @@ useHive({
     cdn: {
       // replace <target_id> and <cdn_access_token> with your values
       endpoint: [
-        'https://cdn.graphql-hive.com/<target_id>',
-        'https://cdn-mirror.graphql-hive.com/<target_id>'
+        "https://cdn.graphql-hive.com/<target_id>",
+        "https://cdn-mirror.graphql-hive.com/<target_id>",
       ],
-      accessToken: '<cdn_access_token>'
-    }
-  }
-})
+      accessToken: "<cdn_access_token>",
+    },
+  },
+});
 ```
 
 #### Allow arbitrary documents
@@ -428,14 +432,14 @@ useHive({
     cdn: {
       // replace <target_id> and <cdn_access_token> with your values
       endpoint: [
-        'https://cdn.graphql-hive.com/<target_id>',
-        'https://cdn-mirror.graphql-hive.com/<target_id>'
+        "https://cdn.graphql-hive.com/<target_id>",
+        "https://cdn-mirror.graphql-hive.com/<target_id>",
       ],
-      accessToken: '<cdn_access_token>'
+      accessToken: "<cdn_access_token>",
     },
-    allowArbitraryDocuments: true
-  }
-})
+    allowArbitraryDocuments: true,
+  },
+});
 ```
 
 Furthermore, you can also allow arbitraty documents based on the incoming HTTP request.
@@ -446,15 +450,15 @@ useHive({
     cdn: {
       // replace <target_id> and <cdn_access_token> with your values
       endpoint: [
-        'https://cdn.graphql-hive.com/<target_id>',
-        'https://cdn-mirror.graphql-hive.com/<target_id>'
+        "https://cdn.graphql-hive.com/<target_id>",
+        "https://cdn-mirror.graphql-hive.com/<target_id>",
       ],
-      accessToken: '<cdn_access_token>'
+      accessToken: "<cdn_access_token>",
     },
-    allowArbitraryDocuments: context =>
-      context.headers.get('x-arbitrary-documents') === '<my-secret-key>'
-  }
-})
+    allowArbitraryDocuments: (context) =>
+      context.headers.get("x-arbitrary-documents") === "<my-secret-key>",
+  },
+});
 ```
 
 #### Cache size
@@ -469,15 +473,15 @@ useHive({
     cdn: {
       // replace <target_id> and <cdn_access_token> with your values
       endpoint: [
-        'https://cdn.graphql-hive.com/<target_id>',
-        'https://cdn-mirror.graphql-hive.com/<target_id>'
+        "https://cdn.graphql-hive.com/<target_id>",
+        "https://cdn-mirror.graphql-hive.com/<target_id>",
       ],
-      accessToken: '<cdn_access_token>'
+      accessToken: "<cdn_access_token>",
     },
     // Cache up to 50.000 documents
-    cache: 50_000
-  }
-})
+    cache: 50_000,
+  },
+});
 ```
 
 ##### Circuit Breaker
@@ -526,11 +530,11 @@ endpoint.
 - Default: `false`
 
 ```ts filename="Example: Opt into processing variables"
-import { createHive } from '@graphql-hive/core'
+import { createHive } from "@graphql-hive/core";
 
 const client = createHive({
-  processVariables: true
-})
+  processVariables: true,
+});
 ```
 
 Enabling `processVariables` allows the SDK to more precisely track which input fields are actually
@@ -554,11 +558,11 @@ It is possible to provide the following options:
 - `'error'`
 
 ```ts filename="Example: Set debug level based on environment variable"
-import { createHive } from '@graphql-hive/core'
+import { createHive } from "@graphql-hive/core";
 
 const client = createHive({
-  logger: process.env.DEBUG === '1' ? 'debug' : 'info'
-})
+  logger: process.env.DEBUG === "1" ? "debug" : "info",
+});
 ```
 
 Alternatively, you can also provide your own [`Logger`](/docs/logger) (or any API-compatible
@@ -570,13 +574,13 @@ If your GraphQL server is not listed above, you can implement a custom integrati
 importing and creating a Hive instance using the `createHive` function.
 
 ```ts
-import { createHive } from '@graphql-hive/core'
+import { createHive } from "@graphql-hive/core";
 
 const hive = createHive({
   enabled: true,
   debug: true, // or, false
-  token: 'YOUR-TOKEN'
-})
+  token: "YOUR-TOKEN",
+});
 ```
 
 Call `collectUsage` as soon as a GraphQL operation execution starts, and use the return value
@@ -584,14 +588,16 @@ callback when the operation ends. You may also wrap and replace the `execute` fu
 following:
 
 ```ts
-export async function executeWithHive(args: ExecutionArgs): Promise<ExecutionResult> {
+export async function executeWithHive(
+  args: ExecutionArgs,
+): Promise<ExecutionResult> {
   // args is ExecutionArgs of graphql-js
-  const finish = hive.collectUsage(args)
+  const finish = hive.collectUsage(args);
   // result is ExecutionResult of graphql-js
-  const result = await execute(args)
+  const result = await execute(args);
   // Use this callback to finish measuring times, and save the operation report
-  finish(result)
+  finish(result);
 
-  return result
+  return result;
 }
 ```

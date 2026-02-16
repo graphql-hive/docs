@@ -5,7 +5,10 @@ import { Navigation } from "@/components/navigation";
 
 export function baseOptions(
   tree: Root,
-  { className, style }: { className?: string; style?: React.CSSProperties } = {},
+  {
+    className,
+    style,
+  }: { className?: string; style?: React.CSSProperties } = {},
 ): DocsLayoutProps {
   return {
     containerProps: {

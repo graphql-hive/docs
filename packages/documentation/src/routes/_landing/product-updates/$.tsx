@@ -12,9 +12,7 @@ import defaultMdxComponents from "fumadocs-ui/mdx";
 const findEntry = createServerFn({ method: "GET" })
   .inputValidator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
-    const { productUpdates } = await import(
-      "fumadocs-mdx:collections/server"
-    );
+    const { productUpdates } = await import("fumadocs-mdx:collections/server");
     const entry = productUpdates.find(
       (e) => e.info.path.replace(/\.mdx?$/, "") === slug,
     );
