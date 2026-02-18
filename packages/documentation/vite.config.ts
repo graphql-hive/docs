@@ -26,7 +26,7 @@ export default defineConfig({
         : process.env["VERCEL"]
           ? "vercel"
           : undefined,
-      routeRules: (await import("./redirects")).routeRules,
+      routeRules: await import("./redirects").then((m) => m.routeRules),
     }),
     mdx(await import("./source.config")),
     tailwindcss(),

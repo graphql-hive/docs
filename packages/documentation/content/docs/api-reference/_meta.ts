@@ -1,12 +1,12 @@
 export default {
-  "graphql-api": "Public GraphQL API",
   cli: "Hive CLI",
   client: "Hive JavaScript Client",
-  "ruby-client": "Hive Ruby Client",
-  "php-client": "Hive PHP Client",
-  "rust-client": "Hive Rust Client",
   "gateway-cli": "Hive Gateway CLI",
   "gateway-config": "Hive Gateway Configuration",
+  "graphql-api": "Public GraphQL API",
   "link-specifications": "Hive GraphQL Link Spec",
+  "php-client": "Hive PHP Client",
+  "ruby-client": "Hive Ruby Client",
+  "rust-client": "Hive Rust Client",
   "usage-reports": "Usage Report Spec",
 };

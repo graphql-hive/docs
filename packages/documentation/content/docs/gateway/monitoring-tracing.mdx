@@ -7,8 +7,6 @@ description:
 ---
 
 import { Callout } from '@hive/design-system/hive-components/callout'
-import { Card, Cards } from '@hive/design-system/hive-components/card'
-import { Image } from '@hive/design-system/image'
 import { Tabs } from '@hive/design-system/tabs'
 
 
@@ -154,7 +152,7 @@ more details about OpenTelemetry setup and API.
 
 #### Basic usage
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>, "CLI"]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>, "CLI"]}>
 
 <Tabs.Tab>
 
@@ -303,7 +301,7 @@ Please refer to `openTelemetrySetup()` usage if you need more control and option
 You can provide a service name, either by using standard `OTEL_SERVICE_NAME` and
 `OTEL_SERVICE_VERSION` or by providing them programmatically via setup options
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -342,7 +340,7 @@ new NodeSDK({
 Resource attributes can be defined by providing a `Resource` instance to the setup `resource`
 option.
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -404,7 +402,7 @@ You can setup OpenTelemetry by providing either:
 - a Tracer Provider. This is the manual setup mode where nothing is created automatically. The
   Tracer Provider will just be registered.
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -495,7 +493,7 @@ debugging purpose.
 
 [See official documentation for more details](https://open-telemetry.github.io/opentelemetry-js/classes/_opentelemetry_sdk-trace-base.ConsoleSpanExporter.html).
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -537,7 +535,7 @@ An exporter that writes the spans to an OTLP-supported backend using HTTP.
 npm i @opentelemetry/exporter-trace-otlp-http
 ```
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -581,7 +579,7 @@ An exporter that writes the spans to an OTLP-supported backend using gRPC.
 npm i @opentelemetry/exporter-trace-otlp-grpc
 ```
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -632,7 +630,7 @@ Your Jaeger instance needs to have OTLP ingestion enabled, so verify that you ha
 `COLLECTOR_OTLP_ENABLED=true` environment variable set, and that ports `4317` and `4318` are
 accessible.
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -683,7 +681,7 @@ Please refer to the
 [NewRelic OTLP documentation](https://docs.newrelic.com/docs/opentelemetry/best-practices/opentelemetry-otlp/#configure-endpoint-port-protocol)
 for complete documentation and to find the appropriate endpoint.
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -740,7 +738,7 @@ endpoint
 You can also use the official DataDog Tracer Provider by using manual Hive Gateway deployment and
 installing the dependency.
 
-<Tabs items={['DataDog Tracer Provider', <div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={['DataDog Tracer Provider', <div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -828,7 +826,7 @@ exporter to send the spans to a Zipkin backend.
 npm i @opentelemetry/exporter-zipkin
 ```
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -890,7 +888,7 @@ If no Context Manager compatible with async is registered, automatic parenting o
 not work. You will have to retrieve the current OpenTelemetry context from the GraphQL context, or
 from the `getActiveContext` method of the plugin instance.
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -946,7 +944,7 @@ behavior to exactly suites your infrastructure limits.
 
 By default, the batch processor will send the spans every 5 seconds or when the buffer is full.
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -1024,7 +1022,7 @@ rate).
 By default, all requests are traced. You can either provide you own Sampler, or provide a sampling
 rate which will be used to setup a Parent + TraceID Ratio strategy.
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -1080,7 +1078,7 @@ new NodeSDK({
 To ensure that you don't overwhelm your tracing ingestion infrastructure, you can set limits for
 both cardinality and amount of data the OpenTelemetry SDK will be allowed to generate.
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 
@@ -2197,7 +2195,7 @@ environment variable on your gateway process/runtime.
 
 In addition, you can use the stdout exporter to log the traces to the console:
 
-<Tabs items={[<div>Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div>OpenTelemetry <code>NodeSDK</code></div>]}>
+<Tabs items={[<div key="gateway">Hive Gateway <code>openTelemetrySetup()</code> (recommended)</div>, <div key="otel">OpenTelemetry <code>NodeSDK</code></div>]}>
 
 <Tabs.Tab>
 

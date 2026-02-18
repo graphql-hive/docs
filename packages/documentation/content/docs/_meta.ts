@@ -1,12 +1,12 @@
 export default {
-  index: "Introduction",
-  "schema-registry": "Hive Console",
+  "api-reference": "API Reference",
   gateway: "Hive Gateway",
-  router: "Hive Router",
+  index: "Introduction",
   logger: "Hive Logger",
+  "migration-guides": "Migration Guides",
   "new-laboratory": "Hive Laboratory",
   "other-integrations": "Integrations",
-  "api-reference": "API Reference",
+  router: "Hive Router",
+  "schema-registry": "Hive Console",
   "use-cases": "Use Cases",
-  "migration-guides": "Migration Guides",
 };

@@ -15,7 +15,7 @@ function walk(dir) {
 
 let fixed = 0;
 for (const file of walk(docsDir)) {
-  let content = fs.readFileSync(file, "utf-8");
+  let content = fs.readFileSync(file, "utf8");
   // Fix "---title: ..." → "---\ntitle: ..."
   if (content.startsWith("---title:")) {
     content = "---\n" + content.slice(3);

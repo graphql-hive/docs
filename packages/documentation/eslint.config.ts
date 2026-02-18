@@ -52,10 +52,22 @@ const config: Linter.Config[] = [
     },
   },
   {
+    files: ["content/**/_meta.ts"],
+    rules: {
+      "import/no-default-export": "off",
+    },
+  },
+  {
+    files: ["scripts/**/*.mjs"],
+    rules: {
+      "no-console": "off",
+    },
+  },
+  {
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ["*.mjs", "*.js"],
+          allowDefaultProject: ["*.mjs", "*.js", "scripts/*.mjs"],
         },
       },
     },

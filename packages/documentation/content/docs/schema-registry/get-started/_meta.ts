@@ -1,6 +1,6 @@
 export default {
-  "first-steps": "First Steps",
   "apollo-federation": "GraphQL Federation",
-  "single-project": "Single Schema",
+  "first-steps": "First Steps",
   "schema-stitching": "Schema-Stitching",
+  "single-project": "Single Schema",
 };

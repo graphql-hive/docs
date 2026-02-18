@@ -1,17 +1,16 @@
 #!/usr/bin/env node
+import { execSync } from "node:child_process";
 /**
  * Fix broken internal links from old Nextra path structure.
  * Based on redirect mappings from .context/hive-console/packages/web/docs/next.config.js
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { globSync } from "node:fs";
-import { execSync } from "node:child_process";
 
 const pkgDir = new URL("..", import.meta.url).pathname;
 
 // Get all MDX and TSX files in content/ and src/
 const files = execSync(
-  `find ${pkgDir}/content ${pkgDir}/src \\( -name '*.mdx' -o -name '*.tsx' -o -name '*.ts' \\) | grep -v node_modules`,
+  String.raw`find ${pkgDir}/content ${pkgDir}/src \( -name '*.mdx' -o -name '*.tsx' -o -name '*.ts' \) | grep -v node_modules`,
   { encoding: "utf8" },
 )
   .trim()
@@ -54,7 +53,6 @@ const rules = [
   ["graphql-hive.com/docs/management/", "graphql-hive.com/docs/schema-registry/management/"],
 ];
 
-let totalReplacements = 0;
 let filesChanged = 0;
 
 for (const file of files) {
@@ -68,22 +66,7 @@ for (const file of files) {
   if (content !== original) {
     writeFileSync(file, content);
     filesChanged++;
-    // Count replacements
-    const count =
-      original.split("").length - content.split("").length === 0
-        ? original.length !== content.length
-          ? 1
-          : (() => {
-              let c = 0;
-              for (const [from] of rules) {
-                const re = new RegExp(from.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
-                c += (original.match(re) || []).length - (content.match(re) || []).length;
-              }
-              return c;
-            })()
-        : 1;
     console.log(`  Fixed: ${file.replace(pkgDir, "")}`);
-    totalReplacements++;
   }
 }
 

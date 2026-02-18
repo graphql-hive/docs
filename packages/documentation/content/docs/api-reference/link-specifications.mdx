@@ -5,7 +5,8 @@ title: 'Hive GraphQL Federated Link Specifications'
 import { Image } from '@hive/design-system/image'
 import { Tabs } from '@hive/design-system/tabs'
 
-
+import explorerMetadataFilterImage from '../../../public/docs/pages/schema-registry/link-specifications/explorer_metadata-filter.png'
+import explorerMetadataViewImage from '../../../public/docs/pages/schema-registry/link-specifications/explorer_metadata-view.png'
 
 Federation `@link` compliant features for GraphQL Hive.
 
@@ -65,22 +66,18 @@ directive @meta(
 Metadata is useful for indicating ownership, contact information, importance, domain, or more. It
 can be viewed from Hive's explorer page:
 
-import explorerMetadataViewImage from '../../../public/docs/pages/schema-registry/link-specifications/explorer_metadata-view.png'
-
 <Image
   alt="Explorer with Metadata Visible"
-  src={explorerMetadataViewImage}
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
+  src={explorerMetadataViewImage}
 />
 
 And can be used in Hive's explorer page to filter the list of elements:
 
-import explorerMetadataFilterImage from '../../../public/docs/pages/schema-registry/link-specifications/explorer_metadata-filter.png'
-
 <Image
   alt="Explorer with Metadata Filter"
-  src={explorerMetadataFilterImage}
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
+  src={explorerMetadataFilterImage}
 />
 
 #### Usage

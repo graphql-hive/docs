@@ -1,9 +1,9 @@
 export default {
-  index: "Introduction",
-  "getting-started": "Getting Started",
-  supergraph: "Supergraph",
-  security: "Security",
-  guides: "Guides",
   configuration: "Configuration",
+  "getting-started": "Getting Started",
+  guides: "Guides",
+  index: "Introduction",
   observability: "Observability",
+  security: "Security",
+  supergraph: "Supergraph",
 };

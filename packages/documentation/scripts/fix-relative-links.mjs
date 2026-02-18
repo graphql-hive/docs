@@ -1,11 +1,11 @@
 #!/usr/bin/env node
+import { execSync } from "node:child_process";
 /**
  * Fix relative links in router docs that break with TanStack Router's splat route.
  * Converts ../X links to absolute /docs/router/X paths.
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { execSync } from "node:child_process";
-import { dirname, resolve, relative } from "node:path";
+import { dirname, relative, resolve } from "node:path";
 
 const docsDir = new URL("../content/docs", import.meta.url).pathname;
 
@@ -23,8 +23,8 @@ for (const file of files) {
   let content = original;
 
   // Replace relative links (](../ and ](../../) with absolute /docs/ paths
-  content = content.replace(
-    /\]\((\.\.\/.+?)([\)#])/g,
+  content = content.replaceAll(
+    /\]\((\.\.\/.+?)([)#])/g,
     (match, relPath, suffix) => {
       const fileDir = dirname(file);
       // Resolve the relative path from the file's directory

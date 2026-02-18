@@ -98,9 +98,8 @@ export default defineConfig({
     remarkImageOptions: {
       // Allow external images (e.g. GitHub user-attachments) to render without
       // explicit dimensions when fetching their size fails.
-      onError(e) {
-        console.warn(e);
-      },
+      // eslint-disable-next-line no-console -- intentional: surface image-size failures during build
+      onError: console.warn,
     },
   },
 });

@@ -1,7 +1,7 @@
 export default {
-  index: "Overview",
-  "gateway-tester": "Gateway Tester",
-  mocking: "Mocking",
   debugging: "Debugging",
+  "gateway-tester": "Gateway Tester",
+  index: "Overview",
+  mocking: "Mocking",
   snapshot: "Upstream HTTP Snapshot",
 };

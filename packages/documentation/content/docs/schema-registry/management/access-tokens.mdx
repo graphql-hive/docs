@@ -2,10 +2,20 @@
 title: Access Tokens
 ---
 
-import { Image } from '@hive/design-system/image'
 import { Callout } from '@hive/design-system/hive-components/callout'
+import { Image } from '@hive/design-system/image'
 import { Step, Steps } from 'fumadocs-ui/components/steps'
 
+import accessTokenConfirmImage from '../../../../public/docs/pages/management/access-tokens/access-token-confirm.png'
+import accessTokenCreateButtonImage from '../../../../public/docs/pages/management/access-tokens/access-token-create-button.png'
+import accessTokenCreateSuccessImage from '../../../../public/docs/pages/management/access-tokens/access-token-create-success.png'
+import accessTokenDeleteActionImage from '../../../../public/docs/pages/management/access-tokens/access-token-delete-action.png'
+import accessTokenDeleteConfirmImage from '../../../../public/docs/pages/management/access-tokens/access-token-delete-confirm.png'
+import accessTokenEnterGeneralImage from '../../../../public/docs/pages/management/access-tokens/access-token-enter-general.png'
+import accessTokenMoreMenuImage from '../../../../public/docs/pages/management/access-tokens/access-token-more-menu.png'
+import accessTokenPermissionsImage from '../../../../public/docs/pages/management/access-tokens/access-token-permissions.png'
+import accessTokenResourcesImage from '../../../../public/docs/pages/management/access-tokens/access-token-resources.png'
+import accessTokensTabImage from '../../../../public/docs/pages/management/access-tokens/access-tokens-tab-settings.png'
 
 
 Access Tokens in GraphQL Hive are secure credentials used to authenticate API requests and automate
@@ -109,22 +119,18 @@ deleted) by any user with sufficient permissions.
 <Step>
 ### Navigate to Access Token Settings
 
-import accessTokensTabImage from '../../../../public/docs/pages/management/access-tokens/access-tokens-tab-settings.png'
-
 <Image
   alt="Organization Access Tokens Section"
-  src={accessTokensTabImage}
   className="mt-8 rounded-lg drop-shadow-md"
+  src={accessTokensTabImage}
 />
 
 Go to the `Settings` tab of your organization and open the `Access Tokens` section.
 
-import accessTokenCreateButtonImage from '../../../../public/docs/pages/management/access-tokens/access-token-create-button.png'
-
 <Image
   alt="Create access token button"
-  src={accessTokenCreateButtonImage}
   className="mt-8 rounded-lg drop-shadow-md"
+  src={accessTokenCreateButtonImage}
 />
 
 Click `Create new access token`.
@@ -136,12 +142,10 @@ Click `Create new access token`.
 <Step>
 ### Enter General Information
 
-import accessTokenEnterGeneralImage from '../../../../public/docs/pages/management/access-tokens/access-token-enter-general.png'
-
 <Image
   alt="Enter general access token information"
-  src={accessTokenEnterGeneralImage}
   className="mt-8 rounded-lg drop-shadow-md"
+  src={accessTokenEnterGeneralImage}
 />
 
 Provide a clear **title** and **description** to help your team understand the token’s purpose.
@@ -155,12 +159,10 @@ Confirm your selection by clicking `Next`.
 <Step>
 ### Select Permission Scopes
 
-import accessTokenPermissionsImage from '../../../../public/docs/pages/management/access-tokens/access-token-permissions.png'
-
 <Image
   alt="Select permission scopes for the access token"
-  src={accessTokenPermissionsImage}
   className="mt-8 rounded-lg drop-shadow-md"
+  src={accessTokenPermissionsImage}
 />
 
 Choose the permissions the token should have.
@@ -184,12 +186,10 @@ Decide if the token should have access to:
 - **All resources** in the organization, or
 - Only **specific projects/targets/services/apps**.
 
-import accessTokenResourcesImage from '../../../../public/docs/pages/management/access-tokens/access-token-resources.png'
-
 <Image
   alt="Select resources for the access token"
-  src={accessTokenResourcesImage}
   className="mt-8 rounded-lg drop-shadow-md"
+  src={accessTokenResourcesImage}
 />
 
 Confirm your selection by clicking `Next`.
@@ -203,12 +203,10 @@ Confirm your selection by clicking `Next`.
 
 Carefully review all the details—title, description, scopes, and resource assignments.
 
-import accessTokenConfirmImage from '../../../../public/docs/pages/management/access-tokens/access-token-confirm.png'
-
 <Image
   alt="Confirm permissions and scopes on the access token"
-  src={accessTokenConfirmImage}
   className="mt-8 rounded-lg drop-shadow-md"
+  src={accessTokenConfirmImage}
 />
 
 When you're ready, click `Create Access Token`.
@@ -227,12 +225,10 @@ After creation, your **access token key** will be displayed once.
 - Use this token to authenticate with Hive's CLI or API.
 - **Never share your token** and immediately revoke it if it becomes compromised.
 
-import accessTokenCreateSuccessImage from '../../../../public/docs/pages/management/access-tokens/access-token-create-success.png'
-
 <Image
   alt="Confirm permissions and scopes on the access token"
-  src={accessTokenCreateSuccessImage}
   className="mt-8 rounded-lg drop-shadow-md"
+  src={accessTokenCreateSuccessImage}
 />
 </Step>
 </Step>
@@ -242,32 +238,26 @@ import accessTokenCreateSuccessImage from '../../../../public/docs/pages/managem
 
 Within the Access Token overview, click the three dots icon for opening the context menu.
 
-import accessTokenMoreMenuImage from '../../../../public/docs/pages/management/access-tokens/access-token-more-menu.png'
-
 <Image
   alt="Open the actions for the access token by pressing the three dot icon on the end of the row."
-  src={accessTokenMoreMenuImage}
   className="mt-8 rounded-lg drop-shadow-md"
+  src={accessTokenMoreMenuImage}
 />
 
 Within that menu, click the `Delete` menu item.
 
-import accessTokenDeleteActionImage from '../../../../public/docs/pages/management/access-tokens/access-token-delete-action.png'
-
 <Image
   alt="Delete the access token by selection the delete action in the menu."
-  src={accessTokenDeleteActionImage}
   className="mt-8 rounded-lg drop-shadow-md"
+  src={accessTokenDeleteActionImage}
 />
 
 Confirm the deletion within the dialog.
 
-import accessTokenDeleteConfirmImage from '../../../../public/docs/pages/management/access-tokens/access-token-delete-confirm.png'
-
 <Image
   alt="Confirm the deletion within the dialogue."
-  src={accessTokenDeleteConfirmImage}
   className="mt-8 rounded-lg drop-shadow-md"
+  src={accessTokenDeleteConfirmImage}
 />
 
 ## Updating Access Tokens

@@ -2,17 +2,22 @@
 title: Get started with Schema-Stitching
 ---
 
-import { Image } from '@hive/design-system/image'
 import { Callout } from '@hive/design-system/hive-components/callout'
+import { Image } from '@hive/design-system/image'
+import { Tabs } from '@hive/design-system/tabs'
 import { File, Files, Folder } from 'fumadocs-ui/components/files'
 import { Step, Steps } from 'fumadocs-ui/components/steps'
-import { Tabs } from '@hive/design-system/tabs'
+
+import accessTokensConfirmImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-confirm.png'
+import accessTokensCreateNewImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-create-new.png'
+import accessTokensPermissionsImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-permissions.png'
+import accessTokensResourcesImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-resources.png'
+import accessTokensSuccessImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-success.png'
+import targetOverview from '../../../../public/docs/pages/get-started/apollo-federation/target-overview.png'
 import cdnTokenImage from '../../../../public/docs/pages/guides/cdn_token.png'
 import stitchingExplorerImage from '../../../../public/docs/pages/guides/stitching-explorer.png'
 import stitchingHistoryImage from '../../../../public/docs/pages/guides/stitching-history.png'
 import stitchingUserSchemaImage from '../../../../public/docs/pages/guides/stitching-users-schema.png'
-import tokenImage from '../../../../public/docs/pages/guides/token.png'
-
 
 
 This guide is for projects using Schema-Stitching. For most new projects we recommend using
@@ -38,7 +43,7 @@ the gateway without the need to specify any stitching configurations on the gate
 For this guide, we are going to use the following schemas and services:
 
 <Files>
-  <Folder name="subschemas" defaultOpen>
+  <Folder defaultOpen name="subschemas">
     <File name="users.graphql" />
     <File name="posts.graphql" />
   </Folder>
@@ -137,55 +142,45 @@ Within your organization, open the `Settings` tab and select the `Access Token` 
 
 Click `Create new access token` and enter a name for the access token.
 
-import accessTokensCreateNewImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-create-new.png'
-
 <Image
-  src={accessTokensCreateNewImage}
   alt="Create new access token button within the organization settings access token section"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
+  src={accessTokensCreateNewImage}
 />
 
 Click `Next` and select `Allowed` for `Check schema/service subgraph`,
 `Publish schema/service/subgraph`, and `Report usage data`.
 
-import accessTokensPermissionsImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-permissions.png'
-
 <Image
-  src={accessTokensPermissionsImage}
   alt="Grant the permissions required for publishing and checking schemas"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
+  src={accessTokensPermissionsImage}
 />
 
 Click `Next` and in the next step keep the `Full Access` selection for the resources. For the
 purpose of this guide there is no need to further restirct the resources.
 
-import accessTokensResourcesImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-resources.png'
-
 <Image
-  src={accessTokensResourcesImage}
   alt="Grant full access on all resources"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
+  src={accessTokensResourcesImage}
 />
 
 One last time click `Next` and review the access token.
 
-import accessTokensConfirmImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-confirm.png'
-
 <Image
-  src={accessTokensConfirmImage}
   alt="Review the permissions"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
+  src={accessTokensConfirmImage}
 />
 
 Then click the `Create Access Token` button. A confirmation dialogue will open that shows the you
 generated token.
 
-import accessTokensSuccessImage from '../../../../public/docs/pages/get-started/apollo-federation/access-tokens-success.png'
-
 <Image
-  src={accessTokensSuccessImage}
   alt="Successful access token creation"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
+  src={accessTokensSuccessImage}
 />
 
 Make sure to copy your token and keep it safe. **You won't be able to see it again.**
@@ -201,12 +196,10 @@ As you may have noticed, Hive has created three targets under your project: `dev
 `staging`, and `production`. This guide will use the `development` target to explore the features
 Hive offers.
 
-import targetOverview from '../../../../public/docs/pages/get-started/apollo-federation/target-overview.png'
-
 <Image
-  src={targetOverview}
   alt="Project overview showing the available targets"
   className="mt-10 max-w-xl rounded-lg drop-shadow-md"
+  src={targetOverview}
 />
 
 For this guide we will use the `development` target.
@@ -249,8 +242,8 @@ new schema you just published 🎉
 
 <Image
   alt="Stitching SDL"
-  src={stitchingUserSchemaImage}
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
+  src={stitchingUserSchemaImage}
 />
 
 <Callout type="info">
@@ -281,8 +274,8 @@ On your target's **Explorer** page now, you'll be able to see the schema of both
 
 <Image
   alt="Schema Explorer"
-  src={stitchingExplorerImage}
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
+  src={stitchingExplorerImage}
 />
 </Step>
 
@@ -501,8 +494,8 @@ schema is published now, and you can see the changes you made:
 
 <Image
   alt="Schema History"
-  src={stitchingHistoryImage}
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
+  src={stitchingHistoryImage}
 />
 </Step>
 
@@ -545,8 +538,8 @@ from the CDN. For this guide, you can pick the **GraphQL SDL** artifact.
 
 <Image
   alt="CDN Token Form"
-  src={cdnTokenImage}
   className="mt-10 max-w-2xl rounded-lg drop-shadow-md"
+  src={cdnTokenImage}
 />
 
 Copy the URL and let's try to fetch your schema using `curl` (replace `YOUR_HIVE_CDN_TOKEN` with
