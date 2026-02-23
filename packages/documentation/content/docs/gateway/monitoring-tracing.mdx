@@ -6,11 +6,8 @@ description:
   behavior of your Hive Gateway.
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Tabs } from '@hive/design-system/tabs'
-
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
 
 If something is not working as it should within your GraphQL gateway, you would not want it to go
 unnoticed.
@@ -50,11 +47,11 @@ You can change this endpoint through the `healthCheckEndpoint` option:
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  healthCheckEndpoint: '/healthcheck'
-})
+  healthCheckEndpoint: "/healthcheck",
+});
 ```
 
 </Tabs.Tab>
@@ -62,11 +59,11 @@ export const gatewayConfig = defineConfig({
 <Tabs.Tab>
 
 ```ts filename="index.ts"
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 
 export const gateway = createGatewayRuntime({
-  healthCheckEndpoint: '/healthcheck'
-})
+  healthCheckEndpoint: "/healthcheck",
+});
 ```
 
 </Tabs.Tab>
@@ -88,11 +85,11 @@ You can customize the readiness check endpoint through the `readinessCheckEndpoi
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  readinessCheckEndpoint: '/readiness'
-})
+  readinessCheckEndpoint: "/readiness",
+});
 ```
 
 </Tabs.Tab>
@@ -100,11 +97,11 @@ export const gatewayConfig = defineConfig({
 <Tabs.Tab>
 
 ```ts filename="index.ts"
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 
 export const gateway = createGatewayRuntime({
-  readinessCheckEndpoint: '/readiness'
-})
+  readinessCheckEndpoint: "/readiness",
+});
 ```
 
 </Tabs.Tab>
@@ -176,13 +173,13 @@ Depending on your usage, you will have to import `openTelemetrySetup` from a dif
 
 ```ts filename="telemetry.ts"
 // For CLI usage
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 
 // For Programmatic usage
-import { openTelemetrySetup } from '@graphql-hive/plugin-opentelemetry/setup'
+import { openTelemetrySetup } from "@graphql-hive/plugin-opentelemetry/setup";
 
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   // Mandatory: It depends on the available API in your runtime.
@@ -193,26 +190,26 @@ openTelemetrySetup({
 
   traces: {
     // Define your exporter, most of the time the OTLP HTTP one. Traces are batched by default.
-    exporter: new OTLPTraceExporter({ url: process.env['OTLP_URL'] }),
+    exporter: new OTLPTraceExporter({ url: process.env["OTLP_URL"] }),
 
     // You can easily enable a console exporter for quick debug
-    console: process.env['DEBUG_TRACES'] === '1'
-  }
-})
+    console: process.env["DEBUG_TRACES"] === "1",
+  },
+});
 ```
 
 After configuring and setting up the telemetry, make sure to import it as the first import in your
 `gateway.config.ts` file and enable OpenTelemetry tracing:
 
 ```ts filename="gateway.config.ts"
-import './telemetry'
-import { defineConfig } from '@graphql-hive/gateway'
+import "./telemetry";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   openTelemetry: {
-    traces: true
-  }
-})
+    traces: true,
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -220,8 +217,8 @@ export const gatewayConfig = defineConfig({
 <Tabs.Tab>
 
 <Callout>
-  Official OpenTelemetry Node SDK is only working when Hive Gateway is used via the CLI or
-  programmatically with a Node runtime.
+  Official OpenTelemetry Node SDK is only working when Hive Gateway is used via
+  the CLI or programmatically with a Node runtime.
 </Callout>
 
 OpenTelemetry provides an official SDK for Node (`@opentelemetry/sdk-node`). This SDK offers a
@@ -239,35 +236,35 @@ can follow official `@opentelemetry/sdk-node` documentation for your setup. Plea
 programmatic usage if you need more packages.
 
 ```ts filename="telemetry.ts"
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
-import { NodeSDK, resources, tracing } from '@opentelemetry/sdk-node'
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { NodeSDK, resources, tracing } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
   // All configuration is optional. OTEL rely on env variables or sensible default value.
 
   // Defines the exporter, HTTP OTLP most of the time. Traces are batched by default
-  traceExporter: new OTLPTraceExporter({ url: process.env['OTLP_URL'] }),
+  traceExporter: new OTLPTraceExporter({ url: process.env["OTLP_URL"] }),
 
   // Optional, enables automatic instrumentation, adding traces like network spans.
   instrumentations: getNodeAutoInstrumentations(),
 
   // Optional, enables automatic resource attributes detection
-  resourceDetectors: getResourceDetectors()
-}).start()
+  resourceDetectors: getResourceDetectors(),
+}).start();
 ```
 
 After configuring and setting up the telemetry, make sure to import it as the first import in your
 `gateway.config.ts` file and enable OpenTelemetry tracing:
 
 ```ts filename="gateway.config.ts"
-import './telemetry'
-import { defineConfig } from '@graphql-hive/gateway'
+import "./telemetry";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   openTelemetry: {
-    traces: true
-  }
-})
+    traces: true,
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -306,14 +303,14 @@ You can provide a service name, either by using standard `OTEL_SERVICE_NAME` and
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 
 openTelemetrySetup({
   resource: {
-    serviceName: 'my-service',
-    serviceVersion: '1.0.0'
-  }
-})
+    serviceName: "my-service",
+    serviceVersion: "1.0.0",
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -321,14 +318,14 @@ openTelemetrySetup({
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { NodeSDK, resources } from '@opentelemetry/sdk-node'
+import { NodeSDK, resources } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
   resource: resources.resourceFromAttributes({
-    'service.name': 'my-service',
-    'service.version': '1.0.0'
-  })
-}).start()
+    "service.name": "my-service",
+    "service.version": "1.0.0",
+  }),
+}).start();
 ```
 
 </Tabs.Tab>
@@ -353,14 +350,14 @@ npm i @opentelemetry/resources
 ```
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { resourceFromAttributes } from '@opentelemetry/resources'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { resourceFromAttributes } from "@opentelemetry/resources";
 
 openTelemetrySetup({
   resource: resourceFromAttributes({
-    'custom.attribute': 'my custom value'
-  })
-})
+    "custom.attribute": "my custom value",
+  }),
+});
 ```
 
 </Tabs.Tab>
@@ -368,14 +365,14 @@ openTelemetrySetup({
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { NodeSDK, resources } from '@opentelemetry/sdk-node'
+import { NodeSDK, resources } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
   resource: resources.resourceFromAttributes({
-    'service.name': 'my-service',
-    'service.version': '1.0.0'
-  })
-}).start()
+    "service.name": "my-service",
+    "service.version": "1.0.0",
+  }),
+}).start();
 ```
 
 </Tabs.Tab>
@@ -498,14 +495,14 @@ debugging purpose.
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
   traces: {
-    console: true
-  }
-})
+    console: true,
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -513,12 +510,14 @@ openTelemetrySetup({
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { NodeSDK, tracing } from '@opentelemetry/sdk-node'
+import { NodeSDK, tracing } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
   // Use `spanProcessors` instead of `traceExporter` to avoid the default batching configuration
-  spanProcessors: [new tracing.SimpleSpanProcessor(new tracing.ConsoleSpanExporter())]
-}).start()
+  spanProcessors: [
+    new tracing.SimpleSpanProcessor(new tracing.ConsoleSpanExporter()),
+  ],
+}).start();
 ```
 
 </Tabs.Tab>
@@ -540,16 +539,16 @@ npm i @opentelemetry/exporter-trace-otlp-http
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
   traces: {
-    exporter: new OTLPTraceExporter({ url: 'http://<otlp-endpoint>:4318' })
-  }
-})
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4318" }),
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -557,12 +556,12 @@ openTelemetrySetup({
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
-import { NodeSDK } from '@opentelemetry/sdk-node'
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { NodeSDK } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
-  traceExporter: new OTLPTraceExporter({ url: 'http://<otlp-endpoint>:4318' })
-}).start()
+  traceExporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4318" }),
+}).start();
 ```
 
 </Tabs.Tab>
@@ -584,16 +583,16 @@ npm i @opentelemetry/exporter-trace-otlp-grpc
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
   traces: {
-    exporter: new OTLPTraceExporter({ url: 'http://<otlp-endpoint>:4317' })
-  }
-})
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -601,12 +600,12 @@ openTelemetrySetup({
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc'
-import { NodeSDK } from '@opentelemetry/sdk-node'
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
+import { NodeSDK } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
-  traceExporter: new OTLPTraceExporter({ url: 'http://<otlp-endpoint>:4317' })
-}).start()
+  traceExporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+}).start();
 ```
 
 </Tabs.Tab>
@@ -635,16 +634,18 @@ accessible.
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
   traces: {
-    exporter: new OTLPTraceExporter({ url: 'http://<jaeger-endpoint>:4318/v1/traces' })
-  }
-})
+    exporter: new OTLPTraceExporter({
+      url: "http://<jaeger-endpoint>:4318/v1/traces",
+    }),
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -652,12 +653,14 @@ openTelemetrySetup({
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
-import { NodeSDK } from '@opentelemetry/sdk-node'
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { NodeSDK } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
-  traceExporter: new OTLPTraceExporter({ url: 'http://<jaeger-endpoint>:4318/v1/traces' })
-}).start()
+  traceExporter: new OTLPTraceExporter({
+    url: "http://<jaeger-endpoint>:4318/v1/traces",
+  }),
+}).start();
 ```
 
 </Tabs.Tab>
@@ -686,24 +689,24 @@ for complete documentation and to find the appropriate endpoint.
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
   traces: {
     exporter: new OTLPTraceExporter({
-      url: 'https://otlp.nr-data.net', // For US users, or https://otlp.eu01.nr-data.net for EU users
-      headers: { 'api-key': '<your-license-key>' },
-      compression: 'gzip' // Compression is recommended by NewRelic
+      url: "https://otlp.nr-data.net", // For US users, or https://otlp.eu01.nr-data.net for EU users
+      headers: { "api-key": "<your-license-key>" },
+      compression: "gzip", // Compression is recommended by NewRelic
     }),
     batching: {
       // Depending on your traces size and network quality, you will probably need to tweak batching
       // configuration. A batch should not be larger than 1Mo.
-    }
-  }
-})
+    },
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -711,16 +714,16 @@ openTelemetrySetup({
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
-import { NodeSDK } from '@opentelemetry/sdk-node'
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { NodeSDK } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
   traceExporter: new OTLPTraceExporter({
-    url: 'https://otlp.nr-data.net', // For US users, or https://otlp.eu01.nr-data.net for EU users
-    headers: { 'api-key': '<your-license-key>' },
-    compression: 'gzip' // Compression is recommended by NewRelic
-  })
-}).start()
+    url: "https://otlp.nr-data.net", // For US users, or https://otlp.eu01.nr-data.net for EU users
+    headers: { "api-key": "<your-license-key>" },
+    compression: "gzip", // Compression is recommended by NewRelic
+  }),
+}).start();
 ```
 
 </Tabs.Tab>
@@ -750,19 +753,19 @@ npm i dd-trace
 ```
 
 ```ts filename="telemetry.ts"
-import ddTrace from 'dd-trace'
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
+import ddTrace from "dd-trace";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 
 const { TracerProvider } = ddTrace.init({
   // Your configuration
-})
+});
 
 openTelemetrySetup({
   contextManager: null, // Don't register a context manager, DataDog Agent registers its own.
   traces: {
-    tracerProvider: new TracerProvider()
-  }
-})
+    tracerProvider: new TracerProvider(),
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -778,18 +781,18 @@ npm i @opentelemetry/exporter-trace-otlp-http
 ```
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
   traces: {
     exporter: new OTLPTraceExporter({
-      url: 'http://<datadog-agent-host>:4318'
-    })
-  }
-})
+      url: "http://<datadog-agent-host>:4318",
+    }),
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -801,14 +804,14 @@ It is possible to not use DataDog Agent if you want to only use DataDog as a tra
 DataDog is compatible with standard OTLP over HTTP export format.
 
 ```ts filename="telemetry.ts"
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
-import { NodeSDK } from '@opentelemetry/sdk-node'
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { NodeSDK } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
   traceExporter: new OTLPTraceExporter({
-    url: 'http://<datadog-agent-host>:4318'
-  })
-}).start()
+    url: "http://<datadog-agent-host>:4318",
+  }),
+}).start();
 ```
 
 </Tabs.Tab>
@@ -831,18 +834,18 @@ npm i @opentelemetry/exporter-zipkin
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
-import { ZipkinExporter } from '@opentelemetry/exporter-zipkin'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { ZipkinExporter } from "@opentelemetry/exporter-zipkin";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
   traces: {
     exporter: new ZipkinExporter({
-      url: '<your-zipkin-endpoint>'
-    })
-  }
-})
+      url: "<your-zipkin-endpoint>",
+    }),
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -850,14 +853,14 @@ openTelemetrySetup({
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { ZipkinExporter } from '@opentelemetry/exporter-zipkin'
-import { NodeSDK } from '@opentelemetry/sdk-node'
+import { ZipkinExporter } from "@opentelemetry/exporter-zipkin";
+import { NodeSDK } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
   traceExporter: new ZipkinExporter({
-    url: '<your-zipkin-endpoint>'
-  })
-}).start()
+    url: "<your-zipkin-endpoint>",
+  }),
+}).start();
 ```
 
 </Tabs.Tab>
@@ -897,18 +900,18 @@ npm i @opentelemetry/context-async-hooks @opentelemetry/exporter-trace-otlp-grpc
 ```
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc'
-import { B3Propagator } from '@opentelemetry/propagator-b3'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
+import { B3Propagator } from "@opentelemetry/propagator-b3";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
   traces: {
-    exporter: new OTLPTraceExporter({ url: 'http://<otlp-endpoint>:4317' })
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
   },
-  propagators: [new B3Propagator()]
-})
+  propagators: [new B3Propagator()],
+});
 ```
 
 </Tabs.Tab>
@@ -920,14 +923,14 @@ npm i @opentelemetry/sdk-node @opentelemetry/exporter-trace-otlp-grpc @opentelem
 ```
 
 ```ts filename="telemetry.ts"
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc'
-import { B3Propagator } from '@opentelemetry/propagator-b3'
-import { NodeSDK } from '@opentelemetry/sdk-node'
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
+import { B3Propagator } from "@opentelemetry/propagator-b3";
+import { NodeSDK } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
-  traceExporter: new OTLPTraceExporter({ url: 'http://<otlp-endpoint>:4317' }),
-  textMapPropagator: new B3Propagator()
-}).start()
+  traceExporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  textMapPropagator: new B3Propagator(),
+}).start();
 ```
 
 </Tabs.Tab>
@@ -1027,9 +1030,9 @@ rate which will be used to setup a Parent + TraceID Ratio strategy.
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { JaegerRemoteSampler } from '@opentelemetry/sampler-jaeger-remote'
-import { AlwaysOnSampler } from '@opentelemetry/sdk-trace-base'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { JaegerRemoteSampler } from "@opentelemetry/sampler-jaeger-remote";
+import { AlwaysOnSampler } from "@opentelemetry/sdk-trace-base";
 
 openTelemetrySetup({
   // Use Parent + TraceID Ratio strategy
@@ -1037,12 +1040,12 @@ openTelemetrySetup({
 
   // Or use a custom Sampler
   sampler: new JaegerRemoteSampler({
-    endpoint: 'http://your-jaeger-agent:14268/api/sampling',
-    serviceName: 'your-service-name',
+    endpoint: "http://your-jaeger-agent:14268/api/sampling",
+    serviceName: "your-service-name",
     initialSampler: new AlwaysOnSampler(),
-    poolingInterval: 60000 // 60 seconds
-  })
-})
+    poolingInterval: 60000, // 60 seconds
+  }),
+});
 ```
 
 </Tabs.Tab>
@@ -1050,23 +1053,23 @@ openTelemetrySetup({
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { JaegerRemoteSampler } from '@opentelemetry/sampler-jaeger-remote'
-import { NodeSDK, tracing } from '@opentelemetry/sdk-node'
+import { JaegerRemoteSampler } from "@opentelemetry/sampler-jaeger-remote";
+import { NodeSDK, tracing } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
   // Use Parent + TraceID Ratio strategy
   sampler: new ParentBasedSampler({
-    root: new TraceIdRatioBasedSampler(0.1)
+    root: new TraceIdRatioBasedSampler(0.1),
   }),
 
   // Or use a custom Sampler
   sampler: new JaegerRemoteSampler({
-    endpoint: 'http://your-jaeger-agent:14268/api/sampling',
-    serviceName: 'your-service-name',
+    endpoint: "http://your-jaeger-agent:14268/api/sampling",
+    serviceName: "your-service-name",
     initialSampler: new tracing.AlwaysOnSampler(),
-    poolingInterval: 60000 // 60 seconds
-  })
-}).start()
+    poolingInterval: 60000, // 60 seconds
+  }),
+}).start();
 ```
 
 </Tabs.Tab>
@@ -1083,7 +1086,7 @@ both cardinality and amount of data the OpenTelemetry SDK will be allowed to gen
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 
 openTelemetrySetup({
   generalLimits: {
@@ -1092,9 +1095,9 @@ openTelemetrySetup({
   traces: {
     spanLimits: {
       //...
-    }
-  }
-})
+    },
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -1102,7 +1105,7 @@ openTelemetrySetup({
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { NodeSDK } from '@opentelemetry/sdk-node'
+import { NodeSDK } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
   generalLimits: {
@@ -1110,8 +1113,8 @@ new NodeSDK({
   },
   spanLimits: {
     //...
-  }
-}).start()
+  },
+}).start();
 ```
 
 </Tabs.Tab>
@@ -1146,18 +1149,18 @@ hive-gateway supergraph --opentelemetry
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 
 openTelemetrySetup({
   //...
-})
+});
 
 export const gatewayConfig = defineConfig({
   openTelemetry: {
-    traces: true
-  }
-})
+    traces: true,
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -1173,22 +1176,22 @@ npm i @graphql-hive/plugin-opentelemetry
 ```
 
 ```ts filename="index.ts"
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
-import { useOpenTelemetry } from '@graphql-hive/plugin-opentelemetry'
-import { openTelemetrySetup } from '@graphql-hive/plugin-opentelemetry/setup'
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
+import { useOpenTelemetry } from "@graphql-hive/plugin-opentelemetry";
+import { openTelemetrySetup } from "@graphql-hive/plugin-opentelemetry/setup";
 
 openTelemetrySetup({
   //...
-})
+});
 
 export const gateway = createGatewayRuntime({
-  plugins: ctx => [
+  plugins: (ctx) => [
     useOpenTelemetry({
       ...ctx,
-      traces: true
-    })
-  ]
-})
+      traces: true,
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>
@@ -1223,8 +1226,8 @@ You can disable this using `configureDiagLogger` option.
 ```ts filename="gateway.config.ts"
 const openTelemetryConfig = {
   // Use the default DiagLogger, which outputs logs directly to stdout
-  configureDiagLogger: false
-}
+  configureDiagLogger: false,
+};
 ```
 
 #### Graceful shutdown
@@ -1241,8 +1244,8 @@ const openTelemetryConfig = {
   // Disable the auto-flush on shutdown
   flushOnDispose: false,
   // or call a custom method
-  flushOnDispose: 'flush'
-}
+  flushOnDispose: "flush",
+};
 ```
 
 #### Tracer
@@ -1253,9 +1256,9 @@ needed.
 ```ts filename="gateway.config.ts"
 const openTelemetryConfig = {
   traces: {
-    tracer: trace.getTracer('my-custom-tracer')
-  }
-}
+    tracer: trace.getTracer("my-custom-tracer"),
+  },
+};
 ```
 
 ### Reported Spans
@@ -1280,10 +1283,10 @@ You may disable this by setting `traces.spans.initialization` to `false`:
 const openTelemetryConfig = {
   traces: {
     spans: {
-      initialization: false
-    }
-  }
-}
+      initialization: false,
+    },
+  },
+};
 ```
 
 </details>
@@ -1304,10 +1307,10 @@ You may disable this by setting `traces.spans.schema` to `false`:
 const openTelemetryConfig = {
   traces: {
     spans: {
-      schema: false
-    }
-  }
-}
+      schema: false,
+    },
+  },
+};
 ```
 
 </details>
@@ -1319,8 +1322,9 @@ const openTelemetryConfig = {
 <summary>HTTP Request</summary>
 
 <Callout>
-  This span is created for each incoming HTTP request, and acts as a root span for the entire
-  request. Disabling this span will also disable the other hooks and spans.
+  This span is created for each incoming HTTP request, and acts as a root span
+  for the entire request. Disabling this span will also disable the other hooks
+  and spans.
 </Callout>
 
 By default, the plugin will create a root span for the HTTP layer as a span (`<METHOD> /path`, eg.
@@ -1341,8 +1345,8 @@ And the following attributes for the HTTP response:
 
 <Callout>
   An error in the this phase will be reported as an [error
-  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/) with the HTTP
-  status text and as an OpenTelemetry
+  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/)
+  with the HTTP status text and as an OpenTelemetry
   [`Exception`](https://opentelemetry.io/docs/specs/otel/trace/exceptions/).
 </Callout>
 
@@ -1352,10 +1356,10 @@ You may disable this by setting `traces.spans.http` to `false`:
 const openTelemetryConfig = {
   traces: {
     spans: {
-      http: false
-    }
-  }
-}
+      http: false,
+    },
+  },
+};
 ```
 
 Or, you may filter the spans by setting the `traces.spans.http` configuration to a function:
@@ -1366,11 +1370,11 @@ const openTelemetryConfig = {
     spans: {
       http: ({ request }) => {
         // Filter the spans based on the request
-        return true
-      }
-    }
-  }
-}
+        return true;
+      },
+    },
+  },
+};
 ```
 
 </details>
@@ -1380,9 +1384,10 @@ const openTelemetryConfig = {
 <summary>GraphQL Operation</summary>
 
 <Callout>
-  This span is created for each GraphQL operation found in incoming HTTP requests, and acts as a
-  parent span for the entire graphql operation. Disabling this span will also disable the other
-  hooks and spans related to the execution of operation.
+  This span is created for each GraphQL operation found in incoming HTTP
+  requests, and acts as a parent span for the entire graphql operation.
+  Disabling this span will also disable the other hooks and spans related to the
+  execution of operation.
 </Callout>
 
 By default, the plugin will create a span for the GraphQL layer as a span
@@ -1396,8 +1401,8 @@ following attributes:
 
 <Callout>
   An error in the parse phase will be reported as an [error
-  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/), including the
-  error message and as an OpenTelemetry
+  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/),
+  including the error message and as an OpenTelemetry
   [`Exception`](https://opentelemetry.io/docs/specs/otel/trace/exceptions/).
 </Callout>
 
@@ -1408,11 +1413,11 @@ const openTelemetryConfig = {
   traces: {
     traces: {
       spans: {
-        graphql: false
-      }
-    }
-  }
-}
+        graphql: false,
+      },
+    },
+  },
+};
 ```
 
 Or, you may filter the spans by setting the `traces.spans.graphql` configuration to a function which
@@ -1424,11 +1429,11 @@ const openTelemetryConfig = {
     spans: {
       graphql: ({ context }) => {
         // Filter the span based on the GraphQL context
-        return true
-      }
-    }
-  }
-}
+        return true;
+      },
+    },
+  },
+};
 ```
 
 </details>
@@ -1449,8 +1454,8 @@ If a parsing error is reported, the following attribute will also be present:
 
 <Callout>
   An error in the parse phase will be reported as an [error
-  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/), including the
-  error message and as an OpenTelemetry
+  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/),
+  including the error message and as an OpenTelemetry
   [`Exception`](https://opentelemetry.io/docs/specs/otel/trace/exceptions/).
 </Callout>
 
@@ -1460,10 +1465,10 @@ You may disable this by setting `traces.spans.graphqlParse` to `false`:
 const openTelemetryConfig = {
   traces: {
     spans: {
-      graphqlParse: false
-    }
-  }
-}
+      graphqlParse: false,
+    },
+  },
+};
 ```
 
 Or, you may filter the spans by setting the `traces.spans.graphqlParse` configuration to a function:
@@ -1474,11 +1479,11 @@ const openTelemetryConfig = {
     spans: {
       graphqlParse: ({ context }) => {
         // Filter the spans based on the GraphQL context
-        return true
-      }
-    }
-  }
-}
+        return true;
+      },
+    },
+  },
+};
 ```
 
 </details>
@@ -1499,8 +1504,8 @@ If a validation error is reported, the following attribute will also be present:
 
 <Callout>
   An error in the validate phase will be reported as an [error
-  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/), including the
-  error message and as an OpenTelemetry
+  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/),
+  including the error message and as an OpenTelemetry
   [`Exception`](https://opentelemetry.io/docs/specs/otel/trace/exceptions/).
 </Callout>
 
@@ -1510,10 +1515,10 @@ You may disable this by setting `traces.spans.graphqlValidate` to `false`:
 const openTelemetryConfig = {
   traces: {
     spans: {
-      graphqlValidate: false
-    }
-  }
-}
+      graphqlValidate: false,
+    },
+  },
+};
 ```
 
 Or, you may filter the spans by setting the `traces.spans.graphqlValidate` configuration to a
@@ -1525,11 +1530,11 @@ const openTelemetryConfig = {
     spans: {
       graphqlValidate: ({ context }) => {
         // Filter the spans based on the GraphQL context
-        return true
-      }
-    }
-  }
-}
+        return true;
+      },
+    },
+  },
+};
 ```
 
 </details>
@@ -1543,8 +1548,8 @@ doesn't have any attribute.
 
 <Callout>
   An error in the context building phase will be reported as an [error
-  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/), including the
-  error message and as an OpenTelemetry
+  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/),
+  including the error message and as an OpenTelemetry
   [`Exception`](https://opentelemetry.io/docs/specs/otel/trace/exceptions/).
 </Callout>
 
@@ -1554,10 +1559,10 @@ You may disable this by setting `traces.spans.graphqlContextBuilding` to `false`
 const openTelemetryConfig = {
   traces: {
     spans: {
-      graphqlContextBuilding: false
-    }
-  }
-}
+      graphqlContextBuilding: false,
+    },
+  },
+};
 ```
 
 Or, you may filter the spans by setting the `traces.spans.graphqlContextBuilding` configuration to a
@@ -1569,11 +1574,11 @@ const openTelemetryConfig = {
     spans: {
       graphqlContextBuilding: ({ context }) => {
         // Filter the spans based on the GraphQL context
-        return true
-      }
-    }
-  }
-}
+        return true;
+      },
+    },
+  },
+};
 ```
 
 </details>
@@ -1595,8 +1600,8 @@ If an execution error is reported, the following attribute will also be present:
 
 <Callout>
   An error in the execute phase will be reported as an [error
-  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/), including the
-  error message and as an OpenTelemetry
+  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/),
+  including the error message and as an OpenTelemetry
   [`Exception`](https://opentelemetry.io/docs/specs/otel/trace/exceptions/).
 </Callout>
 
@@ -1606,10 +1611,10 @@ You may disable this by setting `traces.spans.graphqlExecute` to `false`:
 const openTelemetryConfig = {
   traces: {
     spans: {
-      graphqlExecute: false
-    }
-  }
-}
+      graphqlExecute: false,
+    },
+  },
+};
 ```
 
 Or, you may filter the spans by setting the `traces.spans.graphqlExecute` configuration to a
@@ -1621,11 +1626,11 @@ const openTelemetryConfig = {
     spans: {
       graphqlExecute: ({ context }) => {
         // Filter the spans based on the GraphQL context
-        return true
-      }
-    }
-  }
-}
+        return true;
+      },
+    },
+  },
+};
 ```
 
 </details>
@@ -1648,10 +1653,10 @@ You may disable this by setting `traces.spans.subgraphExecute` to `false`:
 const openTelemetryConfig = {
   traces: {
     spans: {
-      subgraphExecute: false
-    }
-  }
-}
+      subgraphExecute: false,
+    },
+  },
+};
 ```
 
 Or, you may filter the spans by setting the `traces.spans.subgraphExecute` configuration to a
@@ -1663,11 +1668,11 @@ const openTelemetryConfig = {
     spans: {
       subgraphExecute: ({ executionRequest, subgraphName }) => {
         // Filter the spans based on the target SubGraph name and the Execution Request
-        return true
-      }
-    }
-  }
-}
+        return true;
+      },
+    },
+  },
+};
 ```
 
 </details>
@@ -1694,9 +1699,10 @@ And the following attributes for the HTTP response:
 - `http.status_code`: The HTTP status code
 
 <Callout>
-  An error in the fetch phase (including responses with a non-ok status code) will be reported as an
-  [error span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/), including
-  the error message and as an OpenTelemetry
+  An error in the fetch phase (including responses with a non-ok status code)
+  will be reported as an [error
+  span](https://opentelemetry.io/docs/specs/semconv/exceptions/exceptions-spans/),
+  including the error message and as an OpenTelemetry
   [`Exception`](https://opentelemetry.io/docs/specs/otel/trace/exceptions/).
 </Callout>
 
@@ -1706,10 +1712,10 @@ You may disable this by setting `traces.spans.upstreamFetch` to `false`:
 const openTelemetryConfig = {
   traces: {
     spans: {
-      upstreamFetch: false
-    }
-  }
-}
+      upstreamFetch: false,
+    },
+  },
+};
 ```
 
 Or, you may filter the spans by setting the `traces.spans.upstreamFetch` configuration to a
@@ -1721,11 +1727,11 @@ const openTelemetryConfig = {
     spans: {
       upstreamFetch: ({ executionRequest }) => {
         // Filter the spans based on the Execution Request
-        return true
-      }
-    }
-  }
-}
+        return true;
+      },
+    },
+  },
+};
 ```
 
 </details>
@@ -1760,10 +1766,10 @@ You may disable this by setting `traces.events.cache` to `false`:
 const openTelemetryConfig = {
   traces: {
     events: {
-      cache: false
-    }
-  }
-}
+      cache: false,
+    },
+  },
+};
 ```
 
 Or, you may filter the spans by setting the `traces.spans.upstreamFetch` configuration to a
@@ -1775,11 +1781,11 @@ const openTelemetryConfig = {
     events: {
       cache: ({ key, action }) => {
         // Filter the event based on action ('read' or 'write') and the entity key
-        return true
-      }
-    }
-  }
-}
+        return true;
+      },
+    },
+  },
+};
 ```
 
 </details>
@@ -1804,10 +1810,10 @@ You may disable this by setting `traces.events.cache` to `false`:
 const openTelemetryConfig = {
   traces: {
     events: {
-      cache: false
-    }
-  }
-}
+      cache: false,
+    },
+  },
+};
 ```
 
 Or, you may filter the spans by setting the `traces.spans.upstreamFetch` configuration to a
@@ -1819,11 +1825,11 @@ const openTelemetryConfig = {
     events: {
       cache: ({ key, action }) => {
         // Filter the event based on action ('read' or 'write') and the entity key
-        return true
-      }
-    }
-  }
-}
+        return true;
+      },
+    },
+  },
+};
 ```
 
 </details>
@@ -1860,16 +1866,16 @@ which means it will not be defined at import time or if `openTelemetry` option i
 You can also create your own tracer instead of reusing the Gateway one.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { hive } from '@graphql-hive/gateway/opentelemetry/api'
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
-import { useGenericAuth } from '@envelop/generic-auth'
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { hive } from "@graphql-hive/gateway/opentelemetry/api";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { useGenericAuth } from "@envelop/generic-auth";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
   traces: { console: true },
-})
+});
 
 export const gatewayConfig = defineConfig({
   openTelemetry: {
@@ -1879,14 +1885,14 @@ export const gatewayConfig = defineConfig({
     resolveUserFn: (context) => {
       // `startActiveSpan` will rely on the current context to parent the new span correctly
       // You can also use your own tracer instead of Hive Gateway's one.
-      return hive.tracer!.startActiveSpan('users.fetch', (span) => {
-        const user = await fetchUser(extractUserIdFromContext(context))
+      return hive.tracer!.startActiveSpan("users.fetch", (span) => {
+        const user = await fetchUser(extractUserIdFromContext(context));
         span.end();
-        return user
-      })
-    }
+        return user;
+      });
+    },
   },
-})
+});
 ```
 
 </Tabs.Tab>
@@ -1960,15 +1966,15 @@ to get the proper context.
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { hive } from '@graphql-hive/gateway/opentelemetry/api'
-import { useGenericAuth } from '@envelop/generic-auth'
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { hive } from "@graphql-hive/gateway/opentelemetry/api";
+import { useGenericAuth } from "@envelop/generic-auth";
 
 openTelemetrySetup({
   contextManager: null, // Don't register any context manager
   traces: { console: true },
-})
+});
 
 export const gatewayConfig = defineConfig({
   openTelemetry: {
@@ -1981,15 +1987,20 @@ export const gatewayConfig = defineConfig({
         const otelCtx = hive.getActiveContext({ context });
 
         // Explicitly pass the parent context as the third argument.
-        return hive.tracer!.startActiveSpan('users.fetch', {}, otelCtx, (span) => {
-          const user = await fetchUser(extractUserIdFromContext(context))
-          span.end();
-          return user
-        })
-      }
+        return hive.tracer!.startActiveSpan(
+          "users.fetch",
+          {},
+          otelCtx,
+          (span) => {
+            const user = await fetchUser(extractUserIdFromContext(context));
+            span.end();
+            return user;
+          },
+        );
+      },
     }),
   ],
-})
+});
 ```
 
 </Tabs.Tab>
@@ -2068,16 +2079,16 @@ If you are using an async compatible context manager, you can simply use the sta
 [OpenTelemetry documentation](https://opentelemetry.io/docs/languages/js/instrumentation/#create-spans).
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
-import { trace } from '@graphql-hive/gateway/opentelemetry/api'
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
-import { useGenericAuth } from '@envelop/generic-auth'
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { trace } from "@graphql-hive/gateway/opentelemetry/api";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { useGenericAuth } from "@envelop/generic-auth";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
   traces: { console: true },
-})
+});
 
 export const gatewayConfig = defineConfig({
   openTelemetry: {
@@ -2087,13 +2098,13 @@ export const gatewayConfig = defineConfig({
     useGenericAuth({
       resolveUserFn: (context) => {
         const span = trace.getActiveSpan();
-        const user = await fetchUser(extractUserIdFromContext(context))
-        span.setAttribute('user.id', user.id);
-        return user
-      }
+        const user = await fetchUser(extractUserIdFromContext(context));
+        span.setAttribute("user.id", user.id);
+        return user;
+      },
     }),
   ],
-})
+});
 ```
 
 </Tabs.Tab>
@@ -2110,15 +2121,15 @@ matcher is an object containing either the HTTP `request`, the GraphQL `context`
 to get the proper context.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import { openTelemetrySetup } from '@graphql-hive/gateway/opentelemetry/setup'
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 // This package re-export official @opentelemetry/api package for ease of use
-import { trace, hive } from '@graphql-hive/gateway/opentelemetry/api'
+import { trace, hive } from "@graphql-hive/gateway/opentelemetry/api";
 
 openTelemetrySetup({
   contextManager: null, // Don't register any context manager
   traces: { console: true },
-})
+});
 
 export const gatewayConfig = defineConfig({
   openTelemetry: {
@@ -2128,17 +2139,17 @@ export const gatewayConfig = defineConfig({
   plugins: () => [
     useGenericAuth({
       resolveUserFn: (context) => {
-        const user = await fetchUser(extractUserIdFromContext(context))
+        const user = await fetchUser(extractUserIdFromContext(context));
 
-        const otelCtx = hive.getActiveContext({ context })
-        const span = trace.getSpan(otelCtx)
-        span.setAttribute('user.id', user.id);
+        const otelCtx = hive.getActiveContext({ context });
+        const span = trace.getSpan(otelCtx);
+        span.setAttribute("user.id", user.id);
 
-        return user
-      }
+        return user;
+      },
     }),
   ],
-})
+});
 ```
 
 When using `hive.getActiveContext` function, you have to make sure to provide the relevant http
@@ -2201,18 +2212,18 @@ In addition, you can use the stdout exporter to log the traces to the console:
 
 ```ts filename="telemetry.ts"
 // For CLI usage
-import { openTelemetrySetup } from '@graphql-hive/plugin-opentelemetry/setup'
+import { openTelemetrySetup } from "@graphql-hive/plugin-opentelemetry/setup";
 
 // For Programmatic usage
-import { openTelemetrySetup } from '@graphql-hive/plugin-opentelemetry/setup'
-import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
+import { openTelemetrySetup } from "@graphql-hive/plugin-opentelemetry/setup";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
   traces: {
-    console: true
-  }
-})
+    console: true,
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -2220,12 +2231,14 @@ openTelemetrySetup({
 <Tabs.Tab>
 
 ```ts filename="telemetry.ts"
-import { NodeSDK, tracing } from '@opentelemetry/sdk-node'
+import { NodeSDK, tracing } from "@opentelemetry/sdk-node";
 
 new NodeSDK({
   // Use `spanProcessors` instead of `traceExporter` to avoid the default batching configuration
-  spanProcessors: [new tracing.SimpleSpanProcessor(new tracing.ConsoleSpanExporter())]
-}).start()
+  spanProcessors: [
+    new tracing.SimpleSpanProcessor(new tracing.ConsoleSpanExporter()),
+  ],
+}).start();
 ```
 
 </Tabs.Tab>
@@ -2252,7 +2265,7 @@ an HTTP endpoint (`/metrics` by default).
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   prometheus: {
@@ -2273,10 +2286,10 @@ export const gatewayConfig = defineConfig({
       graphql_envelop_phase_execute: true,
       graphql_envelop_phase_subscribe: true,
       graphql_envelop_schema_change: true,
-      graphql_yoga_http_duration: true
-    }
-  }
-})
+      graphql_yoga_http_duration: true,
+    },
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -2288,11 +2301,11 @@ npm i @graphql-mesh/plugin-prometheus
 ```
 
 ```ts filename="index.ts"
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
-import usePrometheus from '@graphql-mesh/plugin-prometheus'
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
+import usePrometheus from "@graphql-mesh/plugin-prometheus";
 
 export const gateway = createGatewayRuntime({
-  plugins: ctx => [
+  plugins: (ctx) => [
     usePrometheus({
       ...ctx,
       // Enable the metrics you want to expose
@@ -2312,11 +2325,11 @@ export const gateway = createGatewayRuntime({
         graphql_envelop_phase_execute: true,
         graphql_envelop_phase_subscribe: true,
         graphql_envelop_schema_change: true,
-        graphql_yoga_http_duration: true
-      }
-    })
-  ]
-})
+        graphql_yoga_http_duration: true,
+      },
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>
@@ -2634,8 +2647,8 @@ multiple schema changes.
   <summary>`graphql_envelop_execute_resolver` (default: **disabled**, type: **Histogram**)</summary>
 
 <Callout type="warning">
-  Enabling resolvers level metrics will introduce significant overhead. It is recommended to enable
-  this metric only for debugging purposes.
+  Enabling resolvers level metrics will introduce significant overhead. It is
+  recommended to enable this metric only for debugging purposes.
 </Callout>
 
 This metric tracks the duration of each resolver execution. It reports the time spent only on
@@ -2674,7 +2687,9 @@ Then, use the following `curl` command will fetch the metrics from your gateway:
 curl -v http://localhost:4000/metrics
 ```
 
-<Callout>Change `http://localhost:4000` to the actual URL of your running gateway.</Callout>
+<Callout>
+  Change `http://localhost:4000` to the actual URL of your running gateway.
+</Callout>
 
 ### Customizations
 
@@ -2695,9 +2710,9 @@ By default, all labels are enabled, but each one can be disabled to reduce cardi
 ```ts filename="gateway.config.ts"
 const prometheusConfig = {
   labels: {
-    url: false // remove `url` labels from all relevant metrics
-  }
-}
+    url: false, // remove `url` labels from all relevant metrics
+  },
+};
 ```
 
 </Tabs.Tab>
@@ -2710,9 +2725,9 @@ name of the `graphql_yoga_http_duration` metric to `http_request_duration`, you 
 ```ts filename="gateway.config.ts"
 const prometheusConfig = {
   metrics: {
-    graphql_yoga_http_duration: 'http_request_duration'
-  }
-}
+    graphql_yoga_http_duration: "http_request_duration",
+  },
+};
 ```
 
 </Tabs.Tab>
@@ -2742,8 +2757,8 @@ For example, you can customize the buckets of the `graphql_yoga_http_duration` h
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { register as registry } from 'prom-client'
-import { createHistogram, defineConfig } from '@graphql-hive/gateway'
+import { register as registry } from "prom-client";
+import { createHistogram, defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   prometheus: {
@@ -2751,24 +2766,24 @@ export const gatewayConfig = defineConfig({
       graphql_yoga_http_duration: createHistogram({
         registry,
         histogram: {
-          name: 'graphql_yoga_http_duration',
-          help: 'Time spent on HTTP connection',
-          labels: ['method', 'statusCode', 'operationName', 'operationType'],
-          buckets: [0.1, 5, 15, 50, 100, 500]
+          name: "graphql_yoga_http_duration",
+          help: "Time spent on HTTP connection",
+          labels: ["method", "statusCode", "operationName", "operationType"],
+          buckets: [0.1, 5, 15, 50, 100, 500],
         },
         fillLabelsFn(params, { request, response }) {
           return {
             method: request.method,
             statusCode: response.status,
             operationType: params.operationType,
-            operationName: params.operationName || 'Anonymous'
-          }
-        }
-      })
+            operationName: params.operationName || "Anonymous",
+          };
+        },
+      }),
       // ... rest of metrics ...
-    }
-  }
-})
+    },
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -2776,12 +2791,14 @@ export const gatewayConfig = defineConfig({
 <Tabs.Tab>
 
 ```ts filename="index.ts"
-import { register as registry } from 'prom-client'
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
-import usePrometheus, { createHistogram } from '@graphql-mesh/plugin-prometheus'
+import { register as registry } from "prom-client";
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
+import usePrometheus, {
+  createHistogram,
+} from "@graphql-mesh/plugin-prometheus";
 
 export const gateway = createGatewayRuntime({
-  plugins: ctx => [
+  plugins: (ctx) => [
     usePrometheus({
       ...ctx,
       // Enable the metrics you want to expose
@@ -2790,25 +2807,25 @@ export const gateway = createGatewayRuntime({
         graphql_yoga_http_duration: createHistogram({
           registry,
           histogram: {
-            name: 'graphql_yoga_http_duration',
-            help: 'Time spent on HTTP connection',
-            labels: ['method', 'statusCode', 'operationName', 'operationType'],
-            buckets: [0.1, 5, 15, 50, 100, 500]
+            name: "graphql_yoga_http_duration",
+            help: "Time spent on HTTP connection",
+            labels: ["method", "statusCode", "operationName", "operationType"],
+            buckets: [0.1, 5, 15, 50, 100, 500],
           },
           fillLabelsFn(params, { request, response }) {
             return {
               method: request.method,
               statusCode: response.status,
               operationType: params.operationType,
-              operationName: params.operationName || 'Anonymous'
-            }
-          }
-        })
+              operationName: params.operationName || "Anonymous",
+            };
+          },
+        }),
         // ... rest of metrics ...
-      }
-    })
-  ]
-})
+      },
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>
@@ -2822,13 +2839,13 @@ export const gateway = createGatewayRuntime({
 You can customize the client's registry by passing a custom registry to the `registry` option.
 
 ```ts filename="gateway.config.ts"
-import { Registry } from 'prom-client'
+import { Registry } from "prom-client";
 
-const myRegistry = new Registry()
+const myRegistry = new Registry();
 
 const prometheusConfig = {
-  registry: myRegistry
-}
+  registry: myRegistry,
+};
 ```
 
 </Tabs.Tab>
@@ -2848,11 +2865,11 @@ information specific to the error reported.
 You can lower the amount of reported errors by changing the phases monitored by this metric.
 
 ```ts
-import { execute, parse, specifiedRules, subscribe, validate } from 'graphql'
-import { Registry } from 'prom-client'
-import { envelop, useEngine } from '@envelop/core'
+import { execute, parse, specifiedRules, subscribe, validate } from "graphql";
+import { Registry } from "prom-client";
+import { envelop, useEngine } from "@envelop/core";
 
-const myRegistry = new Registry()
+const myRegistry = new Registry();
 
 const getEnveloped = envelop({
   plugins: [
@@ -2861,11 +2878,11 @@ const getEnveloped = envelop({
       metrics: {
         // To ignore parsing and validation error, and only monitor errors happening during
         // resolvers executions, you can enable only the `execute` and `subscribe` phases
-        graphql_envelop_error_result: ['execute', 'subscribe']
-      }
-    })
-  ]
-})
+        graphql_envelop_error_result: ["execute", "subscribe"],
+      },
+    }),
+  ],
+});
 ```
 
 #### Skip observation based on request context
@@ -2877,13 +2894,13 @@ For example, you can only monitor a subset of operations, because they are criti
 to debug it's performance:
 
 ```ts
-import { execute, parse, specifiedRules, subscribe, validate } from 'graphql'
-import { envelop, useEngine } from '@envelop/core'
-import { usePrometheus } from '@envelop/prometheus'
+import { execute, parse, specifiedRules, subscribe, validate } from "graphql";
+import { envelop, useEngine } from "@envelop/core";
+import { usePrometheus } from "@envelop/prometheus";
 
 const TRACKED_OPERATION_NAMES = [
   // make a list of operation that you want to monitor
-]
+];
 
 const getEnveloped = envelop({
   plugins: [
@@ -2893,19 +2910,20 @@ const getEnveloped = envelop({
         graphql_yoga_http_duration: createHistogram({
           registry,
           histogram: {
-            name: 'graphql_yoga_http_duration',
-            help: 'Time spent on HTTP connection',
-            labelNames: ['operation_name']
+            name: "graphql_yoga_http_duration",
+            help: "Time spent on HTTP connection",
+            labelNames: ["operation_name"],
           },
           fillLabelsFn: ({ operationName }, _rawContext) => ({
-            operation_name: operationName
+            operation_name: operationName,
           }),
-          shouldObserve: context => TRACKED_OPERATIONS.includes(context?.params?.operationName)
-        })
-      }
-    })
-  ]
-})
+          shouldObserve: (context) =>
+            TRACKED_OPERATIONS.includes(context?.params?.operationName),
+        }),
+      },
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>
@@ -2939,7 +2957,10 @@ Available metrics:
 - `graphql.fetch.error.count` - the number of failed outgoing HTTP requests
 - `graphql.fetch.latency` - a histogram of outgoing HTTP response times (in milliseconds)
 
-<Callout>You can also customize the `graphql` prefix and add custom tags to the metrics.</Callout>
+<Callout>
+  You can also customize the `graphql` prefix and add custom tags to the
+  metrics.
+</Callout>
 
 ### Usage Example
 
@@ -2948,24 +2969,24 @@ Available metrics:
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import useStatsD from '@graphql-mesh/plugin-statsd'
+import { defineConfig } from "@graphql-hive/gateway";
+import useStatsD from "@graphql-mesh/plugin-statsd";
 
 export const gatewayConfig = defineConfig({
-  plugins: pluginCtx => [
+  plugins: (pluginCtx) => [
     useStatsD({
       ...pluginCtx,
       // Configure `hot-shots` if only you need. You don't need to pass this if you don't need to configure it.
       client: {
-        port: 8020
+        port: 8020,
       },
       // results in `my-graphql-gateway.operations.count` instead of `graphql.operations.count`
-      prefix: 'my-graphql-gateway',
+      prefix: "my-graphql-gateway",
       // If you wish to disable introspection logging
-      skipIntrospection: true
-    })
-  ]
-})
+      skipIntrospection: true,
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>
@@ -2973,25 +2994,25 @@ export const gatewayConfig = defineConfig({
 <Tabs.Tab>
 
 ```ts filename="index.ts"
-import { StatsD } from 'hot-shots'
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
-import useStatsD from '@graphql-mesh/plugin-statsd'
+import { StatsD } from "hot-shots";
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
+import useStatsD from "@graphql-mesh/plugin-statsd";
 
 export const gateway = createGatewayRuntime({
-  plugins: pluginCtx => [
+  plugins: (pluginCtx) => [
     useStatsD({
       ...pluginCtx,
       // Configure `hot-shots` if only you need. You don't need to pass this if you don't need to configure it.
       client: new StatsD({
-        port: 8020
+        port: 8020,
       }),
       // results in `my-graphql-gateway.operations.count` instead of `graphql.operations.count`
-      prefix: 'my-graphql-gateway',
+      prefix: "my-graphql-gateway",
       // If you wish to disable introspection logging
-      skipIntrospection: true
-    })
-  ]
-})
+      skipIntrospection: true,
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>
@@ -3005,12 +3026,13 @@ This plugin collects errors and performance tracing for your execution flow, and
 
 This is how it looks like in Sentry for error tracking:
 
-![Example](https://raw.githubusercontent.com/n1ru4l/envelop/main/packages/plugins/sentry/error1.png)
-![Example](https://raw.githubusercontent.com/n1ru4l/envelop/main/packages/plugins/sentry/error2.png)
+![Example](https://raw.githubusercontent.com/graphql-hive/graphql-yoga/main/packages/envelop/plugins/sentry/error1.png)
+![Example](https://raw.githubusercontent.com/graphql-hive/graphql-yoga/main/packages/envelop/plugins/sentry/error2.png)
 
 <Callout>
-  The operation name, document, variables are collected on errors, and the breadcrumbs that led to
-  the error. You can also add any custom values that you need.
+  The operation name, document, variables are collected on errors, and the
+  breadcrumbs that led to the error. You can also add any custom values that you
+  need.
 </Callout>
 
 To get started with Sentry, you need to create a new project in Sentry and get the DSN:
@@ -3033,9 +3055,9 @@ npm i @sentry/node @sentry/tracing @envelop/sentry
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import '@sentry/tracing' // import only once in you entry file!
-import { useSentry } from '@envelop/sentry'
-import { defineConfig } from '@graphql-hive/gateway'
+import "@sentry/tracing"; // import only once in you entry file!
+import { useSentry } from "@envelop/sentry";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   plugins: () => [
@@ -3043,12 +3065,12 @@ export const gatewayConfig = defineConfig({
       includeRawResult: false, // set to `true` in order to include the execution result in the metadata collected
       includeResolverArgs: false, // set to `true` in order to include the args passed to resolvers
       includeExecuteVariables: false, // set to `true` in order to include the operation variables values
-      appendTags: args => {}, // if you wish to add custom "tags" to the Sentry transaction created per operation
+      appendTags: (args) => {}, // if you wish to add custom "tags" to the Sentry transaction created per operation
       configureScope: (args, scope) => {}, // if you wish to modify the Sentry scope
-      skip: executionArgs => {} // if you wish to modify the skip specific operations
-    })
-  ]
-})
+      skip: (executionArgs) => {}, // if you wish to modify the skip specific operations
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>
@@ -3056,9 +3078,9 @@ export const gatewayConfig = defineConfig({
 <Tabs.Tab>
 
 ```ts filename="index.ts"
-import '@sentry/tracing' // import only once in you entry file!
-import { useSentry } from '@envelop/sentry'
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
+import "@sentry/tracing"; // import only once in you entry file!
+import { useSentry } from "@envelop/sentry";
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 
 export const gateway = createGatewayRuntime({
   plugins: () => [
@@ -3066,12 +3088,12 @@ export const gateway = createGatewayRuntime({
       includeRawResult: false, // set to `true` in order to include the execution result in the metadata collected
       includeResolverArgs: false, // set to `true` in order to include the args passed to resolvers
       includeExecuteVariables: false, // set to `true` in order to include the operation variables values
-      appendTags: args => {}, // if you wish to add custom "tags" to the Sentry transaction created per operation
+      appendTags: (args) => {}, // if you wish to add custom "tags" to the Sentry transaction created per operation
       configureScope: (args, scope) => {}, // if you wish to modify the Sentry scope
-      skip: executionArgs => {} // if you wish to modify the skip specific operations
-    })
-  ]
-})
+      skip: (executionArgs) => {}, // if you wish to modify the skip specific operations
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>

@@ -60,6 +60,11 @@ export const authors: Record<string, Author> = {
     link: "https://github.com/gilgardosh",
     name: "Gil Gardosh",
   },
+  iha: {
+    github: "XiNiHa",
+    link: "https://github.com/XiNiHa",
+    name: "Iha Shin",
+  },
   jason: {
     github: "jasonkuhrt",
     link: "https://github.com/jasonkuhrt",

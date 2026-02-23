@@ -3,7 +3,7 @@
   "sourceRepo": ".context/hive-console",
   "sourceBranch": "main",
   "targetSubdirectory": "temporary",
-  "lastSyncedCommit": "350c74f9848a60f49635e9bae71d89c709f6f45b",
+  "lastSyncedCommit": "16a73cbb45c5d345469352064fe4f45970944a5b",
   "migrations": [
     {
       "commit": "f09052749e7ec7a5f759566fac8e13eb3f833067",
@@ -268,6 +268,38 @@
       "author": "Adam Benhassen",
       "syncedAt": "2026-02-13T15:38:24.256Z",
       "mergeCommit": "b30a12206574bc74d5d20298751c9dd963c049cc"
+    },
+    {
+      "commit": "4db50aeb372962dcec56f059ee7b4106bebfba7c",
+      "date": "2026-02-17 10:47:30 +0100",
+      "message": "Remove leading space from an href (#7698)",
+      "author": "Piotr Monwid-Olechnowicz",
+      "syncedAt": "2026-02-23T18:55:26.825Z",
+      "mergeCommit": "76c63ee06dd5319f0410f93b1830ee84a580a78d"
+    },
+    {
+      "commit": "a7f54fbcc939fd7d8bf29f435062afc6e001a8da",
+      "date": "2026-02-18 18:43:01 +0200",
+      "message": "Upcoming Release Changes (#7703)",
+      "author": "TheGuildBot",
+      "syncedAt": "2026-02-23T19:14:19.621Z",
+      "mergeCommit": "acca7fcc79826653e3bcfa67e8860b3f8a2f5c53"
+    },
+    {
+      "commit": "295a16ca710b3c90b051020c795d57f2cfb766f1",
+      "date": "2026-02-20 21:35:54 +0900",
+      "message": "Publish auth improvements product update (#7681)",
+      "author": "Iha Shin (신의하)",
+      "syncedAt": "2026-02-23T19:14:22.744Z",
+      "mergeCommit": "3b5069d88985ad729f5dcd77c80a6b99446b6604"
+    },
+    {
+      "commit": "16a73cbb45c5d345469352064fe4f45970944a5b",
+      "date": "2026-02-23 11:41:44 -0500",
+      "message": "docs(gateway): fix link to mocking in the migration guide (#7719)",
+      "author": "Arda TANRIKULU",
+      "syncedAt": "2026-02-23T19:14:26.435Z",
+      "mergeCommit": "6ae49893020bbdc5159d1a1ee660b6b69155e850"
     }
   ]
 }

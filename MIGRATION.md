@@ -13,7 +13,7 @@ The sync tool uses `git filter-repo` to rewrite the old repo's history, moving a
 
 ### Current Migration Status
 
-**Last manually migrated commit:** `ecosystem illustration fixes 18.12 (#7450)` - `9abc782`
+**Last migrated commit:** 16a73cbb45c5d345469352064fe4f45970944a5b
 
 **Worktree status:** The `.context/hive-console` worktree contains 86 commits starting from #7478 (`8e2e40d`), which are all **newer** than the last manually migrated commit. This means all 86 commits need to be synced.
 
