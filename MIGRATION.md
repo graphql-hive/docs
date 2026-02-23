@@ -19,6 +19,13 @@ The sync tool uses `git filter-repo` to rewrite the old repo's history, moving a
 
 **Starting point:** We start fresh from the beginning of the worktree. The script will migrate all 86 commits in chronological order.
 
+### Current Stabilization Tasks (2026-02-23)
+
+- [x] Fix `/product-updates` prerender failures (legacy `Tabs.Tab` syntax in product update MDX pages).
+- [x] Fix `/docs/schema-registry/high-availability-resilience` route (rename from misspelled `resilence` path).
+- [ ] Add `root: true` + icons for top-level product dirs in docs nav.
+- [ ] Fix sidebar stacking bug (sidebar rendering above navbar).
+
 ## Quick Start
 
 ```bash

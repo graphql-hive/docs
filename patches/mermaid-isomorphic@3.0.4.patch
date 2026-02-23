@@ -1,24 +1,22 @@
 diff --git a/dist/mermaid-isomorphic.js b/dist/mermaid-isomorphic.js
-index aa5dc09a5dfb58a98d3f12cd2fc473caddd97b0d..7092adb582d3f0de1dd4edec532274654b786234 100644
+index d56f2269ac90a3bb9f3073fb4cbd6b4ffa804e69..59b6e849451215a164e6373ab77ebfd769cf0519 100644
 --- a/dist/mermaid-isomorphic.js
 +++ b/dist/mermaid-isomorphic.js
-@@ -1,12 +1,17 @@
+@@ -1,4 +1,5 @@
 -import { chromium } from 'playwright';
 +import { chromium as playwright } from 'playwright';
 +import chromium from '@sparticuz/chromium';
  const html = import.meta.resolve('../index.html');
  const mermaidScript = {
      url: import.meta.resolve('mermaid/dist/mermaid.js')
- };
- const faStyle = {
--    // We use url, not path. If we use path, the fonts can’t be resolved.
-+    // We use url, not path. If we use path, the fonts can't be resolved.
+@@ -7,6 +8,10 @@ const faStyle = {
+     // We use url, not path. If we use path, the fonts can’t be resolved.
      url: import.meta.resolve('@fortawesome/fontawesome-free/css/all.css')
  };
 +
 +chromium.setGraphicsMode = false;
-+const executablePathPromise = process.env.CI ? chromium.executablePath() : undefined;
-+
++const useSparticuzChromium = process.env.CI && process.platform === 'linux';
++const executablePathPromise = useSparticuzChromium ? chromium.executablePath() : undefined;
  /* c8 ignore start */
  /**
   * Render mermaid diagrams in the browser.
@@ -29,7 +27,7 @@ index aa5dc09a5dfb58a98d3f12cd2fc473caddd97b0d..7092adb582d3f0de1dd4edec53227465
 -    const { browserType = chromium, launchOptions } = options;
 +    let { browserType = playwright, launchOptions } = options;
 +
-+    if (process.env.CI) {
++    if (useSparticuzChromium) {
 +        if (options.browserType) {
 +            throw new Error('options.browserType is not supported because @hasparus patched it to run on Vercel builds, sorry');
 +        }

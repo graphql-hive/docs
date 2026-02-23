@@ -556,8 +556,8 @@ export const config: CompareConfig = {
       path: "/docs/schema-registry/high-availability-cdn",
     },
     {
-      name: "schema-registry-high-availability-resilence",
-      path: "/docs/schema-registry/high-availability-resilence",
+      name: "schema-registry-high-availability-resilience",
+      path: "/docs/schema-registry/high-availability-resilience",
     },
     {
       name: "schema-registry-laboratory",

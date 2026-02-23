@@ -8,7 +8,7 @@ authors: [kamil]
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout'
-import { Tabs } from 'fumadocs-ui/components/tabs'
+import { Tabs } from '@hive/design-system/tabs'
 
 We recently improved authorization and demand control directives validation in our federation
 composition library. These changes ensure your federated GraphQL schemas are more secure,
@@ -92,7 +92,6 @@ type User @key(fields: "id") {
 <Tabs items={['❌ Invalid Subgraph B', '✅ Valid Subgraph B']}>
 
 <Tabs.Tab>
-
 ```graphql
 type User @key(fields: "id") {
   id: ID!
@@ -106,7 +105,6 @@ type User @key(fields: "id") {
 </Tabs.Tab>
 
 <Tabs.Tab>
-
 ```graphql
 type User @key(fields: "id") {
   id: ID!
@@ -144,7 +142,6 @@ This ensures cost calculations remain predictable and properly aligned with your
 <Tabs items={['❌ Invalid', '✅ Valid']}>
 
 <Tabs.Tab>
-
 ```graphql
 # Raises error: sizedFields must point to list fields
 type Query {
@@ -160,7 +157,6 @@ type UserConnection {
 </Tabs.Tab>
 
 <Tabs.Tab>
-
 ```graphql
 # sizedFields points to the actual list field
 type Query {

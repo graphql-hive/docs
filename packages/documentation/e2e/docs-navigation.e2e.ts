@@ -8,16 +8,11 @@ test.describe("Documentation User Journeys", () => {
     }
   });
 
-  test("docs landing page shows content", async ({ page, isMobile }) => {
+  test("docs landing page shows content", async ({ page }) => {
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
-    if (isMobile) {
-      const sidebar = page.getByRole("complementary");
-      await expect(sidebar.first()).toBeVisible();
-    } else {
-      const nav = page.getByRole("navigation");
-      await expect(nav.first()).toBeVisible();
-    }
+    const nav = page.getByRole("navigation");
+    await expect(nav.first()).toBeVisible();
   });
 
   test("developer navigates to schema registry via sidebar", async ({

@@ -12,7 +12,7 @@
     "./schema-policy.mdx",
     "./app-deployments.mdx",
     "./external-schema-composition.mdx",
-    "./high-availability-resilence.mdx",
+    "./high-availability-resilience.mdx",
     "./self-hosting.mdx"
   ]
 }

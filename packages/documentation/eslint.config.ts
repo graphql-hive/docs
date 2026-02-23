@@ -46,6 +46,10 @@ const config: Linter.Config[] = [
                 "Use '@hive/design-system/hive-components/card' instead. The Hive card has the arrow style from the old site.",
               name: "fumadocs-ui/components/card",
             },
+            {
+              message: "Use '@hive/design-system/tabs' instead.",
+              name: "fumadocs-ui/components/tabs",
+            },
           ],
         },
       ],

@@ -9,27 +9,33 @@ import {
 } from "@hive/design-system/decorations";
 import { Heading } from "@hive/design-system/heading";
 import { createFileRoute } from "@tanstack/react-router";
-import { Suspense, use } from "react";
 
 import { LandingPageContainer } from "../../../components/landing-page-container";
 
+type OSSFriendsResponse = {
+  data: {
+    description: string;
+    href: string;
+    name: string;
+  }[];
+};
+
 export const Route = createFileRoute("/_landing/_light-only/oss-friends")({
   component: OSSFriendsPage,
+  loader: async (): Promise<OSSFriendsResponse> => {
+    const response = await fetch("https://formbricks.com/api/oss-friends");
+
+    if (!response.ok) {
+      throw new Error("Failed to load OSS friends.");
+    }
+
+    return response.json() as Promise<OSSFriendsResponse>;
+  },
 });
 
-// eslint-disable-next-line unicorn/prefer-top-level-await -- intentional: start fetch without blocking module load
-const friendsPromise = fetch("https://formbricks.com/api/oss-friends").then(
-  (res) =>
-    res.json() as Promise<{
-      data: {
-        description: string;
-        href: string;
-        name: string;
-      }[];
-    }>,
-);
-
 function OSSFriendsPage() {
+  const { data: friends } = Route.useLoaderData();
+
   return (
     <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">
       <div className="bg-beige-100 relative isolate mx-4 flex flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 max-sm:mt-2 sm:py-12 md:mx-6 md:gap-8 lg:py-24">
@@ -37,6 +43,7 @@ function OSSFriendsPage() {
           <ArchDecoration className="pointer-events-none absolute -top-5 left-[-46px] size-[200px] rotate-180 md:left-[-60px] md:top-[-188px] md:size-auto" />
           <ArchDecoration className="pointer-events-none absolute bottom-0 right-[-53px] size-[200px] md:-bottom-32 md:size-auto lg:bottom-[-188px] lg:right-0" />
           <svg
+            aria-hidden="true"
             className="absolute -z-10"
             height="432"
             viewBox="0 0 432 432"
@@ -84,20 +91,23 @@ function OSSFriendsPage() {
           <div className="relative mx-auto flex w-[1392px] max-w-full flex-col gap-x-4 gap-y-6 md:gap-y-12 lg:flex-row [@media(min-width:1400px)]:gap-x-[120px]">
             <div className="flex grow flex-col gap-12 px-4 md:px-0 lg:w-[650px]">
               <div className="mx-auto leading-6 text-green-800">
-                <Suspense
-                  fallback={
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                      {Array.from({ length: 9 }).map((_, i) => (
-                        <div
-                          className="bg-beige-100 h-[140px] animate-pulse rounded-lg p-4"
-                          key={i}
-                        />
-                      ))}
-                    </div>
-                  }
-                >
-                  <FriendsList />
-                </Suspense>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {friends.map((friend) => (
+                    <a
+                      className="hover:bg-beige-200 bg-beige-100 relative block rounded-lg p-4 shadow-xs"
+                      href={friend.href}
+                      key={friend.href}
+                    >
+                      <dt className="text-green-1000 font-medium">
+                        {friend.name}
+                      </dt>
+                      <dd className="mt-2 text-sm/5 text-green-800">
+                        {friend.description}
+                      </dd>
+                      <Arrow className="absolute bottom-2 right-2 size-6 rotate-135 opacity-20" />
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -128,31 +138,10 @@ function OSSFriendsPage() {
   );
 }
 
-function FriendsList() {
-  const { data: friends } = use(friendsPromise);
-
-  return (
-    <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {friends.map((friend, i) => (
-        <a
-          className="hover:bg-beige-200 bg-beige-100 relative block rounded-lg p-4 shadow-xs"
-          href={friend.href}
-          key={i}
-        >
-          <dt className="text-green-1000 font-medium">{friend.name}</dt>
-          <dd className="mt-2 text-sm/5 text-green-800">
-            {friend.description}
-          </dd>
-          <Arrow className="absolute bottom-2 right-2 size-6 rotate-135 opacity-20" />
-        </a>
-      ))}
-    </dl>
-  );
-}
-
 function Arrow(props: { className: string }) {
   return (
     <svg
+      aria-hidden="true"
       className={props.className}
       fill="currentColor"
       height="200px"
