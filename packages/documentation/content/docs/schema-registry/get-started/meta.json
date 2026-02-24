@@ -1,0 +1,8 @@
+{
+  "pages": [
+    "first-steps",
+    "apollo-federation",
+    "schema-stitching",
+    "single-project"
+  ]
+}

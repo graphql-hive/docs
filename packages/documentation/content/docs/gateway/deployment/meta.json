@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "index",
+    "docker",
+    "node-frameworks",
+    "resources-requirements",
+    "runtimes",
+    "serverless"
+  ]
+}

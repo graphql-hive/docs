@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "index",
+    "apollo-gateway",
+    "apollo-router",
+    "apollo-server",
+    "ci-cd",
+    "code-first",
+    "envelop",
+    "gqlgen-go",
+    "grafbase-gateway",
+    "graphql-code-generator",
+    "graphql-ruby",
+    "graphql-yoga",
+    "lighthouse",
+    "schema-stitching"
+  ]
+}

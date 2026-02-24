@@ -1,0 +1,9 @@
+{
+  "pages": [
+    "index",
+    "debugging",
+    "gateway-tester",
+    "mocking",
+    "snapshot"
+  ]
+}

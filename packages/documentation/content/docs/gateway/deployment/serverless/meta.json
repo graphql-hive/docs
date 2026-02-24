@@ -1,0 +1,9 @@
+{
+  "pages": [
+    "index",
+    "aws-lambda",
+    "azure-functions",
+    "cloudflare-workers",
+    "google-cloud-platform"
+  ]
+}

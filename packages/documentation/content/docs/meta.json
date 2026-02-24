@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "index",
+    "schema-registry",
+    "gateway",
+    "router",
+    "logger",
+    "new-laboratory",
+    "api-reference",
+    "other-integrations",
+    "migration-guides",
+    "use-cases"
+  ]
+}

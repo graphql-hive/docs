@@ -1,0 +1,16 @@
+{
+  "title": "API Reference",
+  "root": true,
+  "pages": [
+    "cli",
+    "client",
+    "gateway-cli",
+    "gateway-config",
+    "graphql-api",
+    "link-specifications",
+    "php-client",
+    "ruby-client",
+    "rust-client",
+    "usage-reports"
+  ]
+}

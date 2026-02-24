@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "get-started",
+    "cdn-artifacts",
+    "changelog",
+    "client-and-cli-configuration",
+    "external-composition",
+    "oidc-login",
+    "s3-provider",
+    "telemetry",
+    "troubleshooting"
+  ]
+}

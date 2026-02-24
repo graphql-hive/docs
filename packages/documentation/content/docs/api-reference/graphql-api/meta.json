@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "index",
+    "access-token-management",
+    "contract-management",
+    "member-management",
+    "project-management",
+    "target-management",
+    "unused-deprecated-schema"
+  ]
+}

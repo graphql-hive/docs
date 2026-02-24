@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "index",
+    "collections",
+    "environment-variables",
+    "history",
+    "operations",
+    "preflight",
+    "schema-support"
+  ]
+}

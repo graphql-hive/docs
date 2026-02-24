@@ -1,0 +1,12 @@
+{
+  "root": true,
+  "pages": [
+    "index",
+    "getting-started",
+    "configuration",
+    "guides",
+    "observability",
+    "security",
+    "supergraph"
+  ]
+}
