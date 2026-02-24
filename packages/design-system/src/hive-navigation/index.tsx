@@ -153,7 +153,7 @@ export function HiveNavigation({
 
   return (
     <div
-      className="sticky top-0 z-20 border-b border-beige-400/(--border-opacity) bg-[rgb(var(--nextra-bg))] px-6 py-4 text-green-1000 transition-[border-color] duration-500 md:mb-1.75 md:mt-2 dark:border-neutral-700/(--border-opacity) dark:text-neutral-200 row-1 [grid-area:nav]"
+      className="sticky top-0 z-20 border-b border-beige-400/(--border-opacity) bg-[rgb(var(--nextra-bg))] p-4 md:px-6 text-green-1000 transition-[border-color] duration-500 md:mb-1.75 md:mt-2 dark:border-neutral-700/(--border-opacity) dark:text-neutral-200 row-1 [grid-area:nav]"
       ref={containerRef}
       style={{ "--border-opacity": "0%" } as React.CSSProperties}
     >

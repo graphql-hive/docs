@@ -33,11 +33,14 @@ export function SearchTrigger() {
     <>
       <button
         aria-label="Search documentation"
-        className="ml-3 h-12 md:w-64 cursor-pointer items-center rounded-lg border border-green-200 bg-white px-4 text-sm text-green-700 transition-none hover:border-green-300 focus:outline-hidden focus:ring-2 focus:ring-green-500/50 md:flex dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 max-md:border-none max-sm:p-2 flex justify-start max-md:text-current"
+        className="md:ml-3 max-md:size-8 md:h-12 md:w-64 cursor-pointer items-center rounded-lg border border-green-200 bg-white md:px-4 text-sm text-green-700 transition-none hover:border-green-300 focus:outline-hidden focus:ring-2 focus:ring-green-500/50 md:flex dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300 max-md:border-none max-md:bg-transparent dark:max-md:bg-transparent flex justify-center md:justify-start max-md:text-current"
         onClick={handleClick}
         type="button"
       >
-        <SearchIcon className="size-4.5 md:hidden" />
+        <SearchIcon
+          className="size-4.5 md:hidden"
+          vectorEffect="non-scaling-stroke"
+        />
         <span className="text-green-700/70 dark:text-neutral-400 max-md:hidden">
           Search<span className="max-lg:hidden"> documentation</span>...
         </span>

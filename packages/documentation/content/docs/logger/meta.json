@@ -1,4 +1,5 @@
 {
+  "title": "Hive Logger",
   "root": true,
   "pages": [
     "./index.mdx",

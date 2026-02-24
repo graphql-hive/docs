@@ -1,4 +1,6 @@
 {
+  "title": "Hive Laboratory",
+  "root": true,
   "pages": [
     "index",
     "collections",
