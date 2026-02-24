@@ -95,6 +95,8 @@ export function Navigation({
   );
 }
 
-export function Footer() {
-  return <HiveFooter items={footerItems} showSecurityBadges />;
+export function Footer({ className }: { className?: string }) {
+  return (
+    <HiveFooter className={className} items={footerItems} showSecurityBadges />
+  );
 }

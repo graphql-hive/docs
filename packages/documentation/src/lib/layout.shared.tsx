@@ -2,6 +2,7 @@ import type { Root } from "fumadocs-core/page-tree";
 import type { DocsLayoutProps } from "fumadocs-ui/layouts/docs";
 
 import { Navigation } from "@/components/navigation";
+import { SidebarFooter } from "@/components/sidebar-footer";
 
 export function baseOptions(
   tree: Root,
@@ -28,8 +29,12 @@ export function baseOptions(
         lg: null,
       },
     },
+    sidebar: {
+      collapsible: false,
+      footer: <SidebarFooter />,
+    },
     themeSwitch: {
-      mode: "light-dark-system",
+      enabled: false,
     },
     tree,
   };

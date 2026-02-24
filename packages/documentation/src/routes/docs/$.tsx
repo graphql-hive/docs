@@ -6,6 +6,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
 import browserCollections from "fumadocs-mdx:collections/browser";
+import { MDXLink } from "@hive/design-system/server/mdx-components/mdx-link";
 import * as Twoslash from "fumadocs-twoslash/ui";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import {
@@ -73,6 +74,7 @@ const clientLoader = browserCollections.docs.createClientLoader<{
             components={{
               ...defaultMdxComponents,
               ...Twoslash,
+              a: MDXLink,
             }}
           />
         </DocsBody>
@@ -97,7 +99,7 @@ function Page() {
           markdownUrl: `${data.url}.mdx`,
         })}
       </DocsLayout>
-      <Footer />
+      <Footer className="border-t border-fd-border" />
     </div>
   );
 }

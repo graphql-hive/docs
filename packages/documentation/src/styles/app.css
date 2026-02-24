@@ -30,15 +30,22 @@
   --nextra-primary-lightness: 40%;
   --nextra-bg: 255 255 255;
   --color-fd-background: hsl(0, 0%, 100%);
+  --color-fd-border: var(--color-beige-400);
   --color-fd-muted-foreground: var(--color-beige-900);
+  --color-fd-foreground: var(--color-green-1000);
   --color-fd-primary: var(--color-green-1000);
+  --color-fd-secondary: var(--color-beige-100);
+  --tw-prose-body: var(--color-green-1000);
 }
 
 .dark {
   --nextra-bg: 17 17 17;
   --color-fd-background: hsl(0, 0%, 7.04%);
+  --color-fd-border: var(--color-neutral-700);
+  --color-fd-foreground: hsl(0, 0%, 92%);
   --color-fd-primary: var(--color-neutral-100);
   --color-fd-muted-foreground: var(--color-beige-800);
+  --tw-prose-body: color-mix(in oklab, hsl(0, 0%, 92%) 90%, transparent);
 }
 
 a,
@@ -188,8 +195,7 @@ button,
   animation-name: exit;
   animation-duration: var(--tw-animate-duration, 150ms);
 }
-
-@utility animate-duration-* {
+.duration-200.animate-in @utility animate-duration-* {
   --tw-animate-duration: calc(--value(integer) * 1ms);
 }
 
@@ -370,15 +376,27 @@ button,
   display: none;
 }
 
-#nd-sidebar-mobile [data-theme-toggle] {
-  margin-right: auto;
+/* Sidebar z-index below navbar (z-20) */
+[data-sidebar-placeholder] {
+  z-index: 10 !important;
+}
+
+/* Remove desktop sidebar background — match docs background */
+#nd-sidebar {
+  background-color: transparent !important;
 }
 
 [data-docs] #hive-navigation {
   margin-top: 0;
   margin-bottom: 0;
+  border-bottom: 1px solid var(--color-fd-border);
 }
 
 #nd-sidebar [data-radix-scroll-area-viewport] > div > a:not(:first-child) {
   margin-top: 2px;
+}
+
+#nd-page.xl\:pt-14 {
+  padding-top: 2rem;
+  @apply pb-4 md:pb-6 lg:pb-8 xl:pb-[52px];
 }
