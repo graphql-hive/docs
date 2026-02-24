@@ -373,3 +373,12 @@ button,
 #nd-sidebar-mobile [data-theme-toggle] {
   margin-right: auto;
 }
+
+#nd-docs-layout #hive-navigation {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#nd-sidebar [data-radix-scroll-area-viewport] > div > a:not(:first-child) {
+  margin-top: 2px;
+}
