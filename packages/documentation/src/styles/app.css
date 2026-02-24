@@ -190,7 +190,7 @@ button,
 }
 
 @utility animate-duration-* {
-  --tw-animate-duration: --value(integer, [time]) ms;
+  --tw-animate-duration: calc(--value(integer) * 1ms);
 }
 
 /* tailwindcss-animate compatibility: duration-* should affect animation-duration too */
