@@ -374,7 +374,7 @@ button,
   margin-right: auto;
 }
 
-#nd-docs-layout #hive-navigation {
+[data-docs] #hive-navigation {
   margin-top: 0;
   margin-bottom: 0;
 }

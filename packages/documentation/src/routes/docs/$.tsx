@@ -85,7 +85,7 @@ function Page() {
   const data = useFumadocsLoader(Route.useLoaderData());
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" data-docs>
       <DocsLayout
         {...baseOptions(data.pageTree)}
         nav={{ component: <Navigation noBorder /> }}
