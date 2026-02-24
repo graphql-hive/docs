@@ -4,12 +4,54 @@ import type {
 } from "fumadocs-mdx/runtime/server";
 
 import {
+  HiveGatewayIcon,
+  HiveIcon,
+  HiveRouterIcon,
+} from "@hive/design-system/icons";
+import {
   loader,
+  type LoaderPlugin,
   type MetaData,
   type PageData,
   type Source,
 } from "fumadocs-core/source";
-import { lucideIconsPlugin } from "fumadocs-core/source/lucide-icons";
+import { icons } from "lucide-react";
+import { createElement, type ReactNode } from "react";
+
+const hiveIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
+  Hive: HiveIcon,
+  HiveGateway: HiveGatewayIcon,
+  HiveRouter: HiveRouterIcon,
+};
+
+function resolveIcon(icon: string | undefined): ReactNode | undefined {
+  if (!icon) return undefined;
+  if (icon in hiveIcons) {
+    return createElement(hiveIcons[icon]!, { height: 16, width: 16 });
+  }
+  if (icon in icons) {
+    return createElement(icons[icon as keyof typeof icons]);
+  }
+  return undefined;
+}
+
+function replaceIcon<T extends { icon?: ReactNode }>(node: T): T {
+  if (node.icon === undefined || typeof node.icon === "string") {
+    node.icon = resolveIcon(node.icon as string | undefined);
+  }
+  return node;
+}
+
+function hiveIconsPlugin(): LoaderPlugin {
+  return {
+    name: "hive:icons",
+    transformPageTree: {
+      file: replaceIcon,
+      folder: replaceIcon,
+      separator: replaceIcon,
+    },
+  };
+}
 
 function createSource(docs: { toFumadocsSource(): unknown }) {
   const docsSource = docs.toFumadocsSource() as Source<{
@@ -18,7 +60,7 @@ function createSource(docs: { toFumadocsSource(): unknown }) {
   }>;
   return loader({
     baseUrl: "/docs",
-    plugins: [lucideIconsPlugin()],
+    plugins: [hiveIconsPlugin()],
     source: docsSource,
   });
 }

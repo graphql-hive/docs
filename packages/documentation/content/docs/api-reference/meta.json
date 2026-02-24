@@ -1,5 +1,6 @@
 {
   "title": "API Reference",
+  "icon": "FileCode",
   "root": true,
   "pages": [
     "cli",

@@ -1,5 +1,6 @@
 {
   "title": "Hive Router",
+  "icon": "HiveRouter",
   "root": true,
   "pages": [
     "index",

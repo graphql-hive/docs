@@ -1,5 +1,6 @@
 {
   "title": "Hive Laboratory",
+  "icon": "FlaskConical",
   "root": true,
   "pages": [
     "index",

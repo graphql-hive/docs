@@ -1,5 +1,6 @@
 {
   "title": "Hive Gateway",
+  "icon": "HiveGateway",
   "root": true,
   "pages": [
     "./index.mdx",

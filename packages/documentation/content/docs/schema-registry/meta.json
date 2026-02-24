@@ -1,5 +1,6 @@
 {
   "title": "Hive Console",
+  "icon": "Hive",
   "root": true,
   "pages": [
     "./index.mdx",

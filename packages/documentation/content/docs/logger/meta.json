@@ -1,5 +1,6 @@
 {
   "title": "Hive Logger",
+  "icon": "ScrollText",
   "root": true,
   "pages": [
     "./index.mdx",
