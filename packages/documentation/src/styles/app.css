@@ -392,7 +392,7 @@ button,
   border-bottom: 1px solid var(--color-fd-border);
 }
 
-#nd-sidebar [data-radix-scroll-area-viewport] > div > a:not(:first-child) {
+#nd-sidebar [data-radix-scroll-area-viewport] > div > *:not(:first-child) {
   margin-top: 2px;
 }
 
