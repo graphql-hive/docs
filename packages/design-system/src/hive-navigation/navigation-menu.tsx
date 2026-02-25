@@ -182,13 +182,13 @@ export const NavigationMenuViewport = forwardRef<
     >
       <NavigationMenuPrimitive.Viewport
         className={cn(
-          "relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-(--radix-navigation-menu-viewport-width) origin-[top_center] overflow-hidden rounded-xl border border-beige-200 bg-white shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-90 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 dark:border-neutral-800 dark:bg-neutral-900",
+          "relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-(--radix-navigation-menu-viewport-width) origin-[top_center] overflow-hidden rounded-xl border border-beige-200 bg-white shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] data-[state=closed]:opacity-0 data-[state=closed]:scale-95 data-[state=closed]:pointer-events-none dark:border-neutral-800 dark:bg-neutral-900",
           className,
         )}
         ref={ref}
         style={{
           transition:
-            "width 450ms, height 450ms, transform 250ms, opacity 250ms",
+            "width 450ms, height 450ms, transform 250ms, opacity 250ms, scale 250ms",
         }}
         {...rest}
       />

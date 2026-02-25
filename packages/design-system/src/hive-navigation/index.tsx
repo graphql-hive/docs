@@ -187,6 +187,7 @@ export function HiveNavigation({
           className,
         )}
         delayDuration={0}
+        forceMount
       >
         {resolvedLogo}
         <NavigationMenuList className="ml-4 bg-white dark:bg-transparent [@media(min-width:1180px)]:ml-16">
