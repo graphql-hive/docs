@@ -79,7 +79,7 @@ const itemVariants = cva(
       variant: {
         button:
           "transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none",
-        link: "transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none data-[active=true]:bg-nextra-primary-50 data-[active=true]:text-nextra-primary-700 dark:data-[active=true]:bg-fd-primary/10 dark:data-[active=true]:text-fd-primary data-[active=true]:hover:transition-colors",
+        link: "transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none data-[active=true]:bg-green-100 data-[active=true]:text-green-700 dark:data-[active=true]:bg-fd-primary/10 dark:data-[active=true]:text-fd-primary data-[active=true]:hover:transition-colors",
       },
     },
   },
