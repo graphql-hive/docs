@@ -1,8 +1,8 @@
 {
   "pages": [
     "first-steps",
-    "apollo-federation",
-    "schema-stitching",
-    "single-project"
+    "[GraphQL Federation](apollo-federation)",
+    "[Schema-Stitching](schema-stitching)",
+    "[Single Schema](single-project)"
   ]
 }

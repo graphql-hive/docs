@@ -1,12 +1,12 @@
 {
   "pages": [
-    "express",
-    "fastify",
-    "hapi",
-    "koa",
-    "nestjs",
-    "nextjs",
-    "sveltekit",
-    "uwebsockets"
+    "[Express](express)",
+    "[Fastify](fastify)",
+    "[Hapi](hapi)",
+    "[Koa](koa)",
+    "[NestJS](nestjs)",
+    "[Next.js](nextjs)",
+    "[SvelteKit](sveltekit)",
+    "[µWebSockets.js](uwebsockets)"
   ]
 }

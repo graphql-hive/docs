@@ -1,13 +1,13 @@
 {
   "pages": [
-    "get-started",
+    "[Get Started](get-started)",
     "cdn-artifacts",
     "changelog",
     "client-and-cli-configuration",
     "external-composition",
-    "oidc-login",
+    "[SSO with OIDC](oidc-login)",
     "s3-provider",
-    "telemetry",
+    "[Telemetry / Error Reporting](telemetry)",
     "troubleshooting"
   ]
 }

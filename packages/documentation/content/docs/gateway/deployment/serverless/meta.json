@@ -1,9 +1,9 @@
 {
   "pages": [
-    "index",
-    "aws-lambda",
-    "azure-functions",
-    "cloudflare-workers",
-    "google-cloud-platform"
+    "[Introduction](index)",
+    "[AWS Lambda](aws-lambda)",
+    "[Azure Functions](azure-functions)",
+    "[Cloudflare Workers](cloudflare-workers)",
+    "[Google Cloud Platform](google-cloud-platform)"
   ]
 }

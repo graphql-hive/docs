@@ -1,11 +1,11 @@
 {
   "pages": [
     "index",
-    "access-token-management",
-    "contract-management",
-    "member-management",
-    "project-management",
-    "target-management",
-    "unused-deprecated-schema"
+    "[Manage Access Tokens](access-token-management)",
+    "[Manage Contracts](contract-management)",
+    "[Manage Members](member-management)",
+    "[Manage Projects](project-management)",
+    "[Manage Targets](target-management)",
+    "[Lookup unused/deprecated Schema](unused-deprecated-schema)"
   ]
 }

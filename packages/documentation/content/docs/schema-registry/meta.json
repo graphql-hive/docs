@@ -7,14 +7,14 @@
     "./get-started.mdx",
     "./management.mdx",
     "./explorer.mdx",
-    "./usage-reporting.mdx",
+    "[Usage Reporting and Insights](./usage-reporting.mdx)",
     "./laboratory.mdx",
     "./high-availability-cdn.mdx",
     "./contracts.mdx",
-    "./schema-policy.mdx",
-    "./app-deployments.mdx",
+    "[Schema Policies](./schema-policy.mdx)",
+    "[App Deployments (Persisted Documents)](./app-deployments.mdx)",
     "./external-schema-composition.mdx",
-    "./high-availability-resilience.mdx",
+    "[High-Availability and Resilience](./high-availability-resilience.mdx)",
     "./self-hosting.mdx"
   ]
 }

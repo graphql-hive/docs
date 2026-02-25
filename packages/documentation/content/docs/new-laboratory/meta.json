@@ -3,7 +3,7 @@
   "icon": "FlaskConical",
   "root": true,
   "pages": [
-    "index",
+    "[Overview](index)",
     "collections",
     "environment-variables",
     "history",

@@ -3,9 +3,9 @@
     "organizations",
     "members-roles-permissions",
     "access-tokens",
-    "sso-oidc-provider",
-    "projects",
-    "targets",
+    "[Single Sign On (Okta, Entra ID)](sso-oidc-provider)",
+    "[Projects & Alerts](projects)",
+    "[Targets & Tokens](targets)",
     "audit-logs"
   ]
 }

@@ -1,15 +1,15 @@
 {
   "title": "API Reference",
   "pages": [
-    "cli",
-    "client",
-    "gateway-cli",
-    "gateway-config",
+    "[Hive CLI](cli)",
+    "[Hive JavaScript Client](client)",
+    "[Hive Gateway CLI](gateway-cli)",
+    "[Hive Gateway Configuration](gateway-config)",
     "graphql-api",
-    "link-specifications",
+    "[Hive GraphQL Link Spec](link-specifications)",
     "php-client",
     "ruby-client",
     "rust-client",
-    "usage-reports"
+    "[Usage Report Spec](usage-reports)"
   ]
 }
