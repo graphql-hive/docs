@@ -15,7 +15,7 @@ import type { ComponentProps, ReactNode } from "react";
 
 import { cn } from "@hive/design-system";
 import { siteOrigin } from "@hive/design-system/constants";
-import { ArrowIcon } from "@hive/design-system/icons";
+import { ArrowIcon, GitHubIcon } from "@hive/design-system/icons";
 import {
   FOUR_MAIN_PRODUCTS,
   SIX_HIGHLIGHTED_PRODUCTS,
@@ -41,10 +41,10 @@ import {
 } from "fumadocs-ui/components/sidebar/base";
 import { createPageTreeRenderer } from "fumadocs-ui/components/sidebar/page-tree";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "fumadocs-ui/components/ui/collapsible";
-import { ChevronRight, ExternalLink, Sidebar, X } from "lucide-react";
+import { ChevronRight, ExternalLink, Sidebar } from "lucide-react";
 import { useRef, useState } from "react";
 
-import { SidebarFooter } from "./sidebar-footer";
+import { SidebarFooter, ThemeToggle } from "./sidebar-footer";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -79,7 +79,7 @@ const itemVariants = cva(
       variant: {
         button:
           "transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none",
-        link: "transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none data-[active=true]:bg-fd-primary/10 data-[active=true]:text-fd-primary data-[active=true]:hover:transition-colors",
+        link: "transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none data-[active=true]:bg-green-100 data-[active=true]:text-blue-900 dark:data-[active=true]:bg-fd-primary/10 dark:data-[active=true]:text-fd-primary data-[active=true]:hover:transition-colors",
       },
     },
   },
@@ -185,7 +185,7 @@ function SidebarFolderContent({
   return (
     <SidebarFolderContentBase
       className={cn(
-        "relative",
+        "relative [&>*:not(:first-child)]:mt-0.5",
         depth === 1 &&
           "before:content-[''] before:absolute before:w-px before:inset-y-1 before:bg-fd-border before:start-2.5",
         className,
@@ -300,7 +300,7 @@ function MobileDrawer({
 // ---------------------------------------------------------------------------
 
 const mobileItemClass =
-  "flex w-full items-center gap-2 py-3 text-fd-muted-foreground transition-colors hover:text-fd-foreground";
+  "flex w-full items-center gap-2 py-2 text-fd-muted-foreground transition-colors hover:text-fd-foreground";
 
 function MobileLink({
   children,
@@ -416,7 +416,7 @@ function MobileNavMenu() {
   const onDocsPage = isActive("/docs", pathname);
 
   return (
-    <nav className="flex flex-col px-6">
+    <nav className="flex flex-col">
       <MobileLink external href="https://app.graphql-hive.com/">
         Get Started
       </MobileLink>
@@ -474,9 +474,16 @@ export function DocsSidebar() {
         </div>
       </DesktopSidebar>
       <MobileDrawer>
-        <div className="flex items-center justify-end p-4 pb-0">
-          <SidebarTrigger className="rounded-lg p-1.5 text-fd-muted-foreground hover:bg-fd-accent/50 hover:text-fd-accent-foreground">
-            <X className="size-5" />
+        <div className="flex items-center gap-1.5 p-4 pb-2 text-fd-muted-foreground">
+          <Link
+            className="inline-flex items-center justify-center rounded-lg p-2 hover:bg-fd-accent hover:text-fd-accent-foreground"
+            href="https://github.com/graphql-hive/console"
+          >
+            <GitHubIcon className="size-4.5" />
+          </Link>
+          <ThemeToggle className="ms-auto" />
+          <SidebarTrigger className="rounded-lg p-2 hover:bg-fd-accent hover:text-fd-accent-foreground">
+            <Sidebar className="size-4.5" />
           </SidebarTrigger>
         </div>
         <SidebarViewport>
