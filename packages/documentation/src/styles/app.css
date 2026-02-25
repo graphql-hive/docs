@@ -35,6 +35,8 @@
   --color-fd-foreground: var(--color-green-1000);
   --color-fd-primary: var(--color-green-1000);
   --color-fd-secondary: var(--color-beige-100);
+  --color-fd-sidebar-active: hsl(164 70% 27%);
+  --color-fd-sidebar-active-bg: hsl(164 70% 89%);
   --tw-prose-body: var(--color-green-1000);
 }
 
@@ -45,6 +47,8 @@
   --color-fd-foreground: hsl(0, 0%, 92%);
   --color-fd-primary: var(--color-neutral-100);
   --color-fd-muted-foreground: var(--color-beige-800);
+  --color-fd-sidebar-active: hsl(164 70% 40%);
+  --color-fd-sidebar-active-bg: color-mix(in oklab, hsl(164 70% 61%) 10%, transparent);
   --tw-prose-body: color-mix(in oklab, hsl(0, 0%, 92%) 90%, transparent);
 }
 
@@ -69,6 +73,8 @@ button,
   /* Custom docs colors */
   --color-blueish-green: #003834;
   --color-dark: #111;
+  --color-fd-sidebar-active: initial;
+  --color-fd-sidebar-active-bg: initial;
 
   /* Nextra primary colors (HSL-based, for theming) */
   --color-nextra-primary-50: hsl(
