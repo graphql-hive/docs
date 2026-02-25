@@ -6,20 +6,10 @@ date: 2024-10-11
 authors: [dimitri]
 ---
 
+import { MdxVideo } from "@hive/design-system/server/mdx-components/mdx-video"
+
 export function Caption({ children }) {
   return <p className="text-center text-sm italic">{children}</p>
-}
-
-export function Video({ alt, src }) {
-  return (
-    <>
-      <video autoPlay="autoplay" loop muted playsInline>
-        <source src={src} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-      <Caption>{alt}</Caption>
-    </>
-  )
 }
 
 Over the past few months, we've focused on enhancing Hive's laboratory, refining its appearance, and
@@ -42,7 +32,7 @@ query" were removed, "Prettify query" button was moved to the end of the toolbar
 Users with wide screens can now benefit from the fullscreen mode. The button is located in place of
 the GraphiQL logo.
 
-<Video alt="Full screen mode demo" src="/product-updates/full-screen-mode.mp4" />
+<MdxVideo alt="Full screen mode demo" src="/product-updates/full-screen-mode.mp4" />
 
 ### Tabs Support
 
@@ -50,7 +40,7 @@ Laboratory now supports multiple tabs, you can test as many queries as needed at
 There is no longer a requirement to mandatory save the query in one of the collections, you can have
 a draft query which will be stored in local storage.
 
-<Video alt="Tabs demo" src="/product-updates/tabs-new.mp4" />
+<MdxVideo alt="Tabs demo" src="/product-updates/tabs-new.mp4" />
 
 The UI of the tabs is inspired by the functionality of Google Chrome tabs, tabs will be shown even
 if there is only a single tab as per Chrome tabs UX.
@@ -60,7 +50,7 @@ if there is only a single tab as per Chrome tabs UX.
 The laboratory now also has a query builder, which you can use to explore schema and easily
 construct GraphQL queries.
 
-<Video alt="Query builder demo" src="/product-updates/query-builder.mp4" />
+<MdxVideo alt="Query builder demo" src="/product-updates/query-builder.mp4" />
 
 ## GraphiQL v4 Alpha
 
