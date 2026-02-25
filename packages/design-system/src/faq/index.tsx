@@ -11,7 +11,7 @@ import {
 import { Anchor } from "../anchor";
 import { cn } from "../cn";
 import { Heading } from "../heading";
-import { ChevronDownIcon } from "../hive-components/ui/icons";
+import { ChevronDownIcon } from "../icons";
 import { AttachPageFAQSchema } from "./attach-page-faq-schema";
 
 const UnwrapChild: FC<{ children?: ReactNode }> = (props) => props.children;

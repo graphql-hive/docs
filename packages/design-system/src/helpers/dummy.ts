@@ -8,7 +8,6 @@ import {
   IHeroGradientProps,
   IHeroIllustrationProps,
   IHeroMarketplaceProps,
-  IHeroVideoProps,
   IInfoListProps,
 } from "../types/components";
 
@@ -92,23 +91,6 @@ export const dummyInfoList: IInfoListProps = {
     },
   ],
   title: "Get Started",
-};
-
-export const dummyHeroVideo: IHeroVideoProps = {
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc scelerisque mauris imperdiet nulla vehicula, vitae porttitor massa consequat. Proin semper bibendum aliquam.",
-  flipped: true,
-  link: {
-    children: "Documentation",
-    href: "#",
-    title: "Read the documentation",
-  },
-  title: "Easy Installation",
-  video: {
-    placeholder:
-      "https://ak.picdn.net/shutterstock/videos/1033186691/thumb/1.jpg",
-    src: "https://youtube.com/watch?v=dQw4w9WgXcQ",
-  },
 };
 
 export const dummyHeroIllustration: IHeroIllustrationProps = {
