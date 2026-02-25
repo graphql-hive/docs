@@ -195,7 +195,7 @@ button,
   animation-name: exit;
   animation-duration: var(--tw-animate-duration, 150ms);
 }
-.duration-200.animate-in @utility animate-duration-* {
+@utility animate-duration-* {
   --tw-animate-duration: calc(--value(integer) * 1ms);
 }
 
