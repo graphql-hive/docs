@@ -1,8 +1,8 @@
 import type { Root } from "fumadocs-core/page-tree";
 import type { DocsLayoutProps } from "fumadocs-ui/layouts/docs";
 
+import { DocsSidebar } from "@/components/docs-sidebar";
 import { Navigation } from "@/components/navigation";
-import { SidebarFooter } from "@/components/sidebar-footer";
 
 export function baseOptions(
   tree: Root,
@@ -25,13 +25,10 @@ export function baseOptions(
       component: <Navigation />,
     },
     searchToggle: {
-      components: {
-        lg: null,
-      },
+      enabled: false,
     },
     sidebar: {
-      collapsible: false,
-      footer: <SidebarFooter />,
+      component: <DocsSidebar />,
     },
     themeSwitch: {
       enabled: false,

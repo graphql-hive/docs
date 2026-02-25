@@ -2,7 +2,7 @@
 
 import { cn } from "@hive/design-system";
 import { SidebarCollapseTrigger } from "fumadocs-ui/components/sidebar/base";
-import { Airplay, Moon, Sidebar, Sun, X } from "lucide-react";
+import { Airplay, Moon, Sidebar, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
