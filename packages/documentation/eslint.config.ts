@@ -18,7 +18,6 @@ const config: Linter.Config[] = [
             "prose-invert",
             "subheader",
             "hive-*",
-            "fd-*",
             "not-prose",
           ],
         },

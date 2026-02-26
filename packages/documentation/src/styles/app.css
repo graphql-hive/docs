@@ -77,8 +77,8 @@ button,
   /* Custom docs colors */
   --color-blueish-green: #003834;
   --color-dark: #111;
-  --color-fd-sidebar-active: initial;
-  --color-fd-sidebar-active-bg: initial;
+  --color-fd-sidebar-active: hsl(164 70% 27%);
+  --color-fd-sidebar-active-bg: hsl(164 70% 89%);
 
   /* Nextra primary colors (HSL-based, for theming) */
   --color-nextra-primary-50: hsl(
