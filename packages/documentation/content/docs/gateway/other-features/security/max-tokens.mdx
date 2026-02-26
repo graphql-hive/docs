@@ -4,9 +4,7 @@ title: Max Tokens
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 **Limit** the number of **tokens** in a GraphQL document. It is used to prevent **DOS attack**,
 **heap overflow** or **server overloading**. The token limit is often limited by the GraphQL parser,
@@ -15,7 +13,8 @@ but this is not always the case and would lead to a fatal heap overflow.
 ## Basic Configuration
 
 <Callout type="info">
-  Powered by [GraphQL Armor](https://escape.tech/graphql-armor/docs/plugins/max-tokens).
+  Powered by [GraphQL
+  Armor](https://escape.tech/graphql-armor/docs/plugins/max-tokens).
 </Callout>
 
 Hive Gateway ships with the basic "max tokens" security features. You can enable it by setting the
@@ -23,11 +22,11 @@ Hive Gateway ships with the basic "max tokens" security features. You can enable
 option.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  maxTokens: true // defaults to 1000
-})
+  maxTokens: true, // defaults to 1000
+});
 ```
 
 ## Advanced Configuration
@@ -41,8 +40,8 @@ npm install @escape.tech/graphql-armor-max-tokens
 ```
 
 ```ts filename="gateway.config.ts"
-import { maxTokensPlugin } from '@escape.tech/graphql-armor-max-tokens'
-import { defineConfig } from '@graphql-hive/gateway'
+import { maxTokensPlugin } from "@escape.tech/graphql-armor-max-tokens";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   plugins: () => [
@@ -62,8 +61,8 @@ export const gatewayConfig = defineConfig({
       onAccept: [],
 
       // Callbacks that are ran whenever a Query is rejected
-      onReject: []
-    })
-  ]
-})
+      onReject: [],
+    }),
+  ],
+});
 ```

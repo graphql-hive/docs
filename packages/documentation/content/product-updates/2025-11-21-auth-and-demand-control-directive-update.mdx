@@ -7,17 +7,17 @@ date: 2025-11-24
 authors: [kamil]
 ---
 
-import { Tabs } from '@hive/design-system/tabs'
-import { Callout } from 'fumadocs-ui/components/callout'
+import { Tabs } from "@hive/design-system/tabs";
+import { Callout } from "fumadocs-ui/components/callout";
 
 We recently improved authorization and demand control directives validation in our federation
 composition library. These changes ensure your federated GraphQL schemas are more secure,
 predictable, and properly validated across all subgraphs.
 
 <Callout title="No Action Needed for Hive Cloud Users" type="note">
-  All schemas we've seen in our system are already compliant with these stricter rules. If you're
-  using authorization or demand control directives in your schemas, you shouldn't need to make any
-  changes.
+  All schemas we've seen in our system are already compliant with these stricter
+  rules. If you're using authorization or demand control directives in your
+  schemas, you shouldn't need to make any changes.
 </Callout>
 
 ## Stricter Authorization Directive
@@ -37,7 +37,6 @@ from the object types that implement them. This reduces configuration overhead a
 consistent security policies across your schema.
 
 ```graphql filename="Authorization directives are not allowed on interfaces"
-
 interface Node @authenticated {
   id: ID!
 }
@@ -149,10 +148,11 @@ type Query {
 }
 
 type UserConnection {
-  count: Int!
-  edges: [User!]!
+count: Int!
+edges: [User!]!
 }
-```
+
+````
 
 </Tabs.Tab>
 
@@ -167,7 +167,7 @@ type UserConnection {
   count: Int!
   edges: [User!]!
 }
-```
+````
 
 </Tabs.Tab>
 

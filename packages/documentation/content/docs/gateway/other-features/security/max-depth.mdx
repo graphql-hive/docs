@@ -4,9 +4,7 @@ title: Max Depth
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 **Limit** the **depth** of a GraphQL document. It is used to prevent too large queries that could
 lead to overfetching or **DOS attack**.
@@ -14,18 +12,19 @@ lead to overfetching or **DOS attack**.
 ## Basic Configuration
 
 <Callout type="info">
-  Powered by [GraphQL Armor](https://escape.tech/graphql-armor/docs/plugins/max-depth).
+  Powered by [GraphQL
+  Armor](https://escape.tech/graphql-armor/docs/plugins/max-depth).
 </Callout>
 
 Hive Gateway ships with the basic "max depth" security features. You can enable it by setting the
 `maxDepth` option to `true` or configure the allowed depth by passing a `number` to the option.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  maxDepth: true // defaults to 6
-})
+  maxDepth: true, // defaults to 6
+});
 ```
 
 ## Advanced Configuration
@@ -39,8 +38,8 @@ npm install @escape.tech/graphql-armor-max-depth
 ```
 
 ```ts filename="gateway.config.ts"
-import { maxDepthPlugin } from '@escape.tech/graphql-armor-max-depth'
-import { defineConfig } from '@graphql-hive/gateway'
+import { maxDepthPlugin } from "@escape.tech/graphql-armor-max-depth";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   plugins: () => [
@@ -60,8 +59,8 @@ export const gatewayConfig = defineConfig({
       onAccept: [],
 
       // Callbacks that are ran whenever a Query is rejected
-      onReject: []
-    })
-  ]
-})
+      onReject: [],
+    }),
+  ],
+});
 ```

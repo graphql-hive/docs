@@ -2,8 +2,6 @@
 title: Gateway Tester
 ---
 
-
-
 `@graphql-hive/gateway-testing` lets you spin up a fully wired Hive Gateway inside your tests. It
 boots the gateway with mocked subgraphs or a proxy target and gives you helpers to execute
 operations without touching the network.
@@ -22,13 +20,13 @@ npm i -D @graphql-hive/gateway-testing
 ## Quick start
 
 ```ts filename="gateway.spec.ts"
-import { expect, vi } from 'vitest'
-import { createGatewayTester } from '@graphql-hive/gateway-testing'
+import { expect, vi } from "vitest";
+import { createGatewayTester } from "@graphql-hive/gateway-testing";
 
-const onFetchFn = vi.fn()
+const onFetchFn = vi.fn();
 
 const books = {
-  name: 'books',
+  name: "books",
   schema: {
     typeDefs: /* GraphQL */ `
       type Query {
@@ -42,22 +40,22 @@ const books = {
     `,
     resolvers: {
       Query: {
-        book: (_, { id }) => ({ id, title: 'The Hive Handbook' })
-      }
-    }
-  }
-}
+        book: (_, { id }) => ({ id, title: "The Hive Handbook" }),
+      },
+    },
+  },
+};
 
 await using gateway = createGatewayTester({
   subgraphs: [books],
   plugins: () => [
     {
       onFetch({ executionRequest }) {
-        onFetchFn(executionRequest?.operationName)
-      }
-    }
-  ]
-})
+        onFetchFn(executionRequest?.operationName);
+      },
+    },
+  ],
+});
 
 await expect(
   gateway.execute({
@@ -67,17 +65,17 @@ await expect(
           title
         }
       }
-    `
-  })
+    `,
+  }),
 ).resolves.toStrictEqual({
   data: {
     book: {
-      title: 'The Hive Handbook'
-    }
-  }
-})
+      title: "The Hive Handbook",
+    },
+  },
+});
 
-expect(onFetchFn).toHaveBeenCalledWith('Test')
+expect(onFetchFn).toHaveBeenCalledWith("Test");
 ```
 
 Use `gateway.execute` when you want typed GraphQL results, or `gateway.fetch` if you prefer to issue

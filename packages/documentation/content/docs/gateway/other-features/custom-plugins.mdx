@@ -4,9 +4,7 @@ title: Custom Plugins
 description: Add feature or third party integrations with Hive Gateway plugin system.
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Hive Gateway is built with an highly modular architecture. The core is as small as possible, and
 most of the features are built around a plugin system.
@@ -46,22 +44,22 @@ advised to spread the plugin's factory context into the plugins options, this wa
 access to all components they need.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import useNewRelic from '@graphql-mesh/plugin-newrelic'
-import { useSOFA } from '@graphql-yoga/plugin-sofa'
+import { defineConfig } from "@graphql-hive/gateway";
+import useNewRelic from "@graphql-mesh/plugin-newrelic";
+import { useSOFA } from "@graphql-yoga/plugin-sofa";
 
 export const gatewayConfig = defineConfig({
-  plugins: ctx => [
+  plugins: (ctx) => [
     useSOFA({
       ...ctx,
-      basePath: '/rest',
-      swaggerUIEndpoint: '/rest/docs'
+      basePath: "/rest",
+      swaggerUIEndpoint: "/rest/docs",
     }),
     useNewRelic({
-      ...ctx
-    })
-  ]
-})
+      ...ctx,
+    }),
+  ],
+});
 ```
 
 <details>
@@ -326,23 +324,23 @@ For example, you can shortcut the manually handle an HTTP request, short-circuit
 HTTP handler:
 
 ```ts
-import type { GatewayPlugin } from '@graphql-hive/gateway'
+import type { GatewayPlugin } from "@graphql-hive/gateway";
 
 function useAuth(): GatewayPlugin {
   return {
     onRequest({ request, fetchAPI, endResponse }) {
-      if (!request.headers.get('authorization')) {
+      if (!request.headers.get("authorization")) {
         endResponse(
           new fetchAPI.Response(null, {
             status: 401,
             headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-        )
+              "Content-Type": "application/json",
+            },
+          }),
+        );
       }
-    }
-  }
+    },
+  };
 }
 ```
 
@@ -871,21 +869,31 @@ All instrumentation takes 2 parameters:
 const useMyTracer = () => ({
   instrumentation: {
     async request({ request }, wrapped) {
-      const start = performance.now()
+      const start = performance.now();
       // The `wrapped` function represent the execution of this phase.
       // Its argument or result are not accessible, it can only be used to perform action before and after it, or modify its execution context.
-      await wrapped()
-      const end = performance.now()
-      console.log('request', request.headers['Trace-ID'], 'processed in', end - start)
+      await wrapped();
+      const end = performance.now();
+      console.log(
+        "request",
+        request.headers["Trace-ID"],
+        "processed in",
+        end - start,
+      );
     },
     async operation({ context }, wrapped) {
-      const start = performance.now()
-      await wrapped()
-      const end = performance.now()
-      console.log('operation', context.params.operationName, 'executed in', end - start)
-    }
-  }
-})
+      const start = performance.now();
+      await wrapped();
+      const end = performance.now();
+      console.log(
+        "operation",
+        context.params.operationName,
+        "executed in",
+        end - start,
+      );
+    },
+  },
+});
 ```
 
 An more extensive example usage of this API can be found in
@@ -901,45 +909,48 @@ The most straightforward solution is to use a `WeakMap` with either the `context
 
 ```ts
 const useMyTracer = () => {
-  const spans = new WeakMap<unknown, Span>()
+  const spans = new WeakMap<unknown, Span>();
   return {
     instrumentation: {
       async operation({ context }, wrapped) {
-        const span = new Span()
-        spans.set(context, span)
-        await wrapped()
-        span.end()
-      }
+        const span = new Span();
+        spans.set(context, span);
+        await wrapped();
+        span.end();
+      },
     },
     onExecute({ args }) {
-      const span = spans.get(args.contextValue)
-      span.setAttribute('graphql.operationName', args.operationName)
-    }
-  }
-}
+      const span = spans.get(args.contextValue);
+      span.setAttribute("graphql.operationName", args.operationName);
+    },
+  };
+};
 ```
 
 When your plugin grows in complexity, the number of WeakMaps to track data can become difficult to
 reason about and maintain. In this case, you use the `withState` utility function.
 
 ```ts
-import { withState, type GatewayPlugin } from '@graphql-hive/gateway'
+import { withState, type GatewayPlugin } from "@graphql-hive/gateway";
 
-type State = { span: Span }
+type State = { span: Span };
 
 const useMyTracer = () =>
   withState<GatewayPlugin, State, State, State>({
     instrumentation: {
       async operation({ state }, wrapped) {
-        state.forOperation.span = new Span()
-        await wrapped()
-        span.end()
-      }
+        state.forOperation.span = new Span();
+        await wrapped();
+        span.end();
+      },
     },
     onExecute({ args, state }) {
-      state.forOperation.span.setAttribute('graphql.operationName', args.operationName)
-    }
-  })
+      state.forOperation.span.setAttribute(
+        "graphql.operationName",
+        args.operationName,
+      );
+    },
+  });
 ```
 
 #### Instrumentation composition
@@ -951,16 +962,19 @@ It is possible to customize this composition if it doesn't suite your need (ie. 
 instrumentation to have a different oreder of execution).
 
 ```ts
-import { composeInstrumentation, envelop } from '@envelop/core'
+import { composeInstrumentation, envelop } from "@envelop/core";
 
-const { instrumentation: instrumentation1, ...plugin1 } = usePlugin1()
-const { instrumentation: instrumentation2, ...plugin2 } = usePlugin2()
+const { instrumentation: instrumentation1, ...plugin1 } = usePlugin1();
+const { instrumentation: instrumentation2, ...plugin2 } = usePlugin2();
 
-const instrumentation = composeInstrumentation([instrumentation2, instrumentation1])
+const instrumentation = composeInstrumentation([
+  instrumentation2,
+  instrumentation1,
+]);
 
 const getEnveloped = envelop({
-  plugin: [{ insturments }, plugin1, plugin2]
-})
+  plugin: [{ insturments }, plugin1, plugin2],
+});
 ```
 
 #### `request`
@@ -1063,7 +1077,7 @@ different components. We'd highly recommend you to use those available context v
 creating your own for a specific plugin.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   plugins({
@@ -1071,11 +1085,11 @@ export const gatewayConfig = defineConfig({
     log, // Hive Logger instance used by Hive Gateway
     cwd, // Current working directory
     pubsub, // PubSub instance used by Hive Gateway
-    cache // Cache storage used by Hive Gateway
+    cache, // Cache storage used by Hive Gateway
   }) {
     return [
-      useMyPlugin({ log, fetch }) // So the plugin can use the shared logger and fetch
-    ]
-  }
-})
+      useMyPlugin({ log, fetch }), // So the plugin can use the shared logger and fetch
+    ];
+  },
+});
 ```

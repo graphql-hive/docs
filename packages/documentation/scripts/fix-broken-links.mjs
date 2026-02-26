@@ -23,9 +23,15 @@ const rules = [
   ["/docs/dashboard/insights", "/docs/schema-registry/usage-reporting"],
   ["/docs/dashboard/explorer", "/docs/schema-registry/explorer"],
   ["/docs/dashboard/laboratory", "/docs/schema-registry/laboratory"],
-  ["/docs/high-availability-cdn", "/docs/schema-registry/high-availability-cdn"],
+  [
+    "/docs/high-availability-cdn",
+    "/docs/schema-registry/high-availability-cdn",
+  ],
   ["/docs/graphql-api", "/docs/api-reference/graphql-api"],
-  ["/docs/schema-registry/link-specifications", "/docs/api-reference/link-specifications"],
+  [
+    "/docs/schema-registry/link-specifications",
+    "/docs/api-reference/link-specifications",
+  ],
   ["/docs/api-reference)", "/docs/api-reference/cli)"], // bare /docs/api-reference link
 
   // Path prefix mappings (order matters — more specific first)
@@ -38,19 +44,43 @@ const rules = [
   ["/docs/supergraph", "/docs/router/supergraph"],
 
   // Renamed pages
-  ["/docs/gateway/other-features/performance/deduplicate-request", "/docs/gateway/other-features/performance/deduplicate-inflight-requests"],
-  ["/docs/gateway/other-features/security/cost-limit", "/docs/gateway/other-features/security/demand-control"],
-  ["/docs/router/configuration/usage_reporting", "/docs/router/observability/usage_reporting"],
+  [
+    "/docs/gateway/other-features/performance/deduplicate-request",
+    "/docs/gateway/other-features/performance/deduplicate-inflight-requests",
+  ],
+  [
+    "/docs/gateway/other-features/security/cost-limit",
+    "/docs/gateway/other-features/security/demand-control",
+  ],
+  [
+    "/docs/router/configuration/usage_reporting",
+    "/docs/router/observability/usage_reporting",
+  ],
 
   // Missing /docs prefix
   ["(/schema-registry", "(/docs/schema-registry"],
 
   // Full URLs with old paths (the-guild.dev and graphql-hive.com)
-  ["the-guild.dev/graphql/hive/docs/management/", "the-guild.dev/graphql/hive/docs/schema-registry/management/"],
-  ["the-guild.dev/graphql/hive/docs/get-started/", "the-guild.dev/graphql/hive/docs/schema-registry/get-started/"],
-  ["the-guild.dev/graphql/hive/docs/graphql-api", "the-guild.dev/graphql/hive/docs/api-reference/graphql-api"],
-  ["the-guild.dev/graphql/hive/docs/high-availability-cdn", "the-guild.dev/graphql/hive/docs/schema-registry/high-availability-cdn"],
-  ["graphql-hive.com/docs/management/", "graphql-hive.com/docs/schema-registry/management/"],
+  [
+    "the-guild.dev/graphql/hive/docs/management/",
+    "the-guild.dev/graphql/hive/docs/schema-registry/management/",
+  ],
+  [
+    "the-guild.dev/graphql/hive/docs/get-started/",
+    "the-guild.dev/graphql/hive/docs/schema-registry/get-started/",
+  ],
+  [
+    "the-guild.dev/graphql/hive/docs/graphql-api",
+    "the-guild.dev/graphql/hive/docs/api-reference/graphql-api",
+  ],
+  [
+    "the-guild.dev/graphql/hive/docs/high-availability-cdn",
+    "the-guild.dev/graphql/hive/docs/schema-registry/high-availability-cdn",
+  ],
+  [
+    "graphql-hive.com/docs/management/",
+    "graphql-hive.com/docs/schema-registry/management/",
+  ],
 ];
 
 let filesChanged = 0;

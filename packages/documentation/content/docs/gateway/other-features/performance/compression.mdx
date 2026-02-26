@@ -4,9 +4,7 @@ title: Compression in HTTP
 searchable: false
 ---
 
-
-
-import { Callout } from '@hive/design-system/hive-components/callout'
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Compression is a technique used to reduce the size of the data that is being transferred between the
 server and the client. This is done by compressing the data before sending it and then decompressing
@@ -36,10 +34,10 @@ graph TD
 <Callout>
   <b>Caution!</b>
   <br />
-  Please take a look at the each direction, because even if they look similar, they have different
-  configurations and behaviors. While configuring the compression, make sure each side supports the
-  compression algorithm that the other side supports. Otherwise, it will end up with unexpected
-  errors.
+  Please take a look at the each direction, because even if they look similar,
+  they have different configurations and behaviors. While configuring the
+  compression, make sure each side supports the compression algorithm that the
+  other side supports. Otherwise, it will end up with unexpected errors.
 </Callout>
 
 ## From the gateway to the client
@@ -64,21 +62,24 @@ the gateway compresses the response using the `gzip` algorithm before sending it
 So the client can decompress the response using the `gzip` algorithm.
 
 ```ts
-const res = await fetch('http://localhost:4000/graphql', {
-  method: 'POST',
+const res = await fetch("http://localhost:4000/graphql", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
-    'Accept-Encoding': 'gzip'
+    "Content-Type": "application/json",
+    "Accept-Encoding": "gzip",
   },
   body: JSON.stringify({
     query: `
       query {
         hello
       }
-    `
-  })
-})
-console.assert(res.headers.get('Content-Encoding') === 'gzip', 'Response is compressed')
+    `,
+  }),
+});
+console.assert(
+  res.headers.get("Content-Encoding") === "gzip",
+  "Response is compressed",
+);
 ```
 
 You need to configure the gateway for this feature. [See here](#configuration-on-gateway)
@@ -102,11 +103,11 @@ In the following example, we compress the request using the `gzip` algorithm bef
 the gateway. Then the gateway decompresses the request before processing it.
 
 ```ts
-const res = await fetch('http://localhost:4000/graphql', {
-  method: 'POST',
+const res = await fetch("http://localhost:4000/graphql", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
-    'Content-Encoding': 'gzip'
+    "Content-Type": "application/json",
+    "Content-Encoding": "gzip",
   },
   // Compress the request body
   body: gzip(
@@ -115,10 +116,10 @@ const res = await fetch('http://localhost:4000/graphql', {
       query {
         hello
       }
-    `
-    })
-  )
-})
+    `,
+    }),
+  ),
+});
 ```
 
 Here we are using the `gzip` function to compress the request body before sending it to the gateway.
@@ -127,11 +128,12 @@ We assume that the `gzip` function is a function that compresses the data using 
 <Callout>
   <b>Caution!</b>
   <br />
-  When this feature is not enabled as described below, the gateway won't be able to process the
-  client request body. Then it will fail with a `400 Bad Request` response. Because there is no way
-  to check if the server supports compression from the consumer side. Before configuring this
-  feature on the client side, make sure that the gateway supports the compression algorithm that the
-  client supports.
+  When this feature is not enabled as described below, the gateway won't be able
+  to process the client request body. Then it will fail with a `400 Bad Request`
+  response. Because there is no way to check if the server supports compression
+  from the consumer side. Before configuring this feature on the client side,
+  make sure that the gateway supports the compression algorithm that the client
+  supports.
 </Callout>
 
 ### Configuration on Gateway
@@ -139,11 +141,11 @@ We assume that the `gzip` function is a function that compresses the data using 
 In your gateway configuration, you need to enable the compression for the gateway.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  contentEncoding: true
-})
+  contentEncoding: true,
+});
 ```
 
 Now gateway will respect the `Accept-Encoding` header from the client and compress the response
@@ -169,10 +171,11 @@ graph TD
 ```
 
 <Callout>
-  You don't need to configure anything on the gateway side for this feature. Because the HTTP Client
-  implementation is based on [`@whatwg-node/fetch`](https://github.com/ardatan/whatwg-node) which
-  automatically sends the `Accept-Encoding` headers to the upstream APIs, and decompresses the
-  response based on the sent `Content-Encoding` headers.
+  You don't need to configure anything on the gateway side for this feature.
+  Because the HTTP Client implementation is based on
+  [`@whatwg-node/fetch`](https://github.com/ardatan/whatwg-node) which
+  automatically sends the `Accept-Encoding` headers to the upstream APIs, and
+  decompresses the response based on the sent `Content-Encoding` headers.
 </Callout>
 
 ### Configuration on Subgraph
@@ -187,19 +190,20 @@ npm i @whatwg-node/server
 ```
 
 ```ts
-import { createYoga } from 'graphql-yoga'
-import { useContentEncoding } from '@whatwg-node/server'
+import { createYoga } from "graphql-yoga";
+import { useContentEncoding } from "@whatwg-node/server";
 
 const server = createYoga({
   schema,
-  plugins: [useContentEncoding()]
-})
+  plugins: [useContentEncoding()],
+});
 ```
 
 <Callout>
   If you use [`feTS`](https://the-guild.dev/openapi/fets) or any other
-  [`@whatwg-node/server`](https://github.com/ardatan/whatwg-node) based server implementation in
-  your non GraphQL subgraph, you can still use the same plugin.
+  [`@whatwg-node/server`](https://github.com/ardatan/whatwg-node) based server
+  implementation in your non GraphQL subgraph, you can still use the same
+  plugin.
 </Callout>
 
 ## From the gateway to the subgraph
@@ -222,10 +226,11 @@ In this case, gateway will always send a compressed request to the defined subgr
 <Callout>
   <b>Caution!</b>
   <br />
-  If the subgraph does not support compression, the gateway will receive an unexpected error. So
-  make sure that the subgraph supports the compression algorithm that the gateway supports. Because
-  there is no way to check the subgraph's support for compression since the gateway is acting like a
-  client here.
+  If the subgraph does not support compression, the gateway will receive an
+  unexpected error. So make sure that the subgraph supports the compression
+  algorithm that the gateway supports. Because there is no way to check the
+  subgraph's support for compression since the gateway is acting like a client
+  here.
 </Callout>
 
 ### Configuration on Gateway
@@ -233,19 +238,19 @@ In this case, gateway will always send a compressed request to the defined subgr
 In your gateway configuration, you need to enable the compression.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   contentEncoding: {
-    subgraphs: ['*'] // Enable compression for all subgraphs
+    subgraphs: ["*"], // Enable compression for all subgraphs
     // subgraphs: ['subgraph1', 'subgraph2'] // Enable compression for specific subgraphs
-  }
-})
+  },
+});
 ```
 
 <Callout>
   <b>Caution!</b>
   <br />
-  Currently, activating compression between gateway and subgraph will also activate compression
-  between the client and the gateway.
+  Currently, activating compression between gateway and subgraph will also
+  activate compression between the client and the gateway.
 </Callout>

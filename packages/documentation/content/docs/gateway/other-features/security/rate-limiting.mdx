@@ -4,8 +4,6 @@ title: Rate Limiting
 searchable: false
 ---
 
-
-
 Rate limiting is a technique for reducing server load by limiting the number of requests that can be
 made to a subgraph.
 
@@ -14,30 +12,30 @@ You can use rate limiting feature in order to limit the rate of calling queries 
 ## Programmatic Configuration
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   rateLimiting: [
     {
-      type: 'Query',
-      field: 'foo',
+      type: "Query",
+      field: "foo",
       max: 5, // requests limit for a time period
       ttl: 5000, // time period
       // You can use any value from the context
-      identifier: '{context.headers.authorization}'
-    }
-  ]
-})
+      identifier: "{context.headers.authorization}",
+    },
+  ],
+});
 ```
 
 ## Rate Limiting through `@rateLimit` directive
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  rateLimiting: true
-})
+  rateLimiting: true,
+});
 ```
 
 This approach follows the pattern of
@@ -50,8 +48,14 @@ included in the subgraph schema:
 # Import the directive for Federation
 extend schema
   @link(url: "https://specs.apollo.dev/link/v1.0")
-  @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@composeDirective"])
-  @link(url: "https://the-guild.dev/graphql/mesh/spec/v1.0", import: ["@rateLimit"])
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.3"
+    import: ["@composeDirective"]
+  )
+  @link(
+    url: "https://the-guild.dev/graphql/mesh/spec/v1.0"
+    import: ["@rateLimit"]
+  )
   @composeDirective(name: "@rateLimit")
 
 directive @rateLimit(
@@ -68,7 +72,8 @@ fields:
 
 ```graphql
 type Query {
-  getItems: [Item] @rateLimit(window: "1s", max: 5, message: "You are doing that too often.")
+  getItems: [Item]
+    @rateLimit(window: "1s", max: 5, message: "You are doing that too often.")
 }
 ```
 

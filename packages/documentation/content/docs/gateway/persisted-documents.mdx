@@ -1,11 +1,9 @@
 ---
-title: 'Gateway: Persisted Documents / Operations'
+title: "Gateway: Persisted Documents / Operations"
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Tabs } from '@hive/design-system/tabs'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
 
 Persisted documents can be used on your GraphQL server or Gateway to reduce the payload size of your
 GraphQL requests and secure your GraphQL API by only allowing operations that are known and trusted
@@ -72,20 +70,20 @@ Instead of using the CLI you can also provide the same configuration via the `ga
 file.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   persistedDocuments: {
-    type: 'hive',
+    type: "hive",
     // The endpoint of Hive's CDN
     endpoint: [
-      'https://cdn.graphql-hive.com/artifacts/v1/<target_id>',
-      'https://cdn-mirror.graphql-hive.com/artifacts/v1/<target_id>'
+      "https://cdn.graphql-hive.com/artifacts/v1/<target_id>",
+      "https://cdn-mirror.graphql-hive.com/artifacts/v1/<target_id>",
     ],
     // The CDN token provided by Hive Registry
-    key: '<cdn access token>'
-  }
-})
+    key: "<cdn access token>",
+  },
+});
 ```
 
 ### Enabling Arbitrary Documents
@@ -117,19 +115,20 @@ export const gatewayConfig = defineConfig({
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 const store = {
-  ecf4edb46db40b5132295c0291d62fb65d6759a9eedfa4d5d612dd5ec54a6b38: '{__typename}'
-}
+  ecf4edb46db40b5132295c0291d62fb65d6759a9eedfa4d5d612dd5ec54a6b38:
+    "{__typename}",
+};
 
 export const gatewayConfig = defineConfig({
   persistedDocuments: {
     getPersistedOperation(sha256Hash: string) {
-      return store[sha256Hash]
-    }
-  }
-})
+      return store[sha256Hash];
+    },
+  },
+});
 ```
 
 ## How to use ?
@@ -196,18 +195,20 @@ your application/client-code in a JSON file.
 This map can then be used to persist the GraphQL documents in the server.
 
 ```ts filename="gateway.config.ts"
-import { readFileSync } from 'node:fs'
-import { defineConfig } from '@graphql-hive/gateway'
+import { readFileSync } from "node:fs";
+import { defineConfig } from "@graphql-hive/gateway";
 
-const persistedOperations = JSON.parse(readFileSync('./persistedOperations.json', 'utf-8'))
+const persistedOperations = JSON.parse(
+  readFileSync("./persistedOperations.json", "utf-8"),
+);
 
 export const gatewayConfig = defineConfig({
   persistedDocuments: {
     getPersistedOperation(sha256Hash: string) {
-      return persistedOperations[sha256Hash]
-    }
-  }
-})
+      return persistedOperations[sha256Hash];
+    },
+  },
+});
 ```
 
 ## Sending the hash from the client
@@ -231,20 +232,21 @@ straight-forward using the `@urql/exchange-persisted` package.
 </Callout>
 
 ```ts filename="Urql Client Configuration" {2,8-13}
-import { cacheExchange, createClient } from '@urql/core'
-import { persistedExchange } from '@urql/exchange-persisted'
+import { cacheExchange, createClient } from "@urql/core";
+import { persistedExchange } from "@urql/exchange-persisted";
 
 const client = new createClient({
-  url: 'YOUR_GRAPHQL_ENDPOINT',
+  url: "YOUR_GRAPHQL_ENDPOINT",
   exchanges: [
     cacheExchange,
     persistedExchange({
       enforcePersistedQueries: true,
       enableForMutation: true,
-      generateHash: (_, document) => Promise.resolve(document['__meta__']['hash'])
-    })
-  ]
-})
+      generateHash: (_, document) =>
+        Promise.resolve(document["__meta__"]["hash"]),
+    }),
+  ],
+});
 ```
 
 [More information on `@urql/exchange-persisted` on the the urql documentation](https://formidable.com/open-source/urql/docs/advanced/persistence-and-uploads/))
@@ -262,17 +264,17 @@ hashes is straight-forward.
 </Callout>
 
 ```ts filename="Apollo Client Configuration" {2,4-6}
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
-import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries'
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { createPersistedQueryLink } from "@apollo/client/link/persisted-queries";
 
 const link = createPersistedQueryLink({
-  generateHash: document => document['__meta__']['hash']
-})
+  generateHash: (document) => document["__meta__"]["hash"],
+});
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: link.concat(new HttpLink({ uri: '/graphql' }))
-})
+  link: link.concat(new HttpLink({ uri: "/graphql" })),
+});
 ```
 
 [More information on the Apollo Client documentation](https://www.apollographql.com/docs/apollo-server/performance/apq/#step-2-enable-automatic-persisted-queries)
@@ -308,7 +310,7 @@ requests.
 ```ts filename="Validate persisted operations"
 {
   //...
-  skipDocumentValidation: true
+  skipDocumentValidation: true;
 }
 ```
 
@@ -324,8 +326,8 @@ This can be achieved using the `allowArbitraryOperations` option.
 
 ```ts filename="Allow arbitrary GraphQL operations"
 {
-  allowArbitraryOperations: request =>
-    request.headers.get('x-allow-arbitrary-operations') === 'true'
+  allowArbitraryOperations: (request) =>
+    request.headers.get("x-allow-arbitrary-operations") === "true";
 }
 ```
 
@@ -391,23 +393,24 @@ This combination is powerful as it allows you to use the persisted operation id 
 combined with any type of HTTP proxy cache.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 const store = {
-  ecf4edb46db40b5132295c0291d62fb65d6759a9eedfa4d5d612dd5ec54a6b38: '{__typename}'
-}
+  ecf4edb46db40b5132295c0291d62fb65d6759a9eedfa4d5d612dd5ec54a6b38:
+    "{__typename}",
+};
 
 export const gatewayConfig = defineConfig({
-  graphqlEndpoint: '/graphql/:document_id?',
+  graphqlEndpoint: "/graphql/:document_id?",
   persistedDocuments: {
     getPersistedOperation(sha256Hash: string) {
-      return store[sha256Hash]
+      return store[sha256Hash];
     },
     extractPersistedOperationId(_params, request) {
-      return request.url.split('/graphql/').pop() ?? null
-    }
-  }
-})
+      return request.url.split("/graphql/").pop() ?? null;
+    },
+  },
+});
 ```
 
 ## Using an external Persisted Operation Store
@@ -421,8 +424,8 @@ You can return a `Promise` from the `getPersistedOperation` function and call an
 external service to retrieve the persisted operation.
 
 <Callout>
-  For the best performance a mixture of an LRU in-memory store and external persisted operation
-  store is recommended.
+  For the best performance a mixture of an LRU in-memory store and external
+  persisted operation store is recommended.
 </Callout>
 
 ```ts filename="Use external persisted operation store"

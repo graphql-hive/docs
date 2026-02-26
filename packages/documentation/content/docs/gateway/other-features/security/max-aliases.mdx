@@ -4,9 +4,6 @@ title: Max Aliases
 searchable: false
 ---
 
-
-
-
 **Limit** the number of **aliases** in a GraphQL document.
 
 It is used to prevent **DOS attack** or **heap overflow**.
@@ -24,8 +21,8 @@ npm install @escape.tech/graphql-armor-max-aliases
 Then, add it to your plugins:
 
 ```ts filename="gateway.config.ts"
-import { maxAliasesPlugin } from '@escape.tech/graphql-armor-max-aliases'
-import { defineConfig } from '@graphql-hive/gateway'
+import { maxAliasesPlugin } from "@escape.tech/graphql-armor-max-aliases";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   plugins: () => [
@@ -45,8 +42,8 @@ export const gatewayConfig = defineConfig({
       onAccept: [],
 
       // Callbacks that are ran whenever a Query is rejected
-      onReject: []
-    })
-  ]
-})
+      onReject: [],
+    }),
+  ],
+});
 ```

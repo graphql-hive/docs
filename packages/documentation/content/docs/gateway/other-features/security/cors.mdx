@@ -7,9 +7,7 @@ description:
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 CORS stands for Cross Origin Resource Sharing. In a nutshell, as a security measure, browsers aren't
 allowed to access resources outside their own domain.
@@ -31,29 +29,29 @@ builder function that returns the CORSOptions object.
 ```ts
 export type CORSOptions =
   | {
-      origin?: string[] | string
-      methods?: string[]
-      allowedHeaders?: string[]
-      exposedHeaders?: string[]
-      credentials?: boolean
-      maxAge?: number
+      origin?: string[] | string;
+      methods?: string[];
+      allowedHeaders?: string[];
+      exposedHeaders?: string[];
+      credentials?: boolean;
+      maxAge?: number;
     }
-  | false
+  | false;
 ```
 
 ### Example configuration using CORSOptions
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   cors: {
-    origin: 'http://localhost:4000',
+    origin: "http://localhost:4000",
     credentials: true,
-    allowedHeaders: ['X-Custom-Header'],
-    methods: ['POST']
-  }
-})
+    allowedHeaders: ["X-Custom-Header"],
+    methods: ["POST"],
+  },
+});
 ```
 
 This will return the following headers:
@@ -71,18 +69,18 @@ You can also pass a function to the cors property, that takes your request and c
 options
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  cors: request => {
+  cors: (request) => {
     return {
-      origin: 'http://localhost:4000',
+      origin: "http://localhost:4000",
       credentials: true,
-      allowedHeaders: ['X-Custom-Header'],
-      methods: ['POST']
-    }
-  }
-})
+      allowedHeaders: ["X-Custom-Header"],
+      methods: ["POST"],
+    };
+  },
+});
 ```
 
 This will return the same headers as the previous example, but take the `origin` of the request, and
@@ -103,14 +101,15 @@ You can disable CORS on your gateway by simply passing `false` as the cors prope
 **For example:**
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  cors: false
-})
+  cors: false,
+});
 ```
 
 <Callout>
-  If you disable CORS, you may run into issues with your web client not being able to access the
-  Hive Gateway. This is because of the browser's security policy.
+  If you disable CORS, you may run into issues with your web client not being
+  able to access the Hive Gateway. This is because of the browser's security
+  policy.
 </Callout>

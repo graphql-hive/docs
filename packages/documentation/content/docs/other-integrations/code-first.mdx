@@ -2,8 +2,6 @@
 title: Code-First Approach and Hive CLI
 ---
 
-
-
 If you're using the Code-First approach to define your GraphQL schema, you may have noticed that you
 need to retrieve the schema SDL (in a `.graphql` file) before using it with the
 [Hive CLI](/docs/api-reference/cli).
@@ -47,25 +45,25 @@ To use Hive CLI with `gqtx`, you'll need to setup a script that calls `buildGrap
 exports GraphQL schemas to a file:
 
 ```ts
-import { writeFileSync } from 'fs'
-import { buildGraphQLSchema, createTypesFactory } from 'gqtx'
-import { lexicographicSortSchema, printSchema } from 'graphql'
+import { writeFileSync } from "fs";
+import { buildGraphQLSchema, createTypesFactory } from "gqtx";
+import { lexicographicSortSchema, printSchema } from "graphql";
 
-const t = createTypesFactory<{}>()
+const t = createTypesFactory<{}>();
 const Query = t.queryType({
   fields: [
     t.field({
-      name: 'foo',
+      name: "foo",
       type: t.String,
-      resolve: (_, args, ctx) => 'test'
-    })
-  ]
-})
+      resolve: (_, args, ctx) => "test",
+    }),
+  ],
+});
 
-const schema = buildGraphQLSchema({ query: Query })
-const schemaAsString = printSchema(lexicographicSortSchema(schema))
+const schema = buildGraphQLSchema({ query: Query });
+const schemaAsString = printSchema(lexicographicSortSchema(schema));
 
-writeFileSync('schema.graphql', schemaAsString)
+writeFileSync("schema.graphql", schemaAsString);
 ```
 
 ## GraphQL-Ruby

@@ -1,12 +1,11 @@
 ---
 title: Easier Gradual Schema Migrations with Progressive Overrides
-description:
-  Safer and controlled migrations with Progressive Override that allows gradual schema changes.
+description: Safer and controlled migrations with Progressive Override that allows gradual schema changes.
 date: 2025-10-29
 authors: [arda]
 ---
 
-import { Tabs } from '@hive/design-system/tabs'
+import { Tabs } from "@hive/design-system/tabs";
 
 **Schema migrations just got a lot safer.** We're thrilled to introduce Progressive Override in Hive
 Gateway and Hive Router - enabling you to gradually migrate fields between subgraphs with zero risk
@@ -32,7 +31,11 @@ needed - just add a `percent(x)` label to your `@override` directive.
 **Step 1:** Import the `@override` directive in your subgraph schema:
 
 ```graphql
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key", "@override"])
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.7"
+    import: ["@key", "@override"]
+  )
 ```
 
 **Step 2:** Add the field to your new subgraph with progressive override:

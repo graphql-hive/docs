@@ -1,11 +1,8 @@
 ---
 title: Integration with SvelteKit
 
-description:
-  SvelteKit is a framework for rapidly developing robust, performant web applications using Svelte.
+description: SvelteKit is a framework for rapidly developing robust, performant web applications using Svelte.
 ---
-
-
 
 [SvelteKit](https://kit.svelte.dev/) is a framework for rapidly developing robust, performant web
 applications using [Svelte](https://svelte.dev/). You can easily integrate Hive Gateway into your
@@ -29,13 +26,13 @@ create a new server route in `my-project/src/routes/graphql/+server.ts` to expos
 at `/graphql` and implement using the Hive Gateway runtime like this:
 
 ```ts filename="my-project/src/routes/graphql/+server.ts"
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 
 const serve = createGatewayRuntime({
-  supergraph: 'supergraph.graphql', // working directory is root of the project
-  graphqlEndpoint: '/graphql', // matches the server route path
-  fetchAPI: { Response } // use the native `Response`
-})
+  supergraph: "supergraph.graphql", // working directory is root of the project
+  graphqlEndpoint: "/graphql", // matches the server route path
+  fetchAPI: { Response }, // use the native `Response`
+});
 
-export { serve as GET, serve as POST }
+export { serve as GET, serve as POST };
 ```

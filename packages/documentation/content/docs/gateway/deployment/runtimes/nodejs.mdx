@@ -2,9 +2,6 @@
 title: Node.js
 ---
 
-
-
-
 Node.js is the most common runtime for JavaScript.
 
 If you have Node.js environment, we highly recommend to use Hive Gateway with the CLI as described
@@ -21,25 +18,25 @@ Use this method only if you know what you are doing. It is recommended to use Hi
 most cases.
 
 ```ts filename="index.ts"
-import { createServer } from 'http'
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
-import { enableWebSocket } from './websocket.ts'
+import { createServer } from "http";
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
+import { enableWebSocket } from "./websocket.ts";
 
 // Create the gateway runtime. The Gateway Runtime is an http handler.
 const serveRuntime = createGatewayRuntime({
   /* Your configuration */
-})
+});
 
 // Create the HTTP server that will listen for incoming HTTP requests.
 // It can be any server implementation, here we use Node official http module.
-const server = createServer(serveRuntime)
+const server = createServer(serveRuntime);
 
 // Optionally add support for WebSockets, see below for details
-enableWebSocket(server, serverRuntime)
+enableWebSocket(server, serverRuntime);
 
 server.listen(4000, () => {
-  console.log(`Server is running on http://localhost:4000`)
-})
+  console.log(`Server is running on http://localhost:4000`);
+});
 ```
 
 ## WebSocket support
@@ -56,30 +53,33 @@ Use `getGraphQLWSOptions` from `@graphql-hive/gateway-runtime` to automatically 
 specific needs.
 
 ```ts filename="websocket.ts"
-import type { Server } from 'node:http'
-import { useServer } from 'graphql-ws/use/ws'
-import { WebSocketServer } from 'ws'
-import { GatewayRuntime, getGraphQLWSOptions } from '@graphql-hive/gateway-runtime'
+import type { Server } from "node:http";
+import { useServer } from "graphql-ws/use/ws";
+import { WebSocketServer } from "ws";
+import {
+  GatewayRuntime,
+  getGraphQLWSOptions,
+} from "@graphql-hive/gateway-runtime";
 
 function enableWebSocket(server: Server, runtime: GatewayRuntime): void {
   const wsServer = new WebSocketServer({
     path: runtime.graphqlEndpoint,
-    server
-  })
+    server,
+  });
 
   useServer(
-    getGraphQLWSOptions<TContext, Extra>(runtime, ctx => ({
+    getGraphQLWSOptions<TContext, Extra>(runtime, (ctx) => ({
       req: ctx.extra?.request,
-      socket: ctx.extra?.socket
+      socket: ctx.extra?.socket,
     })),
-    wsServer
-  )
+    wsServer,
+  );
 
   runtime.disposableStack.defer(
     () =>
       new Promise((resolve, reject) => {
-        wsServer.close(err => (err ? reject(err) : resolve()))
-      })
-  )
+        wsServer.close((err) => (err ? reject(err) : resolve()));
+      }),
+  );
 }
 ```

@@ -27,7 +27,7 @@
 
       &::before {
         @apply bg-primary flex size-12 shrink-0 items-center justify-center rounded-2xl pt-2;
-        content: url('./quotemark.svg');
+        content: url("./quotemark.svg");
       }
     }
 

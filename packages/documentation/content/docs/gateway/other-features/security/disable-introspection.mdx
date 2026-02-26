@@ -1,14 +1,11 @@
 ---
 title: Disable Introspection
 
-description:
-  Learn how to disable GraphQL schema introspection and the "did you mean x" suggestion feature.
+description: Learn how to disable GraphQL schema introspection and the "did you mean x" suggestion feature.
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 A powerful feature of GraphQL is schema introspection. This feature is used by GraphiQL for
 exploring the schema and also by tooling such as
@@ -22,19 +19,19 @@ However, you may want to not expose your schema to the outside world. You can di
 introspection with the `disableIntrospection` option.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   disableIntrospection: {
-    disableIf: () => true
-  }
-})
+    disableIf: () => true,
+  },
+});
 ```
 
 <Callout>
-  If your goal is to avoid unknown actors from reverse-engineering your GraphQL schema and executing
-  arbitrary operations, it is highly recommended to use [persisted
-  operations](/docs/gateway/persisted-documents).
+  If your goal is to avoid unknown actors from reverse-engineering your GraphQL
+  schema and executing arbitrary operations, it is highly recommended to use
+  [persisted operations](/docs/gateway/persisted-documents).
 </Callout>
 
 ## Disable Introspection based on the GraphQL Request
@@ -44,15 +41,18 @@ and determine based on that whether introspection should be enabled or not. E.g.
 headers.
 
 ```ts filename="gateway.config.ts" {6}
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   disableIntrospection: {
     disableIf: ({ context }) => {
-      return context.request.headers.get('x-allow-introspection') !== 'secret-access-key'
-    }
-  }
-})
+      return (
+        context.request.headers.get("x-allow-introspection") !==
+        "secret-access-key"
+      );
+    },
+  },
+});
 ```
 
 ## Blocking Field Suggestions
@@ -71,12 +71,12 @@ will disable these smart suggestions and therefore prevent schema leaking.
 Combined with the `disableIntrospection` option, you can make your schema more secure.
 
 ```ts filename="gateway.config.ts" {7}
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   disableIntrospection: {
-    disableIf: () => true
+    disableIf: () => true,
   },
-  blockFieldSuggestions: true
-})
+  blockFieldSuggestions: true,
+});
 ```

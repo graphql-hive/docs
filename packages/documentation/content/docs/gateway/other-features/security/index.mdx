@@ -4,9 +4,7 @@ title: Secure your Gateway
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Building a secure GraphQL API is hard by design because of the “Graph” nature of GraphQL. Libraries
 for making different aspects of a GraphQL server secure have existed since the early days of
@@ -192,7 +190,9 @@ you can block field suggestions.
 
 ### Error Masking
 
-<Callout type="info">Error masking is enabled by default in Hive Gateway.</Callout>
+<Callout type="info">
+  Error masking is enabled by default in Hive Gateway.
+</Callout>
 
 In most GraphQL servers any thrown error or rejected promise will result in the original error
 leaking to the outside world. Some frameworks have custom logic for catching unexpected errors and

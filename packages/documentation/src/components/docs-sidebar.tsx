@@ -40,7 +40,11 @@ import {
   useFolderDepth,
 } from "fumadocs-ui/components/sidebar/base";
 import { createPageTreeRenderer } from "fumadocs-ui/components/sidebar/page-tree";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "fumadocs-ui/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "fumadocs-ui/components/ui/collapsible";
 import { ChevronRight, ExternalLink, Sidebar } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -225,10 +229,7 @@ function DesktopSidebar({
             data-sidebar-placeholder=""
           >
             {collapsed && (
-              <div
-                className="absolute start-0 inset-y-0 w-4"
-                {...rest}
-              />
+              <div className="absolute start-0 inset-y-0 w-4" {...rest} />
             )}
             <aside
               className={cn(
@@ -239,7 +240,7 @@ function DesktopSidebar({
                     ? "shadow-lg translate-x-2 rtl:-translate-x-2"
                     : "-translate-x-(--fd-sidebar-width) rtl:translate-x-full",
                 ],
-                ref.current?.dataset["collapsed"] === "true" !== collapsed &&
+                (ref.current?.dataset["collapsed"] === "true") !== collapsed &&
                   "transition-[width,inset-block,translate,background-color]",
                 className,
               )}

@@ -1,11 +1,9 @@
 ---
-title: 'Authorization'
+title: "Authorization"
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Tabs } from '@hive/design-system/tabs'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
 
 Authorization directives allow you to define fine-grained access control directly in your GraphQL
 schema. Instead of handling authorization logic in resolvers, you declare which fields and types
@@ -27,8 +25,8 @@ When a GraphQL request arrives at the router, it goes through these steps:
 5. **Response is returned** with either the requested data, errors, or a full rejection
 
 <Callout type="note">
-  Authorization happens **before** your subgraphs are called, protecting sensitive fields at the
-  router level.
+  Authorization happens **before** your subgraphs are called, protecting
+  sensitive fields at the router level.
 </Callout>
 
 ## Integration with JWT Authentication
@@ -53,9 +51,9 @@ authorization:
 ```
 
 <Callout title="Scope Requirement" type="warning">
-  Ensure your JWT tokens include the necessary scopes in the `scope` claim as a space-separated
-  string (e.g., `"read:users write:posts"`) or an array of scopes (e.g., `["read:users",
-  "write:posts"]`).
+  Ensure your JWT tokens include the necessary scopes in the `scope` claim as a
+  space-separated string (e.g., `"read:users write:posts"`) or an array of
+  scopes (e.g., `["read:users", "write:posts"]`).
 </Callout>
 
 ## Authorization Directives
@@ -65,7 +63,11 @@ authorization:
 Marks a field or type as requiring authentication. Anonymous requests cannot access these fields.
 
 ```graphql
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.9", import: ["@authenticated"])
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.9"
+    import: ["@authenticated"]
+  )
 
 type Query {
   publicPosts: [Post] # Anyone
@@ -96,7 +98,11 @@ Provides granular control by requiring specific scopes (permissions stored in JW
 - **Multiple lists** (OR logic): User must satisfy **any** complete list
 
 ```graphql
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.9", import: ["@requiresScopes"])
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.9"
+    import: ["@requiresScopes"]
+  )
 
 type Query {
   users: [User]
@@ -266,8 +272,8 @@ interface or its fields, the authorization check applies the combined policies f
 types using logical `AND`.
 
 <Callout title="Composition" type="info">
-  Interface authorization is computed during composition of the supergraph schema, based on the
-  implementing types' directives.
+  Interface authorization is computed during composition of the supergraph
+  schema, based on the implementing types' directives.
 </Callout>
 
 Look at this example with an `Item` interface implemented by `Book` and `Video` types, each with its
@@ -343,10 +349,11 @@ Without this rule, a client could potentially access the `orders` field without 
 thus indirectly accessing the protected `email` field.
 
 <Callout title="Automatic Security Checks" type="success">
-  Console will raise a `MISSING_TRANSITIVE_AUTH_REQUIREMENTS` error during [Schema
-  Check](/docs/schema-registry#check-a-schema) or [Schema
-  Publish](/docs/schema-registry#publish-a-schema) if a field with `@requires` lacks sufficient
-  authorization requirements, protecting you from security gaps.
+  Console will raise a `MISSING_TRANSITIVE_AUTH_REQUIREMENTS` error during
+  [Schema Check](/docs/schema-registry#check-a-schema) or [Schema
+  Publish](/docs/schema-registry#publish-a-schema) if a field with `@requires`
+  lacks sufficient authorization requirements, protecting you from security
+  gaps.
 </Callout>
 
 ## Handling Authorization Errors

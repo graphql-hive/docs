@@ -1,11 +1,9 @@
 ---
-title: 'Gateway: Supergraph schema'
+title: "Gateway: Supergraph schema"
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Tabs } from '@hive/design-system/tabs'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
 
 Hive Gateway can retrieve a supergraph from a wide range of sources.
 
@@ -36,22 +34,22 @@ configuration file.
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   supergraph: {
-    type: 'hive',
+    type: "hive",
     // The endpoints of Hive's CDN
     endpoint: [
       // Main CDN
-      'https://cdn.graphql-hive.com/artifacts/v1/<target_id>',
+      "https://cdn.graphql-hive.com/artifacts/v1/<target_id>",
       // Mirror CDN
-      'https://cdn-mirror.graphql-hive.com/artifacts/v1/<target_id>'
+      "https://cdn-mirror.graphql-hive.com/artifacts/v1/<target_id>",
     ],
     // The CDN token provided by Hive Registry
-    key: '<cdn access token>'
-  }
-})
+    key: "<cdn access token>",
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -150,22 +148,22 @@ You can provide a custom supergraph source, along with other options to customiz
 behavior.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   supergraph: () =>
     // Fetch the supergraph from the schema registry
-    fetch('https://my-registry.com/supergraph.graphql', {
+    fetch("https://my-registry.com/supergraph.graphql", {
       headers: {
-        Authorization: 'Bearer MY_TOKEN'
-      }
-    }).then(res => res.text()),
+        Authorization: "Bearer MY_TOKEN",
+      },
+    }).then((res) => res.text()),
 
-  plugins: ctx => [
+  plugins: (ctx) => [
     // You can also write your custom plugins to interact with the schema registry
-    useMyCustomPlugin(ctx)
-  ]
-})
+    useMyCustomPlugin(ctx),
+  ],
+});
 ```
 
 </Tabs.Tab>
@@ -193,11 +191,11 @@ hive-gateway supergraph ./supergraph.graphql
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  supergraph: './supergraph.graphql'
-})
+  supergraph: "./supergraph.graphql",
+});
 ```
 
 </Tabs.Tab>
@@ -213,15 +211,15 @@ export const gatewayConfig = defineConfig({
 You can configure the polling interval for the supergraph source.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   supergraph: {
     /* Supergraph Configuration */
   },
   // By default it polls the schema registry every 10 seconds
-  pollingInterval: 10_000
-})
+  pollingInterval: 10_000,
+});
 ```
 
 <Callout>
@@ -268,13 +266,13 @@ hive-gateway proxy https://example.com/graphql
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   proxy: {
-    endpoint: 'https://example.com/graphql'
-  }
-})
+    endpoint: "https://example.com/graphql",
+  },
+});
 ```
 
 </Tabs.Tab>

@@ -1,7 +1,3 @@
 {
-  "pages": [
-    "[Bun](bun)",
-    "[Deno](deno)",
-    "nodejs"
-  ]
+  "pages": ["[Bun](bun)", "[Deno](deno)", "nodejs"]
 }

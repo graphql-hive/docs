@@ -2,17 +2,15 @@
 title: Project Management
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Image } from '@hive/design-system/image'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Image } from "@hive/design-system/image";
 
-import slackIntegrationImage from './org-slack-integration.png'
-import projectGitLinkImage from './project-git-link.png'
-import projectHttpAlertImage from './project-http-alert.png'
-import msteamsFormImage from './project-msteams-alert.png'
-import slackAlertFormImage from './project-slack-alert.png'
-import projectImage from './project.png'
-
-
+import slackIntegrationImage from "./org-slack-integration.png";
+import projectGitLinkImage from "./project-git-link.png";
+import projectHttpAlertImage from "./project-http-alert.png";
+import msteamsFormImage from "./project-msteams-alert.png";
+import slackAlertFormImage from "./project-slack-alert.png";
+import projectImage from "./project.png";
 
 A Hive **project** represents a GraphQL API project running a GraphQL schema, created under an
 organization.
@@ -45,8 +43,9 @@ To create a new project, click on **Create Project +** button from your organiza
 Choose a project type based on your project's stack, and then enter the project slug.
 
 <Callout>
-  Please note that a **project** type cannot be changed once it is created. However, you can always
-  create an unlimited number of projects under your organization.
+  Please note that a **project** type cannot be changed once it is created.
+  However, you can always create an unlimited number of projects under your
+  organization.
 </Callout>
 
 ## Manage existing project
@@ -59,9 +58,9 @@ steps are needed. Please double check that the GitHub integration has access to 
 repositories you plan to use with Hive.
 
 <Callout>
-  Previously, you could only connect a single GitHub repository to a project. However, that does not
-  make sense when using federated/composite schema project the subgraphs can be in different
-  repositories.
+  Previously, you could only connect a single GitHub repository to a project.
+  However, that does not make sense when using federated/composite schema
+  project the subgraphs can be in different repositories.
 </Callout>
 
 Having a Project connected with your GitHub repositories gives you the following benefits:
@@ -144,8 +143,9 @@ Hive project:
 />
 
 <Callout type="info">
-  To send messages to private channels, invite the @GraphQLHive account first. Without this
-  invitation, our Slack app will be unable to post messages to the channel.
+  To send messages to private channels, invite the @GraphQLHive account first.
+  Without this invitation, our Slack app will be unable to post messages to the
+  channel.
 </Callout>
 
 #### MS Teams Webhook
@@ -180,14 +180,15 @@ URL, with a JSON payload as body (with `Content-Type: application/json` header s
 a notification is triggered.
 
 <Callout type="warning">
-  Note that using this form of alert is intended to implement custom flows. You cannot use an
-  Incoming Webhook feature of products like MSTeams or Slack, because the expected payload is
-  different.
+  Note that using this form of alert is intended to implement custom flows. You
+  cannot use an Incoming Webhook feature of products like MSTeams or Slack,
+  because the expected payload is different.
 </Callout>
 
 <Callout type="warning">
-  Hive Cloud uses Cloudflare Worker to communicate with your endpoint. This means that endpoint's
-  address must contain a valid hostname (not an IP address), and the port must be standard.
+  Hive Cloud uses Cloudflare Worker to communicate with your endpoint. This
+  means that endpoint's address must contain a valid hostname (not an IP
+  address), and the port must be standard.
 </Callout>
 
 <Image
@@ -197,8 +198,9 @@ a notification is triggered.
 />
 
 <Callout type="info">
-  Every type of event/notification has a different JSON payload, please refer to the information
-  below, for a specific payload structure for every kind of alert.
+  Every type of event/notification has a different JSON payload, please refer to
+  the information below, for a specific payload structure for every kind of
+  alert.
 </Callout>
 
 ### Alerts and Notifications
@@ -225,42 +227,42 @@ This notification has the following payload when shipped over the **HTTP webhook
 type SchemaChangedNotificationPayload = {
   /** General information about organization triggered the event */
   organization: {
-    id: string
-    cleanId: string
-    name: string
-  }
+    id: string;
+    cleanId: string;
+    name: string;
+  };
   /** General information about project triggered the event */
   project: {
-    id: string
-    cleanId: string
-    name: string
-  }
+    id: string;
+    cleanId: string;
+    name: string;
+  };
   /** General information about target triggered the event */
   target: {
-    id: string
-    cleanId: string
-    name: string
-  }
+    id: string;
+    cleanId: string;
+    name: string;
+  };
   /** Information about the published schema and the commit identification */
   schema: {
-    id: string
-    commit: string
-    valid: boolean
-  }
+    id: string;
+    commit: string;
+    valid: boolean;
+  };
   /** List of changes and their criticality */
   changes: Array<{
-    criticality: 'Breaking' | 'Dangerous' | 'Safe'
-    message: string
-    path?: string
-  }>
+    criticality: "Breaking" | "Dangerous" | "Safe";
+    message: string;
+    path?: string;
+  }>;
   /** Useful information about the schema publication flow */
-  messages: string[]
+  messages: string[];
   /** List of validation and composition error */
   errors: Array<{
-    message: string
-    path?: string
-  }>
+    message: string;
+    path?: string;
+  }>;
   /** A boolean indicator set to true, when this is the first schema published to the target */
-  initial: boolean
-}
+  initial: boolean;
+};
 ```

@@ -2,9 +2,6 @@
 title: Deduplicate Inflight Requests
 ---
 
-
-
-
 Most of the time, your Hive Gateway will receive multiple requests for the same data. This can
 happen when multiple clients request the same data, or when a single client sends multiple requests
 for the same data.
@@ -17,16 +14,16 @@ This feature is enabled by default in Hive Gateway! If you would like to disable
 it like this:
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import { HTTPTransportOptions } from '@graphql-tools/executor-http'
+import { defineConfig } from "@graphql-hive/gateway";
+import { HTTPTransportOptions } from "@graphql-tools/executor-http";
 
 export const gatewayConfig = defineConfig({
   transportEntries: {
-    '*.http': {
+    "*.http": {
       options: {
-        deduplicateInflightRequests: false
-      } as HTTPTransportOptions
-    }
-  }
-})
+        deduplicateInflightRequests: false,
+      } as HTTPTransportOptions,
+    },
+  },
+});
 ```

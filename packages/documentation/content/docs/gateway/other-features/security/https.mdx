@@ -4,9 +4,7 @@ title: Secure HTTP Connection (HTTPS)
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 HTTPS (HyperText Transfer Protocol Secure) is an encrypted version of the HTTP protocol. It uses TLS
 to encrypt all communication between a client and a server.
@@ -71,14 +69,14 @@ You can also configure Hive Gateway to listen on HTTPS. You can provide the path
 certificate files in the configuration file;
 
 ```ts
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   sslCredentials: {
-    key_file_name: 'path/to/key.pem',
-    cert_file_name: 'path/to/cert.pem',
-    passphrase: 'passphrase'
+    key_file_name: "path/to/key.pem",
+    cert_file_name: "path/to/cert.pem",
+    passphrase: "passphrase",
   },
-  port: 443
-})
+  port: 443,
+});
 ```

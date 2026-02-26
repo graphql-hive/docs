@@ -1,8 +1,6 @@
 ---
-title: 'override_labels'
+title: "override_labels"
 ---
-
-
 
 The `override_labels` configuration allows you to dynamically activate or deactivate progressive
 override labels at runtime, based on the properties of an incoming request.
@@ -18,7 +16,11 @@ traffic at once can be risky. Progressive override allows for a safer, increment
 using a `label` on the directive:
 
 ```graphql filename="fulfillment-subgraph.graphql"
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.7", import: ["@key", "@override"])
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.7"
+    import: ["@key", "@override"]
+  )
 
 type Order @key(fields: "id") {
   id: ID!
@@ -102,7 +104,7 @@ Within the `expression`, you have access to the following context:
 override_labels:
   # This label will be active for 5% of the traffic
   use-fulfillment-service:
-    expession: 'random_float(0.0, 100.0) < 5.0'
+    expession: "random_float(0.0, 100.0) < 5.0"
 
   activate-beta-feature:
     expression: '.request.headers."x-user-group" == "beta"'

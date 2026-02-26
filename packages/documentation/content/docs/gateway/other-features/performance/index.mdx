@@ -7,18 +7,17 @@ description:
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Hive Gateway provides a set of features to help you optimize the performance of your GraphQL
 gateway. Hive Gateway provides a shared caching storage that can be used across plugins, transforms,
 subgraph execution and remote schema caching.
 
 <Callout>
-  If you are running Hive Gateway [serverless on the edge](/docs/gateway/deployment/serverless),
-  you're highly advised to provide a cache. Aside from all of the aforementioned benefits, the
-  biggest one is caching the remote schema so that it does not get pulled on each request.
+  If you are running Hive Gateway [serverless on the
+  edge](/docs/gateway/deployment/serverless), you're highly advised to provide a
+  cache. Aside from all of the aforementioned benefits, the biggest one is
+  caching the remote schema so that it does not get pulled on each request.
 </Callout>
 
 ## Providing Cache Storage
@@ -64,22 +63,22 @@ use Redis as a cache storage for your Hive Gateway.
 <Callout>The Redis cache currently only works in Node.js environments.</Callout>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   cache: {
-    type: 'redis',
-    host: 'localhost', // The host of the Redis server
+    type: "redis",
+    host: "localhost", // The host of the Redis server
     port: 6379, // The port of the Redis server
     password: undefined, // The password of the Redis server
     lazyConnect: true, // If true, the connection will be established when the first operation is executed
     // or
-    url: 'redis://localhost:6379' // The URL of the Redis server
+    url: "redis://localhost:6379", // The URL of the Redis server
   },
   responseCaching: {
-    session: () => null
-  }
-})
+    session: () => null,
+  },
+});
 ```
 
 #### Redis Sentinel
@@ -89,21 +88,21 @@ If you are using
 use the `sentinels` option to connect to the Redis Sentinel.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   cache: {
-    type: 'redis',
+    type: "redis",
     sentinels: [
-      { host: 'localhost', port: 26379 },
-      { host: 'localhost', port: 26380 },
-      { host: 'localhost', port: 26381 }
-    ]
+      { host: "localhost", port: 26379 },
+      { host: "localhost", port: 26380 },
+      { host: "localhost", port: 26381 },
+    ],
   },
   responseCaching: {
-    session: () => null
-  }
-})
+    session: () => null,
+  },
+});
 ```
 
 #### Redis Cluster
@@ -112,24 +111,24 @@ If you are using [Redis Cluster](http://redis.io/topics/cluster-tutorial), You c
 `startupNodes` option to connect to the Redis Cluster.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   cache: {
-    type: 'redis',
+    type: "redis",
     startupNodes: [
-      { host: 'localhost', port: 7000 },
-      { host: 'localhost', port: 7001 },
-      { host: 'localhost', port: 7002 }
+      { host: "localhost", port: 7000 },
+      { host: "localhost", port: 7001 },
+      { host: "localhost", port: 7002 },
     ],
     // If you are using AWS ElastiCache with TLS, you need to use the following options
     tls: true,
-    dnsLookupAsIs: true
+    dnsLookupAsIs: true,
   },
   responseCaching: {
-    session: () => null
-  }
-})
+    session: () => null,
+  },
+});
 ```
 
 ### Cloudflare Workers KV
@@ -139,15 +138,16 @@ Cloudflare Workers runtime. You can use Cloudflare Workers KV as a cache storage
 Gateway. [Learn more about KV here.](https://developers.cloudflare.com/workers/runtime-apis/kv/)
 
 <Callout>
-  This is only available for Cloudflare Workers runtime. If you want to learn how to deploy your
-  Hive Gateway to Cloudflare Workers, you can check the [deployment
+  This is only available for Cloudflare Workers runtime. If you want to learn
+  how to deploy your Hive Gateway to Cloudflare Workers, you can check the
+  [deployment
   documentation](/docs/gateway/deployment/serverless/cloudflare-workers).
 </Callout>
 
 ```ts filename="worker.ts"
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
-import CloudflareKVCacheStorage from '@graphql-mesh/cache-cfw-kv'
-import supergraph from './my-remote-supergraph-config'
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
+import CloudflareKVCacheStorage from "@graphql-mesh/cache-cfw-kv";
+import supergraph from "./my-remote-supergraph-config";
 
 export default {
   async fetch(request, env, ctx) {
@@ -155,17 +155,17 @@ export default {
       supergraph,
       transports: { http },
       responseCaching: {
-        session: () => null
+        session: () => null,
       },
       cache: new CloudflareKVCacheStorage({
-        namespace: env.NAMESPACE
-      })
-    })
-    const response = await gateway(request, env, ctx)
-    ctx.waitUntil(gateway[Symbol.asyncDispose]())
-    return response
-  }
-}
+        namespace: env.NAMESPACE,
+      }),
+    });
+    const response = await gateway(request, env, ctx);
+    ctx.waitUntil(gateway[Symbol.asyncDispose]());
+    return response;
+  },
+};
 ```
 
 ## Custom Cache Storage
@@ -174,36 +174,38 @@ You can also implement your own cache storage by extending the `CacheStorage` cl
 match `KeyValueCache` interface from `@graphql-hive/gateway`.
 
 ```ts filename="my-cache-storage.ts"
-import { LRUCache } from 'lru-cache'
-import { KeyValueCache } from '@graphql-hive/gateway'
+import { LRUCache } from "lru-cache";
+import { KeyValueCache } from "@graphql-hive/gateway";
 
 export class MyKeyValueCache<V = any> implements KeyValueCache<V> {
   // Your cache implementation here
-  private cache = new LRUCache<string, V>()
+  private cache = new LRUCache<string, V>();
 
   // Get the value of the key
   async get(key: string) {
-    return this.cache.get(key)
+    return this.cache.get(key);
   }
 
   // Set the key with the value and optional options
   async set(key: string, value: V, options?: { ttl?: number }) {
-    this.cache.set(key, value, options?.ttl)
+    this.cache.set(key, value, options?.ttl);
   }
 
   // Delete the key from the cache
   async delete(key: string) {
-    this.cache.del(key)
+    this.cache.del(key);
   }
 
   // Get all keys that match the given prefix
   async getKeysByPrefix(prefix: string) {
-    return Array.from(this.cache.keys()).filter(key => key.startsWith(prefix))
+    return Array.from(this.cache.keys()).filter((key) =>
+      key.startsWith(prefix),
+    );
   }
 
   // This should be implemented if you want to clear the cache on shutdown
   [Symbol.asyncDispose]() {
-    this.cache.reset()
+    this.cache.reset();
   }
 }
 ```

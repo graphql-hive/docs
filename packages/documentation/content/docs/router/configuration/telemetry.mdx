@@ -1,8 +1,6 @@
 ---
-title: 'telemetry'
+title: "telemetry"
 ---
-
-
 
 The `telemetry` configuration controls client identification, Hive reporting, and OpenTelemetry
 tracing behavior in Hive Router.
@@ -48,10 +46,10 @@ Hive-specific telemetry options.
 <details>
   <summary>Show hive configuration</summary>
 
-| Field    | Type                 | Notes                                                                                                                                           |
-| -------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Field    | Type                 | Notes                                                                                                                                                           |
+| -------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `token`  | `StringOrExpression` | Your [Registry Access Token](/docs/schema-registry/management/targets#registry-access-tokens) with write permission.<br />You can also set `HIVE_ACCESS_TOKEN`. |
-| `target` | `StringOrExpression` | Target ID as slug (`the-guild/graphql-hive/staging`) or UUID (`a0f4c605-6541-4350-8cfe-b31f21a4bf80`).<br />You can also set `HIVE_TARGET`.     |
+| `target` | `StringOrExpression` | Target ID as slug (`the-guild/graphql-hive/staging`) or UUID (`a0f4c605-6541-4350-8cfe-b31f21a4bf80`).<br />You can also set `HIVE_TARGET`.                     |
 
 <div id="usage_reporting" style={{marginTop: 10}}>
 <details>
@@ -80,7 +78,7 @@ telemetry:
   hive:
     usage_reporting:
       enabled: true
-      exclude: ['IntrospectionQuery']
+      exclude: ["IntrospectionQuery"]
 ```
 
 </details>
@@ -201,7 +199,7 @@ OTLP over HTTP:
 telemetry:
   tracing:
     exporters:
-      - kind: 'otlp'
+      - kind: "otlp"
         enabled: true
         protocol: http
         http:
@@ -224,7 +222,7 @@ OTLP over gRPC:
 telemetry:
   tracing:
     exporters:
-      - kind: 'otlp'
+      - kind: "otlp"
         enabled: true
         protocol: grpc
         grpc:

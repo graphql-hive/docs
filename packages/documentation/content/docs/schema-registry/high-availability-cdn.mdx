@@ -2,12 +2,10 @@
 title: High-Availability CDN
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Image } from '@hive/design-system/image'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Image } from "@hive/design-system/image";
 
-import cdnTokenImage from './cdn_token.png'
-
-
+import cdnTokenImage from "./cdn_token.png";
 
 The Hive Cloud service leverages the
 [CloudFlare Global Network](https://www.cloudflare.com/network/) to deliver your GraphQL schema and
@@ -45,9 +43,10 @@ flowchart LR
 ```
 
 <Callout type="info">
-  The High-Availability CDN is available only in Hive Cloud, and not available for the self-hosted
-  version. For the self-hosted version you can expose the CDN route handlers via the Hive API.
-  [Learn more](/docs/schema-registry/self-hosting/cdn-artifacts).
+  The High-Availability CDN is available only in Hive Cloud, and not available
+  for the self-hosted version. For the self-hosted version you can expose the
+  CDN route handlers via the Hive API. [Learn
+  more](/docs/schema-registry/self-hosting/cdn-artifacts).
 </Callout>
 
 Currently you can access the single services, merged schema, supergraph, metadata (e.g. GraphQL Mesh
@@ -59,9 +58,11 @@ To get started with Hive's CDN access, you'll need to create a CDN token for you
 [Target & Tokens](/docs/schema-registry/management/targets#cdn-access-tokens)).
 
 <Callout>
-  The CDN access token is considered a secret and should not be shared with anyone else. If a CDN
-  access token is compromised, you can [revoke it from the target's Settings
-  page](/docs/schema-registry/management/targets#revoking-a-cdn-access-token), and create a new token.
+  The CDN access token is considered a secret and should not be shared with
+  anyone else. If a CDN access token is compromised, you can [revoke it from the
+  target's Settings
+  page](/docs/schema-registry/management/targets#revoking-a-cdn-access-token),
+  and create a new token.
 </Callout>
 
 To use your CDN access token, go to your target's page on Hive's dashboard and click on the
@@ -99,7 +100,9 @@ curl -v -H 'X-Hive-CDN-Key: CDN_ACCESS_TOKEN' \
 
 ### Supergraph
 
-<Callout>This artifact is only available for Apollo Federation projects.</Callout>
+<Callout>
+  This artifact is only available for Apollo Federation projects.
+</Callout>
 
 ```bash
 curl -v -H 'X-Hive-CDN-Key: CDN_ACCESS_TOKEN' \
@@ -114,7 +117,9 @@ Further reading:
 
 ### Hive Metadata
 
-<Callout>This artifact is only available for Single and Schema-Stitching projects.</Callout>
+<Callout>
+  This artifact is only available for Single and Schema-Stitching projects.
+</Callout>
 
 ```bash
 curl -v -H 'X-Hive-CDN-Key: CDN_ACCESS_TOKEN' \

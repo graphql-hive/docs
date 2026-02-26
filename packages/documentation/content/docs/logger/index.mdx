@@ -2,7 +2,6 @@
 title: Hive Logger
 ---
 
-
 Lightweight and customizable logging utility designed for use within the GraphQL Hive ecosystem. It
 provides structured logging capabilities, making it easier to debug and monitor applications
 effectively.
@@ -26,21 +25,21 @@ npm i @graphql-hive/logger
 Create a default logger that set to the `info` log level writing to the console.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger()
+const log = new Logger();
 
-log.debug('I wont be logged by default')
+log.debug("I wont be logged by default");
 
-log.info({ some: 'attributes' }, 'Hello %s!', 'world')
+log.info({ some: "attributes" }, "Hello %s!", "world");
 
-const child = log.child({ requestId: '123-456' })
+const child = log.child({ requestId: "123-456" });
 
-child.warn({ more: 'attributes' }, 'Oh hello child!')
+child.warn({ more: "attributes" }, "Oh hello child!");
 
-const err = new Error('Woah!')
+const err = new Error("Woah!");
 
-child.error({ err }, 'Something went wrong!')
+child.error({ err }, "Something went wrong!");
 ```
 
 Will produce the following output to the console output:

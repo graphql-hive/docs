@@ -4,9 +4,6 @@ title: Max Directives
 searchable: false
 ---
 
-
-
-
 **Limit** the number of **directives** in a GraphQL document.
 
 It is used to prevent **DOS attack**, **heap overflow** or **server overloading**.
@@ -24,8 +21,8 @@ npm install @escape.tech/graphql-armor-max-directives
 Then, add it to your plugins:
 
 ```ts filename="gateway.config.ts"
-import { maxDirectivesPlugin } from '@escape.tech/graphql-armor-max-directives'
-import { defineConfig } from '@graphql-hive/gateway'
+import { maxDirectivesPlugin } from "@escape.tech/graphql-armor-max-directives";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   plugins: () => [
@@ -45,10 +42,10 @@ export const gatewayConfig = defineConfig({
       onAccept: [],
 
       // Callbacks that are ran whenever a Query is rejected
-      onReject: []
-    })
-  ]
-})
+      onReject: [],
+    }),
+  ],
+});
 ```
 
 ## References

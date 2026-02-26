@@ -2,10 +2,8 @@
 title: Overview
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Screenshot } from '@hive/design-system/hive-components/screenshot'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Screenshot } from "@hive/design-system/hive-components/screenshot";
 
 Under your target page, you'll find the **Laboratory** page. The Laboratory allows you to explore
 your GraphQL schema and run queries against a mocked version of your GraphQL service.
@@ -65,8 +63,9 @@ curl -X POST -H "X-Hive-Key: HIVE_TOKEN_HERE" -H "Content-Type: application/json
 ### With GraphQL Code Generator
 
 <Callout>
-  We recommend using the CDN for consuming the GraphQL schema in your project. [See GraphQL Code
-  Generator Integration](/docs/other-integrations/graphql-code-generator).
+  We recommend using the CDN for consuming the GraphQL schema in your project.
+  [See GraphQL Code Generator
+  Integration](/docs/other-integrations/graphql-code-generator).
 </Callout>
 
 Since the Laboratory schema is a valid GraphQL schema, and supports introspection, you may use it
@@ -74,21 +73,21 @@ directly with tools like [GraphQL-Code-Generator](https://the-guild.dev/graphql/
 snippet for using it in a project:
 
 ```ts filename="codegen.ts"
-import { CodegenConfig } from '@graphql-codegen/cli'
+import { CodegenConfig } from "@graphql-codegen/cli";
 
-const labEndpoint = 'LAB_ENDPOINT_HERE'
-const labToken = process.env.HIVE_LAB_TOKEN
+const labEndpoint = "LAB_ENDPOINT_HERE";
+const labToken = process.env.HIVE_LAB_TOKEN;
 
 const config: CodegenConfig = {
   schema: [
     {
       [labEndpoint]: {
         headers: {
-          'X-Hive-Key': labToken
-        }
-      }
-    }
-  ]
-}
-export default config
+          "X-Hive-Key": labToken,
+        },
+      },
+    },
+  ],
+};
+export default config;
 ```

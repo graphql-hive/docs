@@ -7,9 +7,6 @@ description:
 searchable: false
 ---
 
-
-
-
 Batching is the process of taking a group of requests, combining them into one, and making a single
 request with the same data that all of the other queries would have made. This is a way to reduce
 the number of requests that your application makes to the server.
@@ -22,11 +19,11 @@ The Batching functionality is described via the
 Batching is disabled by default, but you can enable it by setting the `batching` option to `true`:
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  batching: true
-})
+  batching: true,
+});
 ```
 
 ```bash filename="Execute batched operation"
@@ -41,13 +38,13 @@ exceeded an error will be raised. You can customize this option by passing an ob
 `batching` configuration option:
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   batching: {
-    limit: 2
-  }
-})
+    limit: 2,
+  },
+});
 ```
 
 ```bash filename="Execute batched operation (exceed limit)"

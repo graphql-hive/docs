@@ -3,8 +3,6 @@ title: Project Management via the GraphQL API
 description: Learn how to manage projects via the Hive Console GraphQL API.
 ---
 
-
-
 Projects can be managed via the Hive Console GraphQL API. For more information, please refer to our
 [Projects documentation](/docs/schema-registry/management/projects).
 
@@ -15,7 +13,12 @@ Use the `Query.project` field to retrieve a project either by its `id` or `slug`
 ```graphql filename="Example: Retrieve a single Project via Slug"
 query ProjectBySlug($organizationSlug: String!, $projectSlug: String!) {
   project(
-    reference: { bySelector: { organizationSlug: $organizationSlug, projectSlug: $projectSlug } }
+    reference: {
+      bySelector: {
+        organizationSlug: $organizationSlug
+        projectSlug: $projectSlug
+      }
+    }
   ) {
     id
     type
@@ -30,7 +33,9 @@ Use the `Organization.projects` field for retriving a list of projects within th
 
 ```graphql filename="Example: Retrieve a List of Projects within an Organization"
 query OrganizationProjects($organizationSlug: String!) {
-  organization(reference: { bySelector: { organizationSlug: $organziationSlug } }) {
+  organization(
+    reference: { bySelector: { organizationSlug: $organziationSlug } }
+  ) {
     id
     projects {
       edges {

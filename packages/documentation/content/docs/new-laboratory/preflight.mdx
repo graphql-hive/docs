@@ -2,11 +2,9 @@
 title: Preflight Scripts
 ---
 
-import { Image } from '@hive/design-system/image'
+import { Image } from "@hive/design-system/image";
 
-import preflightImage from './preflight.png'
-
-
+import preflightImage from "./preflight.png";
 
 Preflight scripts are custom TypeScript scripts that run automatically before executing GraphQL
 operations. They enable you to modify requests, set up authentication, manipulate headers, and
@@ -44,14 +42,14 @@ APIs for interacting with the request and environment.
 
 ```typescript
 // Access environment variables
-lab.environment.set('API_KEY', 'your-api-key')
-const apiKey = lab.environment.get('API_KEY')
+lab.environment.set("API_KEY", "your-api-key");
+const apiKey = lab.environment.get("API_KEY");
 
 // Modify request headers
-lab.request.headers.set('Authorization', `Bearer ${apiKey}`)
+lab.request.headers.set("Authorization", `Bearer ${apiKey}`);
 
 // Prompt for user input (if needed)
-const token = await lab.prompt('Enter your token:', 'default-value')
+const token = await lab.prompt("Enter your token:", "default-value");
 ```
 
 ### Available APIs
@@ -60,33 +58,33 @@ const token = await lab.prompt('Enter your token:', 'default-value')
 
 ```typescript
 // Set an environment variable
-lab.environment.set('key', 'value')
+lab.environment.set("key", "value");
 
 // Get an environment variable
-const value = lab.environment.get('key')
+const value = lab.environment.get("key");
 
 // Delete an environment variable
-lab.environment.delete('key')
+lab.environment.delete("key");
 ```
 
 #### Request Headers
 
 ```typescript
 // Set a header
-lab.request.headers.set('Authorization', 'Bearer token')
+lab.request.headers.set("Authorization", "Bearer token");
 
 // Get a header
-const auth = lab.request.headers.get('Authorization')
+const auth = lab.request.headers.get("Authorization");
 
 // Delete a header
-lab.request.headers.delete('X-Custom-Header')
+lab.request.headers.delete("X-Custom-Header");
 ```
 
 #### User Prompts
 
 ```typescript
 // Prompt for input (shows a modal dialog)
-const value = await lab.prompt('Enter your API key:', 'default-value')
+const value = await lab.prompt("Enter your API key:", "default-value");
 
 // Returns null if user cancels
 if (value === null) {
@@ -100,16 +98,18 @@ The preflight environment includes the CryptoJS library for cryptographic operat
 
 ```typescript
 // Hash data
-const hash = CryptoJS.SHA256('data').toString()
+const hash = CryptoJS.SHA256("data").toString();
 
 // Encrypt data
-const encrypted = CryptoJS.AES.encrypt('message', 'secret-key').toString()
+const encrypted = CryptoJS.AES.encrypt("message", "secret-key").toString();
 
 // Decrypt data
-const decrypted = CryptoJS.AES.decrypt(encrypted, 'secret-key').toString(CryptoJS.enc.Utf8)
+const decrypted = CryptoJS.AES.decrypt(encrypted, "secret-key").toString(
+  CryptoJS.enc.Utf8,
+);
 
 // HMAC
-const hmac = CryptoJS.HmacSHA256('message', 'secret-key').toString()
+const hmac = CryptoJS.HmacSHA256("message", "secret-key").toString();
 ```
 
 ## Common Use Cases
@@ -120,17 +120,17 @@ Add authentication tokens to requests:
 
 ```typescript
 // Get token from environment
-const token = lab.environment.get('AUTH_TOKEN')
+const token = lab.environment.get("AUTH_TOKEN");
 
 if (!token) {
   // Prompt if not set
-  const newToken = await lab.prompt('Enter authentication token:')
+  const newToken = await lab.prompt("Enter authentication token:");
   if (newToken) {
-    lab.environment.set('AUTH_TOKEN', newToken)
-    lab.request.headers.set('Authorization', `Bearer ${newToken}`)
+    lab.environment.set("AUTH_TOKEN", newToken);
+    lab.request.headers.set("Authorization", `Bearer ${newToken}`);
   }
 } else {
-  lab.request.headers.set('Authorization', `Bearer ${token}`)
+  lab.request.headers.set("Authorization", `Bearer ${token}`);
 }
 ```
 
@@ -139,8 +139,8 @@ if (!token) {
 Manage API keys dynamically:
 
 ```typescript
-const apiKey = lab.environment.get('API_KEY') || 'default-key'
-lab.request.headers.set('X-API-Key', apiKey)
+const apiKey = lab.environment.get("API_KEY") || "default-key";
+lab.request.headers.set("X-API-Key", apiKey);
 ```
 
 ### Request Signing
@@ -148,12 +148,12 @@ lab.request.headers.set('X-API-Key', apiKey)
 Sign requests for security:
 
 ```typescript
-const secret = lab.environment.get('SIGNING_SECRET')
-const timestamp = Date.now().toString()
-const signature = CryptoJS.HmacSHA256(timestamp, secret).toString()
+const secret = lab.environment.get("SIGNING_SECRET");
+const timestamp = Date.now().toString();
+const signature = CryptoJS.HmacSHA256(timestamp, secret).toString();
 
-lab.request.headers.set('X-Timestamp', timestamp)
-lab.request.headers.set('X-Signature', signature)
+lab.request.headers.set("X-Timestamp", timestamp);
+lab.request.headers.set("X-Signature", signature);
 ```
 
 ### Dynamic Headers
@@ -161,12 +161,12 @@ lab.request.headers.set('X-Signature', signature)
 Set headers based on conditions:
 
 ```typescript
-const environment = lab.environment.get('ENV') || 'development'
+const environment = lab.environment.get("ENV") || "development";
 
-if (environment === 'production') {
-  lab.request.headers.set('X-Environment', 'prod')
+if (environment === "production") {
+  lab.request.headers.set("X-Environment", "prod");
 } else {
-  lab.request.headers.set('X-Environment', 'dev')
+  lab.request.headers.set("X-Environment", "dev");
 }
 ```
 
@@ -215,13 +215,13 @@ Preflight scripts should handle errors gracefully:
 
 ```typescript
 try {
-  const token = lab.environment.get('TOKEN')
+  const token = lab.environment.get("TOKEN");
   if (!token) {
-    throw new Error('Token not found')
+    throw new Error("Token not found");
   }
-  lab.request.headers.set('Authorization', `Bearer ${token}`)
+  lab.request.headers.set("Authorization", `Bearer ${token}`);
 } catch (error) {
-  console.error('Preflight error:', error)
+  console.error("Preflight error:", error);
   // Operation will fail if preflight fails
 }
 ```

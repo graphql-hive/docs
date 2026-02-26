@@ -2,9 +2,7 @@
 title: Expressions
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 The Hive Router uses **expressions** written in
 [VRL (Vector Remap Language)](https://vector.dev/docs/reference/vrl/) to make dynamic decisions at
@@ -36,7 +34,8 @@ if .request.headers."x-feature-toggle" == "beta" {
 ```
 
 <Callout type="info">
-  You can break long expressions across multiple lines using the `|` indentation in YAML.
+  You can break long expressions across multiple lines using the `|` indentation
+  in YAML.
 </Callout>
 
 VRL supports [variables](#available-variables) (prefixed with a dot), built‑in
@@ -136,13 +135,13 @@ instance.
 
 ```js
 // Read an environment variable directly
-env('OTEL_EXPORTER_OTLP_ENDPOINT')
+env("OTEL_EXPORTER_OTLP_ENDPOINT");
 
 // Provide a fallback value
-env('CUSTOM_SUBGRAPH_URL', 'https://default.example.com/graphql')
+env("CUSTOM_SUBGRAPH_URL", "https://default.example.com/graphql");
 
 // Treat empty values as unset
-env('FEATURE_FLAG', 'disabled', true)
+env("FEATURE_FLAG", "disabled", true);
 ```
 
 ### Standard VRL functions
@@ -163,8 +162,9 @@ and more - see the [VRL function reference](https://vector.dev/docs/reference/vr
 writing expressions, you can call any of these functions directly.
 
 <Callout type="warning">
-  Functions that could perform network I/O (e.g. HTTP requests) are intentionally not available, so
-  expressions remain side‑effect‑free and deterministic.
+  Functions that could perform network I/O (e.g. HTTP requests) are
+  intentionally not available, so expressions remain side‑effect‑free and
+  deterministic.
 </Callout>
 
 ## Troubleshooting

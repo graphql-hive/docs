@@ -1,8 +1,6 @@
 ---
-title: 'cors'
+title: "cors"
 ---
-
-
 
 The `cors` configuration lets you control Cross-Origin Resource Sharing (CORS) for your GraphQL API.
 This is important when you have web applications running on different domains that need to access
@@ -85,8 +83,8 @@ Each policy can have:
 cors:
   enabled: true
   allow_credentials: false # Default for all origins
-  methods: ['GET', 'POST', 'OPTIONS']
-  allow_headers: ['Content-Type', 'Authorization']
+  methods: ["GET", "POST", "OPTIONS"]
+  allow_headers: ["Content-Type", "Authorization"]
   policies:
     # Production website
     - origins:
@@ -101,7 +99,7 @@ cors:
     - match_origin:
         - "^https://.*\\.partner\\.com$"
       allow_credentials: true
-      allow_headers: ['Content-Type', 'Authorization', 'X-Custom-Header']
+      allow_headers: ["Content-Type", "Authorization", "X-Custom-Header"]
 ```
 
 ## Common Patterns
@@ -112,7 +110,7 @@ cors:
 cors:
   enabled: true
   policies:
-    - origins: ['http://localhost:3000']
+    - origins: ["http://localhost:3000"]
 ```
 
 **Multiple environments:** Handle different domains for staging and production:
@@ -121,7 +119,7 @@ cors:
 cors:
   enabled: true
   policies:
-    - origins: ['https://myapp.com', 'https://staging.myapp.com']
+    - origins: ["https://myapp.com", "https://staging.myapp.com"]
 ```
 
 **Subdomain matching:** Allow all subdomains of your company:

@@ -2,10 +2,8 @@
 title: Authorization and Authentication
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Tabs } from '@hive/design-system/tabs'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
 
 Hive Gateway supports Authentication and Authorization using JSON Web Tokens (JWT).
 
@@ -30,14 +28,17 @@ gateway, and no other entity can execute requests to the subgraph on behalf of t
 </Callout>
 
 <Callout type="warning">
-  If you are looking for an authentication for subgraph requests via [AWS Signature Version 4
-  (Sigv4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-authenticating-requests.html), you
-  can enable `awsSigv4` flag documented [here](/docs/gateway/other-features/security/aws-sigv4).
+  If you are looking for an authentication for subgraph requests via [AWS
+  Signature Version 4
+  (Sigv4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-authenticating-requests.html),
+  you can enable `awsSigv4` flag documented
+  [here](/docs/gateway/other-features/security/aws-sigv4).
 </Callout>
 
 <Callout>
-  You can refer to [Generic Auth plugin docs](https://www.npmjs.com/package/@envelop/generic-auth),
-  if you need a more customized auth setup without JWT.
+  You can refer to [Generic Auth plugin
+  docs](https://www.npmjs.com/package/@envelop/generic-auth), if you need a more
+  customized auth setup without JWT.
 </Callout>
 
 ## How to use?
@@ -49,23 +50,25 @@ the token in the `authorization` header:
 import {
   createInlineSigningKeyProvider,
   defineConfig,
-  extractFromHeader
-} from '@graphql-hive/gateway'
+  extractFromHeader,
+} from "@graphql-hive/gateway";
 
-const signingKey = 'my-secret-key'
+const signingKey = "my-secret-key";
 
 export const gatewayConfig = defineConfig({
   jwt: {
     // Look and extract for the token in the 'authorization' header, with the 'Bearer' prefix.
-    tokenLookupLocations: [extractFromHeader({ name: 'authorization', prefix: 'Bearer' })],
+    tokenLookupLocations: [
+      extractFromHeader({ name: "authorization", prefix: "Bearer" }),
+    ],
     // Decode and validate the token using the provided signing key.
     signingKeyProviders: [createInlineSigningKeyProvider(signingKey)],
     // Forward the verified token payload to the upstream GraphQL subgraphs.
     forward: {
-      payload: true
-    }
-  }
-})
+      payload: true,
+    },
+  },
+});
 ```
 
 You can also pass
@@ -155,7 +158,7 @@ To pass the full token payload, you can use the `forwarded.claims` option:
 ```ts
 {
   forward: {
-    payload: true // optional, default is "true"
+    payload: true; // optional, default is "true"
   }
 }
 ```
@@ -212,7 +215,7 @@ Additionally, if you wish to change the name of the `jwt` field in the extension
 ```ts
 {
   forward: {
-    extensionsFieldName: 'myJwt' // optional, default is "jwt"
+    extensionsFieldName: "myJwt"; // optional, default is "jwt"
   }
 }
 ```
@@ -231,8 +234,8 @@ context to access the decoded JWT token, and decide what permissions to allow to
 identity or token claims:
 
 ```ts filename="gateway.config.ts"
-import { useOperationFieldPermissions } from '@envelop/operation-field-permissions'
-import { defineConfig } from '@graphql-hive/gateway'
+import { useOperationFieldPermissions } from "@envelop/operation-field-permissions";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   // ...
@@ -241,25 +244,25 @@ export const gatewayConfig = defineConfig({
   },
   plugins: () => [
     useOperationFieldPermissions({
-      getPermissions: context => {
-        const { jwt } = context
+      getPermissions: (context) => {
+        const { jwt } = context;
 
         // Check based on identity / user-id.
-        if (jwt?.payload?.sub === '123') {
-          return new Set(['Query.*'])
+        if (jwt?.payload?.sub === "123") {
+          return new Set(["Query.*"]);
         }
 
         // Check based on token payload
-        if (jwt?.payload?.role === 'admin') {
-          return new Set(['Query.*'])
+        if (jwt?.payload?.role === "admin") {
+          return new Set(["Query.*"]);
         }
 
         // Default permissions
-        return new Set(['Query.greetings'])
-      }
-    })
-  ]
-})
+        return new Set(["Query.greetings"]);
+      },
+    }),
+  ],
+});
 ```
 
 ### Allowing Introspection
@@ -270,38 +273,43 @@ This way, you can still introspect the schema and explore the API without a toke
 the rest of the API with JWT authentication.
 
 <Callout>
-  Be careful with this approach, as it allows anyone to introspect your schema without a token. We
-  always advise using [Persisted Documents](/docs/gateway/persisted-documents) to fully secure your
-  GraphQL API.
+  Be careful with this approach, as it allows anyone to introspect your schema
+  without a token. We always advise using [Persisted
+  Documents](/docs/gateway/persisted-documents) to fully secure your GraphQL
+  API.
 </Callout>
 
 ```ts filename="gateway.config.ts"
-import { useOperationFieldPermissions } from '@envelop/operation-field-permissions'
-import { defineConfig } from '@graphql-hive/gateway'
+import { useOperationFieldPermissions } from "@envelop/operation-field-permissions";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   jwt: {
     ...options,
     reject: {
       // allow requests with missing token to introspect the schema
-      missingToken: false
-    }
+      missingToken: false,
+    },
   },
   plugins: () => [
     useOperationFieldPermissions({
-      getPermissions: context => {
-        const { jwt } = context
+      getPermissions: (context) => {
+        const { jwt } = context;
         if (!jwt) {
           // allow only introspection if no token is present
-          return new Set(['Query.__schema', 'Query.__type', 'Query.__typename'])
+          return new Set([
+            "Query.__schema",
+            "Query.__type",
+            "Query.__typename",
+          ]);
         }
         // allow everything when token is present, or you can return a different
         // set of permissions based on the token like in the previous example
-        return '*'
-      }
-    })
-  ]
-})
+        return "*";
+      },
+    }),
+  ],
+});
 ```
 
 ### In upstream GraphQL subgraphs
@@ -322,19 +330,19 @@ If you are using [GraphQL-Yoga](https://the-guild.dev/graphql/yoga-server) for y
 subgraph implementation, you can use a built-in utility for extracting it for you in an easy way:
 
 ```ts filename="yoga-subgraph.ts"
-import { useForwardedJWT } from '@graphql-hive/gateway'
+import { useForwardedJWT } from "@graphql-hive/gateway";
 
 const myYogaSubgraphServer = createYoga({
   schema: mySchema,
   plugins: [
     useForwardedJWT({
       // The name of the field in the extensions object, default is "jwt"
-      extensionsFieldName: 'jwt',
+      extensionsFieldName: "jwt",
       // The name of the field to inject into the local context object, default is "jwt"
-      extendContextFieldName: 'jwt'
-    })
-  ]
-})
+      extendContextFieldName: "jwt",
+    }),
+  ],
+});
 ```
 
 With this plugin configured, you should be able to just access `context.jwt` in your subgraphs, just
@@ -353,19 +361,19 @@ With Apollo-Server, you can access the forwarded claims/token, using a custom Ap
 that extracts `extensions` and injects it into the context:
 
 ```ts filename="apollo-subgraph.ts"
-import { ApolloServer, ApolloServerPlugin } from '@apollo/server'
+import { ApolloServer, ApolloServerPlugin } from "@apollo/server";
 
 const extractJwtPlugin = {
   async requestDidStart({ request, contextValue }) {
-    contextValue.jwt = request.extensions?.jwt
-  }
-} satisfies ApolloServerPlugin<{ jwt?: { payload: Record<string, any> } }>
+    contextValue.jwt = request.extensions?.jwt;
+  },
+} satisfies ApolloServerPlugin<{ jwt?: { payload: Record<string, any> } }>;
 
 const server = new ApolloServer({
   // Now, in your schema resolvers, you can access the JWT token and claims using `context.jwt`.
-  plugins: [extractJwtPlugin]
+  plugins: [extractJwtPlugin],
   // ...
-})
+});
 ```
 
 </Tabs.Tab>
@@ -419,15 +427,17 @@ plugin to look for the token in a different header or with a different prefix.
 The prefix is being validated along with the token (for example: `Bearer my-token`).
 
 ```ts
-import { defineConfig, extractFromHeader } from '@graphql-hive/gateway'
+import { defineConfig, extractFromHeader } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   // ...
   jwt: {
     // ...
-    tokenLookupLocations: [extractFromHeader({ name: 'x-auth-token', prefix: 'Bearer' })]
-  }
-})
+    tokenLookupLocations: [
+      extractFromHeader({ name: "x-auth-token", prefix: "Bearer" }),
+    ],
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -462,19 +472,19 @@ export const gatewayConfig = defineConfig({
 You can configure the plugin to use a custom function to look for the token:
 
 ```ts
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 const getToken = ({ request, serverContext, url }) => {
-  return request.headers.get('x-my-token')
-}
+  return request.headers.get("x-my-token");
+};
 
 export const gatewayConfig = defineConfig({
   // ...
   jwt: {
     // ...
-    tokenLookupLocations: [getToken]
-  }
-})
+    tokenLookupLocations: [getToken],
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -487,20 +497,24 @@ You can configure the plugin to look for the token in multiple locations. The pl
 the token in the order you provide.
 
 ```ts
-import { defineConfig, extractFromCookie, extractFromHeader } from '@graphql-hive/gateway'
+import {
+  defineConfig,
+  extractFromCookie,
+  extractFromHeader,
+} from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   // ...
   jwt: {
     // ...
     tokenLookupLocations: [
-      extractFromHeader({ name: 'authorization', prefix: 'Bearer' }),
-      extractFromHeader({ name: 'x-legacy-auth' }),
-      extractFromHeader({ name: 'x-api-key', prefix: 'API-Access' }),
-      extractFromCookie({ name: 'browserAuth' })
-    ]
-  }
-})
+      extractFromHeader({ name: "authorization", prefix: "Bearer" }),
+      extractFromHeader({ name: "x-legacy-auth" }),
+      extractFromHeader({ name: "x-api-key", prefix: "API-Access" }),
+      extractFromCookie({ name: "browserAuth" }),
+    ],
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -525,15 +539,20 @@ You can provide the signing key directly in the configuration.
 > secret store!
 
 ```ts
-import { createInlineSigningKeyProvider, defineConfig } from '@graphql-hive/gateway'
+import {
+  createInlineSigningKeyProvider,
+  defineConfig,
+} from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   // ...
   jwt: {
     // ...
-    signingKeyProviders: [createInlineSigningKeyProvider(process.env.MY_JWT_SECRET)]
-  }
-})
+    signingKeyProviders: [
+      createInlineSigningKeyProvider(process.env.MY_JWT_SECRET),
+    ],
+  },
+});
 ```
 
 > In case you are using an inline signing key provider, all `keyid` / `kid` will be allowed in
@@ -551,7 +570,10 @@ Provide a `jwksClientOptions` object (see
 [node-jwks-rsa documentation](https://github.com/auth0/node-jwks-rsa/blob/master/EXAMPLES.md)].
 
 ```ts
-import { createRemoteJwksSigningKeyProvider, defineConfig } from '@graphql-hive/gateway'
+import {
+  createRemoteJwksSigningKeyProvider,
+  defineConfig,
+} from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   // ...
@@ -559,11 +581,11 @@ export const gatewayConfig = defineConfig({
     // ...
     signingKeyProviders: [
       createRemoteJwksSigningKeyProvider({
-        jwksUri: 'https://example.com/.well-known/jwks.json'
-      })
-    ]
-  }
-})
+        jwksUri: "https://example.com/.well-known/jwks.json",
+      }),
+    ],
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -578,8 +600,8 @@ When using multiple providers, the plugin will try to use the first available si
 import {
   createInlineSigningKeyProvider,
   createRemoteJwksSigningKeyProvider,
-  defineConfig
-} from '@graphql-hive/gateway'
+  defineConfig,
+} from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   // ...
@@ -588,12 +610,12 @@ export const gatewayConfig = defineConfig({
     signingKeyProviders: [
       // In case your remote provider is not available, the plugin will try use the inline provider.
       createRemoteJwksSigningKeyProvider({
-        jwksUri: 'https://example.com/.well-known/jwks.json'
+        jwksUri: "https://example.com/.well-known/jwks.json",
       }),
-      createInlineSigningKeyProvider(process.env.MY_JWT_SECRET)
-    ]
-  }
-})
+      createInlineSigningKeyProvider(process.env.MY_JWT_SECRET),
+    ],
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -614,19 +636,19 @@ You can find
 for this plugin.
 
 ```ts
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   // ...
   jwt: {
     // ...
     tokenVerification: {
-      issuer: ['http://yoga'],
-      audience: 'my-audience',
-      algorithms: ['HS256', 'RS256']
-    }
-  }
-})
+      issuer: ["http://yoga"],
+      audience: "my-audience",
+      algorithms: ["HS256", "RS256"],
+    },
+  },
+});
 ```
 
 ### Execution Rejection
@@ -637,7 +659,7 @@ By default, an authentication error will be thrown if the token is missing or in
 request will be reject with status code `401`.
 
 ```ts
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   // ...
@@ -645,10 +667,10 @@ export const gatewayConfig = defineConfig({
     // ...
     reject: {
       missingToken: true,
-      invalidToken: true
-    }
-  }
-})
+      invalidToken: true,
+    },
+  },
+});
 ```
 
 > In case you want to handle the error yourself, you can set
@@ -667,7 +689,7 @@ With the following configuration, you can use the JWT plugin to extract the toke
 then use the Generic Auth plugin to protect the schema with the Federation directives:
 
 ```ts
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   // ...
@@ -675,18 +697,18 @@ export const gatewayConfig = defineConfig({
     // You have to disable the default rejection of the JWT plugin
     reject: {
       missingToken: false,
-      invalidToken: false
-    }
+      invalidToken: false,
+    },
   },
   genericAuth: {
     // Then set generic auth plugin to use granular mode
-    mode: 'protect-granular',
+    mode: "protect-granular",
     // Set where to extract the payload
-    resolveUserFn: ctx => ctx.jwt?.payload,
+    resolveUserFn: (ctx) => ctx.jwt?.payload,
     // If you want to continue execution even if some fields are rejected
-    rejectUnauthenticated: false
-  }
-})
+    rejectUnauthenticated: false,
+  },
+});
 ```
 
 ### Protect a field using a field `@authenticated`
@@ -695,7 +717,11 @@ In your GraphQL schema SDL, you can add `@authenticated` directive to your field
 
 ```graphql
 # Import it from Federation spec
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.6", import: ["@authenticated"])
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.6"
+    import: ["@authenticated"]
+  )
 
 type Query {
   me: User! @authenticated
@@ -712,7 +738,11 @@ You can use `@requiresScope` directive to protect your schema based on the user'
 Here's an example of how you can use it:
 
 ```graphql
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.5", import: ["@requiresScopes"])
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.5"
+    import: ["@requiresScopes"]
+  )
 
 type Query {
   me: User! @requiresScopes(scopes: [["read:user"]])
@@ -738,7 +768,11 @@ this behavior by providing a custom `extractScopes` function.
 You can also apply `AND` or `OR` logic to the scopes:
 
 ```graphql
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.5", import: ["@requiresScopes"])
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.5"
+    import: ["@requiresScopes"]
+  )
 
 type Query {
   # This field requires the user to have `read:user` OR `read:admin` scopes
@@ -755,7 +789,8 @@ You can use the `@policy` directive to fetch the roles from a policy service. He
 how you can use it:
 
 ```graphql
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.5", import: ["@policy"])
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.5", import: ["@policy"])
 
 type Query {
   me: User! @policy(policies: [["read:user"]])

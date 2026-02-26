@@ -2,11 +2,9 @@
 title: Environment Variables
 ---
 
-import { Image } from '@hive/design-system/image'
+import { Image } from "@hive/design-system/image";
 
-import envImage from './env.png'
-
-
+import envImage from "./env.png";
 
 Environment variables in the Laboratory allow you to manage configuration values that can be used
 across all your operations. They're perfect for storing API keys, endpoint URLs, authentication
@@ -79,13 +77,13 @@ Environment variables are accessed in preflight scripts using the `lab.environme
 
 ```typescript
 // Get a variable
-const apiKey = lab.environment.get('API_KEY')
+const apiKey = lab.environment.get("API_KEY");
 
 // Set a variable
-lab.environment.set('API_KEY', 'new-value')
+lab.environment.set("API_KEY", "new-value");
 
 // Delete a variable
-lab.environment.delete('API_KEY')
+lab.environment.delete("API_KEY");
 ```
 
 ### In Operations
@@ -267,13 +265,13 @@ Environment variables work seamlessly with preflight scripts:
 
 ```typescript
 // Preflight script
-const apiKey = lab.environment.get('API_KEY')
+const apiKey = lab.environment.get("API_KEY");
 if (apiKey) {
-  lab.request.headers.set('X-API-Key', apiKey)
+  lab.request.headers.set("X-API-Key", apiKey);
 }
 
 // You can also set variables from preflight
-lab.environment.set('LAST_REQUEST_TIME', Date.now().toString())
+lab.environment.set("LAST_REQUEST_TIME", Date.now().toString());
 ```
 
 ## Troubleshooting

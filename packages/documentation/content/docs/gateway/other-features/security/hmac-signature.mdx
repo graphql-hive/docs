@@ -4,10 +4,8 @@ title: HMAC Signature
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Step, Steps } from 'fumadocs-ui/components/steps'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Step, Steps } from "fumadocs-ui/components/steps";
 
 HMAC (Hash-based Message Authentication Code) is a mechanism for calculating a message
 authentication code involving a hash function in combination with a secret key. It can be used to
@@ -55,26 +53,28 @@ Before you start, you need to have a secret key that will be used for HMAC signi
 
 The secret key should be a random, opaque string, that will be shared between the Hive Gateway and
 the subgraphs validating the HMAC signature.
+
 </Step>
 
 <Step>
 ### Step 2: HMAC Signing in Hive Gateway
 
 ```ts
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   hmacSignature: {
-    secret: myHMACSecret // see step 1 for the secret key
-  }
+    secret: myHMACSecret, // see step 1 for the secret key
+  },
   // ...
-})
+});
 ```
 
 Now, every GraphQL request sent to the upstream GraphQL subgraphs will be signed with the HMAC and
 the `extensions` of the upstream request will contain the HMAC signature.
 
 To configure the subgraph verification of the HMAC signature, please follow the next step.
+
 </Step>
 
 <Step>
@@ -91,24 +91,25 @@ npm i @graphql-hive/gateway
 ```
 
 ```ts
-import { createYoga } from 'graphql-yoga'
-import { useHmacSignatureValidation } from '@graphql-hive/gateway'
+import { createYoga } from "graphql-yoga";
+import { useHmacSignatureValidation } from "@graphql-hive/gateway";
 
 const myYogaSubgraphServer = createYoga({
   // ...
   plugins: [
     useHmacSignatureValidation({
-      secret: myHMACSecret // see step 1 for the secret key
-    })
+      secret: myHMACSecret, // see step 1 for the secret key
+    }),
     // other Yoga plugins
     // ...
-  ]
-})
+  ],
+});
 ```
 
 <Callout>
-  Make sure to add `useHmacSignatureValidation` first in the plugins list in your Yoga
-  configuration. This will ensure the request is verified before processing the other plugins.
+  Make sure to add `useHmacSignatureValidation` first in the plugins list in
+  your Yoga configuration. This will ensure the request is verified before
+  processing the other plugins.
 </Callout>
 
 #### With Apollo Server
@@ -126,39 +127,39 @@ npm i @graphql-hive/gateway
 Now, configure your Apollo Server with the HMAC verification plugin:
 
 ```ts filename="apollo-subgraph.ts"
-import { createHmac } from 'crypto'
-import { ApolloServer, ApolloServerPlugin } from '@apollo/server'
-import { defaultParamsSerializer } from '@graphql-hive/gateway'
+import { createHmac } from "crypto";
+import { ApolloServer, ApolloServerPlugin } from "@apollo/server";
+import { defaultParamsSerializer } from "@graphql-hive/gateway";
 
 const verifyHmacPlugin = {
   async requestDidStart({ request, contextValue }) {
-    const signature = request.extensions?.['hmac-signature']
+    const signature = request.extensions?.["hmac-signature"];
 
     if (!signature) {
-      throw new Error('HMAC signature is missing')
+      throw new Error("HMAC signature is missing");
     }
 
     const serializedParams = defaultParamsSerializer({
       query: request.query,
-      variables: request.variables
-    })
+      variables: request.variables,
+    });
 
-    const incomingReqSignature = createHmac('sha256', HMAC_SIGNING_SECRET)
+    const incomingReqSignature = createHmac("sha256", HMAC_SIGNING_SECRET)
       .update(serializedParams)
-      .digest('base64')
+      .digest("base64");
 
     if (incomingReqSignature !== signature) {
-      throw new Error('HMAC signature is invalid')
+      throw new Error("HMAC signature is invalid");
     }
-  }
-} satisfies ApolloServerPlugin<{}>
+  },
+} satisfies ApolloServerPlugin<{}>;
 
 const server = new ApolloServer({
   plugins: [
-    verifyHmacPlugin
+    verifyHmacPlugin,
     // ... other Apollo plugins
-  ]
-})
+  ],
+});
 ```
 
 #### Other GraphQL servers
@@ -197,6 +198,7 @@ Here's an example of an incoming subgraph request with the HMAC signature:
 
 > The signature is produced by the Hive Gateway using the shared secret key, and the serialized
 > request (query and variables).
+
 </Step>
 </Steps>
 

@@ -1,11 +1,11 @@
 ---
-title: 'App Deployment (Persisted Operations)'
+title: "App Deployment (Persisted Operations)"
 ---
 
-import { ContactTextLink } from '@hive/design-system/contact-us'
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Image } from '@hive/design-system/image'
-import { Tabs } from '@hive/design-system/tabs'
+import { ContactTextLink } from "@hive/design-system/contact-us";
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Image } from "@hive/design-system/image";
+import { Tabs } from "@hive/design-system/tabs";
 
 ## Create an App Deployment
 
@@ -43,12 +43,12 @@ App UI.
 
 Navigate to the Target page on the Hive Dashboard and click on the **Apps** tab to see it.
 
-import pendingAppImage from './pending-app.png'
+import pendingAppImage from "./pending-app.png";
 
 By clicking on the app deployments name, you can navigate to the app deployment details page, where
 you can see all the GraphQL operations that are uploaded as part of this app deployment.
 
-import detailAppImage from './detail-app.png'
+import detailAppImage from "./detail-app.png";
 
 **Further reading**:
 
@@ -79,14 +79,12 @@ hive app:publish \
 After publishing the app deployment, the persisted documents, the status of the app deployment on
 the Hive dashboard will change to **active**.
 
-import activeAppImage from './active-app.png'
-
-
+import activeAppImage from "./active-app.png";
 
 <Callout>
   <div>
-    App deployments are currently in preview. If you would like to try them out, please{' '}
-    <ContactTextLink>reach out to us</ContactTextLink>
+    App deployments are currently in preview. If you would like to try them out,
+    please <ContactTextLink>reach out to us</ContactTextLink>
   </div>
 </Callout>
 
@@ -159,20 +157,20 @@ For GraphQL Code Generator, you can configure the client preset to generate the 
 manifest.
 
 ```typescript filename="codegen.ts" {9-11}
-import { type CodegenConfig } from '@graphql-codegen/cli'
+import { type CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: 'schema.graphql',
-  documents: ['src/**/*.tsx'],
+  schema: "schema.graphql",
+  documents: ["src/**/*.tsx"],
   generates: {
-    './src/gql/': {
-      preset: 'client',
+    "./src/gql/": {
+      preset: "client",
       presetConfig: {
-        persistedDocuments: true
-      }
-    }
-  }
-}
+        persistedDocuments: true,
+      },
+    },
+  },
+};
 ```
 
 After running the Relay Compiler, the file `persisted-documents.json` will be generated. This file
@@ -189,14 +187,14 @@ For Relay Compiler, you can configure the compiler to generate the persisted doc
 
 ```js filename="relay.config.js" {6-8}
 module.exports = {
-  src: './src',
-  language: 'javascript',
-  schema: './data/schema.graphql',
-  excludes: ['**/node_modules/**', '**/__mocks__/**', '**/__generated__/**'],
+  src: "./src",
+  language: "javascript",
+  schema: "./data/schema.graphql",
+  excludes: ["**/node_modules/**", "**/__mocks__/**", "**/__generated__/**"],
   persistConfig: {
-    file: './persisted-documents.json'
-  }
-}
+    file: "./persisted-documents.json",
+  },
+};
 ```
 
 After running the Relay Compiler, the file `persisted-documents.json` will be generated. This file
@@ -338,8 +336,9 @@ hive app:retire \
 ```
 
 <Callout type="warning">
-  Always review deployments before retiring them programmatically. Consider protecting your latest
-  production deployment to avoid accidentally retiring active versions.
+  Always review deployments before retiring them programmatically. Consider
+  protecting your latest production deployment to avoid accidentally retiring
+  active versions.
 </Callout>
 
 ## Schema Checks and Affected App Deployments
@@ -382,8 +381,9 @@ deployment `mobile-app@2.1.0` with operations that query `Query.users`, the sche
   find alternative approaches
 
 <Callout type="info">
-  Only **active** app deployments (published and not retired) are checked for affected operations.
-  Pending and retired deployments are not included in this analysis.
+  Only **active** app deployments (published and not retired) are checked for
+  affected operations. Pending and retired deployments are not included in this
+  analysis.
 </Callout>
 
 ## Persisted Documents on GraphQL Server and Gateway
@@ -405,20 +405,20 @@ For Hive Gateway you can use the Hive configuration for resolving persisted docu
 `gateway.config.ts` file as follows.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   persistedDocuments: {
-    type: 'hive',
+    type: "hive",
     // The endpoint of Hive's CDN
     endpoint: [
-      'https://cdn.graphql-hive.com/artifacts/v1/<target_id>',
-      'https://cdn-mirror.graphql-hive.com/artifacts/v1/<target_id>'
+      "https://cdn.graphql-hive.com/artifacts/v1/<target_id>",
+      "https://cdn-mirror.graphql-hive.com/artifacts/v1/<target_id>",
     ],
     // The CDN token provided by Hive Registry
-    key: '<cdn access token>'
-  }
-})
+    key: "<cdn access token>",
+  },
+});
 ```
 
 For further information, please refer to the
@@ -437,9 +437,9 @@ npm i -D @graphql-hive/yoga
 ```
 
 ```typescript filename="Persisted Documents with GraphQL Yoga" {10-16}
-import { createYoga } from 'graphql-hive'
-import { useHive } from '@graphql-hive/yoga'
-import schema from './schema.js'
+import { createYoga } from "graphql-hive";
+import { useHive } from "@graphql-hive/yoga";
+import schema from "./schema.js";
 
 const yoga = createYoga({
   schema,
@@ -450,15 +450,15 @@ const yoga = createYoga({
         cdn: {
           // replace <target_id> and <cdn_access_token> with your values
           endpoint: [
-            'https://cdn.graphql-hive.com/artifacts/v1/<target_id>',
-            'https://cdn-mirror.graphql-hive.com/artifacts/v1/<target_id>'
+            "https://cdn.graphql-hive.com/artifacts/v1/<target_id>",
+            "https://cdn-mirror.graphql-hive.com/artifacts/v1/<target_id>",
           ],
-          accessToken: '<cdn_access_token>'
-        }
-      }
-    })
-  ]
-})
+          accessToken: "<cdn_access_token>",
+        },
+      },
+    }),
+  ],
+});
 ```
 
 For further configuration options, please refer to the
@@ -471,13 +471,13 @@ the in-memory cache and the CDN. This is useful when in-memory cache is lost bet
 to share cached documents across server instances.
 
 ```typescript filename="Persisted Documents with L2 Cache (Redis)" {14-24}
-import { createYoga } from 'graphql-hive'
-import { createClient } from 'redis'
-import { useHive } from '@graphql-hive/yoga'
-import schema from './schema.js'
+import { createYoga } from "graphql-hive";
+import { createClient } from "redis";
+import { useHive } from "@graphql-hive/yoga";
+import schema from "./schema.js";
 
-const redis = createClient({ url: 'redis://localhost:6379' })
-await redis.connect()
+const redis = createClient({ url: "redis://localhost:6379" });
+await redis.connect();
 
 const yoga = createYoga({
   schema,
@@ -486,22 +486,26 @@ const yoga = createYoga({
       enabled: false,
       experimental__persistedDocuments: {
         cdn: {
-          endpoint: 'https://cdn.graphql-hive.com/artifacts/v1/<target_id>',
-          accessToken: '<cdn_access_token>'
+          endpoint: "https://cdn.graphql-hive.com/artifacts/v1/<target_id>",
+          accessToken: "<cdn_access_token>",
         },
         layer2Cache: {
           cache: {
-            get: key => redis.get(`hive:pd:${key}`),
+            get: (key) => redis.get(`hive:pd:${key}`),
             set: (key, value, opts) =>
-              redis.set(`hive:pd:${key}`, value, opts?.ttl ? { EX: opts.ttl } : {})
+              redis.set(
+                `hive:pd:${key}`,
+                value,
+                opts?.ttl ? { EX: opts.ttl } : {},
+              ),
           },
           ttlSeconds: 3600, // 1 hour for found documents
-          notFoundTtlSeconds: 60 // 1 minute for not-found (negative caching)
-        }
-      }
-    })
-  ]
-})
+          notFoundTtlSeconds: 60, // 1 minute for not-found (negative caching)
+        },
+      },
+    }),
+  ],
+});
 ```
 
 The lookup flow is: **L1 (memory) -> L2 (Redis/external) -> CDN**
@@ -527,9 +531,9 @@ npm i -D @graphql-hive/apollo
 ```
 
 ```typescript filename="Persisted Documents with Apollo Server" {10-16}
-import { ApolloServer } from '@apollo/server'
-import { useHive } from '@graphql-hive/apollo'
-import schema from './schema.js'
+import { ApolloServer } from "@apollo/server";
+import { useHive } from "@graphql-hive/apollo";
+import schema from "./schema.js";
 
 const server = new ApolloServer({
   schema,
@@ -538,13 +542,13 @@ const server = new ApolloServer({
       experimental__persistedDocuments: {
         cdn: {
           // replace <target_id> and <cdn_access_token> with your values
-          endpoint: 'https://cdn.graphql-hive.com/artifacts/v1/<target_id>',
-          accessToken: '<cdn_access_token>'
-        }
-      }
-    })
-  ]
-})
+          endpoint: "https://cdn.graphql-hive.com/artifacts/v1/<target_id>",
+          accessToken: "<cdn_access_token>",
+        },
+      },
+    }),
+  ],
+});
 ```
 
 For further configuration options, please refer to the
@@ -557,13 +561,13 @@ Apollo Server automatically uses the server's
 caching if available. You can also configure a custom L2 cache:
 
 ```typescript filename="Persisted Documents with L2 Cache" {10-20}
-import { createClient } from 'redis'
-import { ApolloServer } from '@apollo/server'
-import { useHive } from '@graphql-hive/apollo'
-import schema from './schema.js'
+import { createClient } from "redis";
+import { ApolloServer } from "@apollo/server";
+import { useHive } from "@graphql-hive/apollo";
+import schema from "./schema.js";
 
-const redis = createClient({ url: 'redis://localhost:6379' })
-await redis.connect()
+const redis = createClient({ url: "redis://localhost:6379" });
+await redis.connect();
 
 const server = new ApolloServer({
   schema,
@@ -571,22 +575,26 @@ const server = new ApolloServer({
     useHive({
       experimental__persistedDocuments: {
         cdn: {
-          endpoint: 'https://cdn.graphql-hive.com/artifacts/v1/<target_id>',
-          accessToken: '<cdn_access_token>'
+          endpoint: "https://cdn.graphql-hive.com/artifacts/v1/<target_id>",
+          accessToken: "<cdn_access_token>",
         },
         layer2Cache: {
           cache: {
-            get: key => redis.get(`hive:pd:${key}`),
+            get: (key) => redis.get(`hive:pd:${key}`),
             set: (key, value, opts) =>
-              redis.set(`hive:pd:${key}`, value, opts?.ttl ? { EX: opts.ttl } : {})
+              redis.set(
+                `hive:pd:${key}`,
+                value,
+                opts?.ttl ? { EX: opts.ttl } : {},
+              ),
           },
           ttlSeconds: 3600,
-          notFoundTtlSeconds: 60
-        }
-      }
-    })
-  ]
-})
+          notFoundTtlSeconds: 60,
+        },
+      },
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>
@@ -607,7 +615,7 @@ Enable the Persisted Document plugin by adding the following to your `router.yam
 # ... the rest of your configuration
 plugins:
   hive.usage:
-    target: '<ORGANIZATION>/<PROJECT>/<TARGET>'
+    target: "<ORGANIZATION>/<PROJECT>/<TARGET>"
   hive.persisted_documents:
     enabled: true
 ```
@@ -700,43 +708,43 @@ The code demonstrates how to send a persisted document request using Apollo Clie
 replace the placeholders with your actual values.
 
 ```typescript filename="Apollo Client Persisted Document Configuration"
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
-import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries'
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { createPersistedQueryLink } from "@apollo/client/link/persisted-queries";
 
 // replace <app_name>, <app_version>, and with your values
-const appVersionPrefix = '<app_name>~<app_version>~'
+const appVersionPrefix = "<app_name>~<app_version>~";
 
 const persistedQueriesLink = createPersistedQueryLink({
   generateHash(document) {
     // GraphQL Code Generator Client Preset generates
     // the persisted document ID within the document node.
     // For other implementations return the hash prefixed with the app version.
-    if (document?.['__metadata__']?.['hash']) {
-      throw Error('Hash not available for document')
+    if (document?.["__metadata__"]?.["hash"]) {
+      throw Error("Hash not available for document");
     }
-    return appVersionPrefix + document['__metadata__']['hash']
-  }
-})
+    return appVersionPrefix + document["__metadata__"]["hash"];
+  },
+});
 
 const httpLink = new HttpLink({
-  uri: '/graphql',
+  uri: "/graphql",
   fetch(url, init) {
-    const parsedBody = JSON.parse(init!.body as string)
+    const parsedBody = JSON.parse(init!.body as string);
     return fetch(url, {
       ...init,
       body: JSON.stringify({
         variables: parsedBody.variables,
         documentId: parsedBody.extensions.persistedQuery.sha256Hash,
-        extensions: { ...parsedBody.extensions, persistedQuery: undefined }
-      })
-    })
-  }
-})
+        extensions: { ...parsedBody.extensions, persistedQuery: undefined },
+      }),
+    });
+  },
+});
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: persistedQueriesLink.concat(httpLink)
-})
+  link: persistedQueriesLink.concat(httpLink),
+});
 ```
 
 | Parameter       | Description                        |
@@ -752,18 +760,18 @@ The code demonstrates how to send a persisted document request using Urql. Make 
 placeholders with your actual values.
 
 ```typescript filename="Urql Persisted Document Configuration"
-import { createClient, fetchExchange, mapExchange } from 'urql'
+import { createClient, fetchExchange, mapExchange } from "urql";
 
 // replace <app_name>, <app_version>, and with your values
-const appVersionPrefix = '<app_name>~<app_version>~'
+const appVersionPrefix = "<app_name>~<app_version>~";
 
 const urqlClient = createClient({
-  url: '/graphql',
+  url: "/graphql",
   exchanges: [
     mapExchange({
       onOperation(op) {
-        if (op.query?.['__metadata__']?.['hash']) {
-          throw Error('Hash not available for document')
+        if (op.query?.["__metadata__"]?.["hash"]) {
+          throw Error("Hash not available for document");
         }
 
         return {
@@ -773,15 +781,15 @@ const urqlClient = createClient({
               // GraphQL Code Generator Client Preset generates
               // the persisted document ID within the document node.
               // For other implementations return the hash prefixed with the app version.
-              appVersionPrefix + op.query['__meta__']['hash'],
-            definitions: []
-          }
-        }
-      }
+              appVersionPrefix + op.query["__meta__"]["hash"],
+            definitions: [],
+          },
+        };
+      },
     }),
-    fetchExchange
-  ]
-})
+    fetchExchange,
+  ],
+});
 ```
 
 | Parameter       | Description                        |
@@ -798,23 +806,23 @@ document.
 
 ```typescript filename="Relay Persisted Document Configuration"
 // replace <app_name>, <app_version>, and with your values
-const appVersionPrefix = '<app_name>~<app_version>~'
+const appVersionPrefix = "<app_name>~<app_version>~";
 
 function fetchQuery(operation, variables) {
   if (!operation.id) {
-    throw new Error('No persisted document hash provided.')
+    throw new Error("No persisted document hash provided.");
   }
 
-  return fetch('/graphql', {
-    method: 'POST',
+  return fetch("/graphql", {
+    method: "POST",
     headers: {
-      'content-type': 'application/json'
+      "content-type": "application/json",
     },
     body: JSON.stringify({
       documentId: appVersionPrefix + operation.id,
-      variables
-    })
-  }).then(response => response.json())
+      variables,
+    }),
+  }).then((response) => response.json());
 }
 ```
 

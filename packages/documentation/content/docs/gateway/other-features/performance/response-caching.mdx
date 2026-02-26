@@ -4,10 +4,8 @@ title: Response Caching
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Tabs } from '@hive/design-system/tabs'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
 
 **_GraphQL Response Caching_** is a feature that allows you to cache the response of a GraphQL
 query. This is useful when you want to reduce the number of requests to your sources. For example,
@@ -16,22 +14,23 @@ query so that the next time the same query is made, the response is fetched from
 of making a request to the underlying sources.
 
 <Callout>
-  You need to set your cache storage in your gateway configuration to enable response caching. See
-  [Cache Storage](/docs/gateway/other-features/performance#providing-cache-storage) for more
-  information.
+  You need to set your cache storage in your gateway configuration to enable
+  response caching. See [Cache
+  Storage](/docs/gateway/other-features/performance#providing-cache-storage) for
+  more information.
 </Callout>
 
 ## How to use?
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   responseCaching: {
     // global cache
-    session: () => null
-  }
-})
+    session: () => null,
+  },
+});
 ```
 
 After starting the server we can execute a GraphQL Query operation, that selects the `Query.slow`
@@ -291,14 +290,14 @@ for more information.
 </Callout>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   responseCaching: {
     // cache based on the authentication header
-    session: request => request.headers.get('authentication')
-  }
-})
+    session: (request) => request.headers.get("authentication"),
+  },
+});
 ```
 
 ### Enforce session based caching
@@ -354,9 +353,9 @@ can use the role as a session key.
 ```ts filename="Role based caching"
 defineConfig({
   responseCaching: {
-    session: request => request.headers.get('x-user-role')
-  }
-})
+    session: (request) => request.headers.get("x-user-role"),
+  },
+});
 ```
 
 ## Time to Live (TTL)
@@ -417,10 +416,10 @@ development.
 ```ts filename="Disabling caching"
 defineConfig({
   responseCaching: {
-    session: request => null,
-    enabled: () => process.env.NODE_ENV !== 'development'
-  }
-})
+    session: (request) => null,
+    enabled: () => process.env.NODE_ENV !== "development",
+  },
+});
 ```
 
 ### Ingore a specific request
@@ -434,10 +433,10 @@ responses, those responses will not be invalidated.
 ```ts filename="Disabling caching for a specific request"
 defineConfig({
   responseCaching: {
-    session: request => null,
-    enabled: request => request.headers.get('x-no-cache') !== 'true'
-  }
-})
+    session: (request) => null,
+    enabled: (request) => request.headers.get("x-no-cache") !== "true",
+  },
+});
 ```
 
 ### Disable caching of specific types and fields
@@ -519,10 +518,10 @@ This behavior can be disabled by setting the `invalidateViaMutation` option to `
 ```ts filename="Disabling mutation invalidation"
 defineConfig({
   responseCaching: {
-    session: request => null,
-    invalidateViaMutation: false
-  }
-})
+    session: (request) => null,
+    invalidateViaMutation: false,
+  },
+});
 ```
 
 ### Entity identity
@@ -537,10 +536,10 @@ You can customize the identity field by setting the `idFields` options.
 ```ts filename="Customizing entity identity"
 defineConfig({
   responseCaching: {
-    session: request => null,
-    idFields: ['id', 'email']
-  }
-})
+    session: (request) => null,
+    idFields: ["id", "email"],
+  },
+});
 ```
 
 ```graphql

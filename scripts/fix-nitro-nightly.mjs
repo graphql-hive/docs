@@ -15,7 +15,7 @@ if (!existsSync(bunCache)) {
 }
 
 const nitroNightlyDirs = readdirSync(bunCache).filter((d) =>
-  d.startsWith("nitro-nightly@")
+  d.startsWith("nitro-nightly@"),
 );
 
 if (nitroNightlyDirs.length === 0) {
@@ -37,7 +37,7 @@ for (const nitroNightlyDir of nitroNightlyDirs) {
       if (!stat.isSymbolicLink()) {
         console.error(
           "[fix-nitro-nightly] File exists but not a symlink:",
-          nitroSymlink
+          nitroSymlink,
         );
       }
     } else {

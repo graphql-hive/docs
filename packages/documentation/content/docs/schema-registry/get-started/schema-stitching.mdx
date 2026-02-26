@@ -2,23 +2,22 @@
 title: Get started with Schema-Stitching
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Image } from '@hive/design-system/image'
-import { Tabs } from '@hive/design-system/tabs'
-import { File, Files, Folder } from 'fumadocs-ui/components/files'
-import { Step, Steps } from 'fumadocs-ui/components/steps'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Image } from "@hive/design-system/image";
+import { Tabs } from "@hive/design-system/tabs";
+import { File, Files, Folder } from "fumadocs-ui/components/files";
+import { Step, Steps } from "fumadocs-ui/components/steps";
 
-import cdnTokenImage from '../cdn_token.png'
-import accessTokensConfirmImage from './access-tokens-confirm.png'
-import accessTokensCreateNewImage from './access-tokens-create-new.png'
-import accessTokensPermissionsImage from './access-tokens-permissions.png'
-import accessTokensResourcesImage from './access-tokens-resources.png'
-import accessTokensSuccessImage from './access-tokens-success.png'
-import stitchingExplorerImage from './stitching-explorer.png'
-import stitchingHistoryImage from './stitching-history.png'
-import stitchingUserSchemaImage from './stitching-users-schema.png'
-import targetOverview from './target-overview.png'
-
+import cdnTokenImage from "../cdn_token.png";
+import accessTokensConfirmImage from "./access-tokens-confirm.png";
+import accessTokensCreateNewImage from "./access-tokens-create-new.png";
+import accessTokensPermissionsImage from "./access-tokens-permissions.png";
+import accessTokensResourcesImage from "./access-tokens-resources.png";
+import accessTokensSuccessImage from "./access-tokens-success.png";
+import stitchingExplorerImage from "./stitching-explorer.png";
+import stitchingHistoryImage from "./stitching-history.png";
+import stitchingUserSchemaImage from "./stitching-users-schema.png";
+import targetOverview from "./target-overview.png";
 
 This guide is for projects using Schema-Stitching. For most new projects we recommend using
 [GraphQL Federation](/docs/schema-registry/get-started/apollo-federation) because it has become the
@@ -129,8 +128,7 @@ type Query {
 </Tabs>
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Create Access Token
@@ -184,10 +182,10 @@ generated token.
 />
 
 Make sure to copy your token and keep it safe. **You won't be able to see it again.**
+
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Publish your schemas
@@ -227,8 +225,8 @@ hive schema:publish \
 ```
 
 <Callout type="info">
-  If you are running under a NodeJS project, make sure to include the `npx`, `yarn` or `pnpm` prefix
-  to the command.
+  If you are running under a NodeJS project, make sure to include the `npx`,
+  `yarn` or `pnpm` prefix to the command.
 </Callout>
 
 If everything goes well, you should see the following output:
@@ -247,8 +245,8 @@ new schema you just published 🎉
 />
 
 <Callout type="info">
-  You should also check out the **Explorer** tab: you can see the schema you just published, and
-  explore the API types, fields, and arguments.
+  You should also check out the **Explorer** tab: you can see the schema you
+  just published, and explore the API types, fields, and arguments.
 </Callout>
 
 Now, let's publish the **Posts** service schema to Hive:
@@ -279,8 +277,7 @@ On your target's **Explorer** page now, you'll be able to see the schema of both
 />
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Schema Checks
@@ -434,10 +431,10 @@ between the schemas:
 - Failed to compare schemas: Failed to build schema: Error: Definitions of field User.posts implement inconsistent list types across subschemas and cannot be merged.
 - Definitions of field User.posts implement inconsistent list types across subschemas and cannot be merged.
 ```
+
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Evolve your schema
@@ -499,8 +496,7 @@ schema is published now, and you can see the changes you made:
 />
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Fetch your schema
@@ -550,10 +546,10 @@ curl -L -H "X-Hive-CDN-Key: YOUR_HIVE_CDN_TOKEN" CDN_ENDPOINT_HERE
 ```
 
 You should see that Hive CDN returns your full GraphQL schema as an output for that command.
+
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### A simple gateway
@@ -571,45 +567,48 @@ Here's a short snippet of how you can fetch the services information from Hive C
 GraphQL gateway using GraphQL-Yoga:
 
 ```ts
-import { createServer } from 'node:http'
-import { buildSchema } from 'graphql'
-import { createYoga } from 'graphql-yoga'
-import { createServicesFetcher } from '@graphql-hive/core'
-import { stitchSchemas } from '@graphql-tools/stitch'
-import { stitchingDirectives } from '@graphql-tools/stitching-directives'
+import { createServer } from "node:http";
+import { buildSchema } from "graphql";
+import { createYoga } from "graphql-yoga";
+import { createServicesFetcher } from "@graphql-hive/core";
+import { stitchSchemas } from "@graphql-tools/stitch";
+import { stitchingDirectives } from "@graphql-tools/stitching-directives";
 
-const { stitchingDirectivesTransformer } = stitchingDirectives()
+const { stitchingDirectivesTransformer } = stitchingDirectives();
 
 const fetchServices = createServicesFetcher({
   endpoint: process.env.HIVE_CDN_ENDPOINT,
-  key: process.env.HIVE_CDN_KEY
-})
+  key: process.env.HIVE_CDN_KEY,
+});
 
 async function main() {
-  const services = await fetchServices()
-  const subschemas = services.map(service => {
+  const services = await fetchServices();
+  const subschemas = services.map((service) => {
     return {
-      schema: buildSchema(service.sdl, { assumeValid: true, assumeValidSDL: true }),
+      schema: buildSchema(service.sdl, {
+        assumeValid: true,
+        assumeValidSDL: true,
+      }),
       executor: buildHTTPExecutor({ endpoint: service.url }),
-      subschemaConfigTransforms: [stitchingDirectivesTransformer]
-    }
-  })
+      subschemaConfigTransforms: [stitchingDirectivesTransformer],
+    };
+  });
 
   const schema = stitchSchemas({
-    subschemas
-  })
-  const yoga = createYoga({ schema })
-  const server = createServer(yoga)
+    subschemas,
+  });
+  const yoga = createYoga({ schema });
+  const server = createServer(yoga);
 
   server.listen(4000, () => {
-    console.info('Gateway is running on http://localhost:4000/graphql')
-  })
+    console.info("Gateway is running on http://localhost:4000/graphql");
+  });
 }
 
-main().catch(err => {
-  console.error(err)
-  process.exit(1)
-})
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
 ```
 
 <Callout type="info">
@@ -624,8 +623,7 @@ Make sure to add environment variables:
 </Callout>
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Next Steps
@@ -640,6 +638,7 @@ powerful features of Hive:
 - [Alerts and Notifications](/docs/schema-registry/management/projects#alerts-and-notifications)
 - [CI/CD Integration](/docs/other-integrations/ci-cd)
 - [Schema Policies](/docs/schema-registry/schema-policy)
+
 </Step>
 </Step>
 </Steps>

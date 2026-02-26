@@ -1,12 +1,12 @@
 ---
-title: 'Hive GraphQL Federated Link Specifications'
+title: "Hive GraphQL Federated Link Specifications"
 ---
 
-import { Image } from '@hive/design-system/image'
-import { Tabs } from '@hive/design-system/tabs'
+import { Image } from "@hive/design-system/image";
+import { Tabs } from "@hive/design-system/tabs";
 
-import explorerMetadataFilterImage from './explorer_metadata-filter.png'
-import explorerMetadataViewImage from './explorer_metadata-view.png'
+import explorerMetadataFilterImage from "./explorer_metadata-filter.png";
+import explorerMetadataViewImage from "./explorer_metadata-view.png";
 
 Federation `@link` compliant features for GraphQL Hive.
 
@@ -31,7 +31,8 @@ extend schema
 Then the Hive features can be imported like:
 
 ```graphql
-extend schema @link(url: "https://specs.graphql-hive.com/hive/v1.0", import: ["@meta"])
+extend schema
+  @link(url: "https://specs.graphql-hive.com/hive/v1.0", import: ["@meta"])
 ```
 
 Be sure to import and add definitions for all resources you intend to use.
@@ -95,7 +96,9 @@ directive @meta(
 ) repeatable on SCHEMA | OBJECT | INTERFACE | FIELD_DEFINITION
 
 type Query {
-  user: User @meta(name: "domain", content: "accounts") @meta(name: "priority", content: "tier-1")
+  user: User
+    @meta(name: "domain", content: "accounts")
+    @meta(name: "priority", content: "tier-1")
 }
 
 type User {

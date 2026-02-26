@@ -4,8 +4,6 @@ title: Upstream reliability
 description: Improve reliability of Hive Gateway with timeout and retry policy for upstream requests
 ---
 
-
-
 Hive Gateway offers Retry and Timeout features to improve the reliability of the traffic between the
 gateway and the subgraphs.
 
@@ -46,13 +44,13 @@ If the upstream is using the `fetch`, the request will be retried only if the st
 present, the delay between retries will respect it, otherwise it defaults to 1 second.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   upstreamRetry: {
-    maxRetries: 3
-  }
-})
+    maxRetries: 3,
+  },
+});
 ```
 
 ### Per-subgraph configuration
@@ -64,21 +62,21 @@ This function will be called for each upstream request, which allows you to have
 retry policy.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   upstreamRetry: ({ subgraphName }) => {
-    if (subgraphName == 'very-unreliable-subgraph') {
+    if (subgraphName == "very-unreliable-subgraph") {
       return {
-        maxRetries: 10
-      }
+        maxRetries: 10,
+      };
     }
 
     return {
-      maxRetries: 3
-    }
-  }
-})
+      maxRetries: 3,
+    };
+  },
+});
 ```
 
 ### Retry delay configuration
@@ -91,14 +89,14 @@ if present.
 The `Retry-After` can either contain a number of second or a date.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   upstreamRetry: {
     maxRetries: 3,
-    retryDelay: 1000 // delay in milliseconds
-  }
-})
+    retryDelay: 1000, // delay in milliseconds
+  },
+});
 ```
 
 ### Exponential backoff configuration
@@ -119,14 +117,14 @@ Hive Gateway implements an exponential backoff by default. You can change the ba
 delay.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   upstreamRetry: {
     maxRetries: 3,
-    retryDelayFactor: 1.25 // default value. Use a value of 1 to disable backoff.
-  }
-})
+    retryDelayFactor: 1.25, // default value. Use a value of 1 to disable backoff.
+  },
+});
 ```
 
 ### Conditional retry logic
@@ -138,14 +136,14 @@ For example, you can make Hive Gateway always retry any response with an error H
 400).
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   upstreamRetry: {
     maxRetries: 3,
-    shouldRetry: ({ response }) => response?.status >= 400 // Always retry any HTTP errors
-  }
-})
+    shouldRetry: ({ response }) => response?.status >= 400, // Always retry any HTTP errors
+  },
+});
 ```
 
 ## Timeout management
@@ -159,12 +157,12 @@ prevents it from waiting indefinitely for a slow or unresponsive subgraphs.
 Hive Gateway allows to configure a global timeout for all subgraphs at once.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   // The maximum time in milliseconds to wait for a response from the upstream.
-  upstreamTimeout: 1000
-})
+  upstreamTimeout: 1000,
+});
 ```
 
 ### Per-subgraph configuration
@@ -176,16 +174,16 @@ This function is called for each upstream request, allowing for complete control
 strategy.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   upstreamTimeout: ({ subgraphName }) => {
-    if (subgraphName == 'very-slow-subgraph') {
-      return 60_000 // Allow for longer request for this very slow server
+    if (subgraphName == "very-slow-subgraph") {
+      return 60_000; // Allow for longer request for this very slow server
     }
-    return 30_000
-  }
-})
+    return 30_000;
+  },
+});
 ```
 
 ## Combining retry and timeout features

@@ -1,15 +1,14 @@
 ---
 title: Laboratory Improvements
-description:
-  The laboratory received a new look, tabs support, Query Builder plugin and uses GraphiQL v4 alpha.
+description: The laboratory received a new look, tabs support, Query Builder plugin and uses GraphiQL v4 alpha.
 date: 2024-10-11
 authors: [dimitri]
 ---
 
-import { MdxVideo } from "@hive/design-system/server/mdx-components/mdx-video"
+import { MdxVideo } from "@hive/design-system/server/mdx-components/mdx-video";
 
 export function Caption({ children }) {
-  return <p className="text-center text-sm italic">{children}</p>
+  return <p className="text-center text-sm italic">{children}</p>;
 }
 
 Over the past few months, we've focused on enhancing Hive's laboratory, refining its appearance, and
@@ -32,7 +31,10 @@ query" were removed, "Prettify query" button was moved to the end of the toolbar
 Users with wide screens can now benefit from the fullscreen mode. The button is located in place of
 the GraphiQL logo.
 
-<MdxVideo alt="Full screen mode demo" src="/product-updates/full-screen-mode.mp4" />
+<MdxVideo
+  alt="Full screen mode demo"
+  src="/product-updates/full-screen-mode.mp4"
+/>
 
 ### Tabs Support
 

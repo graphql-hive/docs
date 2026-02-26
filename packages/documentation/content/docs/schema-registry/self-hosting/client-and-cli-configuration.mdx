@@ -2,9 +2,7 @@
 title: Client & CLI Configuration
 ---
 
-import { Tabs } from '@hive/design-system/tabs'
-
-
+import { Tabs } from "@hive/design-system/tabs";
 
 By default, the Hive CLI and Hive Client SDK connect to the hosted Hive Console version. In order to
 connect to a local Hive server, you need to configure both the client and SDK.
@@ -18,18 +16,18 @@ Instantiate your Gateway or client to point to the self-hosting endpoints.
 <Tabs.Tab>
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 const config = defineConfig({
   reporting: {
-    type: 'hive',
+    type: "hive",
     selfHosting: {
-      graphqlEndpoint: 'http://localhost:8082/graphql',
-      usageEndpoint: 'http://localhost:8081',
-      applicationUrl: 'http://localhost:8080/'
-    }
-  }
-})
+      graphqlEndpoint: "http://localhost:8082/graphql",
+      usageEndpoint: "http://localhost:8081",
+      applicationUrl: "http://localhost:8080/",
+    },
+  },
+});
 ```
 
 </Tabs.Tab>
@@ -46,19 +44,19 @@ usage_reporting:
 <Tabs.Tab>
 
 ```ts filename="custom.ts"
-import { createHive } from '@graphql-hive/core'
+import { createHive } from "@graphql-hive/core";
 
 const hive = createHive({
   enabled: true,
   debug: true,
   token,
   selfHosting: {
-    graphqlEndpoint: 'http://localhost:8082/graphql',
-    usageEndpoint: 'http://localhost:8081',
-    applicationUrl: 'http://localhost:8080/'
+    graphqlEndpoint: "http://localhost:8082/graphql",
+    usageEndpoint: "http://localhost:8081",
+    applicationUrl: "http://localhost:8080/",
   },
-  usage: true
-})
+  usage: true,
+});
 ```
 
 </Tabs.Tab>
@@ -66,8 +64,8 @@ const hive = createHive({
 <Tabs.Tab>
 
 ```ts filename="graphql-yoga.ts"
-import { createYoga } from 'graphql-yoga'
-import { useHive } from '@graphql-hive/yoga'
+import { createYoga } from "graphql-yoga";
+import { useHive } from "@graphql-hive/yoga";
 
 const yoga = createYoga({
   plugins: [
@@ -76,14 +74,14 @@ const yoga = createYoga({
       debug: true,
       token,
       selfHosting: {
-        graphqlEndpoint: 'http://localhost:8082/graphql',
-        usageEndpoint: 'http://localhost:8081',
-        applicationUrl: 'http://localhost:8080/'
+        graphqlEndpoint: "http://localhost:8082/graphql",
+        usageEndpoint: "http://localhost:8081",
+        applicationUrl: "http://localhost:8080/",
       },
-      usage: true
-    })
-  ]
-})
+      usage: true,
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>
@@ -91,8 +89,8 @@ const yoga = createYoga({
 <Tabs.Tab>
 
 ```ts filename="apollo-server.ts"
-import { createYoga } from '@apollo/server'
-import { useHive } from '@graphql-hive/apollo'
+import { createYoga } from "@apollo/server";
+import { useHive } from "@graphql-hive/apollo";
 
 const apollo = new ApolloServer({
   plugins: [
@@ -101,14 +99,14 @@ const apollo = new ApolloServer({
       debug: true,
       token,
       selfHosting: {
-        graphqlEndpoint: 'http://localhost:8082/graphql',
-        usageEndpoint: 'http://localhost:8081',
-        applicationUrl: 'http://localhost:8080/'
+        graphqlEndpoint: "http://localhost:8082/graphql",
+        usageEndpoint: "http://localhost:8081",
+        applicationUrl: "http://localhost:8080/",
       },
-      usage: true
-    })
-  ]
-})
+      usage: true,
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>
@@ -116,8 +114,8 @@ const apollo = new ApolloServer({
 <Tabs.Tab>
 
 ```ts filename="envelop.ts"
-import { createYoga } from 'graphql-yoga'
-import { useHive } from '@graphql-hive/envelop'
+import { createYoga } from "graphql-yoga";
+import { useHive } from "@graphql-hive/envelop";
 
 const yoga = createYoga({
   plugins: [
@@ -126,14 +124,14 @@ const yoga = createYoga({
       debug: true,
       token,
       selfHosting: {
-        graphqlEndpoint: 'http://localhost:8082/graphql',
-        usageEndpoint: 'http://localhost:8081',
-        applicationUrl: 'http://localhost:8080/'
+        graphqlEndpoint: "http://localhost:8082/graphql",
+        usageEndpoint: "http://localhost:8081",
+        applicationUrl: "http://localhost:8080/",
       },
-      usage: true
-    })
-  ]
-})
+      usage: true,
+    }),
+  ],
+});
 ```
 
 </Tabs.Tab>

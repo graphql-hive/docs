@@ -4,9 +4,7 @@ title: Demand Control / Cost Limit
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Demand Control a.k.a. Cost Limit is a feature that allows you to limit the cost of operations that
 are executed in your gateway against subgraphs. This is useful to prevent abuse of your gateway by
@@ -23,7 +21,7 @@ This feature allows you to customize cost limiting on both gateway and subgraph 
 ## How to use?
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   // All of the values below are the default values
@@ -41,23 +39,25 @@ export const gatewayConfig = defineConfig({
      * Cost based on the operation type.
      * By default, mutations have a cost of 10, queries and subscriptions have a cost of 0.
      */
-    operationTypeCost: operationType => (operationType === 'mutation' ? 10 : 0),
+    operationTypeCost: (operationType) =>
+      operationType === "mutation" ? 10 : 0,
     /**
      * Cost based on the field.
      * It is called for each field in the operation, and overrides the `@cost` directive.
      */
-    fieldCost: fieldNode => (fieldNode.name.value === 'expensiveField' ? 10 : 0),
+    fieldCost: (fieldNode) =>
+      fieldNode.name.value === "expensiveField" ? 10 : 0,
     /**
      * Cost based on the type.
      * It is called for return types of fields in the operation, and overrides the `@cost` directive.
      */
-    typeCost: type => (isCompositeType(type) ? 1 : 0),
+    typeCost: (type) => (isCompositeType(type) ? 1 : 0),
     /**
      * Include extension values that provide useful information, such as the estimated cost of the operation.
      */
-    includeExtensionMetadata: process.env.NODE_ENV === 'development'
-  }
-})
+    includeExtensionMetadata: process.env.NODE_ENV === "development",
+  },
+});
 ```
 
 ## Calculation of cost
@@ -153,7 +153,8 @@ type Address @cost(weight: 5) {
   zipCode: Int!
 }
 
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.9", import: ["@cost"]) {
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.9", import: ["@cost"]) {
   query: Query
 }
 ```
@@ -261,7 +262,8 @@ If the size of the list is determined by the arguments of the field, you can use
 type Query {
   book(id: ID): Book
   bestsellers: [Book] @listSize(assumedSize: 5)
-  newestAdditions(after: ID, limit: Int!): [Book] @listSize(slicingArguments: ["limit"])
+  newestAdditions(after: ID, limit: Int!): [Book]
+    @listSize(slicingArguments: ["limit"])
 }
 ```
 
@@ -304,7 +306,10 @@ type Query {
   book(id: ID): Book
   bestsellers: [Book] @listSize(assumedSize: 5)
   newestAdditions(first: ID, last: Int!): [Book]
-    @listSize(slicingArguments: ["first", "last"], requireOneSlicingArgument: false)
+    @listSize(
+      slicingArguments: ["first", "last"]
+      requireOneSlicingArgument: false
+    )
 }
 ```
 

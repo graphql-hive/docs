@@ -6,9 +6,6 @@ description:
   platform besides Node.js.
 ---
 
-
-
-
 Hive Gateway provides you a cross-platform GraphQL Server. So you can easily integrate it into any
 platform besides Node.js. [Bun](https://bun.sh) is a modern JavaScript runtime like Node or Deno,
 and it supports Fetch API as a first class citizen. So the configuration is really simple like any
@@ -26,18 +23,18 @@ Use this method only if you know what you are doing. It is recommended to use Hi
 most cases.
 
 ```ts
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 
-const gatewayRuntime = createGatewayRuntime(/* Your configuration */)
+const gatewayRuntime = createGatewayRuntime(/* Your configuration */);
 
 const server = Bun.serve({
-  fetch: gatewayRuntime
-})
+  fetch: gatewayRuntime,
+});
 
 console.info(
   `Server is running on ${new URL(
     server.graphqlEndpoint,
-    `http://${server.hostname}:${server.port}`
-  )}`
-)
+    `http://${server.hostname}:${server.port}`,
+  )}`,
+);
 ```

@@ -48,7 +48,11 @@
   --color-fd-primary: var(--color-neutral-100);
   --color-fd-muted-foreground: var(--color-beige-800);
   --color-fd-sidebar-active: hsl(164 70% 40%);
-  --color-fd-sidebar-active-bg: color-mix(in oklab, hsl(164 70% 61%) 10%, transparent);
+  --color-fd-sidebar-active-bg: color-mix(
+    in oklab,
+    hsl(164 70% 61%) 10%,
+    transparent
+  );
   --tw-prose-body: color-mix(in oklab, hsl(0, 0%, 92%) 90%, transparent);
 }
 

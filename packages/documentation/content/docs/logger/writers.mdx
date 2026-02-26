@@ -2,7 +2,7 @@
 title: Writers
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Logger writers are responsible for handling how and where log messages are output. In Hive Logger,
 writers are pluggable components that receive structured log data and determine its final
@@ -18,15 +18,15 @@ suit your application's needs. The built-ins are:
 Writes the logs to memory allowing you to access the logs. Mostly useful for testing.
 
 ```ts
-import { Logger, MemoryLogWriter } from '@graphql-hive/logger'
+import { Logger, MemoryLogWriter } from "@graphql-hive/logger";
 
-const writer = new MemoryLogWriter()
+const writer = new MemoryLogWriter();
 
-const log = new Logger({ writers: [writer] })
+const log = new Logger({ writers: [writer] });
 
-log.info({ my: 'attrs' }, 'Hello World!')
+log.info({ my: "attrs" }, "Hello World!");
 
-console.log(writer.logs)
+console.log(writer.logs);
 ```
 
 Outputs:
@@ -47,16 +47,16 @@ not supported. This makes `ConsoleLogWriter` ideal for all cases, providing clea
 out of the box.
 
 ```ts
-import { ConsoleLogWriter, Logger } from '@graphql-hive/logger'
+import { ConsoleLogWriter, Logger } from "@graphql-hive/logger";
 
 const writer = new ConsoleLogWriter({
   noColor: true, // defaults to env.NO_COLOR. read more: https://no-color.org/
-  noTimestamp: true
-})
+  noTimestamp: true,
+});
 
-const log = new Logger({ writers: [writer] })
+const log = new Logger({ writers: [writer] });
 
-log.info({ my: 'attrs' }, 'Hello World!')
+log.info({ my: "attrs" }, "Hello World!");
 ```
 
 Outputs:
@@ -76,7 +76,9 @@ environments that need the logger to not color the output will automatically set
 
 ## `JSONLogWriter`
 
-<Callout type="info">Will be used then the `LOG_JSON=1` environment variable is provided.</Callout>
+<Callout type="info">
+  Will be used then the `LOG_JSON=1` environment variable is provided.
+</Callout>
 
 Built-in log writer that outputs each log entry as a structured JSON object. When used, it prints
 logs to the console in JSON format, including all provided attributes, the log level, message, and a
@@ -95,11 +97,11 @@ logging systems, especially useful for production environments or when logs need
 other tools.
 
 ```ts
-import { JSONLogWriter, Logger } from '@graphql-hive/logger'
+import { JSONLogWriter, Logger } from "@graphql-hive/logger";
 
-const log = new Logger({ writers: [new JSONLogWriter()] })
+const log = new Logger({ writers: [new JSONLogWriter()] });
 
-log.info({ my: 'attrs' }, 'Hello World!')
+log.info({ my: "attrs" }, "Hello World!");
 ```
 
 Outputs:
@@ -141,18 +143,18 @@ npm i @logtape/logtape
 ```
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
-import { LogTapeLogWriter } from '@graphql-hive/logger/writers/logtape'
-import { configure, getConsoleSink } from '@logtape/logtape'
+import { Logger } from "@graphql-hive/logger";
+import { LogTapeLogWriter } from "@graphql-hive/logger/writers/logtape";
+import { configure, getConsoleSink } from "@logtape/logtape";
 
 await configure({
   sinks: { console: getConsoleSink() },
-  loggers: [{ category: 'hive-gateway', sinks: ['console'] }]
-})
+  loggers: [{ category: "hive-gateway", sinks: ["console"] }],
+});
 
-const log = new Logger({ writers: [new LogTapeLogWriter()] })
+const log = new Logger({ writers: [new LogTapeLogWriter()] });
 
-log.info({ some: 'attributes' }, 'hello world')
+log.info({ some: "attributes" }, "hello world");
 ```
 
 ```sh
@@ -171,19 +173,19 @@ npm i pino pino-pretty
 ```
 
 ```ts
-import pino from 'pino'
-import { Logger } from '@graphql-hive/logger'
-import { PinoLogWriter } from '@graphql-hive/logger/writers/pino'
+import pino from "pino";
+import { Logger } from "@graphql-hive/logger";
+import { PinoLogWriter } from "@graphql-hive/logger/writers/pino";
 
 const pinoLogger = pino({
   transport: {
-    target: 'pino-pretty'
-  }
-})
+    target: "pino-pretty",
+  },
+});
 
-const log = new Logger({ writers: [new PinoLogWriter(pinoLogger)] })
+const log = new Logger({ writers: [new PinoLogWriter(pinoLogger)] });
 
-log.info({ some: 'attributes' }, 'hello world')
+log.info({ some: "attributes" }, "hello world");
 ```
 
 {/* prettier-ignore-start */}
@@ -205,17 +207,17 @@ npm i winston
 ```
 
 ```ts
-import winston from 'winston'
-import { Logger } from '@graphql-hive/logger'
-import { WinstonLogWriter } from '@graphql-hive/logger/writers/winston'
+import winston from "winston";
+import { Logger } from "@graphql-hive/logger";
+import { WinstonLogWriter } from "@graphql-hive/logger/writers/winston";
 
 const winstonLogger = winston.createLogger({
-  transports: [new winston.transports.Console()]
-})
+  transports: [new winston.transports.Console()],
+});
 
-const log = new Logger({ writers: [new WinstonLogWriter(winstonLogger)] })
+const log = new Logger({ writers: [new WinstonLogWriter(winstonLogger)] });
 
-log.info({ some: 'attributes' }, 'hello world')
+log.info({ some: "attributes" }, "hello world");
 ```
 
 ```sh
@@ -223,8 +225,8 @@ log.info({ some: 'attributes' }, 'hello world')
 ```
 
 <Callout>
-  Winston logger does not have a "trace" log level. Hive Logger will instead use "verbose" when
-  writing logs to Winston.
+  Winston logger does not have a "trace" log level. Hive Logger will instead use
+  "verbose" when writing logs to Winston.
 </Callout>
 
 ## Custom Writers
@@ -247,41 +249,47 @@ writers that need to ensure all logs are written before the application exits or
 longer needed.
 
 ```ts
-import { Attributes, LogLevel } from '@graphql-hive/logger'
+import { Attributes, LogLevel } from "@graphql-hive/logger";
 
 interface LogWriter {
   write(
     level: LogLevel,
     attrs: Attributes | null | undefined,
-    msg: string | null | undefined
-  ): void | Promise<void>
-  flush?(): void | Promise<void>
+    msg: string | null | undefined,
+  ): void | Promise<void>;
+  flush?(): void | Promise<void>;
 }
 ```
 
 ### Example of HTTP Writer
 
 ```ts
-import { Attributes, ConsoleLogWriter, Logger, LogLevel, LogWriter } from '@graphql-hive/logger'
+import {
+  Attributes,
+  ConsoleLogWriter,
+  Logger,
+  LogLevel,
+  LogWriter,
+} from "@graphql-hive/logger";
 
 class HTTPLogWriter implements LogWriter {
   async write(level: LogLevel, attrs: Attributes, msg: string) {
-    await fetch('https://my-log-service.com', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ level, attrs, msg })
-    })
+    await fetch("https://my-log-service.com", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ level, attrs, msg }),
+    });
   }
 }
 
 const log = new Logger({
   // send logs both to the HTTP loggging service and output them to the console
-  writers: [new HTTPLogWriter(), new ConsoleLogWriter()]
-})
+  writers: [new HTTPLogWriter(), new ConsoleLogWriter()],
+});
 
-log.info('Hello World!')
+log.info("Hello World!");
 
-await log.flush() // make sure all async writes settle
+await log.flush(); // make sure all async writes settle
 ```
 
 ### Example of Daily File Log Writer (Node.js Only)
@@ -290,19 +298,28 @@ Here is an example of a custom log writer that writes logs to a daily log file. 
 file for each day in a given directory.
 
 ```ts filename="daily-file-log-writer.ts"
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { Attributes, jsonStringify, LogLevel, LogWriter } from '@graphql-hive/logger'
+import fs from "node:fs/promises";
+import path from "node:path";
+import {
+  Attributes,
+  jsonStringify,
+  LogLevel,
+  LogWriter,
+} from "@graphql-hive/logger";
 
 export class DailyFileLogWriter implements LogWriter {
   constructor(
     private dir: string,
-    private name: string
+    private name: string,
   ) {}
-  write(level: LogLevel, attrs: Attributes | null | undefined, msg: string | null | undefined) {
-    const date = new Date().toISOString().split('T')[0]
-    const logfile = path.resolve(this.dir, `${this.name}_${date}.log`)
-    return fs.appendFile(logfile, jsonStringify({ level, msg, attrs }))
+  write(
+    level: LogLevel,
+    attrs: Attributes | null | undefined,
+    msg: string | null | undefined,
+  ) {
+    const date = new Date().toISOString().split("T")[0];
+    const logfile = path.resolve(this.dir, `${this.name}_${date}.log`);
+    return fs.appendFile(logfile, jsonStringify({ level, msg, attrs }));
   }
 }
 ```
@@ -332,25 +349,31 @@ operations to complete. This is especially useful in serverless or short-lived e
 you want to guarantee that no logs are lost due to unfinished asynchronous operations.
 
 ```ts
-import { Attributes, ConsoleLogWriter, Logger, LogLevel, LogWriter } from '@graphql-hive/logger'
+import {
+  Attributes,
+  ConsoleLogWriter,
+  Logger,
+  LogLevel,
+  LogWriter,
+} from "@graphql-hive/logger";
 
 class HTTPLogWriter implements LogWriter {
   async write(level: LogLevel, attrs: Attributes, msg: string) {
-    await fetch('https://my-log-service.com', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ level, attrs, msg })
-    })
+    await fetch("https://my-log-service.com", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ level, attrs, msg }),
+    });
   }
 }
 
 {
   await using log = new Logger({
     // send logs both to the HTTP loggging service and output them to the console
-    writers: [new HTTPLogWriter(), new ConsoleLogWriter()]
-  })
+    writers: [new HTTPLogWriter(), new ConsoleLogWriter()],
+  });
 
-  log.info('Hello World!')
+  log.info("Hello World!");
 }
 
 // logger went out of scope and all of the logs have been flushed
@@ -365,29 +388,29 @@ writes have settled, if there were any errors, an `AggregateError` is thrown con
 individual write errors.
 
 ```ts
-import { Logger } from './Logger'
+import { Logger } from "./Logger";
 
-let i = 0
+let i = 0;
 const log = new Logger({
   writers: [
     {
       async write() {
-        i++
-        throw new Error('Write failed! #' + i)
-      }
-    }
-  ]
-})
+        i++;
+        throw new Error("Write failed! #" + i);
+      },
+    },
+  ],
+});
 
 // no fail during logs
-log.info('hello')
-log.info('world')
+log.info("hello");
+log.info("world");
 
 try {
-  await log.flush()
+  await log.flush();
 } catch (e) {
   // flush will fail with each individually failed writes
-  console.error(e)
+  console.error(e);
 }
 ```
 

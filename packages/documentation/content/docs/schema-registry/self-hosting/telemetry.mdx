@@ -2,9 +2,7 @@
 title: Telemetry / Error Handling
 ---
 
-import { Step, Steps } from 'fumadocs-ui/components/steps'
-
-
+import { Step, Steps } from "fumadocs-ui/components/steps";
 
 When self-hosting Hive, you can enable telemetry to help us understand how Hive is being used and
 how we can improve it. Telemetry is disabled by default.
@@ -70,6 +68,7 @@ Alternatively, you can use
 [these following instructions for running a Grafana with Tempo service locally using Docker](https://grafana.com/docs/tempo/latest/getting-started/docker-example/).
 In that case, use `OPENTELEMETRY_COLLECTOR_ENDPOINT="http://localhost:4318/v1/traces"` as the OTLP
 endpoint.
+
 </Step>
 
 <Step>
@@ -81,6 +80,7 @@ variable:
 ```
 OPENTELEMETRY_COLLECTOR_ENDPOINT="http://localhost:4318"
 ```
+
 </Step>
 </Steps>
 

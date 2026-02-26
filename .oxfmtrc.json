@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 80,
+  "ignorePatterns": [
+    "packages/documentation/.source",
+    "*.gen.*",
+    "temporary/",
+    "node_modules/",
+    "build/",
+    "dist/",
+    ".next/",
+    ".turbo/",
+    ".vercel/",
+    ".output/",
+    ".cache/",
+    ".source/",
+    ".tldr/",
+    ".context/",
+    ".git/"
+  ]
+}

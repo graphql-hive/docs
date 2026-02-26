@@ -2,17 +2,15 @@
 title: GraphQL Schema Usage Insights
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Image } from '@hive/design-system/image'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Image } from "@hive/design-system/image";
 
-import usageClientsImage from './usage-clients.png'
-import usageLatencyImage from './usage-latency-over-time.png'
-import usageOperationsOverTimeImage from './usage-operations-over-time.png'
-import usageOperationsImage from './usage-operations.png'
-import usageRpmImage from './usage-rpm-over-time.png'
-import usageStatsImage from './usage-stats.png'
-
-
+import usageClientsImage from "./usage-clients.png";
+import usageLatencyImage from "./usage-latency-over-time.png";
+import usageOperationsOverTimeImage from "./usage-operations-over-time.png";
+import usageOperationsImage from "./usage-operations.png";
+import usageRpmImage from "./usage-rpm-over-time.png";
+import usageStatsImage from "./usage-stats.png";
 
 Hive allow you to collect usage data from your GraphQL operations and use the data collected for the
 following purposes:
@@ -33,9 +31,9 @@ To collect and report usage information from your GraphQL gateway, you'll need t
 traffic reported to Hive.
 
 <Callout type="info">
-  Hive does not collect, process or store any data from your GraphQL operations or responses. Hive
-  Client only transmits the metadata of your GraphQL operations to Hive: what fields were used, if
-  there were any errors, etc.
+  Hive does not collect, process or store any data from your GraphQL operations
+  or responses. Hive Client only transmits the metadata of your GraphQL
+  operations to Hive: what fields were used, if there were any errors, etc.
 </Callout>
 
 The following information is included in usage reporting:

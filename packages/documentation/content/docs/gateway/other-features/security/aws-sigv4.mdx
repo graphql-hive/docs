@@ -4,9 +4,7 @@ title: AWS Signature Version 4 (SigV4)
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Hive Gateway allows you to sign subgraph requests with
 [AWS Signature Version 4 (SigV4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-authenticating-requests.html)
@@ -34,13 +32,13 @@ You can enable AWS SigV4 signing by setting the `awsSigv4.outgoing` option to `t
 configuration.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   awsSigv4: {
-    outgoing: true
-  }
-})
+    outgoing: true,
+  },
+});
 ```
 
 ### Credentials
@@ -49,17 +47,17 @@ By default, Hive Gateway will use the standard environment variables to get the 
 you can also provide the credentials directly in the configuration.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   awsSigv4: {
     outgoing: {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      region: process.env.AWS_REGION
-    }
-  }
-})
+      region: process.env.AWS_REGION,
+    },
+  },
+});
 ```
 
 #### Assume Role (IAM)
@@ -67,18 +65,18 @@ export const gatewayConfig = defineConfig({
 You can provide the `roleArn` and `roleSessionName` to assume a role using the provided credentials.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   awsSigv4: {
     outgoing: {
       region: process.env.AWS_REGION,
       // By default it takes the credentials from the environment variables
-      roleArn: 'arn:aws:iam::123456789012:role/role-name', // process.env.AWS_ROLE_ARN
-      roleSessionName: 'session-name' // process.env.AWS_ROLE_SESSION_NAME
-    }
-  }
-})
+      roleArn: "arn:aws:iam::123456789012:role/role-name", // process.env.AWS_ROLE_ARN
+      roleSessionName: "session-name", // process.env.AWS_ROLE_SESSION_NAME
+    },
+  },
+});
 ```
 
 #### Other credential providers
@@ -88,18 +86,19 @@ You can use AWS SDK's credential providers from
 as SSO support etc.
 
 ```ts filename="gateway.config.ts"
-import { fromNodeProviderChain } from '@aws-sdk/credential-providers'
-import { defineConfig } from '@graphql-hive/gateway'
+import { fromNodeProviderChain } from "@aws-sdk/credential-providers";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   awsSigv4: {
-    outgoing: fromNodeProviderChain()
-  }
-})
+    outgoing: fromNodeProviderChain(),
+  },
+});
 ```
 
 <Callout>
-  Learn more about the available credential providers in the [AWS SDK for JavaScript v3
+  Learn more about the available credential providers in the [AWS SDK for
+  JavaScript v3
   documentation](https://www.npmjs.com/package/@aws-sdk/credential-providers).
 </Callout>
 
@@ -109,7 +108,7 @@ By default, the plugin extracts the service and region from the URL of the subgr
 also provide the service and region directly in the configuration.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   awsSigv4: {
@@ -117,11 +116,11 @@ export const gatewayConfig = defineConfig({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
       region: process.env.AWS_REGION,
-      serviceName: 'lambda',
-      region: 'us-east-1'
-    }
-  }
-})
+      serviceName: "lambda",
+      region: "us-east-1",
+    },
+  },
+});
 ```
 
 ### Subgraph-specific configuration
@@ -130,20 +129,20 @@ You can also configure the SigV4 signing for specific subgraphs by setting the `
 the subgraph configuration.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   awsSigv4: {
     // Allowing SigV4 signing for only the 'products' subgraph
-    outgoing: subgraph => subgraph === 'products'
-  }
-})
+    outgoing: (subgraph) => subgraph === "products",
+  },
+});
 ```
 
 or you can provide the credentials directly per subgraph.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   awsSigv4: {
@@ -151,27 +150,27 @@ export const gatewayConfig = defineConfig({
     // And do not allow SigV4 signing for any other subgraph
     outgoing(subgraph) {
       // You can use hardcoded credentials for the 'products' subgraph
-      if (subgraph === 'products') {
+      if (subgraph === "products") {
         return {
           accessKeyId: process.env.PRODUCTS_AWS_ACCESS_KEY_ID,
           secretAccessKey: process.env.PRODUCTS_AWS_SECRET_ACCESS_KEY,
-          serviceName: 'lambda',
-          region: 'eu-west-1'
-        }
+          serviceName: "lambda",
+          region: "eu-west-1",
+        };
       }
       // You can use Assume Role for the 'users' subgraph
-      if (subgraph === 'users') {
+      if (subgraph === "users") {
         return {
-          roleArn: 'arn:aws:iam::123456789012:role/role-name',
-          roleSessionName: 'session-name',
-          serviceName: 's3',
-          region: 'us-east-1'
-        }
+          roleArn: "arn:aws:iam::123456789012:role/role-name",
+          roleSessionName: "session-name",
+          serviceName: "s3",
+          region: "us-east-1",
+        };
       }
-      return false
-    }
-  }
-})
+      return false;
+    },
+  },
+});
 ```
 
 ## Validating incoming requests
@@ -182,7 +181,7 @@ But you have to provide some credentials using environment variables or directly
 configuration.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   awsSigv4: {
@@ -192,13 +191,13 @@ export const gatewayConfig = defineConfig({
 
       // Or Assume Role
       assumeRole: () => ({
-        roleArn: process.env['AWS_ROLE_ARN'],
-        roleSessionName: process.env['AWS_ROLE_SESSION_NAME'],
-        region: process.env['AWS_REGION']
-      })
-    }
-  }
-})
+        roleArn: process.env["AWS_ROLE_ARN"],
+        roleSessionName: process.env["AWS_ROLE_SESSION_NAME"],
+        region: process.env["AWS_REGION"],
+      }),
+    },
+  },
+});
 ```
 
 ### Combining with JWT
@@ -210,21 +209,22 @@ In this case if the `Authorization` header starts with `Bearer`, the JWT will be
 authentication, otherwise, the request will be validated with AWS SigV4.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   awsSigv4: {
     incoming: {
       enabled: (request, context) =>
-        !('jwt' in context) && !request.headers.get('authorization')?.startsWith('Bearer')
+        !("jwt" in context) &&
+        !request.headers.get("authorization")?.startsWith("Bearer"),
       // other options
-    }
+    },
   },
   jwt: {
     reject: {
       missingToken: false,
-      invalidToken: false
-    }
-  }
-})
+      invalidToken: false,
+    },
+  },
+});
 ```

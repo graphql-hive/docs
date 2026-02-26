@@ -28,34 +28,38 @@ Add a distributed cache (Redis, Memcached, etc.) as an L2 layer between the in-m
 **L1 (memory) → L2 (Redis) → CDN**
 
 ```typescript
-import { createYoga } from 'graphql-yoga'
-import { createClient } from 'redis'
-import { useHive } from '@graphql-hive/yoga'
+import { createYoga } from "graphql-yoga";
+import { createClient } from "redis";
+import { useHive } from "@graphql-hive/yoga";
 
-const redis = createClient({ url: 'redis://localhost:6379' })
-await redis.connect()
+const redis = createClient({ url: "redis://localhost:6379" });
+await redis.connect();
 
 const yoga = createYoga({
   plugins: [
     useHive({
       experimental__persistedDocuments: {
         cdn: {
-          endpoint: 'https://cdn.graphql-hive.com/artifacts/v1/<target_id>',
-          accessToken: '<cdn_access_token>'
+          endpoint: "https://cdn.graphql-hive.com/artifacts/v1/<target_id>",
+          accessToken: "<cdn_access_token>",
         },
         layer2Cache: {
           cache: {
-            get: key => redis.get(`hive:pd:${key}`),
+            get: (key) => redis.get(`hive:pd:${key}`),
             set: (key, value, opts) =>
-              redis.set(`hive:pd:${key}`, value, opts?.ttl ? { EX: opts.ttl } : {})
+              redis.set(
+                `hive:pd:${key}`,
+                value,
+                opts?.ttl ? { EX: opts.ttl } : {},
+              ),
           },
           ttlSeconds: 3600,
-          notFoundTtlSeconds: 60
-        }
-      }
-    })
-  ]
-})
+          notFoundTtlSeconds: 60,
+        },
+      },
+    }),
+  ],
+});
 ```
 
 ## Hive Gateway

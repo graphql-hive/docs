@@ -2,9 +2,7 @@
 title: Run Anywhere - Deploy your Gateway
 ---
 
-
-
-import { Callout } from '@hive/design-system/hive-components/callout'
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Once you configured, and tested your gateway. Now, it is time to deploy it. Hive Gateway Runtime
 uses Web Standards (WHATWG Fetch API) not only as an HTTP client but also for handling the
@@ -46,8 +44,9 @@ See the [Hive Gateway Configuration Rereference](/docs/api-reference/gateway-con
 details about these differences.
 
 <Callout>
-  None of the transports and none of the built-in plugins are included in the slimmed down runtime
-  version of the Hive Gateway `@graphql-hive/gateway-runtime`.
+  None of the transports and none of the built-in plugins are included in the
+  slimmed down runtime version of the Hive Gateway
+  `@graphql-hive/gateway-runtime`.
 </Callout>
 
 ## Other Environments (Not Listed)
@@ -57,22 +56,22 @@ using its progammatic API. In this case, we will show here how to pass the reque
 your environment to Hive Gateway, then get the response for your environment back.
 
 ```ts
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 import type {
   ImaginaryEnvironmentRequest,
-  ImaginaryEnvironmentServerContext
-} from '@imaginary-environment/types'
-import { getMySupergraph } from './my-supergraph.js'
+  ImaginaryEnvironmentServerContext,
+} from "@imaginary-environment/types";
+import { getMySupergraph } from "./my-supergraph.js";
 
 // Initialise and configure the Hive Gateway runtime
 const gateway = createGatewayRuntime<ImaginaryEnvironmentServerContext>({
-  supergraph: () => getMySupergraph()
-})
+  supergraph: () => getMySupergraph(),
+});
 
 // Let's say it needs a function exported
 export async function gatewayEndpoint(
   envRequest: ImaginaryEnvironmentRequest,
-  envContext: ImaginaryEnvironmentServerContext
+  envContext: ImaginaryEnvironmentServerContext,
 ) {
   // The runtime provides a fetch function which has exactly the same signature with regular `fetch`
   const res = await gateway.fetch(
@@ -80,37 +79,37 @@ export async function gatewayEndpoint(
     {
       method: envRequest.method,
       headers: envRequest.headers,
-      body: envRequest.body // Body can be a string or a ReadableStream or UInt8Array, see [BodyInit](https://developer.mozilla.org/en-US/docs/Web/API/BodyInit)
+      body: envRequest.body, // Body can be a string or a ReadableStream or UInt8Array, see [BodyInit](https://developer.mozilla.org/en-US/docs/Web/API/BodyInit)
     },
-    envContext
-  )
+    envContext,
+  );
 
   // You can create an object from [`Headers`](https://developer.mozilla.org/en-US/docs/Web/API/Headers) object
-  const headersObj: Record<string, string> = {}
+  const headersObj: Record<string, string> = {};
   res.headers.forEach((value, key) => {
-    headersObj[key] = value
-  })
+    headersObj[key] = value;
+  });
   // It returns [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object
   // See the methods and properties of the Response object from the link
   // You can get a string
-  const bodyText = await res.text()
+  const bodyText = await res.text();
   // You can get a stream
-  const bodyStream = res.body
+  const bodyStream = res.body;
   // You can get a buffer
-  const bodyBuffer = await res.arrayBuffer()
+  const bodyBuffer = await res.arrayBuffer();
   // You can get a JSON object
-  const bodyJson = await res.json()
+  const bodyJson = await res.json();
   // You can get a blob
-  const bodyBlob = await res.blob()
+  const bodyBlob = await res.blob();
   // You can get a form data
-  const bodyFormData = await res.formData()
+  const bodyFormData = await res.formData();
 
   // Then you can return the response to your environment
   return {
     status: res.status,
     statusText: res.statusText,
     headers: headersObj,
-    bodyText
-  }
+    bodyText,
+  };
 }
 ```

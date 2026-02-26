@@ -1,16 +1,13 @@
 ---
 title: Preflight Scripts
 
-description:
-  Useful for handling authentication flows like OAuth, where you may need to refresh an access token
+description: Useful for handling authentication flows like OAuth, where you may need to refresh an access token
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Screenshot } from "@hive/design-system/hive-components/screenshot";
 
-
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Screenshot } from '@hive/design-system/hive-components/screenshot'
-
-export const figcaptionClass = 'text-center text-sm mt-2'
+export const figcaptionClass = "text-center text-sm mt-2";
 
 **Preflight Scripts** is a feature that enables you to automatically execute custom code before each
 GraphQL request is made. They're especially useful for handling authentication flows like OAuth,
@@ -26,7 +23,9 @@ The interface displays two editors:
 - a **read-only Script editor** in JavaScript for viewing the saved script,
 - an **Environment Variables editor** in JSON that persists data in localStorage.
 
-<Screenshot>![Active Preflight Script](./active-preflight-script.png)</Screenshot>
+<Screenshot>
+  ![Active Preflight Script](./active-preflight-script.png)
+</Screenshot>
 
 ## API Reference
 
@@ -50,8 +49,8 @@ Sets the value of the environment variable with the given key.
 Returns the value of the environment variable with the given key.
 
 ```js
-lab.environment.set('myKey', 'myValue')
-lab.environment.get('myKey') // 'myValue'
+lab.environment.set("myKey", "myValue");
+lab.environment.get("myKey"); // 'myValue'
 ```
 
 Environment variables are persisted in the browser, they are not shared between different users or
@@ -67,8 +66,8 @@ Prompts the user with a message and an optional default value. Returns a promise
 the user's input or `null` if the user cancels the prompt.
 
 ```js
-const username = await lab.prompt('Enter your username')
-const password = await lab.prompt('Enter your password')
+const username = await lab.prompt("Enter your username");
+const password = await lab.prompt("Enter your password");
 ```
 
 ### CryptoJS
@@ -77,8 +76,8 @@ For certain workflows, you may need to encrypt or decrypt data. The Laboratory p
 the [CryptoJS](https://cryptojs.gitbook.io/docs) library.
 
 ```js
-CryptoJS.MD5('Message')
-CryptoJS.HmacSHA256('Message', 'Secret Passphrase')
+CryptoJS.MD5("Message");
+CryptoJS.HmacSHA256("Message", "Secret Passphrase");
 ```
 
 ## Editing Preflight Script
@@ -87,9 +86,10 @@ Clicking the "Edit" button opens a window that allows you to edit, test, and sav
 Hive.
 
 <Callout type="warning">
-  **Note**: Your script will stored as plain text in our database, don't put any secrets there, use
-  Environment variables editor for it! The preflight script is accessible to all members of your
-  organization, but only users with access to target Settings can edit the script code.
+  **Note**: Your script will stored as plain text in our database, don't put any
+  secrets there, use Environment variables editor for it! The preflight script
+  is accessible to all members of your organization, but only users with access
+  to target Settings can edit the script code.
 </Callout>
 
 As you write your script, you can click the "Run" button to test it. The script will run in a
@@ -111,7 +111,7 @@ You achieve this by interacting with the
 to every Laboratory request.
 
 ```ts
-lab.request.headers.set('foo', 'bar')
+lab.request.headers.set("foo", "bar");
 ```
 
 Preflight headers are merged with the following rules:
@@ -140,7 +140,8 @@ This will replace `{{access_token}}` with the value of the `access_token` enviro
 ## CORS
 
 <Callout type="warning">
-  **Note**: Preflight scripts are ran inside an iframe and due to how browsers have implemented this
-  feature, the "Origin" header will be `"null"`. If you encounter a CORS error, try whitelisting the
-  origin `"null"`. This is not recommended for production environments.
+  **Note**: Preflight scripts are ran inside an iframe and due to how browsers
+  have implemented this feature, the "Origin" header will be `"null"`. If you
+  encounter a CORS error, try whitelisting the origin `"null"`. This is not
+  recommended for production environments.
 </Callout>

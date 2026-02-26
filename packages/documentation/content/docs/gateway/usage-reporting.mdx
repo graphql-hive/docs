@@ -2,8 +2,7 @@
 title: Usage Reporting
 ---
 
-import { Tabs } from '@hive/design-system/tabs'
-
+import { Tabs } from "@hive/design-system/tabs";
 
 Hive Gateway can send usage reports to a schema registry such as the Hive schema registry, but also
 other providers such Apollo GraphOS.
@@ -111,11 +110,11 @@ If you want to report usage metrics to a Apollo GraphOS, configure your `gateway
 following.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   reporting: {
-    type: 'graphos',
+    type: "graphos",
     /**
      * The graph ref of the managed federation graph.
      * It is composed of the graph ID and the variant (`<YOUR_GRAPH_ID>@<VARIANT>`).
@@ -124,7 +123,7 @@ export const gatewayConfig = defineConfig({
      *
      * You can find a a graph's ref at the top of its Schema Reference page in Apollo Studio.
      */
-    graphRef: '<graph_id>[@<variant>]',
+    graphRef: "<graph_id>[@<variant>]",
     /**
      * The API key to use to authenticate with the managed federation up link.
      * It needs at least the `service:read` permission.
@@ -133,33 +132,34 @@ export const gatewayConfig = defineConfig({
      *
      * [Learn how to create an API key](https://www.apollographql.com/docs/federation/v1/managed-federation/setup#4-connect-the-gateway-to-studio)
      */
-    apiKey: '<api_key>',
+    apiKey: "<api_key>",
     /**
      * Usage report endpoint
      *
      * Defaults to GraphOS endpoint (https://usage-reporting.api.apollographql.com/api/ingress/traces)
      */
-    endpoint: 'https://usage-reporting.api.apollographql.com/api/ingress/traces',
+    endpoint:
+      "https://usage-reporting.api.apollographql.com/api/ingress/traces",
     /**
      * Agent Version to report to the usage reporting API
      *
      * Defaults to the Hive Gateway's version
      */
-    agentVersion: 'hive-gateway@1.0.0',
+    agentVersion: "hive-gateway@1.0.0",
     /**
      * Client name to report to the usage reporting API
      *
      * Defaults to incoming `apollo-graphql-client-name` HTTP header
      */
-    clientName: req => req.headers.get('apollo-graphql-client-name'),
+    clientName: (req) => req.headers.get("apollo-graphql-client-name"),
     /**
      * Client version to report to the usage reporting API
      *
      * Defaults to incoming `apollo-graphql-client-version` HTTP header
      */
-    clientVersion: req => req.headers.get('apollo-graphql-client-version')
-  }
-})
+    clientVersion: (req) => req.headers.get("apollo-graphql-client-version"),
+  },
+});
 ```
 
 </Tabs.Tab>

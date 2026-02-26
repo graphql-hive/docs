@@ -20,21 +20,21 @@ written. This avoids unnecessary computation for expensive attributes when the l
 due to the current log level.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger({ level: 'info' })
+const log = new Logger({ level: "info" });
 
 log.debug(
   // This function will NOT be called, since 'debug' is below the current log level.
   () => ({ expensive: computeExpensiveValue() }),
-  'This will not be logged'
-)
+  "This will not be logged",
+);
 
 log.info(
   // This function WILL be called, since 'info' log level is set.
   () => ({ expensive: computeExpensiveValue() }),
-  'This will be logged'
-)
+  "This will be logged",
+);
 ```
 
 ## Change on Creation
@@ -43,24 +43,24 @@ When creating an instance of the logger, you can configure the logging level by 
 `level` option. Like this:
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger({ level: 'debug' })
+const log = new Logger({ level: "debug" });
 
 log.trace(
   // you can suply "lazy" attributes which wont be evaluated unless the log level allows logging
   () => ({
-    wont: 'be evaluated',
-    some: expensiveOperation()
+    wont: "be evaluated",
+    some: expensiveOperation(),
   }),
-  'Wont be logged and attributes wont be evaluated'
-)
+  "Wont be logged and attributes wont be evaluated",
+);
 
-log.debug('Hello world!')
+log.debug("Hello world!");
 
-const child = log.child('[prefix] ')
+const child = log.child("[prefix] ");
 
-child.debug('Child loggers inherit the parent log level')
+child.debug("Child loggers inherit the parent log level");
 ```
 
 Outputs the following to the console:
@@ -82,29 +82,29 @@ ways of doing that.
 One way of doing it is by using the log's `setLevel` method.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger({ level: 'debug' })
+const log = new Logger({ level: "debug" });
 
-log.debug('Hello world!')
+log.debug("Hello world!");
 
-const child = log.child('[prefix] ')
+const child = log.child("[prefix] ");
 
-child.debug('Child loggers inherit the parent log level')
+child.debug("Child loggers inherit the parent log level");
 
-log.setLevel('trace')
+log.setLevel("trace");
 
-log.trace(() => ({ hi: 'there' }), 'Now tracing is logged too!')
+log.trace(() => ({ hi: "there" }), "Now tracing is logged too!");
 
-child.trace('Also on the child logger')
+child.trace("Also on the child logger");
 
-child.setLevel('info')
+child.setLevel("info");
 
-log.trace('Still logging!')
+log.trace("Still logging!");
 
-child.debug('Wont be logged because the child has a different log level now')
+child.debug("Wont be logged because the child has a different log level now");
 
-child.info('Hello child!')
+child.info("Hello child!");
 ```
 
 Outputs the following to the console:
@@ -126,31 +126,33 @@ Outputs the following to the console:
 Another way of doing it is to pass a function to the `level` option when creating a logger.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-let isDebug = false
+let isDebug = false;
 
 const log = new Logger({
   level: () => {
     if (isDebug) {
-      return 'debug'
+      return "debug";
     }
-    return 'info'
-  }
-})
+    return "info";
+  },
+});
 
-log.debug('isDebug is false, so this wont be logged')
+log.debug("isDebug is false, so this wont be logged");
 
-log.info('Hello world!')
+log.info("Hello world!");
 
-const child = log.child('[scoped] ')
+const child = log.child("[scoped] ");
 
-child.debug('Child loggers inherit the parent log level function, so this wont be logged either')
+child.debug(
+  "Child loggers inherit the parent log level function, so this wont be logged either",
+);
 
 // enable debug mode
-isDebug = true
+isDebug = true;
 
-child.debug('Now debug is enabled and logged')
+child.debug("Now debug is enabled and logged");
 ```
 
 Outputs the following:

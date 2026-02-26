@@ -2,9 +2,7 @@
 title: External Composition
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 <Callout type="warning">Only available for Federation projects.</Callout>
 
@@ -27,11 +25,11 @@ your `docker-compose.community.yml`:
 services:
   # ... other services
   external-composition:
-    image: '${DOCKER_REGISTRY}composition-federation-2${DOCKER_TAG}'
+    image: "${DOCKER_REGISTRY}composition-federation-2${DOCKER_TAG}"
     networks:
-      - 'stack'
+      - "stack"
     healthcheck:
-      test: ['CMD', 'wget', '--spider', '-q', 'localhost:3069/_readiness']
+      test: ["CMD", "wget", "--spider", "-q", "localhost:3069/_readiness"]
       interval: 5s
       timeout: 5s
       retries: 6
@@ -40,7 +38,7 @@ services:
       - 3069:3069
     environment:
       PORT: 3069
-      SECRET: '${EXTERNAL_COMPOSITION_SECRET}'
+      SECRET: "${EXTERNAL_COMPOSITION_SECRET}"
 ```
 
 Make sure to set the `EXTERNAL_COMPOSITION_SECRET` environment variable to a secure value.

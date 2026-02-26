@@ -3,9 +3,7 @@ title: Using the GraphQL API
 description: Introduction to the Hive Console GraphQL API.
 ---
 
-import { Tabs } from '@hive/design-system/tabs'
-
-
+import { Tabs } from "@hive/design-system/tabs";
 
 Interact programatically interact with your Hive Organization via the public Hive Console GraphQL
 API. You can manage users, projects, and targets, and retrieve information about your schema usage.
@@ -143,7 +141,11 @@ To paginate using cursor-based pagination in GraphQL:
 Repeat this process until `hasNextPage` is `false`.
 
 ```graphql filename="Example: Paginated schema versions"
-query PaginatedSchemaVersions($targetSelector: TargetSelectorInput, $first: Int!, $after: String) {
+query PaginatedSchemaVersions(
+  $targetSelector: TargetSelectorInput
+  $first: Int!
+  $after: String
+) {
   target(reference: { bySelector: $targetSelector }) {
     id
     schemaVersions(first: $first, after: $after) {

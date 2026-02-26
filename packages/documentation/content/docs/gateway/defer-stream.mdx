@@ -6,9 +6,7 @@ description:
   important data as soon as it's ready.
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Stream and defer are directives that allow you to improve latency for clients by sending the most
 important data as soon as it's ready.
@@ -26,18 +24,19 @@ GraphQL libraries can start implementing this as experimental feature to provide
 working group.
 
 <Callout>
-  Stream and Defer are **experimental** features and not yet stable. The implementation can and will
-  change. Furthermore, there is no yet a stable specification for the incremental delivery protocol.
+  Stream and Defer are **experimental** features and not yet stable. The
+  implementation can and will change. Furthermore, there is no yet a stable
+  specification for the incremental delivery protocol.
 </Callout>
 
 ## Enabling in the configuration
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  deferStream: true
-})
+  deferStream: true,
+});
 ```
 
 ## Using Defer

@@ -3,8 +3,6 @@ title: Target Management via the GraphQL API
 description: Learn how to manage targets via the Hive Console GraphQL API.
 ---
 
-
-
 Targets can be managed via the Hive Console GraphQL API. For more information, please refer to our
 [target documentation](/docs/schema-registry/management/targets).
 
@@ -72,7 +70,9 @@ Use the `Mutation.updateTargetGraphQLEndpointUrl` field for updating the GraphQL
 is used in the laboratory for querying the GraphQL server.
 
 ```graphql
-mutation UpdateTargetGraphQLEndpointUrl($input: UpdateTargetGraphQLEndpointUrlInput!) {
+mutation UpdateTargetGraphQLEndpointUrl(
+  $input: UpdateTargetGraphQLEndpointUrlInput!
+) {
   updateTargetGraphQLEndpointUrl(input: $input) {
     ok {
       target {
@@ -128,7 +128,9 @@ Use the `Mutation.updateTargetDangerousChangeClassification` field to set whethe
 changes should fail a schema check (if they are not safe based on usage).
 
 ```graphql
-mutation UpdateTargetGraphQLEndpointUrl($input: UpdateTargetDangerousChangeClassificationInput!) {
+mutation UpdateTargetGraphQLEndpointUrl(
+  $input: UpdateTargetDangerousChangeClassificationInput!
+) {
   updateTargetDangerousChangeClassification(input: $input) {
     ok {
       target {

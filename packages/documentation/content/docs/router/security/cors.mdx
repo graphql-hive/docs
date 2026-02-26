@@ -1,8 +1,6 @@
 ---
-title: 'Configuring CORS'
+title: "Configuring CORS"
 ---
-
-
 
 Cross-Origin Resource Sharing (CORS) controls which websites can access your GraphQL API from a
 browser. Without proper CORS configuration, legitimate web apps can't reach your API, but with
@@ -85,8 +83,8 @@ cors:
   enabled: true
   # Default settings for most origins
   allow_credentials: false
-  methods: ['GET', 'POST', 'OPTIONS']
-  allow_headers: ['Content-Type']
+  methods: ["GET", "POST", "OPTIONS"]
+  allow_headers: ["Content-Type"]
 
   policies:
     # Your main application - inherits defaults but adds credentials
@@ -109,7 +107,7 @@ cors:
     # Public demo site - very restricted
     - origins:
         - https://demo.my-app.com
-      methods: ['GET', 'OPTIONS'] # Read-only access
+      methods: ["GET", "OPTIONS"] # Read-only access
 ```
 
 ## Common Issues and Solutions

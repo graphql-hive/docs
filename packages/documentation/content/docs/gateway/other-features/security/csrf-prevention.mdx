@@ -7,9 +7,6 @@ description:
 searchable: false
 ---
 
-
-
-
 If you have CORS enabled, almost all requests coming from the browser will have a preflight
 request - however, some requests are deemed "simple" and don't make a preflight. One example of such
 a request is a good ol' GET request without any headers, this request can be marked as "simple" and
@@ -23,11 +20,11 @@ therefore always executing a preflight request. Apollo does this when using the
 ## Quick Start
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   csrfPrevention: {
-    requestHeaders: ['x-gateway-csrf']
-  }
-})
+    requestHeaders: ["x-gateway-csrf"],
+  },
+});
 ```

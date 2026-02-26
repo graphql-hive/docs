@@ -1,8 +1,6 @@
 ---
-title: 'JWT Authentication'
+title: "JWT Authentication"
 ---
-
-
 
 Most production GraphQL APIs need to authenticate requests, and JWT tokens are one of the most
 common ways to do this. Hive Router has built-in JWT support that can validate tokens and protect
@@ -47,15 +45,15 @@ jwt:
     - source: remote
       url: https://your-domain.auth0.com/.well-known/jwks.json
       prefetch: true # Fetch keys on startup
-      polling_interval: '15m' # Refresh keys every 15 minutes
+      polling_interval: "15m" # Refresh keys every 15 minutes
 
   # Make sure tokens are for your API
   audiences:
-    - 'https://your-api.com'
+    - "https://your-api.com"
 
   # Make sure tokens come from your provider
   issuers:
-    - 'https://your-domain.auth0.com/'
+    - "https://your-domain.auth0.com/"
 
   # Only allow secure algorithms
   allowed_algorithms:
@@ -88,7 +86,7 @@ jwt:
   # Send user info to subgraphs
   forward_claims_to_upstream_extensions:
     enabled: true
-    field_name: 'user' # Access as extensions.user in subgraphs
+    field_name: "user" # Access as extensions.user in subgraphs
 ```
 
 **What your subgraphs receive:**
@@ -123,7 +121,7 @@ jwt:
 
   forward_claims_to_upstream_extensions:
     enabled: true
-    field_name: 'user'
+    field_name: "user"
 ```
 
 Anonymous requests won't have `extensions.user`, while authenticated requests will. Your subgraphs
@@ -145,7 +143,7 @@ jwt:
     # Check Authorization header first
     - source: header
       name: authorization
-      prefix: 'Bearer '
+      prefix: "Bearer "
 
     # Fall back to a cookie
     - source: cookies
@@ -170,7 +168,7 @@ jwt:
       path: ./dev-jwks.json
 
   audiences:
-    - 'localhost:4000'
+    - "localhost:4000"
 ```
 
 You can generate development keys using tools like [jwt.io](https://jwt.io) or your identity

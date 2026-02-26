@@ -7,9 +7,7 @@ description:
 searchable: false
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Automatic Persisted Queries is a protocol for reducing the overhead of sending the same GraphQL
 documents to the server over and over again. Thus reducing client to server upstream traffic.
@@ -43,12 +41,12 @@ npm i @graphql-yoga/plugin-apq
 ```
 
 ```ts filename="Automatic Persisted Queries Gateway setup" {3, 13}
-import { defineConfig } from '@graphql-hive/gateway'
-import { useAPQ } from '@graphql-yoga/plugin-apq'
+import { defineConfig } from "@graphql-hive/gateway";
+import { useAPQ } from "@graphql-yoga/plugin-apq";
 
 export const gatewayConfig = defineConfig({
-  plugins: pluginCtx => [useAPQ()]
-})
+  plugins: (pluginCtx) => [useAPQ()],
+});
 ```
 
 Start your Hive Gateway and send a request for priming the cache (register the operation).
@@ -83,12 +81,12 @@ unique entries.
 A custom store implementation can be provided via the `store` option.
 
 ```ts filename="Automatic Persisted Operations with a custom store" {16}
-import { useAPQ, type APQStore } from '@graphql-yoga/plugin-apq'
+import { useAPQ, type APQStore } from "@graphql-yoga/plugin-apq";
 
 // Note: this store grows infinitely, so it is not a good idea to use it in production.
-const store: APQStore = new Map()
+const store: APQStore = new Map();
 
-useAPQ({ store })
+useAPQ({ store });
 ```
 
 For external stores the `set` and `get` properties on the store can also return a `Promise`.
@@ -99,28 +97,28 @@ For external stores the `set` and `get` properties on the store can also return 
   respond to requests if the store goes down.
 
 ```ts filename="Automatic Persisted Operations with a redis store" {16}
-import Keyv from 'keyv'
+import Keyv from "keyv";
 
-const store = new Keyv('redis://user:pass@localhost:6379')
+const store = new Keyv("redis://user:pass@localhost:6379");
 
 useAPQ({
   store: {
     async get(key) {
       try {
-        return await store.get(key)
+        return await store.get(key);
       } catch (e) {
-        console.error(`Error while fetching the operation: ${key}`, e)
+        console.error(`Error while fetching the operation: ${key}`, e);
       }
     },
     async set(key, value) {
       try {
-        return await store.set(key, value)
+        return await store.set(key, value);
       } catch (e) {
-        console.error(`Error while saving the operation: ${key}`, e)
+        console.error(`Error while saving the operation: ${key}`, e);
       }
-    }
-  }
-})
+    },
+  },
+});
 ```
 
 </Callout>
@@ -148,9 +146,9 @@ You can force the error responses to use 200 OK status code:
 ```ts filename="Automatic Persisted Operations with a custom store" {18-20}
 useAPQ({
   responseConfig: {
-    forceStatusCodeOk: true
-  }
-})
+    forceStatusCodeOk: true,
+  },
+});
 ```
 
 ## APQ between subgraphs and the gateway
@@ -160,24 +158,24 @@ benefit from APQ between the gateway and the subgraphs. If you have configured A
 subgraphs, the gateway can handle it automatically with the following configuration;
 
 ```ts filename="Automatic Persisted Operations with a custom store"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   transportEntries: {
     MY_APQ_SUBGRAPH: {
       // The name of the subgraph
       options: {
-        apq: true
-      }
+        apq: true,
+      },
     },
     // or you can use wildcard `*` to enable APQ for all subgraphs
-    '*': {
+    "*": {
       options: {
-        apq: true
-      }
-    }
-  }
-})
+        apq: true,
+      },
+    },
+  },
+});
 ```
 
 <Callout>

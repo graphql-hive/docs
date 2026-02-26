@@ -2,18 +2,16 @@
 title: Schema Policies (linting)
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Image } from '@hive/design-system/image'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Image } from "@hive/design-system/image";
 
-import cliPolicyErrorImage from './policy-cli-error.png'
-import cliPolicyWarningImage from './policy-cli-warning.png'
-import policyOverrideConfigImage from './policy-override-config.png'
-import policyOverrideSeverityImage from './policy-override-severity.png'
-import policyOverviewImage from './policy-overview.png'
-import policyRulesConfigImage from './policy-rules-config.png'
-import policySeverityImage from './policy-severity.png'
-
-
+import cliPolicyErrorImage from "./policy-cli-error.png";
+import cliPolicyWarningImage from "./policy-cli-warning.png";
+import policyOverrideConfigImage from "./policy-override-config.png";
+import policyOverrideSeverityImage from "./policy-override-severity.png";
+import policyOverviewImage from "./policy-overview.png";
+import policyRulesConfigImage from "./policy-rules-config.png";
+import policySeverityImage from "./policy-severity.png";
 
 In addition to providing basic schema registry functionality, Hive allows you to define policies for
 schema checks performed on your schemas. These policies can enforce semantic constraints or best
@@ -108,9 +106,9 @@ the `Allow projects to override or disable rules` checkbox under your organizati
 page.
 
 <Callout type="info">
-  Disallowing projects to override the organization-level policies will prevent the projects from
-  editing the project-level policy. If a previous policy has been set for the project, it will be
-  ignored during schema checks.
+  Disallowing projects to override the organization-level policies will prevent
+  the projects from editing the project-level policy. If a previous policy has
+  been set for the project, it will be ignored during schema checks.
 </Callout>
 
 ## Integration with Hive CLI

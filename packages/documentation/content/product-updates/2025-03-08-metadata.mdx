@@ -21,7 +21,8 @@ further by defining a convenient and type safe way to add key-value metadata to 
 features. To opt-in, add a Federation `link` directive to your schema definition:
 
 ```graphql
-extend schema @link(url: "https://specs.graphql-hive.com/hive/v1.0", import: ["@meta"])
+extend schema
+  @link(url: "https://specs.graphql-hive.com/hive/v1.0", import: ["@meta"])
 ```
 
 Metadata is useful for a variety of cases:
@@ -48,7 +49,9 @@ directive @meta(
 ) repeatable on SCHEMA | OBJECT | INTERFACE | FIELD_DEFINITION
 
 type Query {
-  user: User @meta(name: "domain", content: "accounts") @meta(name: "priority", content: "tier-1")
+  user: User
+    @meta(name: "domain", content: "accounts")
+    @meta(name: "priority", content: "tier-1")
 }
 
 type User {

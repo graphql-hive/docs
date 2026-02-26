@@ -2,30 +2,28 @@
 title: Get started with GraphQL Federation
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Card, Cards } from '@hive/design-system/hive-components/card'
-import { Image } from '@hive/design-system/image'
-import { Tabs } from '@hive/design-system/tabs'
-import { File, Files, Folder } from 'fumadocs-ui/components/files'
-import { Step, Steps } from 'fumadocs-ui/components/steps'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Card, Cards } from "@hive/design-system/hive-components/card";
+import { Image } from "@hive/design-system/image";
+import { Tabs } from "@hive/design-system/tabs";
+import { File, Files, Folder } from "fumadocs-ui/components/files";
+import { Step, Steps } from "fumadocs-ui/components/steps";
 
-import accessTokensConfirmImage from './access-tokens-confirm.png'
-import accessTokensCreateNewImage from './access-tokens-create-new.png'
-import accessTokensPermissionsImage from './access-tokens-permissions.png'
-import accessTokensResourcesImage from './access-tokens-resources.png'
-import accessTokensSuccessImage from './access-tokens-success.png'
-import cdnAccessTokenSettings from './cdn-access-token-settings.png'
-import cdnAccessTokenCreate from './create-cdn-access-token.png'
-import cdnAccessTokenCreated from './created-cdn-access-token.png'
-import HiveDashboardInsightsImage from './hive-dashboard-insights.png'
-import HiveGatewayGraphiqlImage from './hive-gateway-graphiql.png'
-import HiveGatewayLandingPageImage from './hive-gateway-landing-page.png'
-import publishFirstSchemaVersionUi from './publish-first-schema-version-ui.png'
-import publishSecondSchemaVersionUi from './publish-second-schema-version-ui.png'
-import publishThirdSchemaVersionUi from './publish-third-schema-version-ui.png'
-import targetOverview from './target-overview.png'
-
-
+import accessTokensConfirmImage from "./access-tokens-confirm.png";
+import accessTokensCreateNewImage from "./access-tokens-create-new.png";
+import accessTokensPermissionsImage from "./access-tokens-permissions.png";
+import accessTokensResourcesImage from "./access-tokens-resources.png";
+import accessTokensSuccessImage from "./access-tokens-success.png";
+import cdnAccessTokenSettings from "./cdn-access-token-settings.png";
+import cdnAccessTokenCreate from "./create-cdn-access-token.png";
+import cdnAccessTokenCreated from "./created-cdn-access-token.png";
+import HiveDashboardInsightsImage from "./hive-dashboard-insights.png";
+import HiveGatewayGraphiqlImage from "./hive-gateway-graphiql.png";
+import HiveGatewayLandingPageImage from "./hive-gateway-landing-page.png";
+import publishFirstSchemaVersionUi from "./publish-first-schema-version-ui.png";
+import publishSecondSchemaVersionUi from "./publish-second-schema-version-ui.png";
+import publishThirdSchemaVersionUi from "./publish-third-schema-version-ui.png";
+import targetOverview from "./target-overview.png";
 
 Once you've created a Hive project of type **Federation**, you can start pushing your GraphQL
 Federation subgraph schemas to the Hive registry.
@@ -126,8 +124,7 @@ extend type Product @key(fields: "upc") {
 </Tabs>
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Create Access Token
@@ -181,10 +178,10 @@ generated token.
 />
 
 Make sure to copy your token and keep it safe. **You won't be able to see it again.**
+
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Publish subgraphs
@@ -293,8 +290,8 @@ new schema you just published 🎉
 />
 
 <Callout type="tip">
-  You should also check out the **Explorer** tab: you can see the schema you just published, and
-  explore the API types, fields, and arguments.
+  You should also check out the **Explorer** tab: you can see the schema you
+  just published, and explore the API types, fields, and arguments.
 </Callout>
 
 Next, we will publish the **Products** subgraph schema to Hive. Again, let's start by copying the
@@ -455,10 +452,10 @@ On your target's **Explorer** page now, you'll be able to see the schema of all 
 />
 
 Congratulations on publishing and composing your first subgraphs with the Hive schema registry!
+
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Gateway
@@ -669,8 +666,8 @@ To start, create a configuration file `router.config.yaml` with the following co
 ```yaml filename="router.config.yaml"
 supergraph:
   type: hive
-  endpoint: '<hive_cdn_endpoint>'
-  key: '<hive_cdn_access_key>'
+  endpoint: "<hive_cdn_endpoint>"
+  key: "<hive_cdn_access_key>"
 ```
 
 | Parameter             | Description                      |
@@ -942,10 +939,10 @@ insights page.
 />
 
 Here we can now see the GraphQL operations from our gateway being reported to the registry.
+
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Schema checks
@@ -1232,10 +1229,10 @@ Usually, you would run these checks in your subgraphs CI pipeline, to ensure tha
 schema integrates flawlessly with the other subgraphs in the federation project, where schema
 publishes are made within the Continious Deployment (CD) pipeline to actually publish the latest
 subgraph version to the schema registry.
+
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Next Steps

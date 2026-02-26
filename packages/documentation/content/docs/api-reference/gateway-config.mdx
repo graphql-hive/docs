@@ -4,9 +4,7 @@ title: Hive Gateway Configuration Reference
 description: Hive Gateway Configuration Reference
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 An overview of all the configuration options for the Hive Gateway, both CLI and
 [Progammatic Usage](/docs/gateway/deployment#programmatic-usage).
@@ -32,20 +30,20 @@ You can provide `GraphQLSchema`, `DocumentNode` which has the AST of the supergr
 which is the `SDL` representation of the supergraph.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  supergraph: './supergraph.graphql',
+  supergraph: "./supergraph.graphql",
   // or
-  supergraph: 'https://example.com/supergraph.graphql',
+  supergraph: "https://example.com/supergraph.graphql",
   // or you can provide a function that returns a promise of the schema
   supergraph: () =>
-    fetch('https://example.com/unified.graphql', {
+    fetch("https://example.com/unified.graphql", {
       headers: {
-        Authorization: 'Bearer token'
-      }
-    }).then(res => res.text())
-})
+        Authorization: "Bearer token",
+      },
+    }).then((res) => res.text()),
+});
 ```
 
 <Callout type="info">
@@ -66,11 +64,11 @@ local file. By enabling this option, Hive Gateway can poll the source and update
 automatically using the set interval.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  pollingInterval: 5_000 // Polling interval in milliseconds
-})
+  pollingInterval: 5_000, // Polling interval in milliseconds
+});
 ```
 
 When running the Hive Gateway [serverless on the edge](/docs/gateway/deployment/serverless) and
@@ -79,9 +77,9 @@ the remote schema will be stored in the provided cache and the `pollingInterval`
 TTL.
 
 ```ts filename="worker.ts"
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
-import CloudflareKVCacheStorage from '@graphql-mesh/cache-cfw-kv'
-import supergraph from './my-remote-supergraph-config'
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
+import CloudflareKVCacheStorage from "@graphql-mesh/cache-cfw-kv";
+import supergraph from "./my-remote-supergraph-config";
 
 export default {
   async fetch(request, env, ctx) {
@@ -91,14 +89,14 @@ export default {
       transports: { http },
       cache: new CloudflareKVCacheStorage({
         logger,
-        namespace: env.NAMESPACE
-      })
-    })
-    const response = await gateway(request, env, ctx)
-    ctx.waitUntil(gateway[Symbol.asyncDispose]())
-    return response
-  }
-}
+        namespace: env.NAMESPACE,
+      }),
+    });
+    const response = await gateway(request, env, ctx);
+    ctx.waitUntil(gateway[Symbol.asyncDispose]());
+    return response;
+  },
+};
 ```
 
 ### `additionalResolvers`
@@ -107,22 +105,22 @@ You can provide additional resolvers to the supergraph. This can be useful if yo
 custom resolver to the supergraph, or override the existing one.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   additionalResolvers: {
     Query: {
-      hello: () => 'Hello World'
-    }
-  }
-})
+      hello: () => "Hello World",
+    },
+  },
+});
 ```
 
 ### `transports` (Advanced usage only)
 
 <Callout>
-  This is an advanced feature and should be used with caution. Use this only if you know what you
-  are doing.
+  This is an advanced feature and should be used with caution. Use this only if
+  you know what you are doing.
 </Callout>
 
 Gateway Transports are the key component of the gateway runtime's execution. It allows the gateway
@@ -158,15 +156,15 @@ Each subgraph's transport can be configured by adding a configuration object to 
 `transportEntries` map, using the subgraph's name as a key.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   transportEntries: {
     subgraphName: {
       // configuration for the 'subgraphName' subgraph transport.
-    }
-  }
-})
+    },
+  },
+});
 ```
 
 Most of the time, all subgraph using the same transport will have the same configuration. To avoid
@@ -174,30 +172,30 @@ duplicating the configuration object for each subgraphs, you can use a transport
 `*.transportKind`:
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   transportEntries: {
-    '*.http': {
+    "*.http": {
       // configuration for all subgraph using the http transport.
-    }
-  }
-})
+    },
+  },
+});
 ```
 
 If you need to define a configuration for all subgraphs at once, you can use the wildcard matcher
 `*`:
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   transportEntries: {
-    '*': {
+    "*": {
       // configuration for all subgraph using the http transport.
-    }
-  }
-})
+    },
+  },
+});
 ```
 
 If a subgraph mathes multiple transport entries, the configurations are merged with priority for the
@@ -219,18 +217,18 @@ A list of headers entries to add (when applicable) to the upstream request. Valu
 and can be dynamic by including string interpolations.
 
 ```ts filename="graphql.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   transportEntries: {
-    '*.http': {
+    "*.http": {
       headers: [
-        ['authorization', '{context.cookie.authorization}'],
-        ['correlation-id', '{context.header.correalation-id}']
-      ]
-    }
-  }
-})
+        ["authorization", "{context.cookie.authorization}"],
+        ["correlation-id", "{context.header.correalation-id}"],
+      ],
+    },
+  },
+});
 ```
 
 ### `options`
@@ -257,24 +255,25 @@ You can provide `GraphQLSchema`, `DocumentNode` which has the AST of the subgrap
 is the `SDL` representation of the subgraph
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  subgraph: './subgraph.graphql',
+  subgraph: "./subgraph.graphql",
   // or
-  subgraph: 'https://example.com/subgraph.graphql',
+  subgraph: "https://example.com/subgraph.graphql",
   // or you can provide a function that returns a promise of the schema
   subgraph: () =>
-    fetch('https://example.com/subgraph.graphql', {
+    fetch("https://example.com/subgraph.graphql", {
       headers: {
-        Authorization: 'Bearer token'
-      }
-    }).then(res => res.text())
-})
+        Authorization: "Bearer token",
+      },
+    }).then((res) => res.text()),
+});
 ```
 
 <Callout>
-  The rest of the configuration options are the same as the supergraph configuration.
+  The rest of the configuration options are the same as the supergraph
+  configuration.
 </Callout>
 
 ## Configure Hive Gateway as a GraphQL Proxy
@@ -284,13 +283,13 @@ export const gatewayConfig = defineConfig({
 HTTP executor options to proxy all incoming requests to another HTTP endpoint.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   proxy: {
-    endpoint: 'https://example.com/graphql'
-  }
-})
+    endpoint: "https://example.com/graphql",
+  },
+});
 ```
 
 By default, Hive Gateway introspects the schema from the endpoint. And if it fails, it skips the
@@ -298,20 +297,20 @@ validation and schema aware features. But if Hive CDN endpoint and key have been
 configuration, Hive Gateway will fetch the schema from the Hive CDN.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   proxy: {
-    endpoint: 'https://example.com/graphql'
+    endpoint: "https://example.com/graphql",
   },
   schema: {
-    type: 'hive',
+    type: "hive",
     // The endpoint of Hive's CDN
-    endpoint: '<graphql schema sdl endpoint>',
+    endpoint: "<graphql schema sdl endpoint>",
     // The CDN token provided by Hive Registry
-    key: '<cdn access token>'
-  }
-})
+    key: "<cdn access token>",
+  },
+});
 ```
 
 #### `endpoint`
@@ -324,17 +323,17 @@ Additional headers to include when querying the original schema It can be a plai
 function that returns a plain object.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   proxy: {
-    endpoint: 'https://example.com/graphql',
-    headers: execReq => ({
+    endpoint: "https://example.com/graphql",
+    headers: (execReq) => ({
       // This will pass the original request headers to the proxied request
-      authorization: execReq.context.headers.authorization
-    })
-  }
-})
+      authorization: execReq.context.headers.authorization,
+    }),
+  },
+});
 ```
 
 #### `useGETForQueries`
@@ -367,14 +366,14 @@ If you want to disable this validation and send the operations directly to the u
 can set this option to `true`.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   proxy: {
-    endpoint: 'https://example.com/graphql'
+    endpoint: "https://example.com/graphql",
   },
-  skipValidation: true
-})
+  skipValidation: true,
+});
 ```
 
 ## Configure Server
@@ -385,20 +384,20 @@ This is the option to provide SSL Credentials for HTTPS Server. If this is provi
 will be served via HTTPS instead of HTTP.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   sslCredentials: {
-    key_file_name: 'path/to/key.pem',
-    cert_file_name: 'path/to/cert.pem',
-    ca_file_name: 'path/to/ca.pem',
-    passphrase: 'passphrase',
-    dh_params_file_name: 'path/to/dhparams.pem',
-    ssl_ciphers: 'ECDHE-R',
+    key_file_name: "path/to/key.pem",
+    cert_file_name: "path/to/cert.pem",
+    ca_file_name: "path/to/ca.pem",
+    passphrase: "passphrase",
+    dh_params_file_name: "path/to/dhparams.pem",
+    ssl_ciphers: "ECDHE-R",
     // This translates to SSL_MODE_RELEASE_BUFFERS
-    ssl_prefer_low_memory_usage: false
-  }
-})
+    ssl_prefer_low_memory_usage: false,
+  },
+});
 ```
 
 ### `browser`
@@ -406,15 +405,15 @@ export const gatewayConfig = defineConfig({
 This is the option to open the browser automatically when the server is started.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   /**
    * Path to the browser that will be used by `Hive Gateway` to open a playground window in development mode
    * This feature can be disabled by passing `false`
    */
-  browser: true // or `google-chrome` or `firefox` or `safari` or `edge` or `opera` or `vivaldi` or `brave` or `chromium` or `msedge` or `false`
-})
+  browser: true, // or `google-chrome` or `firefox` or `safari` or `edge` or `opera` or `vivaldi` or `brave` or `chromium` or `msedge` or `false`
+});
 ```
 
 ### `port` and `host`
@@ -423,12 +422,12 @@ These are the options to configure the port and host of the server in the config
 than passing them as CLI arguments.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   port: 4000,
-  host: 'localhost'
-})
+  host: "localhost",
+});
 ```
 
 ### `maxHeaderSize`
@@ -437,11 +436,11 @@ This is the option to configure the maximum header size of the server. By defaul
 longer headers are sent, the server will respond with a 431 status code.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  maxHeaderSize: 32 * 1024 // 32KB
-})
+  maxHeaderSize: 32 * 1024, // 32KB
+});
 ```
 
 ### `plugins`
@@ -510,13 +509,13 @@ function to control which span should be reported.
 You can configure GraphiQL playground that allows you to play with your GraphQL API.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   graphiql: {
-    defaultQuery: 'query { hello }'
-  }
-})
+    defaultQuery: "query { hello }",
+  },
+});
 ```
 
 [Learn more about available GraphiQL Options from the dedicated GraphQL Yoga page](https://the-guild.dev/graphql/yoga-server/docs/features/graphiql)
@@ -528,11 +527,11 @@ export const gatewayConfig = defineConfig({
 If you want to disable the landing page, you can set this option to `false`.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  landingPage: false
-})
+  landingPage: false,
+});
 ```
 
 ### `batching`
@@ -542,8 +541,8 @@ export const gatewayConfig = defineConfig({
 ### `fetchAPI` (Advanced usage only)
 
 <Callout>
-  This is an advanced feature and should be used with caution. Use this only if you know what you
-  are doing. Use it on your own risk.
+  This is an advanced feature and should be used with caution. Use this only if
+  you know what you are doing. Use it on your own risk.
 </Callout>
 
 Hive Gateway heavily relies on WHATWG Fetch API not only as a HTTP Client but also for handling HTTP
@@ -552,14 +551,14 @@ default which is a platform agnostic implementation of the Fetch API. If you wan
 Fetch API implementation, you can provide it here.
 
 ```ts filename="gateway.config.ts"
-import fetch from 'node-fetch'
-import { defineConfig } from '@graphql-hive/gateway'
+import fetch from "node-fetch";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   fetchAPI: {
-    fetch
-  }
-})
+    fetch,
+  },
+});
 ```
 
 ### `logging`
@@ -596,11 +595,11 @@ This is the option to provide a custom GraphQL endpoint for the server. By defau
 `/graphql`.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  graphqlEndpoint: '/my-graphql-endpoint'
-})
+  graphqlEndpoint: "/my-graphql-endpoint",
+});
 ```
 
 ### `maskedErrors`

@@ -12,21 +12,21 @@ and readable way. This advanced serialization is applied automatically to all at
 log methods, child loggers, and writers.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger()
+const log = new Logger();
 
 class DatabaseError extends Error {
   constructor(message: string) {
-    super(message)
-    this.name = 'DatabaseError'
+    super(message);
+    this.name = "DatabaseError";
   }
 }
-const dbErr = new DatabaseError('Connection failed')
-const userErr = new Error('Updating user failed', { cause: dbErr })
-const errs = new AggregateError([dbErr, userErr], 'Failed to update user')
+const dbErr = new DatabaseError("Connection failed");
+const userErr = new Error("Updating user failed", { cause: dbErr });
+const errs = new AggregateError([dbErr, userErr], "Failed to update user");
 
-log.error(errs)
+log.error(errs);
 ```
 
 {/* prettier-ignore-start */}

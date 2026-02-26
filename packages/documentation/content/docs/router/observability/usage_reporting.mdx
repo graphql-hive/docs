@@ -2,9 +2,6 @@
 title: Usage Reporting
 ---
 
-
-
-
 Hive Router can report usage metrics to the Hive schema registry, giving you
 [insights for executed GraphQL operations](/docs/schema-registry/usage-reporting), and
 [field level usage information](/docs/schema-registry/explorer), but also enabling
@@ -45,8 +42,8 @@ client in Hive Console, set up client identification in `router.config.yaml`.
 ```yaml filename="router.config.yaml"
 telemetry:
   client_identification:
-    name_header: 'graphql-client-name' # default value
-    version_header: 'graphql-client-version' # default value
+    name_header: "graphql-client-name" # default value
+    version_header: "graphql-client-version" # default value
 ```
 
 ## Configuration reference

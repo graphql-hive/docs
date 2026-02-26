@@ -2,8 +2,8 @@
 title: Rust Query Planner
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Tabs } from '@hive/design-system/tabs'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
 
 ## Introduction
 
@@ -55,12 +55,12 @@ hive-gateway supergraph --hive-router-runtime
 or use the Rust Query Planner in your config file:
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import { unifiedGraphHandler } from '@graphql-hive/router-runtime'
+import { defineConfig } from "@graphql-hive/gateway";
+import { unifiedGraphHandler } from "@graphql-hive/router-runtime";
 
 export const gatewayConfig = defineConfig({
-  unifiedGraphHandler
-})
+  unifiedGraphHandler,
+});
 ```
 
 </Tabs.Tab>
@@ -68,12 +68,12 @@ export const gatewayConfig = defineConfig({
 <Tabs.Tab>
 
 ```ts filename="index.ts"
-import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
-import { unifiedGraphHandler } from '@graphql-hive/router-runtime'
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
+import { unifiedGraphHandler } from "@graphql-hive/router-runtime";
 
 export const gateway = createGatewayRuntime({
-  unifiedGraphHandler
-})
+  unifiedGraphHandler,
+});
 ```
 
 </Tabs.Tab>
@@ -86,8 +86,11 @@ To view the generated query plan when using the Rust Query Planner, you can use 
 plugin from `@graphql-hive/router-runtime` as follows:
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import { unifiedGraphHandler, useQueryPlan } from '@graphql-hive/router-runtime'
+import { defineConfig } from "@graphql-hive/gateway";
+import {
+  unifiedGraphHandler,
+  useQueryPlan,
+} from "@graphql-hive/router-runtime";
 
 export const gatewayConfig = defineConfig({
   unifiedGraphHandler,
@@ -95,15 +98,15 @@ export const gatewayConfig = defineConfig({
     useQueryPlan({
       // Query plan available callback
       onQueryPlan(queryPlan) {
-        log.debug({ queryPlan }, 'Generated Query Plan')
+        log.debug({ queryPlan }, "Generated Query Plan");
       },
       // Expose the query plan in the graphql result extensions
       expose: true,
       // or expose based on request.
-      expose: req => req.headers.get('hive-expose-query-plan') === 'true'
-    })
-  ]
-})
+      expose: (req) => req.headers.get("hive-expose-query-plan") === "true",
+    }),
+  ],
+});
 ```
 
 ## Compared to JavaScript Query Planner

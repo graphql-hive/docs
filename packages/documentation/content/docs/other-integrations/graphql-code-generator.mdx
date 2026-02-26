@@ -2,8 +2,6 @@
 title: GraphQL Code Generator
 ---
 
-
-
 [GraphQL Code Generator](https://the-guild.dev/graphql/codegen) is a tool that generates types from
 your GraphQL schema and operations. You can use [High-Availability CDN](/docs/schema-registry/high-availability-cdn)
 to provide the schema.
@@ -13,16 +11,16 @@ to provide the schema.
 You can configure codegen to use the Schema from the CDN:
 
 ```ts {4-10} copy=false filename="codegen.ts"
-import { CodegenConfig } from '@graphql-codegen/cli'
+import { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   schema: {
-    'https://cdn.graphql-hive.com/artifacts/v1/TARGET_ID/sdl.graphql': {
+    "https://cdn.graphql-hive.com/artifacts/v1/TARGET_ID/sdl.graphql": {
       headers: {
-        'X-Hive-CDN-Key': 'CDN_ACCESS_TOKEN'
-      }
-    }
-  }
+        "X-Hive-CDN-Key": "CDN_ACCESS_TOKEN",
+      },
+    },
+  },
   // Your existing config
-}
+};
 ```

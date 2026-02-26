@@ -4,9 +4,6 @@ title: Upstream Cancellation
 searchable: false
 ---
 
-
-
-
 This feature enables you to cancel the upstream HTTP requests when the client cancels the downstream
 GraphQL request. This can be useful when you want to save resources on your server and the services.
 
@@ -18,9 +15,9 @@ HTTP requests by hooking into [`fetch`](https://developer.mozilla.org/en-US/docs
 ## Enable Upstream Cancellation
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  upstreamCancellation: true
-})
+  upstreamCancellation: true,
+});
 ```

@@ -31,7 +31,7 @@ for (const file of files) {
       const body = content.slice(fmEnd + 3);
       const headingMatch = body.match(/^#\s+(.+)$/m);
       if (headingMatch) {
-        const title = headingMatch[1].replaceAll('\\', "").trim();
+        const title = headingMatch[1].replaceAll("\\", "").trim();
         const safeTitle =
           title.includes(":") || title.includes('"') || title.includes("'")
             ? JSON.stringify(title)
@@ -51,7 +51,7 @@ for (const file of files) {
   } else {
     const headingMatch = content.match(/^#\s+(.+)$/m);
     if (headingMatch) {
-      const title = headingMatch[1].replaceAll('\\', "").trim();
+      const title = headingMatch[1].replaceAll("\\", "").trim();
       const safeTitle =
         title.includes(":") || title.includes('"') || title.includes("'")
           ? JSON.stringify(title)

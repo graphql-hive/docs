@@ -2,17 +2,15 @@
 title: Apollo Router
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Tabs } from '@hive/design-system/tabs'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
 
 [Apollo Router](https://www.apollographql.com/docs/router/) is the Rust implementation of the Apollo
 Federation runtime.
 
 <Callout type="info">
-  Hive has its own [GraphQL Router](/docs/router), written in Rust, that offers superior performance
-  and is a great alternative to Apollo Router.
+  Hive has its own [GraphQL Router](/docs/router), written in Rust, that offers
+  superior performance and is a great alternative to Apollo Router.
 </Callout>
 
 Hive ships a custom build of Apollo Router,
@@ -176,8 +174,8 @@ You can find the list of releases in the
   `/<tmp-dir>/supergraph-schema.graphql`)
 
 <Callout>
-  The `HIVE_CDN_ENDPOINT` variable should not include any artifact suffix (for example,
-  `/supergraph`), it should be in the following format:
+  The `HIVE_CDN_ENDPOINT` variable should not include any artifact suffix (for
+  example, `/supergraph`), it should be in the following format:
   `https://cdn.graphql-hive.com/artifacts/v1/TARGET_ID`
 </Callout>
 
@@ -290,8 +288,7 @@ You can send usage reporting to Hive registry by enabling `hive.usage` plugin in
 supergraph:
   listen: 0.0.0.0:4000
 plugins:
-  hive.usage:
-    {}
+  hive.usage: {}
     #  Default: true
     # enabled: true
     #
@@ -374,10 +371,10 @@ plugins:
     enabled: true
     # The endpoint of the Hive CDN. You can either specify it here, or use the existing HIVE_CDN_ENDPOINT environment variable.
     # Required
-    endpoint: 'https://cdn.graphql-hive.com/artifacts/v1/TARGET_ID/supergraph'
+    endpoint: "https://cdn.graphql-hive.com/artifacts/v1/TARGET_ID/supergraph"
     # The access key to the Hive CDN. You can either specify it here, or use the existing HIVE_CDN_KEY environment variable.
     # Required
-    key: '...'
+    key: "..."
     # Enables/disables the option to allow arbitrary documents to be executed.
     # Optional
     # Default: false

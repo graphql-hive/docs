@@ -12,7 +12,7 @@ All logging methods support flexible argument patterns for structured and format
 Logs an empty message at the specified level.
 
 ```ts
-log.debug()
+log.debug();
 ```
 
 ```sh
@@ -24,7 +24,7 @@ log.debug()
 Logs structured attributes without a message.
 
 ```ts
-log.info({ hello: 'world' })
+log.info({ hello: "world" });
 ```
 
 {/* prettier-ignore-start */}
@@ -40,7 +40,7 @@ Logs a formatted message, similar to printf-style formatting. Read more about it
 [Message Formatting section](#message-formatting).
 
 ```ts
-log.warn('Hello %s!', 'World')
+log.warn("Hello %s!", "World");
 ```
 
 {/* prettier-ignore-start */}
@@ -55,8 +55,8 @@ Logs structured attributes and a formatted message. The attributes can be anythi
 including classes.
 
 ```ts
-const err = new Error('Something went wrong!')
-log.error(err, 'Problem occurred at %s', new Date())
+const err = new Error("Something went wrong!");
+log.error(err, "Problem occurred at %s", new Date());
 ```
 
 {/* prettier-ignore-start */}
@@ -77,11 +77,11 @@ The Hive Logger uses the
 messages that include interpolation (e.g., placeholders like %s, %d, etc.).
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger()
+const log = new Logger();
 
-log.info('hello %s %j %d %o', 'world', { obj: true }, 4, { another: 'obj' })
+log.info("hello %s %j %d %o", "world", { obj: true }, 4, { another: "obj" });
 ```
 
 Outputs:

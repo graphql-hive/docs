@@ -2,8 +2,8 @@
 title: Schema Contracts
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Image } from '@hive/design-system/image'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Image } from "@hive/design-system/image";
 
 A GraphQL schema contract allows you to define subsets of your schema that can be distributed to
 different consumers.
@@ -108,15 +108,15 @@ type Query {
 Contracts are defined within the Hive application. You can define a contract by navigating to the
 Target settings.
 
-import settingsPageImage from './settings-page.png'
+import settingsPageImage from "./settings-page.png";
 
 On the settings page, there is a schema contracts section.
 
-import schemaContractsSettingsEmptyImage from './schema-contracts-settings-empty.png'
+import schemaContractsSettingsEmptyImage from "./schema-contracts-settings-empty.png";
 
 Click the "Create new contract" button to create a new contract.
 
-import createSchemaContractModalImage from './create-schema-contract-modal.png'
+import createSchemaContractModalImage from "./create-schema-contract-modal.png";
 
 Within the dialogue, you need to define the name of the contract and the filter.
 
@@ -136,12 +136,12 @@ from the public API schema.
 
 After that, press the "Create Contract" button to create the contract.
 
-import createSchemaContractModalConfirmImage from './create-schema-contract-modal-confirm.png'
+import createSchemaContractModalConfirmImage from "./create-schema-contract-modal-confirm.png";
 
 If the contract creation succeeds you will see the success modal. Close the modal and you will now
 see the contract in the schema contracts section.
 
-import schemaContractsSettingsContractImage from './schema-contracts-settings-contract.png'
+import schemaContractsSettingsContractImage from "./schema-contracts-settings-contract.png";
 
 The contract is now active and used for subsequent schema checks and schema publishing runs within
 the target. Note that the first contract version will only be published after the next schema is
@@ -153,31 +153,29 @@ When you run a schema check, Hive will run the schema check for each contract de
 if the composition of the contract schema is not valid, or the contract schema contains breaking
 changes, the schema check will fail.
 
-import schemaChecksContractExample from './schema-checks-contract-example.png'
+import schemaChecksContractExample from "./schema-checks-contract-example.png";
 
 ## Contracts in Schema Publishing
 
 Hive will publish the contract schema to the schema registry when you run a schema publishing run.
 Within the History view of a target, you can see how the contract schema has evolved.
 
-import schemaHistoryContractDiffTextImage from './schema-history-contract-diff-text.png'
+import schemaHistoryContractDiffTextImage from "./schema-history-contract-diff-text.png";
 
 You can also see the direct changes on the SDL or Supergraph to the previous schema version.
 
-import schemaHistoryContractDiffGitStyle from './schema-history-contract-diff-git-style.png'
+import schemaHistoryContractDiffGitStyle from "./schema-history-contract-diff-git-style.png";
 
 ## Access Contract CDN Artifacts
 
 Artifacts such as the SDL and Supergraph of a contract are available on the High-Availability CDN.
 Within the "Connect to CDN" modal, you can find the URLs for accessing the contract artifacts.
 
-import hiveCdnAccessContractImage from './hive-cdn-access-contract.png'
-
-
+import hiveCdnAccessContractImage from "./hive-cdn-access-contract.png";
 
 <Callout type="warning">
-  Right now, contracts are only supported for **Federation** projects. If you want to use contracts
-  with a non-federated project [please let us
+  Right now, contracts are only supported for **Federation** projects. If you
+  want to use contracts with a non-federated project [please let us
   know](https://github.com/graphql-hive/platform/issues/3856).
 </Callout>
 

@@ -3,8 +3,6 @@ title: Member Management via the GraphQL API
 description: Learn how to manage organization members via the Hive Console GraphQL API.
 ---
 
-
-
 Organization members, roles, and invites can be managed via the GraphQL API. For more information,
 please refer to our
 [member and permissions documentation](/docs/schema-registry/management/members-roles-permissions).
@@ -17,7 +15,9 @@ their permissions.
 
 ```graphql filename="Example: Retrieve permissions by group"
 query OrganizationPermissions($organizationSlug: String!) {
-  organization(reference: { bySelector: { organizationSlug: $organizationSlug } }) {
+  organization(
+    reference: { bySelector: { organizationSlug: $organizationSlug } }
+  ) {
     id
     slug
     availableMemberPermissionGroups {
@@ -139,47 +139,47 @@ permissions granted by the role should apply. Permissions are inherited by all s
 
 ```json5 filename="Example: Grant permissions on all resources"
 {
-  mode: 'ALL',
-  projects: []
+  mode: "ALL",
+  projects: [],
 }
 ```
 
 ```json5 filename="Example: Grant permissions on specific project"
 {
-  mode: 'GRANULAR',
+  mode: "GRANULAR",
   projects: [
     {
-      projectId: '<PROJECT_ID>',
+      projectId: "<PROJECT_ID>",
       targets: {
         // Grant permissions on all targets within project
-        mode: 'ALL'
-      }
-    }
-  ]
+        mode: "ALL",
+      },
+    },
+  ],
 }
 ```
 
 ```json5 filename="Example: Grant permissions on specific target"
 {
-  mode: 'GRANULAR',
+  mode: "GRANULAR",
   projects: [
     {
-      projectId: '<PROJECT_ID>',
+      projectId: "<PROJECT_ID>",
       targets: {
         // Grant permissions on a single targets within project
-        mode: 'GRANULAR',
+        mode: "GRANULAR",
         targets: [
           {
-            targetId: '<TARGET_ID>',
+            targetId: "<TARGET_ID>",
             // Grant permissions on a all services within target
-            services: { mode: 'ALL' },
+            services: { mode: "ALL" },
             // Grant permissions on a all app deployments within target
-            appDeployments: { mode: 'ALL' }
-          }
-        ]
-      }
-    }
-  ]
+            appDeployments: { mode: "ALL" },
+          },
+        ],
+      },
+    },
+  ],
 }
 ```
 
@@ -187,7 +187,9 @@ permissions granted by the role should apply. Permissions are inherited by all s
 
 ```graphql filename="Example: Member Invitations"
 query Invitations($organizationSlug: String!, $after: String) {
-  organization(reference: { bySelector: { organizationSlug: $organizationSlug } }) {
+  organization(
+    reference: { bySelector: { organizationSlug: $organizationSlug } }
+  ) {
     invitations(first: 10, after: $after) {
       edges {
         node {
@@ -228,7 +230,9 @@ mutation InviteUserToOrganization($input: InviteToOrganizationByEmailInput!) {
 Use the `Mutation.deleteOrganizationInvitation` field for deleting an organization invitation.
 
 ```graphql
-mutation DeleteOrganizationInvitation($input: DeleteOrganizationInvitationInput!) {
+mutation DeleteOrganizationInvitation(
+  $input: DeleteOrganizationInvitationInput!
+) {
   deleteOrganizationInvitation(input: $input) {
     ok {
       deletedOrganizationInvitationId

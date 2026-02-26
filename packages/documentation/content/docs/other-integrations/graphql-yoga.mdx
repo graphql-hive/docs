@@ -2,9 +2,7 @@
 title: GraphQL-Yoga
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 GraphQL Yoga is the cross-JavaScript runtime GraphQL server maintained by The Guild. We provide an
 easy to use plugin for [GraphQL Yoga](https://the-guild.dev/graphql/yoga-server) to integrate with
@@ -17,8 +15,9 @@ npm i @graphql-hive/yoga
 ```
 
 <Callout type="info">
-  We recommend installing Hive Client package as a direct dependency of your project, because it
-  includes a runtime to send usage reports and schemas to Hive registry.
+  We recommend installing Hive Client package as a direct dependency of your
+  project, because it includes a runtime to send usage reports and schemas to
+  Hive registry.
 </Callout>
 
 The `@graphql-hive/yoga` package exports a
@@ -40,8 +39,8 @@ Follow the [CI/CD instructions](./ci-cd.mdx) for automating the process.
 ### Usage Reporting
 
 <Callout>
-  For more configuration options, such as sampling, please refer to the [Hive client
-  configuration](/docs/api-reference/client#configuration) reference.
+  For more configuration options, such as sampling, please refer to the [Hive
+  client configuration](/docs/api-reference/client#configuration) reference.
 </Callout>
 
 #### GraphQL over HTTP (default)
@@ -49,30 +48,30 @@ Follow the [CI/CD instructions](./ci-cd.mdx) for automating the process.
 You can send usage reporting to Hive registry by using the `usage` section of the configuration:
 
 ```ts
-import { createServer } from 'node:http'
-import { createYoga } from 'graphql-yoga'
-import { useHive } from '@graphql-hive/yoga'
-import { schema } from './schema'
+import { createServer } from "node:http";
+import { createYoga } from "graphql-yoga";
+import { useHive } from "@graphql-hive/yoga";
+import { schema } from "./schema";
 
 const yoga = createYoga({
   schema,
   plugins: [
     useHive({
       enabled: true, // Enable/Disable Hive Client
-      token: 'YOUR-TOKEN',
+      token: "YOUR-TOKEN",
       // Collects and send usage reporting based on executed operations
       usage: {
-        target: '<YOUR_ORGANIZATION>/<YOUR_PROJECT>/<YOUR_TARGET>'
-      }
-    })
-  ]
-})
+        target: "<YOUR_ORGANIZATION>/<YOUR_PROJECT>/<YOUR_TARGET>",
+      },
+    }),
+  ],
+});
 
-const server = createServer(yoga)
+const server = createServer(yoga);
 
 server.listen(4000, () => {
-  console.info('Server is running on http://localhost:4000/graphql')
-})
+  console.info("Server is running on http://localhost:4000/graphql");
+});
 ```
 
 #### Cloudflare Workers
@@ -85,29 +84,29 @@ implementation.
 Here's an example of how to use Hive with GraphQL Yoga on Cloudflare Workers:
 
 ```typescript
-import { createYoga } from 'graphql-yoga'
-import { createHive, useHive } from '@graphql-hive/yoga'
+import { createYoga } from "graphql-yoga";
+import { createHive, useHive } from "@graphql-hive/yoga";
 
 export default {
   async fetch(request, env, ctx) {
     const hive = createHive({
       enabled: true, // Enable/Disable Hive Client
-      token: 'YOUR-TOKEN',
+      token: "YOUR-TOKEN",
       usage: {
-        target: '<YOUR_ORGANIZATION>/<YOUR_PROJECT>/<YOUR_TARGET>'
+        target: "<YOUR_ORGANIZATION>/<YOUR_PROJECT>/<YOUR_TARGET>",
       },
-      autoDispose: false
-    })
+      autoDispose: false,
+    });
 
     const yoga = createYoga({
-      plugins: [useHive(hive)]
-    })
+      plugins: [useHive(hive)],
+    });
 
-    const response = await yoga.fetch(request, env, ctx)
-    ctx.waitUntil(hive.dispose())
-    return response
-  }
-}
+    const response = await yoga.fetch(request, env, ctx);
+    ctx.waitUntil(hive.dispose());
+    return response;
+  },
+};
 ```
 
 ##### Client Information
@@ -138,11 +137,11 @@ No additional configuration is required for sending usage reporting to Hive when
 Just add the SSE plugin to your Yoga server and the usage reporting will be sent automatically.
 
 ```ts filename="SSE HTTP Request Client info" {4,10}
-import { createServer } from 'node:http'
-import { createYoga, type YogaInitialContext } from 'graphql-yoga'
-import { useHive } from '@graphql-hive/yoga'
-import { useGraphQLSSE } from '@graphql-yoga/plugin-graphql-sse'
-import { schema } from './schema'
+import { createServer } from "node:http";
+import { createYoga, type YogaInitialContext } from "graphql-yoga";
+import { useHive } from "@graphql-hive/yoga";
+import { useGraphQLSSE } from "@graphql-yoga/plugin-graphql-sse";
+import { schema } from "./schema";
 
 const yoga = createYoga({
   schema,
@@ -150,19 +149,19 @@ const yoga = createYoga({
     useGraphQLSSE(),
     useHive({
       enabled: true,
-      token: 'YOUR-TOKEN',
+      token: "YOUR-TOKEN",
       usage: {
-        target: '<YOUR_ORGANIZATION>/<YOUR_PROJECT>/<YOUR_TARGET>'
-      }
-    })
-  ]
-})
+        target: "<YOUR_ORGANIZATION>/<YOUR_PROJECT>/<YOUR_TARGET>",
+      },
+    }),
+  ],
+});
 
-const server = createServer(yoga)
+const server = createServer(yoga);
 
 server.listen(4000, () => {
-  console.info('Server is running on http://localhost:4000/graphql')
-})
+  console.info("Server is running on http://localhost:4000/graphql");
+});
 ```
 
 ##### Client Information
@@ -189,46 +188,47 @@ Use the following example for sending usage reporting to Hive with GraphQL Yoga 
 ([using the official recipe](https://the-guild.dev/graphql/yoga-server/docs/features/subscriptions#graphql-over-websocket-protocol-via-graphql-ws)).
 
 ```ts filename="GraphQL Yoga HTTP and WebSocket Setup"
-import { createServer } from 'node:http'
-import { useServer } from 'graphql-ws/lib/use/ws'
-import { createYoga } from 'graphql-yoga'
-import { WebSocketServer } from 'ws'
-import { useHive } from '@graphql-hive/yoga'
-import { schema } from './schema'
+import { createServer } from "node:http";
+import { useServer } from "graphql-ws/lib/use/ws";
+import { createYoga } from "graphql-yoga";
+import { WebSocketServer } from "ws";
+import { useHive } from "@graphql-hive/yoga";
+import { schema } from "./schema";
 
 const yoga = createYoga({
   schema,
   graphiql: {
-    subscriptionsProtocol: 'WS'
+    subscriptionsProtocol: "WS",
   },
   plugins: [
     useHive({
       enabled: true,
-      token: 'YOUR-TOKEN',
+      token: "YOUR-TOKEN",
       usage: {
-        target: '<YOUR_ORGANIZATION>/<YOUR_PROJECT>/<YOUR_TARGET>'
-      }
-    })
-  ]
-})
+        target: "<YOUR_ORGANIZATION>/<YOUR_PROJECT>/<YOUR_TARGET>",
+      },
+    }),
+  ],
+});
 
-const httpServer = createServer(yoga)
+const httpServer = createServer(yoga);
 const wsServer = new WebSocketServer({
   server: httpServer,
-  path: yoga.graphqlEndpoint
-})
+  path: yoga.graphqlEndpoint,
+});
 
 useServer(
   {
     execute: (args: any) => args.rootValue.execute(args),
     subscribe: (args: any) => args.rootValue.subscribe(args),
     onSubscribe: async (ctx, msg) => {
-      const { schema, execute, subscribe, contextFactory, parse, validate } = yoga.getEnveloped({
-        ...ctx,
-        req: ctx.extra.request,
-        socket: ctx.extra.socket,
-        params: msg.payload
-      })
+      const { schema, execute, subscribe, contextFactory, parse, validate } =
+        yoga.getEnveloped({
+          ...ctx,
+          req: ctx.extra.request,
+          socket: ctx.extra.socket,
+          params: msg.payload,
+        });
 
       const args = {
         schema,
@@ -238,21 +238,21 @@ useServer(
         contextValue: await contextFactory(),
         rootValue: {
           execute,
-          subscribe
-        }
-      }
+          subscribe,
+        },
+      };
 
-      const errors = validate(args.schema, args.document)
-      if (errors.length) return errors
-      return args
-    }
+      const errors = validate(args.schema, args.document);
+      if (errors.length) return errors;
+      return args;
+    },
   },
-  wsServer
-)
+  wsServer,
+);
 
 httpServer.listen(4000, () => {
-  console.log('Server is running on port 4000')
-})
+  console.log("Server is running on port 4000");
+});
 ```
 
 ##### Client Information
@@ -261,17 +261,17 @@ When using the `graphql-ws` client, you can use the `connectionParams` object to
 information to the server.
 
 ```ts filename="GraphQL over WebSocket client configuration"
-import { createClient } from 'graphql-ws'
+import { createClient } from "graphql-ws";
 
 const client = createClient({
   url: `ws://localhost:400/graphql`,
   connectionParams: {
     client: {
-      name: 'my-client',
-      version: '1.0.0'
-    }
-  }
-})
+      name: "my-client",
+      version: "1.0.0",
+    },
+  },
+});
 ```
 
 ## Additional Resources

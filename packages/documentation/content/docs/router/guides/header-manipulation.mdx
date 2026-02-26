@@ -1,8 +1,6 @@
 ---
-title: 'Header Manipulation'
+title: "Header Manipulation"
 ---
-
-
 
 When you're running a federated GraphQL setup, the router is the perfect place to handle HTTP
 headers consistently across all your subgraphs. Hive Router lets you add, remove, and modify headers
@@ -44,7 +42,7 @@ headers:
       # Forward with a default if missing
       - propagate:
           named: X-Trace-ID
-          default: 'router-generated-trace'
+          default: "router-generated-trace"
 ```
 
 This forwards `Authorization` and `X-User-ID` headers if they exist, and always sends `X-Trace-ID`
@@ -66,7 +64,7 @@ headers:
       # Add request timestamp
       - insert:
           name: X-Request-Time
-          value: '.timestamp'
+          value: ".timestamp"
 ```
 
 ## Removing Sensitive Headers

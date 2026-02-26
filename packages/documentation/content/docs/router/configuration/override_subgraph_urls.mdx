@@ -1,8 +1,6 @@
 ---
-title: 'override_subgraph_urls'
+title: "override_subgraph_urls"
 ---
-
-
 
 The `override_subgraph_urls` configuration allows you to dynamically change the URL for a subgraph
 at runtime, based on the properties of an incoming request.
@@ -45,7 +43,7 @@ is useful for permanently redirecting a subgraph without recomposing your superg
 ```yaml
 override_subgraph_urls:
   products:
-    url: 'https://products.staging.svc.cluster.local/'
+    url: "https://products.staging.svc.cluster.local/"
 ```
 
 #### Dynamic URL with `expression`

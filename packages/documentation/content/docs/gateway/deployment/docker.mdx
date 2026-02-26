@@ -2,9 +2,7 @@
 title: Docker
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-
-
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Docker is a tool that allows you to package an application and its dependencies into a container
 that can run on any system. This makes it easy to deploy applications in a consistent and
@@ -48,13 +46,13 @@ You're recommended to use the `gateway.config.ts` file to configure Hive Gateway
 config file when running the image.
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
   proxy: {
-    endpoint: 'https://example.com/graphql'
-  }
-})
+    endpoint: "https://example.com/graphql",
+  },
+});
 ```
 
 ```sh
@@ -109,7 +107,7 @@ services:
     image: ghcr.io/graphql-hive/gateway
     command: supergraph
     ports:
-      - '4000:4000'
+      - "4000:4000"
     # Add Hive Registry environment variables in case you use it
     # environment:
     #   HIVE_CDN_ENDPOINT: <secret>
@@ -152,19 +150,19 @@ docker build -t hive-gateway-w-block-suggestions .
 Configure to use the block field suggestions plugin:
 
 ```ts filename="gateway.config.ts"
-import { blockFieldSuggestionsPlugin } from '@escape.tech/graphql-armor-block-field-suggestions'
-import { defineConfig } from '@graphql-hive/gateway'
+import { blockFieldSuggestionsPlugin } from "@escape.tech/graphql-armor-block-field-suggestions";
+import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  plugins: pluginCtx => [
+  plugins: (pluginCtx) => [
     blockFieldSuggestionsPlugin({
       // Toggle the plugin | Default: true
       enabled: true,
       // Mask applied to the error message | default: '[Suggestion hidden]'
-      mask: '[Suggestion hidden]'
-    })
-  ]
-})
+      mask: "[Suggestion hidden]",
+    }),
+  ],
+});
 ```
 
 And then simply start the new image with the config file mounted:
@@ -198,49 +196,49 @@ execution duration to the GraphQL result `extensions` property.
 ```
 
 ```ts filename="my-timing.ts"
-import moment from 'moment'
-import type { GatewayPlugin } from '@graphql-hive/gateway'
+import moment from "moment";
+import type { GatewayPlugin } from "@graphql-hive/gateway";
 
 export function useTiming(): GatewayPlugin {
   return {
     onExecute() {
-      const start = Date.now()
+      const start = Date.now();
       return {
         onExecuteDone({ result, setResult }) {
-          const duration = moment.duration(Date.now() - start)
+          const duration = moment.duration(Date.now() - start);
           if (isAsyncIterable(result)) {
             setResult(
-              mapAsyncIterator(result, result => ({
+              mapAsyncIterator(result, (result) => ({
                 ...result,
                 extensions: {
                   ...result?.extensions,
-                  duration: duration.humanize()
-                }
-              }))
-            )
-            return
+                  duration: duration.humanize(),
+                },
+              })),
+            );
+            return;
           }
           setResult({
             ...result,
             extensions: {
               ...result?.extensions,
-              duration: duration.humanize()
-            }
-          })
-        }
-      }
-    }
-  }
+              duration: duration.humanize(),
+            },
+          });
+        },
+      };
+    },
+  };
 }
 ```
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import { useTiming } from './my-timing'
+import { defineConfig } from "@graphql-hive/gateway";
+import { useTiming } from "./my-timing";
 
 export const gatewayConfig = defineConfig({
-  plugins: () => [useTiming()]
-})
+  plugins: () => [useTiming()],
+});
 ```
 
 Your Dockerfile should then look something like this:
@@ -304,22 +302,22 @@ Say you have the following files:
 ```
 
 ```js filename="my-time.ts"
-import moment from 'moment'
+import moment from "moment";
 
 export const additionalResolvers = {
   Query: {
     formattedToday() {
-      return moment().format('DD.MM.YYYY')
-    }
-  }
-}
+      return moment().format("DD.MM.YYYY");
+    },
+  },
+};
 ```
 
 ```ts filename="gateway.config.ts"
-import { defineConfig } from '@graphql-hive/gateway'
-import { additionalResolvers } from './my-time'
+import { defineConfig } from "@graphql-hive/gateway";
+import { additionalResolvers } from "./my-time";
 
-export const gatewayConfig = defineConfig({ additionalResolvers })
+export const gatewayConfig = defineConfig({ additionalResolvers });
 ```
 
 Your Dockerfile should then look something like this:

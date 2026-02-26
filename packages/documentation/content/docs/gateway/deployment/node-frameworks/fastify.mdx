@@ -6,9 +6,6 @@ description:
   powerful framework that is easy to learn and use.
 ---
 
-
-
-
 [Fastify is one of the popular HTTP server frameworks for Node.js.](https://www.fastify.io/) It is a
 very simple, yet powerful framework that is easy to learn and use.
 
@@ -24,12 +21,12 @@ npm i @graphql-hive/gateway-runtime @graphql-hive/logger fastify
 ```
 
 ```ts
-import fastify, { type FastifyReply, type FastifyRequest } from 'fastify'
-import { createGatewayRuntime, Logger } from '@graphql-hive/gateway-runtime'
-import { PinoLogWriter } from '@graphql-hive/logger/writers/pino'
+import fastify, { type FastifyReply, type FastifyRequest } from "fastify";
+import { createGatewayRuntime, Logger } from "@graphql-hive/gateway-runtime";
+import { PinoLogWriter } from "@graphql-hive/logger/writers/pino";
 
 // Request ID header used for tracking requests
-const requestIdHeader = 'x-request-id'
+const requestIdHeader = "x-request-id";
 
 // This is the fastify instance you have created
 const app = fastify({
@@ -37,52 +34,53 @@ const app = fastify({
   // Use our custom request id header
   requestIdHeader,
   // Align with Hive Gateway's request id log label
-  requestIdLogLabel: 'requestId',
+  requestIdLogLabel: "requestId",
   // Check the header first, then generate a new one if not found
   genReqId: (req): string =>
-    req.headers[requestIdHeader]?.toString() || gw.fetchAPI.crypto.randomUUID()
-})
+    req.headers[requestIdHeader]?.toString() || gw.fetchAPI.crypto.randomUUID(),
+});
 
 // This will allow us to access Fastify request and reply objects in the gateway
 interface FastifyContext {
-  req: FastifyRequest
-  reply: FastifyReply
+  req: FastifyRequest;
+  reply: FastifyReply;
 }
 
 const gateway = createGatewayRuntime<FastifyContext>({
   // Use Fastify's logger (Pino) with Hive Logger
   logging: new Logger({
-    writers: [new PinoLogWriter(app.log)]
+    writers: [new PinoLogWriter(app.log)],
   }),
   // Align with Fastify
   requestId: {
     // Use the same header name as Fastify
     headerName: requestIdHeader,
     // Use the request id from Fastify (see `FastifyContext`)
-    generateRequestId: ({ context }) => context.req.id
+    generateRequestId: ({ context }) => context.req.id,
   },
   // Point to the supergraph
-  supergraph: './supergraph.graphql'
-})
+  supergraph: "./supergraph.graphql",
+});
 
 // Bind the gateway to Fastify
 app.route({
   // "*" is recommendeded in order to handle landing page, readiness and other related endpoints
-  url: '*',
-  method: ['GET', 'POST', 'OPTIONS'],
+  url: "*",
+  method: ["GET", "POST", "OPTIONS"],
   // Connect the gateway to Fastify route
-  handler: (req, reply) => gateway.handleNodeRequestAndResponse(req, reply, { req, reply })
-})
+  handler: (req, reply) =>
+    gateway.handleNodeRequestAndResponse(req, reply, { req, reply }),
+});
 
-const port = 4000
+const port = 4000;
 
-app.listen({ port, host: '0.0.0.0' }, err => {
+app.listen({ port, host: "0.0.0.0" }, (err) => {
   if (err) {
-    console.error('Error starting gateway', err)
-    process.exit(1)
+    console.error("Error starting gateway", err);
+    process.exit(1);
   }
-  console.log(`Gateway listening on port ${port}`)
-})
+  console.log(`Gateway listening on port ${port}`);
+});
 ```
 
 ## Add dummy content type parser for File Uploads
@@ -92,5 +90,7 @@ otherwise it will throw an error something like `Unsupported media type`.
 
 ```ts
 // This will allow Fastify to forward multipart requests to Hive Gateway
-app.addContentTypeParser('multipart/form-data', {}, (req, payload, done) => done(null))
+app.addContentTypeParser("multipart/form-data", {}, (req, payload, done) =>
+  done(null),
+);
 ```

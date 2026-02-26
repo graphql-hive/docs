@@ -1,8 +1,6 @@
 ---
-title: 'jwt'
+title: "jwt"
 ---
-
-
 
 The `jwt` configuration lets you add JWT-based authentication to your GraphQL endpoint. When
 enabled, the router checks incoming requests for valid JSON Web Tokens and can reject
@@ -99,11 +97,11 @@ jwt:
   jwks_providers:
     - source: remote
       url: https://your-domain.auth0.com/.well-known/jwks.json
-      polling_interval: '1h'
+      polling_interval: "1h"
   audiences:
-    - 'https://your-api.com'
+    - "https://your-api.com"
   issuers:
-    - 'https://your-domain.auth0.com/'
+    - "https://your-domain.auth0.com/"
 ```
 
 ### Multiple Token Locations
@@ -118,7 +116,7 @@ jwt:
     # Check Authorization header first
     - source: header
       name: authorization
-      prefix: 'Bearer '
+      prefix: "Bearer "
     # Fall back to a cookie
     - source: cookies
       name: auth_token
@@ -137,7 +135,7 @@ jwt:
       url: https://your-domain.auth0.com/.well-known/jwks.json
   forward_claims_to_upstream_extensions:
     enabled: true
-    field_name: 'user'
+    field_name: "user"
 ```
 
 With this setup, your subgraphs receive the JWT claims like this:
@@ -164,7 +162,7 @@ jwt:
     - source: file
       path: ./dev-jwks.json
   audiences:
-    - 'localhost:4000'
+    - "localhost:4000"
 ```
 
 ## Common Patterns

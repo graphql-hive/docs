@@ -100,64 +100,64 @@
 
 /* Hive design system theme */
 @theme {
-  --font-sans: 'PP Neue Montreal', system-ui, sans-serif;
+  --font-sans: "PP Neue Montreal", system-ui, sans-serif;
 
-  --color-hive-yellow: #E1FF00;
-  --color-primary: #E1FF00;
+  --color-hive-yellow: #e1ff00;
+  --color-primary: #e1ff00;
 
-  --color-blue-100: #F4F5F5;
-  --color-blue-200: #DCE3E4;
-  --color-blue-300: #C1D3D7;
-  --color-blue-400: #A4C4CB;
-  --color-blue-500: #86B6C1;
-  --color-blue-600: #68A8B6;
-  --color-blue-700: #4F96A6;
-  --color-blue-800: #437C89;
-  --color-blue-900: #39616A;
-  --color-blue-1000: #2E474C;
+  --color-blue-100: #f4f5f5;
+  --color-blue-200: #dce3e4;
+  --color-blue-300: #c1d3d7;
+  --color-blue-400: #a4c4cb;
+  --color-blue-500: #86b6c1;
+  --color-blue-600: #68a8b6;
+  --color-blue-700: #4f96a6;
+  --color-blue-800: #437c89;
+  --color-blue-900: #39616a;
+  --color-blue-1000: #2e474c;
 
-  --color-green-100: #ECF6F3;
-  --color-green-200: #CAE4DE;
-  --color-green-300: #A7D5CA;
-  --color-green-400: #8CBEB3;
-  --color-green-500: #6AAC9E;
-  --color-green-600: #55998D;
-  --color-green-700: #3B736A;
+  --color-green-100: #ecf6f3;
+  --color-green-200: #cae4de;
+  --color-green-300: #a7d5ca;
+  --color-green-400: #8cbeb3;
+  --color-green-500: #6aac9e;
+  --color-green-600: #55998d;
+  --color-green-700: #3b736a;
   --color-green-800: #245850;
-  --color-green-900: #15433C;
-  --color-green-1000: #00342C;
+  --color-green-900: #15433c;
+  --color-green-1000: #00342c;
 
-  --color-beige-100: #F8F7F6;
-  --color-beige-200: #F1EEE4;
-  --color-beige-300: #E9E5DA;
-  --color-beige-400: #DEDACF;
-  --color-beige-500: #CFCABF;
-  --color-beige-600: #B9B4A9;
-  --color-beige-700: #A29E93;
-  --color-beige-800: #86827A;
-  --color-beige-900: #6D6A63;
-  --color-beige-1000: #4D4B46;
+  --color-beige-100: #f8f7f6;
+  --color-beige-200: #f1eee4;
+  --color-beige-300: #e9e5da;
+  --color-beige-400: #dedacf;
+  --color-beige-500: #cfcabf;
+  --color-beige-600: #b9b4a9;
+  --color-beige-700: #a29e93;
+  --color-beige-800: #86827a;
+  --color-beige-900: #6d6a63;
+  --color-beige-1000: #4d4b46;
 
-  --color-critical-bright: #FD3325;
-  --color-critical-dark: #F81202;
-  --color-critical-100: #FFF0E8;
-  --color-critical-500: #FFC6BB;
-  --color-critical-800: #932D47;
+  --color-critical-bright: #fd3325;
+  --color-critical-dark: #f81202;
+  --color-critical-100: #fff0e8;
+  --color-critical-500: #ffc6bb;
+  --color-critical-800: #932d47;
 
-  --color-warning-bright: #FE8830;
-  --color-warning-100: #FBF8CB;
-  --color-warning-500: #E7DE62;
-  --color-warning-800: #7D7204;
+  --color-warning-bright: #fe8830;
+  --color-warning-100: #fbf8cb;
+  --color-warning-500: #e7de62;
+  --color-warning-800: #7d7204;
 
-  --color-positive-bright: #24D551;
-  --color-positive-dark: #1BA13D;
-  --color-positive-100: #F3FBD7;
-  --color-positive-500: #AFD563;
-  --color-positive-800: #406B10;
+  --color-positive-bright: #24d551;
+  --color-positive-dark: #1ba13d;
+  --color-positive-100: #f3fbd7;
+  --color-positive-500: #afd563;
+  --color-positive-800: #406b10;
 
-  --color-info-100: #E7F7FF;
-  --color-info-500: #9FC9DC;
-  --color-info-800: #205B75;
+  --color-info-100: #e7f7ff;
+  --color-info-500: #9fc9dc;
+  --color-info-800: #205b75;
 }
 
 /* Fix font smoothing for Neue Montreal */

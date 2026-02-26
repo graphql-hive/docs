@@ -23,8 +23,8 @@ Here is an example configuration:
 ```yaml filename="router.config.yaml"
 usage_reporting:
   # Enable reporting by providing your access token
-  access_token: 'your-secret-token' # or set HIVE_ACCESS_TOKEN env var
-  target_id: 'your-target-id' # or set HIVE_TARGET env var
+  access_token: "your-secret-token" # or set HIVE_ACCESS_TOKEN env var
+  target_id: "your-target-id" # or set HIVE_TARGET env var
 
   # Report 50% of requests
   sample_rate: 50%
@@ -38,8 +38,8 @@ usage_reporting:
     - IntrospectionQuery
 
   # Custom client identification headers
-  client_name_header: 'x-client-name'
-  client_version_header: 'x-client-version'
+  client_name_header: "x-client-name"
+  client_version_header: "x-client-version"
 ```
 
 ## Key Options

@@ -3,7 +3,7 @@ import type { Linter } from "eslint";
 import baseConfig from "@hasparus/eslint-config/the-guild";
 
 const config: Linter.Config[] = [
-  { ignores: ["e2e/**", "storybook-static/**"] },
+  { ignores: ["e2e/**", "storybook-static/**", "playwright-report/**"] },
   ...baseConfig,
   {
     files: ["**/*.tsx", "**/*.jsx"],
@@ -18,6 +18,7 @@ const config: Linter.Config[] = [
             "prose-invert",
             "subheader",
             "hive-*",
+            "fd-*",
             "not-prose",
           ],
         },

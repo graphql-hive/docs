@@ -2,41 +2,39 @@
 title: Single Sign On via OIDC (Open ID Connect Provider)
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Image } from '@hive/design-system/image'
-import { Step, Steps } from 'fumadocs-ui/components/steps'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Image } from "@hive/design-system/image";
+import { Step, Steps } from "fumadocs-ui/components/steps";
 
-import azureAdAppAfterRegisterSidebar from './azure-ad-after-going-back-choose-tab-in-sidebar.webp'
-import azureAddAppCreds from './azure-ad-app-creds.webp'
-import azureAdAppSecret from './azure-ad-app-new-client-secret.webp'
-import azureAdAppSecretValue from './azure-ad-client-secret-value.webp'
-import azureAdPermissions2 from './azure-ad-configure-api-permissions-graph.webp'
-import azureAdPermissions1 from './azure-ad-configure-api-permissions.webp'
-import azureAdLogoutUrl from './azure-ad-configure-logout-url.webp'
-import azureAdCreateApp from './azure-ad-create-application-panel.webp'
-import azureAdPermissions3 from './azure-ad-delegated-permissions.webp'
-import azureAdEmail4 from './azure-ad-edit-user-email-field.webp'
-import azureAdEmail3 from './azure-ad-edit-user-properties.webp'
-import azureAdEnterpriseApplication from './azure-ad-enterprise-applications.webp'
-import azureAdAppAfterRegister from './azure-ad-go-back-after-app-registeration.webp'
-import azureAdNewApp from './azure-ad-new-application-button.webp'
-import azureAdAppRegister from './azure-ad-register-application.webp'
-import azureAdEmail1 from './azure-ad-users-tab.webp'
-import azureAdEmail2 from './azure-ad-users-table.webp'
-import oktaControlledImage from './controlled-access-of-okta-app.webp'
-import oktaAppIntegrationImage from './create-new-app-integration-options.webp'
-import hiveOidcModalImage from './hive-connect-openid-provider-modal.png'
-import hiveOidcImage from './hive-connect-openid-provider.png'
-import hiveManageOidcImage from './hive-manage-openid-connect-modal.png'
-import hiveLoginUrlImage from './hive-manage-openid-okta-login-url.png'
-import hiveOidcDefaultRoleImage from './oidc-default-role.png'
-import oktaAdminButtonImage from './okta-admin-button.webp'
-import oktaAppConfigClientIdImage from './okta-app-config-client-id.webp'
-import oktaAppConfigClientSecretImage from './okta-app-config-client-secret.webp'
-import oktaAppGeneralSettingsImage from './okta-app-general-settings-section.webp'
-import oktaCreateAppImage from './okta-create-app-integration.webp'
-
-
+import azureAdAppAfterRegisterSidebar from "./azure-ad-after-going-back-choose-tab-in-sidebar.webp";
+import azureAddAppCreds from "./azure-ad-app-creds.webp";
+import azureAdAppSecret from "./azure-ad-app-new-client-secret.webp";
+import azureAdAppSecretValue from "./azure-ad-client-secret-value.webp";
+import azureAdPermissions2 from "./azure-ad-configure-api-permissions-graph.webp";
+import azureAdPermissions1 from "./azure-ad-configure-api-permissions.webp";
+import azureAdLogoutUrl from "./azure-ad-configure-logout-url.webp";
+import azureAdCreateApp from "./azure-ad-create-application-panel.webp";
+import azureAdPermissions3 from "./azure-ad-delegated-permissions.webp";
+import azureAdEmail4 from "./azure-ad-edit-user-email-field.webp";
+import azureAdEmail3 from "./azure-ad-edit-user-properties.webp";
+import azureAdEnterpriseApplication from "./azure-ad-enterprise-applications.webp";
+import azureAdAppAfterRegister from "./azure-ad-go-back-after-app-registeration.webp";
+import azureAdNewApp from "./azure-ad-new-application-button.webp";
+import azureAdAppRegister from "./azure-ad-register-application.webp";
+import azureAdEmail1 from "./azure-ad-users-tab.webp";
+import azureAdEmail2 from "./azure-ad-users-table.webp";
+import oktaControlledImage from "./controlled-access-of-okta-app.webp";
+import oktaAppIntegrationImage from "./create-new-app-integration-options.webp";
+import hiveOidcModalImage from "./hive-connect-openid-provider-modal.png";
+import hiveOidcImage from "./hive-connect-openid-provider.png";
+import hiveManageOidcImage from "./hive-manage-openid-connect-modal.png";
+import hiveLoginUrlImage from "./hive-manage-openid-okta-login-url.png";
+import hiveOidcDefaultRoleImage from "./oidc-default-role.png";
+import oktaAdminButtonImage from "./okta-admin-button.webp";
+import oktaAppConfigClientIdImage from "./okta-app-config-client-id.webp";
+import oktaAppConfigClientSecretImage from "./okta-app-config-client-secret.webp";
+import oktaAppGeneralSettingsImage from "./okta-app-general-settings-section.webp";
+import oktaCreateAppImage from "./okta-create-app-integration.webp";
 
 Hive allows you to connect any Open ID Connect provider (e.g. Okta, Auth0, Azure AD, or Google
 Workspaces) to your organization. This allows you to use then existing Open ID Connect provider to
@@ -51,8 +49,9 @@ This page will guide you through the process of connecting your Open ID Connect 
 Hive organization.
 
 <Callout type="info">
-  SSO is a core feature in Hive, and available for all subscriptions and plans, including free
-  plans. [We do not gate any features behind a paywall](https://sso.tax/).
+  SSO is a core feature in Hive, and available for all subscriptions and plans,
+  including free plans. [We do not gate any features behind a
+  paywall](https://sso.tax/).
 </Callout>
 
 ## Setup Instructions
@@ -64,8 +63,8 @@ Hive organization.
 ### Connecting the OIDC Provider
 
 <Callout type="info">
-  Your OIDC provider needs to support the `email` claim capability in order to work correctly with
-  Hive SSO.
+  Your OIDC provider needs to support the `email` claim capability in order to
+  work correctly with Hive SSO.
 </Callout>
 
 Visit your organization **Settings** page and click on the **Connect Open ID Connect Provider**
@@ -80,10 +79,10 @@ For the form, fill in the following information:
 - **Client Secret**: The client secret of your OIDC provider.
 
 Connect the provider by clicking on the **Connect OIDC Provider** button.
+
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Configuring your OIDC Provider
@@ -98,10 +97,10 @@ This page will show the **OIDC Provider Sign-in redirect URI** (e.g.
 
 Go to the dashboard of your OIDC provider and set these values as the **Sign-in redirect URI** and
 **Sign-out redirect URI** respectively.
+
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Login via OIDC
@@ -131,8 +130,7 @@ organization's slug, and you will then be redirected to your OIDC provider.
 </Callout>
 </Step>
 
-<Step>
-</Step>
+<Step></Step>
 
 <Step>
 ### Default Role for OIDC Users
@@ -280,7 +278,11 @@ button afterwards, you're gonna see the panel on the right where you should prov
 select "**Register an application to integrate with Azure AD (App you're developing)**" as for the
 application purpose, then hit the **Create** button.
 
-<Image alt="Azure AD" className="mt-8 max-w-xl rounded-lg drop-shadow-md" src={azureAdNewApp} />
+<Image
+  alt="Azure AD"
+  className="mt-8 max-w-xl rounded-lg drop-shadow-md"
+  src={azureAdNewApp}
+/>
 
 <Image
   alt="Azure AD"
@@ -338,12 +340,18 @@ Now, reate a new client secret for your app by navigating as the screenshot illu
 right panel add a description for your secret and configure your expiration configuration or leave
 it as the default recommended value which is `6 months`, then click **Add**:
 
-<Image className="mt-8 max-w-xl rounded-lg drop-shadow-md" src={azureAdAppSecret} />
+<Image
+  className="mt-8 max-w-xl rounded-lg drop-shadow-md"
+  src={azureAdAppSecret}
+/>
 
 Copy and store your client secret value. Make sure to copy the value immediately, as you're not
 gonna be able to see it again after navigating.
 
-<Image className="mt-8 max-w-xl rounded-lg drop-shadow-md" src={azureAdAppSecretValue} />
+<Image
+  className="mt-8 max-w-xl rounded-lg drop-shadow-md"
+  src={azureAdAppSecretValue}
+/>
 
 Use the pointers in the screenshot to help you find your credentials to be able to fill Hive's
 connection inputs:
@@ -413,10 +421,26 @@ with Hive.
 If your Azure AD members does not have the `email` field set, the login will fail. You can follow
 the steps in the screenshots below to be able to add an `email` for an existing user record.
 
-<Image alt="Azure AD" className="mt-8 max-w-sm rounded-lg drop-shadow-md" src={azureAdEmail1} />
-<Image alt="Azure AD" className="mt-8 max-w-xl rounded-lg drop-shadow-md" src={azureAdEmail2} />
-<Image alt="Azure AD" className="mt-8 max-w-xl rounded-lg drop-shadow-md" src={azureAdEmail3} />
-<Image alt="Azure AD" className="mt-8 max-w-xl rounded-lg drop-shadow-md" src={azureAdEmail4} />
+<Image
+  alt="Azure AD"
+  className="mt-8 max-w-sm rounded-lg drop-shadow-md"
+  src={azureAdEmail1}
+/>
+<Image
+  alt="Azure AD"
+  className="mt-8 max-w-xl rounded-lg drop-shadow-md"
+  src={azureAdEmail2}
+/>
+<Image
+  alt="Azure AD"
+  className="mt-8 max-w-xl rounded-lg drop-shadow-md"
+  src={azureAdEmail3}
+/>
+<Image
+  alt="Azure AD"
+  className="mt-8 max-w-xl rounded-lg drop-shadow-md"
+  src={azureAdEmail4}
+/>
 
 </Callout>
 
