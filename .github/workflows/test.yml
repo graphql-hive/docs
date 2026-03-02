@@ -19,6 +19,8 @@ jobs:
       - name: build
         run: bun run build
         working-directory: packages/documentation
+        env:
+          NODE_OPTIONS: '--max-old-space-size=4096'
 
       - name: run integration and unit tests
         run: bun test:bun
