@@ -28,7 +28,7 @@ export function LargeCallout({
       {...rest}
     >
       <div>
-        <header className="flex gap-2">
+        <header className="flex gap-2 items-center mb-6">
           {icon}
           <h3 className="font-medium">{heading}</h3>
         </header>

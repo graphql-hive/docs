@@ -26,18 +26,15 @@ import { Lede } from "#components/lede";
 The primary challenges that led Wealthsimple to seek a GraphQL solution included:
 
 1. **Service Integration Complexity**
-
-- Managing a distributed architecture with many microservices
-- Need for comprehensive usage analytics beyond basic performance monitoring
-- Coordinating API changes across multiple development teams
-- Ensuring consistent performance regardless of customer profile
-
+   - Managing a distributed architecture with many microservices
+   - Need for comprehensive usage analytics beyond basic performance monitoring
+   - Coordinating API changes across multiple development teams
+   - Ensuring consistent performance regardless of customer profile
 2. **Development Workflow**
-
-- Lack of visibility into API usage patterns
-- Difficulty in tracking deprecated field usage
-- No systematic way to validate schema changes
-- Coordinating between multiple client applications (mobile and web)
+   - Lack of visibility into API usage patterns
+   - Difficulty in tracking deprecated field usage
+   - No systematic way to validate schema changes
+   - Coordinating between multiple client applications (mobile and web)
 
 ## Architecture
 
@@ -71,35 +68,29 @@ specialized components, including a custom Spring bean for reporting usage metri
 The implementation focused on two key areas:
 
 1. **Usage Analytics Integration**
-
-- Implemented complementary tracking alongside existing Datadog setup
-- Enhanced GraphQL usage monitoring capabilities:
-  - Client-specific query tracking
-  - Detailed operation body analysis
-  - Real-time usage statistics
-
+   - Implemented complementary tracking alongside existing Datadog setup
+   - Enhanced GraphQL usage monitoring capabilities:
+     - Client-specific query tracking
+     - Detailed operation body analysis
+     - Real-time usage statistics
 2. **Schema Validation System**
-
-- Established global policy for schema changes
-- Implemented 30-day field usage monitoring
-- Integrated real-time developer feedback system
-- Set up automated validation checks for breaking changes
+   - Established global policy for schema changes
+   - Implemented 30-day field usage monitoring
+   - Integrated real-time developer feedback system
+   - Set up automated validation checks for breaking changes
 
 ## Results & Benefits
 
 The implementation has delivered several significant benefits:
 
 1. **Enhanced Development Workflow**
-
-- Data-driven decision making for schema changes.
-- Prevented potentially breaking changes through usage analysis.
-- Improved developer confidence in schema modifications.
-
+   - Data-driven decision making for schema changes.
+   - Prevented potentially breaking changes through usage analysis.
+   - Improved developer confidence in schema modifications.
 2. **Operational Improvements**
-
-- Better visibility into API usage patterns.
-- Reduced risk of breaking changes.
-- More efficient schema management.
+   - Better visibility into API usage patterns.
+   - Reduced risk of breaking changes.
+   - More efficient schema management.
 
 <LargeCallout
   cta={

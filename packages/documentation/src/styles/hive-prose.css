@@ -20,7 +20,7 @@
     }
 
     & blockquote {
-      @apply text-green-1000 flex gap-6 border-none p-0 not-italic max-sm:flex-col sm:text-xl;
+      @apply text-green-1000 flex gap-6 border-none p-0 not-italic max-sm:flex-col sm:text-xl my-0;
       &:not(:where(.light, .light *)) {
         @apply text-white;
       }
@@ -28,6 +28,10 @@
       &::before {
         @apply bg-primary flex size-12 shrink-0 items-center justify-center rounded-2xl pt-2;
         content: url("./quotemark.svg");
+      }
+
+      & > p {
+        @apply my-0;
       }
     }
 

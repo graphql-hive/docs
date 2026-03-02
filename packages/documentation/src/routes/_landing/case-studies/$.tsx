@@ -52,7 +52,7 @@ const clientLoader = browserCollections.caseStudies.createClientLoader<{
     const { default: MDX } = loaded;
 
     return (
-      <div className="prose dark:prose-invert mx-auto min-w-0 max-w-[640px] flex-1 [&>h1:first-child]:hidden">
+      <div className="prose dark:prose-invert min-w-0 w-(--article-max-width) max-w-full [&>h1:first-child]:hidden">
         <MDX components={defaultMdxComponents} />
       </div>
     );
@@ -76,7 +76,7 @@ function CaseStudyHeader({
   }
 
   return (
-    <header className="mx-auto flex max-w-[--content-width] justify-between gap-8 pl-6 pr-6 max-lg:flex-col sm:my-12 md:pl-12 lg:my-24 lg:pr-2">
+    <header className="mx-auto flex max-w-(--content-width) justify-between gap-8 pl-6 pr-6 max-lg:flex-col sm:my-12 md:pl-12 lg:my-24 lg:pr-2">
       <div className="max-w-[640px]">
         <Heading as="h1" className="max-sm:text-[32px]" size="md">
           {title}
@@ -230,14 +230,14 @@ function CaseStudyDetail() {
   const data = Route.useLoaderData();
 
   return (
-    <div className="hive-prose mx-auto box-content max-w-360 [--content-width:1208px]">
+    <div className="hive-prose mx-auto w-full box-content max-w-360 [--content-width:1208px]">
       <CaseStudyHeader
         authors={data.authors}
         slug={data.slug}
         title={data.title}
       />
-      <div className="mx-auto flex max-w-[--content-width]">
-        <div className="ml-0 pl-6 max-sm:pr-6 md:pl-12">
+      <div className="mx-auto flex max-w-(--content-width)">
+        <div className="ml-0 min-w-0 flex-1 pl-6 max-sm:pr-6 md:pl-12">
           {clientLoader.useContent(data.path, { slug: data.slug })}
         </div>
         <LookingToUseHiveUpsellBlock className="sticky right-2 top-[108px] mb-8 h-min max-lg:hidden lg:w-[320px] xl:w-[400px]" />
