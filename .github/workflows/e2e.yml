@@ -21,7 +21,7 @@ jobs:
         run: bun run build
         working-directory: packages/documentation
         env:
-          NODE_OPTIONS: '--max-old-space-size=4096'
+          NODE_OPTIONS: "--max-old-space-size=4096"
 
       - name: install playwright browsers
         run: bunx playwright install chromium webkit --with-deps
