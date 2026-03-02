@@ -5,7 +5,8 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", ".output/**"]
+      "outputs": [".next/**", "!.next/cache/**", ".output/**"],
+      "env": ["VERCEL"]
     },
     "lint": {
       "dependsOn": ["^lint"]

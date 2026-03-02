@@ -4,6 +4,9 @@ on:
 jobs:
   deployment:
     runs-on: ubuntu-24.04
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -18,7 +21,6 @@ jobs:
         run: bun run build
         working-directory: packages/documentation
         env:
-          NITRO_PRESET: cloudflare-module
           NODE_OPTIONS: "--max-old-space-size=4096"
 
       - name: deploy to cloudflare workers
