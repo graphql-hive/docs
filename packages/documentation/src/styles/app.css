@@ -54,6 +54,8 @@
   --color-fd-primary: var(--color-neutral-100);
   --color-fd-card: var(--color-neutral-900);
   --color-fd-muted-foreground: var(--color-beige-800);
+  --color-fd-popover-foreground: var(--color-neutral-200);
+  --color-fd-popover: hsl(0, 0%, 7.04%);
   --color-fd-sidebar-active: var(--color-primary);
   --color-fd-sidebar-active-bg: color-mix(in oklab, hsl(0 0% 100% / 0.05), var(--color-primary) 4.5%);
   --tw-prose-body: color-mix(in oklab, hsl(0, 0%, 92%) 90%, transparent);
@@ -403,4 +405,16 @@ a.text-fd-muted-foreground.prose.text-sm:hover {
 
 .shiki {
   box-shadow: none; 
+}
+
+[data-radix-popper-content-wrapper] {
+  background-color: hsl(var(--nextra-bg));
+  --color-fd-accent: var(--color-beige-100);
+}
+
+.dark [data-radix-popper-content-wrapper] {
+  --color-fd-accent: inherit;
+  color: var(--color-white);
+  background-color: var(--color-neutral-800);
+  border-radius: 1rem;
 }

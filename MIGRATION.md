@@ -21,10 +21,8 @@ The sync tool uses `git filter-repo` to rewrite the old repo's history, moving a
 
 ### Current Stabilization Tasks (2026-02-23)
 
-- [x] Fix `/product-updates` prerender failures (legacy `Tabs.Tab` syntax in product update MDX pages).
-- [x] Fix `/docs/schema-registry/high-availability-resilience` route (rename from misspelled `resilence` path).
-- [ ] Add `root: true` + icons for top-level product dirs in docs nav.
-- [ ] Fix sidebar stacking bug (sidebar rendering above navbar).
+- [ ] Fix failing e2e tests (20/42 fail). Most mobile tests fail because `getByRole('button', { name: 'Menu' })` is not found — mobile nav changed and tests weren't updated. Several chromium tests fail on `/ecosystem`, `/oss-friends` (no h1), and search (combobox not found).
+- [ ] Add landing pages to search index (see TODO in `src/routes/api/search.ts`).
 
 ## Quick Start
 

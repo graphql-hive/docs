@@ -488,7 +488,7 @@ export function DocsSidebar() {
       <DesktopSidebar>
         {tabs.length > 0 && (
           <div className="p-4 pb-0">
-            <SidebarTabsDropdown className="w-full bg-white dark:bg-(--nextra-bg) text-green-1000 dark:text-white" options={tabs} />
+            <SidebarTabsDropdown className="w-full bg-white dark:bg-(--nextra-bg) text-green-1000 dark:text-white [--color-fd-accent:var(--color-beige-100)] dark:[--color-fd-accent:inherit]" options={tabs} />
           </div>
         )}
         <SidebarViewport>

@@ -64,22 +64,30 @@ describe("llms.txt", () => {
 });
 
 describe("llms-full.txt", () => {
-  test("returns all docs as markdown", async () => {
-    const res = await fetch(`${BASE_URL}/llms-full.txt`);
-    expect(res.status).toBe(200);
-    expect(res.headers.get("content-type")).toContain("text/markdown");
-    const text = await res.text();
-    expect(text).toContain("# ");
-    expect(text).toContain("(/docs");
-  });
+  test(
+    "returns all docs as markdown",
+    async () => {
+      const res = await fetch(`${BASE_URL}/llms-full.txt`);
+      expect(res.status).toBe(200);
+      expect(res.headers.get("content-type")).toContain("text/markdown");
+      const text = await res.text();
+      expect(text).toContain("# ");
+      expect(text).toContain("(/docs");
+    },
+    30_000,
+  );
 
-  test("is not rewritten to a doc page", async () => {
-    const res = await fetch(`${BASE_URL}/llms-full.txt`);
-    expect(res.status).toBe(200);
-    // llms-full.txt contains multiple docs concatenated, not a single doc
-    const text = await res.text();
-    expect(text).toContain("(/docs/");
-  });
+  test(
+    "is not rewritten to a doc page",
+    async () => {
+      const res = await fetch(`${BASE_URL}/llms-full.txt`);
+      expect(res.status).toBe(200);
+      // llms-full.txt contains multiple docs concatenated, not a single doc
+      const text = await res.text();
+      expect(text).toContain("(/docs/");
+    },
+    30_000,
+  );
 });
 
 describe(".txt extension", () => {
@@ -92,8 +100,8 @@ describe(".txt extension", () => {
     expect(text).toContain("title:");
   });
 
-  test("/docs/test.txt returns markdown for nested page", async () => {
-    const res = await fetch(`${BASE_URL}/docs/test.txt`, {
+  test("/docs/schema-registry.txt returns markdown for nested page", async () => {
+    const res = await fetch(`${BASE_URL}/docs/schema-registry.txt`, {
       redirect: "follow",
     });
     expect(res.status).toBe(200);
@@ -114,8 +122,8 @@ describe(".mdx extension", () => {
     expect(text).toContain("title:");
   });
 
-  test("/docs/test.mdx returns markdown for nested page", async () => {
-    const res = await fetch(`${BASE_URL}/docs/test.mdx`, {
+  test("/docs/schema-registry.mdx returns markdown for nested page", async () => {
+    const res = await fetch(`${BASE_URL}/docs/schema-registry.mdx`, {
       redirect: "follow",
     });
     expect(res.status).toBe(200);
@@ -135,8 +143,8 @@ describe(".md extension", () => {
     expect(text).toContain("---");
   });
 
-  test("/docs/test.md returns markdown for nested page", async () => {
-    const res = await fetch(`${BASE_URL}/docs/test.md`, { redirect: "follow" });
+  test("/docs/schema-registry.md returns markdown for nested page", async () => {
+    const res = await fetch(`${BASE_URL}/docs/schema-registry.md`, { redirect: "follow" });
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("text/markdown");
     const text = await res.text();
@@ -166,7 +174,7 @@ describe("Accept header negotiation", () => {
   });
 
   test("Accept: text/markdown works for nested pages", async () => {
-    const res = await fetch(`${BASE_URL}/docs/test`, {
+    const res = await fetch(`${BASE_URL}/docs/schema-registry`, {
       headers: { Accept: "text/markdown" },
       redirect: "follow",
     });

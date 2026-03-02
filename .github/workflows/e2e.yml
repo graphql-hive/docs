@@ -2,8 +2,9 @@ on:
   workflow_call:
 
 jobs:
-  unit:
+  e2e:
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - name: checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -16,15 +17,24 @@ jobs:
       - name: install dependencies
         run: bun install --frozen-lockfile
 
-      - name: setup Playwright
-        run: bun playwright install chromium --with-deps
+      - name: build
+        run: bun run build
+        working-directory: packages/documentation
 
-      - name: run end-to-end tests
+      - name: install playwright browsers
+        run: bunx playwright install chromium webkit --with-deps
+        working-directory: packages/documentation
+
+      - name: run e2e tests
         run: bun run test:e2e
+        working-directory: packages/documentation
+        env:
+          CI: true
 
-      - uses: actions/upload-artifact@v5
-        if: ${{ !cancelled() }}
+      - name: upload playwright report
+        uses: actions/upload-artifact@v4
+        if: ${{ failure() }}
         with:
           name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+          path: packages/documentation/playwright-report/
+          retention-days: 7
