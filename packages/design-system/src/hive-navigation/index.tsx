@@ -650,7 +650,7 @@ function HiveLogoLink({ isHive }: { isHive: boolean }) {
       className="hive-focus -m-2 flex items-center rounded-md p-2"
       href={isHive ? "/" : "https://the-guild.dev/graphql/hive"}
     >
-      <HiveCombinationMark className="text-green-1000 dark:text-neutral-200" />
+      <HiveCombinationMark className="text-green-1000 dark:text-neutral-200 max-sm:h-6 max-sm:w-auto" />
     </Anchor>
   );
 }
