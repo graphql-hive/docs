@@ -31,7 +31,7 @@ determine if a change could be a breaking change.
 
 Here's an example for a change in a GraphQL schema that could be considered a breaking change:
 
-```diff copy=false
+```gql
 type Query {
   posts: [Post]
 }
@@ -39,8 +39,8 @@ type Query {
 type Post {
   id: ID!
   title: String!
-  content: String!
--  description: String!
+  content: String! # [!code --]
+  description: String! # [!code ++]
 }
 ```
 
