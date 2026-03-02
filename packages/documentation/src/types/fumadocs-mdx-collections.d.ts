@@ -1,12 +1,12 @@
 declare module "fumadocs-mdx:collections/server" {
   import type {
-    DocCollectionEntry,
+    AsyncDocCollectionEntry,
     DocsCollectionEntry,
   } from "fumadocs-mdx/runtime/server";
 
   export const docs: DocsCollectionEntry;
 
-  export const caseStudies: DocCollectionEntry<
+  export const caseStudies: AsyncDocCollectionEntry<
     "caseStudies",
     {
       authors: {
@@ -21,7 +21,7 @@ declare module "fumadocs-mdx:collections/server" {
     }
   >[];
 
-  export const productUpdates: DocCollectionEntry<
+  export const productUpdates: AsyncDocCollectionEntry<
     "productUpdates",
     {
       authors: {
