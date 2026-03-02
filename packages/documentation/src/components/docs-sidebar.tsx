@@ -503,7 +503,7 @@ export function DocsSidebar() {
         </div>
       </DesktopSidebar>
       <MobileDrawer>
-        <div className="flex items-center gap-1.5 p-4 pb-2 text-fd-muted-foreground">
+        <div className="flex items-center gap-1.5 p-2 text-fd-muted-foreground">
           <Link
             className="inline-flex items-center justify-center rounded-lg p-2 hover:bg-fd-accent hover:text-fd-accent-foreground"
             href="https://github.com/graphql-hive/console"
@@ -516,11 +516,11 @@ export function DocsSidebar() {
           </SidebarTrigger>
         </div>
         {tabs.length > 0 && (
-          <div className="px-4 pb-2">
+          <div className="px-2 pb-2">
             <SidebarTabsDropdown className="w-full" options={tabs} />
           </div>
         )}
-        <SidebarViewport>
+        <SidebarViewport className="py-0 [&>div]:pt-0">
           <MobileNavMenu />
         </SidebarViewport>
       </MobileDrawer>
