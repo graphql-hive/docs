@@ -1,13 +1,13 @@
 import type { Root } from "fumadocs-core/page-tree";
 
 import { ProductUpdateAuthors } from "@/components/product-update-header";
+import { mdxComponents } from "@/lib/mdx-components";
 import { Heading } from "@hive/design-system";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import browserCollections from "fumadocs-mdx:collections/browser";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { DocsBody, DocsPage } from "fumadocs-ui/layouts/docs/page";
-import defaultMdxComponents from "fumadocs-ui/mdx";
 
 const findEntry = createServerFn({ method: "GET" })
   .inputValidator((slug: string) => slug)
@@ -67,7 +67,7 @@ const clientLoader = browserCollections.productUpdates.createClientLoader<{
           date={props.date}
         />
         <DocsBody>
-          <MDX components={defaultMdxComponents} />
+          <MDX components={mdxComponents} />
         </DocsBody>
       </DocsPage>
     );

@@ -1,17 +1,17 @@
+import { mdxComponents } from "@/lib/mdx-components";
 import { DecorationIsolation } from "@hive/design-system/decorations";
 import { Heading } from "@hive/design-system/heading";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import browserCollections from "fumadocs-mdx:collections/browser";
-import defaultMdxComponents from "fumadocs-ui/mdx";
 
 import { CaseStudyCard } from "../../../components/case-studies/case-study-card";
 import { getCompanyLogo } from "../../../components/case-studies/company-logos";
 import { getCaseStudies } from "../../../components/case-studies/get-case-studies";
 import { LookingToUseHiveUpsellBlock } from "../../../components/case-studies/looking-to-use-hive-upsell-block";
 import { GetYourAPIGameWhite } from "../../../components/get-your-api-game-white";
-import { SmallAvatar } from "../../../components/small-avatar";
 import "../../../styles/hive-prose.css";
+import { SmallAvatar } from "../../../components/small-avatar";
 
 const serverLoader = createServerFn({ method: "GET" })
   .inputValidator((slug: string) => slug)
@@ -53,7 +53,7 @@ const clientLoader = browserCollections.caseStudies.createClientLoader<{
 
     return (
       <div className="prose dark:prose-invert min-w-0 w-(--article-max-width) max-w-full [&>h1:first-child]:hidden">
-        <MDX components={defaultMdxComponents} />
+        <MDX components={mdxComponents} />
       </div>
     );
   },
