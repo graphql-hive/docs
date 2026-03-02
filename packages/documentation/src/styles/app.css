@@ -29,14 +29,15 @@
   --nextra-primary-saturation: 70%;
   --nextra-primary-lightness: 40%;
   --nextra-bg: 255 255 255;
-  --color-fd-background: hsl(0, 0%, 100%);
+  --color-fd-background: var(--color-beige-100);
   --color-fd-border: var(--color-beige-400);
   --color-fd-muted-foreground: var(--color-beige-900);
   --color-fd-foreground: var(--color-green-1000);
   --color-fd-primary: var(--color-green-1000);
-  --color-fd-card: #FBFBFA;
+  --color-fd-card: var(--color-white);
   --color-fd-secondary: var(--color-beige-100);
-  --color-fd-sidebar-active: var(--color-blue-800);
+  --color-fd-sidebar-active: var(--color-blue-900);
+  --color-fd-popover-foreground: var(--color-green-1000);
   --color-fd-sidebar-active-bg: color-mix(
     in oklab,
     var(--color-blue-400) 20%,

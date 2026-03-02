@@ -87,6 +87,7 @@ async function buildIndexes(): Promise<AdvancedIndex[]> {
     }),
   );
 
+  // TODO: index landing pages (/, /federation, /schema-registry, etc.) once they have structuredData
   return [...docsIndexes, ...caseStudyIndexes, ...productUpdateIndexes];
 }
 
