@@ -19,7 +19,6 @@ import { Anchor } from "../anchor";
 import { CallToAction } from "../call-to-action";
 import { cn } from "../cn";
 import { siteOrigin } from "../constants";
-import { __LANDING_WIDTHS_ID } from "../hive-layout-config";
 import {
   AccountBox,
   AppsIcon,
@@ -88,15 +87,6 @@ export function HiveNavigationMenuIcon({
 
 const ENTERPRISE_MENU_HIDDEN = true;
 
-const WIDTH_STYLE = "max-w-[90rem] [body:has(#hive-l-widths)_&]:max-w-[1392px]";
-
-if (typeof process !== "undefined" && process.env.NODE_ENV === "development") {
-  // eslint-disable-next-line no-console
-  console.assert(
-    __LANDING_WIDTHS_ID === "hive-l-widths",
-    "__LANDING_WIDTHS_ID diverged from the className used in HiveNavigation.",
-  );
-}
 
 export type HiveNavigationProps = {
   children?: ReactNode;
@@ -182,8 +172,7 @@ export function HiveNavigation({
       {/* desktop menu */}
       <NavigationMenu
         className={cn(
-          "mx-auto py-4 px-6 w-360 max-w-full hidden md:flex",
-          WIDTH_STYLE,
+          "mx-auto py-4 px-6 hidden md:flex w-360 max-w-full",
           className,
         )}
         delayDuration={0}
@@ -298,7 +287,7 @@ export const ProductsMenu = React.forwardRef<HTMLDivElement, ProductsMenuProps>(
 
     return (
       <MenuContentColumns ref={ref} {...rest}>
-        <div className="w-[220px]">
+        <div className="w-55">
           <ColumnLabel>Platform</ColumnLabel>
           <NavigationMenuLink
             className="p-4"
@@ -357,7 +346,7 @@ export const ProductsMenu = React.forwardRef<HTMLDivElement, ProductsMenuProps>(
             })}
           </ul>
         </div>
-        <div className="w-[364px]">
+        <div className="w-91">
           <ColumnLabel>Libraries</ColumnLabel>
           <ul className="grid grid-cols-2 gap-x-4">
             {SIX_HIGHLIGHTED_PRODUCTS.map((product) => {
@@ -369,7 +358,7 @@ export const ProductsMenu = React.forwardRef<HTMLDivElement, ProductsMenuProps>(
                     className="flex items-center gap-3 px-4 py-2"
                     href={bidirectionalProductLink(product)}
                   >
-                    <div className="flex size-8 items-center justify-center rounded-sm bg-beige-200 p-[5px] dark:bg-white/5">
+                    <div className="flex size-8 items-center justify-center rounded-sm bg-beige-200 p-1.25 dark:bg-white/5">
                       <Logo className="size-8 text-green-1000 dark:text-neutral-300" />
                     </div>
                     <div>

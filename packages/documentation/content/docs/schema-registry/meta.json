@@ -1,20 +1,21 @@
 {
   "title": "Hive Console",
+  "description": "Schema registry, analytics, and federation platform",
   "icon": "Hive",
   "root": true,
   "pages": [
-    "./index.mdx",
-    "./get-started.mdx",
-    "./management.mdx",
-    "./explorer.mdx",
-    "[Usage Reporting and Insights](./usage-reporting.mdx)",
-    "./laboratory.mdx",
-    "./high-availability-cdn.mdx",
-    "./contracts.mdx",
-    "[Schema Policies](./schema-policy.mdx)",
-    "[App Deployments (Persisted Documents)](./app-deployments.mdx)",
-    "./external-schema-composition.mdx",
-    "[High-Availability and Resilience](./high-availability-resilience.mdx)",
-    "./self-hosting.mdx"
+    "index",
+    "get-started",
+    "management",
+    "explorer",
+    "[Usage Reporting and Insights](/docs/schema-registry/usage-reporting)",
+    "laboratory",
+    "high-availability-cdn",
+    "contracts",
+    "[Schema Policies](/docs/schema-registry/schema-policy)",
+    "[App Deployments (Persisted Documents)](/docs/schema-registry/app-deployments)",
+    "external-schema-composition",
+    "[High-Availability and Resilience](/docs/schema-registry/high-availability-resilience)",
+    "self-hosting"
   ]
 }

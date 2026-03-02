@@ -1,9 +1,9 @@
 {
   "pages": [
-    "[Overview](index)",
+    "[Overview](/docs/gateway/deployment)",
     "docker",
     "node-frameworks",
-    "[Resources](resources-requirements)",
+    "[Resources](/docs/gateway/deployment/resources-requirements)",
     "runtimes",
     "serverless"
   ]

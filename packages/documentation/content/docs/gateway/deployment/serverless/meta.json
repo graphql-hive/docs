@@ -1,9 +1,9 @@
 {
   "pages": [
-    "[Introduction](index)",
-    "[AWS Lambda](aws-lambda)",
-    "[Azure Functions](azure-functions)",
-    "[Cloudflare Workers](cloudflare-workers)",
-    "[Google Cloud Platform](google-cloud-platform)"
+    "[Introduction](/docs/gateway/deployment/serverless)",
+    "[AWS Lambda](/docs/gateway/deployment/serverless/aws-lambda)",
+    "[Azure Functions](/docs/gateway/deployment/serverless/azure-functions)",
+    "[Cloudflare Workers](/docs/gateway/deployment/serverless/cloudflare-workers)",
+    "[Google Cloud Platform](/docs/gateway/deployment/serverless/google-cloud-platform)"
   ]
 }

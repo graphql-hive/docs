@@ -1,13 +1,11 @@
 {
   "title": "Hive Logger",
-  "icon": "ScrollText",
-  "root": true,
   "pages": [
-    "./index.mdx",
-    "./logging-methods.mdx",
-    "./log-levels.mdx",
-    "./child-loggers.mdx",
-    "./writers.mdx",
-    "./serialization.mdx"
+    "index",
+    "logging-methods",
+    "log-levels",
+    "child-loggers",
+    "writers",
+    "serialization"
   ]
 }

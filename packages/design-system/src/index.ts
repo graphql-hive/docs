@@ -13,7 +13,6 @@ export { Giscus } from "./giscus";
 export * from "./heading";
 export * from "./hero";
 export { HiveFooter } from "./hive-footer";
-export { HiveLayoutConfig } from "./hive-layout-config";
 export { GraphQLConfCard, HiveNavigation } from "./hive-navigation";
 export type {
   GraphQLConfCardProps,

@@ -1,18 +1,19 @@
 {
   "title": "Hive Gateway",
+  "description": "Federated GraphQL gateway with subscriptions and built-in security",
   "icon": "HiveGateway",
   "root": true,
   "pages": [
-    "[Getting Started](./index.mdx)",
-    "[Supergraph / Proxy Source](./supergraph-proxy-source.mdx)",
-    "./usage-reporting.mdx",
-    "[Persisted Documents](./persisted-documents.mdx)",
-    "[Authorization / Authentication](./authorization-authentication.mdx)",
-    "[Monitoring / Tracing](./monitoring-tracing.mdx)",
-    "[Incremental Delivery (Defer & Stream)](./defer-stream.mdx)",
-    "[Subscriptions](./subscriptions.mdx)",
-    "./logging-and-error-handling.mdx",
-    "./other-features.mdx",
-    "./deployment.mdx"
+    "[Getting Started](/docs/gateway)",
+    "[Supergraph / Proxy Source](/docs/gateway/supergraph-proxy-source)",
+    "usage-reporting",
+    "[Persisted Documents](/docs/gateway/persisted-documents)",
+    "[Authorization / Authentication](/docs/gateway/authorization-authentication)",
+    "[Monitoring / Tracing](/docs/gateway/monitoring-tracing)",
+    "[Incremental Delivery (Defer & Stream)](/docs/gateway/defer-stream)",
+    "[Subscriptions](/docs/gateway/subscriptions)",
+    "logging-and-error-handling",
+    "other-features",
+    "deployment"
   ]
 }

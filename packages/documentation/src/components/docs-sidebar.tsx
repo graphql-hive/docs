@@ -129,6 +129,7 @@ function SidebarItem({
     <SidebarItemBase
       className={cn(
         itemVariants({ highlight: depth >= 1, variant: "link" }),
+        "not-first:mt-0.5 data-[active=true]:[&:before]:bg-fd-sidebar-active!", // this is `[&:before]` not `before:` intentionally
         className,
       )}
       style={{ paddingInlineStart: getItemOffset(depth), ...style }}
@@ -151,7 +152,7 @@ function SidebarFolderTrigger({
     <SidebarFolderTriggerBase
       className={cn(
         itemVariants({ variant: collapsible ? "button" : null }),
-        "w-full",
+        "w-full mt-0.5",
         className,
       )}
       style={{ paddingInlineStart: getItemOffset(depth - 1), ...style }}
@@ -172,7 +173,7 @@ function SidebarFolderLink({
     <SidebarFolderLinkBase
       className={cn(
         itemVariants({ highlight: depth > 1, variant: "link" }),
-        "w-full",
+        "w-full mt-0.5",
         className,
       )}
       style={{ paddingInlineStart: getItemOffset(depth - 1), ...style }}
@@ -192,7 +193,7 @@ function SidebarFolderContent({
   return (
     <SidebarFolderContentBase
       className={cn(
-        "relative [&>*:not(:first-child)]:mt-0.5",
+        "relative mt-0.5",
         depth === 1 &&
           "before:content-[''] before:absolute before:w-px before:inset-y-1 before:bg-fd-border before:start-2.5",
         className,
@@ -464,6 +465,20 @@ function MobileNavMenu() {
 // Public component
 // ---------------------------------------------------------------------------
 
+function BackToOverview() {
+  const { full, root } = useTreeContext();
+  if (root === full) return null;
+  return (
+    <Link
+      className="flex items-center gap-1.5 px-4 py-2 text-xs text-fd-muted-foreground transition-colors hover:text-fd-foreground"
+      href="/docs"
+    >
+      <ArrowIcon className="size-3 rotate-180" />
+      Back
+    </Link>
+  );
+}
+
 export function DocsSidebar() {
   const { full: tree } = useTreeContext();
   const tabs = useMemo(() => getSidebarTabs(tree), [tree]);
@@ -481,6 +496,7 @@ export function DocsSidebar() {
             <SidebarPageTree />
           </div>
         </SidebarViewport>
+        <BackToOverview />
         <div className="flex flex-col border-t p-4 pt-2">
           <SidebarFooter />
         </div>

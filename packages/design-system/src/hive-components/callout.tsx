@@ -24,37 +24,37 @@ const calloutConfig: Record<
   }
 > = {
   critical: {
-    bg: "bg-critical-100 dark:bg-[rgba(255,240,232,0.2)]",
+    bg: "bg-critical-100 dark:bg-[rgba(255,240,232,0.1)]",
     border: "border border-critical-500 dark:border-[rgba(255,198,187,0.2)]",
     Icon: CalloutCriticalIcon,
     text: "text-critical-800 dark:text-critical-500",
   },
   info: {
-    bg: "bg-info-100 dark:bg-[rgba(231,247,255,0.2)]",
+    bg: "bg-info-100 dark:bg-[rgba(231,247,255,0.1)]",
     border: "border border-info-500 dark:border-[rgba(159,201,220,0.2)]",
     Icon: CalloutInfoIcon,
     text: "text-info-800 dark:text-[#215D93]",
   },
   note: {
-    bg: "bg-beige-200 dark:bg-[rgba(77,75,70,0.4)]",
+    bg: "bg-beige-200 dark:bg-[rgba(77,75,70,0.2)]",
     border: "border border-beige-500 dark:border-[rgba(109,106,99,0.4)]",
     Icon: CalloutNeutralIcon,
     text: "text-beige-900 dark:text-beige-400",
   },
   success: {
-    bg: "bg-positive-100 dark:bg-[rgba(175,213,99,0.2)]",
+    bg: "bg-positive-100 dark:bg-[rgba(175,213,99,0.1)]",
     border: "border border-positive-500 dark:border-[rgba(175,213,99,0.2)]",
     Icon: CalloutSuccessIcon,
     text: "text-positive-800 dark:text-positive-500",
   },
   tip: {
-    bg: "bg-beige-200 dark:bg-[rgba(77,75,70,0.4)]",
+    bg: "bg-beige-200 dark:bg-[rgba(77,75,70,0.2)]",
     border: "border border-beige-500 dark:border-[rgba(109,106,99,0.4)]",
     Icon: CalloutNeutralIcon,
     text: "text-beige-900 dark:text-beige-400",
   },
   warning: {
-    bg: "bg-warning-100 dark:bg-[rgba(251,248,203,0.2)]",
+    bg: "bg-warning-100 dark:bg-[rgba(251,248,203,0.1)]",
     border: "border border-warning-500 dark:border-[rgba(231,222,98,0.2)]",
     Icon: CalloutWarningIcon,
     text: "text-warning-800 dark:text-warning-500",
@@ -78,7 +78,7 @@ export function Callout({
   return (
     <div
       className={cn(
-        "mt-6 flex min-h-12 items-center gap-2 rounded-lg px-[13px] py-[9px]",
+        "mt-6 flex min-h-12 gap-2 rounded-lg px-[13px] py-[9px]",
         config.bg,
         config.border,
         className,
@@ -86,7 +86,7 @@ export function Callout({
     >
       <Icon
         aria-hidden
-        className={cn("size-6 shrink-0", config.text)}
+        className={cn("size-6 mt-5.5 shrink-0", config.text)}
         role="img"
       />
       <div className="min-w-0 flex-1">

@@ -58,7 +58,7 @@ export function ErrorDetails(props: CLIError): ReactElement {
   );
 }
 
-export async function getErrorDescriptions(): Promise<CLIError[]> {
+export function getErrorDescriptions(): CLIError[] {
   const examples: {
     example: string;
     fix: string;
@@ -420,8 +420,8 @@ export async function getErrorDescriptions(): Promise<CLIError[]> {
     );
 }
 
-export async function CLIErrorsSection() {
-  const cliErrors = await getErrorDescriptions();
+export function CLIErrorsSection() {
+  const cliErrors = getErrorDescriptions();
   return (
     <>
       {cliErrors.map((item) => (

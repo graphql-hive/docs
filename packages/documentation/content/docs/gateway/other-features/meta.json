@@ -1,6 +1,6 @@
 {
   "pages": [
-    "[Overview](index)",
+    "[Overview](/docs/gateway/other-features)",
     "custom-plugins",
     "header-propagation",
     "performance",

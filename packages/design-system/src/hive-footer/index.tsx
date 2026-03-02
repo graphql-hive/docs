@@ -4,7 +4,6 @@ import { Anchor } from "../anchor";
 import { cn } from "../cn";
 import { siteOrigin } from "../constants";
 import { ContactTextLink } from "../contact-us";
-import { __LANDING_WIDTHS_ID } from "../hive-layout-config";
 import {
   DiscordIcon,
   GitHubIcon,
@@ -17,16 +16,6 @@ import { FOUR_MAIN_PRODUCTS, SIX_HIGHLIGHTED_PRODUCTS } from "../products";
 import { ILink } from "../types/components";
 import { SecurityBadges } from "./security-badges";
 
-const INNER_BOX_WIDTH_STYLE =
-  "max-w-[90rem] [body:has(#hive-l-widths)_&]:max-w-[75rem] [body:has(#hive-l-widths)_&]:mx-4";
-
-if (process.env.NODE_ENV === "development") {
-  // eslint-disable-next-line no-console
-  console.assert(
-    __LANDING_WIDTHS_ID === "hive-l-widths",
-    "__LANDING_WIDTHS_ID diverged from the className used in HiveFooter.",
-  );
-}
 
 export type HiveFooterProps = {
   className?: string;
@@ -53,15 +42,12 @@ export function HiveFooter({
   return (
     <footer
       className={cn(
-        "relative flex justify-center px-4 pb-6 pt-[72px] xl:px-[120px]",
+        "relative flex justify-center px-4 pb-6 pt-18 xl:px-30",
         className,
       )}
     >
       <div
-        className={cn(
-          "grid w-full grid-cols-1 gap-x-6 text-green-800 max-lg:gap-y-16 sm:grid-cols-4 lg:gap-x-8 xl:gap-x-10 dark:text-neutral-400",
-          INNER_BOX_WIDTH_STYLE,
-        )}
+        className="grid w-full grid-cols-1 gap-x-6 text-green-800 max-lg:gap-y-16 sm:grid-cols-4 lg:gap-x-8 xl:gap-x-10 dark:text-neutral-400 max-w-360"
       >
         <div className="max-lg:col-span-full">
           <Anchor

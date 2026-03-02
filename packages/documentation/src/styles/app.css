@@ -392,3 +392,8 @@ button,
   padding-top: 2rem;
   @apply pb-4 md:pb-6 lg:pb-8 xl:pb-[52px];
 }
+
+/* toc links */
+a.text-fd-muted-foreground.prose.text-sm:hover {
+  text-decoration: underline;
+}

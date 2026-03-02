@@ -1,9 +1,7 @@
 {
   "title": "Hive Laboratory",
-  "icon": "FlaskConical",
-  "root": true,
   "pages": [
-    "[Overview](index)",
+    "[Overview](/docs/new-laboratory)",
     "collections",
     "environment-variables",
     "history",
