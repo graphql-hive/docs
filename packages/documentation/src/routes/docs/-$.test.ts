@@ -29,14 +29,16 @@ async function waitForServer(maxAttempts = 30): Promise<void> {
 beforeAll(async () => {
   if (process.env["TEST_URL"]) return; // user-provided server
 
-  devServer = spawn(
-    ["bun", "--bun", "vite", "dev", "--port", String(TEST_PORT)],
-    {
-      cwd: import.meta.dir + "/../../..",
-      stderr: "ignore",
-      stdout: "ignore",
-    },
-  );
+  const command = process.env["CI"]
+    ? ["bun", "run", "start"]
+    : ["bun", "--bun", "vite", "dev", "--port", String(TEST_PORT)];
+
+  devServer = spawn(command, {
+    cwd: import.meta.dir + "/../../..",
+    env: { ...process.env, PORT: String(TEST_PORT) },
+    stderr: "ignore",
+    stdout: "ignore",
+  });
 
   await waitForServer();
 }, 60_000);

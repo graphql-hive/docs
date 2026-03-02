@@ -16,5 +16,9 @@ jobs:
       - name: install dependencies
         run: bun install --frozen-lockfile
 
+      - name: build
+        run: bun run build
+        working-directory: packages/documentation
+
       - name: run integration and unit tests
         run: bun test:bun
