@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 
-import { Anchor } from "../../anchor";
-import { cn } from "../../cn";
+import { Anchor } from "../anchor";
+import { cn } from "../cn";
 
 export interface MDXLinkProps extends Omit<
   React.ComponentProps<typeof Anchor>,

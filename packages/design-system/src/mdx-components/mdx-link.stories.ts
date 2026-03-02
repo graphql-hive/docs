@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { hiveThemeDecorator } from "../../__storybook__/hive-theme-decorator";
+import { hiveThemeDecorator } from "../__storybook__/hive-theme-decorator";
 import { MDXLink, MDXLinkProps } from "./mdx-link";
 
 export default {

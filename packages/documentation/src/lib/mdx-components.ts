@@ -1,5 +1,6 @@
-import { MDXLink } from "@hive/design-system/server/mdx-components/mdx-link";
 import defaultMdxComponents from "fumadocs-ui/mdx";
+
+import { MDXLink } from "../../../design-system/src/mdx-components/mdx-link";
 
 export const mdxComponents = {
   ...defaultMdxComponents,
