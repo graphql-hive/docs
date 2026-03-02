@@ -35,8 +35,12 @@
   --color-fd-foreground: var(--color-green-1000);
   --color-fd-primary: var(--color-green-1000);
   --color-fd-secondary: var(--color-beige-100);
-  --color-fd-sidebar-active: hsl(164 70% 27%);
-  --color-fd-sidebar-active-bg: hsl(164 70% 89%);
+  --color-fd-sidebar-active: var(--color-blue-800);
+  --color-fd-sidebar-active-bg: color-mix(
+    in oklab,
+    var(--color-blue-400) 20%,
+    transparent
+  );
   --tw-prose-body: var(--color-green-1000);
 }
 
@@ -47,12 +51,8 @@
   --color-fd-foreground: hsl(0, 0%, 92%);
   --color-fd-primary: var(--color-neutral-100);
   --color-fd-muted-foreground: var(--color-beige-800);
-  --color-fd-sidebar-active: hsl(164 70% 40%);
-  --color-fd-sidebar-active-bg: color-mix(
-    in oklab,
-    hsl(164 70% 61%) 10%,
-    transparent
-  );
+  --color-fd-sidebar-active: var(--color-primary);
+  --color-fd-sidebar-active-bg: color-mix(in oklab, hsl(0 0% 100% / 0.05), var(--color-primary) 4.5%);
   --tw-prose-body: color-mix(in oklab, hsl(0, 0%, 92%) 90%, transparent);
 }
 
