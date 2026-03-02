@@ -64,30 +64,22 @@ describe("llms.txt", () => {
 });
 
 describe("llms-full.txt", () => {
-  test(
-    "returns all docs as markdown",
-    async () => {
-      const res = await fetch(`${BASE_URL}/llms-full.txt`);
-      expect(res.status).toBe(200);
-      expect(res.headers.get("content-type")).toContain("text/markdown");
-      const text = await res.text();
-      expect(text).toContain("# ");
-      expect(text).toContain("(/docs");
-    },
-    30_000,
-  );
+  test("returns all docs as markdown", async () => {
+    const res = await fetch(`${BASE_URL}/llms-full.txt`);
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/markdown");
+    const text = await res.text();
+    expect(text).toContain("# ");
+    expect(text).toContain("(/docs");
+  }, 30_000);
 
-  test(
-    "is not rewritten to a doc page",
-    async () => {
-      const res = await fetch(`${BASE_URL}/llms-full.txt`);
-      expect(res.status).toBe(200);
-      // llms-full.txt contains multiple docs concatenated, not a single doc
-      const text = await res.text();
-      expect(text).toContain("(/docs/");
-    },
-    30_000,
-  );
+  test("is not rewritten to a doc page", async () => {
+    const res = await fetch(`${BASE_URL}/llms-full.txt`);
+    expect(res.status).toBe(200);
+    // llms-full.txt contains multiple docs concatenated, not a single doc
+    const text = await res.text();
+    expect(text).toContain("(/docs/");
+  }, 30_000);
 });
 
 describe(".txt extension", () => {
@@ -144,7 +136,9 @@ describe(".md extension", () => {
   });
 
   test("/docs/schema-registry.md returns markdown for nested page", async () => {
-    const res = await fetch(`${BASE_URL}/docs/schema-registry.md`, { redirect: "follow" });
+    const res = await fetch(`${BASE_URL}/docs/schema-registry.md`, {
+      redirect: "follow",
+    });
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("text/markdown");
     const text = await res.text();

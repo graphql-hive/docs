@@ -16,7 +16,6 @@ import { FOUR_MAIN_PRODUCTS, SIX_HIGHLIGHTED_PRODUCTS } from "../products";
 import { ILink } from "../types/components";
 import { SecurityBadges } from "./security-badges";
 
-
 export type HiveFooterProps = {
   className?: string;
   description?: string;
@@ -46,9 +45,7 @@ export function HiveFooter({
         className,
       )}
     >
-      <div
-        className="grid w-full grid-cols-1 gap-x-6 text-green-800 max-lg:gap-y-16 sm:grid-cols-4 lg:gap-x-8 xl:gap-x-10 dark:text-neutral-400 max-w-360"
-      >
+      <div className="grid w-full grid-cols-1 gap-x-6 text-green-800 max-lg:gap-y-16 sm:grid-cols-4 lg:gap-x-8 xl:gap-x-10 dark:text-neutral-400 max-w-360">
         <div className="max-lg:col-span-full">
           <Anchor
             className="hive-focus -m-1.5 flex rounded-sm p-1.5 text-green-1000 dark:text-white"

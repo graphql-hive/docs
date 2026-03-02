@@ -422,9 +422,7 @@ function MobileNavMenu() {
 
   return (
     <nav className="flex flex-col">
-      <MobileLink href="https://app.graphql-hive.com/">
-        Get Started
-      </MobileLink>
+      <MobileLink href="https://app.graphql-hive.com/">Get Started</MobileLink>
       <MobileLink external href={`${siteOrigin}/contact`}>
         Contact Us
       </MobileLink>
@@ -488,7 +486,10 @@ export function DocsSidebar() {
       <DesktopSidebar>
         {tabs.length > 0 && (
           <div className="p-4 pb-0">
-            <SidebarTabsDropdown className="w-full bg-white dark:bg-(--nextra-bg) text-green-1000 dark:text-white [--color-fd-accent:var(--color-beige-100)] dark:[--color-fd-accent:inherit]" options={tabs} />
+            <SidebarTabsDropdown
+              className="w-full bg-white dark:bg-(--nextra-bg) text-green-1000 dark:text-white [--color-fd-accent:var(--color-beige-100)] dark:[--color-fd-accent:inherit]"
+              options={tabs}
+            />
           </div>
         )}
         <SidebarViewport>

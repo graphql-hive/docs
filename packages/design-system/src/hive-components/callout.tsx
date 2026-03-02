@@ -101,7 +101,13 @@ export function Callout({
             {title}
           </div>
         )}
-        <div className={cn("text-base leading-[1.75] text-neutral-900 [&>p:first-child]:mt-0 [&>p:last-child]:mb-0 [&_a]:decoration-current", config.text, "**:leading-[inherit]!")}>
+        <div
+          className={cn(
+            "text-base leading-[1.75] text-neutral-900 [&>p:first-child]:mt-0 [&>p:last-child]:mb-0 [&_a]:decoration-current",
+            config.text,
+            "**:leading-[inherit]!",
+          )}
+        >
           {children}
         </div>
       </div>

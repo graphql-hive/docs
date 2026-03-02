@@ -57,7 +57,11 @@
   --color-fd-popover-foreground: var(--color-neutral-200);
   --color-fd-popover: hsl(0, 0%, 7.04%);
   --color-fd-sidebar-active: var(--color-primary);
-  --color-fd-sidebar-active-bg: color-mix(in oklab, hsl(0 0% 100% / 0.05), var(--color-primary) 4.5%);
+  --color-fd-sidebar-active-bg: color-mix(
+    in oklab,
+    hsl(0 0% 100% / 0.05),
+    var(--color-primary) 4.5%
+  );
   --tw-prose-body: color-mix(in oklab, hsl(0, 0%, 92%) 90%, transparent);
 }
 
@@ -404,7 +408,7 @@ a.text-fd-muted-foreground.prose.text-sm:hover {
 }
 
 .shiki {
-  box-shadow: none; 
+  box-shadow: none;
 }
 
 [data-radix-popper-content-wrapper] {

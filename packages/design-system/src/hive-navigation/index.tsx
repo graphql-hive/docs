@@ -87,7 +87,6 @@ export function HiveNavigationMenuIcon({
 
 const ENTERPRISE_MENU_HIDDEN = true;
 
-
 export type HiveNavigationProps = {
   children?: ReactNode;
   className?: string;

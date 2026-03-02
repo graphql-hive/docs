@@ -45,9 +45,8 @@ async function resolveStructuredData(data: any): Promise<StructuredData> {
 
 async function buildIndexes(): Promise<AdvancedIndex[]> {
   const source = await getSource();
-  const { caseStudies, productUpdates } = await import(
-    "fumadocs-mdx:collections/server"
-  );
+  const { caseStudies, productUpdates } =
+    await import("fumadocs-mdx:collections/server");
 
   const docsIndexes = await Promise.all(
     source.getPages().map(async (page) => ({
