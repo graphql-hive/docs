@@ -20,7 +20,7 @@
     }
 
     & blockquote {
-      @apply text-green-1000 flex gap-6 border-none p-0 not-italic max-sm:flex-col sm:text-xl my-0;
+      @apply text-green-1000 flex gap-6 border-none p-0 not-italic max-sm:flex-col sm:text-xl my-0 font-normal;
       &:not(:where(.light, .light *)) {
         @apply text-white;
       }
@@ -31,7 +31,7 @@
       }
 
       & > p {
-        @apply my-0;
+        @apply my-0 before:content-[''] after:content-[''];
       }
     }
 
