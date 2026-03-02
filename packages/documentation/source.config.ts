@@ -117,20 +117,103 @@ function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {
         look: "classic",
         theme: "neutral",
         themeCSS: `
-          .node rect {
+          .node rect, .node circle, .node ellipse, .node polygon, .node path {
             fill: var(--mermaid-node-fill);
             stroke: var(--mermaid-node-stroke);
           }
-          .label text, span {
-            fill: var(--color-neutral-900);
-            color: var(--color-neutral-900);
+          .label text, span, .label {
+            fill: var(--mermaid-fg);
+            color: var(--mermaid-fg);
           }
+          .cluster rect {
+            fill: var(--mermaid-cluster-fill);
+            stroke: var(--mermaid-cluster-stroke);
+          }
+          .cluster text, .cluster span {
+            fill: var(--mermaid-fg-dim);
+            color: var(--mermaid-fg-dim);
+          }
+          .edgeLabel {
+            background-color: var(--mermaid-edge-label-bg);
+            color: var(--mermaid-fg);
+          }
+          .edgeLabel rect {
+            fill: var(--mermaid-edge-label-bg);
+            opacity: 0.85;
+          }
+          .edgeLabel p {
+            background-color: var(--mermaid-edge-label-bg);
+          }
+          /* Edges and arrows */
           .flowchart-link {
+            stroke: var(--mermaid-arrow);
+          }
+          .edgePath .path {
             stroke: var(--mermaid-arrow);
           }
           .marker {
             stroke: var(--mermaid-arrow);
             fill: var(--mermaid-arrow);
+          }
+          .arrowheadPath {
+            fill: var(--mermaid-arrow);
+          }
+          .flowchartTitleText {
+            fill: var(--mermaid-fg);
+          }
+          /* State diagrams */
+          g.stateGroup rect {
+            fill: var(--mermaid-node-fill);
+            stroke: var(--mermaid-node-stroke);
+          }
+          g.stateGroup text {
+            fill: var(--mermaid-fg);
+          }
+          g.stateGroup .state-title {
+            fill: var(--mermaid-fg);
+          }
+          .transition {
+            stroke: var(--mermaid-arrow);
+          }
+          .stateGroup .composit {
+            fill: var(--mermaid-cluster-fill);
+          }
+          defs #statediagram-barbEnd {
+            fill: var(--mermaid-arrow);
+            stroke: var(--mermaid-arrow);
+          }
+          .actor {
+            fill: var(--mermaid-node-fill);
+            stroke: var(--mermaid-node-stroke);
+          }
+          text.actor > tspan {
+            fill: var(--mermaid-fg);
+          }
+          .messageLine0, .messageLine1 {
+            stroke: var(--mermaid-arrow);
+          }
+          .messageText {
+            fill: var(--mermaid-fg);
+          }
+          .labelBox {
+            fill: var(--mermaid-edge-label-bg);
+            stroke: var(--mermaid-node-stroke);
+          }
+          .labelText, .labelText > tspan {
+            fill: var(--mermaid-fg);
+          }
+          .loopText, .loopText > tspan {
+            fill: var(--mermaid-fg);
+          }
+          .loopLine {
+            stroke: var(--mermaid-arrow);
+          }
+          line[id*="actor"] {
+            stroke: var(--mermaid-arrow);
+          }
+          .activation0 {
+            fill: var(--mermaid-cluster-fill);
+            stroke: var(--mermaid-node-stroke);
           }
         `,
       },
