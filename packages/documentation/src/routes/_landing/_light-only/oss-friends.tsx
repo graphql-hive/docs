@@ -1,5 +1,3 @@
-"use client";
-
 import { CallToAction } from "@hive/design-system/call-to-action";
 import {
   ArchDecoration,
@@ -9,32 +7,36 @@ import {
 } from "@hive/design-system/decorations";
 import { Heading } from "@hive/design-system/heading";
 import { createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
 
 import { LandingPageContainer } from "../../../components/landing-page-container";
 
-type OSSFriendsResponse = {
-  data: {
-    description: string;
-    href: string;
-    name: string;
-  }[];
+type OSSFriend = {
+  description: string;
+  href: string;
+  name: string;
 };
 
-export const Route = createFileRoute("/_landing/_light-only/oss-friends")({
-  component: OSSFriendsPage,
-  loader: async (): Promise<OSSFriendsResponse> => {
+const getOSSFriends = createServerFn({ method: "GET" }).handler(
+  async (): Promise<OSSFriend[]> => {
     const response = await fetch("https://formbricks.com/api/oss-friends");
 
     if (!response.ok) {
       throw new Error("Failed to load OSS friends.");
     }
 
-    return response.json() as Promise<OSSFriendsResponse>;
+    const json = (await response.json()) as { data: OSSFriend[] };
+    return json.data;
   },
+);
+
+export const Route = createFileRoute("/_landing/_light-only/oss-friends")({
+  component: OSSFriendsPage,
+  loader: () => getOSSFriends(),
 });
 
 function OSSFriendsPage() {
-  const { data: friends } = Route.useLoaderData();
+  const friends = Route.useLoaderData();
 
   return (
     <LandingPageContainer className="text-green-1000 light mx-auto max-w-360 overflow-hidden">

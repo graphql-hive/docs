@@ -19,7 +19,7 @@ function ProductUpdatesRoute() {
   const changelogs = Route.useLoaderData();
 
   return (
-    <LandingPageContainer className="text-green-1000 mx-auto max-w-360 overflow-hidden dark:text-neutral-200">
+    <LandingPageContainer className="text-green-1000 mx-auto max-w-360 dark:text-neutral-200">
       <div className="mx-auto w-[872px] max-w-full pt-16 max-sm:mt-2">
         <Heading as="h1" className="text-green-1000 dark:text-white" size="md">
           Product Updates

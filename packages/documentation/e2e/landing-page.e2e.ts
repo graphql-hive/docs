@@ -61,7 +61,7 @@ test.describe("Landing Page User Journeys", () => {
     await page.goto("/");
 
     if (isMobile) {
-      await page.getByRole("button", { name: "Menu" }).click();
+      await page.getByRole("button", { name: "Open Sidebar" }).click();
       await page
         .getByRole("complementary")
         .getByRole("link", { name: /pricing/i })
@@ -95,6 +95,7 @@ test.describe("Landing Page User Journeys", () => {
 
     const tabLists = page.getByRole("tablist");
     const testimonialTabs = tabLists.nth(1);
+    await expect(testimonialTabs).toBeAttached();
     await testimonialTabs.scrollIntoViewIfNeeded();
 
     const tabs = testimonialTabs.getByRole("tab");
@@ -106,7 +107,7 @@ test.describe("Landing Page User Journeys", () => {
     await page.goto("/");
 
     if (isMobile) {
-      const menuButton = page.getByRole("button", { name: "Menu" });
+      const menuButton = page.getByRole("button", { name: "Open Sidebar" });
       await expect(menuButton).toBeVisible();
       await menuButton.click();
       const sidebar = page.getByRole("complementary");

@@ -25,19 +25,58 @@ test.describe("Content User Journeys", () => {
 
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
-    // Sees list of updates
-    const updates = page.locator("li");
+    // Sees list of product update entries
+    const updates = page.locator('a[href^="/product-updates/"]');
     await expect(updates.first()).toBeVisible();
   });
 
-  test("user explores ecosystem and partner pages", async ({ page }) => {
+  test("user explores ecosystem page and discovers libraries", async ({
+    page,
+  }) => {
     await page.goto("/ecosystem");
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "Everything you need to scale your API infrastructure",
+      }),
+    ).toBeVisible();
+
+    // Verify key section headings exist
+    await expect(
+      page.getByRole("heading", { level: 2, name: "Schema Evolution" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 2, name: "Gateway" }),
+    ).toBeVisible();
+
+    // Product cards are inside grid ul elements, each li has a link
+    const productGrid = page.locator("ul.grid");
+    await productGrid.first().scrollIntoViewIfNeeded();
+    await expect(productGrid.first()).toBeVisible();
+    const productLinks = productGrid.locator("a[href]");
+    expect(await productLinks.count()).toBeGreaterThan(5);
+  });
+
+  test("user checks partner page and sees solutions", async ({ page }) => {
     await page.goto("/partners");
+
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
-    await expect(page.locator("p").first()).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Why partner with us?" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Solution Partners" }),
+    ).toBeVisible();
+
+    // Partner links include UTM tracking
+    const partnerLinks = page.locator('a[href*="utm_source=hive"]');
+    await expect(partnerLinks.first()).toBeVisible();
+
+    await expect(
+      page.getByRole("heading", { name: "Frequently Asked Questions" }),
+    ).toBeVisible();
   });
 
   test("user checks OSS friends page and discovers related projects", async ({
@@ -45,11 +84,16 @@ test.describe("Content User Journeys", () => {
   }) => {
     await page.goto("/oss-friends");
 
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "Open Source Friends",
+      }),
+    ).toBeVisible();
 
-    const projectLinks = page.locator('dl a[href^="http"]');
-
-    await projectLinks.first().scrollIntoViewIfNeeded();
-    await expect(projectLinks.first()).toBeVisible();
+    // Each friend card is an <a> with a <dt> for the name
+    const friendCards = page.locator("a[href^='http'] dt");
+    await expect(friendCards.first()).toBeVisible();
+    expect(await friendCards.count()).toBeGreaterThan(5);
   });
 });

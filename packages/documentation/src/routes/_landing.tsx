@@ -1,5 +1,3 @@
-"use client";
-
 import { serverGetPageTree } from "@/lib/get-page-tree";
 import { baseOptions } from "@/lib/layout.shared";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
