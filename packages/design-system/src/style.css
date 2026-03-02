@@ -25,7 +25,7 @@
 
 /* Navigation height for layout consistency */
 :root {
-  --fd-banner-height: 83px;
+  --fd-banner-height: 80px;
   --nextra-primary-hue: 164;
   --nextra-primary-saturation: 70%;
   --nextra-primary-lightness: 40%;
