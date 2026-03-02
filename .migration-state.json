@@ -3,7 +3,7 @@
   "sourceRepo": ".context/hive-console",
   "sourceBranch": "main",
   "targetSubdirectory": "temporary",
-  "lastSyncedCommit": "16a73cbb45c5d345469352064fe4f45970944a5b",
+  "lastSyncedCommit": "6af551730f43b99e2b9873bf4e15bf6a34304dab",
   "migrations": [
     {
       "commit": "f09052749e7ec7a5f759566fac8e13eb3f833067",
@@ -300,6 +300,54 @@
       "author": "Arda TANRIKULU",
       "syncedAt": "2026-02-23T19:14:26.435Z",
       "mergeCommit": "6ae49893020bbdc5159d1a1ee660b6b69155e850"
+    },
+    {
+      "commit": "fcf28f0f1c9d6b145586d284c131e1494b366300",
+      "date": "2026-02-25 09:57:21 -0500",
+      "message": "docs(gateway): mention Rust QP support w/ Docker (#7722)",
+      "author": "Arda TANRIKULU",
+      "syncedAt": "2026-03-02T09:21:39.285Z",
+      "mergeCommit": "8395d9d76ab5a7fea227bd56b31914e873e01828"
+    },
+    {
+      "commit": "5f5b8646876a35cb0d91d063f9b4a156e020cb86",
+      "date": "2026-02-26 08:23:48 -0500",
+      "message": "docs(router): plugin system (#7387)",
+      "author": "Arda TANRIKULU",
+      "syncedAt": "2026-03-02T09:22:00.000Z",
+      "mergeCommit": "0b7e46b7b082c2a6f630d8550cfce1e142b9b76d"
+    },
+    {
+      "commit": "73a5ff3c1fc5334e27b3e38dfa2f27d9b05b71bb",
+      "date": "2026-02-26 08:36:37 -0500",
+      "message": "Revert \"docs(router): plugin system\" (#7742)",
+      "author": "Arda TANRIKULU",
+      "syncedAt": "2026-03-02T09:23:08.432Z",
+      "mergeCommit": "1fb6e25fc2e66ae0bd9a2e3b077235f184d500c3"
+    },
+    {
+      "commit": "0810bb145ab929a55ea8f4919bad663ba673cc66",
+      "date": "2026-02-26 16:24:26 -0600",
+      "message": "add Insights filters product update (#7747)",
+      "author": "Jonathan Brennan",
+      "syncedAt": "2026-03-02T09:23:08.687Z",
+      "mergeCommit": "4bb41a12a80e8fb67b26a034dccbbe64ef286cd2"
+    },
+    {
+      "commit": "60d0bf3ce49237430b45cd7869e902ae996435c3",
+      "date": "2026-02-27 13:53:14 -0800",
+      "message": "Add schema proposal composition background job (#7706)",
+      "author": "jdolle",
+      "syncedAt": "2026-03-02T09:23:08.938Z",
+      "mergeCommit": "78b58895b701c9b46c7ef30ba745fec14ced0816"
+    },
+    {
+      "commit": "6af551730f43b99e2b9873bf4e15bf6a34304dab",
+      "date": "2026-02-28 09:00:00 -0500",
+      "message": "update spelling across docs (#7752)",
+      "author": "coderabbitai[bot]",
+      "syncedAt": "2026-03-02T09:25:00.000Z",
+      "mergeCommit": "917943cbfb903b651b41297ab3b70594eabe62e5"
     }
   ]
 }

@@ -283,7 +283,7 @@ class HTTPLogWriter implements LogWriter {
 }
 
 const log = new Logger({
-  // send logs both to the HTTP loggging service and output them to the console
+  // send logs both to the HTTP logging service and output them to the console
   writers: [new HTTPLogWriter(), new ConsoleLogWriter()],
 });
 
@@ -369,7 +369,7 @@ class HTTPLogWriter implements LogWriter {
 
 {
   await using log = new Logger({
-    // send logs both to the HTTP loggging service and output them to the console
+    // send logs both to the HTTP logging service and output them to the console
     writers: [new HTTPLogWriter(), new ConsoleLogWriter()],
   });
 
