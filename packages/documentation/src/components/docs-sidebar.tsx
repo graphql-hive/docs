@@ -473,7 +473,7 @@ export function DocsSidebar() {
       <DesktopSidebar>
         {tabs.length > 0 && (
           <div className="p-4 pb-0">
-            <SidebarTabsDropdown options={tabs} />
+            <SidebarTabsDropdown className="w-full" options={tabs} />
           </div>
         )}
         <SidebarViewport>
@@ -500,7 +500,7 @@ export function DocsSidebar() {
         </div>
         {tabs.length > 0 && (
           <div className="px-4 pb-2">
-            <SidebarTabsDropdown options={tabs} />
+            <SidebarTabsDropdown className="w-full" options={tabs} />
           </div>
         )}
         <SidebarViewport>
