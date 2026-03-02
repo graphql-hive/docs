@@ -156,7 +156,7 @@ export const Tabs = ({
         className={(args) =>
           cn(
             "nextra-scrollbar overflow-x-auto overflow-y-hidden overscroll-x-contain",
-            "mt-4 flex w-full gap-2 pb-px  dark:border-neutral-800",
+            "mt-4 flex w-full gap-2 pb-px border-b border-beige-400 dark:border-neutral-800",
             "focus-visible:hive-focus",
             typeof className === "function" ? className(args) : className,
           )
@@ -170,7 +170,7 @@ export const Tabs = ({
                 focus && "hive-focus ring-inset",
                 "cursor-pointer whitespace-nowrap relative",
                 "rounded-t p-2 font-medium leading-5 transition-colors",
-                "-mb-0.5 select-none border-b-2",
+                "-mb-0.5 select-none border-b",
                 selected
                   ? "border-current outline-hidden"
                   : hover

@@ -36,7 +36,10 @@ function getDocsBreadcrumbs(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mirrors fumadocs' defaultBuildIndex runtime check for sync/async DocCollectionEntry
 async function resolveStructuredData(data: any): Promise<StructuredData> {
   if ("structuredData" in data) return data.structuredData;
-  if (typeof data.load === "function") return (await data.load()).structuredData;
+  if (typeof data.load === "function") {
+    const loaded = await data.load();
+    return loaded.structuredData;
+  }
   throw new Error("Cannot resolve structuredData from page");
 }
 
