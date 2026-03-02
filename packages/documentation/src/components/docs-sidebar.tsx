@@ -40,13 +40,16 @@ import {
   useFolderDepth,
 } from "fumadocs-ui/components/sidebar/base";
 import { createPageTreeRenderer } from "fumadocs-ui/components/sidebar/page-tree";
+import { SidebarTabsDropdown } from "fumadocs-ui/components/sidebar/tabs/dropdown";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "fumadocs-ui/components/ui/collapsible";
+import { useTreeContext } from "fumadocs-ui/contexts/tree";
+import { getSidebarTabs } from "fumadocs-ui/utils/get-sidebar-tabs";
 import { ChevronRight, ExternalLink, Sidebar } from "lucide-react";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import { SidebarFooter, ThemeToggle } from "./sidebar-footer";
 
@@ -418,7 +421,7 @@ function MobileNavMenu() {
 
   return (
     <nav className="flex flex-col">
-      <MobileLink external href="https://app.graphql-hive.com/">
+      <MobileLink href="https://app.graphql-hive.com/">
         Get Started
       </MobileLink>
       <MobileLink external href={`${siteOrigin}/contact`}>
@@ -462,9 +465,17 @@ function MobileNavMenu() {
 // ---------------------------------------------------------------------------
 
 export function DocsSidebar() {
+  const { full: tree } = useTreeContext();
+  const tabs = useMemo(() => getSidebarTabs(tree), [tree]);
+
   return (
     <>
       <DesktopSidebar>
+        {tabs.length > 0 && (
+          <div className="p-4 pb-0">
+            <SidebarTabsDropdown options={tabs} />
+          </div>
+        )}
         <SidebarViewport>
           <div className="[&>*:not(:first-child)]:mt-0.5">
             <SidebarPageTree />
@@ -487,6 +498,11 @@ export function DocsSidebar() {
             <Sidebar className="size-4.5" />
           </SidebarTrigger>
         </div>
+        {tabs.length > 0 && (
+          <div className="px-4 pb-2">
+            <SidebarTabsDropdown options={tabs} />
+          </div>
+        )}
         <SidebarViewport>
           <MobileNavMenu />
         </SidebarViewport>
