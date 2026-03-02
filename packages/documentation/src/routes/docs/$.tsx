@@ -90,7 +90,7 @@ function Page() {
     <div className="min-h-screen" data-docs>
       <DocsLayout
         {...baseOptions(data.pageTree)}
-        nav={{ component: <Navigation noBorder /> }}
+        nav={{ component: <Navigation className="w-full" noBorder /> }}
         searchToggle={{ enabled: false }}
       >
         {clientLoader.useContent(data.path, {
