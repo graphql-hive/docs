@@ -2,7 +2,7 @@
 
 import { useCopyButton } from "fumadocs-ui/utils/use-copy-button";
 import { Check, Copy, Github } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const cache = new Map<string, string>();
 const actionClass =
@@ -41,9 +41,37 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
     }
   });
 
+  const hasToggled = useRef(false);
+  if (checked) hasToggled.current = true;
+
   return (
     <button className={actionClass} disabled={loading} onClick={onClick}>
-      {checked ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+      <span className="relative size-3.5 in-active:scale-90 transition-transform">
+        <Check
+          className="absolute inset-0 size-3.5 fill-mode-forwards"
+          style={
+            hasToggled.current
+              ? {
+                  animation: checked
+                    ? "icon-blur-in 250ms forwards"
+                    : "icon-blur-out 250ms forwards",
+                }
+              : { opacity: 0 }
+          }
+        />
+        <Copy
+          className="absolute inset-0 size-3.5 fill-mode-forwards"
+          style={
+            hasToggled.current
+              ? {
+                  animation: checked
+                    ? "icon-blur-out 250ms forwards"
+                    : "icon-blur-in 250ms forwards",
+                }
+              : { opacity: 1 }
+          }
+        />
+      </span>
       Copy Markdown
     </button>
   );

@@ -315,6 +315,32 @@ button,
   animation: pop-up 400ms var(--hive-ease-overshoot-far) forwards;
 }
 
+@keyframes icon-blur-in {
+  from {
+    opacity: 0;
+    filter: blur(1px);
+    scale: 0.75;
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    scale: 1;
+  }
+}
+
+@keyframes icon-blur-out {
+  from {
+    opacity: 1;
+    filter: blur(0px);
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    filter: blur(1px);
+    scale: 0.75;
+  }
+}
+
 @utility fill-mode-forwards {
   animation-fill-mode: forwards;
 }
