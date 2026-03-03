@@ -1,20 +1,18 @@
-/* eslint-disable */
-// @ts-nocheck — vendored blog post component
 "use client";
 
-import React from "react";
-import { GithubIcon, RabbitIcon, RouteIcon, TargetIcon } from "lucide-react";
 import { cn } from "@hive/design-system/cn";
+import { GithubIcon, RabbitIcon, RouteIcon, TargetIcon } from "lucide-react";
+import React from "react";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div
-      data-slot="table-container"
       className="relative w-full overflow-x-auto"
+      data-slot="table-container"
     >
       <table
-        data-slot="table"
         className={cn("w-full caption-bottom text-sm", className)}
+        data-slot="table"
         {...props}
       />
     </div>
@@ -24,8 +22,8 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
-      data-slot="table-header"
       className={cn("[&_tr]:border-b", className)}
+      data-slot="table-header"
       {...props}
     />
   );
@@ -34,8 +32,8 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   return (
     <tbody
-      data-slot="table-body"
       className={cn("[&_tr:last-child]:border-0", className)}
+      data-slot="table-body"
       {...props}
     />
   );
@@ -44,11 +42,11 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   return (
     <tr
-      data-slot="table-row"
       className={cn(
         "hover:bg-beige-100 border-beige-400 border-b transition-colors hover:transition-none dark:border-neutral-800 dark:hover:bg-neutral-800/25",
         className,
       )}
+      data-slot="table-row"
       {...props}
     />
   );
@@ -57,11 +55,11 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
 function TableHead({ className, ...props }: React.ComponentProps<"th">) {
   return (
     <th
-      data-slot="table-head"
       className={cn(
         "whitespace-nowrap p-2 text-left align-middle font-medium",
         className,
       )}
+      data-slot="table-head"
       {...props}
     />
   );
@@ -69,8 +67,8 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
 function TableCell({ className, ...props }: React.ComponentProps<"td">) {
   return (
     <td
-      data-slot="table-cell"
       className={cn("whitespace-nowrap p-2 align-middle", className)}
+      data-slot="table-cell"
       {...props}
     />
   );
@@ -82,11 +80,11 @@ function TableCaption({
 }: React.ComponentProps<"caption">) {
   return (
     <caption
-      data-slot="table-caption"
       className={cn(
         "mt-2 text-sm text-green-800 dark:text-neutral-400",
         className,
       )}
+      data-slot="table-caption"
       {...props}
     />
   );
@@ -96,53 +94,53 @@ const testCasesTotal = 189;
 const testSuitesTotal = 42;
 const gateways = [
   {
-    name: "Hive Router",
-    version: "main",
-    rps: 1831.09,
-    p95: 48.58,
-    p99_9: 78.84,
+    cpu: 167,
     mem: 48,
-    cpu: 167.0,
+    name: "Hive Router",
     okTestCases: 189,
     okTestSuites: 42,
+    p95: 48.58,
+    p99_9: 78.84,
+    rps: 1831.09,
+    version: "main",
   },
   {
-    name: "Apollo Router",
-    version: "v2.6.0",
-    rps: 329.84,
-    p95: 196.46,
-    p99_9: 472.21,
-    cpu: 270.0,
+    cpu: 270,
     mem: 192,
+    name: "Apollo Router",
     okTestCases: 185,
     okTestSuites: 40,
+    p95: 196.46,
+    p99_9: 472.21,
+    rps: 329.84,
+    version: "v2.6.0",
   },
   {
-    name: "Grafbase Gateway",
-    version: "v0.48.1",
-    rps: 461.19,
-    p95: 137.81,
-    p99_9: 395.73,
-    cpu: 133.0,
+    cpu: 133,
     mem: 94,
+    name: "Grafbase Gateway",
     okTestCases: 171,
     okTestSuites: 35,
+    p95: 137.81,
+    p99_9: 395.73,
+    rps: 461.19,
+    version: "v0.48.1",
   },
   {
-    name: "Cosmo Router",
-    version: "v0.247.0",
-    rps: 585.79,
-    p95: 128.25,
-    p99_9: 348.17,
     cpu: 263,
     mem: 119,
+    name: "Cosmo Router",
     okTestCases: 179,
     okTestSuites: 36,
+    p95: 128.25,
+    p99_9: 348.17,
+    rps: 585.79,
+    version: "v0.247.0",
   },
 ];
 
 export function BenchmarkResultsTable() {
-  const rows = gateways.slice();
+  const rows = [...gateways];
   rows.sort((a, b) => b.rps - a.rps);
 
   return (
@@ -205,8 +203,9 @@ export function BenchmarkResultsTable() {
       <TableCaption className="text-xs">
         Results from our open-source{" "}
         <a
-          href="http://the-guild.dev/graphql/hive/federation-gateway-performance/#/constant"
           className="underline"
+          href="http://the-guild.dev/graphql/hive/federation-gateway-performance/#/constant"
+          rel="noreferrer"
           target="_blank"
           title="Open Source GraphQL federation gateways performance benchmark"
         >
@@ -218,7 +217,7 @@ export function BenchmarkResultsTable() {
 }
 
 export function AuditResultsTable() {
-  const rows = gateways.slice();
+  const rows = [...gateways];
   rows.sort((a, b) => b.okTestCases - a.okTestCases);
 
   return (
@@ -267,8 +266,9 @@ export function AuditResultsTable() {
       <TableCaption className="text-xs">
         Results from our open-source{" "}
         <a
-          href="http://the-guild.dev/graphql/hive/federation-gateway-audit"
           className="underline"
+          href="http://the-guild.dev/graphql/hive/federation-gateway-audit"
+          rel="noreferrer"
           target="_blank"
           title="Open Source GraphQL federation gateways compatibility audit"
         >
@@ -280,7 +280,7 @@ export function AuditResultsTable() {
 }
 
 export function RPSRace() {
-  const data = gateways.slice();
+  const data = [...gateways];
   const max = Math.max(...data.map((d) => d.rps));
   const sorted = [...data].sort((a, b) => b.rps - a.rps);
   const [hovered, setHovered] = React.useState<(typeof data)[0] | null>(null);
@@ -318,13 +318,13 @@ export function RPSRace() {
 }
 
 export function LatencyBands() {
-  const data = gateways.slice();
+  const data = [...gateways];
   data.sort((a, b) => a.p99_9 - b.p99_9);
   const max = Math.max(...data.map((d) => d.p99_9));
   return (
     <div className="my-4 space-y-5 font-mono">
       {data.map((d) => (
-        <div key={d.name} className="">
+        <div className="" key={d.name}>
           <div className="mb-1 flex items-center justify-between text-sm">
             <span>{d.name}</span>
             <span className="tabular-nums text-green-800 dark:text-neutral-400">
@@ -334,14 +334,14 @@ export function LatencyBands() {
           <div className="border-beige-300 bg-beige-100 relative h-4 border dark:border-zinc-800 dark:bg-zinc-900">
             {/*<div className="absolute inset-y-0 left-0 right-0 m-2 border-b border-zinc-800" />*/}
             <div
-              title={`p95 ${d.p95}ms`}
               className="absolute top-1/2 h-full w-[4px] -translate-y-1/2 bg-sky-600"
               style={{ left: `${(d.p95 / max) * 100}%` }}
+              title={`p95 ${d.p95}ms`}
             />
             <div
-              title={`p99.9 ${d.p99_9}ms`}
               className="absolute top-1/2 h-full w-[4px] -translate-y-1/2 bg-rose-600"
               style={{ left: `${(d.p99_9 / max) * 100}%` }}
+              title={`p99.9 ${d.p99_9}ms`}
             />
           </div>
         </div>
@@ -354,9 +354,9 @@ export function LatencyBands() {
 }
 
 function HighlightItem(props: {
+  description: string;
   icon: React.ReactNode;
   title: string;
-  description: string;
 }) {
   return (
     <div className="relative pl-16">
@@ -377,24 +377,24 @@ export function Highlights() {
   return (
     <div className="my-8 grid grid-cols-1 gap-x-4 gap-y-6 px-4 lg:grid-cols-2">
       <HighlightItem
+        description="MIT licensed, transparent, and community-driven."
         icon={<GithubIcon className="size-6" />}
         title="Open Source"
-        description="MIT licensed, transparent, and community-driven."
       />
       <HighlightItem
+        description="Fully compatible - works seamlessly with Federation standards."
         icon={<TargetIcon className="size-6" />}
         title="Apollo Federation"
-        description="Fully compatible - works seamlessly with Federation standards."
       />
       <HighlightItem
+        description="Designed in Rust for speed, low memory use, and efficiency."
         icon={<RabbitIcon className="size-6" />}
         title="Fast and Efficient"
-        description="Designed in Rust for speed, low memory use, and efficiency."
       />
       <HighlightItem
+        description="Apollo-style query plans, no new concepts to learn."
         icon={<RouteIcon className="size-6" />}
         title="Familiar Query Plans"
-        description="Apollo-style query plans, no new concepts to learn."
       />
     </div>
   );

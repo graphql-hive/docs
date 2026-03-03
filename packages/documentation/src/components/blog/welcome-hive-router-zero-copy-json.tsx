@@ -1,99 +1,18 @@
-/* eslint-disable */
 "use client";
 
 import { useMemo, useState } from "react";
 
-// --- Minimal tokenizer utilities (used by tests to validate slices remain correct) ---
-function isDigit(ch: string) {
-  return ch >= "0" && ch <= "9";
-}
-function isNumChar(ch: string) {
-  return (
-    isDigit(ch) ||
-    ch === "-" ||
-    ch === "+" ||
-    ch === "." ||
-    ch === "e" ||
-    ch === "E"
-  );
-}
-function isWs(ch: string) {
-  return ch === " " || ch === "\n" || ch === "\r" || ch === "\t";
-}
-function skipWs(s: string, i: number) {
-  while (i < s.length && isWs(s[i])) i++;
-  return i;
-}
-function closingQuote(s: string, i: number) {
-  let j = i + 1;
-  while (j < s.length) {
-    if (s[j] === '"') {
-      let bs = 0,
-        k = j - 1;
-      while (k >= 0 && s[k] === "\\") {
-        bs++;
-        k--;
-      } // count backslashes
-      if (bs % 2 === 0) return j; // even # of backslashes → real quote end
-    }
-    j++;
-  }
-  return -1;
-}
-function tokenize(json: string) {
-  const t: Array<{ kind: string; start: number; end: number }> = [];
-  const s = json;
-  let i = 0;
-  while (i < s.length) {
-    const ch = s[i];
-    if (ch === '"') {
-      const end = closingQuote(s, i);
-      if (end < 0) break;
-      const next = skipWs(s, end + 1);
-      const isKey = next < s.length && s[next] === ":";
-      const start = i + 1,
-        stop = end; // exclude quotes
-      t.push({ kind: isKey ? "key" : "string", start, end: stop });
-      i = end + 1;
-      continue;
-    }
-    if (isDigit(ch) || (ch === "-" && isDigit(s[i + 1] || ""))) {
-      let j = i;
-      while (j < s.length && isNumChar(s[j])) j++;
-      t.push({ kind: "number", start: i, end: j });
-      i = j;
-      continue;
-    }
-    if (s.startsWith("true", i)) {
-      t.push({ kind: "bool", start: i, end: i + 4 });
-      i += 4;
-      continue;
-    }
-    if (s.startsWith("false", i)) {
-      t.push({ kind: "bool", start: i, end: i + 5 });
-      i += 5;
-      continue;
-    }
-    if (s.startsWith("null", i)) {
-      t.push({ kind: "null", start: i, end: i + 4 });
-      i += 4;
-      continue;
-    }
-    i++;
-  }
-  return t;
-}
 function enc(str: string) {
   return new TextEncoder().encode(str);
 }
 
 // --- Colors (tweaked for compact contrast) ---
 const COLORS = {
-  key: "#8b93ff",
-  string: "#34d399",
-  number: "#f59e0b",
   bool: "#60a5fa",
+  key: "#8b93ff",
   null: "#9ca3af",
+  number: "#f59e0b",
+  string: "#34d399",
 } as const;
 
 // --- Build stable IDs for keys & primitive values using JSON Pointer‑like paths ---
@@ -115,38 +34,17 @@ function idxValId(path: string, i: number) {
   return `${path}/${i}#value`;
 }
 
-// Collect IDs (no prefix) — used by tests
-function collectIds(val: any, path: string, out: string[]) {
-  if (Array.isArray(val)) {
-    val.forEach((item, idx) => {
-      if (isPrimitive(item)) out.push(idxValId(path, idx));
-      else collectIds(item, `${path}/${idx}`, out);
-    });
-    return out;
-  }
-  if (val && typeof val === "object") {
-    for (const k of Object.keys(val)) {
-      out.push(keyId(path, k));
-      const v = (val as any)[k];
-      if (isPrimitive(v)) out.push(valId(path, k));
-      else collectIds(v, `${path}/${k}`, out);
-    }
-    return out;
-  }
-  return out;
-}
-
 // --- Serialize to MINIFIED JSON while recording byte slices per key/value ---
 function escapeJSONString(s: string) {
   // escape backslashes first, then quotes
-  return s.replace(/\\/g, "\\\\").replace(/\"/g, '\\"');
+  return s.replaceAll("\\", "\\\\").replaceAll('"', String.raw`\"`);
 }
 function serializeWithByteMap(val: any) {
   type Entry = {
+    kind: keyof typeof COLORS;
+    len: number;
     localId: string;
     start: number;
-    len: number;
-    kind: keyof typeof COLORS;
   };
   const entries: Entry[] = [];
   let out = "";
@@ -159,7 +57,7 @@ function serializeWithByteMap(val: any) {
   const walk = (v: any, path: string) => {
     if (Array.isArray(v)) {
       push("[");
-      v.forEach((item, idx) => {
+      for (const [idx, item] of v.entries()) {
         if (isPrimitive(item)) {
           if (typeof item === "string") {
             push('"');
@@ -168,10 +66,10 @@ function serializeWithByteMap(val: any) {
             push(content);
             const len = enc(content).length;
             entries.push({
+              kind: "string",
+              len,
               localId: idxValId(path, idx),
               start,
-              len,
-              kind: "string",
             });
             push('"');
           } else if (typeof item === "number") {
@@ -180,10 +78,10 @@ function serializeWithByteMap(val: any) {
             push(text);
             const len = enc(text).length;
             entries.push({
+              kind: "number",
+              len,
               localId: idxValId(path, idx),
               start,
-              len,
-              kind: "number",
             });
           } else if (typeof item === "boolean") {
             const text = item ? "true" : "false";
@@ -191,10 +89,10 @@ function serializeWithByteMap(val: any) {
             push(text);
             const len = enc(text).length;
             entries.push({
+              kind: "bool",
+              len,
               localId: idxValId(path, idx),
               start,
-              len,
-              kind: "bool",
             });
           } else if (item === null) {
             const text = "null";
@@ -202,17 +100,17 @@ function serializeWithByteMap(val: any) {
             push(text);
             const len = enc(text).length;
             entries.push({
+              kind: "null",
+              len,
               localId: idxValId(path, idx),
               start,
-              len,
-              kind: "null",
             });
           }
         } else {
           walk(item, `${path}/${idx}`);
         }
         if (idx < v.length - 1) push(",");
-      });
+      }
       push("]");
       return;
     }
@@ -220,7 +118,7 @@ function serializeWithByteMap(val: any) {
     if (v && typeof v === "object") {
       push("{");
       const keys = Object.keys(v);
-      keys.forEach((k, i) => {
+      for (const [i, k] of keys.entries()) {
         // key
         push('"');
         const kEsc = escapeJSONString(k);
@@ -228,10 +126,10 @@ function serializeWithByteMap(val: any) {
         push(kEsc);
         const kLen = enc(kEsc).length;
         entries.push({
+          kind: "key",
+          len: kLen,
           localId: keyId(path, k),
           start: kStart,
-          len: kLen,
-          kind: "key",
         });
         push('"');
         push(":");
@@ -244,10 +142,10 @@ function serializeWithByteMap(val: any) {
             push(content);
             const len = enc(content).length;
             entries.push({
+              kind: "string",
+              len,
               localId: valId(path, k),
               start,
-              len,
-              kind: "string",
             });
             push('"');
           } else if (typeof val === "number") {
@@ -256,29 +154,29 @@ function serializeWithByteMap(val: any) {
             push(text);
             const len = enc(text).length;
             entries.push({
+              kind: "number",
+              len,
               localId: valId(path, k),
               start,
-              len,
-              kind: "number",
             });
           } else if (typeof val === "boolean") {
             const text = val ? "true" : "false";
             const start = bytePos;
             push(text);
             const len = enc(text).length;
-            entries.push({ localId: valId(path, k), start, len, kind: "bool" });
+            entries.push({ kind: "bool", len, localId: valId(path, k), start });
           } else if (val === null) {
             const text = "null";
             const start = bytePos;
             push(text);
             const len = enc(text).length;
-            entries.push({ localId: valId(path, k), start, len, kind: "null" });
+            entries.push({ kind: "null", len, localId: valId(path, k), start });
           }
         } else {
           walk(val, `${path}/${k}`);
         }
         if (i < keys.length - 1) push(",");
-      });
+      }
       push("}");
       return;
     }
@@ -290,61 +188,61 @@ function serializeWithByteMap(val: any) {
       const start = bytePos;
       push(content);
       const len = enc(content).length;
-      entries.push({ localId: `${path}#value`, start, len, kind: "string" });
+      entries.push({ kind: "string", len, localId: `${path}#value`, start });
       push('"');
     } else if (typeof v === "number") {
       const text = String(v);
       const start = bytePos;
       push(text);
       const len = enc(text).length;
-      entries.push({ localId: `${path}#value`, start, len, kind: "number" });
+      entries.push({ kind: "number", len, localId: `${path}#value`, start });
     } else if (typeof v === "boolean") {
       const text = v ? "true" : "false";
       const start = bytePos;
       push(text);
       const len = enc(text).length;
-      entries.push({ localId: `${path}#value`, start, len, kind: "bool" });
+      entries.push({ kind: "bool", len, localId: `${path}#value`, start });
     } else if (v === null) {
       const text = "null";
       const start = bytePos;
       push(text);
       const len = enc(text).length;
-      entries.push({ localId: `${path}#value`, start, len, kind: "null" });
+      entries.push({ kind: "null", len, localId: `${path}#value`, start });
     }
   };
 
   walk(val, "");
-  return { json: out, entries };
+  return { entries, json: out };
 }
 
 // --- Pretty JSON renderer with colored spans and cross‑highlight ---
 // idMapper: optional function that returns the GLOBAL ID to use for a given token in this view
 // If missing, we default to idPrefix + localId
 function JsonBlock({
-  value,
   hoverId,
-  setHoverId,
-  title,
-  pretty,
-  idPrefix = "",
   idMapper,
+  idPrefix = "",
+  pretty,
+  setHoverId,
   sliceLookup,
+  title,
+  value,
 }: {
-  value: any;
   hoverId: string | null;
+  idMapper?: (info: {
+    index?: number;
+    key?: string;
+    kind: "index" | "key" | "value";
+    path: string;
+  }) => string | null | undefined;
+  idPrefix?: string;
   pretty: boolean;
   setHoverId: (id: string | null) => void;
-  title?: string;
-  idPrefix?: string;
-  idMapper?: (info: {
-    kind: "key" | "value" | "index";
-    path: string;
-    key?: string;
-    index?: number;
-  }) => string | null | undefined;
   sliceLookup?: (
     globalId: string,
-  ) => { src: "A" | "B"; start: number; len: number } | null;
+  ) => { len: number; src: "A" | "B"; start: number } | null;
+  title?: string;
+  value: any;
 }) {
   let keySeq = 0;
   const K = () => keySeq++;
@@ -357,9 +255,9 @@ function JsonBlock({
     const onLeave = () => setHoverId(null);
     return (
       <span
+        className="ml-1 rounded-sm border border-neutral-700 bg-neutral-800 px-1 py-0.5 align-middle text-[10px]"
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
-        className="ml-1 rounded border border-neutral-700 bg-neutral-800 px-1 py-0.5 align-middle text-[10px]"
         title={`References ${info.src} slice(${info.start}, ${info.len})`}
       >
         {info.src}: {info.start}…{info.start + info.len - 1}
@@ -396,14 +294,14 @@ function JsonBlock({
       if (pretty) {
         parts.push(<span key={K()}>{"\n"}</span>);
       }
-      v.forEach((item, idx) => {
+      for (const [idx, item] of v.entries()) {
         if (pretty) {
           parts.push(<span key={K()}>{pad + "  "}</span>);
         }
         if (isPrimitive(item)) {
           const localId = idxValId(path, idx);
           const globalId = idMapper
-            ? idMapper({ kind: "index", path, index: idx }) ||
+            ? idMapper({ index: idx, kind: "index", path }) ||
               `${idPrefix}${localId}`
             : `${idPrefix}${localId}`;
           const kind: keyof typeof COLORS =
@@ -417,7 +315,7 @@ function JsonBlock({
           if (typeof item === "string") parts.push(<span key={K()}>"</span>);
           parts.push(coloredSpan(String(item), kind, globalId));
           if (typeof item === "string") parts.push(<span key={K()}>"</span>);
-          if (sliceLookup) parts.push(<RefChip key={K()} gid={globalId} />);
+          if (sliceLookup) parts.push(<RefChip gid={globalId} key={K()} />);
         } else {
           parts.push(...renderVal(item, `${path}/${idx}`, indent + 1));
         }
@@ -425,11 +323,11 @@ function JsonBlock({
         if (pretty) {
           parts.push(<span key={K()}>{"\n"}</span>);
         }
-      });
+      }
       if (pretty) {
         parts.push(<span key={K()}>{pad}</span>);
       }
-      parts.push(<span key={K()}>{"]"}</span>);
+      parts.push(<span key={K()}>]</span>);
       return parts;
     }
     if (v && typeof v === "object") {
@@ -438,10 +336,10 @@ function JsonBlock({
       if (pretty) {
         parts.push(<span key={K()}>{"\n"}</span>);
       }
-      keys.forEach((k, idx) => {
+      for (const [idx, k] of keys.entries()) {
         const localKeyId = keyId(path, k);
         const keyGlobalId = idMapper
-          ? idMapper({ kind: "key", path, key: k }) ||
+          ? idMapper({ key: k, kind: "key", path }) ||
             `${idPrefix}${localKeyId}`
           : `${idPrefix}${localKeyId}`;
         if (pretty) {
@@ -455,7 +353,7 @@ function JsonBlock({
         if (isPrimitive(v2)) {
           const localValId = valId(path, k);
           const valGlobalId = idMapper
-            ? idMapper({ kind: "value", path, key: k }) ||
+            ? idMapper({ key: k, kind: "value", path }) ||
               `${idPrefix}${localValId}`
             : `${idPrefix}${localValId}`;
           const kind: keyof typeof COLORS =
@@ -469,7 +367,7 @@ function JsonBlock({
           if (typeof v2 === "string") parts.push(<span key={K()}>"</span>);
           parts.push(coloredSpan(String(v2), kind, valGlobalId));
           if (typeof v2 === "string") parts.push(<span key={K()}>"</span>);
-          if (sliceLookup) parts.push(<RefChip key={K()} gid={valGlobalId} />);
+          if (sliceLookup) parts.push(<RefChip gid={valGlobalId} key={K()} />);
         } else {
           parts.push(...renderVal(v2, `${path}/${k}`, indent + 1));
         }
@@ -477,7 +375,7 @@ function JsonBlock({
         if (pretty) {
           parts.push(<span key={K()}>{"\n"}</span>);
         }
-      });
+      }
       if (pretty) {
         parts.push(<span key={K()}>{pad}</span>);
       }
@@ -500,7 +398,7 @@ function JsonBlock({
     if (typeof v === "string") parts.push(<span key={K()}>"</span>);
     parts.push(coloredSpan(String(v), kind, globalId));
     if (typeof v === "string") parts.push(<span key={K()}>"</span>);
-    if (sliceLookup) parts.push(<RefChip key={K()} gid={globalId} />);
+    if (sliceLookup) parts.push(<RefChip gid={globalId} key={K()} />);
     return parts;
   };
 
@@ -511,7 +409,7 @@ function JsonBlock({
           {title}
         </h3>
       )}
-      <pre className="max-h-40 overflow-auto rounded-lg border border-neutral-800 bg-[#111111] p-2 font-mono text-[12px] leading-5 text-neutral-200">
+      <pre className="max-h-40 overflow-auto rounded-lg border border-neutral-800 bg-[#111111] p-2 font-mono text-[12px]/5 text-neutral-200">
         {renderVal(value, "", 0)}
       </pre>
     </div>
@@ -520,24 +418,24 @@ function JsonBlock({
 
 // --- Byte buffer renderer for a subgraph (auto‑scales to card width) ---
 function ByteBuffer({
-  title,
-  json,
   entries,
-  idPrefix,
   hoverId,
+  idPrefix,
+  json,
   setHoverId,
+  title,
 }: {
-  title: string;
-  json: string;
-  entries: Array<{
+  entries: {
+    kind: keyof typeof COLORS;
+    len: number;
     localId: string;
     start: number;
-    len: number;
-    kind: keyof typeof COLORS;
-  }>;
-  idPrefix: "A:" | "B:";
+  }[];
   hoverId: string | null;
+  idPrefix: "A:" | "B:";
+  json: string;
   setHoverId: (id: string | null) => void;
+  title: string;
 }) {
   const bytes = useMemo(() => enc(json), [json]);
   const PX = 6;
@@ -552,23 +450,23 @@ function ByteBuffer({
       </div>
       <div className="mt-2 border border-neutral-800 bg-[#111111]">
         <svg
-          width="100%"
-          height={H + 8}
-          viewBox={`0 0 ${viewW} ${H + 8}`}
-          preserveAspectRatio="none"
           className="block"
+          height={H + 8}
+          preserveAspectRatio="none"
+          viewBox={`0 0 ${viewW} ${H + 8}`}
+          width="100%"
         >
-          <rect x={0} y={0} width={viewW} height={H + 8} fill="#111111" />
+          <rect fill="#111111" height={H + 8} width={viewW} x={0} y={0} />
           {bytes.map(
             (_, i) =>
               (
                 <rect
+                  fill="#111111"
+                  height={H}
                   key={i}
+                  width={PX - 1}
                   x={i * PX}
                   y={4}
-                  width={PX - 1}
-                  height={H}
-                  fill="#111111"
                 />
               ) as any,
           )}
@@ -579,16 +477,16 @@ function ByteBuffer({
             const active = hoverId === gid;
             return (
               <rect
-                key={i}
-                x={x}
-                y={4}
-                width={w}
-                height={H}
                 fill={COLORS[e.kind] + (active ? "66" : "33")}
-                stroke={COLORS[e.kind]}
-                strokeWidth={active ? 2 : 1}
+                height={H}
+                key={i}
                 onMouseEnter={() => setHoverId(gid)}
                 onMouseLeave={() => setHoverId(null)}
+                stroke={COLORS[e.kind]}
+                strokeWidth={active ? 2 : 1}
+                width={w}
+                x={x}
+                y={4}
               />
             );
           })}
@@ -605,18 +503,22 @@ function ByteBuffer({
 export function ZeroCopyBlocks() {
   // Subgraph A & B
   const subgraphA = {
-    user: { id: 1, name: "Ada", email: "ada@lab" },
     active: true,
+    user: { email: "ada@lab", id: 1, name: "Ada" },
   };
 
   // Final uses only parts of A & B (no email, plan, org, note)
   const finalJson = {
-    user: { id: 1, name: "Ada" },
     active: true,
+    user: { id: 1, name: "Ada" },
   };
 
   // Build an ID mapper for the FINAL view that points back to source tokens (A: or B:)
   const finalMap = new Map<string, string>([
+    ["/active#key", "A:/active#key"],
+    ["/active#value", "A:/active#value"],
+    ["/price#key", "B:/price#key"],
+    ["/price#value", "B:/price#value"],
     ["/user#key", "A:/user#key"],
     ["/user/id#key", "A:/user/id#key"],
     ["/user/id#value", "A:/user/id#value"],
@@ -625,16 +527,12 @@ export function ZeroCopyBlocks() {
     ["/user/tags#key", "B:/user/tags#key"],
     ["/user/tags/0#value", "B:/user/tags/0#value"],
     ["/user/tags/1#value", "B:/user/tags/1#value"],
-    ["/active#key", "A:/active#key"],
-    ["/active#value", "A:/active#value"],
-    ["/price#key", "B:/price#key"],
-    ["/price#value", "B:/price#value"],
   ]);
   const idMapperFinal = (info: {
-    kind: "key" | "value" | "index";
-    path: string;
-    key?: string;
     index?: number;
+    key?: string;
+    kind: "index" | "key" | "value";
+    path: string;
   }) => {
     if (info.kind === "key" && info.key)
       return finalMap.get(`${info.path}/${info.key}#key`);
@@ -642,7 +540,7 @@ export function ZeroCopyBlocks() {
       return finalMap.get(`${info.path}/${info.key}#value`);
     if (info.kind === "index" && typeof info.index === "number")
       return finalMap.get(`${info.path}/${info.index}#value`);
-    return undefined;
+    return;
   };
 
   // Compute byte buffers + maps for A and B (minified JSON)
@@ -650,11 +548,10 @@ export function ZeroCopyBlocks() {
   const mapA = useMemo(() => {
     const m = new Map<
       string,
-      { start: number; len: number; kind: keyof typeof COLORS }
+      { kind: keyof typeof COLORS; len: number; start: number }
     >();
-    Adata.entries.forEach((e) =>
-      m.set(e.localId, { start: e.start, len: e.len, kind: e.kind }),
-    );
+    for (const e of Adata.entries)
+      m.set(e.localId, { kind: e.kind, len: e.len, start: e.start });
     return m;
   }, [Adata]);
 
@@ -666,7 +563,7 @@ export function ZeroCopyBlocks() {
       const local = gid.slice(2);
       const e = mapA.get(local);
       if (!e) return null;
-      return { src: "A" as const, start: e.start, len: e.len };
+      return { len: e.len, src: "A" as const, start: e.start };
     }
     return null;
   };
@@ -678,20 +575,20 @@ export function ZeroCopyBlocks() {
         <section>
           <div className="space-y-2">
             <JsonBlock
-              title="Subgraph response as JSON"
-              value={subgraphA}
               hoverId={hoverId}
-              setHoverId={setHoverId}
               idPrefix="A:"
               pretty={false}
+              setHoverId={setHoverId}
+              title="Subgraph response as JSON"
+              value={subgraphA}
             />
             <ByteBuffer
-              title="Subgraph response is stored as bytes"
-              json={Adata.json}
               entries={Adata.entries}
-              idPrefix="A:"
               hoverId={hoverId}
+              idPrefix="A:"
+              json={Adata.json}
               setHoverId={setHoverId}
+              title="Subgraph response is stored as bytes"
             />
           </div>
         </section>
@@ -700,13 +597,13 @@ export function ZeroCopyBlocks() {
         <section>
           <div>
             <JsonBlock
+              hoverId={hoverId}
+              idMapper={idMapperFinal}
+              pretty
+              setHoverId={setHoverId}
+              sliceLookup={sliceLookup}
               title="Final Response (reuses the bytes from subgraph response)"
               value={finalJson}
-              hoverId={hoverId}
-              setHoverId={setHoverId}
-              idMapper={idMapperFinal}
-              sliceLookup={sliceLookup}
-              pretty={true}
             />
           </div>
         </section>
