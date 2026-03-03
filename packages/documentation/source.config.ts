@@ -53,6 +53,26 @@ export const productUpdates = defineCollections({
   type: "doc",
 });
 
+/** Blog posts use shorthand `authors: [kamil]` and `tags: [graphql, hive]`. */
+const stringOrStringArray = type("string | string[]").pipe((v) =>
+  Array.isArray(v) ? v : [v],
+);
+
+export const blog = defineCollections({
+  async: true,
+  dir: "content/blog",
+  schema: type({
+    authors: stringOrStringArray,
+    date: dateString,
+    "description?": "string",
+    "featured?": "boolean",
+    "image?": "string",
+    tags: stringOrStringArray,
+    title: "string",
+  }),
+  type: "doc",
+});
+
 export default defineConfig({
   mdxOptions: {
     rehypeCodeOptions: {
