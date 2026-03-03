@@ -45,7 +45,7 @@ async function resolveStructuredData(data: any): Promise<StructuredData> {
 
 async function buildIndexes(): Promise<AdvancedIndex[]> {
   const source = await getSource();
-  const { caseStudies, productUpdates } =
+  const { blog, caseStudies, productUpdates } =
     await import("fumadocs-mdx:collections/server");
 
   const docsIndexes = await Promise.all(
@@ -89,8 +89,30 @@ async function buildIndexes(): Promise<AdvancedIndex[]> {
     }),
   );
 
+  const blogIndexes = await Promise.all(
+    blog.map(async (entry) => {
+      const { structuredData } = await entry.load();
+      const slug = entry.info.path
+        .replace(/\.mdx?$/, "")
+        .replace(/\/index$/, "");
+      return {
+        breadcrumbs: ["Blog"],
+        description: entry.description,
+        id: `/blog/${slug}`,
+        structuredData,
+        title: entry.title ?? slug,
+        url: `/blog/${slug}`,
+      };
+    }),
+  );
+
   // TODO: index landing pages (/, /federation, /schema-registry, etc.) once they have structuredData
-  return [...docsIndexes, ...caseStudyIndexes, ...productUpdateIndexes];
+  return [
+    ...docsIndexes,
+    ...caseStudyIndexes,
+    ...productUpdateIndexes,
+    ...blogIndexes,
+  ];
 }
 
 let _searchAPI: ReturnType<typeof createSearchAPI> | undefined;
