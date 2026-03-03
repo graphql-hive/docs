@@ -10,8 +10,8 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   const blogPosts = collections.blog.map((entry) => {
     const slug = entry.info.path
       .replace(/^\//, "")
-      .replace(/\/index$/, "")
-      .replace(/\.mdx?$/, "");
+      .replace(/\.mdx?$/, "")
+      .replace(/\/index$/, "");
     return {
       authors: entry.authors,
       date: entry.date,
@@ -27,8 +27,8 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   const productUpdatePosts = collections.productUpdates.map((entry) => {
     const slug = entry.info.path
       .replace(/^\//, "")
-      .replace(/\/index$/, "")
-      .replace(/\.mdx?$/, "");
+      .replace(/\.mdx?$/, "")
+      .replace(/\/index$/, "");
     return {
       authors: entry.authors.map((a) => (typeof a === "string" ? a : a.name)),
       date: entry.date,
@@ -44,8 +44,8 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   const caseStudyPosts = collections.caseStudies.map((entry) => {
     const slug = entry.info.path
       .replace(/^\//, "")
-      .replace(/\/index$/, "")
-      .replace(/\.mdx?$/, "");
+      .replace(/\.mdx?$/, "")
+      .replace(/\/index$/, "");
     return {
       authors: entry.authors.map((a) => (typeof a === "string" ? a : a.name)),
       date: entry.date,
