@@ -3,9 +3,9 @@ import { createServerFn } from "@tanstack/react-start";
 
 import type { BlogPost } from "../../../../components/blog/blog-card";
 
+import { BlogPageLayout } from "../../../../components/blog/blog-page-layout";
 import { getBlogPosts } from "../../../../components/blog/get-blog-posts";
 import { PostsByTag } from "../../../../components/blog/posts-by-tag";
-import { LandingPageContainer } from "../../../../components/landing-page-container";
 
 const serverGetPostsByTag = createServerFn({ method: "GET" })
   .inputValidator((tag: string) => tag)
@@ -25,8 +25,8 @@ function BlogTagRoute() {
   const { _splat: tag } = Route.useParams();
 
   return (
-    <LandingPageContainer className="text-green-1000 mx-auto max-w-360 overflow-hidden dark:text-neutral-200">
+    <BlogPageLayout>
       <PostsByTag posts={posts} tag={tag} />
-    </LandingPageContainer>
+    </BlogPageLayout>
   );
 }
