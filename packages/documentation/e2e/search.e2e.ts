@@ -1,10 +1,18 @@
 import { expect, test } from "@playwright/test";
 
+/** Click the visible search button. On desktop, it's in the nav. On mobile, it's in the top bar. */
+async function openSearch(page: import("@playwright/test").Page) {
+  await page
+    .getByRole("button", { name: "Search documentation" })
+    .first()
+    .click({ timeout: 10_000 });
+}
+
 test.describe("Search User Journeys", () => {
   test("developer uses search to find federation info", async ({ page }) => {
     await page.goto("/");
 
-    await page.getByRole("button", { name: "Search documentation" }).click();
+    await openSearch(page);
 
     const searchInput = page.getByRole("textbox");
     await expect(searchInput).toBeVisible();
@@ -22,7 +30,7 @@ test.describe("Search User Journeys", () => {
   test("search results navigate to docs", async ({ page }) => {
     await page.goto("/");
 
-    await page.getByRole("button", { name: "Search documentation" }).click();
+    await openSearch(page);
 
     const searchInput = page.getByRole("textbox");
     await searchInput.fill("schema registry");
@@ -40,9 +48,9 @@ test.describe("Search User Journeys", () => {
   test("search is available on pricing page", async ({ page }) => {
     await page.goto("/pricing");
 
-    const searchButton = page.getByRole("button", {
-      name: "Search documentation",
-    });
+    const searchButton = page
+      .getByRole("button", { name: "Search documentation" })
+      .first();
     await expect(searchButton).toBeVisible();
   });
 });

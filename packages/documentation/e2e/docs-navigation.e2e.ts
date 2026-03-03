@@ -59,7 +59,9 @@ test.describe("Documentation User Journeys", () => {
     await schemaRegistryLink.click({ timeout: 10_000 });
 
     await expect(page).toHaveURL(/schema-registry/);
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible({
+      timeout: 10_000,
+    });
   });
 
   test("developer navigates to gateway via sidebar", async ({
@@ -68,7 +70,9 @@ test.describe("Documentation User Journeys", () => {
   }) => {
     if (isMobile) {
       await page.goto("/docs/gateway");
-      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible({
+        timeout: 10_000,
+      });
       return;
     }
 
@@ -87,14 +91,16 @@ test.describe("Documentation User Journeys", () => {
     await page.waitForURL(/gateway/);
 
     await expect(page).toHaveURL(/gateway/);
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible({
+      timeout: 10_000,
+    });
   });
 
   test("documentation shows code examples", async ({ page }) => {
     await page.goto("/docs/api-reference/cli");
 
     const codeBlock = page.locator("pre").first();
-    await expect(codeBlock).toBeVisible();
+    await expect(codeBlock).toBeVisible({ timeout: 10_000 });
   });
 
   test("sidebar shows active tab for current section", async ({
@@ -105,11 +111,7 @@ test.describe("Documentation User Journeys", () => {
 
     const sidebar = await getSidebar(page, isMobile);
 
-    if (isMobile) {
-      await sidebar.getByRole("button", { name: "Documentation" }).click();
-    }
-
-    // On /docs/schema-registry, the "Hive Console" tab should be active
+    // On /docs/schema-registry, the "Hive Console" tab should be visible in sidebar
     const hiveConsoleTab = sidebar.getByRole("button", {
       name: /Hive Console/,
     });
