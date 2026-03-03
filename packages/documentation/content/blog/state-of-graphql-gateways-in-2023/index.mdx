@@ -8,14 +8,14 @@ description:
   Federation spec in 2023.
 ---
 
-import { Callout } from '@theguild/components'
+import { Callout } from "@hive/design-system/hive-components/callout"
 
 The GraphQL ecosystem is growing rapidly, and solutions to complex problems are more accessible than
 ever before.
 
-<Callout type="info" emoji="🚀">
+<Callout emoji="🚀" type="info">
   Since publishing this research, we released [**Hive
-  Router**](https://the-guild.dev/graphql/hive/blog/welcome-hive-router) - a high-performance,
+  Router**](/blog/welcome-hive-router) - a high-performance,
   open-source GraphQL federation gateway.
 
 Hive Router outperforms other leading gateways across RPS, latency, and resource usage.
@@ -35,12 +35,12 @@ the following problems.
 exploring, and creating a report on the state of GraphQL gateways in 2023. We compared, tested, and
 benchmark various open-source solutions, and we'd like to share our process thus far.**
 
-<Callout type="info" emoji="📊">
+<Callout emoji="📊" type="info">
   Prefer numbers? See the live, reproducible benchmark (RPS, p95/p99, CPU, memory): [GraphQL Gateway
   Performance Benchmarks](https://the-guild.dev/graphql/hive/federation-gateway-performance).
 </Callout>
 
-<Callout type="info" emoji="❣️">
+<Callout emoji="❣️" type="info">
   We would like to thank our partners and customers who took part in that journey!
 </Callout>
 
@@ -50,7 +50,7 @@ A GraphQL gateway follows a workflow that adds functionality and acts as a proxy
 consumer and the actual GraphQL server(s) running the GraphQL schema(s). An architecture diagram of
 this setup will look like the following:
 
-<Callout type="info" emoji="">
+<Callout emoji="" type="info">
   <>![](./gw.png)</>
 </Callout>
 

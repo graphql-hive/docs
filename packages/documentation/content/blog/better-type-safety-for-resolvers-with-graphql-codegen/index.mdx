@@ -8,12 +8,12 @@ description:
   with your existing TypeScript data models and context types.
 ---
 
-import { CodeSandbox } from '#components/code-sandbox'
+import { CodeSandbox } from "@hive/design-system/hive-components/code-sandbox"
 
 export const embedOptions = {
+  previewwindow: 'console',
   theme: 'light',
-  view: 'editor',
-  previewwindow: 'console'
+  view: 'editor'
 }
 
 If you use TypeScript to write your GraphQL schema implementation, you'll love the integration with
@@ -64,9 +64,9 @@ In this example, we'll use the following GraphQL schema and resolvers as referen
 [You can find a working live-demo of this part here](https://codesandbox.io/s/condescending-albattani-ixyp9?file=/resolvers.ts).
 
 <CodeSandbox
-  codeSandboxId={'condescending-albattani-ixyp9'}
-  size={'300px'}
+  codeSandboxId="condescending-albattani-ixyp9"
   embedOptions={{ ...embedOptions, module: '/schema.graphql' }}
+  size="300px"
 />
 
 This is a naive implementation of a GraphQL API, and we'll see how more advanced use cases could be
@@ -76,12 +76,12 @@ To get started with the generated files, import `Resolvers` identifier from your
 use it to type your resolvers object, for example:
 
 <CodeSandbox
-  codeSandboxId={'condescending-albattani-ixyp9'}
-  size={'410px'}
+  codeSandboxId="condescending-albattani-ixyp9"
   embedOptions={{
     ...embedOptions,
     module: '/resolvers.ts,/schema.graphql,/resolvers-types.ts'
   }}
+  size="410px"
 />
 
 Now, TypeScript engine will verify that object you returned, and you'll be able to see that if
@@ -118,18 +118,18 @@ our actual objects.
 Let's assumes that your backend is implemented this way, with some models types:
 
 <CodeSandbox
-  codeSandboxId={'silly-kalam-ym77z'}
-  size={'330px'}
+  codeSandboxId="silly-kalam-ym77z"
   embedOptions={{ ...embedOptions, module: '/models.ts' }}
+  size="330px"
 />
 
 It means that now, your resolvers implementation needs to adjusted and handle the different data
 structure:
 
 <CodeSandbox
-  codeSandboxId={'silly-kalam-ym77z'}
-  size={'400px'}
+  codeSandboxId="silly-kalam-ym77z"
   embedOptions={{ ...embedOptions, module: '/resolvers-with-error.ts' }}
+  size="400px"
 />
 
 Noticed the errors? it caused by the fact that we don't have the appropriate mapping set yet. We
@@ -139,18 +139,18 @@ To do that, let's update codegen config with `mappers` and add a mapping between
 TypeScript type (and the file it's located in):
 
 <CodeSandbox
-  codeSandboxId={'silly-kalam-ym77z'}
-  size={'400px'}
+  codeSandboxId="silly-kalam-ym77z"
   embedOptions={{ ...embedOptions, module: '/codegen-with-mappers.yml' }}
+  size="400px"
 />
 
 This way, GraphQL Codegen will use your custom models types in the generated output, instead of the
 default types, and your resolvers' implementation will look like that:
 
 <CodeSandbox
-  codeSandboxId={'silly-kalam-ym77z'}
-  size={'400px'}
+  codeSandboxId="silly-kalam-ym77z"
   embedOptions={{ ...embedOptions, module: '/resolvers.ts' }}
+  size="400px"
 />
 
 Note that now you'll get autocomplete, type safety and a better connection between your GraphQL

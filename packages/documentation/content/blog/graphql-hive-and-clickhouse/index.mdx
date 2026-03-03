@@ -7,8 +7,8 @@ description:
   Learn how ClickHouse enabled GraphQL Hive to scale from millions to billions of requests monthly.
 ---
 
-import { LinkCard } from '#components/link-card'
-import { Callout } from '@theguild/components'
+import { Callout } from "@hive/design-system/hive-components/callout"
+import { LinkCard } from "@hive/design-system/hive-components/link-card"
 
 You will learn how ClickHouse and Kafka enabled GraphQL Hive to collect billions of requests monthly
 without a drop of sweat. We will also cover the challenges we faced and how we overcame them by
@@ -214,7 +214,7 @@ an hour. It allows us to store one row per hour instead of millions. How much im
 ClickHouse performance? For a 24h window, ClickHouse needs to read only 24 rows instead of 100s of
 millions.
 
-<Callout type="info" emoji="🥳">
+<Callout emoji="🥳" type="info">
   Thanks to Materialized Views, the latency of our queries went from 4-10 seconds to less than 1
   second.
 </Callout>
@@ -227,9 +227,9 @@ discussed the new data structure of ClickHouse. It shows the latency of the exis
 we improved it.
 
 <LinkCard
+  alt="See the GitHub issue to learn more on how to improve ClickHouse performance in GraphQL Hive"
   href="https://github.com/kamilkisiela/graphql-hive/issues/302"
   src="https://opengraph.githubassets.com/979a5f6740ae58d53ca7d2c363c8457fde46d7ffaac13987efe96dd98e78bbf6/kamilkisiela/graphql-hive/issues/302"
-  alt="See the GitHub issue to learn more on how to improve ClickHouse performance in GraphQL Hive"
 />
 
 Here's yet another, this time extreme example of a table designed with an end goal in mind.
@@ -291,7 +291,7 @@ GROUP BY
   client_version
 ```
 
-<Callout type="info" emoji="🤯">
+<Callout emoji="🤯" type="info">
   After we shipped a dedicated table (for the component we showed you), the numbers went down from 56 seconds to **56
   milliseconds**.
 

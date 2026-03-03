@@ -9,13 +9,13 @@ description:
   by TypeScript.
 ---
 
-import { CodeSandbox } from '#components/code-sandbox'
-import { Callout } from '@theguild/components'
+import { Callout } from "@hive/design-system/hive-components/callout"
+import { CodeSandbox } from "@hive/design-system/hive-components/code-sandbox"
 
 export const embedOptions = {
+  previewwindow: 'console',
   theme: 'light',
-  view: 'editor',
-  previewwindow: 'console'
+  view: 'editor'
 }
 
 [GraphQL Code Generator](https://github.com/dotansimha/graphql-code-generator) is a template based
@@ -53,12 +53,12 @@ We prepared an example of how to use those auto generated components,
 [it's available on CodeSandbox](https://codesandbox.io/s/github/dotansimha/graphql-codegen-react-apollo-example).
 
 <CodeSandbox
-  codeSandboxId={'github/dotansimha/graphql-codegen-react-apollo-example'}
-  size={'300px'}
+  codeSandboxId="github/dotansimha/graphql-codegen-react-apollo-example"
   embedOptions={{
     ...embedOptions,
     module: '/src/List.tsx,/codegen.yml,/src/all-posts.query.graphql,/src/generated-types.tsx'
   }}
+  size="300px"
 />
 
 ## Start Using It
@@ -74,12 +74,12 @@ yarn add -D @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/ty
 Now let's create `codegen.yml` configuration file, pointing to our schema and documents files:
 
 <CodeSandbox
-  codeSandboxId={'github/dotansimha/graphql-codegen-react-apollo-example'}
-  size={'300px'}
+  codeSandboxId="github/dotansimha/graphql-codegen-react-apollo-example"
   embedOptions={{
     ...embedOptions,
     module: '/codegen.yml,/src/all-posts.query.graphql'
   }}
+  size="300px"
 />
 
 Now let's set up a npm script in `package.json` to run `graphql-codegen` command:
@@ -102,9 +102,9 @@ make things easier.
 Then, define a `.graphql` file with a document that you'd like to use in a component:
 
 <CodeSandbox
-  codeSandboxId={'github/dotansimha/graphql-codegen-react-apollo-example'}
-  size={'300px'}
+  codeSandboxId="github/dotansimha/graphql-codegen-react-apollo-example"
   embedOptions={{ ...embedOptions, module: '/src/all-posts.query.graphql' }}
+  size="300px"
 />
 
 Next, you need to run GraphQL Code Generator to generate Typescript types and React components:
@@ -119,9 +119,9 @@ Then, you simply import the auto-generated React Hook, named after your GraphQL 
 use it in your component:
 
 <CodeSandbox
-  codeSandboxId={'github/dotansimha/graphql-codegen-react-apollo-example'}
-  size={'300px'}
+  codeSandboxId="github/dotansimha/graphql-codegen-react-apollo-example"
   embedOptions={{ ...embedOptions, module: '/src/List.tsx' }}
+  size="300px"
 />
 
 You can learn more about [React Apollo API here](https://apollographql.com/docs/react).

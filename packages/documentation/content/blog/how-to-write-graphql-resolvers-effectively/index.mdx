@@ -8,7 +8,7 @@ description:
   Code Generator and Server Preset to write resolvers.
 ---
 
-import { Callout } from '@theguild/components'
+import { Callout } from "@hive/design-system/hive-components/callout"
 
 Resolvers are the fundamental building blocks of a GraphQL server. To build a robust and scalable
 GraphQL server, we must understand how to write GraphQL resolvers effectively. In this blog post, we
@@ -121,7 +121,7 @@ flowchart LR
   D --> F(Actor.stageName)
 ```
 
-<Callout type="info" emoji="💡">
+<Callout emoji="💡" type="info">
   There are four positional arguments of a resolver function:
   - `parent`: the value returned by the parent resolver.
     - For root-level resolvers like `Query.movie`, `parent` is always `undefined`.
@@ -138,7 +138,7 @@ We must return a value that can be handled by the scalars. In our example:
 - `Movie.name` and `Actor.stageName` resolver must return a non-nullable value that can be coerced
   into the `String` scalar i.e. `string`, `boolean` or `number` values.
 
-<Callout type="info" emoji="💡">
+<Callout emoji="💡" type="info">
   You can learn about GraphQL Scalar, including native Scalar and coercion concept, in this guide
   [here](https://the-guild.dev/blog/the-complete-graphql-scalar-guide)
 </Callout>
@@ -333,7 +333,7 @@ const resolvers = {
 8. Similarly, we use `parent` as the ID of the actor to fetch the actor's `stageName` from the
    database.
 
-<Callout type="info" emoji="💡">
+<Callout emoji="💡" type="info">
   By using **mappers** and **defer resolve** techniques, we avoid unnecessary database calls and
   reduce code duplication. The next time we need to write a resolver that returns `Movie`, `Actor`
   objects, we can simply return the corresponding mapper objects.
@@ -393,7 +393,7 @@ type MovieMapper = {
 type ActorMapper = string
 ```
 
-<Callout type="info" emoji="💡">
+<Callout emoji="💡" type="info">
 Server Preset automatically detects and wires up mappers if they follow the convention:
 1. The mappers are declared in a file in the same directory as the schema source file, and has the file name ending with `.mappers.ts` segment instead of the schema source file's extension. For example:
    - If your schema file is `schema.graphql`, the mappers file is `schema.mappers.ts`.
@@ -450,7 +450,7 @@ By providing mappers, codegen is smart enough to understand that we want to defe
 need to write logic for `Movie.actors`, `Movie.name`, `Actor.id` and `Actor.stageName` resolvers to
 ensure we don't encounter runtime errors.
 
-<Callout type="info" emoji="💡">
+<Callout emoji="💡" type="info">
   Learn how to set up GraphQL Code Generator and Server Preset for GraphQL Yoga and Apollo Server in
   this guide
   [here](https://the-guild.dev/graphql/codegen/docs/guides/graphql-server-apollo-yoga-with-server-preset).

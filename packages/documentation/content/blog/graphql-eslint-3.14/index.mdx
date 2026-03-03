@@ -8,9 +8,10 @@ description:
 skipSync: true
 ---
 
-import NextImage from 'next/image'
-import { Comparison } from '#components/comparison'
-import { Callout } from '@theguild/components'
+import { Callout } from "@hive/design-system/hive-components/callout"
+import { Comparison } from "@hive/design-system/hive-components/comparison"
+import { Image } from "@hive/design-system/image"
+
 import graphqlJsSuggestions from './graphql-js-suggestions.gif'
 
 ## Introduction
@@ -40,7 +41,7 @@ years!
 All `graphql-js` rules that contain "Did you mean" suggestions now can be fixable via ESLint
 suggestions API in your editor 🎉.
 
-<NextImage src={graphqlJsSuggestions} alt="GraphQL-JS suggestions in VSCode" className="mt-6" />
+<Image alt="GraphQL-JS suggestions in VSCode" className="mt-6" src={graphqlJsSuggestions} />
 
 ## Update of `graphql-config`
 

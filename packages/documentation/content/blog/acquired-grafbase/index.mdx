@@ -1,41 +1,18 @@
-import { metadata as rootMetadata } from '../../../layout'
-
-import image from './header-image.webp'
-
-export const metadata = {
-  title: 'The Guild has acquired Grafbase',
-  description:
-    "We're open sourcing the Grafbase stack and uniting the best GraphQL Federation Routers under Hive Platform.",
-  tags: ['company', 'platform'],
-  authors: ['uri'],
-  date: '2026-02-10',
-  featured: true,
-  image,
-  openGraph: {
-    ...rootMetadata.openGraph,
-    url: '/blog/acquired-grafbase',
-    /**
-     * We currently have `metadataBase` which includes `basePath`,
-     * so the opengraph-image.png file convention results in a
-     * duplicate `basePath` in the OG Image URL.
-     *
-     * Remove this workaround when we have a fix upstream.
-     * Do not extract this workaround to a separate file, as it will stop working.
-     */
-    images: [
-      new URL('./opengraph-image.png', import.meta.url)
-        .toString()
-        .replace(process.env.NEXT_BASE_PATH || '', '')
-    ]
-  }
-}
+---
+title: "The Guild has acquired Grafbase"
+authors: uri
+tags: [company, platform]
+date: 2026-02-10
+description: "We're open sourcing the Grafbase stack and uniting the best GraphQL Federation Routers under Hive Platform."
+featured: true
+---
 
 Today, we are very happy to announce that The Guild has acquired Grafbase.
 
 This step is part of our long-term goal to build a stable, long-lasting home for critical GraphQL
 infrastructure — tools and platforms that teams can depend on for many years, regardless of market
 shifts or vendor changes. We’ve followed a similar approach in the past with the
-[Stellate acquisition](https://the-guild.dev/graphql/hive/blog/stellate-acquisition) and when we
+[Stellate acquisition](/blog/stellate-acquisition) and when we
 welcomed Inigo’s enterprise customers and engineering team into the [Hive Platform](/).
 
 Grafbase has been at the forefront of GraphQL Federation, building a high performance Rust Router
