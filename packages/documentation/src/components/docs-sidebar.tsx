@@ -443,7 +443,9 @@ function MobileNavMenu() {
       <MobileLink href="/pricing">Pricing</MobileLink>
       <MobileLink href="/product-updates">Product Updates</MobileLink>
       <MobileLink href="/case-studies">Case Studies</MobileLink>
-      <MobileLink href="/blog">Blog</MobileLink>
+      <MobileLink href="https://the-guild.dev/graphql/hive/blog">
+        Blog
+      </MobileLink>
       <MobileLink external href="https://github.com/graphql-hive/console">
         GitHub
       </MobileLink>

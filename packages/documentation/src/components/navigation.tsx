@@ -40,7 +40,11 @@ const developerMenu = [
     icon: <RightCornerIcon />,
   },
   { children: "Case Studies", href: "/case-studies", icon: <AccountBox /> },
-  { children: "Blog", href: "/blog", icon: <PencilIcon /> },
+  {
+    children: "Blog",
+    href: "https://the-guild.dev/graphql/hive/blog",
+    icon: <PencilIcon />,
+  },
   {
     children: "GitHub",
     href: "https://github.com/graphql-hive/console",
