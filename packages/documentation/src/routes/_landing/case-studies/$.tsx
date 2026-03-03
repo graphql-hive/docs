@@ -76,7 +76,7 @@ function CaseStudyHeader({
   }
 
   return (
-    <header className="mx-auto flex max-w-(--content-width) justify-between gap-8 pl-6 pr-6 max-lg:flex-col sm:my-12 md:pl-12 lg:my-24 lg:pr-2">
+    <header className="mx-auto flex max-w-(--content-width) justify-between gap-8 px-6 max-lg:flex-col sm:my-12 md:pl-12 lg:my-24 lg:pr-2">
       <div className="max-w-[640px]">
         <Heading as="h1" className="max-sm:text-[32px]" size="md">
           {title}
