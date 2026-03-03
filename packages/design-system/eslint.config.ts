@@ -11,60 +11,14 @@ const config: Linter.Config[] = [
     },
   },
   {
-    files: ["**/*.tsx", "**/*.jsx"],
-    rules: {
-      "better-tailwindcss/no-unknown-classes": [
-        "error",
-        {
-          ignore: [
-            "light",
-            "hive-*",
-            "MarketplaceSearch",
-            "nextra-banner",
-            "nextra-bleed",
-            "nextra-callout",
-            "nextra-cards",
-            "nextra-collapse",
-            "nextra-filetree",
-            "nextra-focus",
-            "nextra-hamburger",
-            "nextra-mermaid",
-            "nextra-scrollbar",
-            "nextra-steps",
-            "not-prose",
-            "no-scrollbar",
-            "subheader",
-            "subheading-anchor",
-          ],
-        },
-      ],
-    },
-    settings: {
-      "better-tailwindcss": {
-        entryPoint: new URL(
-          "../documentation/src/styles/app.css",
-          import.meta.url,
-        ).pathname,
-      },
-    },
-  },
-  {
     languageOptions: {
       parserOptions: {
+        project: "./tsconfig.json",
         projectService: {
-          allowDefaultProject: [],
+          allowDefaultProject: ["*.config.ts"],
         },
       },
     },
-  },
-  {
-    ignores: [
-      ".storybook/**",
-      "**/*.stories.ts",
-      "**/*.stories.tsx",
-      "src/__storybook__/**",
-      "storybook-static/**",
-    ],
   },
 ];
 

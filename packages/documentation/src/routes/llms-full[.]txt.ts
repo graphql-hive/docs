@@ -1,12 +1,11 @@
 import { getLLMText } from "@/lib/get-llm-text";
-import { getSource } from "@/lib/source";
+import { source } from "@/lib/source";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/llms-full.txt")({
   server: {
     handlers: {
       GET: async () => {
-        const source = await getSource();
         const scan = source.getPages().map(getLLMText);
         const scanned = await Promise.all(scan);
         return new Response(scanned.join("\n\n"), {

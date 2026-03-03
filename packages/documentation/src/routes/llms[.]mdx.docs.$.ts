@@ -1,4 +1,4 @@
-import { getSource } from "@/lib/source";
+import { source } from "@/lib/source";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/llms.mdx/docs/$")({
@@ -6,7 +6,6 @@ export const Route = createFileRoute("/llms.mdx/docs/$")({
     handlers: {
       GET: async ({ params }) => {
         const slugs = params._splat?.split("/").filter(Boolean) ?? [];
-        const source = await getSource();
         const page = source.getPage(slugs);
         if (!page) throw notFound();
 

@@ -1,21 +1,17 @@
 {
   "extends": "../../tsconfig.json",
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    ".source/**/*.ts",
-    "*.config.ts",
-    "content/**/*.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.tsx", ".source/**/*.ts"],
   "compilerOptions": {
     "types": ["vite/client", "bun"],
+    "rootDir": ".",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@hive/design-system": ["../design-system/src/index.ts"],
-      "@hive/design-system/*": ["../design-system/src/*"],
       "fumadocs-mdx:collections/*": ["./.source/*"]
     },
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "composite": true,
+    "noEmit": false,
+    "outDir": "dist"
   }
 }

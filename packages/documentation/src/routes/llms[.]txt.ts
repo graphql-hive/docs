@@ -1,4 +1,4 @@
-import { getSource } from "@/lib/source";
+import { source } from "@/lib/source";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/llms.txt")({
@@ -6,7 +6,6 @@ export const Route = createFileRoute("/llms.txt")({
     handlers: {
       GET: async ({ request }) => {
         const baseUrl = new URL(request.url).origin;
-        const source = await getSource();
         const pages = source.getPages();
 
         const lines = [

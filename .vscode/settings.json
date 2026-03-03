@@ -7,7 +7,5 @@
   },
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
-  },
-  "editor.defaultFormatter": "nicolo-ribaudo.oxfmt",
-  "editor.formatOnSave": true
+  }
 }

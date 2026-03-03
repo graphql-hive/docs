@@ -1,7 +1,0 @@
-{
-  "pages": [
-    "[Bun](/docs/gateway/deployment/runtimes/bun)",
-    "[Deno](/docs/gateway/deployment/runtimes/deno)",
-    "nodejs"
-  ]
-}

@@ -11,7 +11,6 @@ const BASE_URL = process.env["TEST_URL"] || `http://localhost:${TEST_PORT}`;
 
 let devServer: Subprocess | null = null;
 
-// TODO: Move to a util file
 async function waitForServer(maxAttempts = 30): Promise<void> {
   for (let i = 0; i < maxAttempts; i++) {
     try {
@@ -29,16 +28,14 @@ async function waitForServer(maxAttempts = 30): Promise<void> {
 beforeAll(async () => {
   if (process.env["TEST_URL"]) return; // user-provided server
 
-  const command = process.env["CI"]
-    ? ["bun", "run", "start"]
-    : ["bun", "--bun", "vite", "dev", "--port", String(TEST_PORT)];
-
-  devServer = spawn(command, {
-    cwd: import.meta.dir + "/../../..",
-    env: { ...process.env, PORT: String(TEST_PORT) },
-    stderr: "ignore",
-    stdout: "ignore",
-  });
+  devServer = spawn(
+    ["bun", "--bun", "vite", "dev", "--port", String(TEST_PORT)],
+    {
+      cwd: import.meta.dir + "/../../..",
+      stderr: "ignore",
+      stdout: "ignore",
+    },
+  );
 
   await waitForServer();
 }, 60_000);
@@ -73,7 +70,7 @@ describe("llms-full.txt", () => {
     const text = await res.text();
     expect(text).toContain("# ");
     expect(text).toContain("(/docs");
-  }, 30_000);
+  });
 
   test("is not rewritten to a doc page", async () => {
     const res = await fetch(`${BASE_URL}/llms-full.txt`);
@@ -81,7 +78,7 @@ describe("llms-full.txt", () => {
     // llms-full.txt contains multiple docs concatenated, not a single doc
     const text = await res.text();
     expect(text).toContain("(/docs/");
-  }, 30_000);
+  });
 });
 
 describe(".txt extension", () => {
@@ -94,8 +91,8 @@ describe(".txt extension", () => {
     expect(text).toContain("title:");
   });
 
-  test("/docs/schema-registry.txt returns markdown for nested page", async () => {
-    const res = await fetch(`${BASE_URL}/docs/schema-registry.txt`, {
+  test("/docs/test.txt returns markdown for nested page", async () => {
+    const res = await fetch(`${BASE_URL}/docs/test.txt`, {
       redirect: "follow",
     });
     expect(res.status).toBe(200);
@@ -116,8 +113,8 @@ describe(".mdx extension", () => {
     expect(text).toContain("title:");
   });
 
-  test("/docs/schema-registry.mdx returns markdown for nested page", async () => {
-    const res = await fetch(`${BASE_URL}/docs/schema-registry.mdx`, {
+  test("/docs/test.mdx returns markdown for nested page", async () => {
+    const res = await fetch(`${BASE_URL}/docs/test.mdx`, {
       redirect: "follow",
     });
     expect(res.status).toBe(200);
@@ -137,10 +134,8 @@ describe(".md extension", () => {
     expect(text).toContain("---");
   });
 
-  test("/docs/schema-registry.md returns markdown for nested page", async () => {
-    const res = await fetch(`${BASE_URL}/docs/schema-registry.md`, {
-      redirect: "follow",
-    });
+  test("/docs/test.md returns markdown for nested page", async () => {
+    const res = await fetch(`${BASE_URL}/docs/test.md`, { redirect: "follow" });
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("text/markdown");
     const text = await res.text();
@@ -170,7 +165,7 @@ describe("Accept header negotiation", () => {
   });
 
   test("Accept: text/markdown works for nested pages", async () => {
-    const res = await fetch(`${BASE_URL}/docs/schema-registry`, {
+    const res = await fetch(`${BASE_URL}/docs/test`, {
       headers: { Accept: "text/markdown" },
       redirect: "follow",
     });

@@ -1,12 +1,11 @@
 {
-  "$schema": "https://v2-8-1.turborepo.dev/schema.json",
+  "$schema": "https://turborepo.dev/schema.json",
   "ui": "stream",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", ".output/**"],
-      "env": ["VERCEL"]
+      "outputs": [".next/**", "!.next/cache/**", ".output/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -23,12 +22,6 @@
     },
     "test": {
       "dependsOn": ["^test"]
-    },
-    "test:e2e": {
-      "dependsOn": ["^test:e2e"]
-    },
-    "test:bun": {
-      "dependsOn": ["^test:bun"]
     }
   }
 }

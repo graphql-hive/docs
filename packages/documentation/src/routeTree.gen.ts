@@ -11,22 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
-import { Route as LandingRouteImport } from './routes/_landing'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
-import { Route as LandingLightOnlyRouteImport } from './routes/_landing/_light-only'
-import { Route as LandingProductUpdatesIndexRouteImport } from './routes/_landing/product-updates/index'
-import { Route as LandingCaseStudiesIndexRouteImport } from './routes/_landing/case-studies/index'
-import { Route as LandingLightOnlyIndexRouteImport } from './routes/_landing/_light-only/index'
 import { Route as LlmsDotmdxDocsSplatRouteImport } from './routes/llms[.]mdx.docs.$'
-import { Route as LandingProductUpdatesSplatRouteImport } from './routes/_landing/product-updates/$'
-import { Route as LandingCaseStudiesSplatRouteImport } from './routes/_landing/case-studies/$'
-import { Route as LandingLightOnlyPricingRouteImport } from './routes/_landing/_light-only/pricing'
-import { Route as LandingLightOnlyPartnersRouteImport } from './routes/_landing/_light-only/partners'
-import { Route as LandingLightOnlyOssFriendsRouteImport } from './routes/_landing/_light-only/oss-friends'
-import { Route as LandingLightOnlyGatewayRouteImport } from './routes/_landing/_light-only/gateway'
-import { Route as LandingLightOnlyEcosystemRouteImport } from './routes/_landing/_light-only/ecosystem'
-import { Route as LandingLightOnlyFederationIndexRouteImport } from './routes/_landing/_light-only/federation/index'
 
 const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   id: '/llms.txt',
@@ -38,8 +26,9 @@ const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
   path: '/llms-full.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LandingRoute = LandingRouteImport.update({
-  id: '/_landing',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocsSplatRoute = DocsSplatRouteImport.update({
@@ -52,195 +41,66 @@ const ApiSearchRoute = ApiSearchRouteImport.update({
   path: '/api/search',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LandingLightOnlyRoute = LandingLightOnlyRouteImport.update({
-  id: '/_light-only',
-  getParentRoute: () => LandingRoute,
-} as any)
-const LandingProductUpdatesIndexRoute =
-  LandingProductUpdatesIndexRouteImport.update({
-    id: '/product-updates/',
-    path: '/product-updates/',
-    getParentRoute: () => LandingRoute,
-  } as any)
-const LandingCaseStudiesIndexRoute = LandingCaseStudiesIndexRouteImport.update({
-  id: '/case-studies/',
-  path: '/case-studies/',
-  getParentRoute: () => LandingRoute,
-} as any)
-const LandingLightOnlyIndexRoute = LandingLightOnlyIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => LandingLightOnlyRoute,
-} as any)
 const LlmsDotmdxDocsSplatRoute = LlmsDotmdxDocsSplatRouteImport.update({
   id: '/llms.mdx/docs/$',
   path: '/llms.mdx/docs/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LandingProductUpdatesSplatRoute =
-  LandingProductUpdatesSplatRouteImport.update({
-    id: '/product-updates/$',
-    path: '/product-updates/$',
-    getParentRoute: () => LandingRoute,
-  } as any)
-const LandingCaseStudiesSplatRoute = LandingCaseStudiesSplatRouteImport.update({
-  id: '/case-studies/$',
-  path: '/case-studies/$',
-  getParentRoute: () => LandingRoute,
-} as any)
-const LandingLightOnlyPricingRoute = LandingLightOnlyPricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => LandingLightOnlyRoute,
-} as any)
-const LandingLightOnlyPartnersRoute =
-  LandingLightOnlyPartnersRouteImport.update({
-    id: '/partners',
-    path: '/partners',
-    getParentRoute: () => LandingLightOnlyRoute,
-  } as any)
-const LandingLightOnlyOssFriendsRoute =
-  LandingLightOnlyOssFriendsRouteImport.update({
-    id: '/oss-friends',
-    path: '/oss-friends',
-    getParentRoute: () => LandingLightOnlyRoute,
-  } as any)
-const LandingLightOnlyGatewayRoute = LandingLightOnlyGatewayRouteImport.update({
-  id: '/gateway',
-  path: '/gateway',
-  getParentRoute: () => LandingLightOnlyRoute,
-} as any)
-const LandingLightOnlyEcosystemRoute =
-  LandingLightOnlyEcosystemRouteImport.update({
-    id: '/ecosystem',
-    path: '/ecosystem',
-    getParentRoute: () => LandingLightOnlyRoute,
-  } as any)
-const LandingLightOnlyFederationIndexRoute =
-  LandingLightOnlyFederationIndexRouteImport.update({
-    id: '/federation/',
-    path: '/federation/',
-    getParentRoute: () => LandingLightOnlyRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
-  '/ecosystem': typeof LandingLightOnlyEcosystemRoute
-  '/gateway': typeof LandingLightOnlyGatewayRoute
-  '/oss-friends': typeof LandingLightOnlyOssFriendsRoute
-  '/partners': typeof LandingLightOnlyPartnersRoute
-  '/pricing': typeof LandingLightOnlyPricingRoute
-  '/case-studies/$': typeof LandingCaseStudiesSplatRoute
-  '/product-updates/$': typeof LandingProductUpdatesSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
-  '/': typeof LandingLightOnlyIndexRoute
-  '/case-studies': typeof LandingCaseStudiesIndexRoute
-  '/product-updates': typeof LandingProductUpdatesIndexRoute
-  '/federation': typeof LandingLightOnlyFederationIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
-  '/ecosystem': typeof LandingLightOnlyEcosystemRoute
-  '/gateway': typeof LandingLightOnlyGatewayRoute
-  '/oss-friends': typeof LandingLightOnlyOssFriendsRoute
-  '/partners': typeof LandingLightOnlyPartnersRoute
-  '/pricing': typeof LandingLightOnlyPricingRoute
-  '/case-studies/$': typeof LandingCaseStudiesSplatRoute
-  '/product-updates/$': typeof LandingProductUpdatesSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
-  '/': typeof LandingLightOnlyIndexRoute
-  '/case-studies': typeof LandingCaseStudiesIndexRoute
-  '/product-updates': typeof LandingProductUpdatesIndexRoute
-  '/federation': typeof LandingLightOnlyFederationIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_landing': typeof LandingRouteWithChildren
+  '/': typeof IndexRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
-  '/_landing/_light-only': typeof LandingLightOnlyRouteWithChildren
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
-  '/_landing/_light-only/ecosystem': typeof LandingLightOnlyEcosystemRoute
-  '/_landing/_light-only/gateway': typeof LandingLightOnlyGatewayRoute
-  '/_landing/_light-only/oss-friends': typeof LandingLightOnlyOssFriendsRoute
-  '/_landing/_light-only/partners': typeof LandingLightOnlyPartnersRoute
-  '/_landing/_light-only/pricing': typeof LandingLightOnlyPricingRoute
-  '/_landing/case-studies/$': typeof LandingCaseStudiesSplatRoute
-  '/_landing/product-updates/$': typeof LandingProductUpdatesSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
-  '/_landing/_light-only/': typeof LandingLightOnlyIndexRoute
-  '/_landing/case-studies/': typeof LandingCaseStudiesIndexRoute
-  '/_landing/product-updates/': typeof LandingProductUpdatesIndexRoute
-  '/_landing/_light-only/federation/': typeof LandingLightOnlyFederationIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/api/search'
     | '/docs/$'
-    | '/ecosystem'
-    | '/gateway'
-    | '/oss-friends'
-    | '/partners'
-    | '/pricing'
-    | '/case-studies/$'
-    | '/product-updates/$'
     | '/llms.mdx/docs/$'
-    | '/'
-    | '/case-studies'
-    | '/product-updates'
-    | '/federation'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/api/search'
     | '/docs/$'
-    | '/ecosystem'
-    | '/gateway'
-    | '/oss-friends'
-    | '/partners'
-    | '/pricing'
-    | '/case-studies/$'
-    | '/product-updates/$'
     | '/llms.mdx/docs/$'
-    | '/'
-    | '/case-studies'
-    | '/product-updates'
-    | '/federation'
   id:
     | '__root__'
-    | '/_landing'
+    | '/'
     | '/llms-full.txt'
     | '/llms.txt'
-    | '/_landing/_light-only'
     | '/api/search'
     | '/docs/$'
-    | '/_landing/_light-only/ecosystem'
-    | '/_landing/_light-only/gateway'
-    | '/_landing/_light-only/oss-friends'
-    | '/_landing/_light-only/partners'
-    | '/_landing/_light-only/pricing'
-    | '/_landing/case-studies/$'
-    | '/_landing/product-updates/$'
     | '/llms.mdx/docs/$'
-    | '/_landing/_light-only/'
-    | '/_landing/case-studies/'
-    | '/_landing/product-updates/'
-    | '/_landing/_light-only/federation/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  LandingRoute: typeof LandingRouteWithChildren
+  IndexRoute: typeof IndexRoute
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   ApiSearchRoute: typeof ApiSearchRoute
@@ -264,11 +124,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsFullDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_landing': {
-      id: '/_landing'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof LandingRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/docs/$': {
@@ -285,34 +145,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_landing/_light-only': {
-      id: '/_landing/_light-only'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof LandingLightOnlyRouteImport
-      parentRoute: typeof LandingRoute
-    }
-    '/_landing/product-updates/': {
-      id: '/_landing/product-updates/'
-      path: '/product-updates'
-      fullPath: '/product-updates'
-      preLoaderRoute: typeof LandingProductUpdatesIndexRouteImport
-      parentRoute: typeof LandingRoute
-    }
-    '/_landing/case-studies/': {
-      id: '/_landing/case-studies/'
-      path: '/case-studies'
-      fullPath: '/case-studies'
-      preLoaderRoute: typeof LandingCaseStudiesIndexRouteImport
-      parentRoute: typeof LandingRoute
-    }
-    '/_landing/_light-only/': {
-      id: '/_landing/_light-only/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof LandingLightOnlyIndexRouteImport
-      parentRoute: typeof LandingLightOnlyRoute
-    }
     '/llms.mdx/docs/$': {
       id: '/llms.mdx/docs/$'
       path: '/llms.mdx/docs/$'
@@ -320,109 +152,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsDotmdxDocsSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_landing/product-updates/$': {
-      id: '/_landing/product-updates/$'
-      path: '/product-updates/$'
-      fullPath: '/product-updates/$'
-      preLoaderRoute: typeof LandingProductUpdatesSplatRouteImport
-      parentRoute: typeof LandingRoute
-    }
-    '/_landing/case-studies/$': {
-      id: '/_landing/case-studies/$'
-      path: '/case-studies/$'
-      fullPath: '/case-studies/$'
-      preLoaderRoute: typeof LandingCaseStudiesSplatRouteImport
-      parentRoute: typeof LandingRoute
-    }
-    '/_landing/_light-only/pricing': {
-      id: '/_landing/_light-only/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof LandingLightOnlyPricingRouteImport
-      parentRoute: typeof LandingLightOnlyRoute
-    }
-    '/_landing/_light-only/partners': {
-      id: '/_landing/_light-only/partners'
-      path: '/partners'
-      fullPath: '/partners'
-      preLoaderRoute: typeof LandingLightOnlyPartnersRouteImport
-      parentRoute: typeof LandingLightOnlyRoute
-    }
-    '/_landing/_light-only/oss-friends': {
-      id: '/_landing/_light-only/oss-friends'
-      path: '/oss-friends'
-      fullPath: '/oss-friends'
-      preLoaderRoute: typeof LandingLightOnlyOssFriendsRouteImport
-      parentRoute: typeof LandingLightOnlyRoute
-    }
-    '/_landing/_light-only/gateway': {
-      id: '/_landing/_light-only/gateway'
-      path: '/gateway'
-      fullPath: '/gateway'
-      preLoaderRoute: typeof LandingLightOnlyGatewayRouteImport
-      parentRoute: typeof LandingLightOnlyRoute
-    }
-    '/_landing/_light-only/ecosystem': {
-      id: '/_landing/_light-only/ecosystem'
-      path: '/ecosystem'
-      fullPath: '/ecosystem'
-      preLoaderRoute: typeof LandingLightOnlyEcosystemRouteImport
-      parentRoute: typeof LandingLightOnlyRoute
-    }
-    '/_landing/_light-only/federation/': {
-      id: '/_landing/_light-only/federation/'
-      path: '/federation'
-      fullPath: '/federation'
-      preLoaderRoute: typeof LandingLightOnlyFederationIndexRouteImport
-      parentRoute: typeof LandingLightOnlyRoute
-    }
   }
 }
 
-interface LandingLightOnlyRouteChildren {
-  LandingLightOnlyEcosystemRoute: typeof LandingLightOnlyEcosystemRoute
-  LandingLightOnlyGatewayRoute: typeof LandingLightOnlyGatewayRoute
-  LandingLightOnlyOssFriendsRoute: typeof LandingLightOnlyOssFriendsRoute
-  LandingLightOnlyPartnersRoute: typeof LandingLightOnlyPartnersRoute
-  LandingLightOnlyPricingRoute: typeof LandingLightOnlyPricingRoute
-  LandingLightOnlyIndexRoute: typeof LandingLightOnlyIndexRoute
-  LandingLightOnlyFederationIndexRoute: typeof LandingLightOnlyFederationIndexRoute
-}
-
-const LandingLightOnlyRouteChildren: LandingLightOnlyRouteChildren = {
-  LandingLightOnlyEcosystemRoute: LandingLightOnlyEcosystemRoute,
-  LandingLightOnlyGatewayRoute: LandingLightOnlyGatewayRoute,
-  LandingLightOnlyOssFriendsRoute: LandingLightOnlyOssFriendsRoute,
-  LandingLightOnlyPartnersRoute: LandingLightOnlyPartnersRoute,
-  LandingLightOnlyPricingRoute: LandingLightOnlyPricingRoute,
-  LandingLightOnlyIndexRoute: LandingLightOnlyIndexRoute,
-  LandingLightOnlyFederationIndexRoute: LandingLightOnlyFederationIndexRoute,
-}
-
-const LandingLightOnlyRouteWithChildren =
-  LandingLightOnlyRoute._addFileChildren(LandingLightOnlyRouteChildren)
-
-interface LandingRouteChildren {
-  LandingLightOnlyRoute: typeof LandingLightOnlyRouteWithChildren
-  LandingCaseStudiesSplatRoute: typeof LandingCaseStudiesSplatRoute
-  LandingProductUpdatesSplatRoute: typeof LandingProductUpdatesSplatRoute
-  LandingCaseStudiesIndexRoute: typeof LandingCaseStudiesIndexRoute
-  LandingProductUpdatesIndexRoute: typeof LandingProductUpdatesIndexRoute
-}
-
-const LandingRouteChildren: LandingRouteChildren = {
-  LandingLightOnlyRoute: LandingLightOnlyRouteWithChildren,
-  LandingCaseStudiesSplatRoute: LandingCaseStudiesSplatRoute,
-  LandingProductUpdatesSplatRoute: LandingProductUpdatesSplatRoute,
-  LandingCaseStudiesIndexRoute: LandingCaseStudiesIndexRoute,
-  LandingProductUpdatesIndexRoute: LandingProductUpdatesIndexRoute,
-}
-
-const LandingRouteWithChildren =
-  LandingRoute._addFileChildren(LandingRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
-  LandingRoute: LandingRouteWithChildren,
+  IndexRoute: IndexRoute,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   ApiSearchRoute: ApiSearchRoute,

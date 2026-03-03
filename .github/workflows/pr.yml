@@ -16,18 +16,16 @@ jobs:
   test:
     uses: ./.github/workflows/test.yml
 
-  e2e:
-    uses: ./.github/workflows/e2e.yml
-
   website-preview:
     uses: ./.github/workflows/website.yml
     if: ${{ !github.event.pull_request.head.repo.fork }}
     secrets: inherit
 
-  storybook-preview:
-    uses: ./.github/workflows/storybook.yml
-    if: ${{ !github.event.pull_request.head.repo.fork }}
-    secrets: inherit
+  # todo: add storybook (or lighter alternative) for the design system
+  # storybook-preview:
+  #   uses: ./.github/workflows/storybook.yml
+  #   if: ${{ !github.event.pull_request.head.repo.fork }}
+  #   secrets: inherit
 
   # todo: release snapshots of the libraries (if we need them)
   # alpha:

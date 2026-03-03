@@ -21,7 +21,6 @@ out/
 build
 dist
 *.tsbuildinfo
-storybook-static
 
 # Debug
 npm-debug.log*
@@ -32,7 +31,3 @@ npm-debug.log*
 
 .tldr
 .context
-
-# screenshots
-packages/documentation/tmp/
-test-results/

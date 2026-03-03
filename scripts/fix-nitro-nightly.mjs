@@ -14,35 +14,35 @@ if (!existsSync(bunCache)) {
   process.exit(0);
 }
 
-const nitroNightlyDirs = readdirSync(bunCache).filter((d) =>
-  d.startsWith("nitro-nightly@"),
+const nitroNightlyDir = readdirSync(bunCache).find((d) =>
+  d.startsWith("nitro-nightly@")
 );
 
-if (nitroNightlyDirs.length === 0) {
+if (!nitroNightlyDir) {
   console.log("[fix-nitro-nightly] nitro-nightly not found, skipping");
   process.exit(0);
 }
 
-for (const nitroNightlyDir of nitroNightlyDirs) {
-  const nodeModules = join(bunCache, nitroNightlyDir, "node_modules");
-  const nitroSymlink = join(nodeModules, "nitro");
-  const nitroNightlyPkg = join(nodeModules, "nitro-nightly");
+const nodeModules = join(bunCache, nitroNightlyDir, "node_modules");
+const nitroSymlink = join(nodeModules, "nitro");
+const nitroNightlyPkg = join(nodeModules, "nitro-nightly");
 
-  try {
-    symlinkSync(nitroNightlyPkg, nitroSymlink);
-    console.log(`[fix-nitro-nightly] Created symlink for ${nitroNightlyDir}`);
-  } catch (err) {
-    if (err.code === "EEXIST") {
-      const stat = lstatSync(nitroSymlink);
-      if (!stat.isSymbolicLink()) {
-        console.error(
-          "[fix-nitro-nightly] File exists but not a symlink:",
-          nitroSymlink,
-        );
-      }
+try {
+  symlinkSync(nitroNightlyPkg, nitroSymlink);
+} catch (err) {
+  if (err.code === "EEXIST") {
+    const stat = lstatSync(nitroSymlink);
+    if (stat.isSymbolicLink()) {
+      //  symlink already exists, we're good
+      process.exit(0);
     } else {
-      console.error("[fix-nitro-nightly] Failed:", err.message);
-      process.exit(1);
+      console.error(
+        "[fix-nitro-nightly] File exists but it's not a symlink:",
+        err.message
+      );
     }
+  } else {
+    console.error("[fix-nitro-nightly] Failed to create symlink:", err.message);
+    process.exit(1);
   }
 }
