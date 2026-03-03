@@ -18,7 +18,7 @@ that the ability to scale and evolve your API is an important goal. Therefore, w
 new feature in Hive that enables developers to easily lint, verify, and enforce best practices
 across the entire GraphQL API.
 
-![](https://the-guild.dev/graphql/hive/_next/static/media/policy-overview.e560205a.png "Choose a custom policy and enforce best practices")
+![](./policy-overview.png "Choose a custom policy and enforce best practices")
 
 With a simple dashboard configuration, you can enforce the following:
 
@@ -33,7 +33,7 @@ With a simple dashboard configuration, you can enforce the following:
 5. Enforce `@oneOf` structure the right way (by ensuring response structure and directives usage)
 6. **And +20 more rules you can customize!**
 
-![](https://the-guild.dev/graphql/hive/_next/static/media/policy-rules-config.ff7acd8f.png "Every rule has a broad range of configuration")
+![](./policy-rules-config.png "Every rule has a broad range of configuration")
 
 <Callout type="info">
   **Reminder:** Hive does not have feature-gates or any limitation on features.
@@ -50,13 +50,13 @@ policies, before running the `publish` flow and update the schema in the registr
 
 Each rule can be configured to trigger either a **warning** or an **error**.
 
-![](https://the-guild.dev/graphql/hive/_next/static/media/policy-cli-warning.4937f501.png)
+![](./policy-cli-warning.png)
 
 A warning will be printed as CLI output, while an error will allow you to reject and fail the schema
 check. This way, you can introduce new policy rules and gradually without breaking your existing
 pipelines.
 
-![](https://the-guild.dev/graphql/hive/_next/static/media/policy-cli-error.12678074.png)
+![](./policy-cli-error.png)
 
 ### Organization/project Level
 
@@ -66,9 +66,9 @@ targets.
 You can enable Policy override for projects, and either disable or modify specific policy rules
 defined at the organization level.
 
-![](https://the-guild.dev/graphql/hive/_next/static/media/policy-override-config.c08c0bba.png)
+![](./policy-override-config.png)
 
-![](https://the-guild.dev/graphql/hive/_next/static/media/policy-override-severity.a35154f9.png)
+![](./policy-override-severity.png)
 
 ### Open-Source under the Hood
 
