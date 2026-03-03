@@ -49,25 +49,26 @@ using GraphQL resolvers like below;
 ```js
 module.exports = {
   Query: {
-    user: (root, args) => fetch('https://myrest.com/user/' + args.id).then(res => res.json())
+    user: (root, args) =>
+      fetch("https://myrest.com/user/" + args.id).then((res) => res.json()),
   },
   Mutation: {
     createUser: (root, args) =>
-      fetch('https://myrest.com/user', {
-        method: 'PUT',
-        body: JSON.stringify(args.input)
-      }).then(res => res.json()),
+      fetch("https://myrest.com/user", {
+        method: "PUT",
+        body: JSON.stringify(args.input),
+      }).then((res) => res.json()),
     updateUser: (root, args) =>
-      fetch('https://myrest.com/user' + args.id, {
-        method: 'POST',
-        body: JSON.stringify(args.input)
-      }).then(res => res.json()),
+      fetch("https://myrest.com/user" + args.id, {
+        method: "POST",
+        body: JSON.stringify(args.input),
+      }).then((res) => res.json()),
     deleteUser: (root, args) =>
-      fetch('https://myrest.com/user' + args.id, {
-        method: 'DELETE'
-      }).then(res => res.json())
-  }
-}
+      fetch("https://myrest.com/user" + args.id, {
+        method: "DELETE",
+      }).then((res) => res.json()),
+  },
+};
 ```
 
 This example assumes that you have `/user/:id` endpoint that gets a `User` entity with `HTTP GET`,

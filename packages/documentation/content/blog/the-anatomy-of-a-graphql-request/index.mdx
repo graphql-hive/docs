@@ -308,8 +308,6 @@ This procedure is performed by the `execute` and `subscribe` functions that are 
 `graphql-js`. Other languages that are orientate themselves on the `graphql-js` reference
 implementation have a corresponding counterpart.
 
-
-
 ## Overriding `parse`
 
 ### Add Caching
@@ -367,35 +365,35 @@ Envelop provides us a user-friendly way of hooking into the before and after pha
 `validate`, `execute` and `subscribe`.
 
 ```ts
-import { NoSchemaIntrospectionCustomRule } from 'graphql'
-import { envelop, Plugin } from '@envelop/core'
+import { NoSchemaIntrospectionCustomRule } from "graphql";
+import { envelop, Plugin } from "@envelop/core";
 
 const myPlugin: Plugin = {
   onParse() {
-    console.log('before parsing')
+    console.log("before parsing");
     return function afterParse({ result }) {
       if (result instanceof Error) {
-        console.log('Error occurred during parsing: ', result)
+        console.log("Error occurred during parsing: ", result);
       }
-    }
+    };
   },
   onValidate({ addValidationRule }) {
     // add a custom validation rule
-    addValidationRule(NoSchemaIntrospectionCustomRule)
+    addValidationRule(NoSchemaIntrospectionCustomRule);
 
     return function afterValidate({ result }) {
       if (result.length) {
-        console.log('Errors occurred during validation: ', result)
+        console.log("Errors occurred during validation: ", result);
       }
-    }
+    };
   },
   onExecute({ args }) {
-    const myVar = args.contextValue.myVar
-  }
-}
+    const myVar = args.contextValue.myVar;
+  },
+};
 
-const getEnveloped = envelop({ plugins: [myPlugin] })
-const { parse, validate, execute, subscribe } = getEnveloped()
+const getEnveloped = envelop({ plugins: [myPlugin] });
+const { parse, validate, execute, subscribe } = getEnveloped();
 ```
 
 ![Envelop Plugin Illustration](./envelop-breakdown.png)

@@ -23,6 +23,7 @@ The sync tool uses `git filter-repo` to rewrite the old repo's history, moving a
 
 - [ ] Fix failing e2e tests (20/42 fail). Most mobile tests fail because `getByRole('button', { name: 'Menu' })` is not found — mobile nav changed and tests weren't updated. Several chromium tests fail on `/ecosystem`, `/oss-friends` (no h1), and search (combobox not found).
 - [ ] Add landing pages to search index (see TODO in `src/routes/api/search.ts`).
+- [ ] OG images: old site used Next.js `opengraph-image.png` convention. Need equivalent for TanStack Start (e.g. meta tags pointing to static images or a dynamic OG image route).
 
 ## Quick Start
 

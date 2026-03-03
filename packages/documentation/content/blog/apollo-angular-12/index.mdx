@@ -8,9 +8,9 @@ description:
   GraphQL + TypeScript combined thanks to GraphQL-Code-Generator
 ---
 
-import { StackBlitz } from "@hive/design-system/hive-components/stack-blitz"
-import { MdxVideo } from "@hive/design-system/mdx-components/mdx-video"
-import { YoutubeIframe } from "@hive/design-system/youtube-iframe"
+import { StackBlitz } from "@hive/design-system/hive-components/stack-blitz";
+import { MdxVideo } from "@hive/design-system/mdx-components/mdx-video";
+import { YoutubeIframe } from "@hive/design-system/youtube-iframe";
 
 _Check what's new in Apollo Angular and how to get the full potential benefits of using Angular +
 GraphQL + TypeScript combined thanks to GraphQL-Code-Generator._
@@ -73,17 +73,17 @@ The only thing you need to do is to set the `document` property, That's it, and 
 regular Angular service:
 
 ```ts
-import { Component } from '@angular/core'
-import { FeedGQL } from './feed-gql.ts'
+import { Component } from "@angular/core";
+import { FeedGQL } from "./feed-gql.ts";
 
 @Component({
   /* … */
 })
 export class FeedComponent {
   constructor(feedGQL: FeedGQL) {
-    feedGQL.watch().valueChanges.subscribe(result => {
+    feedGQL.watch().valueChanges.subscribe((result) => {
       // ...
-    })
+    });
   }
 }
 ```
@@ -142,7 +142,7 @@ to generate types and angular services.
 Then you simply import and use it as a regular, Angular service.
 
 ```js
-import { FeedGQL } from './generated'
+import { FeedGQL } from "./generated";
 ```
 
 > GraphQL Code Generator takes query's name, makes it PascalCased and adds GQL suffix to it. An
@@ -150,7 +150,10 @@ import { FeedGQL } from './generated'
 
 See it here in action and play with it:
 
-<StackBlitz file="app/list.component.ts" stackBlitzId="apollo-angular-code-generator-example" />
+<StackBlitz
+  file="app/list.component.ts"
+  stackBlitzId="apollo-angular-code-generator-example"
+/>
 
 To play with code generator try to clone this repository:
 

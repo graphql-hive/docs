@@ -15,7 +15,7 @@ technologies your servers already use.
 We've been using this tool to significantly improve our clients stacks — improving the areas that a
 classic GraphQL gateways would have left untouched
 
-![Mesh SDK](./sdk.png 'Mesh SDK')
+![Mesh SDK](./sdk.png "Mesh SDK")
 
 ## The Basics
 
@@ -57,7 +57,7 @@ Here are some use cases and how GraphQL Mesh can be used to support them:
 - Access and fetch data across microservices (a merged Data Graph) without adding a central failure
   point to your deployment architecture
 
-![Pipeline Architecture](./pipeline-architecture.png 'Pipeline Architecture')
+![Pipeline Architecture](./pipeline-architecture.png "Pipeline Architecture")
 
 The way GraphQL Mesh works is:
 
@@ -80,7 +80,7 @@ GraphQL Mesh was created by the open source group called [The Guild](/).
 
 We currently maintain the following libraries:
 
-![Libraries](./libraries.png 'Libraries')
+![Libraries](./libraries.png "Libraries")
 
 We love what we do and are fulfilled by that, but if you wish to support us, here are some possible
 ways:
@@ -117,7 +117,7 @@ But what about the services and data sources you **query from your resolvers**?
 In your resolvers you still call regular REST endpoints? They might not be typed and might not
 return the shape of response you want them to return.
 
-![Any](./img-1.png 'Any')
+![Any](./img-1.png "Any")
 
 Wouldn't it be nice if you could use those data sources as GraphQL sources?
 
@@ -146,7 +146,7 @@ SDK**, take would make it look like those sources exposed GraphQL themselves.
 
 That SDK can run locally on your GraphQL server without affecting the underlining services at all.
 
-![No Any](./img-2.png 'No Any')
+![No Any](./img-2.png "No Any")
 
 ### 2 — the Merging Use Case
 
@@ -192,14 +192,18 @@ Here's a simple example for fetching and aggregating data across multiple extern
 **Before:**
 
 ```typescript
-async function getCityAndWeather(city: string): Promise<{ city: string; weather: any }> {
-  const cities /* any */ = await fetchApi(`https://cities-api/cities?search=${city}`)
-  const city /* any */ = cities.data[0]
+async function getCityAndWeather(
+  city: string,
+): Promise<{ city: string; weather: any }> {
+  const cities /* any */ = await fetchApi(
+    `https://cities-api/cities?search=${city}`,
+  );
+  const city /* any */ = cities.data[0];
   const weather /* any */ = await fetchApi(
-    `https://weather-api/forecast?lat=${city.latitude}&lon=${city.longitude}`
-  )
+    `https://weather-api/forecast?lat=${city.latitude}&lon=${city.longitude}`,
+  );
 
-  return { city, weather }
+  return { city, weather };
 }
 ```
 
@@ -240,13 +244,15 @@ sources:
 The data aggregation logic can be moved into a custom GraphQL resolver:
 
 ```typescript
-import { Resolvers } from './mesh/types.generated'
+import { Resolvers } from "./mesh/types.generated";
 
 export const resolvers: Resolvers = {
   dailyForecast: async (city, args, { Weather }) => {
-    return Weather.api.forecastDailyByLatLon(city.latitude, city.longitude).then(r => r.data)
-  }
-}
+    return Weather.api
+      .forecastDailyByLatLon(city.latitude, city.longitude)
+      .then((r) => r.data);
+  },
+};
 ```
 
 We are using `city` parent value, which is being fetched by the Cities API, and fetch data from the
@@ -289,7 +295,7 @@ GraphQL engine will be in charge of running the actual data fetching, using the 
 This method brings the GraphQL schema management closer to the developer, and allows you to modify
 and manage the GraphQL schema according to your application needs.
 
-![GraphQL Mesh as an SDK running inside the services](./gateway-1.png 'GraphQL Mesh as an SDK running inside the services')
+![GraphQL Mesh as an SDK running inside the services](./gateway-1.png "GraphQL Mesh as an SDK running inside the services")
 
 ### GraphQL Mesh as a Gateway
 
@@ -300,7 +306,7 @@ the schema is being managed by the gateway itself, and not the consuming applica
 Using GraphQL Mesh output as a gateway means that the consuming applications will execute GraphQL
 over the network to the gateway, and from the gateway to the source APIs.
 
-![GraphQL Mesh as a self hosted gateway](./gateway-2.png 'GraphQL Mesh as a self hosted gateway')
+![GraphQL Mesh as a self hosted gateway](./gateway-2.png "GraphQL Mesh as a self hosted gateway")
 
 ### Querying Data from Mesh
 

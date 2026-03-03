@@ -8,7 +8,7 @@ description:
   out of it.
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 In this article we'll try to explain and demonstrate common patterns for frontend development with
 GraphQL and GraphQL Code Generator.
@@ -91,17 +91,17 @@ expect to have those fields in your GraphQL response.
 You can also use it in your component code:
 
 ```tsx
-export const ListEvents = listEvents => {
+export const ListEvents = (listEvents) => {
   return (
     <ul className="list-events">
-      {listEvents.map(event => (
+      {listEvents.map((event) => (
         <li key={event.id}>
           {event.title} ({event.date})
         </li>
       ))}
     </ul>
-  )
-}
+  );
+};
 ```
 
 In the example above we have a few issues that might be bugs in the future:
@@ -215,7 +215,7 @@ schema: YOUR_SCHEMA_PATH
 generates:
   ./src/types.ts:
     plugins:
-      - add: '// THIS FILE IS GENERATED, DO NOT EDIT!'
+      - add: "// THIS FILE IS GENERATED, DO NOT EDIT!"
       - typescript
 ```
 
@@ -228,7 +228,7 @@ configuration:
 
 ```yaml
 schema: SCHEMA_PATH_HERE
-documents: './src/**/*.graphql'
+documents: "./src/**/*.graphql"
 generates:
   src/generated-types.tsx:
     config:
@@ -242,15 +242,15 @@ generates:
 And then use it in your code:
 
 ```tsx
-import React from 'react'
-import { useMyQuery } from './generated-types'
+import React from "react";
+import { useMyQuery } from "./generated-types";
 
 export const MyComponent: React.FC = () => {
-  const { data, loading, error } = useMyQuery()
+  const { data, loading, error } = useMyQuery();
 
   // `data` is now fully typed based on your GraphQL query
-  return <> ... </>
-}
+  return <> ... </>;
+};
 ```
 
 - [`@graphql-codegen/typescript-react-apollo` docs](https://graphql-code-generator.com/docs/plugins/typescript-react-apollo)
@@ -262,7 +262,7 @@ configuration:
 
 ```yaml
 schema: SCHEMA_PATH_HERE
-documents: './src/**/*.graphql'
+documents: "./src/**/*.graphql"
 generates:
   src/generated-types.tsx:
     config:
@@ -299,7 +299,7 @@ configuration:
 
 ```yaml
 schema: SCHEMA_PATH_HERE
-documents: './src/**/*.graphql'
+documents: "./src/**/*.graphql"
 generates:
   src/generated-types.tsx:
     config:
@@ -341,7 +341,7 @@ configuration:
 
 ```yaml
 schema: SCHEMA_PATH_HERE
-documents: './src/**/*.graphql'
+documents: "./src/**/*.graphql"
 generates:
   src/generated-types.ts:
     config:
@@ -355,22 +355,24 @@ generates:
 And then use it in your code:
 
 ```ts
-import { MyFeedGQL, MyFeedQuery } from './generated-types'
+import { MyFeedGQL, MyFeedQuery } from "./generated-types";
 
 @Component({
-  selector: 'feed',
+  selector: "feed",
   template: `
     <h1>Feed:</h1>
     <ul>
       <li *ngFor="let item of feed | async">{{ item.id }}</li>
     </ul>
-  `
+  `,
 })
 export class FeedComponent {
-  feed: Observable<MyFeedQuery['feed']>
+  feed: Observable<MyFeedQuery["feed"]>;
 
   constructor(feedGQL: MyFeedGQL) {
-    this.feed = feedGQL.watch().valueChanges.pipe(map(result => result.data.feed))
+    this.feed = feedGQL
+      .watch()
+      .valueChanges.pipe(map((result) => result.data.feed));
   }
 }
 ```
@@ -384,7 +386,7 @@ generate ready-to-use React hooks for your GraphQL operations, with the followin
 
 ```yaml
 schema: SCHEMA_PATH_HERE
-documents: './src/**/*.graphql'
+documents: "./src/**/*.graphql"
 generates:
   src/generated-types.tsx:
     config:
@@ -398,21 +400,24 @@ generates:
 And then use it in your code:
 
 ```tsx
-import React from 'react'
-import { useMyQuery } from './generated-types'
+import React from "react";
+import { useMyQuery } from "./generated-types";
 
 export const MyComponent: React.FC = () => {
-  const { data, loading, error } = useMyQuery()
+  const { data, loading, error } = useMyQuery();
 
   // `data` is now fully typed based on your GraphQL query
 
-  return <> ... </>
-}
+  return <> ... </>;
+};
 ```
 
 - [`@graphql-codegen/typescript-urql` docs](https://graphql-code-generator.com/docs/plugins/typescript-urql)
 
-<Callout>This plugin can also generate HOC or data Component, based on your preference ;)</Callout>
+<Callout>
+  This plugin can also generate HOC or data Component, based on your preference
+  ;)
+</Callout>
 
 #### Vue.js & Apollo: Generate Composition Functions
 
@@ -421,7 +426,7 @@ you can generate composition functions based on your GraphQL operations:
 
 ```yaml
 schema: SCHEMA_PATH_HERE
-documents: './src/**/*.graphql'
+documents: "./src/**/*.graphql"
 generates:
   src/generated-types.ts:
     config:
@@ -473,7 +478,7 @@ This is how to configure it:
 
 ```yaml
 schema: SCHEMA_PATH_HERE
-documents: './src/**/*.graphql'
+documents: "./src/**/*.graphql"
 generates:
   src/generated-types.ts:
     plugins:
@@ -499,8 +504,8 @@ client.mutate({
 ```
 
 <Callout>
-  You can use it with any other wrapper of Apollo-Client, such as `apollo-angular` or
-  `react-apollo`.
+  You can use it with any other wrapper of Apollo-Client, such as
+  `apollo-angular` or `react-apollo`.
 </Callout>
 
 - [`@graphql-codegen/named-operations-object` docs](https://graphql-code-generator.com/docs/plugins/named-operations-object)
@@ -526,13 +531,13 @@ generates:
 And then pass it directly to your Apollo instance:
 
 ```ts
-import { InMemoryCache } from '@apollo/client'
+import { InMemoryCache } from "@apollo/client";
 // generated by Fragment Matcher plugin
-import introspectionResult from '../fragment-matcher'
+import introspectionResult from "../fragment-matcher";
 
 const cache = new InMemoryCache({
-  possibleTypes: introspectionResult.possibleTypes
-})
+  possibleTypes: introspectionResult.possibleTypes,
+});
 ```
 
 - [`@graphql-codegen/fragment-matcher` docs](https://graphql-code-generator.com/docs/plugins/fragment-matcher)
@@ -586,7 +591,7 @@ So you can maintain your operations in `.graphql` files, but import it from gene
 
 ```ts
 // MyQueryDocument and MyUserFragmentDoc are parsed `DocumentNode`
-import { MyQueryDocument, MyUserFragmentDoc } from './generated-types'
+import { MyQueryDocument, MyUserFragmentDoc } from "./generated-types";
 ```
 
 <Callout>
@@ -668,36 +673,37 @@ So you can use the generated fragment type as the input for your components, and
 from the parent component easily, with type-safety:
 
 ```tsx filename="todo-list.tsx"
-import React from 'react'
-import { useTodoList } from '../generated-types'
-import { TodoItem } from './todo-item'
+import React from "react";
+import { useTodoList } from "../generated-types";
+import { TodoItem } from "./todo-item";
 
 export const TodoList: React.FC = () => {
-  const { data, loading, error } = useTodoList()
+  const { data, loading, error } = useTodoList();
 
   return (
     <>
-      {data.todos.map(todo => (
+      {data.todos.map((todo) => (
         <TodoItem todo={todo} />
       ))}
     </>
-  )
-}
+  );
+};
 ```
 
 ```tsx filename="todo-item.tsx"
-import React from 'react'
-import { TodoItemFieldsFragment } from '../generated-types'
+import React from "react";
+import { TodoItemFieldsFragment } from "../generated-types";
 
 export const TodoItem: React.FC = (todo: TodoItemFieldsFragment) => {
-  return <div>{todo.title}</div>
-}
+  return <div>{todo.title}</div>;
+};
 ```
 
 <Callout>
-  Please have some judgment before creating fragments, it should represent data structure that is
-  specific per component. Don't abuse this mechanism by creating fragments with a single field. Try
-  to group it in a way that matches your components needs.
+  Please have some judgment before creating fragments, it should represent data
+  structure that is specific per component. Don't abuse this mechanism by
+  creating fragments with a single field. Try to group it in a way that matches
+  your components needs.
 </Callout>
 
 ## Access to Nested Generated Types
@@ -731,17 +737,17 @@ query userById($userId: ID!) {
 The `@graphql-codegen/typescript-operations` plugin output for that `query` will be:
 
 ```ts
-export type UserByIdQuery = { __typename?: 'Query' } & {
+export type UserByIdQuery = { __typename?: "Query" } & {
   user?: Maybe<
-    { __typename?: 'User' } & Pick<User, 'id'> & {
+    { __typename?: "User" } & Pick<User, "id"> & {
         profile?: Maybe<
-          { __typename?: 'Profile' } & Pick<Profile, 'age'> & {
-              name: { __typename?: 'Name' } & Pick<Name, 'first' | 'last'>
+          { __typename?: "Profile" } & Pick<Profile, "age"> & {
+              name: { __typename?: "Name" } & Pick<Name, "first" | "last">;
             }
-        >
+        >;
       }
-  >
-}
+  >;
+};
 ```
 
 Accessing the actual TypeScript type of `user.profile.name.first` might look a bit intimidating, but

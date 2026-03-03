@@ -25,7 +25,7 @@ Functions, AWS Lambda or something else, Yoga will fit right in.
 GraphQL Yoga comes with [Envelop](https://envelop.dev), and is the recommended way you should be
 using Envelop today to extend your GraphQL server.
 
-import { YoutubeIframe } from "@hive/design-system/youtube-iframe"
+import { YoutubeIframe } from "@hive/design-system/youtube-iframe";
 
 <YoutubeIframe
   src="https://youtube.com/embed/XnmB1-2i8mI"
@@ -35,7 +35,7 @@ import { YoutubeIframe } from "@hive/design-system/youtube-iframe"
 If you haven't used Yoga before, this is how easy it is to create a production-ready GraphQL server:
 
 ```ts
-import { createServer } from '@graphql-yoga/node'
+import { createServer } from "@graphql-yoga/node";
 
 const server = createServer({
   schema: {
@@ -46,13 +46,13 @@ const server = createServer({
     `,
     resolvers: {
       Query: {
-        hello: () => 'Hello from Yoga!'
-      }
-    }
-  }
-})
+        hello: () => "Hello from Yoga!",
+      },
+    },
+  },
+});
 
-server.start()
+server.start();
 ```
 
 If you are interested in following along with me to build a server, add plugins and more, you can

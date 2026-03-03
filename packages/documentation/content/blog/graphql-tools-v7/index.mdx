@@ -1,7 +1,8 @@
 ---
 title: GraphQL Tools v7 delivers the next generation GraphQL API Gateway
 authors: arda
-tags: [graphql, graphql-tools, schema-first, schema-stitching, graphql-federation]
+tags:
+  [graphql, graphql-tools, schema-first, schema-stitching, graphql-federation]
 date: 2020-11-03
 description:
   GraphQL Tools v7 - Brings Schema Stitching to a whole new level thanks to automation and
@@ -117,7 +118,6 @@ sources: # Here we have two independent sources
             method: GET
             responseSchema: ./src/json-schemas/worldPop.json
 
-
 # as in federation
 
 # Also in schema stitching, we extend the unified schema instead of transforming the source schemas.
@@ -146,7 +146,7 @@ additionalResolvers:
     targetSource: WorldPop
     targetMethod: population
     args:
-      country: '{root.countryRegion}'
+      country: "{root.countryRegion}"
 ```
 
 Here is an example for Apollo Federation;

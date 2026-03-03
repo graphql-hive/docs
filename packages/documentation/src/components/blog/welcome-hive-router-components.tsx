@@ -1,9 +1,10 @@
 /* eslint-disable */
+// @ts-nocheck — vendored blog post component
 "use client";
 
 import React from "react";
 import { GithubIcon, RabbitIcon, RouteIcon, TargetIcon } from "lucide-react";
-import { cn } from "../../../../lib/utils";
+import { cn } from "@hive/design-system/cn";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -283,7 +284,7 @@ export function RPSRace() {
   const max = Math.max(...data.map((d) => d.rps));
   const sorted = [...data].sort((a, b) => b.rps - a.rps);
   const [hovered, setHovered] = React.useState<(typeof data)[0] | null>(null);
-  const first = sorted[0];
+  const first = sorted[0]!;
 
   return (
     <div className="my-4 space-y-3 font-mono">

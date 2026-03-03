@@ -4,8 +4,8 @@ authors: laurin
 tags: [federation, graphql, hive]
 date: 2025-09-22
 description:
-  'Learn how to safely expose a public GraphQL API from a monolith using federation contracts and
-  tags, enabling incremental and controlled schema evolution.'
+  "Learn how to safely expose a public GraphQL API from a monolith using federation contracts and
+  tags, enabling incremental and controlled schema evolution."
 ---
 
 Many teams start with a **single GraphQL monolith** powering their applications. Over time, the need
@@ -94,40 +94,40 @@ If you not yet have adopted a schema registry, you can also use our
 to generate the contract programmatically from your monolith.
 
 ```ts
-import { parse } from 'graphql'
-import { composeSchemaContract } from '@theguild/federation-composition'
+import { parse } from "graphql";
+import { composeSchemaContract } from "@theguild/federation-composition";
 
 const result = composeSchemaContract(
   [
     {
-      name: 'monolith',
+      name: "monolith",
       typeDefs: parse(/* GraphQL */ `
         type Query {
           publicInfo: String @tag(name: "public")
           privateInfo: String
         }
-      `)
-    }
+      `),
+    },
   ],
   /** Tags to include and exclude */
   {
-    include: new Set(['public']),
-    exclude: new Set()
+    include: new Set(["public"]),
+    exclude: new Set(),
   },
   /** Exclude unreachable types */
-  true
-)
+  true,
+);
 
 // This is the filtered schema!
-console.log(result.publicSdl)
+console.log(result.publicSdl);
 ```
 
 Then you can simply create a private schema, similar to the following
 
 ```ts
-import { createSchema } from 'graphql-yoga'
-import { composeSchemaContract } from '@theguild/federation-composition'
-import { resolvers } from './resolvers'
+import { createSchema } from "graphql-yoga";
+import { composeSchemaContract } from "@theguild/federation-composition";
+import { resolvers } from "./resolvers";
 
 // ...
 
@@ -137,9 +137,9 @@ const publicSchema = createSchema({
   resolverValidationOptions: {
     // The resolvers still contain the ones of the public schema
     // Instead of filtering them out ignoring it is good enough.
-    requireResolversToMatchSchema: 'ignore'
-  }
-})
+    requireResolversToMatchSchema: "ignore",
+  },
+});
 ```
 
 ## Step 4: Serve the Public Schema Contract
@@ -175,17 +175,17 @@ As mentioned before, if you are not relying on a schema registry you can simply 
 server for serving the public schema.
 
 ```ts filename="Example GraphQL Yoga"
-import { createServer } from 'node:http'
-import { createSchema, createYoga } from 'graphql-yoga'
-import { publicSchema } from './public-schema'
+import { createServer } from "node:http";
+import { createSchema, createYoga } from "graphql-yoga";
+import { publicSchema } from "./public-schema";
 
 const server = createServer(
   createYoga({
-    schema: publicSchema
-  })
-)
+    schema: publicSchema,
+  }),
+);
 
-server.listen(8080)
+server.listen(8080);
 ```
 
 ## Step 5: Evolve the Public Schema Incrementally

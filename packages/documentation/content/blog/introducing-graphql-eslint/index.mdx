@@ -48,7 +48,7 @@ yarn add -D @graphql-eslint/eslint-plugin
 With `graphql-eslint` you can easily validate and lint your GraphQL schema and your GraphQL
 operations, enforce coding-style, best practices, and avoid runtime issues.
 
-![GraphQL-ESLint](./1.png 'GraphQL ESLint in action')
+![GraphQL-ESLint](./1.png "GraphQL ESLint in action")
 
 It can run as a syntax validation tool (without a GraphQL schema), or as a complete validation
 solution for your GraphQL operations (with a schema loaded into it).
@@ -87,22 +87,22 @@ Think that rule might be valuable for others?
 [Create a PR!](https://github.com/dimaMachina/graphql-eslint#contributing)
 
 ```ts
-import { GraphQLESLintRule } from '@graphql-eslint/eslint-plugin'
+import { GraphQLESLintRule } from "@graphql-eslint/eslint-plugin";
 
 const rule: GraphQLESLintRule = {
   create(context) {
     return {
       OperationDefinition(node) {
-        if (!node.name || node.name.value === '') {
+        if (!node.name || node.name.value === "") {
           context.report({
             node: node,
-            message: `Oops, name is required on GraphQL operations!`
-          })
+            message: `Oops, name is required on GraphQL operations!`,
+          });
         }
-      }
-    }
-  }
-}
+      },
+    };
+  },
+};
 ```
 
 ## Compared to Similar Tools

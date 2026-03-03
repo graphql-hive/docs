@@ -3,12 +3,11 @@ title: Add reactivity to an existing source using GraphQL Mesh
 authors: jycouet
 tags: [graphql, graphql-mesh, subscription]
 date: 2020-12-15
-description:
-  How To extend an existing endpoint with subscriptions to bring reactivity to your application.
+description: How To extend an existing endpoint with subscriptions to bring reactivity to your application.
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
-import { MdxVideo } from "@hive/design-system/mdx-components/mdx-video"
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { MdxVideo } from "@hive/design-system/mdx-components/mdx-video";
 
 ## Introduction
 
@@ -37,7 +36,9 @@ mutation addUser {
 }
 ```
 
-<Callout emoji="🏎">How hard is to do this? Let's find out... **Let's Pimp this GraphQL!**</Callout>
+<Callout emoji="🏎">
+  How hard is to do this? Let's find out... **Let's Pimp this GraphQL!**
+</Callout>
 
 <MdxVideo
   src="/blog-assets/add-reactivity-to-an-existing-source/PimpMyGraphQL.webm"
@@ -83,7 +84,7 @@ additionalTypeDefs: |
 
 transforms:
   - resolversComposition:
-      - resolver: 'Mutation.insert_users'
+      - resolver: "Mutation.insert_users"
         composer: ./src/composition/insert_user
 
 additionalResolvers:
@@ -101,42 +102,42 @@ Where I
 ### 4. Add `./src/composition/insert_user.js` File with All the Logic for This New Mutation Composition
 
 ```js filename="insert_user.js"
-module.exports = next => async (root, args, context, info) => {
+module.exports = (next) => async (root, args, context, info) => {
   // add returning.id to the selection
   info.operation.selectionSet.selections[0].selectionSet.selections.push({
-    kind: 'Field',
+    kind: "Field",
     name: {
-      kind: 'Name',
-      value: 'returning'
+      kind: "Name",
+      value: "returning",
     },
     arguments: [],
     directives: [],
     selectionSet: {
-      kind: 'SelectionSet',
+      kind: "SelectionSet",
       selections: [
         {
-          kind: 'Field',
+          kind: "Field",
           name: {
-            kind: 'Name',
-            value: 'id'
+            kind: "Name",
+            value: "id",
           },
           arguments: [],
-          directives: []
-        }
-      ]
-    }
-  })
+          directives: [],
+        },
+      ],
+    },
+  });
 
   // send the mutation to the graphQL source
-  const result = await next(root, args, context, info)
+  const result = await next(root, args, context, info);
 
   // select returned ids
-  const ids = result.returning.map(c => c.id)
+  const ids = result.returning.map((c) => c.id);
 
   // Query users enforcing fields to return
   const responseUser = await context.spacexGQL.apiQuery.users(
     {
-      where: { id: { _in: ids } }
+      where: { id: { _in: ids } },
     },
     {
       fields: {
@@ -144,16 +145,16 @@ module.exports = next => async (root, args, context, info) => {
         name: true,
         rocket: true,
         timestamp: true,
-        twitter: true
-      }
-    }
-  )
+        twitter: true,
+      },
+    },
+  );
 
   // publish new users
-  context.pubsub.publish('usersAdded', responseUser)
+  context.pubsub.publish("usersAdded", responseUser);
 
-  return result
-}
+  return result;
+};
 ```
 
 That's it!
@@ -173,6 +174,6 @@ I'm now ready to work on the demo for
 [@jycouet](https://twitter.com/jycouet)
 
 <Callout>
-  Special thanks to [n1ru4l](https://twitter.com/n1rual) who helped me find the nicest way to do it
-  ;)
+  Special thanks to [n1ru4l](https://twitter.com/n1rual) who helped me find the
+  nicest way to do it ;)
 </Callout>

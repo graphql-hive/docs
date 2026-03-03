@@ -22,18 +22,18 @@ forward faster.
 ```ts
 // If you are only resolving fields through `__resolveReference`, then explicitly set the reference type:
 import { FederationReferenceTypes } from "./types.generated";
-export type UserMapper = FederationReferenceTypes["User"]
+export type UserMapper = FederationReferenceTypes["User"];
 
 // If your current subgraph returns a different interface to `__resolveReference`, include both in the mapper, and handle both cases in subsequent resolvers:
 import { UserTypeFromDatabase } from "./your-database-type";
 import { FederationReferenceTypes } from "./types.generated";
 export type UserMapper =
   | UserTypeFromDatabase
-  | FederationReferenceTypes["User"]
+  | FederationReferenceTypes["User"];
 
 // If you want to standardise the mapper interface (which means you may need to resolve for `UserTypeFromDatabase` in `__resolveReference`):
 import { UserTypeFromDatabase } from "./your-database-type";
-export type UserMapper = UserTypeFromDatabase
+export type UserMapper = UserTypeFromDatabase;
 ```
 
 - If you have implemented non-meta resolvers in Interfaces, remove them as they are never called.

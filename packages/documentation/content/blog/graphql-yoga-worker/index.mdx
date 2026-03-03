@@ -151,39 +151,43 @@ npm install graphql graphql-yoga @pothos/core
 Create a schema with a Query that will be used as a sample.
 
 ```ts filename="src/builder.ts"
-import SchemaBuilder from '@pothos/core'
+import SchemaBuilder from "@pothos/core";
 
-export const builder = new SchemaBuilder({})
+export const builder = new SchemaBuilder({});
 ```
 
 ```ts filename="src/schema.ts"
-import { builder } from './builder'
+import { builder } from "./builder";
 
 builder.queryType({
-  fields: t => ({
+  fields: (t) => ({
     hello: t.string({
-      resolve: () => 'world'
-    })
-  })
-})
+      resolve: () => "world",
+    }),
+  }),
+});
 
-export const schema = builder.toSchema()
+export const schema = builder.toSchema();
 ```
 
 Load the created schema and create a GraphQL endpoint with GraphQL Yoga.
 
 ```ts filename="src/workers.ts"
-import { createYoga } from 'graphql-yoga'
-import { schema } from './schema'
+import { createYoga } from "graphql-yoga";
+import { schema } from "./schema";
 
 // Create a Yoga instance with a GraphQL schema.
-const yoga = createYoga({ schema })
+const yoga = createYoga({ schema });
 
 export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    return yoga(request, ctx)
-  }
-}
+  async fetch(
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext,
+  ): Promise<Response> {
+    return yoga(request, ctx);
+  },
+};
 ```
 
 To verify that the created GraphQL server is working, start the server with the following command.
@@ -258,21 +262,21 @@ npm install pg
 Writing the code for the connection using the installed `pg`.
 
 ```ts filename="src/context.ts"
-import { Kysely, PostgresDialect } from 'kysely'
-import { Pool } from 'pg'
-import type { DB } from './types'
+import { Kysely, PostgresDialect } from "kysely";
+import { Pool } from "pg";
+import type { DB } from "./types";
 
 export const connection = () =>
   new Kysely<DB>({
     dialect: new PostgresDialect({
       pool: new Pool({
-        host: 'localhost',
-        database: 'postgres',
-        user: 'postgres',
-        password: 'password'
-      })
-    })
-  })
+        host: "localhost",
+        database: "postgres",
+        user: "postgres",
+        password: "password",
+      }),
+    }),
+  });
 ```
 
 There is one important piece of code here. It is slightly different from what is written in the
@@ -311,52 +315,52 @@ the code was [suggested](https://github.com/chimame/graphql-yoga-worker-with-pot
 [hayes](https://github.com/hayes), the author of `Pothos`, while I was working on this article.
 
 ```ts filename="src/models/index.ts"
-export * from './User'
+export * from "./User";
 ```
 
 ```ts filename="src/models/User.ts"
-import { AllSelection } from 'kysely/dist/cjs/parser/select-parser'
-import { builder } from '../builder'
-import { DB } from '../types'
+import { AllSelection } from "kysely/dist/cjs/parser/select-parser";
+import { builder } from "../builder";
+import { DB } from "../types";
 
-export const UserType = builder.objectRef<AllSelection<DB, 'User'>>('User')
+export const UserType = builder.objectRef<AllSelection<DB, "User">>("User");
 
 UserType.implement({
-  fields: t => ({
-    id: t.exposeID('id'),
-    name: t.exposeString('name', { nullable: true }),
-    email: t.exposeString('email'),
+  fields: (t) => ({
+    id: t.exposeID("id"),
+    name: t.exposeString("name", { nullable: true }),
+    email: t.exposeString("email"),
     initial: t.string({
       nullable: true,
-      resolve: user => user.name?.slice(0, 1)
-    })
-  })
-})
+      resolve: (user) => user.name?.slice(0, 1),
+    }),
+  }),
+});
 ```
 
 ```ts filename="src/resolvers/index.ts"
-export * from './User'
+export * from "./User";
 ```
 
 ```ts filename="src/resolvers/Users/index.ts"
-export * from './query'
+export * from "./query";
 ```
 
 ```ts filename="src/resolvers/User/query.ts"
-import { builder } from '../../builder'
-import { connection } from '../../context'
-import { UserType } from '../../models/User'
+import { builder } from "../../builder";
+import { connection } from "../../context";
+import { UserType } from "../../models/User";
 
-builder.queryFields(t => ({
+builder.queryFields((t) => ({
   User: t.field({
     type: UserType,
     nullable: true,
     async resolve() {
-      const db = connection()
-      await db.selectFrom('User').selectAll().executeTakeFirst()
-    }
-  })
-}))
+      const db = connection();
+      await db.selectFrom("User").selectAll().executeTakeFirst();
+    },
+  }),
+}));
 ```
 
 ```diff filename="src/schema.ts"

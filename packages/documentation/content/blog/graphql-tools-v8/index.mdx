@@ -80,7 +80,7 @@ Check out our documentation and stitching handbook to learn more about Type Merg
 
 Also, please watch this great presentation from Greg MacWilliam!
 
-import { YoutubeIframe } from "@hive/design-system/youtube-iframe"
+import { YoutubeIframe } from "@hive/design-system/youtube-iframe";
 
 <YoutubeIframe
   src="https://youtube.com/embed/hOdGL3DepDM"
@@ -117,16 +117,16 @@ you to call your remote GraphQL APIs by using different protocols;
 - [Multipart File Uploads](https://github.com/jaydenseric/graphql-multipart-request-spec) ✔️
 
 ```ts
-import { loadSchema } from '@graphql-tools/load'
-import { UrlLoader } from '@graphql-tools/url-loader'
+import { loadSchema } from "@graphql-tools/load";
+import { UrlLoader } from "@graphql-tools/url-loader";
 
 const schema = await loadSchema(`https://my-graphql-api.com`, {
   loaders: [new UrlLoader()],
   // Enable File Uploads
   multipart: true,
   // Choose your Subscription protocol
-  subscriptionProtocol: SubscriptionProtocol.SSE
-})
+  subscriptionProtocol: SubscriptionProtocol.SSE,
+});
 ```
 
 #### Create Executors for Schema Stitching / Delegation
@@ -134,19 +134,19 @@ const schema = await loadSchema(`https://my-graphql-api.com`, {
 You can easily create executors for subschemas like below:
 
 ```ts
-import { stitchSchemas } from '@graphql-tools/stitch'
-import { UrlLoader } from '@graphql-tools/url-loader'
-import { introspectSchema } from '@graphql-tools/wrap'
+import { stitchSchemas } from "@graphql-tools/stitch";
+import { UrlLoader } from "@graphql-tools/url-loader";
+import { introspectSchema } from "@graphql-tools/wrap";
 
-const urlLoader = new UrlLoader()
-const executor = urlLoader.getExecutorAsync(`https://my-graphql-api.com`, {})
+const urlLoader = new UrlLoader();
+const executor = urlLoader.getExecutorAsync(`https://my-graphql-api.com`, {});
 
 const mySubschema = {
   schema: await introspectSchema(executor),
-  executor
-}
+  executor,
+};
 
-const stitchedSchema = await stitchSchemas([mySubschema, myOtherSubschema])
+const stitchedSchema = await stitchSchemas([mySubschema, myOtherSubschema]);
 ```
 
 ## And More...

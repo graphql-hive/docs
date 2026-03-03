@@ -48,16 +48,16 @@ the same functionalities as its React sibling** React-Apollo, and the usage is r
     }
   `}
   renderer={({ data, loading }) => {
-    if (loading) return 'Loading...'
+    if (loading) return "Loading...";
     return (
       <ul>
-        {data.posts.map(post => (
+        {data.posts.map((post) => (
           <li>
             {post.title}({post.votes} votes)
           </li>
         ))}
       </ul>
-    )
+    );
   }}
 />
 ```
@@ -89,8 +89,8 @@ of Apollo Client and StencilJS's Virtual DOM, like React-Apollo does for React's
 
 To start using Stencil-Apollo check out our examples and docs:
 
-[https://github.com/ardatan/stencil-apollo/](https://github.com/ardatan/stencil-apollo/ 'ardatan/stencil-apollo
-Stencil Apollo Library. Contribute to ardatan/stencil-apollo development by creating an account on GitHub.github.com')
+[https://github.com/ardatan/stencil-apollo/](https://github.com/ardatan/stencil-apollo/ "ardatan/stencil-apollo
+Stencil Apollo Library. Contribute to ardatan/stencil-apollo development by creating an account on GitHub.github.com")
 
 [Stencil-Apollo](https://github.com/ardatan/stencil-apollo) works quite well with Ionic 4, and we're
 planning to give support for all other frameworks, the same way as Ionic 4 does by using the power
@@ -108,7 +108,7 @@ your GraphQL operations into ready to use elements.
 
 > Now it also supports Stencil-Apollo!
 
-import { MdxVideo } from "@hive/design-system/mdx-components/mdx-video"
+import { MdxVideo } from "@hive/design-system/mdx-components/mdx-video";
 
 <MdxVideo
   src="/blog-assets/graphql-stencil-apollo/stencil.webm"
@@ -126,8 +126,8 @@ We're also working on an example Stencil PWA project that uses
 
 Follow the process here:
 
-[https://github.com/Urigo/WhatsApp-Clone-Client-React/issues/158](https://github.com/Urigo/WhatsApp-Clone-Client-React/issues/158 'Another Clone using Stencil & Ionic 4 🚀 · Issue #158 · Urigo/WhatsApp-Clone-Client-React
-Pure Progressive Web Application Example using Stencil and Ionic 4 with; PWA Support / 100% Lighthouse Audit Result HMR…github.com')
+[https://github.com/Urigo/WhatsApp-Clone-Client-React/issues/158](https://github.com/Urigo/WhatsApp-Clone-Client-React/issues/158 "Another Clone using Stencil & Ionic 4 🚀 · Issue #158 · Urigo/WhatsApp-Clone-Client-React
+Pure Progressive Web Application Example using Stencil and Ionic 4 with; PWA Support / 100% Lighthouse Audit Result HMR…github.com")
 
 ---
 

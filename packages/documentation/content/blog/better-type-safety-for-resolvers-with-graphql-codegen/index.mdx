@@ -8,13 +8,13 @@ description:
   with your existing TypeScript data models and context types.
 ---
 
-import { CodeSandbox } from "@hive/design-system/hive-components/code-sandbox"
+import { CodeSandbox } from "@hive/design-system/hive-components/code-sandbox";
 
 export const embedOptions = {
-  previewwindow: 'console',
-  theme: 'light',
-  view: 'editor'
-}
+  previewwindow: "console",
+  theme: "light",
+  view: "editor",
+};
 
 If you use TypeScript to write your GraphQL schema implementation, you'll love the integration with
 GraphQL Codegen and `typescript-resolvers` plugin.
@@ -65,7 +65,7 @@ In this example, we'll use the following GraphQL schema and resolvers as referen
 
 <CodeSandbox
   codeSandboxId="condescending-albattani-ixyp9"
-  embedOptions={{ ...embedOptions, module: '/schema.graphql' }}
+  embedOptions={{ ...embedOptions, module: "/schema.graphql" }}
   size="300px"
 />
 
@@ -79,7 +79,7 @@ use it to type your resolvers object, for example:
   codeSandboxId="condescending-albattani-ixyp9"
   embedOptions={{
     ...embedOptions,
-    module: '/resolvers.ts,/schema.graphql,/resolvers-types.ts'
+    module: "/resolvers.ts,/schema.graphql,/resolvers-types.ts",
   }}
   size="410px"
 />
@@ -119,7 +119,7 @@ Let's assumes that your backend is implemented this way, with some models types:
 
 <CodeSandbox
   codeSandboxId="silly-kalam-ym77z"
-  embedOptions={{ ...embedOptions, module: '/models.ts' }}
+  embedOptions={{ ...embedOptions, module: "/models.ts" }}
   size="330px"
 />
 
@@ -128,7 +128,7 @@ structure:
 
 <CodeSandbox
   codeSandboxId="silly-kalam-ym77z"
-  embedOptions={{ ...embedOptions, module: '/resolvers-with-error.ts' }}
+  embedOptions={{ ...embedOptions, module: "/resolvers-with-error.ts" }}
   size="400px"
 />
 
@@ -140,7 +140,7 @@ TypeScript type (and the file it's located in):
 
 <CodeSandbox
   codeSandboxId="silly-kalam-ym77z"
-  embedOptions={{ ...embedOptions, module: '/codegen-with-mappers.yml' }}
+  embedOptions={{ ...embedOptions, module: "/codegen-with-mappers.yml" }}
   size="400px"
 />
 
@@ -149,7 +149,7 @@ default types, and your resolvers' implementation will look like that:
 
 <CodeSandbox
   codeSandboxId="silly-kalam-ym77z"
-  embedOptions={{ ...embedOptions, module: '/resolvers.ts' }}
+  embedOptions={{ ...embedOptions, module: "/resolvers.ts" }}
   size="400px"
 />
 

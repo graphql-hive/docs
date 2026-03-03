@@ -5,10 +5,17 @@ description:
   codemod. Improve type safety, reduce bundle size, and automate the migration process with ease.
 date: 2025-08-01
 authors: eddeee888
-tags: [graphql, graphql-code-generator, graphql-codegen, client-preset, typescript-react-apollo]
+tags:
+  [
+    graphql,
+    graphql-code-generator,
+    graphql-codegen,
+    client-preset,
+    typescript-react-apollo,
+  ]
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 It is now easier than ever to migrate from Apollo Client generated hooks (by
 `@graphql-codegen/typescript-react-apollo`) to Client Preset with our brand new GraphQL codemod.
@@ -50,7 +57,6 @@ There are two main approaches to using a `@graphql-codegen/typescript-react-apol
 For example, given an operation document file like this:
 
 ```graphql
-
 query User($id: ID!) {
   user(id: $id) {
     id
@@ -65,10 +71,10 @@ A generated hook/s would be generated into an index or near-operation file:
 // src/generated/types.ts
 export function useUserQuery(
   baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables> &
-    ({ variables: UserQueryVariables; skip?: boolean } | { skip: boolean })
+    ({ variables: UserQueryVariables; skip?: boolean } | { skip: boolean }),
 ) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options)
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
 }
 ```
 
@@ -76,12 +82,12 @@ And, the hook is then used in a component file:
 
 ```tsx
 // src/User.tsx
-import { useUserQuery } from './generated/types'
+import { useUserQuery } from "./generated/types";
 
 export const User = ({ id }) => {
-  const { data } = useUserQuery({ variables: { id } })
+  const { data } = useUserQuery({ variables: { id } });
   // ...
-}
+};
 ```
 
 #### After
@@ -91,7 +97,7 @@ approach!
 
 ```tsx
 // src/User.tsx
-import { graphql } from './gql'
+import { graphql } from "./gql";
 
 const UserDoc = graphql(`
   query User($id: ID!) {
@@ -100,17 +106,17 @@ const UserDoc = graphql(`
       name
     }
   }
-`)
+`);
 
 export const User = ({ id }) => {
-  const { data } = useQuery(UserDoc, { variables: { id } })
+  const { data } = useQuery(UserDoc, { variables: { id } });
   // ...
-}
+};
 ```
 
 <Callout type="info">
-  You may see type errors if Client Preset is not fully set up by this point. Read on to see how the
-  migration process works end-to-end.
+  You may see type errors if Client Preset is not fully set up by this point.
+  Read on to see how the migration process works end-to-end.
 </Callout>
 
 ### How to run the codemod
@@ -128,12 +134,12 @@ codemod config like the example below:
 
 ```ts
 // codegen.ts
-import { defineConfig } from '@eddeee888/gcg-operation-location-migration'
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import { defineConfig } from "@eddeee888/gcg-operation-location-migration";
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: 'src/**/*.graphqls', // 👈 This points to your usual GraphQL schema endpoint or files.
-  documents: 'src/**/*.graphql', // 👈 This points to your operation files.
+  schema: "src/**/*.graphqls", // 👈 This points to your usual GraphQL schema endpoint or files.
+  documents: "src/**/*.graphql", // 👈 This points to your operation files.
   generates: {
     /*
      * 💡 Example of index file generation approach
@@ -161,19 +167,19 @@ const config: CodegenConfig = {
 
     // 💡 Codemod config example
     // `src/` is the base path where we want to run the codemod.
-    'src/': defineConfig({
-      tsConfigFilePath: './tsconfig.json', // 👈 Path from project root to your project tsconfig.json (Note: not from the base path).
+    "src/": defineConfig({
+      tsConfigFilePath: "./tsconfig.json", // 👈 Path from project root to your project tsconfig.json (Note: not from the base path).
       gqlTag: {
-        name: 'graphql', // 👈 The tag used to parse operation documents.
-        importFrom: './gql', // 👈 The the module to import the graphql tag.
-        importType: 'relative' // 👈 Whether `importFrom` is relative or absolute. If relative, the path from the base path to the module.
+        name: "graphql", // 👈 The tag used to parse operation documents.
+        importFrom: "./gql", // 👈 The the module to import the graphql tag.
+        importType: "relative", // 👈 Whether `importFrom` is relative or absolute. If relative, the path from the base path to the module.
       },
-      hooksImportFrom: '@apollo/client/react' // 👈 The module to import Apollo Client hooks. Use @apollo/client for older Apollo Client v3 versions.
-    })
-  }
-}
+      hooksImportFrom: "@apollo/client/react", // 👈 The module to import Apollo Client hooks. Use @apollo/client for older Apollo Client v3 versions.
+    }),
+  },
+};
 
-export default config
+export default config;
 ```
 
 ### Running the codemod
@@ -187,9 +193,9 @@ npm run codegen
 If the codemod runs successfully, you should see your components file getting updated!
 
 <Callout type="info">
-  We have successfully tested the codemod on a few production repos with commonly used setup. If it
-  does not work for your use case, please file an issue here:
-  https://github.com/eddeee888/graphql-code-generator-plugins/issues
+  We have successfully tested the codemod on a few production repos with
+  commonly used setup. If it does not work for your use case, please file an
+  issue here: https://github.com/eddeee888/graphql-code-generator-plugins/issues
 </Callout>
 
 ### Setting up Client Preset
@@ -199,19 +205,19 @@ again to wire up the migrated files!
 
 ```ts
 // codegen.ts
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: 'src/**/*.graphqls',
-  documents: 'src/**/*.tsx', // 👈 Update this to point to your component files, where your operations have been migrated to.
+  schema: "src/**/*.graphqls",
+  documents: "src/**/*.tsx", // 👈 Update this to point to your component files, where your operations have been migrated to.
   generates: {
-    'src/gql/': {
-      preset: 'client'
-    }
-  }
-}
+    "src/gql/": {
+      preset: "client",
+    },
+  },
+};
 
-export default config
+export default config;
 ```
 
 ## Summary

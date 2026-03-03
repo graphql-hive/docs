@@ -8,11 +8,11 @@ description:
   data models, query builder, resolvers, etc...
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 <Callout type="warning">
-  This blog post refers to an outdated version, please check https://the-guild.dev/graphql/codegen
-  for the latest docs!
+  This blog post refers to an outdated version, please check
+  https://the-guild.dev/graphql/codegen for the latest docs!
 </Callout>
 
 The [GraphQL codegen library](https://github.com/dotansimha/graphql-code-generator) can generate
@@ -108,12 +108,12 @@ type User @entity {
 And your generated output will be:
 
 ```typescript
-import { ObjectID } from 'mongodb'
+import { ObjectID } from "mongodb";
 
 export interface UserDbObject {
-  _id: ObjectID
-  username: string
-  email?: string | null
+  _id: ObjectID;
+  username: string;
+  email?: string | null;
 }
 ```
 
@@ -143,14 +143,14 @@ Just import `generate` from `graphql-code-generator` and run it with your option
 also choose whether to write the files to the FS or not):
 
 ```typescript
-import { generate } from 'graphql-code-generator'
+import { generate } from "graphql-code-generator";
 
 async function doSomething() {
   const generatedFiles = await generate({
-    template: 'typescript',
-    url: 'http://127.0.0.1:3000/graphql',
-    out: process.cwd() + '/models/'
-  })
+    template: "typescript",
+    url: "http://127.0.0.1:3000/graphql",
+    out: process.cwd() + "/models/",
+  });
 }
 ```
 

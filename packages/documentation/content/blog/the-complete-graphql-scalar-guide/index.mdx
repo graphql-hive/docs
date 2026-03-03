@@ -8,7 +8,7 @@ description:
   GraphQL schema.
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Scalar type is one of the most important GraphQL concepts to understand. Knowing how scalar works
 and using the right tools can help us build type safe, robust and extendable schemas. In this
@@ -87,11 +87,11 @@ yarn add graphql
 ```
 
 ```tsx filename="resolvers/CustomScalar.ts"
-import { GraphQLScalarType } from 'graphql'
+import { GraphQLScalarType } from "graphql";
 
 export const CustomScalar = new GraphQLScalarType({
-  name: 'CustomScalar',
-  description: 'Custom Scalar description',
+  name: "CustomScalar",
+  description: "Custom Scalar description",
   parseValue(inputValue: unknown) {
     // (1) Used for input
   },
@@ -100,8 +100,8 @@ export const CustomScalar = new GraphQLScalarType({
   },
   serialize(outputValue: unknown) {
     // (3) Used for output
-  }
-})
+  },
+});
 ```
 
 There are 3 main functions to keep in mind when creating a custom scalar:
@@ -156,23 +156,23 @@ yarn add graphql-yoga
 ```
 
 ```tsx
-import { createServer } from 'http'
-import { createSchema, createYoga } from 'graphql-yoga'
+import { createServer } from "http";
+import { createSchema, createYoga } from "graphql-yoga";
 // 1. Import the custom resolver
-import { CustomScalar } from './resolvers/CustomScalar.ts'
+import { CustomScalar } from "./resolvers/CustomScalar.ts";
 
 const yoga = createYoga({
   schema: createSchema({
     typeDefs /* GraphQL typeDefs */,
     resolvers: {
-      CustomScalar // 2. Put the custom scalar resolver into resolvers map
-    }
-  })
-})
-const server = createServer(yoga)
+      CustomScalar, // 2. Put the custom scalar resolver into resolvers map
+    },
+  }),
+});
+const server = createServer(yoga);
 server.listen(4000, () => {
-  console.info('Server is running on http://localhost:4000/graphql')
-})
+  console.info("Server is running on http://localhost:4000/graphql");
+});
 ```
 
 Now, running the server allows us to use custom scalars in our project. 🎉
@@ -214,32 +214,32 @@ yarn add -D @graphql-codegen/cli @graphql-codegen/typescript
 Here's an example config that generates native scalar types and `CustomScalar` scalar for clients:
 
 ```tsx filename="codegen.ts"
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: '**/schema.graphql',
+  schema: "**/schema.graphql",
   generates: {
-    'src/schema/types.generated.ts': {
-      plugins: ['typescript'],
+    "src/schema/types.generated.ts": {
+      plugins: ["typescript"],
       config: {
         scalars: {
           // Recommended ID scalar type for clients:
           ID: {
-            input: 'string | number',
-            output: 'string'
+            input: "string | number",
+            output: "string",
           },
           // Setting custom scalar type:
           CustomScalar: {
-            input: 'string', // this means our server can take CustomScalar as string
-            output: 'number' // this means our server will return CustomScalar as number
-          }
-        }
-      }
-    }
-  }
-}
+            input: "string", // this means our server can take CustomScalar as string
+            output: "number", // this means our server will return CustomScalar as number
+          },
+        },
+      },
+    },
+  },
+};
 
-export default config
+export default config;
 ```
 
 Running `yarn graphql-codegen` generates the following Scalar type:
@@ -266,9 +266,10 @@ config is used for these cases, we don't have to manually convert the ID to a `s
 sending it to the server.
 
 <Callout type="info">
-  Starting from `typescript` and `typescript-operations` plugin v4, all dependent client plugins
-  (e.g. Apollo Client, React Request, urql, etc.) must update to use the new input/output format. If
-  you find issues in these client plugins, create an issue in the [community
+  Starting from `typescript` and `typescript-operations` plugin v4, all
+  dependent client plugins (e.g. Apollo Client, React Request, urql, etc.) must
+  update to use the new input/output format. If you find issues in these client
+  plugins, create an issue in the [community
   repo](https://github.com/dotansimha/graphql-code-generator-community).
 </Callout>
 
@@ -305,32 +306,32 @@ yarn add -D @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/ty
 Here's the recommended config server types:
 
 ```tsx
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: '**/schema.graphql',
+  schema: "**/schema.graphql",
   generates: {
-    'src/schema/types.generated.ts': {
-      plugins: ['typescript', 'typescript-resolvers'],
+    "src/schema/types.generated.ts": {
+      plugins: ["typescript", "typescript-resolvers"],
       config: {
         scalars: {
           // Recommended ID scalar type for servers:
           ID: {
-            input: 'string',
-            output: 'string | number'
+            input: "string",
+            output: "string | number",
           },
           // Setting custom scalar type:
           CustomScalar: {
-            input: 'string', // this means our server can take CustomScalar as string
-            output: 'number' // this means our server will return CustomScalar as number
-          }
-        }
-      }
-    }
-  }
-}
+            input: "string", // this means our server can take CustomScalar as string
+            output: "number", // this means our server will return CustomScalar as number
+          },
+        },
+      },
+    },
+  },
+};
 
-export default config
+export default config;
 ```
 
 Running `yarn graphql-codegen` generates the following Scalar type:
@@ -386,23 +387,23 @@ scalar DateTime
 3.  Import `DateTime` resolver into resolvers map:
 
 ```tsx
-import { createServer } from 'http'
+import { createServer } from "http";
 // 1. Import scalar resolver
-import { DateTimeResolver } from 'graphql-scalars'
-import { createSchema, createYoga } from 'graphql-yoga'
+import { DateTimeResolver } from "graphql-scalars";
+import { createSchema, createYoga } from "graphql-yoga";
 
 const yoga = createYoga({
   schema: createSchema({
     typeDefs /* GraphQL typeDefs */,
     resolvers: {
-      DateTime: DateTimeResolver // 2. Put resolver to resolvers map
-    }
-  })
-})
-const server = createServer(yoga)
+      DateTime: DateTimeResolver, // 2. Put resolver to resolvers map
+    },
+  }),
+});
+const server = createServer(yoga);
 server.listen(4000, () => {
-  console.info('Server is running on http://localhost:4000/graphql')
-})
+  console.info("Server is running on http://localhost:4000/graphql");
+});
 ```
 
 4.  Use GraphQL Code Generator to create types:
@@ -411,29 +412,29 @@ Most scalar resolvers from `graphql-scalars` come with recommended server type t
 Codegen config. We can import a resolver and use said type very easily:
 
 ```tsx filename="codegen.ts"
-import { DateTimeResolver } from 'graphql-scalars'
+import { DateTimeResolver } from "graphql-scalars";
 // 1. Import scalar resolver
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: '**/schema.graphql',
+  schema: "**/schema.graphql",
   generates: {
-    'src/schema/types.generated.ts': {
-      plugins: ['typescript', 'typescript-resolvers'],
+    "src/schema/types.generated.ts": {
+      plugins: ["typescript", "typescript-resolvers"],
       config: {
         scalars: {
           ID: {
-            input: 'string',
-            output: 'string | number'
+            input: "string",
+            output: "string | number",
           },
-          DateTime: DateTimeResolver.extensions.codegenScalarType // 2. Use scalar resolver's recommended server type
-        }
-      }
-    }
-  }
-}
+          DateTime: DateTimeResolver.extensions.codegenScalarType, // 2. Use scalar resolver's recommended server type
+        },
+      },
+    },
+  },
+};
 
-export default config
+export default config;
 ```
 
 <Callout type="info">
@@ -477,17 +478,17 @@ yarn add graphql-scalars
 2.  Use Server Preset in the Codegen config:
 
 ```ts filename="codegen.ts"
-import { defineConfig } from '@eddeee888/gcg-typescript-resolver-files'
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import { defineConfig } from "@eddeee888/gcg-typescript-resolver-files";
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: '**/schema.graphql',
+  schema: "**/schema.graphql",
   generates: {
-    'src/schema': defineConfig()
-  }
-}
+    "src/schema": defineConfig(),
+  },
+};
 
-export default config
+export default config;
 ```
 
 Run `yarn graphql-codegen`, and... that's it! Now, every time a custom scalar like `DateTime` is

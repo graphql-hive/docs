@@ -9,8 +9,8 @@ description:
   Generator.
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
-import { YoutubeIframe } from "@hive/design-system/youtube-iframe"
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { YoutubeIframe } from "@hive/design-system/youtube-iframe";
 
 If you follow the React community, you'll know for sure that
 [React Hooks](https://reactjs.org/docs/hooks-intro.html) had been one of the most awaited feature in
@@ -63,15 +63,15 @@ component, without props nor contextType:
 ```tsx
 // This is our custom hook
 function useThemeColor() {
-  const theme = useContext(ThemeContext)
-  return theme.color
+  const theme = useContext(ThemeContext);
+  return theme.color;
 }
 
 function MyComponent(props: Props) {
   // Here we go
-  const color = useThemeColor()
+  const color = useThemeColor();
 
-  return <h1 style={{ color }}>{props.title}</h1>
+  return <h1 style={{ color }}>{props.title}</h1>;
 }
 ```
 
@@ -105,7 +105,7 @@ If you are used to `Query` component, in the next example you'll see how we are 
 just the `useQuery` hook:
 
 ```tsx
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from "@apollo/react-hooks";
 
 const GET_TODOS = gql`
   {
@@ -114,11 +114,11 @@ const GET_TODOS = gql`
       description
     }
   }
-`
+`;
 
 function Todos() {
   // Here the magic bits
-  const { data, error, loading } = useQuery(GET_TODOS)
+  const { data, error, loading } = useQuery(GET_TODOS);
   if (loading)
     if (error)
       // ...
@@ -126,11 +126,11 @@ function Todos() {
 
       return (
         <ul>
-          {data.todos.map(todo => (
+          {data.todos.map((todo) => (
             <li key={todo.id}>{todo.description}</li>
           ))}
         </ul>
-      )
+      );
 }
 ```
 
@@ -159,11 +159,13 @@ dependencies if you already didn't.
 This is an example generated hook, with proper typings:
 
 ```tsx
-export function useUserListQuery(baseOptions?: QueryHookOptions<UserListQueryVariables>) {
+export function useUserListQuery(
+  baseOptions?: QueryHookOptions<UserListQueryVariables>,
+) {
   return useApolloQuery<UserListQueryQuery, UserListQueryVariables>(
     UserListQueryDocument,
-    baseOptions
-  )
+    baseOptions,
+  );
 }
 ```
 

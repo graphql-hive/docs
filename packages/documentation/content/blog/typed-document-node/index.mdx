@@ -1,5 +1,5 @@
 ---
-title: 'TypedDocumentNode: the next generation of GraphQL and TypeScript'
+title: "TypedDocumentNode: the next generation of GraphQL and TypeScript"
 authors: dotan
 tags: [graphql, codegen, typescript, react]
 date: 2020-07-22
@@ -43,7 +43,7 @@ This is made possible by
 - You can integrate it to your project
   [using these instructions](https://github.com/dotansimha/graphql-typed-document-node#how-to-use)
 
-import { YoutubeIframe } from "@hive/design-system/youtube-iframe"
+import { YoutubeIframe } from "@hive/design-system/youtube-iframe";
 
 <YoutubeIframe
   src="https://youtube.com/embed/cYIhx8dusa4"
@@ -110,9 +110,12 @@ This project works in the following way:
 The definition of `TypedDocumentNode` is super simple - it's all about the TS generics:
 
 ```ts
-import { DocumentNode } from 'graphql'
+import { DocumentNode } from "graphql";
 
-export interface TypedDocumentNode<Result = {}, Variables = {}> extends DocumentNode {}
+export interface TypedDocumentNode<
+  Result = {},
+  Variables = {},
+> extends DocumentNode {}
 ```
 
 ### Can I Use It Now?

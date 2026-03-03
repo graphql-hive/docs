@@ -48,19 +48,19 @@ types based on the schema types:
 ```ts
 // Base types generated based on the schema, from `typescript` plugin:
 type Query = {
-  user: User
-}
+  user: User;
+};
 
 type User = {
-  id: Scalars['ID']
-  name: Scalars['String']
-}
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
 
 // Types generate based on operations, from `typescript-plugins`:
 
 type MyQuery = {
-  user: Pick<User, 'id' | 'name'>
-}
+  user: Pick<User, "id" | "name">;
+};
 ```
 
 Some time after, we added `preResolveTypes` configuration flag as experimental, in order to generate
@@ -69,10 +69,10 @@ more readable types with primitive types resolved directly on the generate types
 ```ts
 type MyQuery = {
   user: {
-    id: string
-    name: string
-  }
-}
+    id: string;
+    name: string;
+  };
+};
 ```
 
 We are happy to announce that v2 of `typescript-operations` now uses `preResolveTypes: true` by
@@ -177,7 +177,7 @@ statements for each GraphQL operation.
 It allowed writing the operations in the following way:
 
 ```ts
-import { gql } from './gql'
+import { gql } from "./gql";
 
 const { GetTweets, CreateTweet } = gql(`#graphql
   query GetTweets {
@@ -191,7 +191,7 @@ const { GetTweets, CreateTweet } = gql(`#graphql
       id
     }
   }
-`)
+`);
 ```
 
 The README on his repository contained a
@@ -225,7 +225,7 @@ having to manually specify import statements for the documents. All you need to 
 `gql` function and run codegen in watch mode.
 
 ```tsx
-import { FragmentType, gql } from '@app/gql'
+import { FragmentType, gql } from "@app/gql";
 
 // TweetFragment is a fully typed document node
 const TweetFragment = gql(/* GraphQL */ `
@@ -233,7 +233,7 @@ const TweetFragment = gql(/* GraphQL */ `
     id
     body
   }
-`)
+`);
 
 const TweetsQueryWithFragment = gql(/* GraphQL */ `
   query TweetsWithFragmentQuery {
@@ -242,11 +242,13 @@ const TweetsQueryWithFragment = gql(/* GraphQL */ `
       ...TweetFragment
     }
   }
-`)
+`);
 
-const TweetComponent = (props: { tweet: FragmentType<typeof TweetFragment> }) => {
-  return <Tweet>{props.tweet.body}</Tweet>
-}
+const TweetComponent = (props: {
+  tweet: FragmentType<typeof TweetFragment>;
+}) => {
+  return <Tweet>{props.tweet.body}</Tweet>;
+};
 ```
 
 That way we don't need to switch context between `.graphql` and our `.ts(x)` files and have less
@@ -283,20 +285,20 @@ this preset is to make sure that every resolver that should be defined and imple
 implemented.
 
 ```ts
-import { typeDefs } from 'tsgql'
+import { typeDefs } from "tsgql";
 
 const sdl = typeDefs(/* GraphQL */ `
   type Query {
     foo: String!
   }
-`)
+`);
 
 export const resolvers: typeof sdl = {
   Query: {
     // If this resolver would not be defined it will raise a TypeScript error.
-    foo: () => 'test'
-  }
-}
+    foo: () => "test",
+  },
+};
 ```
 
 [You can find more info here](https://github.com/dotansimha/graphql-code-generator/pull/6379)
@@ -308,7 +310,7 @@ objects that are added via fragments. Those properties are only accessible from 
 that consumes the fragment:
 
 ```tsx
-import { FragmentProperty, gql } from '@app/gql'
+import { FragmentProperty, gql } from "@app/gql";
 
 // TweetFragment is a fully typed document node
 const TweetFragment = gql(/* GraphQL */ `
@@ -316,7 +318,7 @@ const TweetFragment = gql(/* GraphQL */ `
     id
     body
   }
-`)
+`);
 
 const TweetsQueryWithFragment = gql(/* GraphQL */ `
   query TweetsWithFragmentQuery {
@@ -325,27 +327,29 @@ const TweetsQueryWithFragment = gql(/* GraphQL */ `
       ...TweetFragment
     }
   }
-`)
+`);
 
 const AppComponent = () => {
-  const { data } = useQuery({ query: TweetsQueryWithFragment })
+  const { data } = useQuery({ query: TweetsQueryWithFragment });
 
   // accessing this here is a TypeScript error.
-  data.Tweets[0].body
+  data.Tweets[0].body;
 
   return (
     <>
-      {data.Tweets.map(tweet => (
+      {data.Tweets.map((tweet) => (
         <TweetComponent key={tweet.id} tweet={tweet} />
       ))}
     </>
-  )
-}
+  );
+};
 
-const TweetComponent = (props: { tweet: FragmentProperty<typeof TweetFragment> }) => {
+const TweetComponent = (props: {
+  tweet: FragmentProperty<typeof TweetFragment>;
+}) => {
   // accessing props.tweet.body here is legit.
-  return <Tweet>{props.tweet.body}</Tweet>
-}
+  return <Tweet>{props.tweet.body}</Tweet>;
+};
 ```
 
 This allows building scalable components as each component only receives the data it should have

@@ -6,7 +6,7 @@ authors: [tshedor, josiassejod1]
 tags: [graphql, deepdive, flutter]
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 ## Offline GraphQL: The Easy Parts
 
@@ -174,7 +174,8 @@ Even if your GraphQL server doesn't utilize subscriptions, you can still use `su
 will be triggered every time data is inserted into the local SQLite database.
 
 <Callout type="warning">
-  Always dispose [your streams](https://dart.dev/articles/libraries/creating-streams)!
+  Always dispose [your
+  streams](https://dart.dev/articles/libraries/creating-streams)!
 </Callout>
 
 ## Now Make It Offline
@@ -203,7 +204,8 @@ try. And try. We've seen queues retry for 30 days.
 <Callout>
   You can still [use the retry
   queue](https://github.com/GetDutchie/brick/blob/main/packages/brick_offline_first_with_graphql/lib/src/graphql_offline_queue_link.dart)
-  as an independent link in your `gql` client. You can also grab [requests about to be
+  as an independent link in your `gql` client. You can also grab [requests about
+  to be
   retried](https://pub.dev/documentation/brick_offline_first/latest/offline_queue/RequestSqliteCacheManager/unprocessedRequests.html)
   and [delete
   them](https://pub.dev/documentation/brick_offline_first/latest/offline_queue/RequestSqliteCacheManager/deleteUnprocessedRequest.html)

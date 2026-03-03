@@ -3,16 +3,15 @@ title: GraphQL-ESLint v3.14 - What's New?
 tags: [graphql, eslint, linter]
 authors: dimitri
 date: 2022-12-28
-description:
-  The best GraphQL linter becomes even better! Check out what we added in the new version.
+description: The best GraphQL linter becomes even better! Check out what we added in the new version.
 skipSync: true
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
-import { Comparison } from "@hive/design-system/hive-components/comparison"
-import { Image } from "@hive/design-system/image"
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Comparison } from "@hive/design-system/hive-components/comparison";
+import { Image } from "@hive/design-system/image";
 
-import graphqlJsSuggestions from './graphql-js-suggestions.gif'
+import graphqlJsSuggestions from "./graphql-js-suggestions.gif";
 
 ## Introduction
 
@@ -22,8 +21,9 @@ with you all changes that were made in the last version. This is a small minor v
 bunch of new rules and options were added.
 
 <Callout>
-  If you are not familiar with GraphQL-ESLint check out [here](/blog/introducing-graphql-eslint) an
-  introduction blog post by GraphQL-ESLint creator [Dotan Simha](https://github.com/dotansimha).
+  If you are not familiar with GraphQL-ESLint check out
+  [here](/blog/introducing-graphql-eslint) an introduction blog post by
+  GraphQL-ESLint creator [Dotan Simha](https://github.com/dotansimha).
 </Callout>
 
 ## Support New ESLint Flat Config System
@@ -41,7 +41,11 @@ years!
 All `graphql-js` rules that contain "Did you mean" suggestions now can be fixable via ESLint
 suggestions API in your editor 🎉.
 
-<Image alt="GraphQL-JS suggestions in VSCode" className="mt-6" src={graphqlJsSuggestions} />
+<Image
+  alt="GraphQL-JS suggestions in VSCode"
+  className="mt-6"
+  src={graphqlJsSuggestions}
+/>
 
 ## Update of `graphql-config`
 
@@ -50,8 +54,9 @@ dependency to be installed.
 
 <Callout>
   Also, GraphQL Config is no longer bundled with `cosmiconfig-toml-loader` and
-  `cosmiconfig-typescript-loader`. You must install it manually in case of using TOML or TypeScript
-  config. The benefit of this is that bundle size is reduced by 35%.
+  `cosmiconfig-typescript-loader`. You must install it manually in case of using
+  TOML or TypeScript config. The benefit of this is that bundle size is reduced
+  by 35%.
 </Callout>
 
 ## New Rules
@@ -133,14 +138,15 @@ Require queries, mutations, subscriptions or fragments to be located in separate
 ```graphql filename="❌ Incorrect"
 
 query Users {
-  users {
-    ...UserFields
-  }
+users {
+...UserFields
+}
 }
 fragment UserFields on User {
-  id
+id
 }
-```
+
+````
 ```graphql filename="✅ Correct"
 # users.graphql
 query Users {
@@ -148,7 +154,8 @@ query Users {
     ...UserFields
   }
 }
-```
+````
+
 </Comparison>
 
 ### Rule `no-one-place-fragments`
@@ -213,7 +220,9 @@ Here is an example of configuration and cases:
 }
 ```
 
-<Callout type="warning">`*` symbol is mandatory, which means everything else.</Callout>
+<Callout type="warning">
+  `*` symbol is mandatory, which means everything else.
+</Callout>
 
 <Comparison>
 ```graphql filename="❌ Incorrect"

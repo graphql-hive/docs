@@ -85,15 +85,15 @@ But, with the codegen, the manual types are no longer needed, because it generat
 typescript will now know which TypeScript types to use and validate:
 
 ```ts
-import { Resolvers } from './generated/graphql'
+import { Resolvers } from "./generated/graphql";
 
 const resolvers: Resolvers = {
   Query: {
     feed: async (parent, args, context) => {
       // ...
-    }
-  }
-}
+    },
+  },
+};
 ```
 
 As you can see, now that the resolvers are typed, we don't need to define types for each resolver.
@@ -237,7 +237,7 @@ Now, run GraphQL-Codegen and the Prisma Codegen and you should get a fully-typed
 example:
 
 ```ts
-import { Resolvers } from './generated/graphql'
+import { Resolvers } from "./generated/graphql";
 
 const resolvers: Resolvers = {
   Query: {
@@ -246,13 +246,13 @@ const resolvers: Resolvers = {
       // will expect you to return here an object of
       // Prisma's User model.
 
-      return context.prisma.user.findOne({ id: args.id })
-    }
+      return context.prisma.user.findOne({ id: args.id });
+    },
   },
   User: {
-    name: user => {
-      return `${user.first_name} ${user.last_name}`
-    }
-  }
-}
+    name: (user) => {
+      return `${user.first_name} ${user.last_name}`;
+    },
+  },
+};
 ```

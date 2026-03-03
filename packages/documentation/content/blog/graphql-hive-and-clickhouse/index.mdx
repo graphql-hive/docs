@@ -3,12 +3,11 @@ title: How ClickHouse helps us track billions of GraphQL requests monthly
 tags: [graphql, graphql-hive]
 authors: [kamil]
 date: 2022-11-08
-description:
-  Learn how ClickHouse enabled GraphQL Hive to scale from millions to billions of requests monthly.
+description: Learn how ClickHouse enabled GraphQL Hive to scale from millions to billions of requests monthly.
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
-import { LinkCard } from "@hive/design-system/hive-components/link-card"
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { LinkCard } from "@hive/design-system/hive-components/link-card";
 
 You will learn how ClickHouse and Kafka enabled GraphQL Hive to collect billions of requests monthly
 without a drop of sweat. We will also cover the challenges we faced and how we overcame them by
@@ -90,7 +89,7 @@ the problems we were facing and the decision-making process that lead us to love
 The data pipeline in GraphQL Hive is relatively simple but has proven to be highly scalable and
 reliable. Here's a high-level data flow of the usage reporting part of GraphQL Hive.
 
-![](./data-pipeline.png 'An overview of the architecture')
+![](./data-pipeline.png "An overview of the architecture")
 
 We can distinguish two parts here, the **collecting** and **processing** of data.
 
@@ -108,7 +107,7 @@ Kafka by 10 times**.
 It sounds mysterious, but we find this part extremely interesting, that's why we're going to write a
 dedicated article about it soon.
 
-![](./data-collecting-part.png 'Data collecting part')
+![](./data-collecting-part.png "Data collecting part")
 
 Thanks to Kafka and its persistence of messages, the collecting and processing parts are nicely and
 reliably separated.
@@ -119,7 +118,7 @@ The Usage Ingestor service receives the messages from Kafka, then it unpacks the
 each message and processes them. Once the processing of reports is done, the service writes data to
 Clickhouse.
 
-![](./data-processing-part.png 'Data processing part')
+![](./data-processing-part.png "Data processing part")
 
 The data pipeline does not end here, there're still a few quite interesting techniques we use within
 ClickHouse.
@@ -147,7 +146,7 @@ Nothing special here.
 
 An overview of our ClickHouse tables.
 
-![](./tables.png 'An overview of our ClickHouse tables')
+![](./tables.png "An overview of our ClickHouse tables")
 
 In GraphQL Hive, we use `MergeTree` to store received GraphQL requests in the
 [`operations` table](https://github.com/kamilkisiela/graphql-hive/blob/64e53f207b413f8bb222eabd6aeb437e3300dbfd/packages/services/storage/migrations/clickhouse.ts#L29-L49).
@@ -185,9 +184,9 @@ Without the `SummingMergeTree` we would have to either maintain our own aggregat
 data to the `MergeTree` table or always scan through billions of rows of the `operations` table.
 
 <Callout emoji="🤓" type="info">
-  We are not data scientists, at least not yet… but what we learned by developing GraphQL Hive is
-  that in order to squeeze the most performance of a database, you need to design the DB structure
-  with the end goal in mind.
+  We are not data scientists, at least not yet… but what we learned by
+  developing GraphQL Hive is that in order to squeeze the most performance of a
+  database, you need to design the DB structure with the end goal in mind.
 </Callout>
 
 What do we mean by that? Here's a good example.
@@ -197,7 +196,7 @@ p95, p99) of all and individual operations, and a lot more other things.
 
 The page contains a date range filter.
 
-![](./date-ranges.png 'Operations page and the date range filter')
+![](./date-ranges.png "Operations page and the date range filter")
 
 Calculating the percentiles of the latency for a large number of GraphQL requests (stored as rows)
 might be a challenge, even for ClickHouse. Maybe not for "Last 24 hours" as we get only 1/30 of all
@@ -215,8 +214,8 @@ ClickHouse performance? For a 24h window, ClickHouse needs to read only 24 rows 
 millions.
 
 <Callout emoji="🥳" type="info">
-  Thanks to Materialized Views, the latency of our queries went from 4-10 seconds to less than 1
-  second.
+  Thanks to Materialized Views, the latency of our queries went from 4-10
+  seconds to less than 1 second.
 </Callout>
 
 You can see how `SummingMergeTree` and `Materialized Views` are crucial to ClickHouse performance.
@@ -234,7 +233,7 @@ we improved it.
 
 Here's yet another, this time extreme example of a table designed with an end goal in mind.
 
-![](./clients.png 'Operations page and the Clients section')
+![](./clients.png "Operations page and the Clients section")
 
 GraphQL Hive allows you to understand who are the consumers of your GraphQL API.
 
@@ -303,7 +302,7 @@ Another fantastic feature of ClickHouse is **Asynchronous Inserts**. This opt-in
 up inserted data and flush it in a single batch. Thanks to the async inserts we're able to accept a
 higher rate of INSERT queries, without worrying about the performance.
 
-![](./async-sync-inserts.png 'Difference between synchronous and asynchronous inserts in ClickHouse')
+![](./async-sync-inserts.png "Difference between synchronous and asynchronous inserts in ClickHouse")
 
 Every read operation in ClickHouse is being cached, writing too often translates to a lot of cache
 misses. To avoid that, we either use the async inserts mode or synchronously write data less often
@@ -323,7 +322,8 @@ it "highly scalable". We think it's better to make mistakes and learn from them,
 the architecture of Cloudflare and other big tech companies.
 
 <Callout emoji="🙋">
-  If you find this article interesting, please let us know and tell us what else you wish to learn
-  about. We're going to write a couple of articles about technical bits and pieces of GraphQL Hive
-  in the upcoming weeks, so stay tuned!
+  If you find this article interesting, please let us know and tell us what else
+  you wish to learn about. We're going to write a couple of articles about
+  technical bits and pieces of GraphQL Hive in the upcoming weeks, so stay
+  tuned!
 </Callout>

@@ -82,15 +82,15 @@ simple `package.json` file with the following content:
 Next, create the `codegen.yml` config file with the following content:
 
 ```yaml
-schema: 'schema.graphql'
-documents: './src/main/**/*.graphql'
+schema: "schema.graphql"
+documents: "./src/main/**/*.graphql"
 generates:
   generatedJava/:
-    preset: 'java-apollo-android'
+    preset: "java-apollo-android"
     config:
-      package: 'com.app.generated.graphql'
+      package: "com.app.generated.graphql"
     plugins:
-      - 'java-apollo-android'
+      - "java-apollo-android"
 ```
 
 _You can use your GraphQL endpoint if your schema is not available locally._
@@ -170,16 +170,16 @@ union SearchResult = Chat | User
 And the following `codegen.yml` configuration, that maps your GraphQ types into your Java models:
 
 ```yaml
-schema: 'src/app/resources/schema.graphql'
+schema: "src/app/resources/schema.graphql"
 generates:
   src/app/graphql/generated/Resolvers.java:
     plugins:
       - java-resolvers
     config:
       mappers:
-        User: 'com.myapp.models.UserModel#UserModel'
-        Chat: 'com.myapp.models.ChatModel#ChatModel'
-        Node: 'com.myapp.models.BaseModel#BaseModel'
+        User: "com.myapp.models.UserModel#UserModel"
+        Chat: "com.myapp.models.ChatModel#ChatModel"
+        Node: "com.myapp.models.BaseModel#BaseModel"
 ```
 
 You'll get a complete type-safe resolvers signature:

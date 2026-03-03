@@ -91,7 +91,7 @@ your application, you can run the codegen, and it will have the information abou
 
 ```jsx
 // src/index.tsx
-import { graphql } from './gql'
+import { graphql } from "./gql";
 
 const OrdersFragment = graphql(`
   fragment OrdersFragment on User {
@@ -100,7 +100,7 @@ const OrdersFragment = graphql(`
       total
     }
   }
-`)
+`);
 
 const GetUserQuery = graphql(`
   query GetUser($id: ID!) {
@@ -110,7 +110,7 @@ const GetUserQuery = graphql(`
       ...OrdersFragment @defer
     }
   }
-`)
+`);
 ```
 
 The generated type for `GetUserQuery` will have information that the fragment is _incremental,_
@@ -119,11 +119,15 @@ meaning it may not be available right away.
 ```tsx
 // gql/graphql.ts
 
-export type GetUserQuery = { __typename?: 'Query'; id: string; name: string } & ({
-  __typename?: 'Query'
+export type GetUserQuery = {
+  __typename?: "Query";
+  id: string;
+  name: string;
+} & ({
+  __typename?: "Query";
 } & {
-  ' $fragmentRefs'?: { OrdersFragment: Incremental<OrdersFragment> }
-})
+  " $fragmentRefs"?: { OrdersFragment: Incremental<OrdersFragment> };
+});
 ```
 
 Apart from generating code that includes support for the `@defer` directive, the Codegen also

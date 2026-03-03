@@ -94,12 +94,12 @@ Step 1: npm install the [`sofa-api`](https://npmjs.com/package/sofa-api) package
 following line of code:
 
 ```ts
-import express from 'express'
-import sofa from 'sofa-api'
+import express from "express";
+import sofa from "sofa-api";
 
-const app = express()
+const app = express();
 
-app.use(sofa({ schema }))
+app.use(sofa({ schema }));
 ```
 
 Step 2: Go REST on a Sofa, you're done.
@@ -211,8 +211,8 @@ With `ignore: ['Book.author']`you end up with an entire User object.
 ```ts
 sofa({
   // ...
-  ignore: ['Book.author']
-})
+  ignore: ["Book.author"],
+});
 ```
 
 ## Swagger and OpenAPI
@@ -222,28 +222,28 @@ REST API. Right now we support Swagger and its OpenAPI specification but it's re
 different specs.
 
 ```ts
-import sofa, { OpenAPI } from 'sofa-api'
+import sofa, { OpenAPI } from "sofa-api";
 
 const openApi = OpenAPI({
   schema,
   info: {
-    title: 'Example API',
-    version: '3.0.0'
-  }
-})
+    title: "Example API",
+    version: "3.0.0",
+  },
+});
 
 app.use(
   sofa({
     schema,
     onRoute(info) {
       openApi.addRoute(info, {
-        basePath: ''
-      })
-    }
-  })
-)
+        basePath: "",
+      });
+    },
+  }),
+);
 
-openApi.save('./swagger.json')
+openApi.save("./swagger.json");
 ```
 
 ## Summary

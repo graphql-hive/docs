@@ -6,11 +6,11 @@ date: 2018-08-21
 description: Generate React and Angular Apollo Components, Resolver signatures and much more!
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 <Callout type="warning">
-  This blog post refers to an outdated version, please check https://the-guild.dev/graphql/codegen
-  for the latest docs!
+  This blog post refers to an outdated version, please check
+  https://the-guild.dev/graphql/codegen for the latest docs!
 </Callout>
 
 ## Generate React and Angular Apollo Components, Resolver Signatures and Much More!
@@ -121,14 +121,14 @@ The template now generates a Typescript type for each GraphQL type with resolver
 fields but it is also possible to extract a type of a single field.
 
 ```typescript
-import { QueryResolvers } from './generated/graphql'
-import { getPosts } from './posts'
+import { QueryResolvers } from "./generated/graphql";
+import { getPosts } from "./posts";
 
 const Query: QueryResolvers.Resolvers = {
   posts() {
-    return getPosts()
-  }
-}
+    return getPosts();
+  },
+};
 ```
 
 As you can see the usage is straightforward, but we recommend to explore the source code of a
@@ -175,8 +175,6 @@ great contribution, GraphQL Code Generator now understands the graphql-import sy
 GraphQL Yoga.
 
 ```graphql
-
-
 type A {
   # test 1
   first: String
@@ -209,22 +207,23 @@ type User @entity {
 You will get a generated TypeScript interface:
 
 ```typescript
-import { ObjectID } from 'mongodb'
+import { ObjectID } from "mongodb";
 
 export interface UserDbObject {
-  _id: ObjectID
-  username: string
-  email?: string | null
+  _id: ObjectID;
+  username: string;
+  email?: string | null;
 }
 ```
 
 Then, you can use it with MongoDB driver for NodeJS:
 
 ```typescript
-import { Collection } from 'mongodb'
-import { db } from './my-db-instance'
+import { Collection } from "mongodb";
+import { db } from "./my-db-instance";
 
-const MyCollection: Collection<UserDbObject> = db.collection<UserDbObject>('users')
+const MyCollection: Collection<UserDbObject> =
+  db.collection<UserDbObject>("users");
 ```
 
 Now your MongoDB collection is typed, and it's easier to find bugs during development.
@@ -281,22 +280,22 @@ type Photo @entity {
 Will output:
 
 ```typescript
-import { ObjectID } from 'mongodb'
+import { ObjectID } from "mongodb";
 
 export interface UserDbObject {
-  _id: ObjectID
-  profile: ProfileDbObject
-  photos: [ObjectID]
-  email?: string | null
+  _id: ObjectID;
+  profile: ProfileDbObject;
+  photos: [ObjectID];
+  email?: string | null;
 }
 
 export interface ProfileDbObject {
-  fullName: string
+  fullName: string;
 }
 
 export interface PhotoDbObject {
-  _id: ObjectID
-  url: string
+  _id: ObjectID;
+  url: string;
 }
 ```
 
@@ -321,8 +320,8 @@ We are also thinking about adding more templates for entities schemas in the fut
 [JSON schema](https://json-schema.org).
 
 <Callout>
-  We are planning to release the new version of that template next week and write a dedicated blog
-  post on it with more details.
+  We are planning to release the new version of that template next week and
+  write a dedicated blog post on it with more details.
 </Callout>
 
 Also, that template can be a great start for others to add the same generated features to other data

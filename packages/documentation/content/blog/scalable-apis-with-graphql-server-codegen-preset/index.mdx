@@ -231,11 +231,11 @@ This means the Maintainers are notified on every new module instead of every new
 
 ```ts
 // server.ts
-import { createServer } from 'node:http'
-import { createSchema, createYoga } from 'graphql-yoga'
-import * as authResolvers from './schema/auth/resolvers'
-import * as bookResolvers from './schema/book/resolvers'
-import * as userResolvers from './schema/user/resolvers'
+import { createServer } from "node:http";
+import { createSchema, createYoga } from "graphql-yoga";
+import * as authResolvers from "./schema/auth/resolvers";
+import * as bookResolvers from "./schema/book/resolvers";
+import * as userResolvers from "./schema/user/resolvers";
 
 const schema = createSchema({
   typeDefs: `...`,
@@ -243,9 +243,9 @@ const schema = createSchema({
     // mergeResolvers are called internally
     authResolvers,
     bookResolvers,
-    userResolvers
-  ]
-})
+    userResolvers,
+  ],
+});
 
 // rest of server config
 ```
@@ -257,7 +257,7 @@ find in large codebases with hundreds of resolvers and modules.
 <img
   alt="mergeResolvers can accidentally override resolvers if there are conflicts in resolver names"
   src="./scalable-apis-with-graphql-server-codegen-preset/merge-resolvers.gif"
-  style={{ margin: '0 auto', width: '80%' }}
+  style={{ margin: "0 auto", width: "80%" }}
 />
 
 Another commonly used feature is
@@ -267,15 +267,14 @@ This feature allows resolvers to return custom mapper objects instead of GraphQL
 The problem with mappers is that we need to update `codegen.yml` every time we need to create one:
 
 ```yaml
-
 generates:
   src/schema/types.generated.ts:
     plugins:
       - typescript
       - typescript-resolvers
     mappers:
-      User: './mappers#UserMapper'
-      Profile: './mappers#ProfileMapper'
+      User: "./mappers#UserMapper"
+      Profile: "./mappers#ProfileMapper"
       # Add another line for each mapper
 ```
 
@@ -302,10 +301,10 @@ Then, you can add the following config:
 
 ```yaml
 # codegen.yml
-schema: 'src/**/*.graphql'
+schema: "src/**/*.graphql"
 generates:
   src/schema:
-    preset: '@eddeee888/gcg-typescript-resolver-files'
+    preset: "@eddeee888/gcg-typescript-resolver-files"
 ```
 
 Note that this preset includes `@graphql-codegen/typescript` and
@@ -424,11 +423,15 @@ export const resolvers: Resolvers = {
 
 ```ts
 // Example: src/schema/user/resolvers/Query/user.ts
-import type { QueryResolvers } from './../../../types.generated'
+import type { QueryResolvers } from "./../../../types.generated";
 
-export const user: NonNullable<QueryResolvers['user']> = async (_parent, _arg, _ctx) => {
+export const user: NonNullable<QueryResolvers["user"]> = async (
+  _parent,
+  _arg,
+  _ctx,
+) => {
   /* Implement Query.user resolver logic here */
-}
+};
 ```
 
 - **Object type resolvers**:
@@ -437,11 +440,11 @@ export const user: NonNullable<QueryResolvers['user']> = async (_parent, _arg, _
 
 ```ts
 // Example: src/schema/user/resolvers/User.ts
-import type { UserResolvers } from './../../types.generated'
+import type { UserResolvers } from "./../../types.generated";
 
 export const User: UserResolvers = {
   /* Implement User resolver logic here */
-}
+};
 ```
 
 Resolvers are generated with developer experience in mind:
@@ -462,15 +465,15 @@ with a warning:
 
 ```ts
 // Example: src/schema/user/resolvers/User.ts
-import type { UserResolvers } from './../../types.generated'
+import type { UserResolvers } from "./../../types.generated";
 
 export const WrongUser: UserResolvers = {
   /* Implement User resolver logic here */
-}
+};
 /* WARNING: The following resolver was missing from this file. Make sure it is properly implemented or there could be runtime errors. */
 export const User: UserResolvers = {
   /* Implement User resolver logic here */
-}
+};
 ```
 
 Some of these features are inspired by [gqlgen](https://gqlgen.com/) so check it out if you need a
@@ -487,6 +490,7 @@ These other types are also supported by the preset:
   ```bash
   yarn add graphql-scalars
   ```
+
   - If the Scalar name does not exist in `graphql-scalars`, a file is generated for every Scalar
     type.
 
@@ -502,21 +506,21 @@ files in each module. For example, `UserMapper` will be used as `User`'s mapper 
 // src/schema/user/schema.mappers.ts
 
 // This works! This will be used as mapper for `User` object type
-export { User as UserMapper } from 'external-module'
+export { User as UserMapper } from "external-module";
 
 // This 1 works! For `User1` object type
 export interface User1Mapper {
-  id: string
+  id: string;
 }
 
 // This works 2! For `User2` object type
-export type User2Mapper = { id: string }
+export type User2Mapper = { id: string };
 
 // This works 3! For `User3` object type
 interface User3Mapper {
-  id: string
+  id: string;
 }
-export { User3Mapper }
+export { User3Mapper };
 ```
 
 #### Gradual Migration Supported

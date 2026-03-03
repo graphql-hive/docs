@@ -88,13 +88,13 @@ So when `User` module is loaded, the `type User` is created, and when `Chat` mod
 `type User` being extended with more fields.
 
 ```typescript
-import { GraphQLModule } from '@graphql-modules/core'
-import { ChatModule } from './chat-module'
-import { UserModule } from './user-module'
+import { GraphQLModule } from "@graphql-modules/core";
+import { ChatModule } from "./chat-module";
+import { UserModule } from "./user-module";
 
 export const appModule = new GraphQLModule({
-  imports: [UserModule, ChatModule]
-})
+  imports: [UserModule, ChatModule],
+});
 ```
 
 ```typescript
@@ -138,18 +138,18 @@ export const ChatModule = new GraphQLModule({
 ```
 
 ```typescript
-import { ApolloServer } from 'apollo-server'
-import { appModule } from './modules/app'
+import { ApolloServer } from "apollo-server";
+import { appModule } from "./modules/app";
 
-const { schema, context } = appModule
+const { schema, context } = appModule;
 
 const server = new ApolloServer({
   schema,
   context,
-  introspection: true
-})
+  introspection: true,
+});
 
-server.listen()
+server.listen();
 ```
 
 ```typescript
@@ -205,7 +205,7 @@ What does a “_module_” contain?
 GraphQL Modules is built as a toolkit, with the following tools, which you should individually and
 gradually adopt:
 
-**@​graphql-modules/epoxy**
+**@​raphql-modules/epoxy**
 
 - That will probably be the first tool you want to introduce into your server. The first step into
   organizing your server in a feature based structure
@@ -217,7 +217,7 @@ gradually adopt:
   [merge-graphql-schemas](https://github.com/okgrow/merge-graphql-schemas), and added some features
   on top of it to allow custom merging rules to make it easier to separate your schema.
 
-**@​graphql-modules/core**
+**@​raphql-modules/core**
 
 - [Resolvers Composition](https://graphql-modules.com/docs/introduction/resolvers-composition) —
   manages the app's resolvers wrapping
@@ -231,10 +231,10 @@ gradually adopt:
 
 You can find more tooling at your disposal like:
 
-**@​graphql-modules/sonar —** a small util that helps you find GraphQL schema and resolvers files,
+**@​raphql-modules/sonar —** a small util that helps you find GraphQL schema and resolvers files,
 and include them.
 
-**@​graphql-modules/logger —** a small logger, based on
+**@​raphql-modules/logger —** a small logger, based on
 [winston 3](https://github.com/winstonjs/winston), which you can easily use in your app.
 
 ## Get Started

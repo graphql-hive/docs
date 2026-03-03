@@ -86,7 +86,6 @@ fragment Partial on User {
 you can share it from other places by importing it.
 
 ```graphql
-
 query Viewer {
   viewer {
     ...Partial
@@ -105,14 +104,14 @@ It's still partial support, but `graphql-let` provides a babel plugin to allows 
 inline GraphQL documents.
 
 ```ts
-import gql from 'graphql-let'
+import gql from "graphql-let";
 
 // Typed️⚡️
 const { useViewerQuery } = gql(`
     query Viewer {
         viewer { name }
     }
-`)
+`);
 ```
 
 It generates `.d.ts` files in `node_modules/@types/graphql-let` by default to apply overload

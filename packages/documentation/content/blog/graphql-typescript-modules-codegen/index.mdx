@@ -23,13 +23,13 @@ let's export typeDefs without any business logic that includes resolvers, DI, pr
 You can create a `schema.ts` file to expose `typeDefs` to GraphQL Code Generator:
 
 ```ts filename="schema.ts"
-import { AppModule } from './modules/app'
+import { AppModule } from "./modules/app";
 
-export default AppModule.typeDefs
+export default AppModule.typeDefs;
 
 // If your module needs a configuration
 
-export default AppModule.forRoot({ ...dummyConfiguration }).typeDefs
+export default AppModule.forRoot({ ...dummyConfiguration }).typeDefs;
 ```
 
 Create a `codegen.yml` config file, including `schema.ts` as a schema source, and generate
@@ -71,15 +71,16 @@ Then, we can use these typings in our project. This example shows a resolvers ha
 implements resolvers for `Query` type with generated types.
 
 ```ts
-import { IResolvers } from '../../generated-models'
-import { UsersProvider } from '../providers/users.provider'
+import { IResolvers } from "../../generated-models";
+import { UsersProvider } from "../providers/users.provider";
 
 export default <IResolvers>{
   Query: {
     // all parameters and return value are typed
-    users: (root, args, context, info) => context.injector.get(UsersProvider).getUsers(args)
-  }
-}
+    users: (root, args, context, info) =>
+      context.injector.get(UsersProvider).getUsers(args),
+  },
+};
 ```
 
 At the end, we have a strictly-typed backend project, based of separate feature modules, and each of
@@ -87,8 +88,6 @@ those modules uses GraphQL and TypeScript.
 
 You can check our working example that is created by using this approach;
 [https://github.com/darkbasic/graphql-modules-seed](https://github.com/darkbasic/graphql-modules-seed)
-
-
 
 - [GraphQL Modules — Feature based GraphQL Modules at scale](/blog/graphql-modules)
 - [Why is True Modular Encapsulation So Important in Large-Scale GraphQL Projects?](/blog/modular-encapsulation-graphql-modules)

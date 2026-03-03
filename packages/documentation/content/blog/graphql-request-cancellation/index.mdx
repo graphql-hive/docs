@@ -8,7 +8,7 @@ description:
   server side with JavaScript.
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Canceling in-flight requests in an application if a user navigates away from a view has become a
 standard in modern applications. GraphQL client libraries such as Apollo Client and urql support
@@ -30,38 +30,39 @@ on the `AbortController`.
 
 ```tsx filename="React AbortController example"
 function useProfileData() {
-  const [state, setState] = useState()
+  const [state, setState] = useState();
 
   useEffect(() => {
-    const controller = new AbortController()
+    const controller = new AbortController();
     async function fetchData() {
-      const response = await fetch('/graphql', {
-        method: 'POST',
-        body: JSON.stringify({ query: '{ me { id  name } }' }),
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal
-      })
-      const data = await response.json()
-      setState(data)
+      const response = await fetch("/graphql", {
+        method: "POST",
+        body: JSON.stringify({ query: "{ me { id  name } }" }),
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+      });
+      const data = await response.json();
+      setState(data);
     }
 
-    fetchData().catch(err => console.log(err))
+    fetchData().catch((err) => console.log(err));
     return function onUnmount() {
-      controller.abort()
-    }
-  }, [])
+      controller.abort();
+    };
+  }, []);
 
-  return state
+  return state;
 }
 ```
 
 When checking the network tab within the browser, we can see that the request was canceled.
 
 <Callout>
-  **Note:** When a pending fetch request is canceled, the Promise returned from the fetch call will
-  reject with a [`DOMException`](https://developer.mozilla.org/en-US/docs/Web/API/DOMException)`. It
-  is recommended to always add a catch handler for your fetch calls to avoid unhandled promise
-  rejections.
+  **Note:** When a pending fetch request is canceled, the Promise returned from
+  the fetch call will reject with a
+  [`DOMException`](https://developer.mozilla.org/en-US/docs/Web/API/DOMException)`.
+  It is recommended to always add a catch handler for your fetch calls to avoid
+  unhandled promise rejections.
 </Callout>
 
 All modern GraphQL clients use this under the hood for optimizing the user experience, as it is
@@ -243,20 +244,20 @@ GraphQL API).
 For now, opting into this feature is achieved via a plugin.
 
 ```ts filename="GraphQL Yoga cancelation plugin"
-import { createYoga, useExecutionCancellation } from 'graphql-yoga'
-import { schema } from './schema'
+import { createYoga, useExecutionCancellation } from "graphql-yoga";
+import { schema } from "./schema";
 
 // Provide your schema
 const yoga = createYoga({
   plugins: [useExecutionCancellation()],
-  schema
-})
+  schema,
+});
 
 // Start the server and explore http://localhost:4000/graphql
-const server = createServer(yoga)
+const server = createServer(yoga);
 server.listen(4000, () => {
-  console.info('Server is running on http://localhost:4000/graphql')
-})
+  console.info("Server is running on http://localhost:4000/graphql");
+});
 ```
 
 After that, you should immediately benefit from GraphQL execution cancellation without having to do

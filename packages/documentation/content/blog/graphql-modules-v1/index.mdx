@@ -92,7 +92,7 @@ Use and extend `GraphQLModules.GlobalContext` like this:
 declare global {
   namespace GraphQLModules {
     interface GlobalContext {
-      request: any
+      request: any;
     }
   }
 }
@@ -124,20 +124,20 @@ Thanks to @ExecutionContext decorator, every Singleton provider gets access to t
 and the Operation scoped Injector.
 
 ```typescript
-import { ExecutionContext, Injectable } from 'graphql-modules'
-import { Config } from './config'
+import { ExecutionContext, Injectable } from "graphql-modules";
+import { Config } from "./config";
 
 @Injectable()
 export class Data {
   constructor(private config: Config) {}
 
   @ExecutionContext()
-  private context: ExecutionContext
+  private context: ExecutionContext;
 
   someMethod() {
-    console.log('Environment', this.config.env)
+    console.log("Environment", this.config.env);
 
-    const value = this.context.injector.get(SOME_TOKEN)
+    const value = this.context.injector.get(SOME_TOKEN);
   }
 }
 ```
@@ -154,7 +154,7 @@ and also for more granular testing of module's smaller units, like providers and
 To access the testing utilities, import `testkit` object from `graphql-modules` package:
 
 ```ts
-import { testkit } from 'graphql-modules'
+import { testkit } from "graphql-modules";
 ```
 
 The testkit object and its API will grow over time, we expect to implement more and more useful

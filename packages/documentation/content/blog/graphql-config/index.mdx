@@ -101,8 +101,8 @@ GraphQL Config allowed to indicate a single graphql file, an introspection file 
 endpoint. That's the past!
 
 ```yaml
-schema: './schema.graphql'
-documents: './my/app/**/*.graphql'
+schema: "./schema.graphql"
+documents: "./my/app/**/*.graphql"
 extensions:
   customConfig:
     value: true
@@ -138,9 +138,9 @@ GraphQL Config accepts not only `.graphql` files but also extracts documents fro
 JavaScript files, including JSX and TSX**.
 
 ```jsx
-import React from 'react'
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
+import React from "react";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
 
 // GraphQL Config is able to extract it!
 const GET_USERS = gql`
@@ -150,14 +150,14 @@ const GET_USERS = gql`
       name
     }
   }
-`
+`;
 
 export function Users() {
-  const { loading, error, data } = useQuery(GET_USERS)
+  const { loading, error, data } = useQuery(GET_USERS);
 
   // ...
 
-  return <UsersList users={data.users} />
+  return <UsersList users={data.users} />;
 }
 ```
 
@@ -179,7 +179,7 @@ We also kept `extensions` and turned them into a first class citizen in GraphQL 
 them way more powerful than before**.
 
 ```yaml
-schema: './schema/*.graphql'
+schema: "./schema/*.graphql"
 extensions:
   codegen:
     generates:
@@ -220,20 +220,20 @@ themselves anymore.
 ```typescript
 export const RelayLoader = {
   loaderId() {
-    return 'relay-loader'
+    return "relay-loader";
   },
   canLoad(pointer) {
-    return isReactFile(pointer)
+    return isReactFile(pointer);
   },
   load(pointer) {
-    const document = extractDocument(pointer)
+    const document = extractDocument(pointer);
 
     return new Source({
       location: pointer,
-      document
-    })
-  }
-}
+      document,
+    });
+  },
+};
 ```
 
 We maintain
@@ -263,13 +263,13 @@ project. With the new GraphQL Config, you can write a loader and register it thr
 Extension.
 
 ```typescript
-const RelayExtension = api => {
-  api.loaders.documents.register(RelayLoader)
+const RelayExtension = (api) => {
+  api.loaders.documents.register(RelayLoader);
 
   return {
-    name: 'relay'
-  }
-}
+    name: "relay",
+  };
+};
 ```
 
 The new `extensions` allows you to turn GraphQL Config into something fully customizable and to be
@@ -289,7 +289,7 @@ hanging and highly requested issue**. Now the usage in JS config file is straigh
 very easy to use environment variables in YAML and JSON files.
 
 ```yaml
-schema: './schema.graphql'
+schema: "./schema.graphql"
 include: ${INCLUDE_GLOB}
 ```
 

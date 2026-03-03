@@ -28,16 +28,16 @@ For example, you have a provider called `ExampleApplicationProvider` , then this
 counter in it;
 
 ```typescript
-import { Injectable, ProviderScope } from '@graphql-modules/di'
+import { Injectable, ProviderScope } from "@graphql-modules/di";
 
 @Injectable({
-  scope: ProviderScope.Application
+  scope: ProviderScope.Application,
 })
 export class ExampleApplicationProvider {
-  counter = 0
+  counter = 0;
   increment() {
-    counter++
-    return counter
+    counter++;
+    return counter;
   }
 }
 ```
@@ -45,8 +45,8 @@ export class ExampleApplicationProvider {
 And let's assume that we have a module declaration something like below;
 
 ```ts
-import { GraphQLModule } from '@graphql-modules/core'
-import { ExampleApplicationProvider } from './ExampleApplicationProvider'
+import { GraphQLModule } from "@graphql-modules/core";
+import { ExampleApplicationProvider } from "./ExampleApplicationProvider";
 
 export const ExampleModule = new GraphQLModule({
   providers: [ExampleApplicationProvider],
@@ -58,10 +58,10 @@ export const ExampleModule = new GraphQLModule({
   resolvers: {
     Mutation: {
       increment: (root, args, context) =>
-        context.injector.get(ExampleApplicationProvider).increment()
-    }
-  }
-})
+        context.injector.get(ExampleApplicationProvider).increment(),
+    },
+  },
+});
 ```
 
 Finally, let's try to call the following GraphQL Request in multiple times;
@@ -94,16 +94,16 @@ requests but in resolver calls those belong to same network request.
 Let's try the same thing in that scope by creating a new provider called `ExampleSessionProvider` .
 
 ```typescript
-import { Injectable, ProviderScope } from '@graphql-modules/di'
+import { Injectable, ProviderScope } from "@graphql-modules/di";
 
 @Injectable({
-  scope: ProviderScope.Session
+  scope: ProviderScope.Session,
 })
 export class ExampleSessionProvider {
-  counter = 0
+  counter = 0;
   increment() {
-    counter++
-    return counter
+    counter++;
+    return counter;
   }
 }
 ```
@@ -111,8 +111,8 @@ export class ExampleSessionProvider {
 Then change our module declaration to use this provider;
 
 ```typescript
-import { GraphQLModule } from '@graphql-modules/core'
-import { ExampleSessionProvider } from './ExampleApplicationProvider'
+import { GraphQLModule } from "@graphql-modules/core";
+import { ExampleSessionProvider } from "./ExampleApplicationProvider";
 
 export const ExampleModule = new GraphQLModule({
   providers: [ExampleSessionProvider],
@@ -123,10 +123,11 @@ export const ExampleModule = new GraphQLModule({
  `,
   resolvers: {
     Mutation: {
-      increment: (root, args, context) => context.injector.get(ExampleSessionProvider).increment()
-    }
-  }
-})
+      increment: (root, args, context) =>
+        context.injector.get(ExampleSessionProvider).increment(),
+    },
+  },
+});
 ```
 
 So at this time, in every mutation call our Session-Scoped Provider's increment method will be
@@ -145,20 +146,20 @@ assume we have two more resolvers called `multiply` . First let's add another me
 `multiply` that takes one argument to be multiplied by our counter value;
 
 ```typescript
-import { Injectable, ProviderScope } from '@graphql-modules/di'
+import { Injectable, ProviderScope } from "@graphql-modules/di";
 
 @Injectable({
-  scope: ProviderScope.Session
+  scope: ProviderScope.Session,
 })
 export class ExampleSessionProvider {
-  counter = 0
+  counter = 0;
   increment() {
-    counter++
-    return counter
+    counter++;
+    return counter;
   }
   multiply(times: number) {
-    counter = counter * times
-    return counter
+    counter = counter * times;
+    return counter;
   }
 }
 ```
@@ -166,8 +167,8 @@ export class ExampleSessionProvider {
 After that, let's use this new method in our new resolver;
 
 ```typescript
-import { GraphQLModule } from '@graphql-modules/core'
-import { ExampleApplicationProvider } from './ExampleApplicationProvider'
+import { GraphQLModule } from "@graphql-modules/core";
+import { ExampleApplicationProvider } from "./ExampleApplicationProvider";
 
 export const ExampleModule = new GraphQLModule({
   providers: [ExampleApplicationProvider],
@@ -182,10 +183,10 @@ export const ExampleModule = new GraphQLModule({
       increment: (root, args, context) =>
         context.injector.get(ExampleApplicationProvider).increment(),
       multiply: (root, args, context) =>
-        context.injector.get(ExampleApplicationProvider).multiply(args.times)
-    }
-  }
-})
+        context.injector.get(ExampleApplicationProvider).multiply(args.times),
+    },
+  },
+});
 ```
 
 When we call the following GraphQL request,
@@ -254,27 +255,27 @@ together with Application-scoped ones and `Context` object which is constructed 
 
 ```typescript
 @Injectable({
-  scope: ProviderScope.Session
+  scope: ProviderScope.Session,
 })
 class ExampleSessionScopeProvider {
   constructor(private moduleSessionInfo: ModuleSessionInfo) {
-    moduleSessionInfo // { session, context, injector }
+    moduleSessionInfo; // { session, context, injector }
   }
 }
 
 @Injectable({
-  scope: ProviderScope.Application
+  scope: ProviderScope.Application,
 })
 class ExampleInvalidApplicationScopeProvider {
   constructor(private moduleSessionInfo: ModuleSessionInfo) {} // Error: ModuleSessionInfo is not valid provider
 }
 
 @Injectable({
-  scope: ProviderScope.Application
+  scope: ProviderScope.Application,
 })
 class ExampleApplicationScopeProvider implements OnRequest {
   onRequest(moduleSessionInfo) {
-    moduleSessionInfo // { session, context, injector }
+    moduleSessionInfo; // { session, context, injector }
   }
 }
 ```

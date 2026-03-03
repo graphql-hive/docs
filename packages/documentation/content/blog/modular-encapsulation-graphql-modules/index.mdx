@@ -52,16 +52,16 @@ explicitly.
 `AppModule` is our top Application Module;
 
 ```typescript
-import { GraphQLModule } from '@graphql-modules/core'
-import { AuthenticationModule } from './modules/auth.module'
+import { GraphQLModule } from "@graphql-modules/core";
+import { AuthenticationModule } from "./modules/auth.module";
 
 const AppModule = new GraphQLModule({
   imports: [
     AuthenticationModule, //this module has `user` in its context
-    SomeImportantModuleThatUsesAuthenticatedContext
+    SomeImportantModuleThatUsesAuthenticatedContext,
     // ...
-  ]
-})
+  ],
+});
 ```
 
 And there is another module that tries to use `AuthenticationModule`'s context, but it doesn't
@@ -81,12 +81,12 @@ const SomeImportantModuleThatUsesAuthenticatedContext = new GraphQLModule({
     // ...
     Query: {
       getUser(root, args, context) {
-        return context.user // Oops! Undefined!
-      }
-    }
+        return context.user; // Oops! Undefined!
+      },
+    },
     // ...
-  }
-})
+  },
+});
 ```
 
 To fix this, we need to import `AuthenticationModule` into that 'important' module to make it able
@@ -98,19 +98,19 @@ const SomeImportantModuleThatUsesAuthenticatedContext = new GraphQLModule({
   imports: [
     // ...
     // This module imports AuthenticationModule
-    AuthenticationModule
+    AuthenticationModule,
     // ...
   ],
   resolvers: {
     // ...
     Query: {
       getUser(root, args, context) {
-        return context.user // Yes, we have that user HERE!
-      }
-    }
+        return context.user; // Yes, we have that user HERE!
+      },
+    },
     // ...
-  }
-})
+  },
+});
 ```
 
 So, these examples above show us that the encapsulation can be very important in the long term of
@@ -122,8 +122,6 @@ each other.**
 Having a tool that knows how to **encapsulate modules** and **force this policy**, makes it much
 easier to write modular schema, and later, even reuse existing modules and share them across
 multiple projects.
-
-
 
 - [GraphQL Modules — Feature based GraphQL Modules at scale](/blog/graphql-modules)
 - [Why is True Modular Encapsulation So Important in Large-Scale GraphQL Projects?](/blog/modular-encapsulation-graphql-modules)

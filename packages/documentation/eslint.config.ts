@@ -62,6 +62,12 @@ const config: Linter.Config[] = [
     },
   },
   {
+    files: ["content/blog/**"],
+    rules: {
+      "no-irregular-whitespace": "off",
+    },
+  },
+  {
     files: ["scripts/**/*.mjs"],
     rules: {
       "no-console": "off",

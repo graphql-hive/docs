@@ -262,10 +262,10 @@ const resolvers = {
   Query: {
     user(parent, args, context) {
       // ...
-      throw new Error('User not found')
-    }
-  }
-}
+      throw new Error("User not found");
+    },
+  },
+};
 ```
 
 Doing so returns the following response:
@@ -367,7 +367,6 @@ It can be achieved with 3 approaches: Federation, Modern Stitching and, Schema E
 Taking the following subschemas:
 
 ```graphql
-
 type Post {
   id: ID!
   text: String
@@ -472,7 +471,7 @@ type Query {
 and adding the following gateway configuration will be required:
 
 ```tsx
-import { stitchSchemas } from '@graphql-tools/stitch'
+import { stitchSchemas } from "@graphql-tools/stitch";
 
 const gatewaySchema = stitchSchemas({
   subschemas: [
@@ -480,24 +479,24 @@ const gatewaySchema = stitchSchemas({
       schema: postsSchema,
       merge: {
         User: {
-          fieldName: 'postUserById',
-          selectionSet: '{ id }',
-          args: originalObject => ({ id: originalObject.id })
-        }
-      }
+          fieldName: "postUserById",
+          selectionSet: "{ id }",
+          args: (originalObject) => ({ id: originalObject.id }),
+        },
+      },
     },
     {
       schema: usersSchema,
       merge: {
         User: {
-          fieldName: 'userById',
-          selectionSet: '{ id }',
-          args: originalObject => ({ id: originalObject.id })
-        }
-      }
-    }
-  ]
-})
+          fieldName: "userById",
+          selectionSet: "{ id }",
+          args: (originalObject) => ({ id: originalObject.id }),
+        },
+      },
+    },
+  ],
+});
 ```
 
 The final stitched schema could also be built similarly to Federation by using type merging
@@ -559,14 +558,14 @@ export const schema = stitchSchemas({
         resolve(user, args, context, info) {
           return delegateToSchema({
             schema: postsSubschema,
-            operation: 'query',
-            fieldName: 'postsByUserId',
+            operation: "query",
+            fieldName: "postsByUserId",
             args: { userId: user.id },
             context,
-            info
-          })
-        }
-      }
+            info,
+          });
+        },
+      },
     },
     Post: {
       user: {
@@ -574,27 +573,27 @@ export const schema = stitchSchemas({
         resolve(post, args, context, info) {
           return delegateToSchema({
             schema: usersSubschema,
-            operation: 'query',
-            fieldName: 'userById',
+            operation: "query",
+            fieldName: "userById",
             args: { id: post.userId },
             context,
-            info
-          })
-        }
-      }
-    }
-  }
-})
+            info,
+          });
+        },
+      },
+    },
+  },
+});
 ```
 
 ## Modern Stitching Architecture
 
-> [Schema Stitching](https://graphql-tools.com/docs/stitch-combining-schemas) (a component
-> of [GraphQL Tools](https://graphql-tools.com)[*v6 and under*]) got a bad rap when it was famously
-> abandoned by Apollo in favor of
-> their [Federation](https://apollographql.com/docs/federation) architecture some years back.
-> However, Stitching came under the stewardship of [The Guild](/) and friends in 2020, and they've
-> since overhauled it with numerous automation and performance enhancements. Seemingly out of
+> [Schema Stitching](https://graphql-tools.com/docs/stitch-combining-schemas) (a component
+> of [GraphQL Tools](https://graphql-tools.com)[*v6 and under*]) got a bad ra  when it was famously
+> ab ndoned by Apollo in favor of
+> their [Federation](https://apollographql.com/docs/federation) architecture some years back.
+> Howev r, Stitching came under the stewardship of [The Guild]( ) and friends in 2020, and they've
+> since overhauled it with numerous automation and performance en ancements. Seemingly out of
 > nowhere, Schema Stitching has reemerged as something of a nimble hummingbird racing alongside the
 > stallion that is Apollo Federation.
 

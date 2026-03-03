@@ -3,10 +3,10 @@ title: GraphQL Cursor Pagination with PostgreSQL
 authors: laurin
 tags: [graphql, sql, postgresql]
 date: 2023-02-15
-description: 'An SQL based approach for understanding and implementing GraphQL Cursor Pagination.'
+description: "An SQL based approach for understanding and implementing GraphQL Cursor Pagination."
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 The GraphQL Cursor Pagination specification is a popular approach for exposing paginated data via an
 API. There are many resources out there that describe the behavior of the
@@ -124,8 +124,8 @@ possible to use a serial primary key. E.g. you might be using `uuid` as the prim
 which is not monotonically orderable.
 
 <Callout type="info">
-  You might consider using `ULID` as an alternative to `UUID`. `ULID`s are lexicographically
-  sortable.
+  You might consider using `ULID` as an alternative to `UUID`. `ULID`s are
+  lexicographically sortable.
 </Callout>
 
 ```diff filename="Dataset users table"
@@ -216,12 +216,13 @@ LIMIT
 ```
 
 <Callout type="info">
-  By now you might have noticed that we are using `to_json("created_at") as "created_at"` instead of
-  simply selecting `"created_at"`. The reason behind this is that this consistently returns the date
-  as a string in the [`ISO8601` format](https://en.wikipedia.org/wiki/ISO_8601). When working with
-  pagination it is generally recommended to treat dates as strings as parsing them to numbers and
-  then back can lead to subtle bugs, especially in languages like JavaScript where numbers are a bit
-  complicated.
+  By now you might have noticed that we are using `to_json("created_at") as
+  "created_at"` instead of simply selecting `"created_at"`. The reason behind
+  this is that this consistently returns the date as a string in the [`ISO8601`
+  format](https://en.wikipedia.org/wiki/ISO_8601). When working with pagination
+  it is generally recommended to treat dates as strings as parsing them to
+  numbers and then back can lead to subtle bugs, especially in languages like
+  JavaScript where numbers are a bit complicated.
 </Callout>
 
 While this method so far has been working, it is not perfect. This only shows up as you have items

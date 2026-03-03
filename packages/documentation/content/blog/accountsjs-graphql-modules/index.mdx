@@ -6,15 +6,16 @@ authors: arda
 tags: [graphql, graphql-modules, authentication]
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 When starting a backend project, two of the biggest concerns will usually be the right structure of
 the project and authentication. If you could skip thinking and planning about these two, starting a
 new backend project can be much easier.
 
 <Callout>
-  If you haven't checked out our [blog post about authentication and authorization in GraphQL
-  Modules](/blog/graphql-modules-auth), please read that before!
+  If you haven't checked out our [blog post about authentication and
+  authorization in GraphQL Modules](/blog/graphql-modules-auth), please read
+  that before!
 </Callout>
 
 Internally, we use [GraphQL-Modules](https://graphql-modules.com) and
@@ -52,45 +53,45 @@ Let's assume that we're using MongoDB as our database, password-based authentica
 ApolloServer:
 
 ```ts
-import 'graphql-import-node'
-import { ApolloServer } from 'apollo-server'
-import { MongoClient } from 'mongodb'
-import { DatabaseManager } from '@accounts/database-manager'
-import { AccountsModule } from '@accounts/graphql-api'
-import MongoDBInterface from '@accounts/mongo'
-import { AccountsPassword } from '@accounts/password'
-import { AccountsServer } from '@accounts/server'
-import { resolvers } from './resolvers'
-import * as typeDefs from './typeDefs.graphql'
+import "graphql-import-node";
+import { ApolloServer } from "apollo-server";
+import { MongoClient } from "mongodb";
+import { DatabaseManager } from "@accounts/database-manager";
+import { AccountsModule } from "@accounts/graphql-api";
+import MongoDBInterface from "@accounts/mongo";
+import { AccountsPassword } from "@accounts/password";
+import { AccountsServer } from "@accounts/server";
+import { resolvers } from "./resolvers";
+import * as typeDefs from "./typeDefs.graphql";
 
-const PORT = process.env.MONGO_URI || 4000
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/myDb'
-const TOKEN_SECRET = process.env.TOKEN_SECRET || 'myTokenSecret'
+const PORT = process.env.MONGO_URI || 4000;
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/myDb";
+const TOKEN_SECRET = process.env.TOKEN_SECRET || "myTokenSecret";
 
 async function main() {
   const mongoClient = await MongoClient.connect(MONGO_URI, {
     useNewUrlParser: true,
-    native_parser: true
-  })
-  const db = mongoClient.db()
+    native_parser: true,
+  });
+  const db = mongoClient.db();
   const userStorage = new MongoDBInterface(db, {
-    convertUserIdToMongoObjectId: false
-  })
+    convertUserIdToMongoObjectId: false,
+  });
   // Create database manager (create user, find users, sessions etc) for accounts-js
   const accountsDb = new DatabaseManager({
     sessionStorage: userStorage,
-    userStorage
-  })
+    userStorage,
+  });
   // Create accounts server that holds a lower level of all accounts operations
   const accountsServer = new AccountsServer(
     {
       db: accountsDb,
-      tokenSecret: TOKEN_SECRET
+      tokenSecret: TOKEN_SECRET,
     },
     {
-      password: new AccountsPassword()
-    }
-  )
+      password: new AccountsPassword(),
+    },
+  );
   const { schema } = new GraphQLModule({
     typeDefs,
     resolvers,
@@ -98,20 +99,20 @@ async function main() {
     providers: [
       {
         provide: Db,
-        useValue: db // Use MongoDB's instance inside DI
-      }
-    ]
-  })
+        useValue: db, // Use MongoDB's instance inside DI
+      },
+    ],
+  });
   const apolloServer = new ApolloServer({
     schema,
-    context: session => session,
-    introspection: true
-  })
-  const { url } = await apolloServer.listen(PORT)
-  console.log(`Server listening: ${url}`)
+    context: (session) => session,
+    introspection: true,
+  });
+  const { url } = await apolloServer.listen(PORT);
+  console.log(`Server listening: ${url}`);
 }
 
-main()
+main();
 ```
 
 And we can extend User type with custom fields in our schema, and add a mutation which is restricted
@@ -144,34 +145,38 @@ Finally, let's define some resolvers for it:
 export const resolvers = {
   User: {
     posts({ _id }, args, { injector }) {
-      const db = injector.get(Db)
-      const Posts = db.collection('posts')
-      return Posts.find({ userId: _id }).toArray()
-    }
+      const db = injector.get(Db);
+      const Posts = db.collection("posts");
+      return Posts.find({ userId: _id }).toArray();
+    },
   },
   Post: {
     id: ({ _id }) => _id,
     author({ userId }, args, { injector }) {
-      const accountsServer = injector.get(AccountsServer)
-      return accountsServer.findUserById(userId)
-    }
+      const accountsServer = injector.get(AccountsServer);
+      return accountsServer.findUserById(userId);
+    },
   },
   Query: {
     allPosts(root, args, { injector }) {
-      const db = injector.get(Db)
-      const Posts = db.collection('posts')
-      return Posts.find().toArray()
-    }
+      const db = injector.get(Db);
+      const Posts = db.collection("posts");
+      return Posts.find().toArray();
+    },
   },
   Mutation: {
-    addPost(root, { title, content }, { injector, userId }: ModuleContext<AccountsContext>) {
-      const db = injector.get(Db)
-      const Posts = db.collection('posts')
-      const { insertedId } = Posts.insertOne({ title, content, userId })
-      return insertedId
-    }
-  }
-}
+    addPost(
+      root,
+      { title, content },
+      { injector, userId }: ModuleContext<AccountsContext>,
+    ) {
+      const db = injector.get(Db);
+      const Posts = db.collection("posts");
+      const { insertedId } = Posts.insertOne({ title, content, userId });
+      return insertedId;
+    },
+  },
+};
 ```
 
 When you print the whole app's schema, you would see something like above:
@@ -223,7 +228,10 @@ type Mutation {
   impersonate(accessToken: String!, username: String!): ImpersonateReturn
   refreshTokens(accessToken: String!, refreshToken: String!): LoginResult
   logout: Boolean
-  authenticate(serviceName: String!, params: AuthenticateParamsInput!): LoginResult
+  authenticate(
+    serviceName: String!
+    params: AuthenticateParamsInput!
+  ): LoginResult
   addPost(title: String, content: String): Post
 }
 
@@ -283,32 +291,32 @@ Now we can create a simple frontend app by using Apollo-Client and accounts-js c
 backend app. The example below shows some example code that works on these two.
 
 ```tsx
-import React, { Component } from 'react'
-import { render } from 'react-dom'
-import ApolloClient from 'apollo-boost'
-import gql from 'graphql-tag'
-import { ApolloProvider, Mutation, Query } from 'react-apollo'
-import { AccountsClient } from '@accounts/client'
-import { AccountsClientPassword } from '@accounts/client-password'
-import GraphQLClient from '@accounts/graphql-client'
+import React, { Component } from "react";
+import { render } from "react-dom";
+import ApolloClient from "apollo-boost";
+import gql from "graphql-tag";
+import { ApolloProvider, Mutation, Query } from "react-apollo";
+import { AccountsClient } from "@accounts/client";
+import { AccountsClientPassword } from "@accounts/client-password";
+import GraphQLClient from "@accounts/graphql-client";
 
 const apolloClient = new ApolloClient({
   async request(operation) {
-    const tokens = await accountsClient.getTokens()
+    const tokens = await accountsClient.getTokens();
     if (tokens) {
       operation.setContext({
         headers: {
-          'accounts-access-token': tokens.accessToken
-        }
-      })
+          "accounts-access-token": tokens.accessToken,
+        },
+      });
     }
   },
-  uri: 'http://localhost:4000/graphql'
-})
+  uri: "http://localhost:4000/graphql",
+});
 
-const accountsGraphQL = new GraphQLClient({ graphQLClient: apolloClient })
-const accountsClient = new AccountsClient({}, accountsGraphQL)
-const accountsPassword = new AccountsClientPassword(accountsClient)
+const accountsGraphQL = new GraphQLClient({ graphQLClient: apolloClient });
+const accountsClient = new AccountsClient({}, accountsGraphQL);
+const accountsPassword = new AccountsClientPassword(accountsClient);
 
 const ALL_POSTS_QUERY = gql`
   query AllPosts {
@@ -321,34 +329,34 @@ const ALL_POSTS_QUERY = gql`
       }
     }
   }
-`
+`;
 
 const ADD_POST_MUTATION = gql`
   mutation AddPost($title: String, $content: String) {
     addPost(title: $title, content: $content)
   }
-`
+`;
 
 class App extends Component {
   state = {
     credentials: {
-      username: '',
-      password: ''
+      username: "",
+      password: "",
     },
     newPost: {
-      title: '',
-      content: ''
+      title: "",
+      content: "",
     },
-    user: null
-  }
+    user: null,
+  };
   componentDidMount() {
-    return this.updateUserState()
+    return this.updateUserState();
   }
   async updateUserState() {
-    const tokens = await accountsClient.refreshSession()
+    const tokens = await accountsClient.refreshSession();
     if (tokens) {
-      const user = await accountsGraphQL.getUser()
-      await this.setState({ user })
+      const user = await accountsGraphQL.getUser();
+      await this.setState({ user });
     }
   }
   renderAllPosts() {
@@ -356,10 +364,10 @@ class App extends Component {
       <Query query={ALL_POSTS_QUERY}>
         {({ data, loading, error }) => {
           if (loading) {
-            return <p>Loading...</p>
+            return <p>Loading...</p>;
           }
           if (error) {
-            return <p>Error: {error}</p>
+            return <p>Error: {error}</p>;
           }
           return data.allPosts.map((post: any) => (
             <li>
@@ -367,10 +375,10 @@ class App extends Component {
               <p>{post.content}</p>
               <p>Author: {post.author.username}</p>
             </li>
-          ))
+          ));
         }}
       </Query>
-    )
+    );
   }
   renderLoginRegister() {
     return (
@@ -382,12 +390,12 @@ class App extends Component {
               Username:
               <input
                 value={this.state.credentials.username}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     credentials: {
                       ...this.state.credentials,
-                      username: e.target.value
-                    }
+                      username: e.target.value,
+                    },
                   })
                 }
               />
@@ -398,12 +406,12 @@ class App extends Component {
               Password:
               <input
                 value={this.state.credentials.password}
-                onChange={e =>
+                onChange={(e) =>
                   this.setState({
                     credentials: {
                       ...this.state.credentials,
-                      password: e.target.value
-                    }
+                      password: e.target.value,
+                    },
                   })
                 }
               />
@@ -411,16 +419,16 @@ class App extends Component {
           </p>
           <p>
             <button
-              onClick={e => {
-                e.preventDefault()
+              onClick={(e) => {
+                e.preventDefault();
                 accountsPassword
                   .login({
                     password: this.state.credentials.password,
                     user: {
-                      username: this.state.credentials.username
-                    }
+                      username: this.state.credentials.username,
+                    },
                   })
-                  .then(() => this.updateUserState())
+                  .then(() => this.updateUserState());
               }}
             >
               Login
@@ -428,22 +436,22 @@ class App extends Component {
           </p>
           <p>
             <button
-              onClick={e => {
-                e.preventDefault()
+              onClick={(e) => {
+                e.preventDefault();
                 accountsPassword
                   .createUser({
                     password: this.state.credentials.password,
-                    username: this.state.credentials.username
+                    username: this.state.credentials.username,
                   })
                   .then(() => {
-                    alert('Please login with your new credentials')
+                    alert("Please login with your new credentials");
                     this.setState({
                       credentials: {
-                        username: '',
-                        password: ''
-                      }
-                    })
-                  })
+                        username: "",
+                        password: "",
+                      },
+                    });
+                  });
               }}
             >
               Register
@@ -451,12 +459,12 @@ class App extends Component {
           </p>
         </form>
       </fieldset>
-    )
+    );
   }
   renderAddPost() {
     return (
       <Mutation mutation={ADD_POST_MUTATION}>
-        {addPost => (
+        {(addPost) => (
           <fieldset>
             <legend>Add Post</legend>
             <form>
@@ -465,13 +473,13 @@ class App extends Component {
                   Title:
                   <input
                     value={this.state.newPost.title}
-                    onChange={e => {
+                    onChange={(e) => {
                       this.setState({
                         newPost: {
                           ...this.state.newPost,
-                          title: e.target.value
-                        }
-                      })
+                          title: e.target.value,
+                        },
+                      });
                     }}
                   />
                 </label>
@@ -481,13 +489,13 @@ class App extends Component {
                   Content:
                   <input
                     value={this.state.newPost.content}
-                    onChange={e => {
+                    onChange={(e) => {
                       this.setState({
                         newPost: {
                           ...this.state.newPost,
-                          content: e.target.value
-                        }
-                      })
+                          content: e.target.value,
+                        },
+                      });
                     }}
                   />
                 </label>
@@ -495,14 +503,14 @@ class App extends Component {
               <p>
                 <input
                   type="submit"
-                  onClick={e => {
-                    e.preventDefault()
+                  onClick={(e) => {
+                    e.preventDefault();
                     addPost({
                       variables: {
                         title: this.state.newPost.title,
-                        content: this.state.newPost.content
-                      }
-                    })
+                        content: this.state.newPost.content,
+                      },
+                    });
                   }}
                 />
               </p>
@@ -510,7 +518,7 @@ class App extends Component {
           </fieldset>
         )}
       </Mutation>
-    )
+    );
   }
   render() {
     return (
@@ -519,7 +527,7 @@ class App extends Component {
         {this.renderAllPosts()}
         {this.state.user ? this.renderAddPost() : this.renderLoginRegister()}
       </div>
-    )
+    );
   }
 }
 
@@ -527,8 +535,8 @@ render(
   <ApolloProvider client={apolloClient}>
     <App />
   </ApolloProvider>,
-  document.getElementById('root')
-)
+  document.getElementById("root"),
+);
 ```
 
 As you can see from the example, it can be really easy to create an application that has

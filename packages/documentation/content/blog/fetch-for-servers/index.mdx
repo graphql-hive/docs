@@ -62,9 +62,9 @@ Fetch API.
 You can see how easy to handle file uploads;
 
 ```ts
-const formData = await request.formData()
-const myFile = await formData.get('myFile')
-const fileContents = await myFile.text()
+const formData = await request.formData();
+const myFile = await formData.get("myFile");
+const fileContents = await myFile.text();
 ```
 
 See more in our code;
@@ -75,24 +75,24 @@ Streaming responses like
 example:
 
 ```ts
-let interval
+let interval;
 new Response(
   new ReadableStream({
     start() {
       interval = setInterval(() => {
-        this.enqueue(`data: ${Date.now()}\n\n`)
-      }, 1000)
+        this.enqueue(`data: ${Date.now()}\n\n`);
+      }, 1000);
     },
     cancel() {
-      clearInterval(interval)
-    }
+      clearInterval(interval);
+    },
   }),
   {
     headers: {
-      'Content-Type': 'text/event-stream'
-    }
-  }
-)
+      "Content-Type": "text/event-stream",
+    },
+  },
+);
 ```
 
 See more in our code;
@@ -220,24 +220,24 @@ You can basically achieve routing like below, however it looks a bit unsafe.
 ```tsx
 createServerAdapter({
   handle(request: Request) {
-    if (request.url.endsWith('/hello')) {
+    if (request.url.endsWith("/hello")) {
       return new Response('{ "message": "hello" }', {
         status: 200,
         headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+          "Content-Type": "application/json",
+        },
+      });
     }
-    if (request.url.endsWith('/secret')) {
-      return new Response('No way!', {
-        status: 401
-      })
+    if (request.url.endsWith("/secret")) {
+      return new Response("No way!", {
+        status: 401,
+      });
     }
-    return new Response('Nothing here!', {
-      status: 404
-    })
-  }
-})
+    return new Response("Nothing here!", {
+      status: 404,
+    });
+  },
+});
 ```
 
 There is another library called `itty-router` which can be used for Routing with Fetch API. You can

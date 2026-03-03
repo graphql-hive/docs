@@ -28,18 +28,21 @@ description:
 - Share templates with the **community** — move the community forward by having an **eco-system of
   templates** that probably match most of the use-cases, learning from the Swagger codegen community
 
-import { Callout } from "@hive/design-system/hive-components/callout"
-import { YoutubeIframe } from "@hive/design-system/youtube-iframe"
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { YoutubeIframe } from "@hive/design-system/youtube-iframe";
 
-<YoutubeIframe src="https://youtube.com/embed/00TqfHWQRoM" title="GraphQL Code Generator" />
+<YoutubeIframe
+  src="https://youtube.com/embed/00TqfHWQRoM"
+  title="GraphQL Code Generator"
+/>
 
 [**_The source code of the video examples are available here_**](https://github.com/dotansimha/graphql-code-generator-usage-example)
 
 ---
 
 <Callout type="warning">
-  This blog post refers to an outdated version, please check https://the-guild.dev/graphql/codegen
-  for the latest docs!
+  This blog post refers to an outdated version, please check
+  https://the-guild.dev/graphql/codegen for the latest docs!
 </Callout>
 
 ## Do More than Just Generating
@@ -124,8 +127,6 @@ template for it.
   need support with.
 
 ---
-
-
 
 To get started with the GraphQL code generator, start by installing NodeJS, and then install:
 
@@ -233,9 +234,9 @@ Now when we use the two together, we will get:
 
 ```ts
 export type Person = {
-  name: string
-  age?: number
-}
+  name: string;
+  age?: number;
+};
 ```
 
 This is a simple example, because in real life, GraphQL allows use to do much more in our schema:

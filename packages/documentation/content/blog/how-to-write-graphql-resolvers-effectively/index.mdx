@@ -8,7 +8,7 @@ description:
   Code Generator and Server Preset to write resolvers.
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout"
+import { Callout } from "@hive/design-system/hive-components/callout";
 
 Resolvers are the fundamental building blocks of a GraphQL server. To build a robust and scalable
 GraphQL server, we must understand how to write GraphQL resolvers effectively. In this blog post, we
@@ -64,18 +64,18 @@ We can write a **resolver map** like this:
 ```ts filename="src/graphql/resolvers.ts"
 const resolvers = {
   Query: {
-    movie: () => {} // `Query.movie` resolver
+    movie: () => {}, // `Query.movie` resolver
   },
   Movie: {
     id: () => {}, // `Movie.id` resolver
     name: () => {}, // `Movie.name` resolver
-    actors: () => {} // `Movie.actors` resolver
+    actors: () => {}, // `Movie.actors` resolver
   },
   Actor: {
     id: () => {}, // `Actor.id` resolver
-    stageName: () => {} // `Actor.stageName` resolver
-  }
-}
+    stageName: () => {}, // `Actor.stageName` resolver
+  },
+};
 ```
 
 We will discuss how the code flows through resolvers when the server handles a request in the next
@@ -139,7 +139,8 @@ We must return a value that can be handled by the scalars. In our example:
   into the `String` scalar i.e. `string`, `boolean` or `number` values.
 
 <Callout emoji="💡" type="info">
-  You can learn about GraphQL Scalar, including native Scalar and coercion concept, in this guide
+  You can learn about GraphQL Scalar, including native Scalar and coercion
+  concept, in this guide
   [here](https://the-guild.dev/blog/the-complete-graphql-scalar-guide)
 </Callout>
 
@@ -169,11 +170,11 @@ const resolvers = {
 
   // 👇 ...are the equivalent of the following `Movie` resolvers:
   Movie: {
-    id: parent => parent.id,
-    name: parent => parent.name,
-    actors: parent => parent.actors
-  }
-}
+    id: (parent) => parent.id,
+    name: (parent) => parent.name,
+    actors: (parent) => parent.actors,
+  },
+};
 ```
 
 This means if `Query.movie` resolver returns an object with `id`, `name`, and `actors` properties,
@@ -184,19 +185,19 @@ const resolvers = {
   Query: {
     movie: () => {
       return {
-        id: '1',
-        name: 'Harry Potter and the Half-Blood Prince',
+        id: "1",
+        name: "Harry Potter and the Half-Blood Prince",
         actors: [
-          { id: '1', stageName: 'Daniel Radcliffe' },
-          { id: '2', stageName: 'Emma Watson' },
-          { id: '3', stageName: 'Rupert Grint' }
-        ]
-      }
-    }
-  }
+          { id: "1", stageName: "Daniel Radcliffe" },
+          { id: "2", stageName: "Emma Watson" },
+          { id: "3", stageName: "Rupert Grint" },
+        ],
+      };
+    },
+  },
   // 💡 `Movie` and `Actor` resolvers are omitted here but it still works,
   // Thanks to default resolvers!
-}
+};
 ```
 
 In this very simple example where we are returning static values, this will work. However, in a
@@ -212,34 +213,34 @@ Below is an object this can be used as an in-memory database:
 const database = {
   movies: {
     // Movies table
-    '1': {
-      id: '1',
-      movieName: 'Harry Potter and the Half-Blood Prince'
-    }
+    "1": {
+      id: "1",
+      movieName: "Harry Potter and the Half-Blood Prince",
+    },
   },
   actors: {
     // Actors table
-    '1': {
-      id: '1',
-      stageName: 'Daniel Radcliffe'
+    "1": {
+      id: "1",
+      stageName: "Daniel Radcliffe",
     },
-    '2': {
-      id: '2',
-      stageName: 'Emma Watson'
+    "2": {
+      id: "2",
+      stageName: "Emma Watson",
     },
-    '3': {
-      id: '3',
-      stageName: 'Rupert Grint'
-    }
+    "3": {
+      id: "3",
+      stageName: "Rupert Grint",
+    },
   },
   movies_actors: {
     // Table containing movie-actor relationship
-    '1': {
+    "1": {
       // Movie ID
-      actorIds: ['1', '2', '3']
-    }
-  }
-}
+      actorIds: ["1", "2", "3"],
+    },
+  },
+};
 ```
 
 We usually pass database connection through context, so we might update `Query.movie` to look like
@@ -249,23 +250,23 @@ this:
 const resolvers = {
   Query: {
     movie: (_, { id }, { database }) => {
-      const movie = database.movies[id] // 🔄 Database access counter: (1)
+      const movie = database.movies[id]; // 🔄 Database access counter: (1)
 
       if (!movie) {
-        return null
+        return null;
       }
 
       return {
         id: movie.id,
         name: movie.movieName,
         actors: (database.movies_actors[id] || []).actorIds // 🔄 (2)
-          .map(actorId => {
-            return database.actors[actorId] // 🔄 (3), 🔄 (4), 🔄 (5)
-          })
-      }
-    }
-  }
-}
+          .map((actorId) => {
+            return database.actors[actorId]; // 🔄 (3), 🔄 (4), 🔄 (5)
+          }),
+      };
+    },
+  },
+};
 ```
 
 This works, however, there are a few issues:
@@ -283,34 +284,35 @@ database calls and reduce code duplication:
 ```ts
 type MovieMapper = {
   // 1.
-  id: string
-  movieName: string
-}
-type ActorMapper = string // 2.
+  id: string;
+  movieName: string;
+};
+type ActorMapper = string; // 2.
 
 const resolvers = {
   Query: {
     movie: (_, { id }, { database }): MovieMapper => {
-      const movie = database.movies[id]
+      const movie = database.movies[id];
 
       if (!movie) {
-        return null
+        return null;
       }
 
-      return movie // 3.
-    }
+      return movie; // 3.
+    },
   },
   Movie: {
     name: (parent: MovieMapper) => parent.movieName, // 4.
     actors: (parent: MovieMapper, _, { database }): ActorMapper[] =>
-      database.movies_actors[parent.id].actorIds // 5.
+      database.movies_actors[parent.id].actorIds, // 5.
     // 6.
   },
   Actor: {
     id: (parent: ActorMapper) => parent, // 7.
-    stageName: (parent: ActorMapper, _, { database }) => database.actors[parent].stageName // 8.
-  }
-}
+    stageName: (parent: ActorMapper, _, { database }) =>
+      database.actors[parent].stageName, // 8.
+  },
+};
 ```
 
 1. We define a `MovieMapper` type to represent the shape of the object returned by `Query.movie`
@@ -334,9 +336,10 @@ const resolvers = {
    database.
 
 <Callout emoji="💡" type="info">
-  By using **mappers** and **defer resolve** techniques, we avoid unnecessary database calls and
-  reduce code duplication. The next time we need to write a resolver that returns `Movie`, `Actor`
-  objects, we can simply return the corresponding mapper objects.
+  By using **mappers** and **defer resolve** techniques, we avoid unnecessary
+  database calls and reduce code duplication. The next time we need to write a
+  resolver that returns `Movie`, `Actor` objects, we can simply return the
+  corresponding mapper objects.
 </Callout>
 
 ### Implementing Resolvers with Mappers and Defer Resolve Best Practices
@@ -369,28 +372,28 @@ npm i -D @graphql-codegen/cli @eddeee888/gcg-typescript-resolver-files
 Next, create a `codegen.ts` file at the root of your project:
 
 ```ts filename="codegen.ts"
-import { defineConfig } from '@eddeee888/gcg-typescript-resolver-files'
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import { defineConfig } from "@eddeee888/gcg-typescript-resolver-files";
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: 'src/graphql/schema.graphql',
+  schema: "src/graphql/schema.graphql",
   generates: {
-    'src/graphql': defineConfig({
-      resolverGeneration: 'minimal'
-    })
-  }
-}
-export default config
+    "src/graphql": defineConfig({
+      resolverGeneration: "minimal",
+    }),
+  },
+};
+export default config;
 ```
 
 Then, add mappers into `schema.mappers.ts` file, in the same directory as `schema.graphql`:
 
 ```ts filename="src/graphql/schema.mappers.ts"
 type MovieMapper = {
-  id: string
-  movieName: string
-}
-type ActorMapper = string
+  id: string;
+  movieName: string;
+};
+type ActorMapper = string;
 ```
 
 <Callout emoji="💡" type="info">
@@ -411,15 +414,19 @@ npm run graphql-codegen
 We will see generated resolver files in `src/graphql` directory:
 
 ```ts filename="src/graphql/resolvers/Query/movie.ts"
-import type { QueryResolvers } from './../../types.generated'
+import type { QueryResolvers } from "./../../types.generated";
 
-export const movie: NonNullable<QueryResolvers['movie']> = async (_parent, _arg, _ctx) => {
+export const movie: NonNullable<QueryResolvers["movie"]> = async (
+  _parent,
+  _arg,
+  _ctx,
+) => {
   /* Implement Query.movie resolver logic here */
-}
+};
 ```
 
 ```ts filename="src/graphql/resolvers/Movie.ts"
-import type { MovieResolvers } from './../types.generated'
+import type { MovieResolvers } from "./../types.generated";
 
 export const Movie: MovieResolvers = {
   /* Implement Movie resolver logic here */
@@ -428,12 +435,12 @@ export const Movie: MovieResolvers = {
   },
   name: async (_parent, _arg, _ctx) => {
     /* Movie.name resolver is required because Movie.name exists but MovieMapper.name does not */
-  }
-}
+  },
+};
 ```
 
 ```ts filename="src/graphql/resolvers/Actor.ts"
-import type { ActorResolvers } from './../types.generated'
+import type { ActorResolvers } from "./../types.generated";
 
 export const Actor: ActorResolvers = {
   /* Implement Actor resolver logic here */
@@ -442,8 +449,8 @@ export const Actor: ActorResolvers = {
   },
   stageName: async (_parent, _arg, _ctx) => {
     /* Actor.stageName resolver is required because Actor.stageName exists but ActorMapper.stageName does not */
-  }
-}
+  },
+};
 ```
 
 By providing mappers, codegen is smart enough to understand that we want to defer resolve, and we
@@ -451,8 +458,8 @@ need to write logic for `Movie.actors`, `Movie.name`, `Actor.id` and `Actor.stag
 ensure we don't encounter runtime errors.
 
 <Callout emoji="💡" type="info">
-  Learn how to set up GraphQL Code Generator and Server Preset for GraphQL Yoga and Apollo Server in
-  this guide
+  Learn how to set up GraphQL Code Generator and Server Preset for GraphQL Yoga
+  and Apollo Server in this guide
   [here](https://the-guild.dev/graphql/codegen/docs/guides/graphql-server-apollo-yoga-with-server-preset).
 </Callout>
 

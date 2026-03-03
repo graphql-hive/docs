@@ -92,17 +92,17 @@ resolvers and type definitions to the `buildSchema` function.
 // GraphQL Yoga 5
 const yoga = createYoga({
   plugins: [useGraphQLModules(app)],
-  context: ctx => context(ctx, { createOperationController })
-})
-createServer(yoga).listen()
+  context: (ctx) => context(ctx, { createOperationController }),
+});
+createServer(yoga).listen();
 
 // Apollo Server 4
 const apollo = new ApolloServer({
-  gateway: app.createApolloGateway()
-})
+  gateway: app.createApolloGateway(),
+});
 startStandaloneServer(apollo, {
-  context: ctx => context(ctx, { createOperationController })
-})
+  context: (ctx) => context(ctx, { createOperationController }),
+});
 ```
 
 At this point, whatever your GraphQL server of choice, your authenticated application is just a few
@@ -115,10 +115,10 @@ Use the `graphql-modules` injector to retrieve the `AccountsServer` instance and
 
 ```ts
 const controller = app.createOperationController({
-  context: {}
-})
-const accountsServer = controller.injector.get(AccountsServer)
-expressApp.use(accountsExpress(accountsServer))
+  context: {},
+});
+const accountsServer = controller.injector.get(AccountsServer);
+expressApp.use(accountsExpress(accountsServer));
 ```
 
 Alternatively, if you don't want to use `graphql-modules`, you can still manually instantiate the
@@ -140,16 +140,16 @@ noticing it—more information [here](https://mikro-orm.io/docs/dataloaders).
 @Entity()
 export class User extends AccountsUser {
   @Property()
-  firstName: string
+  firstName: string;
 
   @Property({ nullable: true })
-  lastName?: string
+  lastName?: string;
 
   constructor({ firstName, lastName, ...otherProps }: CtorArgs) {
-    super(otherProps)
-    this.firstName = firstName
+    super(otherProps);
+    this.firstName = firstName;
     if (lastName) {
-      this.lastName = lastName
+      this.lastName = lastName;
     }
   }
 }

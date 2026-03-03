@@ -3,8 +3,7 @@ title: Announcing GraphQL Yoga 2.0!
 tags: [server, graphql-federation, envelop, node, graphql]
 authors: [charlypoly, arda, laurin, saihaj]
 date: 2022-03-29
-description:
-  Fully-featured GraphQL Server with focus on easy setup, performance and great developer experience
+description: Fully-featured GraphQL Server with focus on easy setup, performance and great developer experience
 ---
 
 Today we are incredibly excited to share with you the new GraphQL Yoga! This release was made
@@ -28,7 +27,7 @@ development even easier.
 
 ```js
 // 1. Import GraphQL Yoga
-import { createServer } from '@graphql-yoga/node'
+import { createServer } from "@graphql-yoga/node";
 
 // 2. Create your server
 const server = createServer({
@@ -40,14 +39,14 @@ const server = createServer({
     `,
     resolvers: {
       Query: {
-        hello: () => 'Hello Hello Hello'
-      }
-    }
-  }
-})
+        hello: () => "Hello Hello Hello",
+      },
+    },
+  },
+});
 
 // 3. Serve the API and GraphiQL
-server.start()
+server.start();
 ```
 
 ## The Yoga V2 Experience
@@ -64,30 +63,30 @@ preferred schema design approach and HTTP server library.
 For example, Yoga v2 is fully compatible with Express and Nexus, with no additional packages:
 
 ```ts
-import express from 'express'
-import { makeSchema, queryType } from 'nexus'
-import { createServer } from '@graphql-yoga/node'
+import express from "express";
+import { makeSchema, queryType } from "nexus";
+import { createServer } from "@graphql-yoga/node";
 
 const Query = queryType({
   definition(t) {
-    t.string('hello', { resolve: () => 'hello world!' })
-  }
-})
+    t.string("hello", { resolve: () => "hello world!" });
+  },
+});
 const schema = makeSchema({
-  types: [Query]
-})
+  types: [Query],
+});
 
-const graphQLServer = createServer({ schema })
+const graphQLServer = createServer({ schema });
 
-const app = express()
+const app = express();
 
 // Bind GraphQL Yoga to the `/graphql` endpoint
 // Here it takes the request and response objects and handles them internally
-app.use('/graphql', graphQLServer)
+app.use("/graphql", graphQLServer);
 
 app.listen(4000, () => {
-  console.log('Running a GraphQL API server at http://localhost:4000/graphql')
-})
+  console.log("Running a GraphQL API server at http://localhost:4000/graphql");
+});
 ```
 
 The same applies to **GraphQL Tools, Pothos, Nexus, TypeGraphQL, SDL first schema-design approaches,
@@ -100,17 +99,17 @@ more).
 Here, a GraphQL API built with GraphQL Modules, deployed on Cloudflare Workers:
 
 ```tsx
-import { createApplication } from 'graphql-modules'
-import { createServer } from '@graphql-yoga/common'
-import { helloWorldModule } from './helloWorld'
+import { createApplication } from "graphql-modules";
+import { createServer } from "@graphql-yoga/common";
+import { helloWorldModule } from "./helloWorld";
 
 const application = createApplication({
-  modules: [helloWorldModule]
-})
+  modules: [helloWorldModule],
+});
 
-const server = createServer({ schema: application.schema })
+const server = createServer({ schema: application.schema });
 
-server.start()
+server.start();
 ```
 
 ## Productivity at Your Fingertips
@@ -124,7 +123,7 @@ support**.
 error handling, or CORS **come built-in with Yoga**:
 
 ```ts
-import { createServer, GraphQLYogaError } from '@graphql-yoga/node'
+import { createServer, GraphQLYogaError } from "@graphql-yoga/node";
 
 // Provide your schema
 const server = createServer({
@@ -147,38 +146,38 @@ const server = createServer({
     `,
     resolvers: {
       Query: {
-        hello: () => 'world'
+        hello: () => "world",
       },
       Subscription: {
         countdown: {
           // This will return the value on every 1 sec until it reaches 0
           subscribe: async function* (_, { from }) {
             for (let i = from; i >= 0; i--) {
-              await new Promise(resolve => setTimeout(resolve, 1000))
-              yield { countdown: i }
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+              yield { countdown: i };
             }
-          }
-        }
+          },
+        },
       },
       Mutation: {
         readTextFile: async (_, { file }: { file: File }) => {
-          let textContent = null
+          let textContent = null;
           try {
-            textContent = await file.text()
+            textContent = await file.text();
           } catch (e) {
             // return an error visible by the client
-            throw new GraphQLYogaError(`Failed to parse file`)
+            throw new GraphQLYogaError(`Failed to parse file`);
           }
-          return textContent
-        }
-      }
-    }
-  }
-})
+          return textContent;
+        },
+      },
+    },
+  },
+});
 
 // We now serve a GraphQL API with Subscriptions (over SSE), CORS,
 // and File uploads support!
-server.start()
+server.start();
 ```
 
 Yoga v2 also provides APIs to handle **logging, advanced Subscriptions** use-cases (over WS,
@@ -194,10 +193,10 @@ Here, we are building a full-featured GraphQL API with security rules, a respons
 error reporting with only a few lines of code:
 
 ```ts
-import { useDepthLimit } from '@envelop/depth-limit'
-import { useResponseCache } from '@envelop/response-cache'
-import { useSentry } from '@envelop/sentry'
-import { createServer } from '@graphql-yoga/node'
+import { useDepthLimit } from "@envelop/depth-limit";
+import { useResponseCache } from "@envelop/response-cache";
+import { useSentry } from "@envelop/sentry";
+import { createServer } from "@graphql-yoga/node";
 
 const server = createServer({
   schema: {
@@ -208,22 +207,22 @@ const server = createServer({
     `,
     resolvers: {
       Query: {
-        hello: () => 'Hello Hello Hello'
-      }
-    }
+        hello: () => "Hello Hello Hello",
+      },
+    },
   },
   plugins: [
     useDepthLimit({
       // set up some security rules
-      maxDepth: 10
+      maxDepth: 10,
     }),
     useResponseCache(), // speed up our server with a response cache
-    useSentry() // report unexpected errors to sentry
-  ]
-})
+    useSentry(), // report unexpected errors to sentry
+  ],
+});
 
 // Start the server and explore http://localhost:4000/graphql
-server.start()
+server.start();
 ```
 
 The Envelop Plugin currently [proposes more than 35+ plugins](https://envelop.dev/plugins) covering
@@ -288,9 +287,12 @@ guide you in building a full-featured, modern API with GraphQL Yoga.
 [Episode #36 of `graphql.wtf`](https://graphql.wtf/episodes/36-graphql-yoga-2) is also great
 introduction to GraphQL Yoga 2.0:
 
-import { YoutubeIframe } from "@hive/design-system/youtube-iframe"
+import { YoutubeIframe } from "@hive/design-system/youtube-iframe";
 
-<YoutubeIframe src="https://youtube.com/embed/_-B6QIFSSwo" title="GraphQL Yoga 2" />
+<YoutubeIframe
+  src="https://youtube.com/embed/_-B6QIFSSwo"
+  title="GraphQL Yoga 2"
+/>
 
 ### ... or Migrate Your Existing GraphQL Server to Yoga
 

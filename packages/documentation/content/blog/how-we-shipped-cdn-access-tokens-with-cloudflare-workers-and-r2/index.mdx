@@ -147,19 +147,19 @@ For this we just used a cursor paginated SQL query for reading the targets (to w
 token is related to) and then run some logic for writing the data to the designated locations.
 
 ```ts filename="Slonik and Zod for safely reading paginated results from PostgreSQL"
-import { CommonQueryMethods } from 'slonik'
-import * as zod from 'zod'
+import { CommonQueryMethods } from "slonik";
+import * as zod from "zod";
 
 const TargetsModel = zod.array(
   zod.object({
     id: zod.string(),
-    created_at_cursor: zod.string()
-  })
-)
+    created_at_cursor: zod.string(),
+  }),
+);
 
 async function getPaginationTargets(
   connection: CommonQueryMethods,
-  cursor: null | Cursor
+  cursor: null | Cursor,
 ): Promise<zod.TypeOf<typeof TargetsModel>> {
   const query = sql`
     SELECT
@@ -181,10 +181,10 @@ async function getPaginationTargets(
       , "id" ASC
     LIMIT
       200
-  `
+  `;
 
-  const items = await connection.query(query)
-  return TargetsModel.parse(items.rows)
+  const items = await connection.query(query);
+  return TargetsModel.parse(items.rows);
 }
 ```
 
@@ -221,65 +221,70 @@ reading from R2 and running bcrypt for verifying the access token against the ha
 
 ```ts filename="Using the Cache API for caching access token verification"
 const validateLegacyCDNAccessToken = async (args: {
-  targetId: string
-  accessToken: string
-  s3: S3Config
-  requestCache: Cache
-  waitUntil: FetchEvent['waitUntil']
+  targetId: string;
+  accessToken: string;
+  s3: S3Config;
+  requestCache: Cache;
+  waitUntil: FetchEvent["waitUntil"];
 }): Promise<boolean> => {
   const cacheKey = new Request(
     [
-      'https://key-cache.graphql-hive.com',
-      'legacy',
+      "https://key-cache.graphql-hive.com",
+      "legacy",
       args.targetId,
-      encodeURIComponent(args.accessToken)
-    ].join('/'),
+      encodeURIComponent(args.accessToken),
+    ].join("/"),
     {
-      method: 'GET'
-    }
-  )
+      method: "GET",
+    },
+  );
 
-  const response = await args.requestCache.match(cacheKey)
+  const response = await args.requestCache.match(cacheKey);
 
   if (response) {
-    const responseValue = await response.text()
+    const responseValue = await response.text();
 
-    const isValid = responseValue === '1'
-    return isValid
+    const isValid = responseValue === "1";
+    return isValid;
   }
 
   const withCache = async (isValid: boolean) => {
     const promise = args.requestCache.put(
       cacheKey,
-      new Response(isValid ? '1' : '0', {
+      new Response(isValid ? "1" : "0", {
         status: 200,
         headers: {
           // cache for 5 minutes
-          'Cache-Control': `s-maxage=${60 * 5}`
-        }
-      })
-    )
+          "Cache-Control": `s-maxage=${60 * 5}`,
+        },
+      }),
+    );
 
     // don't block the request by the cache
-    args.waitUntil(promise)
+    args.waitUntil(promise);
 
-    return isValid
-  }
+    return isValid;
+  };
 
   const key = await args.s3.client.fetch(
-    [args.s3.endpoint, args.s3.bucketName, 'cdn-legacy-keys', args.targetId].join('/'),
+    [
+      args.s3.endpoint,
+      args.s3.bucketName,
+      "cdn-legacy-keys",
+      args.targetId,
+    ].join("/"),
     {
-      method: 'GET'
-    }
-  )
+      method: "GET",
+    },
+  );
 
   if (key.status !== 200) {
-    return withCache(false)
+    return withCache(false);
   }
 
-  const isValid = await bcrypt.compare(args.accessToken, await key.text())
-  return withCache(isValid)
-}
+  const isValid = await bcrypt.compare(args.accessToken, await key.text());
+  return withCache(isValid);
+};
 ```
 
 After everything was implemented and properly tested via our integration test suite, we finally
@@ -353,37 +358,40 @@ We can read the `accessKeyId` from the `X-Hive-CDN-Key` header value.
 
 ```ts filename="Logic for decoding the incoming CDN access token"
 export interface CDNToken {
-  keyId: string
-  privateKey: string
+  keyId: string;
+  privateKey: string;
 }
 
 /**
  * We prefix the token so we can check fast whether a token is a new one or a legacy one.
  */
-const keyPrefix = 'hv2'
+const keyPrefix = "hv2";
 
 export function isCDNAccessToken(token: string) {
-  return token.startsWith(keyPrefix) === true
+  return token.startsWith(keyPrefix) === true;
 }
 
-const decodeError = { type: 'failure', reason: 'Invalid access token.' } as const
+const decodeError = {
+  type: "failure",
+  reason: "Invalid access token.",
+} as const;
 
 /**
  * Safely decode a CDN token that got serialized as a string.
  */
 export function decodeCdnAccessTokenSafe(token: string) {
   if (isCDNAccessToken(token) === false) {
-    return decodeError
+    return decodeError;
   }
 
-  token = token.slice(keyPrefix.length)
+  token = token.slice(keyPrefix.length);
 
-  const str = globalThis.atob(token)
-  const [keyId, privateKey] = str.split(':')
+  const str = globalThis.atob(token);
+  const [keyId, privateKey] = str.split(":");
   if (keyId && privateKey) {
-    return { type: 'success', token: { keyId, privateKey } } as const
+    return { type: "success", token: { keyId, privateKey } } as const;
   }
-  return decodeError
+  return decodeError;
 }
 ```
 
