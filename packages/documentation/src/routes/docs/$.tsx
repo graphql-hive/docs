@@ -1,6 +1,8 @@
+import { Footer, Navigation } from "@/components/navigation";
 import { PageActions } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
-import { source } from "@/lib/source";
+import { getSource } from "@/lib/source";
+import { MDXLink } from "@hive/design-system/server/mdx-components/mdx-link";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
@@ -30,6 +32,7 @@ const serverLoader = createServerFn({
 })
   .inputValidator((slugs: string[]) => slugs)
   .handler(async ({ data: slugs }) => {
+    const source = await getSource();
     const page = source.getPage(slugs);
     if (!page) throw notFound();
 
@@ -71,6 +74,7 @@ const clientLoader = browserCollections.docs.createClientLoader<{
             components={{
               ...defaultMdxComponents,
               ...Twoslash,
+              a: MDXLink,
             }}
           />
         </DocsBody>
@@ -83,12 +87,26 @@ function Page() {
   const data = useFumadocsLoader(Route.useLoaderData());
 
   return (
-    <DocsLayout {...baseOptions()} tree={data.pageTree}>
-      {clientLoader.useContent(data.path, {
-        className: "",
-        githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,
-        markdownUrl: `${data.url}.mdx`,
-      })}
-    </DocsLayout>
+    <div className="min-h-screen" data-docs>
+      <DocsLayout
+        {...baseOptions(data.pageTree)}
+        nav={{
+          component: (
+            <Navigation
+              className="w-full bg-beige-100 dark:bg-[rgb(var(--nextra-bg))]"
+              noBorder
+            />
+          ),
+        }}
+        searchToggle={{ enabled: false }}
+      >
+        {clientLoader.useContent(data.path, {
+          className: "",
+          githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,
+          markdownUrl: `${data.url}.mdx`,
+        })}
+      </DocsLayout>
+      <Footer className="border-t border-fd-border" />
+    </div>
   );
 }

@@ -1,27 +1,460 @@
-@import 'tailwindcss';
-@import 'fumadocs-ui/css/neutral.css';
-@import 'fumadocs-ui/css/preset.css';
-@import 'fumadocs-twoslash/twoslash.css';
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+@import "fumadocs-twoslash/twoslash.css";
 
-.flowchart {
-  --mermaid-node-fill: var(--color-neutral-100);
-  --mermaid-node-stroke: var(--color-neutral-200);
-  --mermaid-arrow: var(--color-neutral-500);
+@import "@hive/design-system/style.css";
 
-  margin: 1.5rem auto 0 auto;
+@import "../fonts/fonts.css";
 
-  & .label text,
-  span {
-    font-size: 14px !important;
-  }
+@source "../../**/*.tsx";
+@source "../../../design-system/src/**/*.tsx";
 
-  & div:has(> .nodeLabel) {
-    display: unset !important;
+@variant dark (&:where(.dark, .dark *):not(:where(.light, .light *)));
+
+@theme {
+  --font-sans:
+    "PP Neue Montreal", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
   }
 }
 
-.dark .flowchart {
-  --mermaid-node-fill: oklch(from var(--color-neutral-50) l c h / 0.5);
-  --mermaid-node-stroke: var(--color-neutral-100);
-  --mermaid-arrow: var(--color-neutral-300);
+:root {
+  --nextra-primary-hue: 164deg;
+  --nextra-primary-saturation: 70%;
+  --nextra-primary-lightness: 40%;
+  --nextra-bg: 255 255 255;
+  --color-fd-background: var(--color-beige-100);
+  --color-fd-border: var(--color-beige-400);
+  --color-fd-muted-foreground: var(--color-beige-900);
+  --color-fd-foreground: var(--color-green-1000);
+  --color-fd-primary: var(--color-green-1000);
+  --color-fd-card: var(--color-white);
+  --color-fd-secondary: var(--color-beige-100);
+  --color-fd-sidebar-active: var(--color-blue-900);
+  --color-fd-popover-foreground: var(--color-green-1000);
+  --color-fd-sidebar-active-bg: color-mix(
+    in oklab,
+    var(--color-blue-400) 20%,
+    transparent
+  );
+  --tw-prose-body: var(--color-green-1000);
+}
+
+.dark {
+  --nextra-bg: 17 17 17;
+  --color-fd-background: hsl(0, 0%, 7.04%);
+  --color-fd-border: var(--color-neutral-700);
+  --color-fd-foreground: hsl(0, 0%, 92%);
+  --color-fd-primary: var(--color-neutral-100);
+  --color-fd-card: var(--color-neutral-900);
+  --color-fd-muted-foreground: var(--color-beige-800);
+  --color-fd-popover-foreground: var(--color-neutral-200);
+  --color-fd-popover: hsl(0, 0%, 7.04%);
+  --color-fd-sidebar-active: var(--color-primary);
+  --color-fd-sidebar-active-bg: color-mix(
+    in oklab,
+    hsl(0 0% 100% / 0.05),
+    var(--color-primary) 4.5%
+  );
+  --tw-prose-body: color-mix(in oklab, hsl(0, 0%, 92%) 90%, transparent);
+}
+
+a,
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/* Tailwind v4 preflight sets [hidden] { display: none !important } in @layer base.
+   Base UI Tabs.Panel with keepMounted sets `hidden` on inactive panels.
+   We need all panels visible in horizontal scroll containers on mobile. */
+@media (max-width: 1023px) {
+  .snap-x > [hidden] {
+    display: flex !important;
+    flex-direction: column;
+  }
+}
+
+/* Docs-specific theme extensions */
+@theme {
+  /* Custom docs colors */
+  --color-blueish-green: #003834;
+  --color-dark: #111;
+  --color-fd-sidebar-active: hsl(164 70% 27%);
+  --color-fd-sidebar-active-bg: hsl(164 70% 89%);
+
+  /* Nextra primary colors (HSL-based, for theming) */
+  --color-nextra-primary-50: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      calc(var(--nextra-primary-lightness) + 52%)
+  );
+  --color-nextra-primary-100: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      calc(var(--nextra-primary-lightness) + 49%)
+  );
+  --color-nextra-primary-200: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      calc(var(--nextra-primary-lightness) + 41%)
+  );
+  --color-nextra-primary-300: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      calc(var(--nextra-primary-lightness) + 32%)
+  );
+  --color-nextra-primary-400: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      calc(var(--nextra-primary-lightness) + 21%)
+  );
+  --color-nextra-primary-500: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      calc(var(--nextra-primary-lightness) + 5%)
+  );
+  --color-nextra-primary-600: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      var(--nextra-primary-lightness)
+  );
+  --color-nextra-primary-700: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      calc(var(--nextra-primary-lightness) - 6%)
+  );
+  --color-nextra-primary-750: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      calc(var(--nextra-primary-lightness) - 10%)
+  );
+  --color-nextra-primary-800: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      calc(var(--nextra-primary-lightness) - 13%)
+  );
+  --color-nextra-primary-900: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      calc(var(--nextra-primary-lightness) - 21%)
+  );
+  --color-nextra-primary-1000: hsl(
+    var(--nextra-primary-hue) var(--nextra-primary-saturation)
+      calc(var(--nextra-primary-lightness) - 33%)
+  );
+
+  /* Accordion animations */
+  --animate-accordion-down: accordion-down 0.5s ease;
+  --animate-accordion-up: accordion-up 0.5s ease;
+}
+
+/* Accordion keyframes */
+@keyframes accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+/* tailwindcss-animate compatible animations */
+@keyframes enter {
+  from {
+    opacity: var(--tw-enter-opacity, 1);
+    transform: translate3d(
+        var(--tw-enter-translate-x, 0),
+        var(--tw-enter-translate-y, 0),
+        0
+      )
+      scale3d(
+        var(--tw-enter-scale, 1),
+        var(--tw-enter-scale, 1),
+        var(--tw-enter-scale, 1)
+      )
+      rotate(var(--tw-enter-rotate, 0));
+  }
+}
+
+@keyframes exit {
+  to {
+    opacity: var(--tw-exit-opacity, 1);
+    transform: translate3d(
+        var(--tw-exit-translate-x, 0),
+        var(--tw-exit-translate-y, 0),
+        0
+      )
+      scale3d(
+        var(--tw-exit-scale, 1),
+        var(--tw-exit-scale, 1),
+        var(--tw-exit-scale, 1)
+      )
+      rotate(var(--tw-exit-rotate, 0));
+  }
+}
+
+@utility animate-in {
+  animation-name: enter;
+  animation-duration: var(--tw-animate-duration, 150ms);
+  /* Don't reset variables here — the keyframes already have fallbacks (0/1),
+     and resetting would override slide-in/fade-in/zoom-in values when
+     variant-prefixed utilities sort after this one in the CSS output. */
+}
+
+@utility animate-out {
+  animation-name: exit;
+  animation-duration: var(--tw-animate-duration, 150ms);
+}
+@utility animate-duration-* {
+  --tw-animate-duration: calc(--value(integer) * 1ms);
+}
+
+/* tailwindcss-animate compatibility: duration-* should affect animation-duration too */
+.duration-75.animate-in,
+.duration-75.animate-out {
+  animation-duration: 75ms;
+}
+.duration-100.animate-in,
+.duration-100.animate-out {
+  animation-duration: 100ms;
+}
+.duration-150.animate-in,
+.duration-150.animate-out {
+  animation-duration: 150ms;
+}
+.duration-200.animate-in,
+.duration-200.animate-out {
+  animation-duration: 200ms;
+}
+.duration-300.animate-in,
+.duration-300.animate-out {
+  animation-duration: 300ms;
+}
+.duration-500.animate-in,
+.duration-500.animate-out {
+  animation-duration: 500ms;
+}
+.duration-700.animate-in,
+.duration-700.animate-out {
+  animation-duration: 700ms;
+}
+.duration-1000.animate-in,
+.duration-1000.animate-out {
+  animation-duration: 1000ms;
+}
+
+@utility fade-in-* {
+  --tw-enter-opacity: calc(--value(integer) / 100);
+}
+
+@utility fade-out-* {
+  --tw-exit-opacity: calc(--value(integer) / 100);
+}
+
+@utility slide-in-from-top-* {
+  --tw-enter-translate-y: calc(--value(integer) * -0.25rem);
+}
+
+@utility slide-in-from-bottom-* {
+  --tw-enter-translate-y: calc(--value(integer) * 0.25rem);
+}
+
+@utility slide-in-from-left-* {
+  --tw-enter-translate-x: calc(--value(integer) * -0.25rem);
+}
+
+@utility slide-in-from-right-* {
+  --tw-enter-translate-x: calc(--value(integer) * 0.25rem);
+}
+
+@utility slide-out-to-top-* {
+  --tw-exit-translate-y: calc(--value(integer) * -0.25rem);
+}
+
+@utility slide-out-to-bottom-* {
+  --tw-exit-translate-y: calc(--value(integer) * 0.25rem);
+}
+
+@utility slide-out-to-left-* {
+  --tw-exit-translate-x: calc(--value(integer) * -0.25rem);
+}
+
+@utility slide-out-to-right-* {
+  --tw-exit-translate-x: calc(--value(integer) * 0.25rem);
+}
+
+@utility zoom-in-* {
+  --tw-enter-scale: calc(--value(integer) / 100);
+}
+
+@utility zoom-out-* {
+  --tw-exit-scale: calc(--value(integer) / 100);
+}
+
+@keyframes pop-up {
+  from {
+    opacity: 0;
+    transform: translateY(3px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@utility animate-pop-up {
+  animation: pop-up 400ms var(--hive-ease-overshoot-far) forwards;
+}
+
+@keyframes icon-blur-in {
+  from {
+    opacity: 0;
+    filter: blur(1px);
+    scale: 0.75;
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    scale: 1;
+  }
+}
+
+@keyframes icon-blur-out {
+  from {
+    opacity: 1;
+    filter: blur(0px);
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    filter: blur(1px);
+    scale: 0.75;
+  }
+}
+
+@utility fill-mode-forwards {
+  animation-fill-mode: forwards;
+}
+
+@utility fill-mode-backwards {
+  animation-fill-mode: backwards;
+}
+
+@utility fill-mode-both {
+  animation-fill-mode: both;
+}
+
+/* Firefox variant - targets Firefox browser */
+@custom-variant firefox {
+  @supports (-moz-appearance: none) {
+    @slot;
+  }
+}
+
+/* Utility: mask-image-none */
+@utility mask-image-none {
+  mask-image: none;
+}
+
+/* Blockquote utility - adds styled quotation marks with configurable color
+   Usage: blockquote-[#color] or blockquote-[var(--color-name)]
+   Example: blockquote-[#A4C4CB] or blockquote-[var(--color-blue-400)] */
+@utility blockquote-* {
+  position: relative;
+  quotes: "" " " "" "'" "'";
+  --blockquote-color: --value(--color-*, [color]);
+
+  &::before,
+  &::after {
+    line-height: 0;
+    position: relative;
+    font-size: 2.25em;
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    color: var(--blockquote-color);
+  }
+
+  &::before {
+    content: open-quote;
+    left: -0.375em;
+  }
+
+  &::after {
+    content: close-quote;
+  }
+}
+
+:is(.flowchart, .statediagram, .sequenceDiagram) {
+  --mermaid-fg: var(--color-neutral-900);
+  --mermaid-fg-dim: var(--color-neutral-600);
+  --mermaid-node-fill: var(--color-neutral-100);
+  --mermaid-node-stroke: var(--color-neutral-200);
+  --mermaid-arrow: var(--color-neutral-500);
+  --mermaid-cluster-fill: var(--color-neutral-50);
+  --mermaid-cluster-stroke: var(--color-neutral-400);
+  --mermaid-edge-label-bg: var(--color-white);
+
+  margin: 1.5rem auto 0 auto;
+}
+
+.flowchart .label text,
+.flowchart span {
+  font-size: 14px !important;
+}
+
+.flowchart div:has(> .nodeLabel) {
+  display: unset !important;
+}
+
+.dark :is(.flowchart, .statediagram, .sequenceDiagram) {
+  --mermaid-fg: var(--color-neutral-200);
+  --mermaid-fg-dim: var(--color-neutral-400);
+  --mermaid-node-fill: oklch(from var(--color-neutral-50) l c h / 0.2);
+  --mermaid-node-stroke: var(--color-neutral-500);
+  --mermaid-arrow: var(--color-neutral-400);
+  --mermaid-cluster-fill: oklch(from var(--color-neutral-50) l c h / 0.15);
+  --mermaid-cluster-stroke: var(--color-neutral-600);
+  --mermaid-edge-label-bg: var(--color-neutral-900);
+}
+
+[data-docs] #hive-navigation {
+  margin-top: 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--color-fd-border);
+}
+
+#nd-page.xl\:pt-14 {
+  padding-top: 2rem;
+  @apply pb-4 md:pb-6 lg:pb-8 xl:pb-[52px];
+}
+
+/* toc links */
+a.text-fd-muted-foreground.prose.text-sm:hover {
+  text-decoration: underline;
+}
+
+.shiki {
+  box-shadow: none;
+}
+
+[data-radix-popper-content-wrapper] {
+  background-color: hsl(var(--nextra-bg));
+  --color-fd-accent: var(--color-beige-100);
+}
+
+.dark [data-radix-popper-content-wrapper] {
+  --color-fd-accent: inherit;
+  color: var(--color-white);
+  background-color: var(--color-neutral-800);
+  border-radius: 1rem;
 }

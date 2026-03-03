@@ -6,20 +6,65 @@ import mdx from "fumadocs-mdx/vite";
 import { nitro } from "nitro/vite";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
+import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      onwarn(warning, defaultHandler) {
+        if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
+        defaultHandler(warning);
+      },
+    },
+  },
   plugins: [
     !process.env["CI"] && devtools(),
-    nitro({ preset: "vercel" }),
+    nitro({
+      preset: process.env["VERCEL"] ? "vercel" : "cloudflare-module",
+      routeRules: await import("./redirects").then((m) => m.routeRules),
+    }),
     mdx(await import("./source.config")),
     tailwindcss(),
+    svgr({
+      include: "**/*.svg?svgr",
+      svgrOptions: {
+        svgoConfig: {
+          plugins: [
+            {
+              name: "preset-default",
+              params: {
+                overrides: {
+                  minifyStyles: false,
+                  removeTitle: false,
+                  removeViewBox: false,
+                },
+              },
+            },
+            "removeXMLNS",
+            "removeXlink",
+            "prefixIds",
+          ],
+        },
+      },
+    }),
     tsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
     tanstackStart({
       prerender: {
-        enabled: false, // todo: enable this
+        crawlLinks: true,
+        enabled: true,
+      },
+      sitemap: {
+        enabled: true,
+        host: "https://the-guild.dev/graphql/hive",
+      },
+      spa: {
+        enabled: true,
+        prerender: {
+          crawlLinks: true,
+        },
       },
     }),
     react(),
@@ -27,9 +72,15 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("src", import.meta.url)),
+      "@hive/design-system": fileURLToPath(
+        new URL("../design-system/src", import.meta.url),
+      ),
     },
   },
   server: {
     port: 1440,
+  },
+  ssr: {
+    noExternal: ["@hive/design-system", "tailwind-merge"],
   },
 });

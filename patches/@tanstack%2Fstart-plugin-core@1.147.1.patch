@@ -1,0 +1,14 @@
+diff --git a/dist/esm/prerender.js b/dist/esm/prerender.js
+index f6242696d9f719d04b0e5b5c2c393dfa8792fa9f..f041d2147dfcbee95915b7072611a8008a570d09 100644
+--- a/dist/esm/prerender.js
++++ b/dist/esm/prerender.js
+@@ -83,7 +83,8 @@ async function prerender({
+     while ((match = linkRegex.exec(html)) !== null) {
+       const href = match[1];
+       if (href && (href.startsWith("/") || href.startsWith("./"))) {
+-        links.push(href);
++        const clean = href.split("#")[0];
++        if (clean) links.push(clean);
+       }
+     }
+     return links;
