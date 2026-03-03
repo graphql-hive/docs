@@ -238,13 +238,24 @@ const finalJson: JsonValue = {
   user: { id: 1, name: "Ada" },
 };
 
-const ADATA = serializeWithByteMap(subgraphA);
-const MAP_A = new Map<
-  string,
-  { kind: keyof typeof COLORS; len: number; start: number }
->();
-for (const e of ADATA.entries)
-  MAP_A.set(e.localId, { kind: e.kind, len: e.len, start: e.start });
+let _adata: ReturnType<typeof serializeWithByteMap> | undefined;
+let _mapA:
+  | Map<string, { kind: keyof typeof COLORS; len: number; start: number }>
+  | undefined;
+
+function getAdata() {
+  _adata ||= serializeWithByteMap(subgraphA);
+  return _adata;
+}
+
+function getMapA() {
+  if (!_mapA) {
+    _mapA = new Map();
+    for (const e of getAdata().entries)
+      _mapA.set(e.localId, { kind: e.kind, len: e.len, start: e.start });
+  }
+  return _mapA;
+}
 
 const FINAL_MAP = new Map<string, string>([
   ["/active#key", "A:/active#key"],
@@ -281,7 +292,7 @@ function idMapperFinal(info: IdMapperInfo) {
 function sliceLookup(gid: string) {
   if (gid.startsWith("A:")) {
     const local = gid.slice(2);
-    const e = MAP_A.get(local);
+    const e = getMapA().get(local);
     if (!e) return null;
     return { len: e.len, src: "A" as const, start: e.start };
   }
@@ -581,10 +592,10 @@ export function ZeroCopyBlocks() {
               value={subgraphA}
             />
             <ByteBuffer
-              entries={ADATA.entries}
+              entries={getAdata().entries}
               hoverId={hoverId}
               idPrefix="A:"
-              json={ADATA.json}
+              json={getAdata().json}
               setHoverId={setHoverId}
               title="Subgraph response is stored as bytes"
             />
