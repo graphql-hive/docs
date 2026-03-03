@@ -29,6 +29,7 @@ import { Route as LandingLightOnlyOssFriendsRouteImport } from './routes/_landin
 import { Route as LandingLightOnlyGatewayRouteImport } from './routes/_landing/_light-only/gateway'
 import { Route as LandingLightOnlyEcosystemRouteImport } from './routes/_landing/_light-only/ecosystem'
 import { Route as LandingLightOnlyFederationIndexRouteImport } from './routes/_landing/_light-only/federation/index'
+import { Route as LandingBlogTagSplatRouteImport } from './routes/_landing/blog/tag/$'
 
 const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   id: '/llms.txt',
@@ -134,6 +135,11 @@ const LandingLightOnlyFederationIndexRoute =
     path: '/federation/',
     getParentRoute: () => LandingLightOnlyRoute,
   } as any)
+const LandingBlogTagSplatRoute = LandingBlogTagSplatRouteImport.update({
+  id: '/blog/tag/$',
+  path: '/blog/tag/$',
+  getParentRoute: () => LandingRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
@@ -153,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof LandingBlogIndexRoute
   '/case-studies': typeof LandingCaseStudiesIndexRoute
   '/product-updates': typeof LandingProductUpdatesIndexRoute
+  '/blog/tag/$': typeof LandingBlogTagSplatRoute
   '/federation': typeof LandingLightOnlyFederationIndexRoute
 }
 export interface FileRoutesByTo {
@@ -173,6 +180,7 @@ export interface FileRoutesByTo {
   '/blog': typeof LandingBlogIndexRoute
   '/case-studies': typeof LandingCaseStudiesIndexRoute
   '/product-updates': typeof LandingProductUpdatesIndexRoute
+  '/blog/tag/$': typeof LandingBlogTagSplatRoute
   '/federation': typeof LandingLightOnlyFederationIndexRoute
 }
 export interface FileRoutesById {
@@ -196,6 +204,7 @@ export interface FileRoutesById {
   '/_landing/blog/': typeof LandingBlogIndexRoute
   '/_landing/case-studies/': typeof LandingCaseStudiesIndexRoute
   '/_landing/product-updates/': typeof LandingProductUpdatesIndexRoute
+  '/_landing/blog/tag/$': typeof LandingBlogTagSplatRoute
   '/_landing/_light-only/federation/': typeof LandingLightOnlyFederationIndexRoute
 }
 export interface FileRouteTypes {
@@ -218,6 +227,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/case-studies'
     | '/product-updates'
+    | '/blog/tag/$'
     | '/federation'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -238,6 +248,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/case-studies'
     | '/product-updates'
+    | '/blog/tag/$'
     | '/federation'
   id:
     | '__root__'
@@ -260,6 +271,7 @@ export interface FileRouteTypes {
     | '/_landing/blog/'
     | '/_landing/case-studies/'
     | '/_landing/product-updates/'
+    | '/_landing/blog/tag/$'
     | '/_landing/_light-only/federation/'
   fileRoutesById: FileRoutesById
 }
@@ -414,6 +426,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandingLightOnlyFederationIndexRouteImport
       parentRoute: typeof LandingLightOnlyRoute
     }
+    '/_landing/blog/tag/$': {
+      id: '/_landing/blog/tag/$'
+      path: '/blog/tag/$'
+      fullPath: '/blog/tag/$'
+      preLoaderRoute: typeof LandingBlogTagSplatRouteImport
+      parentRoute: typeof LandingRoute
+    }
   }
 }
 
@@ -448,6 +467,7 @@ interface LandingRouteChildren {
   LandingBlogIndexRoute: typeof LandingBlogIndexRoute
   LandingCaseStudiesIndexRoute: typeof LandingCaseStudiesIndexRoute
   LandingProductUpdatesIndexRoute: typeof LandingProductUpdatesIndexRoute
+  LandingBlogTagSplatRoute: typeof LandingBlogTagSplatRoute
 }
 
 const LandingRouteChildren: LandingRouteChildren = {
@@ -458,6 +478,7 @@ const LandingRouteChildren: LandingRouteChildren = {
   LandingBlogIndexRoute: LandingBlogIndexRoute,
   LandingCaseStudiesIndexRoute: LandingCaseStudiesIndexRoute,
   LandingProductUpdatesIndexRoute: LandingProductUpdatesIndexRoute,
+  LandingBlogTagSplatRoute: LandingBlogTagSplatRoute,
 }
 
 const LandingRouteWithChildren =
