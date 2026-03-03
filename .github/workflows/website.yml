@@ -33,3 +33,6 @@ jobs:
           command: |
             ${{ github.ref == 'refs/heads/main' && 'deploy' || 'versions upload' }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+env:
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
