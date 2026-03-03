@@ -1,0 +1,7 @@
+name = "hive-platform-docs"
+compatibility_date = "2026-02-10"
+compatibility_flags = ["nodejs_compat"]
+main = ".output/server/index.mjs"
+
+[assets]
+directory = ".output/public"

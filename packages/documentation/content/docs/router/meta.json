@@ -1,0 +1,15 @@
+{
+  "title": "Hive Router",
+  "description": "High-performance GraphQL federation router built with Rust",
+  "icon": "HiveRouter",
+  "root": true,
+  "pages": [
+    "index",
+    "getting-started",
+    "configuration",
+    "guides",
+    "observability",
+    "security",
+    "supergraph"
+  ]
+}

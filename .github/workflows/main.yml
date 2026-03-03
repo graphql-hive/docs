@@ -15,8 +15,11 @@ jobs:
   typescript:
     uses: ./.github/workflows/typescript-typecheck.yml
 
-  # tests:
-  #   uses: ./.github/workflows/tests.yml
+  test:
+    uses: ./.github/workflows/test.yml
+
+  e2e:
+    uses: ./.github/workflows/e2e.yml
 
   website:
     uses: ./.github/workflows/website.yml

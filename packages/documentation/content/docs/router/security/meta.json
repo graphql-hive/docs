@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "authorization",
+    "cors",
+    "csrf",
+    "introspection",
+    "jwt-authentication",
+    "operation-complexity"
+  ]
+}

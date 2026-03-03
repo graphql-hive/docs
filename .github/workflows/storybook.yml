@@ -1,0 +1,56 @@
+name: Storybook
+
+on:
+  workflow_call:
+
+jobs:
+  deployment:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 2
+
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: build storybook
+        run: bun run storybook:build
+        working-directory: packages/design-system
+
+      - name: push to cloudflare pages
+        uses: cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65 # v3.14.1
+        id: deploy
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: |
+            pages deploy packages/design-system/storybook-static --project-name=the-guild-docs-storybook --branch=${{ github.event.pull_request.number != '' && format('pr-{0}', github.event.pull_request.number) || 'main' }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: find pr comment
+        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
+        id: fc
+        if: ${{ github.event.pull_request.number != '' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: <!--- storybook-deployment --->
+
+      - name: create/update comment
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
+        if: ${{ github.event.pull_request.number != '' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            <!--- storybook-deployment --->
+            ### 📚 Storybook Deployment
+
+            The latest changes are available as preview in: [${{ steps.deploy.outputs.pages-deployment-alias-url }}](${{ steps.deploy.outputs.pages-deployment-alias-url }})
+          edit-mode: replace
