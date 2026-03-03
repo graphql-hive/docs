@@ -237,7 +237,7 @@ function CaseStudyDetail() {
         title={data.title}
       />
       <div className="mx-auto flex max-w-(--content-width)">
-        <div className="ml-0 min-w-0 flex-1 pl-6 max-sm:pr-6 md:pl-12">
+        <div className="ml-0 min-w-0 flex-1 pl-4 max-sm:pr-4 md:pl-12">
           {clientLoader.useContent(data.path, { slug: data.slug })}
         </div>
         <LookingToUseHiveUpsellBlock className="sticky right-2 top-[108px] mb-8 h-min max-lg:hidden lg:w-[320px] xl:w-[400px]" />

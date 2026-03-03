@@ -45,6 +45,10 @@
       & :nth-child(2) {
         @apply font-medium;
       }
+
+      & img {
+        @apply !my-0;
+      }
     }
   }
 
