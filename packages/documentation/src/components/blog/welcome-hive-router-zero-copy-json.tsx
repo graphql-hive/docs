@@ -1,6 +1,16 @@
 "use client";
 
+import type { ReactNode } from "react";
+
 import { useMemo, useState } from "react";
+
+type JsonValue =
+  | JsonValue[]
+  | { [key: string]: JsonValue }
+  | boolean
+  | number
+  | string
+  | null;
 
 function enc(str: string) {
   return new TextEncoder().encode(str);
@@ -16,7 +26,7 @@ const COLORS = {
 } as const;
 
 // --- Build stable IDs for keys & primitive values using JSON Pointer‑like paths ---
-function isPrimitive(v: any) {
+function isPrimitive(v: unknown): v is boolean | number | string | null {
   return (
     v === null ||
     typeof v === "string" ||
@@ -39,14 +49,16 @@ function escapeJSONString(s: string) {
   // escape backslashes first, then quotes
   return s.replaceAll("\\", "\\\\").replaceAll('"', String.raw`\"`);
 }
-function serializeWithByteMap(val: any) {
-  type Entry = {
-    kind: keyof typeof COLORS;
-    len: number;
-    localId: string;
-    start: number;
-  };
-  const entries: Entry[] = [];
+
+type ByteMapEntry = {
+  kind: keyof typeof COLORS;
+  len: number;
+  localId: string;
+  start: number;
+};
+
+function serializeWithByteMap(val: JsonValue) {
+  const entries: ByteMapEntry[] = [];
   let out = "";
   let bytePos = 0; // running UTF‑8 length
   const push = (chunk: string) => {
@@ -54,7 +66,7 @@ function serializeWithByteMap(val: any) {
     bytePos += enc(chunk).length;
   };
 
-  const walk = (v: any, path: string) => {
+  const walk = (v: JsonValue, path: string) => {
     if (Array.isArray(v)) {
       push("[");
       for (const [idx, item] of v.entries()) {
@@ -133,11 +145,11 @@ function serializeWithByteMap(val: any) {
         });
         push('"');
         push(":");
-        const val = (v as any)[k];
-        if (isPrimitive(val)) {
-          if (typeof val === "string") {
+        const child = (v as Record<string, JsonValue>)[k]!;
+        if (isPrimitive(child)) {
+          if (typeof child === "string") {
             push('"');
-            const content = escapeJSONString(val);
+            const content = escapeJSONString(child);
             const start = bytePos;
             push(content);
             const len = enc(content).length;
@@ -148,8 +160,8 @@ function serializeWithByteMap(val: any) {
               start,
             });
             push('"');
-          } else if (typeof val === "number") {
-            const text = String(val);
+          } else if (typeof child === "number") {
+            const text = String(child);
             const start = bytePos;
             push(text);
             const len = enc(text).length;
@@ -159,13 +171,13 @@ function serializeWithByteMap(val: any) {
               localId: valId(path, k),
               start,
             });
-          } else if (typeof val === "boolean") {
-            const text = val ? "true" : "false";
+          } else if (typeof child === "boolean") {
+            const text = child ? "true" : "false";
             const start = bytePos;
             push(text);
             const len = enc(text).length;
             entries.push({ kind: "bool", len, localId: valId(path, k), start });
-          } else if (val === null) {
+          } else if (child === null) {
             const text = "null";
             const start = bytePos;
             push(text);
@@ -173,7 +185,7 @@ function serializeWithByteMap(val: any) {
             entries.push({ kind: "null", len, localId: valId(path, k), start });
           }
         } else {
-          walk(val, `${path}/${k}`);
+          walk(child, `${path}/${k}`);
         }
         if (i < keys.length - 1) push(",");
       }
@@ -215,26 +227,80 @@ function serializeWithByteMap(val: any) {
   return { entries, json: out };
 }
 
+// --- Module-scope constants (stable across renders) ---
+const subgraphA: JsonValue = {
+  active: true,
+  user: { email: "ada@lab", id: 1, name: "Ada" },
+};
+
+const finalJson: JsonValue = {
+  active: true,
+  user: { id: 1, name: "Ada" },
+};
+
+const ADATA = serializeWithByteMap(subgraphA);
+const MAP_A = new Map<
+  string,
+  { kind: keyof typeof COLORS; len: number; start: number }
+>();
+for (const e of ADATA.entries)
+  MAP_A.set(e.localId, { kind: e.kind, len: e.len, start: e.start });
+
+const FINAL_MAP = new Map<string, string>([
+  ["/active#key", "A:/active#key"],
+  ["/active#value", "A:/active#value"],
+  ["/price#key", "B:/price#key"],
+  ["/price#value", "B:/price#value"],
+  ["/user#key", "A:/user#key"],
+  ["/user/id#key", "A:/user/id#key"],
+  ["/user/id#value", "A:/user/id#value"],
+  ["/user/name#key", "A:/user/name#key"],
+  ["/user/name#value", "A:/user/name#value"],
+  ["/user/tags#key", "B:/user/tags#key"],
+  ["/user/tags/0#value", "B:/user/tags/0#value"],
+  ["/user/tags/1#value", "B:/user/tags/1#value"],
+]);
+
+type IdMapperInfo = {
+  index?: number;
+  key?: string;
+  kind: "index" | "key" | "value";
+  path: string;
+};
+
+function idMapperFinal(info: IdMapperInfo) {
+  if (info.kind === "key" && info.key)
+    return FINAL_MAP.get(`${info.path}/${info.key}#key`);
+  if (info.kind === "value" && info.key)
+    return FINAL_MAP.get(`${info.path}/${info.key}#value`);
+  if (info.kind === "index" && typeof info.index === "number")
+    return FINAL_MAP.get(`${info.path}/${info.index}#value`);
+  return;
+}
+
+function sliceLookup(gid: string) {
+  if (gid.startsWith("A:")) {
+    const local = gid.slice(2);
+    const e = MAP_A.get(local);
+    if (!e) return null;
+    return { len: e.len, src: "A" as const, start: e.start };
+  }
+  return null;
+}
+
 // --- Pretty JSON renderer with colored spans and cross‑highlight ---
-// idMapper: optional function that returns the GLOBAL ID to use for a given token in this view
-// If missing, we default to idPrefix + localId
 function JsonBlock({
   hoverId,
   idMapper,
   idPrefix = "",
   pretty,
   setHoverId,
-  sliceLookup,
+  sliceLookup: sliceLookupFn,
   title,
   value,
 }: {
   hoverId: string | null;
-  idMapper?: (info: {
-    index?: number;
-    key?: string;
-    kind: "index" | "key" | "value";
-    path: string;
-  }) => string | null | undefined;
+  idMapper?: (info: IdMapperInfo) => string | null | undefined;
   idPrefix?: string;
   pretty: boolean;
   setHoverId: (id: string | null) => void;
@@ -242,22 +308,20 @@ function JsonBlock({
     globalId: string,
   ) => { len: number; src: "A" | "B"; start: number } | null;
   title?: string;
-  value: any;
+  value: JsonValue;
 }) {
   let keySeq = 0;
   const K = () => keySeq++;
 
   const RefChip = ({ gid }: { gid: string }) => {
-    if (!sliceLookup) return null;
-    const info = sliceLookup(gid);
+    if (!sliceLookupFn) return null;
+    const info = sliceLookupFn(gid);
     if (!info) return null;
-    const onEnter = () => setHoverId(gid);
-    const onLeave = () => setHoverId(null);
     return (
       <span
         className="ml-1 rounded-sm border border-neutral-700 bg-neutral-800 px-1 py-0.5 align-middle text-[10px]"
-        onMouseEnter={onEnter}
-        onMouseLeave={onLeave}
+        onMouseEnter={() => setHoverId(gid)}
+        onMouseLeave={() => setHoverId(null)}
         title={`References ${info.src} slice(${info.start}, ${info.len})`}
       >
         {info.src}: {info.start}…{info.start + info.len - 1}
@@ -286,9 +350,13 @@ function JsonBlock({
     );
   };
 
-  const renderVal = (v: any, path: string, indent: number) => {
+  const renderVal = (
+    v: JsonValue,
+    path: string,
+    indent: number,
+  ): ReactNode[] => {
     const pad = "  ".repeat(indent);
-    const parts: any[] = [];
+    const parts: ReactNode[] = [];
     if (Array.isArray(v)) {
       parts.push(<span key={K()}>[</span>);
       if (pretty) {
@@ -315,7 +383,7 @@ function JsonBlock({
           if (typeof item === "string") parts.push(<span key={K()}>"</span>);
           parts.push(coloredSpan(String(item), kind, globalId));
           if (typeof item === "string") parts.push(<span key={K()}>"</span>);
-          if (sliceLookup) parts.push(<RefChip gid={globalId} key={K()} />);
+          if (sliceLookupFn) parts.push(<RefChip gid={globalId} key={K()} />);
         } else {
           parts.push(...renderVal(item, `${path}/${idx}`, indent + 1));
         }
@@ -345,11 +413,13 @@ function JsonBlock({
         if (pretty) {
           parts.push(<span key={K()}>{pad + "  "}</span>);
         }
-        parts.push(<span key={K()}>"</span>);
-        parts.push(coloredSpan(k, "key", keyGlobalId));
-        parts.push(<span key={K()}>"</span>);
-        parts.push(<span key={K()}>:</span>);
-        const v2 = (v as any)[k];
+        parts.push(
+          <span key={K()}>"</span>,
+          coloredSpan(k, "key", keyGlobalId),
+          <span key={K()}>"</span>,
+          <span key={K()}>:</span>,
+        );
+        const v2 = (v as Record<string, JsonValue>)[k]!;
         if (isPrimitive(v2)) {
           const localValId = valId(path, k);
           const valGlobalId = idMapper
@@ -367,7 +437,8 @@ function JsonBlock({
           if (typeof v2 === "string") parts.push(<span key={K()}>"</span>);
           parts.push(coloredSpan(String(v2), kind, valGlobalId));
           if (typeof v2 === "string") parts.push(<span key={K()}>"</span>);
-          if (sliceLookup) parts.push(<RefChip gid={valGlobalId} key={K()} />);
+          if (sliceLookupFn)
+            parts.push(<RefChip gid={valGlobalId} key={K()} />);
         } else {
           parts.push(...renderVal(v2, `${path}/${k}`, indent + 1));
         }
@@ -398,7 +469,7 @@ function JsonBlock({
     if (typeof v === "string") parts.push(<span key={K()}>"</span>);
     parts.push(coloredSpan(String(v), kind, globalId));
     if (typeof v === "string") parts.push(<span key={K()}>"</span>);
-    if (sliceLookup) parts.push(<RefChip gid={globalId} key={K()} />);
+    if (sliceLookupFn) parts.push(<RefChip gid={globalId} key={K()} />);
     return parts;
   };
 
@@ -425,12 +496,7 @@ function ByteBuffer({
   setHoverId,
   title,
 }: {
-  entries: {
-    kind: keyof typeof COLORS;
-    len: number;
-    localId: string;
-    start: number;
-  }[];
+  entries: ByteMapEntry[];
   hoverId: string | null;
   idPrefix: "A:" | "B:";
   json: string;
@@ -457,19 +523,16 @@ function ByteBuffer({
           width="100%"
         >
           <rect fill="#111111" height={H + 8} width={viewW} x={0} y={0} />
-          {bytes.map(
-            (_, i) =>
-              (
-                <rect
-                  fill="#111111"
-                  height={H}
-                  key={i}
-                  width={PX - 1}
-                  x={i * PX}
-                  y={4}
-                />
-              ) as any,
-          )}
+          {Array.from(bytes, (_, i) => (
+            <rect
+              fill="#111111"
+              height={H}
+              key={i}
+              width={PX - 1}
+              x={i * PX}
+              y={4}
+            />
+          ))}
           {entries.map((e, i) => {
             const x = e.start * PX;
             const w = Math.max(2, e.len * PX);
@@ -501,72 +564,7 @@ function ByteBuffer({
 }
 
 export function ZeroCopyBlocks() {
-  // Subgraph A & B
-  const subgraphA = {
-    active: true,
-    user: { email: "ada@lab", id: 1, name: "Ada" },
-  };
-
-  // Final uses only parts of A & B (no email, plan, org, note)
-  const finalJson = {
-    active: true,
-    user: { id: 1, name: "Ada" },
-  };
-
-  // Build an ID mapper for the FINAL view that points back to source tokens (A: or B:)
-  const finalMap = new Map<string, string>([
-    ["/active#key", "A:/active#key"],
-    ["/active#value", "A:/active#value"],
-    ["/price#key", "B:/price#key"],
-    ["/price#value", "B:/price#value"],
-    ["/user#key", "A:/user#key"],
-    ["/user/id#key", "A:/user/id#key"],
-    ["/user/id#value", "A:/user/id#value"],
-    ["/user/name#key", "A:/user/name#key"],
-    ["/user/name#value", "A:/user/name#value"],
-    ["/user/tags#key", "B:/user/tags#key"],
-    ["/user/tags/0#value", "B:/user/tags/0#value"],
-    ["/user/tags/1#value", "B:/user/tags/1#value"],
-  ]);
-  const idMapperFinal = (info: {
-    index?: number;
-    key?: string;
-    kind: "index" | "key" | "value";
-    path: string;
-  }) => {
-    if (info.kind === "key" && info.key)
-      return finalMap.get(`${info.path}/${info.key}#key`);
-    if (info.kind === "value" && info.key)
-      return finalMap.get(`${info.path}/${info.key}#value`);
-    if (info.kind === "index" && typeof info.index === "number")
-      return finalMap.get(`${info.path}/${info.index}#value`);
-    return;
-  };
-
-  // Compute byte buffers + maps for A and B (minified JSON)
-  const Adata = useMemo(() => serializeWithByteMap(subgraphA), []);
-  const mapA = useMemo(() => {
-    const m = new Map<
-      string,
-      { kind: keyof typeof COLORS; len: number; start: number }
-    >();
-    for (const e of Adata.entries)
-      m.set(e.localId, { kind: e.kind, len: e.len, start: e.start });
-    return m;
-  }, [Adata]);
-
   const [hoverId, setHoverId] = useState<string | null>(null);
-
-  // Lookup slices for Final's global IDs
-  const sliceLookup = (gid: string) => {
-    if (gid.startsWith("A:")) {
-      const local = gid.slice(2);
-      const e = mapA.get(local);
-      if (!e) return null;
-      return { len: e.len, src: "A" as const, start: e.start };
-    }
-    return null;
-  };
 
   return (
     <div className="w-full p-4 text-neutral-100">
@@ -583,10 +581,10 @@ export function ZeroCopyBlocks() {
               value={subgraphA}
             />
             <ByteBuffer
-              entries={Adata.entries}
+              entries={ADATA.entries}
               hoverId={hoverId}
               idPrefix="A:"
-              json={Adata.json}
+              json={ADATA.json}
               setHoverId={setHoverId}
               title="Subgraph response is stored as bytes"
             />

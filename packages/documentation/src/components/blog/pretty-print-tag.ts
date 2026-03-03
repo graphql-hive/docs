@@ -1,5 +1,5 @@
-export function prettyPrintTag(tag: string) {
-  let text = tag || "All";
+export function prettyPrintTag(tag = "All") {
+  let text = tag;
   if (text === "typescript") {
     text = "TypeScript";
   }
