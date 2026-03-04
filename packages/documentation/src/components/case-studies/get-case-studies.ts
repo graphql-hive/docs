@@ -1,4 +1,5 @@
 import { pathToSlug } from "@/lib/path-to-slug";
+
 import { CaseStudyFile } from "./case-study-types";
 
 export async function getCaseStudies(): Promise<CaseStudyFile[]> {

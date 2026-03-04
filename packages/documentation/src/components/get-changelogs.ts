@@ -1,11 +1,11 @@
+import { pathToSlug } from "@/lib/path-to-slug";
+
 type Changelog = {
   date: string;
   description: string;
   route: string;
   title: string;
 };
-
-import { pathToSlug } from "@/lib/path-to-slug";
 
 export async function getChangelogs(): Promise<Changelog[]> {
   const collections = await import("fumadocs-mdx:collections/server");
