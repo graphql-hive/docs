@@ -11,7 +11,7 @@ export interface BlogTagChipProps {
 
 export function BlogTagChip({ colorScheme, inert, tag }: BlogTagChipProps) {
   const className = cn(
-    "rounded-full px-3 py-1 text-sm text-white",
+    "outline-none focus-visible:ring rounded-full px-3 py-1 text-white text-sm",
     colorScheme === "featured"
       ? "bg-green-800 dark:bg-primary/90 dark:text-neutral-900"
       : "bg-beige-800 dark:bg-beige-800/40",

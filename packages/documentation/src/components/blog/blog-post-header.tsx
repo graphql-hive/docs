@@ -36,7 +36,7 @@ export function BlogPostHeader({
       >
         <div className="flex items-center gap-2">
           <Anchor
-            className="flex items-center gap-2 text-sm font-medium"
+            className="outline-none focus-visible:ring flex items-center gap-2 text-sm font-medium"
             href="/blog"
           >
             <ArrowIcon className="text-beige-1000 mr-1 size-4 rotate-180" />
