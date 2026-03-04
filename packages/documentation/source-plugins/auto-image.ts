@@ -2,7 +2,7 @@ import type { GlobalConfig } from "fumadocs-mdx/config";
 
 /**
  * Fumadocs MDX plugin + remark plugin that auto-detects colocated blog images
- * (header-image.* and opengraph-image.png) and exposes them as
+ * (header-image.*, mobile-image.*, opengraph-image.png) and exposes them as
  * Vite-resolved asset URLs on collection entries.
  *
  * The remark plugin injects `export { default as X } from './file'`
@@ -18,18 +18,24 @@ const HEADER_IMAGE_NAMES = [
   "header-image.png",
   "header-image.jpg",
 ];
+const MOBILE_IMAGE_NAMES = [
+  "mobile-image.webp",
+  "mobile-image.png",
+  "mobile-image.jpg",
+];
 const OG_IMAGE_NAME = "opengraph-image.png";
 
 type FumadocsPlugin = NonNullable<GlobalConfig["plugins"]>[number];
 
 const EXTEND_TYPES = `{
   _headerImage?: string;
+  _mobileImage?: string;
   _ogImage?: string;
 }`;
 
 /**
  * Fumadocs plugin that registers passthroughs and extends types
- * so `_headerImage` and `_ogImage` are available on collection entries.
+ * so `_headerImage`, `_mobileImage` and `_ogImage` are available on collection entries.
  */
 export function autoImage(): FumadocsPlugin {
   return {
@@ -45,7 +51,7 @@ export function autoImage(): FumadocsPlugin {
       serverOptions(opts) {
         opts.doc ??= {};
         opts.doc.passthroughs ??= [];
-        opts.doc.passthroughs.push("_headerImage", "_ogImage");
+        opts.doc.passthroughs.push("_headerImage", "_mobileImage", "_ogImage");
       },
     },
     name: "auto-image",
@@ -72,7 +78,6 @@ function remarkAutoImageTransform(
 
   const dir = dirname(filePath);
 
-  // Check for header image
   for (const name of HEADER_IMAGE_NAMES) {
     if (existsSync(join(dir, name))) {
       tree.children.unshift(createReExportNode("_headerImage", `./${name}`));
@@ -80,7 +85,13 @@ function remarkAutoImageTransform(
     }
   }
 
-  // Check for OG image
+  for (const name of MOBILE_IMAGE_NAMES) {
+    if (existsSync(join(dir, name))) {
+      tree.children.unshift(createReExportNode("_mobileImage", `./${name}`));
+      break;
+    }
+  }
+
   if (existsSync(join(dir, OG_IMAGE_NAME))) {
     tree.children.unshift(createReExportNode("_ogImage", `./${OG_IMAGE_NAME}`));
   }

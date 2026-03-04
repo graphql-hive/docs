@@ -12,6 +12,7 @@ export function BlogPostHeader({
   className,
   date,
   image,
+  mobileImage,
   tags,
   title,
 }: {
@@ -19,6 +20,8 @@ export function BlogPostHeader({
   className?: string;
   date: string;
   image?: string;
+  mobileImage?: string;
+  noImageOnMobile?: boolean;
   tags: string[];
   title: string;
 }) {
@@ -26,12 +29,12 @@ export function BlogPostHeader({
 
   return (
     <>
-      {image && <BlogPostPicture image={image} />}
+      {image && <BlogPostPicture image={image} mobileImage={mobileImage} />}
       <header
         className={cn(
-          "flex flex-col px-1 pb-6 pt-4 sm:items-center md:px-12 md:pb-16 md:pt-12 xl:w-[888px]",
+          "flex flex-col px-2 pb-6 pt-4 sm:items-center md:px-12 md:pb-16 md:pt-12 xl:w-[888px]",
           image &&
-            "-mt-16 max-sm:mx-6 rounded-3xl bg-white dark:bg-neutral-900/80",
+            "-mt-10 sm:-mt-16 max-sm:mx-6 rounded-3xl bg-white dark:bg-[rgb(var(--nextra-bg))] items-center",
           className,
         )}
       >
@@ -48,14 +51,17 @@ export function BlogPostHeader({
         </div>
         <Heading
           as="h1"
-          className="mb-0 mt-4 w-[--article-max-width] text-pretty sm:text-center"
+          className={cn(
+            "mb-0 mt-4 w-(--article-max-width) text-pretty sm:text-center",
+            !!image && "text-center",
+          )}
           size="md"
         >
           {title}
         </Heading>
         <ProductUpdateAuthors
           authors={authors}
-          className="mt-4 max-sm:justify-start"
+          className={cn("mt-4", !image && "max-sm:justify-start")}
           date={date}
         />
       </header>

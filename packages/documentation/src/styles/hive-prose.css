@@ -9,6 +9,19 @@
     @apply text-white;
   }
 
+  & > :is(h2, h3, h4, h5, h6, p, ol, ul) {
+    max-width: var(--article-max-width);
+    margin-inline: auto;
+  }
+
+  & > p:first-of-type {
+    font-size: 1.25rem;
+    line-height: 2rem;
+    @media (min-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+
   & img {
     @apply rounded-2xl;
   }

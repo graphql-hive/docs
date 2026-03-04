@@ -30,6 +30,7 @@ const findEntry = createServerFn({ method: "GET" })
     // These are injected by the auto-image plugin but DocData base type doesn't include them
     const loaded = (await entry.load()) as unknown as {
       _headerImage?: string;
+      _mobileImage?: string;
       _ogImage?: string;
     };
 
@@ -39,6 +40,7 @@ const findEntry = createServerFn({ method: "GET" })
       date: entry.date,
       description: entry.description ?? "",
       image: entry.image ?? loaded._headerImage,
+      mobileImage: loaded._mobileImage,
       ogImage: loaded._ogImage,
       path: entry.info.path,
       tags: entry.tags,
@@ -52,6 +54,7 @@ interface BlogLoaderData {
   date: string;
   description: string;
   image?: string;
+  mobileImage?: string;
   ogImage?: string;
   path: string;
   tags: string[];
@@ -82,14 +85,8 @@ export const Route = createFileRoute("/_landing/blog/$")({
 
 const emptyTree: Root = { children: [], name: "" };
 
-const clientLoader = browserCollections.blog.createClientLoader<{
-  authors: string[];
-  date: string;
-  image?: string;
-  tags: string[];
-  title: string;
-}>({
-  component(loaded, props) {
+const clientLoader = browserCollections.blog.createClientLoader({
+  component(loaded) {
     const { default: MDX, toc } = loaded;
 
     return (
@@ -99,15 +96,7 @@ const clientLoader = browserCollections.blog.createClientLoader<{
         tableOfContentPopover={{ enabled: false }}
         toc={toc}
       >
-        <BlogPostHeader
-          authors={props.authors}
-          className="mx-auto"
-          date={props.date}
-          image={props.image}
-          tags={props.tags}
-          title={props.title}
-        />
-        <DocsBody className="hive-prose">
+        <DocsBody className="hive-prose mx-auto">
           <MDX components={mdxComponents} />
         </DocsBody>
       </DocsPage>
@@ -120,18 +109,21 @@ function BlogPostDetail() {
 
   return (
     <LandingPageContainer className="text-green-1000 mx-auto max-w-360 overflow-hidden dark:text-white">
+      <BlogPostHeader
+        authors={data.authors}
+        className="mx-auto"
+        date={data.date}
+        image={data.image}
+        mobileImage={data.mobileImage}
+        tags={data.tags}
+        title={data.title}
+      />
       <DocsLayout
         nav={{ enabled: false }}
         sidebar={{ enabled: false }}
         tree={emptyTree}
       >
-        {clientLoader.useContent(data.path, {
-          authors: data.authors,
-          date: data.date,
-          image: data.image,
-          tags: data.tags,
-          title: data.title,
-        })}
+        {clientLoader.useContent(data.path)}
       </DocsLayout>
       <SimilarPosts
         allPosts={data.allPosts}
