@@ -14,7 +14,7 @@ const findEntry = createServerFn({ method: "GET" })
   .handler(async ({ data: slug }) => {
     const collections = await import("fumadocs-mdx:collections/server");
     const entry = collections.productUpdates.find(
-      (e) => e.info.path.replace(/\.mdx?$/, "") === slug,
+      (e) => e.info.path.replace(/(?:\/index)?\.mdx?$/, "") === slug,
     );
     if (!entry) return null;
 

@@ -77,7 +77,7 @@ async function buildIndexes(): Promise<AdvancedIndex[]> {
   const productUpdateIndexes = await Promise.all(
     productUpdates.map(async (entry) => {
       const { structuredData } = await entry.load();
-      const slug = entry.info.path.replace(/\.mdx?$/, "");
+      const slug = entry.info.path.replace(/(?:\/index)?\.mdx?$/, "");
       return {
         breadcrumbs: ["Product Updates"],
         description: entry.description,
