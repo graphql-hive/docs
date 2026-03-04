@@ -1,5 +1,6 @@
 import type { Root } from "fumadocs-core/page-tree";
 
+import { pathToSlug } from "@/lib/path-to-slug";
 import { ProductUpdateAuthors } from "@/components/product-update-header";
 import { mdxComponents } from "@/lib/mdx-components";
 import { Heading } from "@hive/design-system";
@@ -14,7 +15,7 @@ const findEntry = createServerFn({ method: "GET" })
   .handler(async ({ data: slug }) => {
     const collections = await import("fumadocs-mdx:collections/server");
     const entry = collections.productUpdates.find(
-      (e) => e.info.path.replace(/(?:\/index)?\.mdx?$/, "") === slug,
+      (e) => pathToSlug(e.info.path) === slug,
     );
     if (!entry) return null;
 
