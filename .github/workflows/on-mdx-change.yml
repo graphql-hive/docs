@@ -10,7 +10,6 @@ jobs:
     with:
       node-version: "24"
       cwd: packages/documentation
-      files: content/**/*.mdx
       content-dir: content
       version: "1.2.1"
     concurrency:
