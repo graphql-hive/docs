@@ -60,30 +60,30 @@ export function autoImage(): FumadocsPlugin {
  * Register in `source.config.ts` remarkPlugins.
  */
 export function remarkAutoImage() {
-  return (
-    tree: { children: unknown[] },
-    file: { history?: string[]; path?: string },
-  ) => {
-    const filePath = file.path ?? file.history?.[0];
-    if (!filePath) return;
+  return remarkAutoImageTransform;
+}
 
-    const dir = dirname(filePath);
+function remarkAutoImageTransform(
+  tree: { children: unknown[] },
+  file: { history?: string[]; path?: string },
+) {
+  const filePath = file.path ?? file.history?.[0];
+  if (!filePath) return;
 
-    // Check for header image
-    for (const name of HEADER_IMAGE_NAMES) {
-      if (existsSync(join(dir, name))) {
-        tree.children.unshift(createReExportNode("_headerImage", `./${name}`));
-        break;
-      }
+  const dir = dirname(filePath);
+
+  // Check for header image
+  for (const name of HEADER_IMAGE_NAMES) {
+    if (existsSync(join(dir, name))) {
+      tree.children.unshift(createReExportNode("_headerImage", `./${name}`));
+      break;
     }
+  }
 
-    // Check for OG image
-    if (existsSync(join(dir, OG_IMAGE_NAME))) {
-      tree.children.unshift(
-        createReExportNode("_ogImage", `./${OG_IMAGE_NAME}`),
-      );
-    }
-  };
+  // Check for OG image
+  if (existsSync(join(dir, OG_IMAGE_NAME))) {
+    tree.children.unshift(createReExportNode("_ogImage", `./${OG_IMAGE_NAME}`));
+  }
 }
 
 /** Creates an mdxjsEsm AST node: `export { default as <name> } from '<source>'` */

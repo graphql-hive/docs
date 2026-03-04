@@ -21,7 +21,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: build
-        run: ./node_modules/.bin/turbo run build --filter docs
+        run: ./node_modules/.bin/turbo run build --filter docs -vv
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
 
