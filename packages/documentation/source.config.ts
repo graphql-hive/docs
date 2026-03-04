@@ -8,6 +8,8 @@ import {
 import { transformerTwoslash } from "fumadocs-twoslash";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 
+import { autoImage, remarkAutoImage } from "./source-plugins/auto-image";
+
 export const docs = defineDocs({
   dir: "content/docs",
   docs: {
@@ -121,7 +123,9 @@ export default defineConfig({
       // eslint-disable-next-line no-console -- intentional: surface image-size failures during build
       onError: console.warn,
     },
+    remarkPlugins: (plugins) => [remarkAutoImage, ...plugins],
   },
+  plugins: [autoImage()],
 });
 
 function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {

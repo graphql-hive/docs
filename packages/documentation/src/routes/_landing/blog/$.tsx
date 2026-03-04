@@ -26,21 +26,53 @@ const findEntry = createServerFn({ method: "GET" })
 
     const allPosts = await getBlogPosts();
 
+    // Load the full module to access passthrough exports (_headerImage, _ogImage)
+    // These are injected by the auto-image plugin but DocData base type doesn't include them
+    const loaded = (await entry.load()) as unknown as {
+      _headerImage?: string;
+      _ogImage?: string;
+    };
+
     return {
       allPosts,
       authors: entry.authors,
       date: entry.date,
       description: entry.description ?? "",
-      image: entry.image,
+      image: entry.image ?? loaded._headerImage,
+      ogImage: loaded._ogImage,
       path: entry.info.path,
       tags: entry.tags,
       title: entry.title ?? slug,
     };
   });
 
+interface BlogLoaderData {
+  allPosts: import("../../../components/blog/blog-card").BlogPost[];
+  authors: string[];
+  date: string;
+  description: string;
+  image?: string;
+  ogImage?: string;
+  path: string;
+  tags: string[];
+  title: string;
+}
+
 export const Route = createFileRoute("/_landing/blog/$")({
   component: BlogPostDetail,
-  loader: async ({ params }) => {
+  head: ({ loaderData: d }: { loaderData?: BlogLoaderData }) => {
+    if (!d) return {};
+    return {
+      meta: [
+        { title: d.title },
+        { content: d.description, name: "description" },
+        { content: d.title, property: "og:title" },
+        { content: d.description, property: "og:description" },
+        ...(d.ogImage ? [{ content: d.ogImage, property: "og:image" }] : []),
+      ],
+    };
+  },
+  loader: async ({ params }): Promise<BlogLoaderData> => {
     const slug = params._splat ?? "";
     const data = await findEntry({ data: slug });
     if (!data) throw notFound();

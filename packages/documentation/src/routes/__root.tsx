@@ -26,6 +26,14 @@ export const Route = createRootRoute({
       {
         title: "Open-Source GraphQL Federation Platform",
       },
+      {
+        content: "website",
+        property: "og:type",
+      },
+      {
+        content: "/opengraph-image.png",
+        property: "og:image",
+      },
     ],
   }),
 });
