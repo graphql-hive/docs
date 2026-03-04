@@ -11,7 +11,7 @@ jobs:
       node-version: "24"
       cwd: packages/documentation
       files: content/**/*.mdx
-      version: "1.1.0"
+      version: "1.2.0"
     concurrency:
       group: mdx-${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
