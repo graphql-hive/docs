@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { ReactElement } from 'react';
-import ReactAvatar from 'react-avatar';
+import { ReactElement } from "react";
+import ReactAvatar from "react-avatar";
 
 /**
  * TODO: We should drop this and use the avatars defined in authors/index.ts

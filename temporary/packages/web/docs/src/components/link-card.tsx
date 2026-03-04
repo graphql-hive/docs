@@ -1,5 +1,5 @@
-import Image, { StaticImageData } from 'next/image';
-import { Anchor, cn } from '@theguild/components';
+import Image, { StaticImageData } from "next/image";
+import { Anchor, cn } from "@theguild/components";
 
 export interface LinkCardProps extends React.HTMLAttributes<HTMLAnchorElement> {
   description?: string;
@@ -24,7 +24,7 @@ export function LinkCard({
         href={href}
         className="border-beige-200 mt-6 block overflow-hidden rounded-2xl border dark:border-neutral-800"
       >
-        <Image src={src} alt={alt || ''} />
+        <Image src={src} alt={alt || ""} />
       </Anchor>
     );
   }
@@ -33,7 +33,7 @@ export function LinkCard({
     <a
       href={href}
       className={cn(
-        'bg-beige-100 mt-6 flex gap-2 overflow-hidden rounded-2xl dark:bg-neutral-900',
+        "bg-beige-100 mt-6 flex gap-2 overflow-hidden rounded-2xl dark:bg-neutral-900",
         className,
       )}
       {...rest}
@@ -44,7 +44,7 @@ export function LinkCard({
       </span>
       <Image
         src={src}
-        alt={alt || ''}
+        alt={alt || ""}
         role="presentation"
         width={286}
         height={160}

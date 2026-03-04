@@ -1,5 +1,5 @@
 ---
-title: 'Enhanced CDN and Gateway Reliability'
+title: "Enhanced CDN and Gateway Reliability"
 description:
   Major improvements to our CDN infrastructure to ensure higher availability and resilience against
   outages.

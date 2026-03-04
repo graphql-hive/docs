@@ -1,24 +1,26 @@
-'use client';
+"use client";
 
-import { format } from 'date-fns';
-import { Anchor, cn, useConfig } from '@theguild/components';
-import { AuthorId, authors } from '../../../authors';
-import { SocialAvatar } from '../../../components/social-avatar';
-import { BlogFrontmatter } from '../../blog/blog-types';
+import { format } from "date-fns";
+import { Anchor, cn, useConfig } from "@theguild/components";
+import { AuthorId, authors } from "../../../authors";
+import { SocialAvatar } from "../../../components/social-avatar";
+import { BlogFrontmatter } from "../../blog/blog-types";
 
-type Meta = Pick<BlogFrontmatter, 'authors' | 'date' | 'title' | 'description'>;
+type Meta = Pick<BlogFrontmatter, "authors" | "date" | "title" | "description">;
 
 export const ProductUpdateAuthors = ({
   meta,
   className,
 }: {
-  meta: Pick<Meta, 'authors' | 'date'>;
+  meta: Pick<Meta, "authors" | "date">;
   className?: string;
 }) => {
   const date = meta.date ? new Date(meta.date) : new Date();
 
-  const metaAuthors = (Array.isArray(meta.authors) ? meta.authors : [meta.authors]).map(author => {
-    return typeof author === 'string' ? authors[author as AuthorId] : author;
+  const metaAuthors = (
+    Array.isArray(meta.authors) ? meta.authors : [meta.authors]
+  ).map((author) => {
+    return typeof author === "string" ? authors[author as AuthorId] : author;
   });
 
   if (metaAuthors.length === 1) {
@@ -31,7 +33,7 @@ export const ProductUpdateAuthors = ({
     return (
       <div
         className={cn(
-          'has-[a:hover]:bg-beige-900/5 my-4 -mb-1 flex flex-row items-center justify-center rounded-xl py-1 pl-1 pr-3 dark:has-[a:hover]:bg-neutral-50/5',
+          "has-[a:hover]:bg-beige-900/5 my-4 -mb-1 flex flex-row items-center justify-center rounded-xl py-1 pl-1 pr-3 dark:has-[a:hover]:bg-neutral-50/5",
           className,
         )}
       >
@@ -48,10 +50,10 @@ export const ProductUpdateAuthors = ({
           </Anchor>
           <time
             dateTime={date.toISOString()}
-            title={`Posted ${format(date, 'EEEE, LLL do y')}`}
+            title={`Posted ${format(date, "EEEE, LLL do y")}`}
             className="text-green-1000 text-xs dark:text-neutral-200"
           >
-            {format(date, 'EEEE, LLL do y')}
+            {format(date, "EEEE, LLL do y")}
           </time>
         </div>
       </div>
@@ -61,13 +63,13 @@ export const ProductUpdateAuthors = ({
     <>
       <time
         dateTime={date.toISOString()}
-        title={`Posted ${format(date, 'EEEE, LLL do y')}`}
+        title={`Posted ${format(date, "EEEE, LLL do y")}`}
         className="mt-5 block text-center text-xs text-[#777]"
       >
-        {format(date, 'EEEE, LLL do y')}
+        {format(date, "EEEE, LLL do y")}
       </time>
       <div className="my-5 flex flex-wrap justify-center gap-5">
-        {metaAuthors.map(author => {
+        {metaAuthors.map((author) => {
           return (
             <div key={author.name}>
               <Anchor

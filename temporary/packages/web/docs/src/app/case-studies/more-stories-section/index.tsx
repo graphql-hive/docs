@@ -1,6 +1,6 @@
-import { cn, Heading } from '@theguild/components';
-import { getCaseStudies } from '../get-case-studies';
-import { OtherCaseStudies } from './other-case-studies';
+import { cn, Heading } from "@theguild/components";
+import { getCaseStudies } from "../get-case-studies";
+import { OtherCaseStudies } from "./other-case-studies";
 
 export interface MoreStoriesSectionProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -11,7 +11,7 @@ export async function MoreStoriesSection({
   const caseStudies = await getCaseStudies();
 
   return (
-    <section {...rest} className={cn('py-6 sm:p-24', className)}>
+    <section {...rest} className={cn("py-6 sm:p-24", className)}>
       <Heading size="md" as="h2" className="text-center">
         More stories
       </Heading>
