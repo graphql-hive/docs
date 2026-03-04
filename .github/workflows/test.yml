@@ -23,6 +23,7 @@ jobs:
         run: ./node_modules/.bin/turbo run build --filter docs
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
+        timeout-minutes: 10
 
       - name: run integration and unit tests
         run: bun test:bun
