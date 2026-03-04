@@ -53,6 +53,7 @@ const emptyTree: Root = { children: [], name: "" };
 const clientLoader = browserCollections.blog.createClientLoader<{
   authors: string[];
   date: string;
+  image?: string;
   tags: string[];
   title: string;
 }>({
@@ -70,6 +71,7 @@ const clientLoader = browserCollections.blog.createClientLoader<{
           authors={props.authors}
           className="mx-auto"
           date={props.date}
+          image={props.image}
           tags={props.tags}
           title={props.title}
         />
@@ -94,6 +96,7 @@ function BlogPostDetail() {
         {clientLoader.useContent(data.path, {
           authors: data.authors,
           date: data.date,
+          image: data.image,
           tags: data.tags,
           title: data.title,
         })}
