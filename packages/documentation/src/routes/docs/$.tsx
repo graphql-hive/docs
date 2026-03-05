@@ -54,7 +54,6 @@ const clientLoader = browserCollections.docs.createClientLoader<{
       description?: string;
       title: string;
     };
-    useScrollToHash();
     return (
       <DocsPage
         tableOfContent={{
@@ -82,16 +81,6 @@ const clientLoader = browserCollections.docs.createClientLoader<{
     );
   },
 });
-
-/** After async MDX content mounts, scroll to the hash target if present. */
-function useScrollToHash() {
-  useEffect(() => {
-    const { hash } = globalThis.location;
-    if (!hash) return;
-    const el = document.getElementById(hash.slice(1));
-    el?.scrollIntoView();
-  }, []);
-}
 
 function Page() {
   const data = useFumadocsLoader(Route.useLoaderData());
