@@ -1,9 +1,10 @@
 export default {
-  index: "Introduction",
-  "getting-started": "Getting Started",
-  supergraph: "Supergraph",
-  security: "Security",
-  guides: "Guides",
-  configuration: "Configuration",
-  observability: "Observability",
+  index: 'Introduction',
+  'getting-started': 'Getting Started',
+  supergraph: 'Supergraph',
+  security: 'Security',
+  guides: 'Guides',
+  configuration: 'Configuration',
+  observability: 'Observability',
+  'plugin-system': 'Plugin System',
 };
