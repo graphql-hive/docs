@@ -43,11 +43,7 @@ export function Card({
     <Anchor
       {...props}
       className={cn(
-        "hive-card group",
-        "flex flex-col justify-start overflow-hidden rounded-lg border border-gray-200 no-underline",
-        "bg-transparent shadow-sm transition-all duration-200",
-        "hover:border-gray-300 hover:bg-slate-50 hover:shadow-md",
-        "dark:border-neutral-800 dark:shadow-none dark:hover:border-neutral-700 dark:hover:bg-neutral-900",
+        "hive-card group flex flex-col justify-start overflow-hidden rounded-lg border ring-beige-200 no-underline bg-white dark:bg-transparent shadow-sm transition-all duration-200 hover:shadow-md dark:ring-neutral-800 dark:shadow-none dark:hover:ring-neutral-700 dark:hover:bg-neutral-900",
         className,
       )}
       href={href}
