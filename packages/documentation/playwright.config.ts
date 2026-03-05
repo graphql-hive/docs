@@ -6,6 +6,10 @@ const baseURL = `http://localhost:${PORT}`;
 export default defineConfig({
   expect: {
     timeout: process.env["CI"] ? 15_000 : 5000,
+    toHaveScreenshot: {
+      // Strip platform from snapshot path — font rendering diffs are handled by maxDiffPixelRatio
+      pathTemplate: "{snapshotDir}/{arg}-{projectName}{ext}",
+    },
   },
   forbidOnly: !!process.env["CI"],
   fullyParallel: true,

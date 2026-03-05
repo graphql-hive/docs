@@ -109,6 +109,14 @@ test.describe("Landing Page User Journeys", () => {
     expect(await tabs.count()).toBeGreaterThan(0);
   });
 
+  test("visual regression", async ({ page }) => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    await expect(page).toHaveScreenshot("landing-page.png", {
+      fullPage: true,
+      maxDiffPixelRatio: 0.05,
+    });
+  });
+
   test("navigation menu is accessible", async ({ page, isMobile }) => {
     await page.goto("/");
 
