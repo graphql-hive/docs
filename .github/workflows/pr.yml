@@ -22,7 +22,6 @@ jobs:
     secrets: inherit
 
   website-preview:
-    needs: [test]
     uses: ./.github/workflows/website.yml
     if: ${{ !github.event.pull_request.head.repo.fork }}
     secrets: inherit
