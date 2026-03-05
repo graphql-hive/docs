@@ -1,53 +1,55 @@
-import { FeatureTab, FeatureTabs, Highlight } from '#components/feature-tabs';
-import { cn } from '@theguild/components';
-import { GatewayMarqueeRows } from './gateway-marquee-rows';
+import { FeatureTab, FeatureTabs, Highlight } from "#components/feature-tabs";
+import { cn } from "@theguild/components";
+import { GatewayMarqueeRows } from "./gateway-marquee-rows";
 
 // TODO: the long values here will be bad for mobiles
-type Tab = 'Observability & Performance Monitoring' | 'Security & Access Control';
+type Tab =
+  | "Observability & Performance Monitoring"
+  | "Security & Access Control";
 
 const highlights: Record<Tab, Highlight[]> = {
-  'Observability & Performance Monitoring': [
+  "Observability & Performance Monitoring": [
     {
-      title: 'Open Telemetry & Prometheus Integration',
+      title: "Open Telemetry & Prometheus Integration",
       description:
-        'Equip your teams with comprehensive tools for monitoring API health, performance, and usage patterns, crucial for maintaining operational excellence.',
+        "Equip your teams with comprehensive tools for monitoring API health, performance, and usage patterns, crucial for maintaining operational excellence.",
     },
     {
-      title: 'Response Caching',
+      title: "Response Caching",
       description:
-        'Enhances response times and reduces load on backend services by intelligently caching frequent requests.',
+        "Enhances response times and reduces load on backend services by intelligently caching frequent requests.",
     },
     {
-      title: 'Rate Limiting',
+      title: "Rate Limiting",
       description:
-        'Protects your API from overload and abuse, ensuring consistent and reliable service performance.',
+        "Protects your API from overload and abuse, ensuring consistent and reliable service performance.",
     },
     {
-      title: 'Schema Explorer',
+      title: "Schema Explorer",
       description:
-        'Navigate and analyze the connections within your GraphQL schema using Schema Explorer.',
+        "Navigate and analyze the connections within your GraphQL schema using Schema Explorer.",
     },
   ],
-  'Security & Access Control': [
+  "Security & Access Control": [
     {
-      title: 'JWT Authentication & Authorization',
+      title: "JWT Authentication & Authorization",
       description:
-        'Provides secure user identification and role-based access control, crucial for protecting sensitive data and operations.',
+        "Provides secure user identification and role-based access control, crucial for protecting sensitive data and operations.",
     },
     {
-      title: 'Persisted Operations',
+      title: "Persisted Operations",
       description:
-        'Allows only pre-registered GraphQL operations to be executed, safeguarding against arbitrary and potentially harmful requests.',
+        "Allows only pre-registered GraphQL operations to be executed, safeguarding against arbitrary and potentially harmful requests.",
     },
     {
-      title: 'Fine-grained Access Control',
+      title: "Fine-grained Access Control",
       description:
-        'Prevents unauthorized access with powerful, centralized policies at the gateway level, reducing the risk of security breaches.',
+        "Prevents unauthorized access with powerful, centralized policies at the gateway level, reducing the risk of security breaches.",
     },
     {
-      title: 'CORS and CSRF Prevention',
+      title: "CORS and CSRF Prevention",
       description:
-        'Shields against common web security vulnerabilities, securing your applications from unauthorized inter-domain interactions.',
+        "Shields against common web security vulnerabilities, securing your applications from unauthorized inter-domain interactions.",
     },
   ],
 };
@@ -59,13 +61,13 @@ export function GatewayFeatureTabs(props: { className?: string }) {
       // eslint-disable-next-line react/jsx-key
       icons={[<PerformanceIcon />, <SecurityIcon />]}
       className={cn(
-        'border-blue-200 [--tab-bg-dark:theme(colors.blue.300)] [--tab-bg:theme(colors.blue.200)]',
+        "border-blue-200 [--tab-bg-dark:theme(colors.blue.300)] [--tab-bg:theme(colors.blue.200)]",
         props.className,
       )}
       tabTexts={{
-        'Observability & Performance Monitoring': (
+        "Observability & Performance Monitoring": (
           <span>
-            Observability & Performance{' '}
+            Observability & Performance{" "}
             <span className="[@media(width<420px)]:hidden">Monitoring</span>
           </span>
         ),
@@ -74,15 +76,15 @@ export function GatewayFeatureTabs(props: { className?: string }) {
       <FeatureTab
         title="Observability & Performance Monitoring"
         documentationLink="/docs/gateway/monitoring-tracing"
-        highlights={highlights['Observability & Performance Monitoring']}
+        highlights={highlights["Observability & Performance Monitoring"]}
       />
       <FeatureTab
         title="Security & Access Control"
         documentationLink={{
-          text: 'Learn more about plugins',
-          href: '/docs/gateway/other-features/custom-plugins',
+          text: "Learn more about plugins",
+          href: "/docs/gateway/other-features/custom-plugins",
         }}
-        highlights={highlights['Security & Access Control']}
+        highlights={highlights["Security & Access Control"]}
       />
       {/* todo: these marquee rows should probably be draggable, and connected to one "timeline" */}
       <GatewayMarqueeRows className="[--pill-bg-hover:#fff] [--pill-bg:#fff] [--pill-text-hover:theme(colors.blue.600)] [--pill-text:theme(colors.blue.400)] max-lg:hidden" />

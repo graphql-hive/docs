@@ -1,6 +1,7 @@
 import type { StructuredData } from "fumadocs-core/mdx-plugins/remark-structure";
 import type { AdvancedIndex } from "fumadocs-core/search/server";
 
+import { pathToSlug } from "@/lib/path-to-slug";
 import { getSource } from "@/lib/source";
 import { createFileRoute } from "@tanstack/react-router";
 import { findPath } from "fumadocs-core/page-tree";
@@ -45,7 +46,7 @@ async function resolveStructuredData(data: any): Promise<StructuredData> {
 
 async function buildIndexes(): Promise<AdvancedIndex[]> {
   const source = await getSource();
-  const { caseStudies, productUpdates } =
+  const { blog, caseStudies, productUpdates } =
     await import("fumadocs-mdx:collections/server");
 
   const docsIndexes = await Promise.all(
@@ -62,7 +63,7 @@ async function buildIndexes(): Promise<AdvancedIndex[]> {
   const caseStudyIndexes = await Promise.all(
     caseStudies.map(async (entry) => {
       const { structuredData } = await entry.load();
-      const slug = entry.info.path.replace(/\.mdx?$/, "");
+      const slug = pathToSlug(entry.info.path);
       return {
         breadcrumbs: ["Case Studies"],
         description: entry.excerpt,
@@ -77,7 +78,7 @@ async function buildIndexes(): Promise<AdvancedIndex[]> {
   const productUpdateIndexes = await Promise.all(
     productUpdates.map(async (entry) => {
       const { structuredData } = await entry.load();
-      const slug = entry.info.path.replace(/\.mdx?$/, "");
+      const slug = pathToSlug(entry.info.path);
       return {
         breadcrumbs: ["Product Updates"],
         description: entry.description,
@@ -89,8 +90,30 @@ async function buildIndexes(): Promise<AdvancedIndex[]> {
     }),
   );
 
+  const blogIndexes = await Promise.all(
+    blog.map(async (entry) => {
+      const { structuredData } = await entry.load();
+      const slug = entry.info.path
+        .replace(/\.mdx?$/, "")
+        .replace(/\/index$/, "");
+      return {
+        breadcrumbs: ["Blog"],
+        description: entry.description,
+        id: `/blog/${slug}`,
+        structuredData,
+        title: entry.title ?? slug,
+        url: `/blog/${slug}`,
+      };
+    }),
+  );
+
   // TODO: index landing pages (/, /federation, /schema-registry, etc.) once they have structuredData
-  return [...docsIndexes, ...caseStudyIndexes, ...productUpdateIndexes];
+  return [
+    ...docsIndexes,
+    ...caseStudyIndexes,
+    ...productUpdateIndexes,
+    ...blogIndexes,
+  ];
 }
 
 let _searchAPI: ReturnType<typeof createSearchAPI> | undefined;

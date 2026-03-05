@@ -1,7 +1,10 @@
-import { ReactNode } from 'react';
-import { Anchor, Heading, InfoCard } from '@theguild/components';
+import { ReactNode } from "react";
+import { Anchor, Heading, InfoCard } from "@theguild/components";
 
-export function OrchestrateYourWay({ className, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
+export function OrchestrateYourWay({
+  className,
+  ...rest
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <section className={className}>
       <div
@@ -13,8 +16,8 @@ export function OrchestrateYourWay({ className, ...rest }: React.HTMLAttributes<
             Orchestrate your way!
           </Heading>
           <p className="mt-6">
-            The open nature of Hive Gateway ensures that it fits into your existing GraphQL
-            infrastructure.
+            The open nature of Hive Gateway ensures that it fits into your
+            existing GraphQL infrastructure.
           </p>
         </header>
         <ul className="flex grow basis-2/5 max-lg:flex-col md:p-12">
@@ -24,8 +27,9 @@ export function OrchestrateYourWay({ className, ...rest }: React.HTMLAttributes<
             icon={<CodeIcon />}
             className="flex-1 bg-transparent !pl-0 max-lg:!pr-0 md:pt-0 lg:pb-0"
           >
-            Ensures full compatibility and seamless operation within Apollo Federation setups,
-            simplifying integration with existing GraphQL services.
+            Ensures full compatibility and seamless operation within Apollo
+            Federation setups, simplifying integration with existing GraphQL
+            services.
           </InfoCard>
           <InfoCard
             as="li"
@@ -33,14 +37,22 @@ export function OrchestrateYourWay({ className, ...rest }: React.HTMLAttributes<
             icon={<EditIcon />}
             className="flex-1 basis-full border-blue-300 bg-transparent !pr-0 max-lg:border-t max-lg:!pl-0 md:pb-0 lg:basis-0 lg:border-l lg:pt-0"
           >
-            Extensive customization options, allowing enterprises to tailor the gateway to fit
-            specific architectural needs and workflows.
+            Extensive customization options, allowing enterprises to tailor the
+            gateway to fit specific architectural needs and workflows.
           </InfoCard>
         </ul>
         <div className="nextra-scrollbar max-w-full basis-full overflow-auto rounded-3xl">
           <ul className="grid w-fit grid-cols-[repeat(4,minmax(240px,1fr))] bg-[#F8F7F6] [background-image:linear-gradient(55deg,#F8F7F6_25%,theme(colors.blue.700/0.25)_70%,#F8F7F6_94%)] [&>:not(:first-child)]:border-l [&>:not(:first-child)]:border-blue-300">
-            <LinkCard href="/federation" logo={<ApolloLogo />} text="Apollo Federation V1" />
-            <LinkCard href="/federation" logo={<ApolloLogo />} text="Apollo Federation V2" />
+            <LinkCard
+              href="/federation"
+              logo={<ApolloLogo />}
+              text="Apollo Federation V1"
+            />
+            <LinkCard
+              href="/federation"
+              logo={<ApolloLogo />}
+              text="Apollo Federation V2"
+            />
             <LinkCard
               href="/docs/get-started/first-steps#create-hive-project"
               logo={<StitchingLogo />}
@@ -80,7 +92,15 @@ function EditIcon() {
   );
 }
 
-function LinkCard({ href, text, logo }: { href: string; text: ReactNode; logo: ReactNode }) {
+function LinkCard({
+  href,
+  text,
+  logo,
+}: {
+  href: string;
+  text: ReactNode;
+  logo: ReactNode;
+}) {
   return (
     <li>
       <Anchor
@@ -99,7 +119,13 @@ function LinkCard({ href, text, logo }: { href: string; text: ReactNode; logo: R
 
 function ApolloLogo() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="58" viewBox="0 0 60 58" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="60"
+      height="58"
+      viewBox="0 0 60 58"
+      fill="none"
+    >
       <path
         d="M29.2787 0.0405435C29.1666 0.045613 28.7435 0.0810993 28.3357 0.111516C23.2382 0.486658 18.0694 2.36237 13.8334 5.37364C12.4316 6.36726 11.3255 7.30005 10.0919 8.52686C3.00132 15.5836 0.0804735 25.682 2.29787 35.4915C3.20521 39.5166 5.14225 43.5672 7.71137 46.8218C11.7435 51.9369 17.2691 55.5413 23.4676 57.1027C25.9908 57.7414 28.0859 58 30.7315 58C33.3414 58 35.2631 57.7668 37.7507 57.1635C41.324 56.2916 44.464 54.8569 47.6041 52.672C50.6116 50.5732 53.4101 47.6329 55.4185 44.4645C58.008 40.3683 59.4811 35.8463 59.8431 30.8833C59.9195 29.839 59.8736 27.2535 59.7615 26.189C59.5372 24.075 58.9663 21.2868 58.635 20.7038C58.5024 20.4756 58.1303 20.1816 57.855 20.0853C57.7582 20.0549 57.5441 20.0295 57.3708 20.0295C56.6062 20.0295 55.9639 20.6632 55.9639 21.4084C55.9639 21.5859 56.0455 22.0117 56.1627 22.473C57.172 26.3765 57.2535 30.6653 56.3921 34.579C55.291 39.5927 52.8341 44.0133 49.1282 47.638C47.4002 49.3261 45.7333 50.5732 43.5771 51.8C38.5459 54.6643 32.2913 55.7491 26.4241 54.7758C21.969 54.0407 18.1 52.3374 14.4247 49.4934C12.6967 48.155 10.5914 45.9498 9.28648 44.1045C7.0334 40.9209 5.61631 37.5649 4.88228 33.6664C4.51016 31.6792 4.38273 29.0431 4.55604 26.8987C4.82111 23.6441 5.6418 20.6227 7.0334 17.7584C7.67568 16.4251 8.07329 15.7306 8.843 14.5798C10.413 12.2175 12.4928 10.0072 14.7917 8.25311C17.4883 6.18983 20.6895 4.62336 23.9264 3.78182C25.6748 3.32557 27.0715 3.09744 28.8454 2.97071C35.2631 2.51445 41.5024 4.34961 46.5846 8.19735C46.9618 8.48124 47.3594 8.79048 47.4664 8.8868L47.6601 9.05409L47.5837 9.26701C47.1912 10.362 47.4817 11.7257 48.3075 12.6788C48.7306 13.1654 49.4952 13.6217 50.1426 13.7738C50.5861 13.8802 51.3558 13.8802 51.8044 13.7738C52.9411 13.5051 54.0014 12.5368 54.3378 11.4621C54.715 10.2606 54.4958 9.07437 53.721 8.11117C52.8646 7.04657 51.3915 6.57004 50.0305 6.92491L49.7348 7.00095L49.3168 6.65622C47.6194 5.24184 45.5651 3.93391 43.4038 2.89466C39.8967 1.20653 36.3744 0.299087 32.3627 0.0557519C31.5929 0.0101265 29.7732 -1.24276e-05 29.2787 0.0405435Z"
         fill="#00342C"
@@ -114,7 +140,13 @@ function ApolloLogo() {
 
 function StitchingLogo() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="60"
+      height="60"
+      viewBox="0 0 60 60"
+      fill="none"
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -131,7 +163,13 @@ function StitchingLogo() {
 
 function MonolithLogo() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="60"
+      height="60"
+      viewBox="0 0 60 60"
+      fill="none"
+    >
       <path
         d="M19.5551 45.9136L33.2263 54.3749V18.6311L19.5551 10.1711V45.9136ZM19.5551 45.9136L33.2263 37.4536"
         stroke="#00342C"

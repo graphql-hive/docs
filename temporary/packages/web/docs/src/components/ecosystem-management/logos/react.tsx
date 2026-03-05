@@ -1,6 +1,10 @@
 export function ReactLogo(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-11.5 -10.23174 23 20.46348" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="-11.5 -10.23174 23 20.46348"
+      {...props}
+    >
       <rect
         x={-11.5}
         y={-10.231_74}

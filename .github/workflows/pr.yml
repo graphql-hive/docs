@@ -15,11 +15,14 @@ jobs:
 
   test:
     uses: ./.github/workflows/test.yml
+    secrets: inherit
 
   e2e:
     uses: ./.github/workflows/e2e.yml
+    secrets: inherit
 
   website-preview:
+    needs: [test]
     uses: ./.github/workflows/website.yml
     if: ${{ !github.event.pull_request.head.repo.fork }}
     secrets: inherit

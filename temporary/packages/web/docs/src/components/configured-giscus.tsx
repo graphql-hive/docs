@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { usePathname } from 'next/navigation';
-import { Giscus } from '@theguild/components';
+import { usePathname } from "next/navigation";
+import { Giscus } from "@theguild/components";
 
 export function ConfiguredGiscus(props: React.HTMLAttributes<HTMLDivElement>) {
   const route = usePathname();

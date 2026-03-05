@@ -1,6 +1,11 @@
-import { DecorationIsolation, Heading, ProductCard, PRODUCTS } from '@theguild/components';
-import EcosystemPageContent from './content.mdx';
-import { EcosystemPageNavH2 } from './ecosystem-page-nav-h2';
+import {
+  DecorationIsolation,
+  Heading,
+  ProductCard,
+  PRODUCTS,
+} from "@theguild/components";
+import EcosystemPageContent from "./content.mdx";
+import { EcosystemPageNavH2 } from "./ecosystem-page-nav-h2";
 
 export const components = {
   EcosystemHeader: (props: React.HTMLAttributes<HTMLDivElement>) => (
@@ -16,7 +21,9 @@ export const components = {
       </nav>
     </header>
   ),
-  h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => <Heading as="h1" size="xl" {...props} />,
+  h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+    <Heading as="h1" size="xl" {...props} />
+  ),
   h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
     <Heading as="h2" size="xs" className="mb-4 mt-24" {...props} />
   ),
@@ -34,14 +41,21 @@ export const components = {
   li: (props: React.LiHTMLAttributes<HTMLLIElement>) => {
     const productName = String(props.children)
       .toUpperCase()
-      .replace(' ', '_') as keyof typeof PRODUCTS;
+      .replace(" ", "_") as keyof typeof PRODUCTS;
 
     const product = PRODUCTS[productName];
     if (!product) {
       throw new Error(`Product ${productName} is missing`);
     }
 
-    return <ProductCard as="li" product={product} className="h-[222px] max-md:w-auto" {...props} />;
+    return (
+      <ProductCard
+        as="li"
+        product={product}
+        className="h-[222px] max-md:w-auto"
+        {...props}
+      />
+    );
   },
 };
 
@@ -49,7 +63,9 @@ export const components = {
  * Take all sections headings and render them as navigation links
  */
 const ecosystemPageNav = {
-  ...Object.fromEntries(Object.keys(components).map(key => [key, () => null])),
+  ...Object.fromEntries(
+    Object.keys(components).map((key) => [key, () => null]),
+  ),
   h2: EcosystemPageNavH2,
 };
 

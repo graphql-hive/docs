@@ -1,20 +1,23 @@
-'use client';
+"use client";
 
-import { ReactNode, useState } from 'react';
-import { LuGlobeLock, LuPackage, LuUserRound } from 'react-icons/lu';
+import { ReactNode, useState } from "react";
+import { LuGlobeLock, LuPackage, LuUserRound } from "react-icons/lu";
 import {
   CallToAction,
   cn,
   Heading,
   ComparisonTable as Table,
   TextLink,
-} from '@theguild/components';
-import { CheckmarkIcon, XIcon } from '../../app/gateway/federation-compatible-benchmarks/icons';
-import { GatewayIcon } from '../icons';
-import { NestedSticky } from '../nested-sticky';
-import { AvailabilityIcon, EnterpriseSupportIcon, UsageIcon } from './icons';
+} from "@theguild/components";
+import {
+  CheckmarkIcon,
+  XIcon,
+} from "../../app/gateway/federation-compatible-benchmarks/icons";
+import { GatewayIcon } from "../icons";
+import { NestedSticky } from "../nested-sticky";
+import { AvailabilityIcon, EnterpriseSupportIcon, UsageIcon } from "./icons";
 
-type PlanName = 'Hobby' | 'Pro' | 'Enterprise';
+type PlanName = "Hobby" | "Pro" | "Enterprise";
 interface PricingPlan {
   name: PlanName;
   cta: ReactNode;
@@ -22,7 +25,7 @@ interface PricingPlan {
 
 const pricingTiers: PricingPlan[] = [
   {
-    name: 'Hobby',
+    name: "Hobby",
     cta: (
       <CallToAction
         variant="tertiary"
@@ -35,7 +38,7 @@ const pricingTiers: PricingPlan[] = [
     ),
   },
   {
-    name: 'Pro',
+    name: "Pro",
     cta: (
       <CallToAction
         variant="primary"
@@ -47,7 +50,7 @@ const pricingTiers: PricingPlan[] = [
     ),
   },
   {
-    name: 'Enterprise',
+    name: "Enterprise",
     cta: (
       <CallToAction
         variant="primary"
@@ -61,13 +64,18 @@ const pricingTiers: PricingPlan[] = [
 ];
 
 export function PlansTable({ className }: { className?: string }) {
-  const [activePlan, setActivePlan] = useState<PlanName>('Hobby');
+  const [activePlan, setActivePlan] = useState<PlanName>("Hobby");
 
   const NO = <XIcon className="text-critical-dark mx-auto size-6" />;
   const YES = <CheckmarkIcon className="text-positive-dark mx-auto size-6" />;
 
   return (
-    <section className={cn('relative p-4 py-12 md:px-6 lg:py-24 xl:px-[120px]', className)}>
+    <section
+      className={cn(
+        "relative p-4 py-12 md:px-6 lg:py-24 xl:px-[120px]",
+        className,
+      )}
+    >
       <Heading
         size="md"
         as="h3"
@@ -77,8 +85,8 @@ export function PlansTable({ className }: { className?: string }) {
         <br className="max-xl:hidden" /> On&nbsp;your&nbsp;own&nbsp;terms.
       </Heading>
       <p className="mb-8 mt-4 text-center md:mb-16">
-        Part of the Hive ecosystem, Hive Console is a fully-fledged solution that you can easily
-        tailor to your&nbsp;needs.
+        Part of the Hive ecosystem, Hive Console is a fully-fledged solution
+        that you can easily tailor to your&nbsp;needs.
       </p>
 
       <MobileNavbar setActivePlan={setActivePlan} activePlan={activePlan} />
@@ -99,13 +107,17 @@ export function PlansTable({ className }: { className?: string }) {
               >
                 <div
                   className={cn(
-                    'border-beige-400 flex w-full items-center justify-between px-6 pr-0 sm:[@media(width<1400px)]:[&>a]:hidden',
+                    "border-beige-400 flex w-full items-center justify-between px-6 pr-0 sm:[@media(width<1400px)]:[&>a]:hidden",
                   )}
                 >
-                  <div className="mr-auto text-xl/6 font-medium">{tier.name}</div>
+                  <div className="mr-auto text-xl/6 font-medium">
+                    {tier.name}
+                  </div>
                   {tier.cta}
                   {i < pricingTiers.length - 1 && (
-                    <div className="border-beige-400 h-full w-6 select-none border-r">&nbsp;</div>
+                    <div className="border-beige-400 h-full w-6 select-none border-r">
+                      &nbsp;
+                    </div>
                   )}
                 </div>
               </div>
@@ -116,7 +128,7 @@ export function PlansTable({ className }: { className?: string }) {
           <thead className="sr-only">
             <tr>
               <th>Features</th>
-              {pricingTiers.map(tier => (
+              {pricingTiers.map((tier) => (
                 <th key={tier.name}>{tier.name}</th>
               ))}
             </tr>
@@ -143,7 +155,10 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink href="/docs/management/sso-oidc-provider" target="_blank">
+                <TextLink
+                  href="/docs/management/sso-oidc-provider"
+                  target="_blank"
+                >
                   Single Sign-On (SSO)
                 </TextLink>
               </PlansTableCell>
@@ -160,7 +175,10 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink href="/docs/management/members-roles-permissions" target="_blank">
+                <TextLink
+                  href="/docs/management/members-roles-permissions"
+                  target="_blank"
+                >
                   Role-based Access Control (RBAC)
                 </TextLink>
               </PlansTableCell>
@@ -213,7 +231,10 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/schema-registry#publish-a-schema">
+                <TextLink
+                  target="_blank"
+                  href="/docs/schema-registry#publish-a-schema"
+                >
                   Subgraph/schema publishes
                 </TextLink>
               </PlansTableCell>
@@ -230,7 +251,10 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/schema-registry#check-a-schema">
+                <TextLink
+                  target="_blank"
+                  href="/docs/schema-registry#check-a-schema"
+                >
                   Subgraph/schema checks
                 </TextLink>
               </PlansTableCell>
@@ -247,7 +271,10 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink href="/docs/schema-registry/contracts" target="_blank">
+                <TextLink
+                  href="/docs/schema-registry/contracts"
+                  target="_blank"
+                >
                   Schema Contracts
                 </TextLink>
               </PlansTableCell>
@@ -264,8 +291,28 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink href="/docs/schema-registry/schema-policy" target="_blank">
+                <TextLink
+                  href="/docs/schema-registry/schema-policy"
+                  target="_blank"
+                >
                   Schema Linting
+                </TextLink>
+              </PlansTableCell>
+              <PlansTableCell activePlan={activePlan} plan="Hobby">
+                {YES}
+              </PlansTableCell>
+              <PlansTableCell activePlan={activePlan} plan="Pro">
+                {YES}
+              </PlansTableCell>
+              <PlansTableCell activePlan={activePlan} plan="Enterprise">
+                {YES}
+              </PlansTableCell>
+            </tr>
+
+            <tr>
+              <PlansTableCell>
+                <TextLink href="/docs/schema-registry/app-deployments" target="_blank">
+                  Manage Persisted Documents
                 </TextLink>
               </PlansTableCell>
               <PlansTableCell activePlan={activePlan} plan="Hobby">
@@ -287,7 +334,10 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink href="/docs/schema-registry/usage-reporting" target="_blank">
+                <TextLink
+                  href="/docs/schema-registry/usage-reporting"
+                  target="_blank"
+                >
                   Operation usage reporting and insights
                 </TextLink>
               </PlansTableCell>
@@ -310,7 +360,9 @@ export function PlansTable({ className }: { className?: string }) {
               <PlansTableCell activePlan={activePlan} plan="Pro">
                 1M operations per month
                 <br className="max-sm:inline" />
-                <span className="font-normal">Then $10 per 1 million operations</span>
+                <span className="font-normal">
+                  Then $10 per 1 million operations
+                </span>
               </PlansTableCell>
               <PlansTableCell activePlan={activePlan} plan="Enterprise">
                 Volume discount negotiable
@@ -347,6 +399,26 @@ export function PlansTable({ className }: { className?: string }) {
               </PlansTableCell>
               <PlansTableCell activePlan={activePlan} plan="Enterprise">
                 One-year Minimum, Customizable
+              </PlansTableCell>
+            </tr>
+
+            <tr>
+              <PlansTableCell>
+                <TextLink
+                  href="/docs/schema-registry/app-deployments#schema-checks-and-affected-app-deployments"
+                  target="_blank"
+                >
+                  Persisted Document breaking change detection
+                </TextLink>
+              </PlansTableCell>
+              <PlansTableCell activePlan={activePlan} plan="Hobby">
+                {YES}
+              </PlansTableCell>
+              <PlansTableCell activePlan={activePlan} plan="Pro">
+                {YES}
+              </PlansTableCell>
+              <PlansTableCell activePlan={activePlan} plan="Enterprise">
+                {YES}
               </PlansTableCell>
             </tr>
 
@@ -447,7 +519,10 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/gateway/authorization-authentication">
+                <TextLink
+                  target="_blank"
+                  href="/docs/gateway/authorization-authentication"
+                >
                   JWT authentication
                 </TextLink>
               </PlansTableCell>
@@ -484,7 +559,10 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/gateway/persisted-documents">
+                <TextLink
+                  target="_blank"
+                  href="/docs/gateway/persisted-documents"
+                >
                   Persisted documents
                 </TextLink>
               </PlansTableCell>
@@ -638,7 +716,10 @@ export function PlansTable({ className }: { className?: string }) {
 
             <tr>
               <PlansTableCell>
-                <TextLink target="_blank" href="/docs/gateway/other-features/custom-plugins">
+                <TextLink
+                  target="_blank"
+                  href="/docs/gateway/other-features/custom-plugins"
+                >
                   Custom plugins
                 </TextLink>
               </PlansTableCell>
@@ -741,7 +822,9 @@ export function PlansTable({ className }: { className?: string }) {
               </PlansTableCell>
             </tr>
             <tr>
-              <PlansTableCell>Dedicated Slack channel for support</PlansTableCell>
+              <PlansTableCell>
+                Dedicated Slack channel for support
+              </PlansTableCell>
               <PlansTableCell activePlan={activePlan} plan="Hobby">
                 {NO}
               </PlansTableCell>
@@ -765,7 +848,9 @@ export function PlansTable({ className }: { className?: string }) {
               </PlansTableCell>
             </tr>
             <tr>
-              <PlansTableCell>Technical Account Manager & guidance from The Guild</PlansTableCell>
+              <PlansTableCell>
+                Technical Account Manager & guidance from The Guild
+              </PlansTableCell>
               <PlansTableCell activePlan={activePlan} plan="Hobby">
                 {NO}
               </PlansTableCell>
@@ -791,7 +876,9 @@ export function PlansTable({ className }: { className?: string }) {
               </PlansTableCell>
             </tr>
             <tr>
-              <PlansTableCell>Custom Data Processing Agreements (DPA)</PlansTableCell>
+              <PlansTableCell>
+                Custom Data Processing Agreements (DPA)
+              </PlansTableCell>
               <PlansTableCell activePlan={activePlan} plan="Hobby">
                 {NO}
               </PlansTableCell>
@@ -870,13 +957,13 @@ function MobileNavbar({
     >
       <div className="bg-beige-100 before:bg-beige-100 before:border-b-beige-400 relative top-0 z-10 w-full rounded-2xl p-2 duration-100 ease-[var(--hive-ease-overshoot-a-bit)] before:absolute before:inset-0 before:opacity-0 before:transition md:hidden [[data-sticky]>&:before]:scale-x-125 [[data-sticky]>&:before]:border-b [[data-sticky]>&:before]:opacity-100 [[data-sticky]>&:before]:shadow-sm">
         <div className="relative flex w-full">
-          {pricingTiers.map(tier => (
+          {pricingTiers.map((tier) => (
             <button
               key={tier.name}
               onClick={() => setActivePlan(tier.name)}
               className={cn(
-                'hive-focus bg-beige-100 flex-1 rounded-xl px-3 py-2 text-center text-sm font-medium leading-5 transition hover:z-10 hover:ring hover:ring-inset focus:z-10',
-                activePlan === tier.name && 'bg-white',
+                "hive-focus bg-beige-100 flex-1 rounded-xl px-3 py-2 text-center text-sm font-medium leading-5 transition hover:z-10 hover:ring hover:ring-inset focus:z-10",
+                activePlan === tier.name && "bg-white",
               )}
             >
               {tier.name}
@@ -890,8 +977,8 @@ function MobileNavbar({
             return (
               <div
                 className={cn(
-                  'absolute inset-0 z-10 flex items-center justify-center rounded-lg *:!w-full aria-hidden:pointer-events-none aria-hidden:z-0',
-                  i === 0 && 'bg-beige-100',
+                  "absolute inset-0 z-10 flex items-center justify-center rounded-lg *:!w-full aria-hidden:pointer-events-none aria-hidden:z-0",
+                  i === 0 && "bg-beige-100",
                 )}
                 aria-hidden={!isActive}
                 key={plan.name}
@@ -921,8 +1008,8 @@ function PlansTableCell({
     <td
       aria-hidden={plan !== currentPlan}
       className={cn(
-        'border-beige-400 border-b border-r p-4 font-medium first:border-l first:font-medium max-md:w-1/2 max-sm:text-sm sm:py-6 md:w-1/4 lg:w-[23%] lg:first:w-[28%] lg:last:w-[26%] [&:not(:first-child)]:border-l-0 [&:not(:first-child)]:text-center [&:not(:first-child)]:text-sm [&:not(:first-child)]:text-green-800 md:[.subheader+tr>&:last-child]:rounded-tr-3xl max-md:[.subheader+tr>&:not(:first-child,:has(+td[aria-hidden=false]))]:rounded-tr-3xl [.subheader+tr>&]:border-t [.subheader+tr>&]:first:rounded-tl-3xl md:[tr:is(:has(+.subheader),:last-child)>&:last-child]:rounded-br-3xl max-md:[tr:is(:has(+.subheader),:last-child)>&:not(:first-child,:has(+td[aria-hidden=false]))]:rounded-br-3xl [tr:is(:last-child,:has(+.subheader))>&]:first:rounded-bl-3xl',
-        plan && plan !== currentPlan && 'max-md:hidden',
+        "border-beige-400 border-b border-r p-4 font-medium first:border-l first:font-medium max-md:w-1/2 max-sm:text-sm sm:py-6 md:w-1/4 lg:w-[23%] lg:first:w-[28%] lg:last:w-[26%] [&:not(:first-child)]:border-l-0 [&:not(:first-child)]:text-center [&:not(:first-child)]:text-sm [&:not(:first-child)]:text-green-800 md:[.subheader+tr>&:last-child]:rounded-tr-3xl max-md:[.subheader+tr>&:not(:first-child,:has(+td[aria-hidden=false]))]:rounded-tr-3xl [.subheader+tr>&]:border-t [.subheader+tr>&]:first:rounded-tl-3xl md:[tr:is(:has(+.subheader),:last-child)>&:last-child]:rounded-br-3xl max-md:[tr:is(:has(+.subheader),:last-child)>&:not(:first-child,:has(+td[aria-hidden=false]))]:rounded-br-3xl [tr:is(:last-child,:has(+.subheader))>&]:first:rounded-bl-3xl",
+        plan && plan !== currentPlan && "max-md:hidden",
         className,
       )}
     >
@@ -936,7 +1023,11 @@ interface TableSubheaderRowProps {
   title: string;
   description: ReactNode;
 }
-function TableSubheaderRow({ icon, title, description }: TableSubheaderRowProps) {
+function TableSubheaderRow({
+  icon,
+  title,
+  description,
+}: TableSubheaderRowProps) {
   return (
     <tr className="subheader">
       <td colSpan={4} className="pb-6 pt-8">

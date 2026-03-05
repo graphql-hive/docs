@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from "react";
 
 const BOTTOM_THRESHOLD_ADJUSTMENT = 10;
 
@@ -42,9 +42,9 @@ export function NestedSticky({
     // relative at the top
     // fixed when we scroll
     // absolute when we're near the bottom
-    type State = 'fixed' | 'absolute' | 'relative';
-    let state: State = 'relative';
-    let prevState: State = 'relative';
+    type State = "fixed" | "absolute" | "relative";
+    let state: State = "relative";
+    let prevState: State = "relative";
 
     const measureDimensions = () => {
       const rect = sticky.getBoundingClientRect();
@@ -55,28 +55,28 @@ export function NestedSticky({
     };
 
     const updateStyles = () => {
-      placeholder.style.height = state !== 'relative' ? `${height}px` : '0';
+      placeholder.style.height = state !== "relative" ? `${height}px` : "0";
 
-      if (state === 'fixed') {
-        sticky.style.position = 'fixed';
+      if (state === "fixed") {
+        sticky.style.position = "fixed";
         sticky.style.top = `${offsetTop}px`;
         sticky.style.width = `${width}px`;
-        sticky.setAttribute('data-sticky', 'fixed');
-      } else if (state === 'absolute') {
+        sticky.setAttribute("data-sticky", "fixed");
+      } else if (state === "absolute") {
         const containerRect = container.getBoundingClientRect();
         const stickyRect = sticky.getBoundingClientRect();
 
         const relativeTop = stickyRect.top - containerRect.top;
 
-        sticky.style.position = 'absolute';
+        sticky.style.position = "absolute";
         sticky.style.top = `${relativeTop}px`;
         sticky.style.width = `${width}px`;
-        sticky.setAttribute('data-sticky', 'absolute');
+        sticky.setAttribute("data-sticky", "absolute");
       } else {
-        sticky.style.position = 'relative';
-        sticky.style.top = '';
-        sticky.style.width = '';
-        sticky.removeAttribute('data-sticky');
+        sticky.style.position = "relative";
+        sticky.style.top = "";
+        sticky.style.width = "";
+        sticky.removeAttribute("data-sticky");
       }
     };
 
@@ -92,9 +92,15 @@ export function NestedSticky({
         const shouldBeFixed = containerRect.top < offsetTop;
 
         const nearBottom =
-          parentRect.bottom < offsetTop + height + offsetBottom + BOTTOM_THRESHOLD_ADJUSTMENT;
+          parentRect.bottom <
+          offsetTop + height + offsetBottom + BOTTOM_THRESHOLD_ADJUSTMENT;
 
-        state = shouldBeFixed && nearBottom ? 'absolute' : shouldBeFixed ? 'fixed' : 'relative';
+        state =
+          shouldBeFixed && nearBottom
+            ? "absolute"
+            : shouldBeFixed
+              ? "fixed"
+              : "relative";
 
         if (state !== prevState) {
           prevState = state;
@@ -115,22 +121,22 @@ export function NestedSticky({
     measureDimensions();
     handleScroll();
 
-    window.addEventListener('resize', handleResize, { passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       if (rafId) {
         cancelAnimationFrame(rafId);
       }
 
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [offsetTop, offsetBottom, zIndex]);
 
   return (
     <div ref={containerRef} className="relative">
-      <div style={{ width: '100%', height: 0 }} />
+      <div style={{ width: "100%", height: 0 }} />
       <div>{children}</div>
     </div>
   );

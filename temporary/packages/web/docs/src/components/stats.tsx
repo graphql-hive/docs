@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { ReactNode } from 'react';
-import CountUp from 'react-countup';
-import { cn, Heading } from '@theguild/components';
+import { ReactNode } from "react";
+import CountUp from "react-countup";
+import { cn, Heading } from "@theguild/components";
 
 export function StatsItem(props: {
   label: string;
@@ -12,7 +12,11 @@ export function StatsItem(props: {
 }) {
   return (
     <div className="flex items-end justify-between gap-4 rounded-3xl border border-green-400 p-8 lg:flex-col lg:items-start lg:p-12">
-      <Heading as="div" size="xl" className="text-green-1000 min-w-[120px] text-[48px] lg:text-6xl">
+      <Heading
+        as="div"
+        size="xl"
+        className="text-green-1000 min-w-[120px] text-[48px] lg:text-6xl"
+      >
         <CountUp
           start={0}
           end={props.value}
@@ -34,7 +38,9 @@ export function StatsItem(props: {
 
 export function StatsList(props: { children: ReactNode; className?: string }) {
   return (
-    <section className={cn('p-6 sm:py-20 md:py-24 xl:px-[120px]', props.className)}>
+    <section
+      className={cn("p-6 sm:py-20 md:py-24 xl:px-[120px]", props.className)}
+    >
       <Heading as="h2" size="md" className="text-center">
         Living and Breathing GraphQL Federation
       </Heading>

@@ -1,6 +1,12 @@
-'use client';
+"use client";
 
-import { HTMLAttributes, ReactElement, ReactNode, useRef, useState } from 'react';
+import {
+  HTMLAttributes,
+  ReactElement,
+  ReactNode,
+  useRef,
+  useState,
+} from "react";
 import {
   CallToAction,
   cn,
@@ -9,8 +15,8 @@ import {
   Heading,
   ShieldFlashIcon,
   TextLink,
-} from '@theguild/components';
-import { Tooltip } from '../tooltip';
+} from "@theguild/components";
+import { Tooltip } from "../tooltip";
 import {
   AvailabilityIcon,
   BillingIcon,
@@ -21,9 +27,9 @@ import {
   ShortCheckmarkIcon,
   SSOIcon,
   UsageIcon,
-} from './icons';
-import { PlanCard } from './plan-card';
-import { PricingSlider } from './pricing-slider';
+} from "./icons";
+import { PlanCard } from "./plan-card";
+import { PricingSlider } from "./pricing-slider";
 
 interface PlanFeaturesListItemProps extends HTMLAttributes<HTMLLIElement> {
   icon: ReactNode;
@@ -63,30 +69,36 @@ function PlanFeaturesListItem({
   );
 }
 
-const USAGE_DATA_RETENTION_EXPLAINER = 'How long your GraphQL operations are stored on Hive';
-const OPERATIONS_EXPLAINER = 'GraphQL operations reported to Hive Console';
+const USAGE_DATA_RETENTION_EXPLAINER =
+  "How long your GraphQL operations are stored on Hive";
+const OPERATIONS_EXPLAINER = "GraphQL operations reported to Hive Console";
 
 export function Pricing({ className }: { className?: string }): ReactElement {
-  type PlanType = 'Hobby' | 'Pro' | 'Enterprise';
+  type PlanType = "Hobby" | "Pro" | "Enterprise";
 
-  const [highlightedPlan, setHighlightedPlan] = useState<PlanType>('Hobby');
+  const [highlightedPlan, setHighlightedPlan] = useState<PlanType>("Hobby");
   const scrollviewRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section className={cn('py-12 sm:py-20', className)}>
+    <section className={cn("py-12 sm:py-20", className)}>
       <div className="mx-auto box-border w-full max-w-[1200px]">
-        <Heading size="md" as="h3" className="max-md:text-[32px]/10 max-sm:tracking-[-.16px]">
+        <Heading
+          size="md"
+          as="h3"
+          className="max-md:text-[32px]/10 max-sm:tracking-[-.16px]"
+        >
           Operations: learn more about usage-based pricing
         </Heading>
         <p className="mt-6 text-green-800">
-          Hive Console is completely free to use. We charge only for operations collected and
-          processed.
+          Hive Console is completely free to use. We charge only for operations
+          collected and processed.
         </p>
 
         <PricingSlider
           className="mt-6 lg:mt-12"
-          onChange={value => {
-            const newPlan = value === 1 ? 'Hobby' : value < 280 ? 'Pro' : 'Enterprise';
+          onChange={(value) => {
+            const newPlan =
+              value === 1 ? "Hobby" : value < 280 ? "Pro" : "Enterprise";
             if (newPlan !== highlightedPlan) {
               setHighlightedPlan(newPlan);
               if (!scrollviewRef.current) return;
@@ -96,10 +108,13 @@ export function Pricing({ className }: { className?: string }): ReactElement {
               if (!card) return;
 
               const { left, right } = card.getBoundingClientRect();
-              const containerRect = scrollviewRef.current.getBoundingClientRect();
+              const containerRect =
+                scrollviewRef.current.getBoundingClientRect();
               const scrollLeft = scrollviewRef.current.scrollLeft;
               const containerLeft = containerRect.left;
-              const padding = parseInt(window.getComputedStyle(scrollviewRef.current).paddingLeft);
+              const padding = parseInt(
+                window.getComputedStyle(scrollviewRef.current).paddingLeft,
+              );
 
               const cardLeftRelativeToContainer = left - containerLeft;
               const cardRightRelativeToContainer = right - containerLeft;
@@ -114,15 +129,21 @@ export function Pricing({ className }: { className?: string }): ReactElement {
               let targetScrollLeft = scrollLeft;
 
               if (cardLeftRelativeToContainer < padding) {
-                targetScrollLeft = scrollLeft - (padding - cardLeftRelativeToContainer);
-              } else if (cardRightRelativeToContainer > containerRect.width - padding) {
                 targetScrollLeft =
-                  scrollLeft + (cardRightRelativeToContainer - (containerRect.width - padding));
+                  scrollLeft - (padding - cardLeftRelativeToContainer);
+              } else if (
+                cardRightRelativeToContainer >
+                containerRect.width - padding
+              ) {
+                targetScrollLeft =
+                  scrollLeft +
+                  (cardRightRelativeToContainer -
+                    (containerRect.width - padding));
               }
 
               scrollviewRef.current.scrollTo({
                 left: targetScrollLeft,
-                behavior: 'smooth',
+                behavior: "smooth",
               });
             }
           }}
@@ -137,11 +158,14 @@ export function Pricing({ className }: { className?: string }): ReactElement {
             data-plan="Hobby"
             name="Hobby"
             description="For personal or small projects"
-            highlighted={highlightedPlan === 'Hobby'}
+            highlighted={highlightedPlan === "Hobby"}
             adjustable={false}
             price="Free forever"
             callToAction={
-              <CallToAction variant="tertiary" href="https://app.graphql-hive.com">
+              <CallToAction
+                variant="tertiary"
+                href="https://app.graphql-hive.com"
+              >
                 Get started for free
               </CallToAction>
             }
@@ -150,38 +174,41 @@ export function Pricing({ className }: { className?: string }): ReactElement {
                 <PlanFeaturesListItem
                   icon={<OperationsIcon />}
                   category="Operations per month"
-                  features={['1M operations per month']}
+                  features={["1M operations per month"]}
                   tooltip={OPERATIONS_EXPLAINER}
                 />
                 <PlanFeaturesListItem
                   icon={<RetentionIcon />}
                   category="Usage data retention"
-                  features={['7 days']}
+                  features={["7 days"]}
                   tooltip={USAGE_DATA_RETENTION_EXPLAINER}
                 />
                 <PlanFeaturesListItem
                   icon={<FeaturesIcon />}
                   category="Features"
-                  features={['Full access to everything!']}
+                  features={["Full access to everything!"]}
                 />
                 <PlanFeaturesListItem
                   icon={<UsageIcon />}
                   category="Usage"
                   features={[
-                    'Unlimited seats, projects and organizations',
-                    'GitHub issues and chat support',
-                    'Unlimited schema pushes and checks',
+                    "Unlimited seats, projects and organizations",
+                    "GitHub issues and chat support",
+                    "Unlimited schema pushes and checks",
                   ]}
                 />
                 <PlanFeaturesListItem
                   icon={<ShieldFlashIcon />}
                   category="Availability"
-                  features={['99.95% uptime for operation', '100% uptime for schema registry CDN']}
+                  features={[
+                    "99.95% uptime for operation",
+                    "100% uptime for schema registry CDN",
+                  ]}
                 />
                 <PlanFeaturesListItem
                   icon={<SSOIcon />}
                   category="SSO"
-                  features={['Single sign-on via Open ID provider']}
+                  features={["Single sign-on via Open ID provider"]}
                 />
               </>
             }
@@ -190,16 +217,23 @@ export function Pricing({ className }: { className?: string }): ReactElement {
             data-plan="Pro"
             name="Pro"
             description="For scaling API and teams"
-            highlighted={highlightedPlan === 'Pro'}
+            highlighted={highlightedPlan === "Pro"}
             adjustable
             startingFrom
             price={
               <Tooltip content="Base price charged monthly">
-                $20<span className="text-base leading-normal text-green-800"> / month</span>
+                $20
+                <span className="text-base leading-normal text-green-800">
+                  {" "}
+                  / month
+                </span>
               </Tooltip>
             }
             callToAction={
-              <CallToAction variant="primary" href="https://app.graphql-hive.com">
+              <CallToAction
+                variant="primary"
+                href="https://app.graphql-hive.com"
+              >
                 Try free for 30 days
               </CallToAction>
             }
@@ -212,7 +246,9 @@ export function Pricing({ className }: { className?: string }): ReactElement {
                     // eslint-disable-next-line react/jsx-key
                     <span>
                       1M operations per month
-                      <small className="block text-xs">Then $10 per million operations</small>
+                      <small className="block text-xs">
+                        Then $10 per million operations
+                      </small>
                     </span>,
                   ]}
                   tooltip={OPERATIONS_EXPLAINER}
@@ -220,32 +256,37 @@ export function Pricing({ className }: { className?: string }): ReactElement {
                 <PlanFeaturesListItem
                   icon={<RetentionIcon />}
                   category="Usage data retention"
-                  features={['90 days']}
+                  features={["90 days"]}
                   tooltip={USAGE_DATA_RETENTION_EXPLAINER}
                 />
                 <PlanFeaturesListItem
                   icon={<FeaturesIcon />}
                   category="Features"
-                  features={['Everything in Hobby, plus the ability to scale past 1M operations.']}
+                  features={[
+                    "Everything in Hobby, plus the ability to scale past 1M operations.",
+                  ]}
                 />
                 <PlanFeaturesListItem
                   icon={<UsageIcon />}
                   category="Usage"
                   features={[
-                    'Unlimited seats, projects and organizations',
-                    'GitHub issues and chat support',
-                    'Unlimited schema pushes and checks',
+                    "Unlimited seats, projects and organizations",
+                    "GitHub issues and chat support",
+                    "Unlimited schema pushes and checks",
                   ]}
                 />
                 <PlanFeaturesListItem
                   icon={<AvailabilityIcon />}
                   category="Availability"
-                  features={['99.95% uptime for operation', '100% uptime for schema registry CDN']}
+                  features={[
+                    "99.95% uptime for operation",
+                    "100% uptime for schema registry CDN",
+                  ]}
                 />
                 <PlanFeaturesListItem
                   icon={<SSOIcon />}
                   category="SSO"
-                  features={['Single sign-on via Open ID provider']}
+                  features={["Single sign-on via Open ID provider"]}
                 />
               </>
             }
@@ -254,7 +295,7 @@ export function Pricing({ className }: { className?: string }): ReactElement {
             data-plan="Enterprise"
             name="Enterprise"
             description="Custom plan for large companies"
-            highlighted={highlightedPlan === 'Enterprise'}
+            highlighted={highlightedPlan === "Enterprise"}
             adjustable
             price={
               <ContactTextLink className="hover:text-current hover:no-underline">
@@ -264,7 +305,8 @@ export function Pricing({ className }: { className?: string }): ReactElement {
             callToAction={
               <ContactButton variant="primary">
                 <span>
-                  Shape a custom plan <span className="hidden sm:inline">for your business</span>
+                  Shape a custom plan{" "}
+                  <span className="hidden sm:inline">for your business</span>
                 </span>
               </ContactButton>
             }
@@ -274,53 +316,60 @@ export function Pricing({ className }: { className?: string }): ReactElement {
                   icon={<OperationsIcon />}
                   category="Operations per month"
                   features={[
-                    'Custom operation limit',
-                    'Large request volume discount',
-                    'Ability to exceed operation limit without loss of data',
+                    "Custom operation limit",
+                    "Large request volume discount",
+                    "Ability to exceed operation limit without loss of data",
                   ]}
                   tooltip={OPERATIONS_EXPLAINER}
                 />
                 <PlanFeaturesListItem
                   icon={<RetentionIcon />}
                   category="Usage data retention"
-                  features={['One year or more']}
+                  features={["One year or more"]}
                   tooltip={USAGE_DATA_RETENTION_EXPLAINER}
                 />
                 <PlanFeaturesListItem
                   icon={<FeaturesIcon />}
                   category="Features"
-                  features={['Everything in Pro, plus full enterprise support.']}
+                  features={[
+                    "Everything in Pro, plus full enterprise support.",
+                  ]}
                 />
                 <PlanFeaturesListItem
                   icon={<EnterpriseSupportIcon />}
                   category="Enterprise support"
                   features={[
-                    'Dedicated Slack channel for support',
-                    'White-glove onboarding',
+                    "Dedicated Slack channel for support",
+                    "White-glove onboarding",
                     // eslint-disable-next-line react/jsx-key
                     <span>
-                      GraphQL / APIs support and guidance from{' '}
-                      <TextLink href="https://theguild.dev">The&nbsp;Guild</TextLink>
+                      GraphQL / APIs support and guidance from{" "}
+                      <TextLink href="https://theguild.dev">
+                        The&nbsp;Guild
+                      </TextLink>
                     </span>,
-                    '365, 24/7 support, SLA tailored to your needs',
-                    'Custom Data Processing Agreements (DPA)',
+                    "365, 24/7 support, SLA tailored to your needs",
+                    "Custom Data Processing Agreements (DPA)",
                   ]}
                 />
                 <PlanFeaturesListItem
                   icon={<AvailabilityIcon />}
                   category="Availability"
-                  features={['99.95% uptime for operation', '100% uptime for schema registry CDN']}
+                  features={[
+                    "99.95% uptime for operation",
+                    "100% uptime for schema registry CDN",
+                  ]}
                 />
                 <PlanFeaturesListItem
                   icon={<SSOIcon />}
                   category="SSO"
-                  features={['Single sign-on via Open ID provider']}
+                  features={["Single sign-on via Open ID provider"]}
                 />
                 <PlanFeaturesListItem
                   icon={<BillingIcon />}
                   category="Customized Billing"
                   features={[
-                    'Flexible billing options tailored to enterprise procurement processes',
+                    "Flexible billing options tailored to enterprise procurement processes",
                   ]}
                 />
               </>

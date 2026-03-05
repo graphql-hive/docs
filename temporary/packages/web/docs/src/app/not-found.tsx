@@ -1,4 +1,4 @@
-import { NotFoundPage } from '@theguild/components';
+import { NotFoundPage } from "@theguild/components";
 
 export default function Page() {
   return (

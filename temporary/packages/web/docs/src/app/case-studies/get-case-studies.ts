@@ -1,12 +1,12 @@
-import { getPageMap } from '@theguild/components/server';
-import { parseSchema } from '../../lib/parse-schema';
-import { CaseStudyFile } from './case-study-types';
+import { getPageMap } from "@theguild/components/server";
+import { parseSchema } from "../../lib/parse-schema";
+import { CaseStudyFile } from "./case-study-types";
 
 export async function getCaseStudies() {
-  const [_meta, _indexPage, ...pageMap] = await getPageMap('/case-studies');
+  const [_meta, _indexPage, ...pageMap] = await getPageMap("/case-studies");
 
   const caseStudies: CaseStudyFile[] = pageMap
-    .map(x => parseSchema(x, CaseStudyFile))
+    .map((x) => parseSchema(x, CaseStudyFile))
     .sort((a, b) => {
       const aDate = a.frontMatter.date;
       const bDate = b.frontMatter.date;

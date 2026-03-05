@@ -1,9 +1,21 @@
-import { CallToAction, cn, Heading, InfoCard, TargetIcon } from '@theguild/components';
+import {
+  CallToAction,
+  cn,
+  Heading,
+  InfoCard,
+  TargetIcon,
+} from "@theguild/components";
 
-export function LetsGetAdvancedSection({ className, ...rest }: React.HTMLAttributes<HTMLElement>) {
+export function LetsGetAdvancedSection({
+  className,
+  ...rest
+}: React.HTMLAttributes<HTMLElement>) {
   return (
     <section
-      className={cn('px-4 py-6 sm:py-12 md:px-6 lg:py-16 xl:px-24 xl:pb-24', className)}
+      className={cn(
+        "px-4 py-6 sm:py-12 md:px-6 lg:py-16 xl:px-24 xl:pb-24",
+        className,
+      )}
       {...rest}
     >
       <Heading as="h2" size="md" className="text-center">
@@ -22,7 +34,8 @@ export function LetsGetAdvancedSection({ className, ...rest }: React.HTMLAttribu
             // and it looks like it has too much spacing without seeing other cards
             className="max-sm:order-10"
           >
-            Supports real-time data streaming capabilities crucial for dynamic user experiences.
+            Supports real-time data streaming capabilities crucial for dynamic
+            user experiences.
             <div
               className="grow" /* we're using a spacer div here bcs mt-[min(20px,auto)] is not supported */
             />
@@ -34,9 +47,13 @@ export function LetsGetAdvancedSection({ className, ...rest }: React.HTMLAttribu
               Documentation
             </CallToAction>
           </InfoCard>
-          <InfoCard as="li" icon={<CogIcon />} heading="@defer and @stream Support">
-            Allows more efficient data loading patterns, improving user interface responsiveness and
-            system performance.
+          <InfoCard
+            as="li"
+            icon={<CogIcon />}
+            heading="@defer and @stream Support"
+          >
+            Allows more efficient data loading patterns, improving user
+            interface responsiveness and system performance.
             <div className="grow" />
             <CallToAction
               variant="tertiary"
@@ -47,8 +64,8 @@ export function LetsGetAdvancedSection({ className, ...rest }: React.HTMLAttribu
             </CallToAction>
           </InfoCard>
           <InfoCard as="li" icon={<StackIcon />} heading="Request Batching">
-            Reduces network overhead by enabling multiple GraphQL operations in a single HTTP
-            request, enhancing data retrieval efficiency.
+            Reduces network overhead by enabling multiple GraphQL operations in
+            a single HTTP request, enhancing data retrieval efficiency.
             <div className="grow" />
             <CallToAction
               variant="tertiary"
@@ -59,8 +76,9 @@ export function LetsGetAdvancedSection({ className, ...rest }: React.HTMLAttribu
             </CallToAction>
           </InfoCard>
           <InfoCard as="li" icon={<TargetIcon />} heading="Demand Control">
-            Facilitates efficient management of API resources by setting limits on query complexity
-            and execution depth, tailored for high-demand cloud environments.
+            Facilitates efficient management of API resources by setting limits
+            on query complexity and execution depth, tailored for high-demand
+            cloud environments.
             <div className="grow" />
             <CallToAction
               variant="tertiary"

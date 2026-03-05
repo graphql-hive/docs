@@ -1,9 +1,16 @@
-import { GetYourAPIGameRightSection, HiveLayoutConfig } from '@theguild/components';
-import { LandingPageContainer } from '../../../components/landing-page-container';
-import { BlogPageHero } from '../components/blog-page-hero';
-import { CompanyNewsAndPressSection } from '../components/company-news-and-press-section';
+import {
+  GetYourAPIGameRightSection,
+  HiveLayoutConfig,
+} from "@theguild/components";
+import { LandingPageContainer } from "../../../components/landing-page-container";
+import { BlogPageHero } from "../components/blog-page-hero";
+import { CompanyNewsAndPressSection } from "../components/company-news-and-press-section";
 
-export default function BlogPageLayout({ children }: { children: React.ReactNode }) {
+export default function BlogPageLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <LandingPageContainer className="text-green-1000 mx-auto max-w-[90rem] overflow-hidden dark:text-white">
       <HiveLayoutConfig widths="landing-narrow" />

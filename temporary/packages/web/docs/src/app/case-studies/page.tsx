@@ -4,18 +4,21 @@ import {
   DecorationIsolation,
   Heading,
   HiveLayoutConfig,
-} from '@theguild/components';
-import { GetYourAPIGameWhite } from '../../components/get-your-api-game-white';
-import { HeroLinks } from '../../components/hero';
-import { LandingPageContainer } from '../../components/landing-page-container';
-import { TrustedBySection } from '../../components/trusted-by-section';
-import { AllCaseStudiesList } from './all-case-studies-list';
-import { CaseStudiesArchDecoration, CaseStudiesGradientDefs } from './case-studies-arch-decoration';
-import { FeaturedCaseStudiesGrid } from './featured-case-studies-grid';
-import { getCaseStudies } from './get-case-studies';
+} from "@theguild/components";
+import { GetYourAPIGameWhite } from "../../components/get-your-api-game-white";
+import { HeroLinks } from "../../components/hero";
+import { LandingPageContainer } from "../../components/landing-page-container";
+import { TrustedBySection } from "../../components/trusted-by-section";
+import { AllCaseStudiesList } from "./all-case-studies-list";
+import {
+  CaseStudiesArchDecoration,
+  CaseStudiesGradientDefs,
+} from "./case-studies-arch-decoration";
+import { FeaturedCaseStudiesGrid } from "./featured-case-studies-grid";
+import { getCaseStudies } from "./get-case-studies";
 
 export const metadata = {
-  title: 'Case Studies',
+  title: "Case Studies",
 };
 
 export default async function CaseStudiesPage() {
@@ -30,7 +33,7 @@ export default async function CaseStudiesPage() {
           as="h1"
           className="relative z-10 mx-auto max-w-3xl text-balance text-center max-md:text-5xl"
         >
-          Best teams. Hive{'‑' /* non-breaking hyphen */}powered.
+          Best teams. Hive{"‑" /* non-breaking hyphen */}powered.
         </Heading>
         <p className="relative z-10 text-pretty text-center text-green-800 dark:text-white/80">
           See the results our Customers achieved by switching to Hive.
@@ -61,9 +64,12 @@ export default async function CaseStudiesPage() {
           />
         </DecorationIsolation>
       </header>
-      {(caseStudies.length >= 6 || process.env.NODE_ENV === 'development') && (
+      {(caseStudies.length >= 6 || process.env.NODE_ENV === "development") && (
         <>
-          <FeaturedCaseStudiesGrid caseStudies={caseStudies} className="mt-6 max-xl:hidden" />
+          <FeaturedCaseStudiesGrid
+            caseStudies={caseStudies}
+            className="mt-6 max-xl:hidden"
+          />
           <TrustedBySection className="mx-auto my-8 md:mt-24" />
         </>
       )}
