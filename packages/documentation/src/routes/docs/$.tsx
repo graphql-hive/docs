@@ -15,7 +15,6 @@ import {
   DocsPage,
   DocsTitle,
 } from "fumadocs-ui/layouts/docs/page";
-import { useEffect } from "react";
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
