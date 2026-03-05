@@ -23,11 +23,15 @@ jobs:
 
   website-preview:
     uses: ./.github/workflows/website.yml
+    with:
+      environment: preview
     if: ${{ !github.event.pull_request.head.repo.fork }}
     secrets: inherit
 
   storybook-preview:
     uses: ./.github/workflows/storybook.yml
+    with:
+      environment: storybook-preview
     if: ${{ !github.event.pull_request.head.repo.fork }}
     secrets: inherit
 

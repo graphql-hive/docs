@@ -2,10 +2,17 @@ name: Storybook
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
 
 jobs:
   deployment:
     runs-on: ubuntu-24.04
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
@@ -29,7 +36,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: |
             pages deploy packages/design-system/storybook-static --project-name=the-guild-docs-storybook --branch=${{ github.event.pull_request.number != '' && format('pr-{0}', github.event.pull_request.number) || 'main' }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: find deployment comment
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
