@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 /**
  * Click the visible search button and wait for the search dialog to appear.
- * Retries clicking because the search handler may not be hydrated yet on CI.
+ * Waits for React hydration first, then retries clicking until the dialog opens.
  */
 async function openSearch(page: import("@playwright/test").Page) {
   const searchButton = page
@@ -12,9 +12,13 @@ async function openSearch(page: import("@playwright/test").Page) {
 
   await expect(searchButton).toBeVisible();
 
-  // The search dialog is mounted by JS — on slow CI the handler may not be
-  // attached yet when the button first becomes clickable. Retry the click
-  // until the dialog appears.
+  // Wait for the SPA to hydrate — SearchTrigger sets this flag in useEffect.
+  await page.waitForFunction(() => (window as any).__searchHydrated === true, {
+    timeout: 30_000,
+  });
+
+  // Retry clicking until the search dialog appears (SearchProvider's keydown
+  // listener may register slightly after our hydration marker).
   await expect(async () => {
     await searchButton.click();
     await expect(dialog).toBeVisible({ timeout: 2_000 });
@@ -34,7 +38,7 @@ async function waitForSearchResults(
 
 test.describe("Search User Journeys", () => {
   test("developer uses search to find federation info", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "networkidle" });
 
     await openSearch(page);
 
@@ -48,7 +52,7 @@ test.describe("Search User Journeys", () => {
   });
 
   test("search results navigate to docs", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/", { waitUntil: "networkidle" });
 
     await openSearch(page);
 
@@ -62,7 +66,7 @@ test.describe("Search User Journeys", () => {
   });
 
   test("search is available on pricing page", async ({ page }) => {
-    await page.goto("/pricing");
+    await page.goto("/pricing", { waitUntil: "networkidle" });
 
     const searchButton = page
       .getByRole("button", { name: "Search documentation" })
