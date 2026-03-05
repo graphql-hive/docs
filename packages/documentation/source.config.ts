@@ -235,6 +235,13 @@ function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {
           line[id*="actor"] {
             stroke: var(--mermaid-arrow);
           }
+          .note {
+            fill: var(--mermaid-note-fill);
+            stroke: var(--mermaid-note-stroke);
+          }
+          .noteText, .noteText > tspan {
+            fill: var(--mermaid-note-fg);
+          }
           .activation0 {
             fill: var(--mermaid-cluster-fill);
             stroke: var(--mermaid-node-stroke);

@@ -15,6 +15,7 @@ import {
   DocsPage,
   DocsTitle,
 } from "fumadocs-ui/layouts/docs/page";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
@@ -53,6 +54,7 @@ const clientLoader = browserCollections.docs.createClientLoader<{
       description?: string;
       title: string;
     };
+    useScrollToHash();
     return (
       <DocsPage
         tableOfContent={{
@@ -81,11 +83,24 @@ const clientLoader = browserCollections.docs.createClientLoader<{
   },
 });
 
+/** After async MDX content mounts, scroll to the hash target if present. */
+function useScrollToHash() {
+  useEffect(() => {
+    const { hash } = globalThis.location;
+    if (!hash) return;
+    const el = document.getElementById(hash.slice(1));
+    el?.scrollIntoView();
+  }, []);
+}
+
 function Page() {
   const data = useFumadocsLoader(Route.useLoaderData());
 
   return (
-    <div className="min-h-screen" data-docs>
+    <div
+      className="min-h-screen bg-beige-100 dark:bg-[rgb(var(--nextra-bg))]"
+      data-docs
+    >
       <DocsLayout
         {...baseOptions(data.pageTree)}
         nav={{

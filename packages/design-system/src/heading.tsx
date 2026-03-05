@@ -6,12 +6,13 @@ import { cn } from "./cn";
 
 export interface HeadingProps extends ComponentPropsWithoutRef<"h1"> {
   as: "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span";
-  size: "lg" | "md" | "sm" | "xl" | "xs";
+  size?: "lg" | "md" | "sm" | "xl" | "xs";
 }
 export function Heading({
   as: _as,
   children,
   className,
+  id: idProp,
   size,
   ...rest
 }: HeadingProps) {
@@ -30,8 +31,6 @@ export function Heading({
     case "sm":
       sizeStyle = "text-[40px] leading-[1.2] tracking-[-0.2px]";
       break;
-    // TODO: This should probably be a class, not a component, because the design expects
-    //       an equivalent of `heading-sm lg:heading-xl.`
     case "xl":
       sizeStyle =
         "text-4xl leading-[1.2] md:text-[4rem] md:leading-[1.1875] tracking-[-0.64px]";
@@ -41,10 +40,11 @@ export function Heading({
       break;
   }
 
-  const id =
+  const autoId =
     typeof children === "string"
       ? children.replaceAll(/[\s.,]+/g, "-").toLowerCase()
       : undefined;
+  const id = idProp ?? autoId;
 
   return (
     <Level className={cn("group", sizeStyle, className)} id={id} {...rest}>

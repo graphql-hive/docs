@@ -52,14 +52,18 @@ export function Card({
       <span
         className={cn(
           "flex items-center gap-2 p-4 font-semibold text-gray-700 hover:text-gray-900",
-          "after:content-['→'] after:transition-transform after:duration-75",
-          "group-hover:after:translate-x-0.5",
           "dark:text-neutral-200 dark:hover:text-neutral-50",
         )}
         title={title}
       >
         {icon}
         <span className="truncate">{title}</span>
+        <span
+          aria-hidden
+          className="transition-transform duration-75 group-hover:translate-x-0.5"
+        >
+          →
+        </span>
       </span>
       {description ? (
         <p className="px-4 pb-4 text-sm text-gray-500 dark:text-neutral-400">

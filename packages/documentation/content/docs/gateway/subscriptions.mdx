@@ -33,10 +33,10 @@ ability to resolve additional fields.
 sequenceDiagram;
   Client->>Server: Subscription Query
   PubSub->>Server: Event (data changed, new entry added, etc...)
-  Note over Server: Resolvers runs to construct a new result based on event
+  Note over Server: Resolvers construct a new result
   Server->>Client: Result
   PubSub->>Server: Event (data changed, new entry added, etc...)
-  Note over Server: Resolvers runs to construct a new result based on event
+  Note over Server: Resolvers construct a new result
   Server->>Client: Result
 ```
 
