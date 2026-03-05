@@ -15,7 +15,7 @@ async function getSidebar(
 
 test.describe("Documentation User Journeys", () => {
   test.beforeEach(async ({ page }) => {
-    const response = await page.goto("/docs", { waitUntil: "networkidle" });
+    const response = await page.goto("/docs");
     if (!response?.ok()) {
       test.skip(true, "Docs page not available (needs build)");
     }
@@ -38,29 +38,25 @@ test.describe("Documentation User Journeys", () => {
   }) => {
     if (isMobile) {
       // On mobile, verify the page loads directly instead
-      await page.goto("/docs/schema-registry", { waitUntil: "networkidle" });
+      await page.goto("/docs/schema-registry");
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       return;
     }
 
     const sidebar = page.locator("#nd-sidebar");
 
-    // Click the "Hive Console" tab and wait for the section to expand.
-    // Retry because sidebar tab handlers may not be hydrated yet on CI.
+    // Click the "Hive Console" tab in sidebar to reveal schema registry section
+    const hiveConsoleTab = sidebar.getByRole("button", {
+      name: "Hive Console",
+    });
+    await expect(hiveConsoleTab).toBeVisible();
+    await hiveConsoleTab.click();
+
     const schemaRegistryLink = sidebar.locator(
       'a[href="/docs/schema-registry"]',
     );
-    // Wait for SPA hydration before interacting with sidebar tabs
-    await page.waitForFunction(
-      () => (window as any).__searchHydrated === true,
-      { timeout: 30_000 },
-    );
-    await expect(async () => {
-      await sidebar.getByRole("button", { name: "Hive Console" }).click();
-      await expect(schemaRegistryLink).toBeVisible({ timeout: 2_000 });
-    }).toPass({ timeout: 15_000 });
-
-    await schemaRegistryLink.click();
+    await expect(schemaRegistryLink).toBeVisible();
+    await schemaRegistryLink.click({ timeout: 10_000 });
 
     await expect(page).toHaveURL(/schema-registry/);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -71,50 +67,49 @@ test.describe("Documentation User Journeys", () => {
     isMobile,
   }) => {
     if (isMobile) {
-      await page.goto("/docs/gateway", { waitUntil: "networkidle" });
+      await page.goto("/docs/gateway");
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       return;
     }
 
     const sidebar = page.locator("#nd-sidebar");
 
-    // Click the "Hive Gateway" tab and wait for the section to expand.
-    const gatewayLink = sidebar.locator('a[href="/docs/gateway"]');
-    // Wait for SPA hydration before interacting with sidebar tabs
-    await page.waitForFunction(
-      () => (window as any).__searchHydrated === true,
-      { timeout: 30_000 },
-    );
-    await expect(async () => {
-      await sidebar.getByRole("button", { name: "Hive Gateway" }).click();
-      await expect(gatewayLink).toBeVisible({ timeout: 2_000 });
-    }).toPass({ timeout: 15_000 });
+    // Click the "Hive Gateway" tab in sidebar to reveal gateway section
+    const hiveGatewayTab = sidebar.getByRole("button", {
+      name: "Hive Gateway",
+    });
+    await expect(hiveGatewayTab).toBeVisible();
+    await hiveGatewayTab.click();
 
-    await gatewayLink.click();
+    const gatewayLink = sidebar.locator('a[href="/docs/gateway"]');
+    await expect(gatewayLink).toBeVisible();
+    await gatewayLink.click({ timeout: 10_000 });
     await page.waitForURL(/gateway/);
 
     await expect(page).toHaveURL(/gateway/);
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
 
   test("documentation shows code examples", async ({ page }) => {
-    await page.goto("/docs/api-reference/cli", { waitUntil: "networkidle" });
+    await page.goto("/docs/api-reference/cli");
 
     const codeBlock = page.locator("pre").first();
-    await expect(codeBlock).toBeVisible({ timeout: 10_000 });
+    await expect(codeBlock).toBeVisible();
   });
 
   test("sidebar shows active tab for current section", async ({
     page,
     isMobile,
   }) => {
-    await page.goto("/docs/schema-registry", { waitUntil: "networkidle" });
+    await page.goto("/docs/schema-registry");
 
     const sidebar = await getSidebar(page, isMobile);
 
-    // On /docs/schema-registry, the "Hive Console" tab should be visible in sidebar
+    if (isMobile) {
+      await sidebar.getByRole("button", { name: "Documentation" }).click();
+    }
+
+    // On /docs/schema-registry, the "Hive Console" tab should be active
     const hiveConsoleTab = sidebar.getByRole("button", {
       name: /Hive Console/,
     });
@@ -124,9 +119,7 @@ test.describe("Documentation User Journeys", () => {
 
 test.describe("Documentation API Reference", () => {
   test("CLI reference page loads", async ({ page }) => {
-    const response = await page.goto("/docs/api-reference/cli", {
-      waitUntil: "networkidle",
-    });
+    const response = await page.goto("/docs/api-reference/cli");
     if (!response?.ok()) {
       test.skip(true, "Page not available");
     }

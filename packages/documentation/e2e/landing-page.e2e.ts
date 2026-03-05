@@ -61,14 +61,13 @@ test.describe("Landing Page User Journeys", () => {
     await page.goto("/");
 
     if (isMobile) {
-      // On mobile, the nav is hidden — navigate via footer link
-      const footerPricing = page.getByRole("contentinfo").getByRole("link", {
-        name: /pricing/i,
-      });
-      await footerPricing.scrollIntoViewIfNeeded();
-      await footerPricing.click();
+      await page.getByRole("button", { name: "Open Sidebar" }).click();
+      await page
+        .getByRole("complementary")
+        .getByRole("link", { name: /pricing/i })
+        .click();
     } else {
-      const nav = page.getByRole("navigation", { name: "Navigation Menu" });
+      const nav = page.getByRole("navigation").first();
       await nav.getByRole("link", { name: /pricing/i }).click();
     }
     await page.waitForURL("/pricing");
@@ -80,20 +79,15 @@ test.describe("Landing Page User Journeys", () => {
   test("FAQ accordion expands on click", async ({ page }) => {
     await page.goto("/");
 
-    const faqHeading = page.getByRole("heading", {
-      name: "Frequently Asked Questions",
-    });
-    await faqHeading.scrollIntoViewIfNeeded();
-    await expect(faqHeading).toBeVisible();
+    // Find FAQ section by its accordion structure (Radix UI)
+    const faqAccordion = page.locator('[data-orientation="vertical"]').first();
+    await faqAccordion.scrollIntoViewIfNeeded();
 
-    // FAQ items are headings with trigger buttons inside (Base UI Accordion)
-    const faqSection = page.locator("section", { has: faqHeading });
-    const faqTrigger = faqSection.getByRole("button").first();
+    const faqTrigger = faqAccordion.getByRole("button").first();
     await expect(faqTrigger).toBeVisible();
     await faqTrigger.click();
 
-    // After clicking, a region (panel) should become visible
-    await expect(faqSection.getByRole("region").first()).toBeVisible();
+    await expect(page.locator('[data-state="open"]').first()).toBeVisible();
   });
 
   test("testimonials section shows company tabs", async ({ page }) => {
@@ -113,19 +107,18 @@ test.describe("Landing Page User Journeys", () => {
     await page.goto("/");
 
     if (isMobile) {
-      // On mobile, the full nav is hidden — verify the compact top bar is present
-      const searchButton = page
-        .getByRole("button", { name: "Search documentation" })
-        .first();
-      await expect(searchButton).toBeVisible();
-
-      const sidebarButton = page.getByRole("button", {
-        name: "Open Sidebar",
-      });
-      await expect(sidebarButton).toBeVisible();
+      const menuButton = page.getByRole("button", { name: "Open Sidebar" });
+      await expect(menuButton).toBeVisible();
+      await menuButton.click();
+      const sidebar = page.getByRole("complementary");
+      await expect(sidebar).toBeVisible();
+      await expect(
+        sidebar.getByRole("link", { name: /pricing/i }),
+      ).toBeVisible();
     } else {
-      const nav = page.getByRole("navigation", { name: "Navigation Menu" });
+      const nav = page.getByRole("navigation").first();
       await expect(nav).toBeVisible();
+      await expect(nav.getByRole("button").first()).toBeVisible();
       await expect(nav.getByRole("link", { name: /pricing/i })).toBeVisible();
     }
   });

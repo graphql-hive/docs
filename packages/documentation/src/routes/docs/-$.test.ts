@@ -11,7 +11,6 @@ const BASE_URL = process.env["TEST_URL"] || `http://localhost:${TEST_PORT}`;
 
 let devServer: Subprocess | null = null;
 
-// TODO: Move to a util file
 async function waitForServer(maxAttempts = 30): Promise<void> {
   for (let i = 0; i < maxAttempts; i++) {
     try {

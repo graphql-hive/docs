@@ -1,19 +1,10 @@
-import {
-  cn,
-  ContactButton,
-  DecorationIsolation,
-  Heading,
-} from "@theguild/components";
+import { cn, ContactButton, DecorationIsolation, Heading } from '@theguild/components';
 
-export function LookingToUseHiveUpsellBlock({
-  className,
-}: {
-  className?: string;
-}) {
+export function LookingToUseHiveUpsellBlock({ className }: { className?: string }) {
   return (
     <article
       className={cn(
-        "text-green-1000 bg-primary dark:bg-primary/95 absolute rounded-2xl p-6",
+        'text-green-1000 bg-primary dark:bg-primary/95 absolute rounded-2xl p-6',
         className,
       )}
     >
@@ -26,7 +17,7 @@ export function LookingToUseHiveUpsellBlock({
       <ContactButton
         variant="secondary-inverted"
         className="relative mt-[72px] dark:[&>div]:border-[#89A09E]"
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
       >
         Talk to us
       </ContactButton>

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { createContext, ReactNode, useContext, useState } from "react";
-import Image, { StaticImageData } from "next/image";
-import NextLink from "next/link";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
-import * as Tabs from "@radix-ui/react-tabs";
-import { CallToAction, cn, Heading } from "@theguild/components";
-import { ArrowIcon } from "./arrow-icon";
+import { createContext, ReactNode, useContext, useState } from 'react';
+import Image, { StaticImageData } from 'next/image';
+import NextLink from 'next/link';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
+import * as Tabs from '@radix-ui/react-tabs';
+import { CallToAction, cn, Heading } from '@theguild/components';
+import { ArrowIcon } from './arrow-icon';
 
 export type Highlight = {
   title: string;
@@ -39,24 +39,20 @@ export function FeatureTabs<T extends string>({
   const allHighlights = Object.values<Highlight[]>(highlights).flat();
 
   const smallScreenTabHandlers = useSmallScreenTabsHandlers();
-  const [activeHighlight, setActiveHighlight] = useState(
-    allHighlights[0].title,
-  );
+  const [activeHighlight, setActiveHighlight] = useState(allHighlights[0].title);
 
   return (
     <section
       className={cn(
-        "border-beige-400 isolate mx-auto w-[1248px] max-w-full rounded-3xl bg-white",
-        "[--tab-bg-dark:theme(colors.beige.600)] [--tab-bg:theme(colors.beige.200)] sm:max-w-[calc(100%-4rem)] sm:border md:p-6",
+        'border-beige-400 isolate mx-auto w-[1248px] max-w-full rounded-3xl bg-white',
+        '[--tab-bg-dark:theme(colors.beige.600)] [--tab-bg:theme(colors.beige.200)] sm:max-w-[calc(100%-4rem)] sm:border md:p-6',
         className,
       )}
     >
-      <FeatureTabsContext.Provider
-        value={{ activeHighlight, setActiveHighlight, highlights }}
-      >
+      <FeatureTabsContext.Provider value={{ activeHighlight, setActiveHighlight, highlights }}>
         <Tabs.Root
           {...smallScreenTabHandlers}
-          onValueChange={(value) => {
+          onValueChange={value => {
             const tab = value as T;
             setCurrentTab(tab);
             setActiveHighlight(highlights[tab][0].title);
@@ -106,9 +102,9 @@ function Feature({
   highlights,
   setActiveHighlight,
 }: FeatureProps) {
-  if (typeof documentationLink === "string") {
+  if (typeof documentationLink === 'string') {
     documentationLink = {
-      text: "Learn more",
+      text: 'Learn more',
       href: documentationLink,
     };
   }
@@ -116,16 +112,10 @@ function Feature({
   return (
     <div className="flex flex-col gap-6 px-4 pb-4 md:gap-12 md:px-8 md:pb-12">
       <header className="flex flex-wrap items-center gap-4 md:flex-col md:items-start md:gap-6">
-        <Heading
-          as="h2"
-          size="md"
-          className="text-green-1000 max-sm:text-2xl max-sm:leading-8"
-        >
+        <Heading as="h2" size="md" className="text-green-1000 max-sm:text-2xl max-sm:leading-8">
           {title}
         </Heading>
-        {description && (
-          <p className="basis-full leading-6 text-green-800">{description}</p>
-        )}
+        {description && <p className="basis-full leading-6 text-green-800">{description}</p>}
       </header>
       <dl className="grid grid-cols-2 gap-4 md:gap-12">
         {highlights.map((highlight, i) => {
@@ -134,16 +124,12 @@ function Feature({
               <NextLink
                 href={highlight.link}
                 key={i}
-                title={"Learn more about " + highlight.title}
+                title={'Learn more about ' + highlight.title}
                 onPointerOver={() => setActiveHighlight(highlight.title)}
                 className="hover:bg-beige-100 -m-2 block rounded-lg p-2 md:-m-4 md:rounded-xl md:p-4"
               >
-                <dt className="text-green-1000 font-medium">
-                  {highlight.title}
-                </dt>
-                <dd className="mt-2 text-sm leading-5 text-green-800">
-                  {highlight.description}
-                </dd>
+                <dt className="text-green-1000 font-medium">{highlight.title}</dt>
+                <dd className="mt-2 text-sm leading-5 text-green-800">{highlight.description}</dd>
               </NextLink>
             );
           }
@@ -155,9 +141,7 @@ function Feature({
               className="hover:bg-beige-100 -m-2 rounded-lg p-2 md:-m-4 md:rounded-xl md:p-4"
             >
               <dt className="text-green-1000 font-medium">{highlight.title}</dt>
-              <dd className="mt-2 text-sm leading-5 text-green-800">
-                {highlight.description}
-              </dd>
+              <dd className="mt-2 text-sm leading-5 text-green-800">{highlight.description}</dd>
             </div>
           );
         })}
@@ -166,8 +150,7 @@ function Feature({
         <CallToAction variant="primary" href={documentationLink.href}>
           {documentationLink.text}
           <span className="sr-only">
-            {/* descriptive text for screen readers and SEO audits */} about{" "}
-            {title}
+            {/* descriptive text for screen readers and SEO audits */} about {title}
           </span>
           <ArrowIcon />
         </CallToAction>
@@ -180,11 +163,9 @@ function useSmallScreenTabsHandlers() {
   const isSmallScreen = () => window.innerWidth < 640;
   return {
     onBlur: (event: React.FocusEvent<HTMLDivElement>) => {
-      const tabs = event.currentTarget.querySelectorAll(
-        '[role="tablist"] > [role="tab"]',
-      );
+      const tabs = event.currentTarget.querySelectorAll('[role="tablist"] > [role="tab"]');
       for (const tab of tabs) {
-        tab.ariaSelected = "false";
+        tab.ariaSelected = 'false';
       }
     },
     onValueChange: () => {
@@ -192,11 +173,7 @@ function useSmallScreenTabsHandlers() {
       setTimeout(() => {
         const activeElement = document.activeElement;
         // This isn't a perfect dropdown for keyboard users, but we only render it on mobiles.
-        if (
-          activeElement &&
-          activeElement instanceof HTMLElement &&
-          activeElement.role === "tab"
-        ) {
+        if (activeElement && activeElement instanceof HTMLElement && activeElement.role === 'tab') {
           activeElement.blur();
         }
       }, 0);
@@ -205,9 +182,7 @@ function useSmallScreenTabsHandlers() {
     onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (
         !isSmallScreen() ||
-        (event.key !== "ArrowDown" &&
-          event.key !== "ArrowUp" &&
-          event.key !== "Enter")
+        (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'Enter')
       ) {
         return;
       }
@@ -218,38 +193,37 @@ function useSmallScreenTabsHandlers() {
       if (
         !activeElement ||
         !(activeElement instanceof HTMLElement) ||
-        activeElement.role !== "tab"
+        activeElement.role !== 'tab'
       ) {
         return;
       }
 
-      const items =
-        activeElement.parentElement?.querySelectorAll('[role="tab"]');
+      const items = activeElement.parentElement?.querySelectorAll('[role="tab"]');
       if (!items) {
         return;
       }
 
       let index = Array.from(items).indexOf(activeElement);
       for (const [i, item] of items.entries()) {
-        if (item.ariaSelected === "true") {
+        if (item.ariaSelected === 'true') {
           index = i;
         }
-        item.ariaSelected = "false";
+        item.ariaSelected = 'false';
       }
 
       switch (event.key) {
-        case "ArrowDown":
+        case 'ArrowDown':
           index = (index + 1) % items.length;
           break;
 
-        case "ArrowUp":
+        case 'ArrowUp':
           index = (index - 1 + items.length) % items.length;
           break;
 
-        case "Enter": {
+        case 'Enter': {
           const item = items[index];
           if (item instanceof HTMLElement) {
-            if (item.dataset.state === "active") {
+            if (item.dataset.state === 'active') {
               item.blur();
             } else {
               item.focus();
@@ -259,22 +233,14 @@ function useSmallScreenTabsHandlers() {
         }
       }
 
-      items[index].ariaSelected = "true";
+      items[index].ariaSelected = 'true';
     },
   };
 }
 
-export interface FeatureTabProps extends Omit<
-  FeatureProps,
-  "setActiveHighlight"
-> {}
+export interface FeatureTabProps extends Omit<FeatureProps, 'setActiveHighlight'> {}
 
-export function FeatureTab({
-  title,
-  highlights,
-  description,
-  documentationLink,
-}: FeatureTabProps) {
+export function FeatureTab({ title, highlights, description, documentationLink }: FeatureTabProps) {
   const { setActiveHighlight } = useFeatureTabsContext();
 
   return (
@@ -302,14 +268,12 @@ interface FeatureTabsContextType {
   highlights: Record<string, Highlight[]>;
 }
 
-const FeatureTabsContext = createContext<FeatureTabsContextType | undefined>(
-  undefined,
-);
+const FeatureTabsContext = createContext<FeatureTabsContextType | undefined>(undefined);
 
 export function useFeatureTabsContext() {
   const value = useContext(FeatureTabsContext);
   if (!value) {
-    throw new Error("useFeatureTabsContext must be used within a FeatureTabs");
+    throw new Error('useFeatureTabsContext must be used within a FeatureTabs');
   }
   return value;
 }

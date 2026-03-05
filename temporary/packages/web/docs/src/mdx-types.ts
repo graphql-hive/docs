@@ -1,5 +1,5 @@
-import { z, ZodTypeAny } from "zod";
-import type { getPageMap } from "@theguild/components/server";
+import { z, ZodTypeAny } from 'zod';
+import type { getPageMap } from '@theguild/components/server';
 
 export type MdxFile<FrontMatterType> = {
   name: string;
@@ -23,7 +23,7 @@ export type PageMapItem = Awaited<ReturnType<typeof getPageMap>>[number];
 export type FolderItem = Extract<PageMapItem, { children: PageMapItem[] }>;
 
 export function isFolder(item: PageMapItem): item is FolderItem {
-  return !!item && typeof item === "object" && "children" in item;
+  return !!item && typeof item === 'object' && 'children' in item;
 }
 
 export function* pagesDepthFirst(items: PageMapItem[]): Generator<PageMapItem> {

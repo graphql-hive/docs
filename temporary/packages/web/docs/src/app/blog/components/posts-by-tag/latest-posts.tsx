@@ -1,7 +1,7 @@
-import { Heading } from "@theguild/components";
-import { BlogPostFile } from "../../blog-types";
-import { BlogCard } from "../blog-card";
-import { prettyPrintTag } from "../pretty-print-tag";
+import { Heading } from '@theguild/components';
+import { BlogPostFile } from '../../blog-types';
+import { BlogCard } from '../blog-card';
+import { prettyPrintTag } from '../pretty-print-tag';
 
 export function LatestPosts({
   posts,
@@ -17,7 +17,7 @@ export function LatestPosts({
   const firstTwelve = posts.slice(0, itemsInFirstSection);
   const rest = posts.slice(itemsInFirstSection);
 
-  const firstSection = firstTwelve.map((post) => (
+  const firstSection = firstTwelve.map(post => (
     <li key={post.route} className="*:h-full">
       <BlogCard post={post} tag={tag} />
     </li>
@@ -33,11 +33,11 @@ export function LatestPosts({
         Latest posts
         {tag ? (
           <>
-            {" "}
+            {' '}
             in <span>{prettyPrintTag(tag)}</span>
           </>
         ) : (
-          ""
+          ''
         )}
       </Heading>
       <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid sm:grid-cols-2 sm:gap-6 md:mt-16 lg:grid-cols-3 xl:grid-cols-4">
@@ -51,7 +51,7 @@ export function LatestPosts({
           </summary>
 
           <ul className="mt-4 grid grid-cols-1 gap-4 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
-            {rest.map((post) => {
+            {rest.map(post => {
               return (
                 <li key={post.route} className="*:h-full">
                   <BlogCard post={post} tag={tag} />

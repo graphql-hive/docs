@@ -1,21 +1,20 @@
 import type { Root } from "fumadocs-core/page-tree";
 
 import { ProductUpdateAuthors } from "@/components/product-update-header";
-import { mdxComponents } from "@/lib/mdx-components";
-import { pathToSlug } from "@/lib/path-to-slug";
 import { Heading } from "@hive/design-system";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import browserCollections from "fumadocs-mdx:collections/browser";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { DocsBody, DocsPage } from "fumadocs-ui/layouts/docs/page";
+import defaultMdxComponents from "fumadocs-ui/mdx";
 
 const findEntry = createServerFn({ method: "GET" })
   .inputValidator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
     const collections = await import("fumadocs-mdx:collections/server");
     const entry = collections.productUpdates.find(
-      (e) => pathToSlug(e.info.path) === slug,
+      (e) => e.info.path.replace(/\.mdx?$/, "") === slug,
     );
     if (!entry) return null;
 
@@ -68,7 +67,7 @@ const clientLoader = browserCollections.productUpdates.createClientLoader<{
           date={props.date}
         />
         <DocsBody>
-          <MDX components={mdxComponents} />
+          <MDX components={defaultMdxComponents} />
         </DocsBody>
       </DocsPage>
     );

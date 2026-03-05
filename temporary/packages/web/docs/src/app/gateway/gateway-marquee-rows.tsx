@@ -1,73 +1,46 @@
-import { Anchor, cn, MarqueeRows } from "@theguild/components";
+import { Anchor, cn, MarqueeRows } from '@theguild/components';
 
 // todo: a test that checks if none of the links here are 404
 const terms = new Map<string[], string /* href */>([
   [
-    ["authenticated", "requiresScopes", "policy"],
-    "/docs/gateway/authorization-authentication#granular-protection-using-auth-directives-authenticated-requiresscopes-and-policy",
+    ['authenticated', 'requiresScopes', 'policy'],
+    '/docs/gateway/authorization-authentication#granular-protection-using-auth-directives-authenticated-requiresscopes-and-policy',
   ],
+  [['Usage Reporting'], 'https://the-guild.dev/graphql/hive/docs/gateway/usage-reporting'],
+  [['Monitoring', 'Tracing'], '/docs/gateway/monitoring-tracing'],
+  [['@stream', '@defer', 'Incremental Delivery'], '/docs/gateway/defer-stream'],
+  [['Persisted Documents'], '/docs/gateway/persisted-documents'],
+  [['Response Caching'], '/docs/gateway/other-features/performance/response-caching'],
+  [['Content-Encoding'], '/docs/gateway/other-features/performance/compression'],
   [
-    ["Usage Reporting"],
-    "https://the-guild.dev/graphql/hive/docs/gateway/usage-reporting",
+    ['parserAndValidationCache'],
+    '/docs/gateway/other-features/performance/parsing-and-validation-caching',
   ],
-  [["Monitoring", "Tracing"], "/docs/gateway/monitoring-tracing"],
-  [["@stream", "@defer", "Incremental Delivery"], "/docs/gateway/defer-stream"],
-  [["Persisted Documents"], "/docs/gateway/persisted-documents"],
+  [['executionCancellation'], '/docs/gateway/other-features/performance/execution-cancellation'],
+  [['Upstream Cancellation'], '/docs/gateway/other-features/performance/upstream-cancellation'],
+  [['documentCache', 'errorCache', 'validationCache'], '/docs/gateway/other-features/performance'],
+  [['HTTP Caching'], '/docs/gateway/other-features/performance/http-caching'],
+  [['useRequestDeduplication'], '/docs/gateway/other-features/performance/deduplicate-request'],
   [
-    ["Response Caching"],
-    "/docs/gateway/other-features/performance/response-caching",
+    ['APQ', 'Automatic Persisted Queries'],
+    '/docs/gateway/other-features/performance/automatic-persisted-queries',
   ],
+  [['Persisted Documents'], '/docs/gateway/persisted-documents'],
   [
-    ["Content-Encoding"],
-    "/docs/gateway/other-features/performance/compression",
+    ['batching', 'Request Batching'],
+    'https://the-guild.dev/graphql/hive/docs/gateway/other-features/performance/request-batching',
   ],
-  [
-    ["parserAndValidationCache"],
-    "/docs/gateway/other-features/performance/parsing-and-validation-caching",
-  ],
-  [
-    ["executionCancellation"],
-    "/docs/gateway/other-features/performance/execution-cancellation",
-  ],
-  [
-    ["Upstream Cancellation"],
-    "/docs/gateway/other-features/performance/upstream-cancellation",
-  ],
-  [
-    ["documentCache", "errorCache", "validationCache"],
-    "/docs/gateway/other-features/performance",
-  ],
-  [["HTTP Caching"], "/docs/gateway/other-features/performance/http-caching"],
-  [
-    ["useRequestDeduplication"],
-    "/docs/gateway/other-features/performance/deduplicate-request",
-  ],
-  [
-    ["APQ", "Automatic Persisted Queries"],
-    "/docs/gateway/other-features/performance/automatic-persisted-queries",
-  ],
-  [["Persisted Documents"], "/docs/gateway/persisted-documents"],
-  [
-    ["batching", "Request Batching"],
-    "https://the-guild.dev/graphql/hive/docs/gateway/other-features/performance/request-batching",
-  ],
-  [["Supergraph", "Proxy"], "/docs/gateway/supergraph-proxy-source"],
-  [
-    ["Authorization", "Authentication"],
-    "/docs/gateway/authorization-authentication",
-  ],
-  [["Header Propagation"], "/docs/gateway/other-features/header-propagation"],
-  [["Subscriptions"], "/docs/gateway/subscriptions"],
-  [["useMock", "Mocking"], "/docs/gateway/other-features/testing/mocking"],
-  [["Snapshots"], "/docs/gateway/other-features/testing/snapshot"],
-  [
-    ["CSRF Prevention"],
-    "/docs/gateway/other-features/security/csrf-prevention",
-  ],
-  [["Rate Limiting"], "/docs/gateway/other-features/security/rate-limiting"],
-  [["Cost Limit"], "/docs/gateway/other-features/security/cost-limit"],
-  [["Security"], "/docs/gateway/other-features/security"],
-  [["maskedErrors"], "/docs/gateway/logging-and-error-handling"],
+  [['Supergraph', 'Proxy'], '/docs/gateway/supergraph-proxy-source'],
+  [['Authorization', 'Authentication'], '/docs/gateway/authorization-authentication'],
+  [['Header Propagation'], '/docs/gateway/other-features/header-propagation'],
+  [['Subscriptions'], '/docs/gateway/subscriptions'],
+  [['useMock', 'Mocking'], '/docs/gateway/other-features/testing/mocking'],
+  [['Snapshots'], '/docs/gateway/other-features/testing/snapshot'],
+  [['CSRF Prevention'], '/docs/gateway/other-features/security/csrf-prevention'],
+  [['Rate Limiting'], '/docs/gateway/other-features/security/rate-limiting'],
+  [['Cost Limit'], '/docs/gateway/other-features/security/cost-limit'],
+  [['Security'], '/docs/gateway/other-features/security'],
+  [['maskedErrors'], '/docs/gateway/logging-and-error-handling'],
 ]);
 
 export function GatewayMarqueeRows({
@@ -82,10 +55,7 @@ export function GatewayMarqueeRows({
       pauseOnHover
       speed="slow"
       rows={9}
-      className={cn(
-        "flex max-w-full flex-col justify-center rounded-2xl p-4 pb-28",
-        className,
-      )}
+      className={cn('flex max-w-full flex-col justify-center rounded-2xl p-4 pb-28', className)}
       {...rest}
     >
       {inPlaceShuffle(

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Anchor, cn, Heading } from "@theguild/components";
-import { ArrowIcon } from "../../../../components/arrow-icon";
-import { useFrontmatter } from "../../../../components/use-frontmatter";
-import { ProductUpdateAuthors } from "../../../product-updates/(posts)/product-update-header";
-import { BlogFrontmatter } from "../../blog-types";
-import { BlogTagChip } from "../blog-tag-chip";
-import { BlogPostPicture } from "./blog-post-picture";
+import { Anchor, cn, Heading } from '@theguild/components';
+import { ArrowIcon } from '../../../../components/arrow-icon';
+import { useFrontmatter } from '../../../../components/use-frontmatter';
+import { ProductUpdateAuthors } from '../../../product-updates/(posts)/product-update-header';
+import { BlogFrontmatter } from '../../blog-types';
+import { BlogTagChip } from '../blog-tag-chip';
+import { BlogPostPicture } from './blog-post-picture';
 
 export function BlogPostHeader({ className }: { className?: string }) {
   const {
@@ -20,16 +20,13 @@ export function BlogPostHeader({ className }: { className?: string }) {
       {image && <BlogPostPicture image={image} />}
       <header
         className={cn(
-          "flex flex-col rounded-3xl bg-[rgb(var(--nextra-bg))] px-1 pb-6 pt-4 sm:items-center md:px-12 md:pb-16 md:pt-12 xl:w-[888px]",
-          image && "-mt-16 max-sm:mx-6",
+          'flex flex-col rounded-3xl bg-[rgb(var(--nextra-bg))] px-1 pb-6 pt-4 sm:items-center md:px-12 md:pb-16 md:pt-12 xl:w-[888px]',
+          image && '-mt-16 max-sm:mx-6',
           className,
         )}
       >
         <div className="flex items-center gap-2">
-          <Anchor
-            href="/blog"
-            className="flex items-center gap-2 text-sm font-medium"
-          >
+          <Anchor href="/blog" className="flex items-center gap-2 text-sm font-medium">
             <ArrowIcon className="text-beige-1000 mr-1 size-4 rotate-180" />
             <span className="text-beige-800">Blog</span>
             {tag && <span className="text-beige-800"> /</span>}

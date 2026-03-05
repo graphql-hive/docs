@@ -1,25 +1,21 @@
-import NextLink from "next/link";
+import NextLink from 'next/link';
 import {
   CallToAction,
   cn,
   DecorationIsolation,
   Heading,
   HighlightDecoration,
-} from "@theguild/components";
-import { ArrowIcon } from "../arrow-icon";
-import { BookIcon } from "../book-icon";
-import { CheckIcon } from "../check-icon";
-import { EcosystemIllustration } from "./ecosystem-illustration";
+} from '@theguild/components';
+import { ArrowIcon } from '../arrow-icon';
+import { BookIcon } from '../book-icon';
+import { CheckIcon } from '../check-icon';
+import { EcosystemIllustration } from './ecosystem-illustration';
 
-export function EcosystemManagementSection({
-  className,
-}: {
-  className?: string;
-}) {
+export function EcosystemManagementSection({ className }: { className?: string }) {
   return (
     <section
       className={cn(
-        "bg-green-1000 relative isolate overflow-hidden rounded-3xl p-8 px-4 pb-[180px] text-white sm:pb-[128px] md:p-[72px] md:pb-[128px] md:pr-8 lg:pb-[72px]",
+        'bg-green-1000 relative isolate overflow-hidden rounded-3xl p-8 px-4 pb-[180px] text-white sm:pb-[128px] md:p-[72px] md:pb-[128px] md:pr-8 lg:pb-[72px]',
         className,
       )}
     >
@@ -35,11 +31,9 @@ export function EcosystemManagementSection({
                 A complete ecosystem covering all your dev and production needs.
               </div>,
               <>
-                <div className="font-medium text-white">
-                  Apollo Federation v1 and v2
-                </div>
+                <div className="font-medium text-white">Apollo Federation v1 and v2</div>
                 <div>
-                  Best in class{" "}
+                  Best in class{' '}
                   <NextLink
                     className="underline underline-offset-2"
                     href="/federation-gateway-audit"
@@ -50,43 +44,33 @@ export function EcosystemManagementSection({
               </>,
               <>
                 <div className="font-medium text-white">
-                  Powerful and flexible{" "}
-                  <NextLink
-                    className="underline decoration-1 underline-offset-2"
-                    href="/gateway"
-                  >
+                  Powerful and flexible{' '}
+                  <NextLink className="underline decoration-1 underline-offset-2" href="/gateway">
                     GraphQL Gateway (Router)
                   </NextLink>
                 </div>
                 <div>
-                  GraphQL Subscriptions support and built-in security features
-                  (RBAC, JWT, Persisted Operations)
+                  GraphQL Subscriptions support and built-in security features (RBAC, JWT, Persisted
+                  Operations)
                 </div>
               </>,
               <>
-                <span className="font-medium text-white">No vendor-lock</span> —
-                dive into our full GraphQL ecosystem, or&nbsp;build your own
-                stack, connecting{" "}
-                <NextLink
-                  className="underline decoration-1 underline-offset-2"
-                  href="/federation"
-                >
+                <span className="font-medium text-white">No vendor-lock</span> — dive into our full
+                GraphQL ecosystem, or&nbsp;build your own stack, connecting{' '}
+                <NextLink className="underline decoration-1 underline-offset-2" href="/federation">
                   GraphQL federation
                 </NextLink>
-                ,{" "}
-                <NextLink
-                  className="underline decoration-1 underline-offset-2"
-                  href="/gateway"
-                >
+                ,{' '}
+                <NextLink className="underline decoration-1 underline-offset-2" href="/gateway">
                   Hive Gateway
                 </NextLink>
-                ,{" "}
+                ,{' '}
                 <NextLink
                   className="underline decoration-1 underline-offset-2"
                   href="https://the-guild.dev/graphql/mesh"
                 >
                   GraphQL Mesh
-                </NextLink>{" "}
+                </NextLink>{' '}
                 and more.
               </>,
               <>
@@ -111,10 +95,7 @@ export function EcosystemManagementSection({
               Learn GraphQL Federation
               <ArrowIcon />
             </CallToAction>
-            <CallToAction
-              href="/docs/use-cases/apollo-graphos"
-              variant="secondary"
-            >
+            <CallToAction href="/docs/use-cases/apollo-graphos" variant="secondary">
               <BookIcon />
               Migrate from Apollo GraphOS
             </CallToAction>
@@ -124,8 +105,8 @@ export function EcosystemManagementSection({
       </div>
       <DecorationIsolation
         style={{
-          maskImage: "linear-gradient(to right, transparent 20%, black)",
-          WebkitMaskImage: "linear-gradient(to right, transparent 20%, black)",
+          maskImage: 'linear-gradient(to right, transparent 20%, black)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 20%, black)',
         }}
       >
         <HighlightDecoration className="pointer-events-none absolute right-0 top-[-22px] overflow-visible" />

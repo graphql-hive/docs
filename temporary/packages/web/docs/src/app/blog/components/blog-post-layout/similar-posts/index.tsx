@@ -1,8 +1,8 @@
-import { ArrowIcon, cn, Heading } from "@theguild/components";
-import { getPageMap } from "@theguild/components/server";
-import { parseSchema } from "../../../../../lib/parse-schema";
-import { BlogPostFile } from "../../../blog-types";
-import { SimilarPostsClient } from "./client";
+import { ArrowIcon, cn, Heading } from '@theguild/components';
+import { getPageMap } from '@theguild/components/server';
+import { parseSchema } from '../../../../../lib/parse-schema';
+import { BlogPostFile } from '../../../blog-types';
+import { SimilarPostsClient } from './client';
 
 export async function SimilarPosts({ className }: { className?: string }) {
   // We're overfetching all posts here, because Nextra doesn't allow us
@@ -10,14 +10,10 @@ export async function SimilarPosts({ className }: { className?: string }) {
   // filter the similar posts. This could be worked around by moving the
   // code to a remark/rehype plugin layer, but it seems like an overkill.
   // We can optimize this later.
-  const [_meta, _indexPage, ...pageMap] = await getPageMap("/blog");
+  const [_meta, _indexPage, ...pageMap] = await getPageMap('/blog');
   const sortedPosts = pageMap
-    .map((x) => parseSchema(x, BlogPostFile))
-    .sort(
-      (a, b) =>
-        new Date(b.frontMatter.date).getTime() -
-        new Date(a.frontMatter.date).getTime(),
-    )
+    .map(x => parseSchema(x, BlogPostFile))
+    .sort((a, b) => new Date(b.frontMatter.date).getTime() - new Date(a.frontMatter.date).getTime())
     .slice(
       0,
       // This is an assumption that 100 posts is enough to find similar ones.
@@ -28,8 +24,8 @@ export async function SimilarPosts({ className }: { className?: string }) {
   return (
     <section
       className={cn(
-        "flex items-stretch gap-4 py-6 *:flex-1 max-md:flex-col sm:gap-6 lg:p-24",
-        "has-[del]:hidden",
+        'flex items-stretch gap-4 py-6 *:flex-1 max-md:flex-col sm:gap-6 lg:p-24',
+        'has-[del]:hidden',
         className,
       )}
     >
@@ -40,9 +36,7 @@ export async function SimilarPosts({ className }: { className?: string }) {
           </Heading>
           <ArrowIcon className="ml-2 size-12 shrink-0 max-md:hidden" />
         </header>
-        <p className="mt-4 max-md:text-center">
-          Dive deeper into related topics.
-        </p>
+        <p className="mt-4 max-md:text-center">Dive deeper into related topics.</p>
       </div>
       <SimilarPostsClient sortedPosts={sortedPosts} />
     </section>

@@ -8,8 +8,6 @@ import {
 import { transformerTwoslash } from "fumadocs-twoslash";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 
-import { autoImage, remarkAutoImage } from "./source-plugins/auto-image";
-
 export const docs = defineDocs({
   dir: "content/docs",
   docs: {
@@ -50,26 +48,6 @@ export const productUpdates = defineCollections({
     authors: author.array().default(() => []),
     date: dateString,
     description: "string",
-    title: "string",
-  }),
-  type: "doc",
-});
-
-/** Blog posts use shorthand `authors: [kamil]` and `tags: [graphql, hive]`. */
-const stringOrStringArray = type("string | string[]").pipe((v) =>
-  Array.isArray(v) ? v : [v],
-);
-
-export const blog = defineCollections({
-  async: true,
-  dir: "content/blog",
-  schema: type({
-    authors: stringOrStringArray,
-    date: dateString,
-    "description?": "string",
-    "featured?": "boolean",
-    "image?": "string",
-    tags: stringOrStringArray,
     title: "string",
   }),
   type: "doc",
@@ -123,9 +101,7 @@ export default defineConfig({
       // eslint-disable-next-line no-console -- intentional: surface image-size failures during build
       onError: console.warn,
     },
-    remarkPlugins: (plugins) => [remarkAutoImage, ...plugins],
   },
-  plugins: [autoImage()],
 });
 
 function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {

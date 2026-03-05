@@ -1,11 +1,11 @@
-import RSS from "rss";
-import { getChangelogs } from "../../components/product-updates";
+import RSS from 'rss';
+import { getChangelogs } from '../../components/product-updates';
 
 export async function GET() {
   const feed = new RSS({
-    title: "Hive Changelog",
-    site_url: "https://the-guild.dev/graphql/hive",
-    feed_url: "https://the-guild.dev/graphql/hive/feed.xml",
+    title: 'Hive Changelog',
+    site_url: 'https://the-guild.dev/graphql/hive',
+    feed_url: 'https://the-guild.dev/graphql/hive/feed.xml',
   });
 
   for (const item of await getChangelogs()) {
@@ -19,10 +19,10 @@ export async function GET() {
 
   return new Response(feed.xml({ indent: true }), {
     headers: {
-      "Content-Type": "application/xml; charset=utf-8",
+      'Content-Type': 'application/xml; charset=utf-8',
     },
   });
 }
 
-export const dynamic = "force-static";
-export const config = { runtime: "edge" };
+export const dynamic = 'force-static';
+export const config = { runtime: 'edge' };

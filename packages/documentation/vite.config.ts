@@ -21,11 +21,7 @@ export default defineConfig({
   plugins: [
     !process.env["CI"] && devtools(),
     nitro({
-      preset: process.env["VERCEL"]
-        ? "vercel"
-        : process.env["E2E"]
-          ? "node-server"
-          : "cloudflare-module",
+      preset: process.env["VERCEL"] ? "vercel" : "cloudflare-module",
       routeRules: await import("./redirects").then((m) => m.routeRules),
     }),
     mdx(await import("./source.config")),

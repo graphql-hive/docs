@@ -1,11 +1,11 @@
-import { GotAnIdeaSection } from "../../components/got-an-idea-section";
-import { LandingPageContainer } from "../../components/landing-page-container";
-import { components } from "./components";
-import EcosystemPageContent from "./content.mdx";
+import { GotAnIdeaSection } from '../../components/got-an-idea-section';
+import { LandingPageContainer } from '../../components/landing-page-container';
+import { components } from './components';
+import EcosystemPageContent from './content.mdx';
 
 export const metadata = {
-  title: "The Ecosystem",
-  description: "Everything you need to scale your API infrastructure",
+  title: 'The Ecosystem',
+  description: 'Everything you need to scale your API infrastructure',
 };
 
 export default function EcosystemPage() {

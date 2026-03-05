@@ -1,20 +1,16 @@
-"use client";
+'use client';
 
-import { useFrontmatter } from "../../../components/use-frontmatter";
-import { CaseStudyCard } from "../case-study-card";
-import { CaseStudyFile, CaseStudyFrontmatter } from "../case-study-types";
-import { getCompanyLogo } from "../company-logos";
+import { useFrontmatter } from '../../../components/use-frontmatter';
+import { CaseStudyCard } from '../case-study-card';
+import { CaseStudyFile, CaseStudyFrontmatter } from '../case-study-types';
+import { getCompanyLogo } from '../company-logos';
 
-export function OtherCaseStudies({
-  caseStudies,
-}: {
-  caseStudies: CaseStudyFile[];
-}) {
+export function OtherCaseStudies({ caseStudies }: { caseStudies: CaseStudyFile[] }) {
   const frontmatter = useFrontmatter(CaseStudyFrontmatter);
   return (
     <>
       {caseStudies
-        .filter((item) => item.name !== frontmatter.name)
+        .filter(item => item.name !== frontmatter.name)
         .slice(0, 3)
         .map((item, i) => {
           return (

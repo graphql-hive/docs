@@ -1,14 +1,10 @@
-import { Suspense } from "react";
-import {
-  CallToAction,
-  cn,
-  Heading,
-  ComparisonTable as Table,
-} from "@theguild/components";
-import { BenchmarkTableBody } from "./benchmark-table-body";
-import { CheckmarkIcon, XIcon } from "./icons";
+import { Suspense } from 'react';
+import { CallToAction, cn, Heading, ComparisonTable as Table } from '@theguild/components';
+import { BenchmarkTableBody } from './benchmark-table-body';
+import { CheckmarkIcon, XIcon } from './icons';
 
-export interface FederationCompatibleBenchmarksSectionProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface FederationCompatibleBenchmarksSectionProps
+  extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function FederationCompatibleBenchmarksSection({
   className,
@@ -17,7 +13,7 @@ export function FederationCompatibleBenchmarksSection({
   return (
     <section
       className={cn(
-        "text-green-1000 px-4 py-6 sm:py-12 md:px-6 lg:py-[120px] xl:px-[120px]",
+        'text-green-1000 px-4 py-6 sm:py-12 md:px-6 lg:py-[120px] xl:px-[120px]',
         className,
       )}
       {...rest}
@@ -27,14 +23,13 @@ export function FederationCompatibleBenchmarksSection({
           Federation-Compatible Gateway Benchmarks
         </Heading>
         <p className="mb-6 mt-4 text-green-800 md:mb-16">
-          See the results of our open-source audit for Apollo Federation
-          Gateways.
+          See the results of our open-source audit for Apollo Federation Gateways.
         </p>
       </header>
       <div className="my-6 flex items-start gap-6 max-md:flex-col md:mb-12 md:mt-16">
         <p className="text-pretty text-2xl/8 lg:text-[32px]/10">
-          Learn how Hive Gateway performs against other gateways in&nbsp;terms
-          of correctness and compliance with the Apollo Federation specification
+          Learn how Hive Gateway performs against other gateways in&nbsp;terms of correctness and
+          compliance with the Apollo Federation specification
         </p>
         <CallToAction
           variant="tertiary"
@@ -49,9 +44,7 @@ export function FederationCompatibleBenchmarksSection({
             <Table.Row className="*:text-left">
               <Table.Header className="whitespace-pre pl-6">
                 Gateway
-                <small className="block text-xs/[18px] text-green-800">
-                  Name and variant
-                </small>
+                <small className="block text-xs/[18px] text-green-800">Name and variant</small>
               </Table.Header>
               <Table.Header className="whitespace-pre sm:w-1/4">
                 Compatibility
@@ -77,10 +70,7 @@ export function FederationCompatibleBenchmarksSection({
             fallback={
               <tbody aria-busy>
                 <tr>
-                  <td
-                    colSpan={4}
-                    className="bg-beige-100 h-[347.5px] animate-pulse cursor-wait"
-                  />
+                  <td colSpan={4} className="bg-beige-100 h-[347.5px] animate-pulse cursor-wait" />
                 </tr>
               </tbody>
             }

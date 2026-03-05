@@ -1,11 +1,8 @@
-import { cn, Heading } from "@theguild/components";
-import {
-  CaseStudiesArchDecoration,
-  CaseStudiesGradientDefs,
-} from "./case-studies-arch-decoration";
-import { CaseStudyCard } from "./case-study-card";
-import { CaseStudyFile } from "./case-study-types";
-import { getCompanyLogo } from "./company-logos";
+import { cn, Heading } from '@theguild/components';
+import { CaseStudiesArchDecoration, CaseStudiesGradientDefs } from './case-studies-arch-decoration';
+import { CaseStudyCard } from './case-study-card';
+import { CaseStudyFile } from './case-study-types';
+import { getCompanyLogo } from './company-logos';
 
 export function FeaturedCaseStudiesGrid({
   caseStudies,
@@ -14,7 +11,7 @@ export function FeaturedCaseStudiesGrid({
   caseStudies: CaseStudyFile[];
   className?: string;
 }) {
-  if (process.env.NODE_ENV === "development" && caseStudies.length < 6) {
+  if (process.env.NODE_ENV === 'development' && caseStudies.length < 6) {
     while (caseStudies.length < 6) {
       caseStudies = [...caseStudies, ...caseStudies, ...caseStudies];
     }
@@ -22,14 +19,13 @@ export function FeaturedCaseStudiesGrid({
 
   return (
     <section
-      className={cn("grid gap-6", className)}
+      className={cn('grid gap-6', className)}
       style={{
-        gridTemplateAreas:
-          "'a1 a1 a1 a2 a2 a2' 'a3 a3 ac ac a4 a4' 'a5 a5 a5 a6 a6 a6'",
+        gridTemplateAreas: "'a1 a1 a1 a2 a2 a2' 'a3 a3 ac ac a4 a4' 'a5 a5 a5 a6 a6 a6'",
       }}
     >
       <header
-        style={{ gridArea: "ac" }}
+        style={{ gridArea: 'ac' }}
         className="relative flex h-[508px] w-[448px] items-center overflow-hidden"
       >
         <Heading size="md" as="h2" className="text-center">

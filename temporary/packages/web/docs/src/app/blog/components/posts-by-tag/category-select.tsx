@@ -1,4 +1,4 @@
-import { CategoryFilterLink } from "./category-filter-link";
+import { CategoryFilterLink } from './category-filter-link';
 
 export function CategorySelect({
   tag: currentTag,
@@ -12,12 +12,9 @@ export function CategorySelect({
       <li>
         <CategoryFilterLink category={null} currentCategory={currentTag} />
       </li>
-      {categories.map((category) => (
+      {categories.map(category => (
         <li key={category}>
-          <CategoryFilterLink
-            category={category}
-            currentCategory={currentTag}
-          />
+          <CategoryFilterLink category={category} currentCategory={currentTag} />
         </li>
       ))}
     </ul>
