@@ -1,11 +1,35 @@
 import { expect, test } from "@playwright/test";
 
-/** Click the visible search button. On desktop, it's in the nav. On mobile, it's in the top bar. */
+/**
+ * Click the visible search button and wait for the search dialog to appear.
+ * Retries clicking because the search handler may not be hydrated yet on CI.
+ */
 async function openSearch(page: import("@playwright/test").Page) {
-  await page
+  const searchButton = page
     .getByRole("button", { name: "Search documentation" })
-    .first()
-    .click({ timeout: 10_000 });
+    .first();
+  const dialog = page.getByRole("dialog");
+
+  await expect(searchButton).toBeVisible();
+
+  // The search dialog is mounted by JS — on slow CI the handler may not be
+  // attached yet when the button first becomes clickable. Retry the click
+  // until the dialog appears.
+  await expect(async () => {
+    await searchButton.click();
+    await expect(dialog).toBeVisible({ timeout: 2_000 });
+  }).toPass({ timeout: 15_000 });
+}
+
+/** Wait for search results or "No results found" to appear in the dialog. */
+async function waitForSearchResults(
+  page: import("@playwright/test").Page,
+  timeout = 30_000,
+) {
+  const result = page.getByRole("dialog").locator("button[aria-selected]");
+  const noResults = page.getByText("No results found");
+  await expect(result.first().or(noResults)).toBeVisible({ timeout });
+  return result;
 }
 
 test.describe("Search User Journeys", () => {
@@ -20,11 +44,7 @@ test.describe("Search User Journeys", () => {
     await searchInput.fill("federation");
     await expect(searchInput).toHaveValue("federation");
 
-    const result = page.getByRole("dialog").locator("button[aria-selected]");
-    const noResults = page.getByText("No results found");
-    await expect(result.first().or(noResults)).toBeVisible({
-      timeout: 30_000,
-    });
+    await waitForSearchResults(page);
   });
 
   test("search results navigate to docs", async ({ page }) => {
@@ -35,12 +55,8 @@ test.describe("Search User Journeys", () => {
     const searchInput = page.getByRole("textbox");
     await searchInput.fill("schema registry");
 
-    const firstResult = page
-      .getByRole("dialog")
-      .locator("button[aria-selected]")
-      .first();
-    await expect(firstResult).toBeVisible({ timeout: 10_000 });
-    await firstResult.click();
+    const result = await waitForSearchResults(page);
+    await result.first().click();
 
     await expect(page).toHaveURL(/docs/);
   });

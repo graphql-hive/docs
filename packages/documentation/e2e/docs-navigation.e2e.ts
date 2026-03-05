@@ -45,23 +45,20 @@ test.describe("Documentation User Journeys", () => {
 
     const sidebar = page.locator("#nd-sidebar");
 
-    // Click the "Hive Console" tab in sidebar to reveal schema registry section
-    const hiveConsoleTab = sidebar.getByRole("button", {
-      name: "Hive Console",
-    });
-    await expect(hiveConsoleTab).toBeVisible();
-    await hiveConsoleTab.click();
-
+    // Click the "Hive Console" tab and wait for the section to expand.
+    // Retry because sidebar tab handlers may not be hydrated yet on CI.
     const schemaRegistryLink = sidebar.locator(
       'a[href="/docs/schema-registry"]',
     );
-    await expect(schemaRegistryLink).toBeVisible();
-    await schemaRegistryLink.click({ timeout: 10_000 });
+    await expect(async () => {
+      await sidebar.getByRole("button", { name: "Hive Console" }).click();
+      await expect(schemaRegistryLink).toBeVisible({ timeout: 2_000 });
+    }).toPass({ timeout: 15_000 });
+
+    await schemaRegistryLink.click();
 
     await expect(page).toHaveURL(/schema-registry/);
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
 
   test("developer navigates to gateway via sidebar", async ({
@@ -70,24 +67,20 @@ test.describe("Documentation User Journeys", () => {
   }) => {
     if (isMobile) {
       await page.goto("/docs/gateway");
-      await expect(page.getByRole("heading", { level: 1 })).toBeVisible({
-        timeout: 10_000,
-      });
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       return;
     }
 
     const sidebar = page.locator("#nd-sidebar");
 
-    // Click the "Hive Gateway" tab in sidebar to reveal gateway section
-    const hiveGatewayTab = sidebar.getByRole("button", {
-      name: "Hive Gateway",
-    });
-    await expect(hiveGatewayTab).toBeVisible();
-    await hiveGatewayTab.click();
-
+    // Click the "Hive Gateway" tab and wait for the section to expand.
     const gatewayLink = sidebar.locator('a[href="/docs/gateway"]');
-    await expect(gatewayLink).toBeVisible();
-    await gatewayLink.click({ timeout: 10_000 });
+    await expect(async () => {
+      await sidebar.getByRole("button", { name: "Hive Gateway" }).click();
+      await expect(gatewayLink).toBeVisible({ timeout: 2_000 });
+    }).toPass({ timeout: 15_000 });
+
+    await gatewayLink.click();
     await page.waitForURL(/gateway/);
 
     await expect(page).toHaveURL(/gateway/);
