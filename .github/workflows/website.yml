@@ -32,7 +32,7 @@ jobs:
             ${{ github.ref == 'refs/heads/main' && 'deploy' || 'versions upload' }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: find pr comment
+      - name: find deployment comment
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
         id: fc
         if: ${{ github.event.pull_request.number != '' }}
@@ -40,7 +40,31 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: "github-actions[bot]"
-          body-includes: <!--- website-deployment --->
+          body-includes: <!--- deployment-previews --->
+
+      - name: build comment body
+        if: ${{ github.event.pull_request.number != '' }}
+        id: comment
+        env:
+          EXISTING_BODY: ${{ steps.fc.outputs.comment-body }}
+          WEBSITE_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: |
+          STORYBOOK_URL=$(echo "$EXISTING_BODY" | grep -o 'storybook-url:[^ ]*' | head -1 | cut -d: -f2- || true)
+
+          {
+            echo "body<<ENDOFCOMMENT"
+            echo "<!--- deployment-previews --->"
+            echo "<!--- website-url:${WEBSITE_URL} --->"
+            [ -n "$STORYBOOK_URL" ] && echo "<!--- storybook-url:${STORYBOOK_URL} --->"
+            echo ""
+            echo "### Deployments"
+            echo ""
+            echo "| | URL |"
+            echo "|:--|:--|"
+            echo "| 🌐 Website | [${WEBSITE_URL}](${WEBSITE_URL}) |"
+            [ -n "$STORYBOOK_URL" ] && echo "| 📚 Storybook | [${STORYBOOK_URL}](${STORYBOOK_URL}) |"
+            echo "ENDOFCOMMENT"
+          } >> "$GITHUB_OUTPUT"
 
       - name: create/update comment
         uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
@@ -49,9 +73,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            <!--- website-deployment --->
-            ### 🌐 Website Deployment
-
-            The latest changes are available as preview in: [${{ steps.deploy.outputs.deployment-url }}](${{ steps.deploy.outputs.deployment-url }})
+          body: ${{ steps.comment.outputs.body }}
           edit-mode: replace
