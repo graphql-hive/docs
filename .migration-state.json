@@ -3,375 +3,407 @@
   "sourceRepo": ".context/hive-console",
   "sourceBranch": "main",
   "targetSubdirectory": "temporary",
-  "lastSyncedCommit": "db2b3b1fea5917ef574522ac3c615a7833c53cd9",
+  "lastSyncedCommit": "9ca7071dc699d7c38e66eeccb8f8c017c681e209",
   "migrations": [
     {
       "commit": "f09052749e7ec7a5f759566fac8e13eb3f833067",
       "date": "2026-01-13 17:28:06 +0100",
       "message": "fix: better error message when schema service memory limit is reached (#7478)",
       "author": "Laurin Quast",
-      "syncedAt": "2026-02-04T19:17:24.058Z",
-      "mergeCommit": "fe3639cab70f02a6c6b7de39352be1e4d1f3ec6d"
+      "syncedAt": "2026-03-05T19:56:25.574Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "239f848418c6231a112618a1b84f5193ea4947fc",
       "date": "2026-01-14 12:11:22 +0200",
       "message": "docs(router): document `http.graphql_endpoint` config (#7484)",
       "author": "Dotan Simha",
-      "syncedAt": "2026-02-04T19:17:36.031Z",
-      "mergeCommit": "d0a593eab1606117465ca3791686d71ab62f0b68"
+      "syncedAt": "2026-03-05T19:56:25.605Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "387e1963f01d73dc1e524d84825d54bbf78f5106",
       "date": "2026-01-16 10:42:55 +0100",
       "message": "docs: fix self hosted docker tag (#7502)",
       "author": "Laurin Quast",
-      "syncedAt": "2026-02-04T19:17:36.275Z",
-      "mergeCommit": "53dfdb1f5db70402f559bb38f38382d2bef6c7db"
+      "syncedAt": "2026-03-05T19:56:25.632Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "576e4fa275e6c49cbe3ac37a2d4ec780bfbccd15",
       "date": "2026-01-16 15:31:31 +0100",
       "message": "feat: update Node.js to 24.13 (#7492)",
       "author": "Laurin Quast",
-      "syncedAt": "2026-02-04T19:17:36.527Z",
-      "mergeCommit": "e3988827a2aa47b40138d0c375c02bb6539e6b0b"
+      "syncedAt": "2026-03-05T19:56:25.658Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "8dfc24a1bc4abe26f25abea5dba223e6fde6c4d8",
       "date": "2026-01-20 11:42:43 +0200",
       "message": "Upcoming Release Changes (#7481)",
       "author": "TheGuildBot",
-      "syncedAt": "2026-02-04T19:17:36.793Z",
-      "mergeCommit": "fee27a07f282136c81ad34e0b0362f69d16b9b4a"
+      "syncedAt": "2026-03-05T19:56:25.690Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "049b3965cdbba2cf984fc0abc8eaadb847a4ef7c",
       "date": "2026-01-20 10:47:59 -0500",
       "message": "fix(docs/gateway): schema transforms are supported in Rust QP (#7518)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-02-04T19:17:37.041Z",
-      "mergeCommit": "de2e3ec985b2c2812f1cd437743ae6ef8dcd23c2"
+      "syncedAt": "2026-03-05T19:56:25.715Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "7760d113446455e5e19b54d1d3e3094f6b93f89e",
       "date": "2026-01-20 18:25:42 +0200",
       "message": "docs: add retrieve app deployments based on last used data docs and product update (#7398)",
       "author": "Adam Benhassen",
-      "syncedAt": "2026-02-04T19:17:37.267Z",
-      "mergeCommit": "d4b104258417466061c4f27973e90b18a12a499b"
+      "syncedAt": "2026-03-05T19:56:25.741Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "5035b42c72caa854835774fcfd089bf6859abe1f",
       "date": "2026-01-20 18:50:05 +0200",
       "message": "docs: conditional breaking changes based on app deployments product update (#7401)",
       "author": "Adam Benhassen",
-      "syncedAt": "2026-02-04T19:17:37.501Z",
-      "mergeCommit": "fed95133b180ad3f234dda760fbab95ec5ff1ed7"
+      "syncedAt": "2026-03-05T19:56:25.771Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "051dc8bf75f29b6372fb0f2e4e3d7565bca75af7",
       "date": "2026-01-20 21:05:36 +0100",
       "message": "Revise Hive client configuration documentation (#7520)",
       "author": "Laurin Quast",
-      "syncedAt": "2026-02-04T19:17:37.818Z",
-      "mergeCommit": "2f93b10c5d28a3483e15f4edc43d8ebdc67a649b"
+      "syncedAt": "2026-03-05T19:56:25.799Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "75c8f19b6583403a1fcce5212e188cae6500efd9",
       "date": "2026-01-21 12:33:12 +0200",
       "message": "Upcoming Release Changes (#7515)",
       "author": "TheGuildBot",
-      "syncedAt": "2026-02-04T19:17:38.050Z",
-      "mergeCommit": "49e87e4a8ba31b38b235cc5228c97dfca05508d0"
+      "syncedAt": "2026-03-05T19:56:25.824Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "ddc748905c35a4ee66fb3de882c25d1fe918c6b7",
       "date": "2026-01-21 05:11:25 -0600",
       "message": "Upgrade web/app to tailwind v4 (#7490)",
       "author": "Jonathan Brennan",
-      "syncedAt": "2026-02-04T19:17:38.278Z",
-      "mergeCommit": "d540daece6ee8ebeea9e35402d719a46d35d940a"
+      "syncedAt": "2026-03-05T19:56:25.849Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "df5e7f3ffbf3db7b43a1062c7b09914de9890374",
       "date": "2026-01-21 08:37:46 -0500",
       "message": "docs(gateway): rate limiting is now supported in Rust QP (#7522)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-02-04T19:17:38.511Z",
-      "mergeCommit": "a6c8ebbe3d70e71691b31c29778a657e9e19192c"
+      "syncedAt": "2026-03-05T19:56:25.875Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "779085ac9c05c212ae4148e6bbbfa5d7a622bc38",
       "date": "2026-01-25 21:38:44 +0100",
       "message": "docs end-to-end tests (#7551)",
       "author": "Piotr Monwid-Olechnowicz",
-      "syncedAt": "2026-02-04T19:17:38.860Z",
-      "mergeCommit": "839e3adaacfab295ca02ef93dbf58f2c0e57d14c"
+      "syncedAt": "2026-03-05T19:56:25.900Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "760e66fba033463500c8a88e2e110475b0aac41c",
       "date": "2026-01-26 06:05:21 -0500",
       "message": "Document Grafbase Gateway support & add Hive Router and Grafbase Gateway to CDN modal (#7550)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-02-04T19:17:39.099Z",
-      "mergeCommit": "235c661e1fb419d418fe6f8e0e53fdd3a9cb5945"
+      "syncedAt": "2026-03-05T19:56:25.927Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "94c790c48ef9743a37396c226e60894cbe1c3c3a",
       "date": "2026-01-27 06:34:57 -0500",
       "message": "Fix references in CDN Modal and Apollo Router integration docs (#7583)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-02-04T19:17:39.353Z",
-      "mergeCommit": "eb5dfedd138cd6a96d6310fa6f7695595b7c4858"
+      "syncedAt": "2026-03-05T19:56:25.951Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "8415af81b2a69e9123d775632ad143a77a7fae93",
       "date": "2026-01-27 19:03:49 +0200",
       "message": "Upcoming Release Changes (#7546)",
       "author": "TheGuildBot",
-      "syncedAt": "2026-02-04T19:17:39.678Z",
-      "mergeCommit": "289da20c9692b21fb4eeaf44a102677599330eaf"
+      "syncedAt": "2026-03-05T19:56:25.976Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "a8ede55298f49b3b1e1dab613a503bb1ac2b3c9e",
       "date": "2026-01-28 12:26:32 +0100",
       "message": "Bump to fixed React and Next versions (#7587)",
       "author": "Piotr Monwid-Olechnowicz",
-      "syncedAt": "2026-02-04T19:17:39.926Z",
-      "mergeCommit": "d1bdf99a3935ab72c3306a813a32e3a832aa0137"
+      "syncedAt": "2026-03-05T19:56:26.000Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "66a3306fa65f02f28a919bb6d1d1320183bbf598",
       "date": "2026-01-28 13:50:41 +0100",
       "message": "chore: bump react-dom so website preview does not fail (#7596)",
       "author": "Laurin Quast",
-      "syncedAt": "2026-02-04T19:17:40.177Z",
-      "mergeCommit": "3b0942e9dce82b510234ad54ed2125d69e93a156"
+      "syncedAt": "2026-03-05T19:56:26.026Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "b26caead857458398e450ddbab7035cc4da4e5cf",
       "date": "2026-01-28 14:39:53 +0100",
       "message": "Enhancement: New lab docs (#7560)",
       "author": "Michael Skorokhodov",
-      "syncedAt": "2026-02-04T19:17:40.472Z",
-      "mergeCommit": "6d9df37f69638e3616f4e49123d115530f86ca10"
+      "syncedAt": "2026-03-05T19:56:26.051Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "f50d04816b68e8350ebedbe91bc90496ab3e5955",
       "date": "2026-02-01 07:06:51 -0500",
       "message": "docs(router): Operation Complexity (#7544)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-02-04T19:17:40.746Z",
-      "mergeCommit": "0cd645ad68d1ea6d1666bbc86331d17fad74a3d5"
+      "syncedAt": "2026-03-05T19:56:26.076Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "efaa3115fce3e1410c275b9198f813645200016e",
       "date": "2026-02-02 03:33:05 -0500",
       "message": "docs(router): `introspection` (#7483)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-02-04T19:17:41.010Z",
-      "mergeCommit": "ac3f57f62d963488cf7dff67ecff77e9ee96d79c"
+      "syncedAt": "2026-03-05T19:56:26.101Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "9a683572e843082f0749b8ce046e1827f82eaa7f",
       "date": "2026-02-03 13:26:29 +0200",
       "message": "Upcoming Release Changes (#7613)",
       "author": "TheGuildBot",
-      "syncedAt": "2026-02-04T19:17:41.257Z",
-      "mergeCommit": "86e1b71cb35224708afc69b75323b84a251cf819"
+      "syncedAt": "2026-03-05T19:56:26.124Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "e6d3af87280f1f27946c00aded68000dd839b9e2",
       "date": "2026-02-03 12:55:24 +0100",
       "message": "Enhancement: New lab product update (#7599)",
       "author": "Michael Skorokhodov",
-      "syncedAt": "2026-02-04T19:17:41.493Z",
-      "mergeCommit": "8ffe937daecc857a5045dc108330b48d0ef9f43c"
+      "syncedAt": "2026-03-05T19:56:26.152Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "56e4741005b5577ed6e16941d6bd5c4be57c482e",
       "date": "2026-02-05 08:50:53 +0100",
       "message": "Fix: lab product updates video (#7625)",
       "author": "Michael Skorokhodov",
-      "syncedAt": "2026-02-10T01:11:14.925Z",
-      "mergeCommit": "dd7fd7cab193058c3ffabe8722855e9e97718afe"
+      "syncedAt": "2026-03-05T19:56:26.176Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "a10c0ffb2cd110cc1d0caf49ef5fd7303ab4e9ec",
       "date": "2026-02-08 03:39:04 -0500",
       "message": "docs(router): Operation Complexity: Max Aliases (#7649)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-02-10T01:11:15.148Z",
-      "mergeCommit": "8388bca27993cdff650b5bfeede6dfe768d6d447"
+      "syncedAt": "2026-03-05T19:56:26.202Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "f1e5ac9fffdcbb750b83c1a25019bec7776b9ec6",
       "date": "2026-02-08 20:09:52 -0500",
       "message": "fix(docs/router): fix missing `\\` (#7656)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-02-10T01:11:15.370Z",
-      "mergeCommit": "6d18bb869c409f4180a1e0f1edb61232ed888ea9"
+      "syncedAt": "2026-03-05T19:56:26.226Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "67e555651ecc7dae255a72b9587a82d1226b1420",
       "date": "2026-02-09 09:13:47 +0100",
       "message": "Add referrerPolicy back to YouTube iframes (#7655)",
       "author": "Piotr Monwid-Olechnowicz",
-      "syncedAt": "2026-02-10T01:11:15.590Z",
-      "mergeCommit": "a3d8b6cfbd97c8a2e0639dc441228a3b40c569e0"
+      "syncedAt": "2026-03-05T19:56:26.251Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "233c9b9d27ccf60f6a691c83dc8f43c02e07e2e0",
       "date": "2026-02-10 10:54:18 +0100",
       "message": "add Grafbase announcement blog post (#7663)",
       "author": "Piotr Monwid-Olechnowicz",
-      "syncedAt": "2026-02-13T15:38:23.064Z",
-      "mergeCommit": "0d687d89fa6148b50cef47e89a20f71bd7a21b01"
+      "syncedAt": "2026-03-05T19:56:26.275Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "b03d318c4f3ba53eb723d23acfa9c558b7a5281b",
       "date": "2026-02-10 13:23:10 +0200",
       "message": "Upcoming Release Changes (#7668)",
       "author": "TheGuildBot",
-      "syncedAt": "2026-02-13T15:38:23.309Z",
-      "mergeCommit": "2409f82b568096ed7727b38a3de9eb9ec8956c03"
+      "syncedAt": "2026-03-05T19:56:26.299Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "700e6a35a481c9e2221bdb49d774795c194d83ad",
       "date": "2026-02-11 12:48:28 +0100",
       "message": "docs: add dem linkz (#7679)",
       "author": "Laurin",
-      "syncedAt": "2026-02-13T15:38:23.551Z",
-      "mergeCommit": "b3aff3ff41ea239799176d7da263cfce6e987351"
+      "syncedAt": "2026-03-05T19:56:26.323Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "6e9f9c66d2985283cd9a37e29cd1b6a5b430413f",
       "date": "2026-02-11 14:49:00 +0100",
       "message": "docs(router): document `telemetry` (#7658)",
       "author": "Kamil Kisiela",
-      "syncedAt": "2026-02-13T15:38:23.784Z",
-      "mergeCommit": "7be266ecb1672bdea5c737afc0512d8860593ec7"
+      "syncedAt": "2026-03-05T19:56:26.348Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "e2fba097b3f1f0bac992dd29cb81eca97eb2ba5d",
       "date": "2026-02-11 15:11:49 +0100",
       "message": "Add a blog post header image and OG image to Grafbase post (#7680)",
       "author": "Piotr Monwid-Olechnowicz",
-      "syncedAt": "2026-02-13T15:38:24.025Z",
-      "mergeCommit": "84a697241d04f64fa9e81e98b77ca7fc1177d0ad"
+      "syncedAt": "2026-03-05T19:56:26.373Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "350c74f9848a60f49635e9bae71d89c709f6f45b",
       "date": "2026-02-12 15:29:28 +0200",
       "message": "docs: add l2 cache documentation for persisted documents (#7463)",
       "author": "Adam Benhassen",
-      "syncedAt": "2026-02-13T15:38:24.256Z",
-      "mergeCommit": "b30a12206574bc74d5d20298751c9dd963c049cc"
+      "syncedAt": "2026-03-05T19:56:26.397Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "4db50aeb372962dcec56f059ee7b4106bebfba7c",
       "date": "2026-02-17 10:47:30 +0100",
       "message": "Remove leading space from an href (#7698)",
       "author": "Piotr Monwid-Olechnowicz",
-      "syncedAt": "2026-02-23T18:55:26.825Z",
-      "mergeCommit": "76c63ee06dd5319f0410f93b1830ee84a580a78d"
+      "syncedAt": "2026-03-05T19:56:26.421Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "a7f54fbcc939fd7d8bf29f435062afc6e001a8da",
       "date": "2026-02-18 18:43:01 +0200",
       "message": "Upcoming Release Changes (#7703)",
       "author": "TheGuildBot",
-      "syncedAt": "2026-02-23T19:14:19.621Z",
-      "mergeCommit": "acca7fcc79826653e3bcfa67e8860b3f8a2f5c53"
+      "syncedAt": "2026-03-05T19:56:26.447Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "295a16ca710b3c90b051020c795d57f2cfb766f1",
       "date": "2026-02-20 21:35:54 +0900",
       "message": "Publish auth improvements product update (#7681)",
       "author": "Iha Shin (신의하)",
-      "syncedAt": "2026-02-23T19:14:22.744Z",
-      "mergeCommit": "3b5069d88985ad729f5dcd77c80a6b99446b6604"
+      "syncedAt": "2026-03-05T19:56:26.471Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "16a73cbb45c5d345469352064fe4f45970944a5b",
       "date": "2026-02-23 11:41:44 -0500",
       "message": "docs(gateway): fix link to mocking in the migration guide (#7719)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-02-23T19:14:26.435Z",
-      "mergeCommit": "6ae49893020bbdc5159d1a1ee660b6b69155e850"
+      "syncedAt": "2026-03-05T19:56:26.495Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "fcf28f0f1c9d6b145586d284c131e1494b366300",
       "date": "2026-02-25 09:57:21 -0500",
       "message": "docs(gateway): mention Rust QP support w/ Docker (#7722)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-03-02T09:21:39.285Z",
-      "mergeCommit": "8395d9d76ab5a7fea227bd56b31914e873e01828"
+      "syncedAt": "2026-03-05T19:56:26.521Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "5f5b8646876a35cb0d91d063f9b4a156e020cb86",
       "date": "2026-02-26 08:23:48 -0500",
       "message": "docs(router): plugin system (#7387)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-03-02T09:22:00.000Z",
-      "mergeCommit": "0b7e46b7b082c2a6f630d8550cfce1e142b9b76d"
+      "syncedAt": "2026-03-05T19:56:26.548Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "73a5ff3c1fc5334e27b3e38dfa2f27d9b05b71bb",
       "date": "2026-02-26 08:36:37 -0500",
       "message": "Revert \"docs(router): plugin system\" (#7742)",
       "author": "Arda TANRIKULU",
-      "syncedAt": "2026-03-02T09:23:08.432Z",
-      "mergeCommit": "1fb6e25fc2e66ae0bd9a2e3b077235f184d500c3"
+      "syncedAt": "2026-03-05T19:56:26.573Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "0810bb145ab929a55ea8f4919bad663ba673cc66",
       "date": "2026-02-26 16:24:26 -0600",
       "message": "add Insights filters product update (#7747)",
       "author": "Jonathan Brennan",
-      "syncedAt": "2026-03-02T09:23:08.687Z",
-      "mergeCommit": "4bb41a12a80e8fb67b26a034dccbbe64ef286cd2"
+      "syncedAt": "2026-03-05T19:56:26.598Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "60d0bf3ce49237430b45cd7869e902ae996435c3",
       "date": "2026-02-27 13:53:14 -0800",
       "message": "Add schema proposal composition background job (#7706)",
       "author": "jdolle",
-      "syncedAt": "2026-03-02T09:23:08.938Z",
-      "mergeCommit": "78b58895b701c9b46c7ef30ba745fec14ced0816"
+      "syncedAt": "2026-03-05T19:56:26.623Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "6af551730f43b99e2b9873bf4e15bf6a34304dab",
-      "date": "2026-02-28 09:00:00 -0500",
+      "date": "2026-02-27 17:53:55 -0600",
       "message": "update spelling across docs (#7752)",
-      "author": "coderabbitai[bot]",
-      "syncedAt": "2026-03-02T09:25:00.000Z",
-      "mergeCommit": "917943cbfb903b651b41297ab3b70594eabe62e5"
+      "author": "Jonathan Brennan",
+      "syncedAt": "2026-03-05T19:56:26.647Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "732438596fcae898cef4ca13a98186dbbdf0327e",
       "date": "2026-03-03 00:59:49 -0800",
       "message": "Fix docs typo (#7760)",
       "author": "jdolle",
-      "syncedAt": "2026-03-04T17:40:35.278Z",
-      "mergeCommit": "12565c6225a22fc195133600e598f0ea2bcd9853"
+      "syncedAt": "2026-03-05T19:56:26.672Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "b26be48b56edc16f69d7c2048d9716cf1ca19857",
       "date": "2026-03-03 21:12:10 +0200",
       "message": "Upcoming Release Changes (#7764)",
       "author": "TheGuildBot",
-      "syncedAt": "2026-03-04T17:40:35.528Z",
-      "mergeCommit": "4b52c33b7df0554d9cfc0596b259a1490cd80a8a"
+      "syncedAt": "2026-03-05T19:56:26.700Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },
     {
       "commit": "db2b3b1fea5917ef574522ac3c615a7833c53cd9",
-      "date": "2026-03-04 16:45:51 +0200",
+      "date": "2026-03-04 15:18:45 +0100",
       "message": "feat: enable app deployments (#7769)",
-      "author": "Laurin Quast",
-      "syncedAt": "2026-03-04T17:41:00.000Z",
-      "mergeCommit": "2940c54d1ef085cd9ee8eba57fa4cac5c609271c"
+      "author": "Laurin",
+      "syncedAt": "2026-03-05T19:56:26.729Z",
+      "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
+    },
+    {
+      "commit": "3041fb69a32b27ad21bf63e3b9e834f45c22d351",
+      "date": "2026-03-05 13:05:38 +0100",
+      "message": "docs: app deployments product update (#7777)",
+      "author": "Laurin",
+      "syncedAt": "2026-03-05T19:56:27.010Z",
+      "mergeCommit": "5401ea515b2b922a0b8aa890eff4791b47bf9cf4"
+    },
+    {
+      "commit": "f424e14f53b745777fee7dc7bdd91d280e57c456",
+      "date": "2026-03-05 15:03:57 +0200",
+      "message": "Upcoming Release Changes (#7775)",
+      "author": "TheGuildBot",
+      "syncedAt": "2026-03-05T19:56:27.281Z",
+      "mergeCommit": "c72ef1868c14bbf54876915083f0fd1c51be2c04"
+    },
+    {
+      "commit": "0d8e1ea4f1011c46102530ca9a7004307d2f779f",
+      "date": "2026-03-05 09:13:18 -0500",
+      "message": "docs(router): plugin system (#7743)",
+      "author": "Arda TANRIKULU",
+      "syncedAt": "2026-03-05T19:56:45.908Z",
+      "mergeCommit": "9f0ea1138244aa41301a0858e0286b83376e7d95"
+    },
+    {
+      "commit": "9ca7071dc699d7c38e66eeccb8f8c017c681e209",
+      "date": "2026-03-05 18:34:07 +0200",
+      "message": "docs(router): product update for Router plugin system (#7784)",
+      "author": "Dotan Simha",
+      "syncedAt": "2026-03-05T19:56:46.148Z",
+      "mergeCommit": "34948d9751239ab3d783506adfd823024f26ac35"
     }
   ]
 }
