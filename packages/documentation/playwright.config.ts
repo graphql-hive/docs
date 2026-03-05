@@ -4,9 +4,6 @@ const PORT = 1440;
 const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
-  expect: {
-    timeout: process.env["CI"] ? 15_000 : 5000,
-  },
   forbidOnly: !!process.env["CI"],
   fullyParallel: true,
   projects: [
@@ -23,7 +20,6 @@ export default defineConfig({
   retries: process.env["CI"] ? 2 : 0,
   testDir: "./e2e",
   testMatch: "**/*.{spec,e2e}.ts",
-  timeout: process.env["CI"] ? 60_000 : 30_000,
   use: {
     baseURL,
     trace: "on-first-retry",

@@ -34,26 +34,12 @@ declare module "fumadocs-mdx:collections/server" {
       title: string;
     }
   >[];
-
-  export const blog: AsyncDocCollectionEntry<
-    "blog",
-    {
-      authors: string[];
-      date: string;
-      description?: string;
-      featured?: boolean;
-      image?: string;
-      tags: string[];
-      title: string;
-    }
-  >[];
 }
 
 declare module "fumadocs-mdx:collections/browser" {
   import type { DocCollectionEntry } from "fumadocs-mdx/runtime/browser";
 
   const browserCollections: {
-    blog: DocCollectionEntry;
     caseStudies: DocCollectionEntry;
     docs: DocCollectionEntry;
     productUpdates: DocCollectionEntry;

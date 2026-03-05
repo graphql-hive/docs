@@ -3,7 +3,7 @@
   "sourceRepo": ".context/hive-console",
   "sourceBranch": "main",
   "targetSubdirectory": "temporary",
-  "lastSyncedCommit": "db2b3b1fea5917ef574522ac3c615a7833c53cd9",
+  "lastSyncedCommit": "6af551730f43b99e2b9873bf4e15bf6a34304dab",
   "migrations": [
     {
       "commit": "f09052749e7ec7a5f759566fac8e13eb3f833067",
@@ -348,30 +348,6 @@
       "author": "coderabbitai[bot]",
       "syncedAt": "2026-03-02T09:25:00.000Z",
       "mergeCommit": "917943cbfb903b651b41297ab3b70594eabe62e5"
-    },
-    {
-      "commit": "732438596fcae898cef4ca13a98186dbbdf0327e",
-      "date": "2026-03-03 00:59:49 -0800",
-      "message": "Fix docs typo (#7760)",
-      "author": "jdolle",
-      "syncedAt": "2026-03-04T17:40:35.278Z",
-      "mergeCommit": "12565c6225a22fc195133600e598f0ea2bcd9853"
-    },
-    {
-      "commit": "b26be48b56edc16f69d7c2048d9716cf1ca19857",
-      "date": "2026-03-03 21:12:10 +0200",
-      "message": "Upcoming Release Changes (#7764)",
-      "author": "TheGuildBot",
-      "syncedAt": "2026-03-04T17:40:35.528Z",
-      "mergeCommit": "4b52c33b7df0554d9cfc0596b259a1490cd80a8a"
-    },
-    {
-      "commit": "db2b3b1fea5917ef574522ac3c615a7833c53cd9",
-      "date": "2026-03-04 16:45:51 +0200",
-      "message": "feat: enable app deployments (#7769)",
-      "author": "Laurin Quast",
-      "syncedAt": "2026-03-04T17:41:00.000Z",
-      "mergeCommit": "2940c54d1ef085cd9ee8eba57fa4cac5c609271c"
     }
   ]
 }

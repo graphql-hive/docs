@@ -403,11 +403,11 @@ Hive client supports resolving persisted documents. For getting started please r
 
 #### Basic Configuration
 
-For enabling you need to provide the `persistedDocuments` as follows.
+For enabling you need to provide the `experimental__persistedDocuments` as follows.
 
 ```ts filename="Hive Persisted Documents Basic Configuration"
 useHive({
-  persistedDocuments: {
+  experimental__persistedDocuments: {
     cdn: {
       // replace <target_id> and <cdn_access_token> with your values
       endpoint: [
@@ -428,7 +428,7 @@ Schema Registry. If you want to allow arbitrary documents to be executed, you ca
 
 ```typescript filename="Hive Persisted Documents Allow Arbitrary Documents" {8}
 useHive({
-  persistedDocuments: {
+  experimental__persistedDocuments: {
     cdn: {
       // replace <target_id> and <cdn_access_token> with your values
       endpoint: [
@@ -446,7 +446,7 @@ Furthermore, you can also allow arbitrary documents based on the incoming HTTP r
 
 ```typescript filename="Hive Persisted Documents Allow Arbitrary Documents Based on Request" {8-9}
 useHive({
-  persistedDocuments: {
+  experimental__persistedDocuments: {
     cdn: {
       // replace <target_id> and <cdn_access_token> with your values
       endpoint: [
@@ -469,7 +469,7 @@ the `cache` option.
 
 ```typescript filename="Hive Persisted Documents Cache Size" {8-9}
 useHive({
-  persistedDocuments: {
+  experimental__persistedDocuments: {
     cdn: {
       // replace <target_id> and <cdn_access_token> with your values
       endpoint: [

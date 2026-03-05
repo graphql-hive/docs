@@ -1,9 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-export function CaseStudiesArchDecoration(props: {
-  className?: string;
-  gradientId: string;
-}) {
+export function CaseStudiesArchDecoration(props: { className?: string; gradientId: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,10 +18,7 @@ export function CaseStudiesArchDecoration(props: {
   );
 }
 
-export function CaseStudiesGradientDefs(props: {
-  gradientId: string;
-  stops: ReactNode;
-}) {
+export function CaseStudiesGradientDefs(props: { gradientId: string; stops: ReactNode }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

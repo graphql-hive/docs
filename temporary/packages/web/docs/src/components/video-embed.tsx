@@ -1,4 +1,4 @@
-import { cn } from "@theguild/components";
+import { cn } from '@theguild/components';
 
 export function VideoEmbed({
   src,
@@ -11,7 +11,7 @@ export function VideoEmbed({
 }) {
   return (
     <video
-      className={cn("mx-auto mt-6", className)}
+      className={cn('mx-auto mt-6', className)}
       playsInline
       autoPlay
       loop
@@ -19,7 +19,7 @@ export function VideoEmbed({
       controls
       title={title}
     >
-      <source src={src} type={`video/${src.slice(src.lastIndexOf(".") + 1)}`} />
+      <source src={src} type={`video/${src.slice(src.lastIndexOf('.') + 1)}`} />
       Your browser does not support the video tag.
     </video>
   );

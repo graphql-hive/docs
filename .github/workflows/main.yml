@@ -25,9 +25,9 @@ jobs:
     uses: ./.github/workflows/website.yml
     secrets: inherit
 
-  storybook:
-    uses: ./.github/workflows/storybook.yml
-    secrets: inherit
+  # storybook:
+  #   uses: ./.github/workflows/storybook.yml
+  #   secrets: inherit
 
   # release:
   #   uses: the-guild-org/shared-config/.github/workflows/release.yml@main

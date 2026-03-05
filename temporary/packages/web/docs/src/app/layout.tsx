@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import localFont from "next/font/local";
+import { ReactNode } from 'react';
+import localFont from 'next/font/local';
 import {
   AccountBox,
   GitHubIcon,
@@ -11,32 +11,28 @@ import {
   PRODUCTS,
   RightCornerIcon,
   TargetIcon,
-} from "@theguild/components";
-import {
-  getDefaultMetadata,
-  getPageMap,
-  HiveLayout,
-} from "@theguild/components/server";
-import { DynamicMetaTags } from "./dynamic-meta-tags";
-import graphQLConfLocalImage from "../components/graphql-conf-image.webp";
-import "@theguild/components/style.css";
-import "../selection-styles.css";
-import "../easing-functions.css";
-import "../mermaid.css";
-import { NarrowPages } from "./narrow-pages";
-import "./global.css";
+} from '@theguild/components';
+import { getDefaultMetadata, getPageMap, HiveLayout } from '@theguild/components/server';
+import { DynamicMetaTags } from './dynamic-meta-tags';
+import graphQLConfLocalImage from '../components/graphql-conf-image.webp';
+import '@theguild/components/style.css';
+import '../selection-styles.css';
+import '../easing-functions.css';
+import '../mermaid.css';
+import { NarrowPages } from './narrow-pages';
+import './global.css';
 
 export const metadata = getDefaultMetadata({
   productName: PRODUCTS.HIVE.name,
-  websiteName: "Hive",
+  websiteName: 'Hive',
   description:
-    "Fully Open-source schema registry, analytics and gateway for GraphQL federation and other GraphQL APIs",
+    'Fully Open-source schema registry, analytics and gateway for GraphQL federation and other GraphQL APIs',
 });
 
 metadata.openGraph = {
   ...metadata.openGraph,
   // to remove leading slash
-  url: ".",
+  url: '.',
   /**
    * We currently have `metadataBase` which includes `basePath`,
    * so the opengraph-image.png file convention results in a
@@ -46,37 +42,33 @@ metadata.openGraph = {
    * Do not extract this workaround to a separate file, as it will stop working.
    */
   images: [
-    new URL("./opengraph-image.png", import.meta.url)
+    new URL('./opengraph-image.png', import.meta.url)
       .toString()
-      .replace(process.env.NEXT_BASE_PATH || "", ""),
+      .replace(process.env.NEXT_BASE_PATH || '', ''),
   ],
 };
 
 const neueMontreal = localFont({
   src: [
-    { path: "../fonts/PPNeueMontreal-Regular.woff2", weight: "400" },
-    { path: "../fonts/PPNeueMontreal-Medium.woff2", weight: "500" },
+    { path: '../fonts/PPNeueMontreal-Regular.woff2', weight: '400' },
+    { path: '../fonts/PPNeueMontreal-Medium.woff2', weight: '500' },
     // Medium is actually 530, so we use it both for 500 and 600
-    { path: "../fonts/PPNeueMontreal-Medium.woff2", weight: "600" },
-    { path: "../fonts/PPNeueMontreal-SemiBold.woff2", weight: "700" },
+    { path: '../fonts/PPNeueMontreal-Medium.woff2', weight: '600' },
+    { path: '../fonts/PPNeueMontreal-SemiBold.woff2', weight: '700' },
   ],
 });
 
-export default async function HiveDocsLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default async function HiveDocsLayout({ children }: { children: ReactNode }) {
   const pageMap = await getPageMap();
 
   const lightOnlyPages = [
-    "/",
-    "/pricing",
-    "/federation",
-    "/oss-friends",
-    "/ecosystem",
-    "/partners",
-    "/gateway",
+    '/',
+    '/pricing',
+    '/federation',
+    '/oss-friends',
+    '/ecosystem',
+    '/partners',
+    '/gateway',
   ];
 
   return (
@@ -87,36 +79,30 @@ export default async function HiveDocsLayout({
       fontFamily={neueMontreal.style.fontFamily}
       navbar={
         <HiveNavigation
-          companyMenuChildren={
-            <GraphQLConfCard image={graphQLConfLocalImage} />
-          }
+          companyMenuChildren={<GraphQLConfCard image={graphQLConfLocalImage} />}
           productName={PRODUCTS.HIVE.name}
           developerMenu={[
             {
-              href: "/docs",
+              href: '/docs',
               icon: <PaperIcon />,
-              children: "Documentation",
+              children: 'Documentation',
             },
+            { href: 'https://status.graphql-hive.com/', icon: <TargetIcon />, children: 'Status' },
             {
-              href: "https://status.graphql-hive.com/",
-              icon: <TargetIcon />,
-              children: "Status",
-            },
-            {
-              href: "/product-updates",
+              href: '/product-updates',
               icon: <RightCornerIcon />,
-              children: "Product Updates",
+              children: 'Product Updates',
             },
             {
-              href: "/case-studies",
+              href: '/case-studies',
               icon: <AccountBox />,
-              children: "Case Studies",
+              children: 'Case Studies',
             },
-            { href: "/blog", icon: <PencilIcon />, children: "Blog" },
+            { href: '/blog', icon: <PencilIcon />, children: 'Blog' },
             {
-              href: "https://github.com/graphql-hive/console",
+              href: 'https://github.com/graphql-hive/console',
               icon: <GitHubIcon />,
-              children: "GitHub",
+              children: 'GitHub',
             },
           ]}
         />
@@ -127,19 +113,19 @@ export default async function HiveDocsLayout({
           items={{
             resources: [
               {
-                children: "Privacy Policy",
-                href: "https://the-guild.dev/graphql/hive/privacy-policy.html",
-                title: "Privacy Policy",
+                children: 'Privacy Policy',
+                href: 'https://the-guild.dev/graphql/hive/privacy-policy.html',
+                title: 'Privacy Policy',
               },
               {
-                children: "Terms of Use",
-                href: "https://the-guild.dev/graphql/hive/terms-of-use.pdf",
-                title: "Terms of Use",
+                children: 'Terms of Use',
+                href: 'https://the-guild.dev/graphql/hive/terms-of-use.pdf',
+                title: 'Terms of Use',
               },
               {
-                children: "Partners",
-                href: "/partners",
-                title: "Partners",
+                children: 'Partners',
+                href: '/partners',
+                title: 'Partners',
               },
             ],
           }}

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Component } from "react";
+import { Component } from 'react';
 
 export class ErrorBoundary extends Component<{
   fallback: React.ReactNode;

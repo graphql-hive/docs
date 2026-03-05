@@ -1,13 +1,10 @@
-import { cn, DecorationIsolation, Heading } from "@theguild/components";
+import { cn, DecorationIsolation, Heading } from '@theguild/components';
 
-export function CloudNativeSection({
-  className,
-  ...rest
-}: React.HTMLAttributes<HTMLElement>) {
+export function CloudNativeSection({ className, ...rest }: React.HTMLAttributes<HTMLElement>) {
   return (
     <section
       className={cn(
-        "bg-green-1000 relative rounded-3xl px-4 py-6 text-white md:px-8 md:py-16 xl:p-24",
+        'bg-green-1000 relative rounded-3xl px-4 py-6 text-white md:px-8 md:py-16 xl:p-24',
         className,
       )}
       {...rest}
@@ -17,17 +14,16 @@ export function CloudNativeSection({
           Cloud Native Nature
         </Heading>
         <p className="mt-6 text-white/80">
-          As modern teams expect their tools to work seamlessly in serverless
-          environments, Hive Gateway is highly versatile and cloud-ready.
+          As modern teams expect their tools to work seamlessly in serverless environments, Hive
+          Gateway is highly versatile and cloud-ready.
         </p>
         <div className="mt-8 flex gap-2 max-sm:flex-col max-sm:border-t max-sm:border-green-700 max-sm:pt-4 sm:mt-12 sm:gap-12">
           <strong className="block basis-1/2 font-medium md:text-xl/7">
             Cloud-Native & Serverless Support
           </strong>
           <p className="basis-1/2 text-white/80">
-            Optimized for deployment in modern cloud and serverless environments
-            such as AWS Lambda and Cloudflare Workers, demonstrating high
-            scalability and flexibility.
+            Optimized for deployment in modern cloud and serverless environments such as AWS Lambda
+            and Cloudflare Workers, demonstrating high scalability and flexibility.
           </p>
         </div>
       </div>

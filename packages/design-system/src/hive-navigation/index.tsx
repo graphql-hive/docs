@@ -138,7 +138,7 @@ export function HiveNavigation({
           : "https://the-guild.dev/graphql/hive/pricing",
     },
   ];
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null!);
 
   return (
     <div
@@ -151,9 +151,6 @@ export function HiveNavigation({
         <TopOfSiteMarker
           onChange={(scrolled) => {
             const container = containerRef.current;
-            if (!container) {
-              return;
-            }
             container.style.setProperty(
               "--border-opacity",
               scrolled ? "100%" : "0%",

@@ -9,6 +9,16 @@ import {
 } from "@tanstack/react-router";
 import { RootProvider } from "fumadocs-ui/provider/tanstack";
 
+const lightOnlyPages = new Set([
+  "/",
+  "/ecosystem",
+  "/federation",
+  "/gateway",
+  "/oss-friends",
+  "/partners",
+  "/pricing",
+]);
+
 export const Route = createRootRoute({
   component: RootComponent,
   errorComponent: RootErrorComponent,
@@ -25,14 +35,6 @@ export const Route = createRootRoute({
       },
       {
         title: "Open-Source GraphQL Federation Platform",
-      },
-      {
-        content: "website",
-        property: "og:type",
-      },
-      {
-        content: "/opengraph-image.png",
-        property: "og:image",
       },
     ],
   }),
@@ -67,9 +69,8 @@ function RootErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const isLightOnlyPage = useRouterState({
-    select: (s) => s.matches.some((m) => m.routeId.includes("/_light-only")),
-  });
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isLightOnlyPage = lightOnlyPages.has(pathname);
   const themeConfig = {
     attribute: "class",
     defaultTheme: "system",

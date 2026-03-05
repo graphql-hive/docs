@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-const pagesWithFAQ = ["/", "/federation", "/pricing"];
+const pagesWithFAQ = ['/', '/federation', '/pricing'];
 
 export function isPageWithFaq(path: string) {
   return pagesWithFAQ.includes(path);
@@ -10,22 +10,22 @@ export function isPageWithFaq(path: string) {
 
 export function AttachPageFAQSchema() {
   useEffect(() => {
-    const html = document.querySelector("html");
+    const html = document.querySelector('html');
 
     if (!html) {
       // This should never happen
       return;
     }
 
-    const path = window.location.pathname.replace("/graphql/hive", "/");
+    const path = window.location.pathname.replace('/graphql/hive', '/');
 
-    if (isPageWithFaq(path) && !html.hasAttribute("itemscope")) {
-      html.setAttribute("itemscope", "");
-      html.setAttribute("itemtype", "https://schema.org/FAQPage");
+    if (isPageWithFaq(path) && !html.hasAttribute('itemscope')) {
+      html.setAttribute('itemscope', '');
+      html.setAttribute('itemtype', 'https://schema.org/FAQPage');
 
       return () => {
-        html.removeAttribute("itemscope");
-        html.removeAttribute("itemtype");
+        html.removeAttribute('itemscope');
+        html.removeAttribute('itemtype');
       };
     }
   }, []);

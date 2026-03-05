@@ -145,11 +145,6 @@ export const routeRules: Record<string, NitroRouteRules> = {
     "/docs/gateway/other-features/rust-query-planner",
   ),
 
-  // Typo in old URL (linked from blog posts)
-  "/docs/schema-registry/high-availability-resilence": redirect(
-    "/docs/schema-registry/high-availability-resilience",
-  ),
-
   // Product updates
   "/product-updates/2024-01-25-schema-contracts-for-federation": redirect(
     "/product-updates/2024-02-06-schema-contracts-for-federation",

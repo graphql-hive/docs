@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import React, { Fragment, useRef } from "react";
-import Head from "next/head";
-import Image, { StaticImageData } from "next/image";
-import * as Tabs from "@radix-ui/react-tabs";
-import { CallToAction, cn, Heading } from "@theguild/components";
-import { ArrowIcon } from "../arrow-icon";
+import React, { Fragment, useRef } from 'react';
+import Head from 'next/head';
+import Image, { StaticImageData } from 'next/image';
+import * as Tabs from '@radix-ui/react-tabs';
+import { CallToAction, cn, Heading } from '@theguild/components';
+import { ArrowIcon } from '../arrow-icon';
 import {
   KarrotLogo,
   NacelleLogo,
   ProdigyLogo,
   WealthsimpleLogo,
   type LogoProps,
-} from "../company-logos";
-import karrotPicture from "./karrot-picture.webp";
-import nacellePicture from "./nacelle-picture.webp";
-import prodigyPicture from "./prodigy-picture.webp";
-import wealthsimplePicture from "./wealthsimple-picture.webp";
+} from '../company-logos';
+import karrotPicture from './karrot-picture.webp';
+import nacellePicture from './nacelle-picture.webp';
+import prodigyPicture from './prodigy-picture.webp';
+import wealthsimplePicture from './wealthsimple-picture.webp';
 
 type Testimonial = {
   company: string;
@@ -33,7 +33,7 @@ type Testimonial = {
 
 const testimonials: Testimonial[] = [
   {
-    company: "nacelle",
+    company: 'nacelle',
     logo: NacelleLogo,
     text: "Our migration from Apollo GraphOS to Hive was incredibly straightforward. In less than a month, we had about 20 subgraphs running on Hive in production. The process was smooth, and the Hive team's friendly demeanor made it even more pleasant. Although we haven't needed direct assistance with our implementation, their openness to feedback and generally nice attitude has fostered a sense of collaboration and partnership.",
     picture: { img: nacellePicture },
@@ -44,57 +44,50 @@ const testimonials: Testimonial[] = [
     // caseStudyHref: ""
   },
   {
-    company: "Karrot",
+    company: 'Karrot',
     logo: KarrotLogo,
-    text: "We use Hive as schema registry and monitoring tool. As a schema registry, we can publish GraphQL Schema with decoupled any application code. As a monitoring tool, we can find useful metrics. For example operation latency, usage of deprecated field. The great thing about GraphQL Hive is that it is easy to use, we have already integrated many tools like Slack or Github.",
+    text: 'We use Hive as schema registry and monitoring tool. As a schema registry, we can publish GraphQL Schema with decoupled any application code. As a monitoring tool, we can find useful metrics. For example operation latency, usage of deprecated field. The great thing about GraphQL Hive is that it is easy to use, we have already integrated many tools like Slack or Github.',
     picture: { img: karrotPicture },
   },
   {
-    company: "Wealthsimple",
-    logo: (props) => (
+    company: 'Wealthsimple',
+    logo: props => (
       <WealthsimpleLogo
         {...props}
         height={26}
-        className={cn("translate-y-[2px]", props.className)}
+        className={cn('translate-y-[2px]', props.className)}
       />
     ),
-    text: "Hive enables Wealthsimple to build flexible and resilient GraphQL APIs. The GitHub integration provides feedback in a format developers are familiar with and conditional breaking changes enable us to focus our discussion on schema design rather than maintenance. Hive empowers us to confidently evolve our schemas by ensuring seamless API updates, detecting potential breaking changes, and guiding developers.",
+    text: 'Hive enables Wealthsimple to build flexible and resilient GraphQL APIs. The GitHub integration provides feedback in a format developers are familiar with and conditional breaking changes enable us to focus our discussion on schema design rather than maintenance. Hive empowers us to confidently evolve our schemas by ensuring seamless API updates, detecting potential breaking changes, and guiding developers.',
     picture: {
       img: wealthsimplePicture,
     },
-    caseStudyHref: "/case-studies/wealthsimple",
+    caseStudyHref: '/case-studies/wealthsimple',
   },
   {
-    company: "Prodigy",
+    company: 'Prodigy',
     logo: ({ className, ...props }) => (
-      <div
-        className={cn("flex h-8 w-min items-center justify-center", className)}
-      >
+      <div className={cn('flex h-8 w-min items-center justify-center', className)}>
         <ProdigyLogo {...props} className="" height={37} />
       </div>
     ),
     text: (
       <>
-        Hive is essential to us handling more than 750M GraphQL requests every
-        month. We ship with certainty that schema changes will not break
-        clients. The <code>atLeastOnceSampler</code> is crucial to capture
-        telemetry from less-often run operations. The schema explorer condenses
+        Hive is essential to us handling more than 750M GraphQL requests every month. We ship with
+        certainty that schema changes will not break clients. The <code>atLeastOnceSampler</code> is
+        crucial to capture telemetry from less-often run operations. The schema explorer condenses
         hours of searching through Github for client usage down to minutes.
       </>
     ),
     picture: {
       img: prodigyPicture,
-      className: "bg-[#a9e7f599]",
+      className: 'bg-[#a9e7f599]',
     },
-    data: [{ numbers: ">750M", description: "requests every month" }],
+    data: [{ numbers: '>750M', description: 'requests every month' }],
   },
 ];
 
-export function CompanyTestimonialsSection({
-  className,
-}: {
-  className?: string;
-}) {
+export function CompanyTestimonialsSection({ className }: { className?: string }) {
   const tabsListRef = useRef<HTMLDivElement>(null);
   const scrollviewRef = React.useRef<HTMLDivElement>(null);
   const updateDotsOnScroll = useRef<(event: React.UIEvent) => void>();
@@ -108,7 +101,7 @@ export function CompanyTestimonialsSection({
 
     const tabs = tabsList.querySelectorAll('[role="tab"]');
     for (const [i, tab] of tabs.entries()) {
-      tab.setAttribute("data-state", i === index ? "active" : "inactive");
+      tab.setAttribute('data-state', i === index ? 'active' : 'inactive');
     }
   }, 50);
 
@@ -121,7 +114,7 @@ export function CompanyTestimonialsSection({
       </Head>
       <section
         className={cn(
-          "bg-beige-100 text-green-1000 relative overflow-hidden rounded-3xl px-4 py-6 md:p-10 lg:p-[72px]",
+          'bg-beige-100 text-green-1000 relative overflow-hidden rounded-3xl px-4 py-6 md:p-10 lg:p-[72px]',
           className,
         )}
       >
@@ -132,7 +125,7 @@ export function CompanyTestimonialsSection({
           defaultValue={testimonials[0].company}
           className="flex flex-col overflow-hidden"
           // we need scrolling for mobile, so this can't be changed to a state-driven opacity transition
-          onValueChange={(value) => {
+          onValueChange={value => {
             const id = getTestimonialId(value);
             const element = document.getElementById(id)?.parentElement;
             const scrollview = scrollviewRef.current;
@@ -140,17 +133,14 @@ export function CompanyTestimonialsSection({
             if (!scrollview || !element) return;
 
             // we don't use scrollIntoView because it will also scroll vertically
-            scrollview.scrollTo({
-              left: element.offsetLeft,
-              behavior: "instant",
-            });
+            scrollview.scrollTo({ left: element.offsetLeft, behavior: 'instant' });
           }}
         >
           <Tabs.List
             ref={tabsListRef}
             className="lg:bg-beige-200 z-10 order-1 mt-4 flex flex-row justify-center rounded-2xl lg:order-first lg:my-16"
           >
-            {testimonials.map((testimonial) => {
+            {testimonials.map(testimonial => {
               const Logo = testimonial.logo;
               return (
                 <Tabs.Trigger
@@ -159,11 +149,7 @@ export function CompanyTestimonialsSection({
                   className='hive-focus lg:rdx-state-active:bg-white rdx-state-active:text-green-1000 lg:rdx-state-active:border-beige-600 flex flex-1 grow-0 items-center justify-center rounded-[15px] border-transparent p-0.5 font-medium leading-6 text-green-800 lg:grow lg:border lg:bg-transparent lg:p-4 [&[data-state="active"]>:first-child]:bg-blue-400'
                 >
                   <div className="size-2 rounded-full bg-blue-200 transition-colors lg:hidden" />
-                  <Logo
-                    title={testimonial.company}
-                    height={32}
-                    className="max-lg:sr-only"
-                  />
+                  <Logo title={testimonial.company} height={32} className="max-lg:sr-only" />
                 </Tabs.Trigger>
               );
             })}
@@ -175,27 +161,19 @@ export function CompanyTestimonialsSection({
             onScroll={updateDotsOnScroll.current}
           >
             {testimonials.map(
-              ({
-                company,
-                data,
-                caseStudyHref,
-                text,
-                picture,
-                person,
-                logo: Logo,
-              }) => {
+              ({ company, data, caseStudyHref, text, picture, person, logo: Logo }) => {
                 return (
                   <Tabs.Content
                     key={company}
                     value={company}
                     tabIndex={-1}
                     className={cn(
-                      "relative flex w-full shrink-0 snap-center flex-col outline-none",
-                      "gap-6 md:flex-row lg:gap-12",
+                      'relative flex w-full shrink-0 snap-center flex-col outline-none',
+                      'gap-6 md:flex-row lg:gap-12',
                       'lg:data-[state="inactive"]:hidden',
                       caseStudyHref
                         ? 'data-[state="active"]:pb-[72px] lg:data-[state="active"]:pb-0'
-                        : "max-lg:pb-8",
+                        : 'max-lg:pb-8',
                     )}
                     forceMount // we mount everything, as we scroll through tabs on mobile
                   >
@@ -207,31 +185,22 @@ export function CompanyTestimonialsSection({
                         width={300}
                         height={300}
                         className={cn(
-                          "hidden size-[300px] shrink-0 rounded-3xl object-cover mix-blend-multiply max-lg:mt-6 md:block",
+                          'hidden size-[300px] shrink-0 rounded-3xl object-cover mix-blend-multiply max-lg:mt-6 md:block',
                           picture.className,
                         )}
                       />
                     )}
-                    <article
-                      className="max-lg:mt-6 lg:relative"
-                      id={getTestimonialId(company)}
-                    >
-                      <Logo
-                        title={company}
-                        height={32}
-                        className="text-blue-1000 mb-6 lg:hidden"
-                      />
+                    <article className="max-lg:mt-6 lg:relative" id={getTestimonialId(company)}>
+                      <Logo title={company} height={32} className="text-blue-1000 mb-6 lg:hidden" />
                       <blockquote
                         className={cn(
-                          "sm:blockquote-beige-500 lg:text-xl xl:text-2xl xl:leading-[32px] [&_code]:font-mono [&_code]:text-[0.9em]",
-                          data && "lg:text-lg",
+                          'sm:blockquote-beige-500 lg:text-xl xl:text-2xl xl:leading-[32px] [&_code]:font-mono [&_code]:text-[0.9em]',
+                          data && 'lg:text-lg',
                         )}
                       >
                         {text}
                       </blockquote>
-                      {person && (
-                        <TestimonialPerson className="mt-6" person={person} />
-                      )}
+                      {person && <TestimonialPerson className="mt-6" person={person} />}
                       {caseStudyHref && (
                         <CallToAction
                           variant="primary"
@@ -245,9 +214,7 @@ export function CompanyTestimonialsSection({
                     </article>
                     {data && (
                       <>
-                        <div
-                          /* divider */ className="bg-beige-600 hidden w-px md:block"
-                        />
+                        <div /* divider */ className="bg-beige-600 hidden w-px md:block" />
                         <ul className="flex gap-6 md:flex-col md:gap-12">
                           {data.map(({ numbers, description }, i) => (
                             <Fragment key={i}>
@@ -259,9 +226,7 @@ export function CompanyTestimonialsSection({
                               </li>
 
                               {i < data.length - 1 && (
-                                <div
-                                  /* divider */ className="bg-beige-600 w-px md:hidden"
-                                />
+                                <div /* divider */ className="bg-beige-600 w-px md:hidden" />
                               )}
                             </Fragment>
                           ))}
@@ -280,7 +245,7 @@ export function CompanyTestimonialsSection({
 }
 
 function getTestimonialId(company: string) {
-  return encodeURIComponent(company.toLowerCase()) + "-testimonial";
+  return encodeURIComponent(company.toLowerCase()) + '-testimonial';
 }
 
 function TestimonialPerson({
@@ -288,7 +253,7 @@ function TestimonialPerson({
   person,
 }: {
   className?: string;
-  person: Testimonial["person"];
+  person: Testimonial['person'];
 }) {
   if (!person) return null;
 

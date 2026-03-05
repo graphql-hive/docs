@@ -1,5 +1,5 @@
-import Image, { StaticImageData } from "next/image";
-import { cn } from "@theguild/components";
+import Image, { StaticImageData } from 'next/image';
+import { cn } from '@theguild/components';
 
 export function BlogPostPicture({
   className,
@@ -11,24 +11,12 @@ export function BlogPostPicture({
   blurDataURL?: string;
 }) {
   className = cn(
-    "h-[324px] rounded-3xl overflow-hidden object-cover sm:rounded-2xl sm:mx-6",
+    'h-[324px] rounded-3xl overflow-hidden object-cover sm:rounded-2xl sm:mx-6',
     className,
   );
 
-  if (
-    typeof image === "string" &&
-    (image.endsWith(".webm") || image.endsWith(".mp4"))
-  ) {
-    return (
-      <video
-        className={className}
-        src={image}
-        autoPlay
-        muted
-        loop
-        playsInline
-      />
-    );
+  if (typeof image === 'string' && (image.endsWith('.webm') || image.endsWith('.mp4'))) {
+    return <video className={className} src={image} autoPlay muted loop playsInline />;
   }
 
   return (

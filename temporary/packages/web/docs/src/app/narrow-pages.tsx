@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { usePathname } from "next/navigation";
-import { HiveLayoutConfig } from "@theguild/components";
+import { usePathname } from 'next/navigation';
+import { HiveLayoutConfig } from '@theguild/components';
 
 /**
  * All light mode only pages are narrower, but we also have

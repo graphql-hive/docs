@@ -6,10 +6,7 @@ export function Lede(props: LedeProps) {
   return (
     <div
       {...props}
-      className={cn(
-        "sm:*:text-xl/8 md:*:text-2xl/8 [&>p:first-child]:mt-0",
-        props.className,
-      )}
+      className={cn("sm:*:text-xl/8 md:*:text-2xl/8", props.className)}
     />
   );
 }

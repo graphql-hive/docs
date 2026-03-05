@@ -11,27 +11,22 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
-import { Route as FeedDotxmlRouteImport } from './routes/feed[.]xml'
 import { Route as LandingRouteImport } from './routes/_landing'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
 import { Route as LandingLightOnlyRouteImport } from './routes/_landing/_light-only'
 import { Route as LandingProductUpdatesIndexRouteImport } from './routes/_landing/product-updates/index'
 import { Route as LandingCaseStudiesIndexRouteImport } from './routes/_landing/case-studies/index'
-import { Route as LandingBlogIndexRouteImport } from './routes/_landing/blog/index'
 import { Route as LandingLightOnlyIndexRouteImport } from './routes/_landing/_light-only/index'
 import { Route as LlmsDotmdxDocsSplatRouteImport } from './routes/llms[.]mdx.docs.$'
 import { Route as LandingProductUpdatesSplatRouteImport } from './routes/_landing/product-updates/$'
 import { Route as LandingCaseStudiesSplatRouteImport } from './routes/_landing/case-studies/$'
-import { Route as LandingBlogFeedDotxmlRouteImport } from './routes/_landing/blog/feed[.]xml'
-import { Route as LandingBlogSplatRouteImport } from './routes/_landing/blog/$'
 import { Route as LandingLightOnlyPricingRouteImport } from './routes/_landing/_light-only/pricing'
 import { Route as LandingLightOnlyPartnersRouteImport } from './routes/_landing/_light-only/partners'
 import { Route as LandingLightOnlyOssFriendsRouteImport } from './routes/_landing/_light-only/oss-friends'
 import { Route as LandingLightOnlyGatewayRouteImport } from './routes/_landing/_light-only/gateway'
 import { Route as LandingLightOnlyEcosystemRouteImport } from './routes/_landing/_light-only/ecosystem'
 import { Route as LandingLightOnlyFederationIndexRouteImport } from './routes/_landing/_light-only/federation/index'
-import { Route as LandingBlogTagSplatRouteImport } from './routes/_landing/blog/tag/$'
 
 const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   id: '/llms.txt',
@@ -41,11 +36,6 @@ const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
 const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
   id: '/llms-full.txt',
   path: '/llms-full.txt',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FeedDotxmlRoute = FeedDotxmlRouteImport.update({
-  id: '/feed.xml',
-  path: '/feed.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LandingRoute = LandingRouteImport.update({
@@ -77,11 +67,6 @@ const LandingCaseStudiesIndexRoute = LandingCaseStudiesIndexRouteImport.update({
   path: '/case-studies/',
   getParentRoute: () => LandingRoute,
 } as any)
-const LandingBlogIndexRoute = LandingBlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
-  getParentRoute: () => LandingRoute,
-} as any)
 const LandingLightOnlyIndexRoute = LandingLightOnlyIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -101,16 +86,6 @@ const LandingProductUpdatesSplatRoute =
 const LandingCaseStudiesSplatRoute = LandingCaseStudiesSplatRouteImport.update({
   id: '/case-studies/$',
   path: '/case-studies/$',
-  getParentRoute: () => LandingRoute,
-} as any)
-const LandingBlogFeedDotxmlRoute = LandingBlogFeedDotxmlRouteImport.update({
-  id: '/blog/feed.xml',
-  path: '/blog/feed.xml',
-  getParentRoute: () => LandingRoute,
-} as any)
-const LandingBlogSplatRoute = LandingBlogSplatRouteImport.update({
-  id: '/blog/$',
-  path: '/blog/$',
   getParentRoute: () => LandingRoute,
 } as any)
 const LandingLightOnlyPricingRoute = LandingLightOnlyPricingRouteImport.update({
@@ -147,14 +122,8 @@ const LandingLightOnlyFederationIndexRoute =
     path: '/federation/',
     getParentRoute: () => LandingLightOnlyRoute,
   } as any)
-const LandingBlogTagSplatRoute = LandingBlogTagSplatRouteImport.update({
-  id: '/blog/tag/$',
-  path: '/blog/tag/$',
-  getParentRoute: () => LandingRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
-  '/feed.xml': typeof FeedDotxmlRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/api/search': typeof ApiSearchRoute
@@ -164,20 +133,15 @@ export interface FileRoutesByFullPath {
   '/oss-friends': typeof LandingLightOnlyOssFriendsRoute
   '/partners': typeof LandingLightOnlyPartnersRoute
   '/pricing': typeof LandingLightOnlyPricingRoute
-  '/blog/$': typeof LandingBlogSplatRoute
-  '/blog/feed.xml': typeof LandingBlogFeedDotxmlRoute
   '/case-studies/$': typeof LandingCaseStudiesSplatRoute
   '/product-updates/$': typeof LandingProductUpdatesSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
   '/': typeof LandingLightOnlyIndexRoute
-  '/blog': typeof LandingBlogIndexRoute
   '/case-studies': typeof LandingCaseStudiesIndexRoute
   '/product-updates': typeof LandingProductUpdatesIndexRoute
-  '/blog/tag/$': typeof LandingBlogTagSplatRoute
   '/federation': typeof LandingLightOnlyFederationIndexRoute
 }
 export interface FileRoutesByTo {
-  '/feed.xml': typeof FeedDotxmlRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/api/search': typeof ApiSearchRoute
@@ -187,22 +151,17 @@ export interface FileRoutesByTo {
   '/oss-friends': typeof LandingLightOnlyOssFriendsRoute
   '/partners': typeof LandingLightOnlyPartnersRoute
   '/pricing': typeof LandingLightOnlyPricingRoute
-  '/blog/$': typeof LandingBlogSplatRoute
-  '/blog/feed.xml': typeof LandingBlogFeedDotxmlRoute
   '/case-studies/$': typeof LandingCaseStudiesSplatRoute
   '/product-updates/$': typeof LandingProductUpdatesSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
   '/': typeof LandingLightOnlyIndexRoute
-  '/blog': typeof LandingBlogIndexRoute
   '/case-studies': typeof LandingCaseStudiesIndexRoute
   '/product-updates': typeof LandingProductUpdatesIndexRoute
-  '/blog/tag/$': typeof LandingBlogTagSplatRoute
   '/federation': typeof LandingLightOnlyFederationIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_landing': typeof LandingRouteWithChildren
-  '/feed.xml': typeof FeedDotxmlRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/_landing/_light-only': typeof LandingLightOnlyRouteWithChildren
@@ -213,22 +172,17 @@ export interface FileRoutesById {
   '/_landing/_light-only/oss-friends': typeof LandingLightOnlyOssFriendsRoute
   '/_landing/_light-only/partners': typeof LandingLightOnlyPartnersRoute
   '/_landing/_light-only/pricing': typeof LandingLightOnlyPricingRoute
-  '/_landing/blog/$': typeof LandingBlogSplatRoute
-  '/_landing/blog/feed.xml': typeof LandingBlogFeedDotxmlRoute
   '/_landing/case-studies/$': typeof LandingCaseStudiesSplatRoute
   '/_landing/product-updates/$': typeof LandingProductUpdatesSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
   '/_landing/_light-only/': typeof LandingLightOnlyIndexRoute
-  '/_landing/blog/': typeof LandingBlogIndexRoute
   '/_landing/case-studies/': typeof LandingCaseStudiesIndexRoute
   '/_landing/product-updates/': typeof LandingProductUpdatesIndexRoute
-  '/_landing/blog/tag/$': typeof LandingBlogTagSplatRoute
   '/_landing/_light-only/federation/': typeof LandingLightOnlyFederationIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/feed.xml'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/api/search'
@@ -238,20 +192,15 @@ export interface FileRouteTypes {
     | '/oss-friends'
     | '/partners'
     | '/pricing'
-    | '/blog/$'
-    | '/blog/feed.xml'
     | '/case-studies/$'
     | '/product-updates/$'
     | '/llms.mdx/docs/$'
     | '/'
-    | '/blog'
     | '/case-studies'
     | '/product-updates'
-    | '/blog/tag/$'
     | '/federation'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/feed.xml'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/api/search'
@@ -261,21 +210,16 @@ export interface FileRouteTypes {
     | '/oss-friends'
     | '/partners'
     | '/pricing'
-    | '/blog/$'
-    | '/blog/feed.xml'
     | '/case-studies/$'
     | '/product-updates/$'
     | '/llms.mdx/docs/$'
     | '/'
-    | '/blog'
     | '/case-studies'
     | '/product-updates'
-    | '/blog/tag/$'
     | '/federation'
   id:
     | '__root__'
     | '/_landing'
-    | '/feed.xml'
     | '/llms-full.txt'
     | '/llms.txt'
     | '/_landing/_light-only'
@@ -286,22 +230,17 @@ export interface FileRouteTypes {
     | '/_landing/_light-only/oss-friends'
     | '/_landing/_light-only/partners'
     | '/_landing/_light-only/pricing'
-    | '/_landing/blog/$'
-    | '/_landing/blog/feed.xml'
     | '/_landing/case-studies/$'
     | '/_landing/product-updates/$'
     | '/llms.mdx/docs/$'
     | '/_landing/_light-only/'
-    | '/_landing/blog/'
     | '/_landing/case-studies/'
     | '/_landing/product-updates/'
-    | '/_landing/blog/tag/$'
     | '/_landing/_light-only/federation/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   LandingRoute: typeof LandingRouteWithChildren
-  FeedDotxmlRoute: typeof FeedDotxmlRoute
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   ApiSearchRoute: typeof ApiSearchRoute
@@ -323,13 +262,6 @@ declare module '@tanstack/react-router' {
       path: '/llms-full.txt'
       fullPath: '/llms-full.txt'
       preLoaderRoute: typeof LlmsFullDottxtRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/feed.xml': {
-      id: '/feed.xml'
-      path: '/feed.xml'
-      fullPath: '/feed.xml'
-      preLoaderRoute: typeof FeedDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_landing': {
@@ -374,13 +306,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandingCaseStudiesIndexRouteImport
       parentRoute: typeof LandingRoute
     }
-    '/_landing/blog/': {
-      id: '/_landing/blog/'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof LandingBlogIndexRouteImport
-      parentRoute: typeof LandingRoute
-    }
     '/_landing/_light-only/': {
       id: '/_landing/_light-only/'
       path: '/'
@@ -407,20 +332,6 @@ declare module '@tanstack/react-router' {
       path: '/case-studies/$'
       fullPath: '/case-studies/$'
       preLoaderRoute: typeof LandingCaseStudiesSplatRouteImport
-      parentRoute: typeof LandingRoute
-    }
-    '/_landing/blog/feed.xml': {
-      id: '/_landing/blog/feed.xml'
-      path: '/blog/feed.xml'
-      fullPath: '/blog/feed.xml'
-      preLoaderRoute: typeof LandingBlogFeedDotxmlRouteImport
-      parentRoute: typeof LandingRoute
-    }
-    '/_landing/blog/$': {
-      id: '/_landing/blog/$'
-      path: '/blog/$'
-      fullPath: '/blog/$'
-      preLoaderRoute: typeof LandingBlogSplatRouteImport
       parentRoute: typeof LandingRoute
     }
     '/_landing/_light-only/pricing': {
@@ -465,13 +376,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LandingLightOnlyFederationIndexRouteImport
       parentRoute: typeof LandingLightOnlyRoute
     }
-    '/_landing/blog/tag/$': {
-      id: '/_landing/blog/tag/$'
-      path: '/blog/tag/$'
-      fullPath: '/blog/tag/$'
-      preLoaderRoute: typeof LandingBlogTagSplatRouteImport
-      parentRoute: typeof LandingRoute
-    }
   }
 }
 
@@ -500,26 +404,18 @@ const LandingLightOnlyRouteWithChildren =
 
 interface LandingRouteChildren {
   LandingLightOnlyRoute: typeof LandingLightOnlyRouteWithChildren
-  LandingBlogSplatRoute: typeof LandingBlogSplatRoute
-  LandingBlogFeedDotxmlRoute: typeof LandingBlogFeedDotxmlRoute
   LandingCaseStudiesSplatRoute: typeof LandingCaseStudiesSplatRoute
   LandingProductUpdatesSplatRoute: typeof LandingProductUpdatesSplatRoute
-  LandingBlogIndexRoute: typeof LandingBlogIndexRoute
   LandingCaseStudiesIndexRoute: typeof LandingCaseStudiesIndexRoute
   LandingProductUpdatesIndexRoute: typeof LandingProductUpdatesIndexRoute
-  LandingBlogTagSplatRoute: typeof LandingBlogTagSplatRoute
 }
 
 const LandingRouteChildren: LandingRouteChildren = {
   LandingLightOnlyRoute: LandingLightOnlyRouteWithChildren,
-  LandingBlogSplatRoute: LandingBlogSplatRoute,
-  LandingBlogFeedDotxmlRoute: LandingBlogFeedDotxmlRoute,
   LandingCaseStudiesSplatRoute: LandingCaseStudiesSplatRoute,
   LandingProductUpdatesSplatRoute: LandingProductUpdatesSplatRoute,
-  LandingBlogIndexRoute: LandingBlogIndexRoute,
   LandingCaseStudiesIndexRoute: LandingCaseStudiesIndexRoute,
   LandingProductUpdatesIndexRoute: LandingProductUpdatesIndexRoute,
-  LandingBlogTagSplatRoute: LandingBlogTagSplatRoute,
 }
 
 const LandingRouteWithChildren =
@@ -527,7 +423,6 @@ const LandingRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   LandingRoute: LandingRouteWithChildren,
-  FeedDotxmlRoute: FeedDotxmlRoute,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   ApiSearchRoute: ApiSearchRoute,

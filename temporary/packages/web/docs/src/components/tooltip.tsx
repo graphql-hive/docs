@@ -1,13 +1,7 @@
-import { ReactNode } from "react";
-import { Content, Root, Trigger } from "@radix-ui/react-tooltip";
+import { ReactNode } from 'react';
+import { Content, Root, Trigger } from '@radix-ui/react-tooltip';
 
-export function Tooltip({
-  content,
-  children,
-}: {
-  content: string;
-  children: ReactNode;
-}) {
+export function Tooltip({ content, children }: { content: string; children: ReactNode }) {
   return (
     <Root delayDuration={350}>
       <Trigger className="hive-focus -mx-1 -my-0.5 rounded px-1 py-0.5 text-left">

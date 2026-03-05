@@ -64,13 +64,7 @@ export function EnterpriseSupportIcon() {
 
 export function ShortCheckmarkIcon(props: React.SVGAttributes<SVGSVGElement>) {
   return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="currentColor"
-      {...props}
-    >
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" {...props}>
       <path d="M6.66674 10.1134L12.7947 3.98602L13.7374 4.92869L6.66674 11.9994L2.42407 7.75669L3.36674 6.81402L6.66674 10.1134Z" />
     </svg>
   );

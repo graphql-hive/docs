@@ -1,8 +1,8 @@
 import { Footer, Navigation } from "@/components/navigation";
 import { PageActions } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
-import { mdxComponents } from "@/lib/mdx-components";
 import { getSource } from "@/lib/source";
+import { MDXLink } from "@hive/design-system/server/mdx-components/mdx-link";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
@@ -15,6 +15,7 @@ import {
   DocsPage,
   DocsTitle,
 } from "fumadocs-ui/layouts/docs/page";
+import defaultMdxComponents from "fumadocs-ui/mdx";
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
@@ -71,8 +72,9 @@ const clientLoader = browserCollections.docs.createClientLoader<{
         <DocsBody>
           <MDX
             components={{
-              ...mdxComponents,
+              ...defaultMdxComponents,
               ...Twoslash,
+              a: MDXLink,
             }}
           />
         </DocsBody>

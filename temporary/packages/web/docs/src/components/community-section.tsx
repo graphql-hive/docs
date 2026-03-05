@@ -1,5 +1,5 @@
-import Image, { StaticImageData } from "next/image";
-import { GlobeIcon } from "@radix-ui/react-icons";
+import Image, { StaticImageData } from 'next/image';
+import { GlobeIcon } from '@radix-ui/react-icons';
 import {
   CallToAction,
   cn,
@@ -7,34 +7,27 @@ import {
   GitHubIcon,
   Heading,
   TwitterIcon,
-} from "@theguild/components";
-import { MaskingScrollview } from "./masking-scrollview";
-import Achrafash from "./community-section/achrafash_.png";
-import ChimameRt from "./community-section/chimame_rt.png";
-import Daniel2Color from "./community-section/daniel2color.jpg";
-import FlexDinesh from "./community-section/flexdinesh.jpg";
-import GetHackTeam from "./community-section/gethackteam.jpg";
-import Malgamves from "./community-section/malgamves.jpg";
-import Michlbrmly from "./community-section/michbrmly.png";
-import NicolasKa3 from "./community-section/NicolasKa3.jpg";
-import ReardenQL from "./community-section/ReardenQL.jpg";
-import ScottBolinger from "./community-section/scottboilinger.png";
-import TheWritingDev from "./community-section/thewritingdev.png";
-import WhereIsCharly from "./community-section/whereischarly.jpg";
+} from '@theguild/components';
+import { MaskingScrollview } from './masking-scrollview';
+import Achrafash from './community-section/achrafash_.png';
+import ChimameRt from './community-section/chimame_rt.png';
+import Daniel2Color from './community-section/daniel2color.jpg';
+import FlexDinesh from './community-section/flexdinesh.jpg';
+import GetHackTeam from './community-section/gethackteam.jpg';
+import Malgamves from './community-section/malgamves.jpg';
+import Michlbrmly from './community-section/michbrmly.png';
+import NicolasKa3 from './community-section/NicolasKa3.jpg';
+import ReardenQL from './community-section/ReardenQL.jpg';
+import ScottBolinger from './community-section/scottboilinger.png';
+import TheWritingDev from './community-section/thewritingdev.png';
+import WhereIsCharly from './community-section/whereischarly.jpg';
 
 export function CommunitySection({ className }: { className?: string }) {
   return (
     <section
-      className={cn(
-        "bg-green-1000 rounded-3xl px-4 py-6 lg:px-8 lg:py-16 xl:p-24",
-        className,
-      )}
+      className={cn('bg-green-1000 rounded-3xl px-4 py-6 lg:px-8 lg:py-16 xl:p-24', className)}
     >
-      <Heading
-        as="h2"
-        size="sm"
-        className="text-balance text-white lg:text-center"
-      >
+      <Heading as="h2" size="sm" className="text-balance text-white lg:text-center">
         Community-Driven Open Source
       </Heading>
       <p className="mt-4 text-white/80 lg:text-center">
@@ -69,10 +62,7 @@ export function CommunitySection({ className }: { className?: string }) {
             Discord
           </CallToAction>
         </CommunityCard>
-        <CommunityCard
-          title="Public Roadmap"
-          description="Influence the future of Hive"
-        >
+        <CommunityCard title="Public Roadmap" description="Influence the future of Hive">
           <CallToAction
             variant="secondary-inverted"
             href="https://the-guild.dev/graphql/hive/product-updates"
@@ -97,10 +87,7 @@ export function CommunitySection({ className }: { className?: string }) {
         fade="y"
       >
         {Array.from({ length: 4 }).map((_, i) => (
-          <div
-            className="contents flex-col gap-6 sm:flex max-lg:[&>:last-child]:flex-1"
-            key={i}
-          >
+          <div className="contents flex-col gap-6 sm:flex max-lg:[&>:last-child]:flex-1" key={i}>
             {socialPosts.map((post, j) =>
               j % 4 === i ? <SocialPostCard post={post} key={j} /> : null,
             )}
@@ -108,9 +95,7 @@ export function CommunitySection({ className }: { className?: string }) {
         ))}
       </MaskingScrollview>
       <footer className="mt-8 text-green-200">
-        <p className="text-center text-sm">
-          Join professionals from companies like
-        </p>
+        <p className="text-center text-sm">Join professionals from companies like</p>
         <div className="mx-auto mt-6 flex w-fit max-w-full flex-row flex-wrap items-center justify-center gap-6">
           <TheGraphCombomark />
           <ParseCombomark />
@@ -123,11 +108,7 @@ export function CommunitySection({ className }: { className?: string }) {
   );
 }
 
-function CommunityCard(props: {
-  title: string;
-  description: string;
-  children: React.ReactNode;
-}) {
+function CommunityCard(props: { title: string; description: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col">
       <p className="font-medium text-white">{props.title}</p>
@@ -145,16 +126,12 @@ type SocialPost = {
 };
 
 const SocialPost = {
-  fromTweet(
-    href: string,
-    text: string,
-    avatar: StaticImageData | string,
-  ): SocialPost {
+  fromTweet(href: string, text: string, avatar: StaticImageData | string): SocialPost {
     // https://x.com/scottbolinger/status/1623466404610719744
-    const handle = href.split("/")[3];
+    const handle = href.split('/')[3];
     return {
       href,
-      avatar: typeof avatar === "string" ? avatar : avatar.src,
+      avatar: typeof avatar === 'string' ? avatar : avatar.src,
       name: `@${handle}`,
       text,
     };
@@ -163,7 +140,7 @@ const SocialPost = {
 
 const socialPosts: SocialPost[] = [
   SocialPost.fromTweet(
-    "https://x.com/malgamves/status/1272959879054049280",
+    'https://x.com/malgamves/status/1272959879054049280',
     `I was playing around with 
 @strapijs's GraphQL API & got an error I'd never seen
 
@@ -175,7 +152,7 @@ Lost? I explain it all [here](https://blog.logrocket.com/using-code-gen-to-avoid
     Malgamves,
   ),
   SocialPost.fromTweet(
-    "https://x.com/thewritingdev/status/1705160937697689706",
+    'https://x.com/thewritingdev/status/1705160937697689706',
     `GraphQL Yoga by @TheGuildDev is THE way to start new GraphQL projects now. 
 
 Especially since other similar projects are going the closed-source route, Yoga is the current champion of true Open Source.
@@ -184,12 +161,12 @@ It's a batteries-included, cross-platform, and runs anywhere!!`,
     TheWritingDev,
   ),
   SocialPost.fromTweet(
-    "https://x.com/scottbolinger/status/1623466404610719744",
-    "Having fully typed API data is pretty awesome, thanks to urql and graphql-codegen",
+    'https://x.com/scottbolinger/status/1623466404610719744',
+    'Having fully typed API data is pretty awesome, thanks to urql and graphql-codegen',
     ScottBolinger,
   ),
   SocialPost.fromTweet(
-    "https://x.com/achrafash_/status/1526654279062278146",
+    'https://x.com/achrafash_/status/1526654279062278146',
     `Yoga 2.0 makes it dead simple to build a GraphQL API in NextJS!! 
 and no need to put \`any\` everywhere to make it work lol
 
@@ -198,17 +175,17 @@ ty @TheGuildDev 🙏
     Achrafash,
   ),
   SocialPost.fromTweet(
-    "https://x.com/gethackteam/status/1255062494411964416",
+    'https://x.com/gethackteam/status/1255062494411964416',
     "If you're using REST APIs with Swagger or OpenAPI, make sure to check out GraphQL Mesh https://medium.com/the-guild/graphql-mesh-query-anything-run-anywhere-433c173863b5",
     GetHackTeam,
   ),
   SocialPost.fromTweet(
-    "https://x.com/NicolasKa3/status/1502204138188378114",
+    'https://x.com/NicolasKa3/status/1502204138188378114',
     "Just contributed to @TheGuildDev by fixing a bug in the GraphQL TypeScript types generator. It's not much but it feels very good to give back 🥳",
     NicolasKa3,
   ),
   SocialPost.fromTweet(
-    "https://x.com/flexdinesh/status/1602776469071355906",
+    'https://x.com/flexdinesh/status/1602776469071355906',
     `The smart folks at @TheGuildDev have introduced a compiler to write GraphQL schema. The extended file format is .graphxql.
 
 https://the-guild.dev/blog/graphqxl-language`,
@@ -216,7 +193,7 @@ https://the-guild.dev/blog/graphqxl-language`,
   ),
   //
   SocialPost.fromTweet(
-    "https://x.com/whereischarly/status/1349467930166239232",
+    'https://x.com/whereischarly/status/1349467930166239232',
     `Sooo, I'm on a good way for \`spotify-graphql@2.0.0\` that will cover all endpoints of 
 @Spotify API (queries + mutations) 🤓
 
@@ -224,7 +201,7 @@ Thanks to the combination of my \`functional-json-schema\` lib and GraphQL Mesh 
     WhereIsCharly,
   ),
   SocialPost.fromTweet(
-    "https://x.com/daniel2color/status/1408064880377143297",
+    'https://x.com/daniel2color/status/1408064880377143297',
     `@TheGuildDev gave me a demo of GraphQL Hive as part of my research on GraphQL observability with Prisma
 
 It's an immensely useful tool:
@@ -237,18 +214,18 @@ https://graphql-hive.com`,
     Daniel2Color,
   ),
   SocialPost.fromTweet(
-    "https://x.com/michlbrmly/status/1313037429314551809",
-    "@TheGuildDev Just updated a project from angular-apollo v1.5 -> v2. Really impressed with the use of schematics to automatically update Apollo Client, import paths etc. Nice work!",
+    'https://x.com/michlbrmly/status/1313037429314551809',
+    '@TheGuildDev Just updated a project from angular-apollo v1.5 -> v2. Really impressed with the use of schematics to automatically update Apollo Client, import paths etc. Nice work!',
     Michlbrmly,
   ),
   SocialPost.fromTweet(
-    "https://x.com/ReardenQL/status/1263478563115859968",
+    'https://x.com/ReardenQL/status/1263478563115859968',
     "Super excited about GraphQL Tools' overhaul! Amazing work @TheGuildDev 👏",
     ReardenQL,
   ),
   //
   SocialPost.fromTweet(
-    "https://x.com/chimame_rt/status/1663577579557900289",
+    'https://x.com/chimame_rt/status/1663577579557900289',
     `私が寄稿したブログが公開されました。ありがとう！
 
 The @TheGuildDev blog I contributed to is now available. Thank you! @UriGoldshtein
@@ -282,9 +259,9 @@ for (const post of socialPosts) {
 }
 
 function SocialPostCard({ post }: { post: SocialPost }) {
-  const isDiscordLink = post.href.startsWith("https://discordapp.com/");
-  const isGitHubLink = post.href.startsWith("https://github.com/");
-  const isTwitterLink = post.href.startsWith("https://x.com/");
+  const isDiscordLink = post.href.startsWith('https://discordapp.com/');
+  const isGitHubLink = post.href.startsWith('https://github.com/');
+  const isTwitterLink = post.href.startsWith('https://x.com/');
 
   return (
     <div className="relative h-max rounded-2xl bg-green-900 p-6 text-green-200">
@@ -296,7 +273,7 @@ function SocialPostCard({ post }: { post: SocialPost }) {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              backgroundColor: isDiscordLink ? "#5865F2" : "#222530",
+              backgroundColor: isDiscordLink ? '#5865F2' : '#222530',
             }}
           >
             {isGitHubLink ? (
@@ -346,12 +323,7 @@ function TheGraphCombomark() {
       </g>
       <defs>
         <clipPath id="clip0_1079_4499">
-          <rect
-            width="123"
-            height="24"
-            fill="white"
-            transform="translate(0.928589)"
-          />
+          <rect width="123" height="24" fill="white" transform="translate(0.928589)" />
         </clipPath>
       </defs>
     </svg>
@@ -360,13 +332,7 @@ function TheGraphCombomark() {
 
 function ParseCombomark() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="67"
-      height="24"
-      viewBox="0 0 67 24"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="67" height="24" viewBox="0 0 67 24" fill="none">
       <g clipPath="url(#clip0_1079_4501)">
         <path
           d="M65.6225 17.18V15.6C64.8544 16.02 64.0064 16.19 63.2782 16.19C61.7918 16.19 60.7643 15.44 60.6944 13.73H65.9717C66.0415 13.27 66.0615 12.79 66.0615 12.41C66.0615 10.5 64.9442 9.05 62.949 9.03C60.5149 9.01 58.9885 10.79 58.9885 13.53V13.57C58.9885 16.16 60.6545 17.69 63.1286 17.69C63.9566 17.68 64.8943 17.53 65.6225 17.18ZM62.8891 10.4C63.9566 10.4 64.4853 11.15 64.4853 12.31V12.4H60.8042C61.0436 11.1 61.7718 10.4 62.8891 10.4ZM54.8286 13.95L55.0081 14.02C56.2152 14.46 56.4946 14.72 56.4946 15.27C56.4946 15.91 56.0157 16.26 55.0081 16.26C54.2001 16.26 53.2524 16 52.2947 15.54V17.2C53.1027 17.51 54.0904 17.68 54.9383 17.68C57.0632 17.68 58.1506 16.67 58.1506 15.24C58.1506 13.99 57.562 13.22 55.8062 12.59L55.6266 12.52C54.2899 12.04 54.0305 11.77 54.0305 11.29C54.0305 10.76 54.4694 10.37 55.4271 10.37C56.1753 10.37 56.9335 10.63 57.7515 11.01V9.46C57.0532 9.2 56.305 9.02 55.477 9.02C53.6015 9.02 52.4244 10.05 52.4244 11.5C52.4244 12.66 53.013 13.29 54.8286 13.95ZM48.5238 11.87C49.0525 11.06 49.8107 10.62 50.7384 10.62C51.0477 10.62 51.3969 10.66 51.6562 10.75V9.26C51.3969 9.17 51.0676 9.11 50.7384 9.11C49.7708 9.11 49.0525 9.53 48.3941 10.38L48.3143 9.21H46.8877V17.52H48.5038V11.87H48.5238ZM43.9149 17.53H45.3415V11.93C45.3415 9.96 44.3538 9.01 42.2988 9.01C41.3112 9.01 40.2837 9.32 39.5155 9.73V11.33C40.4333 10.78 41.4209 10.45 42.209 10.45C43.3064 10.45 43.7453 10.93 43.7453 11.81V12.47C41.4907 12.56 40.134 12.93 39.4357 13.63C38.9369 14.11 38.6875 14.79 38.6875 15.47C38.6875 16.9 39.735 17.71 41.1615 17.71C42.0793 17.71 42.9971 17.34 43.8052 16.57L43.9149 17.53ZM41.5007 16.34C40.8024 16.34 40.3236 15.97 40.3236 15.35C40.3236 14.38 41.1316 13.84 43.7353 13.75V15.2C43.1268 15.88 42.3986 16.34 41.5007 16.34ZM32.2231 12.44V8.16H34.348C35.7945 8.16 36.6225 8.84 36.6225 10.27V10.29C36.6225 11.74 35.7945 12.42 34.348 12.42H32.2231V12.44ZM30.5172 17.53H32.2231V13.97H34.2183C36.7821 13.97 38.2885 12.61 38.2885 10.31V10.29C38.2885 8.01 36.7522 6.65 34.2183 6.65H30.5172V17.53ZM14.8949 14.92H9.0091C8.15117 14.92 7.65237 15.45 7.65237 16.21C7.65237 16.89 8.11126 17.37 8.76967 17.37C9.53782 17.37 9.97676 16.84 10.0167 16.08H11.7226C11.6328 17.94 10.4756 18.93 8.74972 18.93C7.13362 18.93 5.92653 17.83 5.92653 16.19C5.92653 14.48 7.19348 13.29 9.09888 13.29H14.9248C16.8901 13.29 18.3865 11.84 18.3865 9.89C18.3865 7.92 17.0497 6.53 15.1443 6.53C13.2588 6.53 11.7325 7.91 11.7325 10.46V12.13H10.0067V10.46C10.0067 7.08 12.1715 4.89 15.1742 4.89C18.0373 4.89 20.1223 6.95 20.1223 9.87C20.1422 12.79 17.9076 14.92 14.8949 14.92ZM12.8997 24C19.5936 24 24.8708 18.69 24.8708 12C24.8708 5.31 19.5936 0 12.8997 0C6.20586 0 0.928589 5.33 0.928589 12C0.928589 18.69 6.20586 24 12.8997 24Z"
@@ -375,12 +341,7 @@ function ParseCombomark() {
       </g>
       <defs>
         <clipPath id="clip0_1079_4501">
-          <rect
-            width="65.1429"
-            height="24"
-            fill="white"
-            transform="translate(0.928589)"
-          />
+          <rect width="65.1429" height="24" fill="white" transform="translate(0.928589)" />
         </clipPath>
       </defs>
     </svg>
@@ -445,22 +406,13 @@ function SequenceCombomark() {
 
 function DaletCombomark() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="72"
-      height="24"
-      viewBox="0 0 72 24"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="72" height="24" viewBox="0 0 72 24" fill="none">
       <g clipPath="url(#clip0_1079_4527)">
         <path
           d="M44.6088 17.5934C43.6324 19.0263 42.1719 19.7427 40.2274 19.7427C39.4188 19.7696 38.6141 19.6192 37.87 19.3024C37.126 18.9855 36.4606 18.5098 35.9209 17.9087C34.8327 16.6793 34.2541 15.0831 34.3023 13.444C34.2534 11.8035 34.8321 10.2058 35.9209 8.97511C36.4821 8.36536 37.1703 7.88556 37.9373 7.56943C38.7043 7.2533 39.5314 7.10851 40.3606 7.14523C41.1974 7.11049 42.0291 7.29204 42.7749 7.67227C43.5207 8.0525 44.1553 8.6185 44.6171 9.31536V7.34025H46.4563V19.5477H44.6171L44.6088 17.5934ZM40.4729 18.083C41.0654 18.1095 41.6562 17.9998 42.1994 17.7623C42.7427 17.5249 43.224 17.1661 43.606 16.7137C44.3619 15.7948 44.7541 14.6316 44.7087 13.444C44.754 12.2551 44.3618 11.0907 43.606 10.1701C43.2231 9.71893 42.7416 9.36127 42.1985 9.12462C41.6553 8.88796 41.065 8.77862 40.4729 8.80498C39.8743 8.78519 39.2787 8.89727 38.7285 9.13322C38.1784 9.36918 37.6871 9.72322 37.2898 10.1701C36.5077 11.0785 36.0976 12.2475 36.1414 13.444C36.0975 14.6392 36.5076 15.807 37.2898 16.7137C37.6864 17.1618 38.1774 17.5169 38.7277 17.7537C39.2779 17.9904 39.8739 18.1028 40.4729 18.083Z"
           fill="#CAE4DE"
         />
-        <path
-          d="M50.6547 19.5477H48.8197V2.73853H50.6547V19.5477Z"
-          fill="#CAE4DE"
-        />
+        <path d="M50.6547 19.5477H48.8197V2.73853H50.6547V19.5477Z" fill="#CAE4DE" />
         <path
           d="M59.2345 18.083C60.8822 18.083 62.0652 17.3984 62.7837 16.0291H64.7892C64.3911 17.1009 63.6902 18.0348 62.7712 18.7179C61.7276 19.4372 60.477 19.797 59.2095 19.7428C58.3709 19.7732 57.5354 19.6254 56.7585 19.3092C55.9816 18.993 55.281 18.5156 54.7032 17.9087C53.5704 16.7017 52.9631 15.0964 53.0139 13.444C52.9545 11.8026 53.5329 10.2017 54.6283 8.97514C55.8137 7.80296 57.4154 7.14526 59.0847 7.14526C60.754 7.14526 62.3557 7.80296 63.541 8.97514C64.638 10.2008 65.2165 11.8023 65.1554 13.444V14.1743H54.8988C54.9988 15.2336 55.4773 16.2217 56.2469 16.9585C56.6461 17.3329 57.1155 17.625 57.6282 17.818C58.1409 18.0109 58.6868 18.101 59.2345 18.083ZM59.0847 8.80501C58.0381 8.77505 57.0207 9.15142 56.2469 9.85481C55.5192 10.5413 55.0518 11.4574 54.9238 12.4482H63.2455C63.121 11.4525 62.655 10.5304 61.9265 9.83821C61.1485 9.14096 60.1302 8.77075 59.0847 8.80501Z"
           fill="#CAE4DE"
@@ -504,7 +456,7 @@ function OutreachCombomark() {
         <mask
           id="mask0_1079_4503"
           style={{
-            maskType: "luminance",
+            maskType: 'luminance',
           }}
           maskUnits="userSpaceOnUse"
           x="0"
@@ -512,10 +464,7 @@ function OutreachCombomark() {
           width="130"
           height="24"
         >
-          <path
-            d="M129.379 0.00439453H0.619019V23.987H129.379V0.00439453Z"
-            fill="white"
-          />
+          <path d="M129.379 0.00439453H0.619019V23.987H129.379V0.00439453Z" fill="white" />
         </mask>
         <g mask="url(#mask0_1079_4503)">
           <path
@@ -558,12 +507,7 @@ function OutreachCombomark() {
       </g>
       <defs>
         <clipPath id="clip0_1079_4503">
-          <rect
-            width="128.762"
-            height="24"
-            fill="white"
-            transform="translate(0.619019)"
-          />
+          <rect width="128.762" height="24" fill="white" transform="translate(0.619019)" />
         </clipPath>
       </defs>
     </svg>
