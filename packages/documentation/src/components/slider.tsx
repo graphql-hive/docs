@@ -3,7 +3,7 @@
 import { cn } from "@hive/design-system/cn";
 import { InputHTMLAttributes } from "react";
 
-const svgHref = new URL("code-icon-white.svg", import.meta.url).toString();
+import svgHref from "./code-icon-white.svg?url";
 
 export interface SliderProps extends InputHTMLAttributes<HTMLInputElement> {
   counter: string;
