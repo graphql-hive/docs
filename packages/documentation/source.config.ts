@@ -216,6 +216,14 @@ function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {
           .messageLine0, .messageLine1 {
             stroke: var(--mermaid-arrow);
           }
+          defs marker#arrowhead path {
+            fill: var(--mermaid-arrow);
+            stroke: var(--mermaid-arrow);
+          }
+          defs marker#crosshead path {
+            fill: var(--mermaid-arrow);
+            stroke: var(--mermaid-arrow);
+          }
           .messageText {
             fill: var(--mermaid-fg);
           }
