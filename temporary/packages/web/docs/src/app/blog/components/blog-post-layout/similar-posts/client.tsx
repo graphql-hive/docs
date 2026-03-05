@@ -1,12 +1,18 @@
-'use client';
+"use client";
 
-import { useFrontmatter } from '#components/use-frontmatter';
-import { BlogFrontmatter, BlogPostFile } from '../../../blog-types';
-import { BlogCard } from '../../blog-card';
+import { useFrontmatter } from "#components/use-frontmatter";
+import { BlogFrontmatter, BlogPostFile } from "../../../blog-types";
+import { BlogCard } from "../../blog-card";
 
-export function SimilarPostsClient({ sortedPosts }: { sortedPosts: BlogPostFile[] }) {
+export function SimilarPostsClient({
+  sortedPosts,
+}: {
+  sortedPosts: BlogPostFile[];
+}) {
   const { frontmatter } = useFrontmatter(BlogFrontmatter);
-  const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : [frontmatter.tags];
+  const tags = Array.isArray(frontmatter.tags)
+    ? frontmatter.tags
+    : [frontmatter.tags];
 
   const postsToShow = [];
   const intersectedTags: string[] = [];
@@ -18,7 +24,7 @@ export function SimilarPostsClient({ sortedPosts }: { sortedPosts: BlogPostFile[
         ? post.frontMatter.tags
         : [post.frontMatter.tags];
 
-      const tagsInCommon = postTags.filter(tag => tags.includes(tag));
+      const tagsInCommon = postTags.filter((tag) => tags.includes(tag));
       if (tagsInCommon.length > 0) {
         postsToShow.push(post);
         intersectedTags.push(tagsInCommon[0]);

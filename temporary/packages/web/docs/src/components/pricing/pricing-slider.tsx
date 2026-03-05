@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
-import { Content, Root, Trigger } from '@radix-ui/react-tooltip';
-import { CallToAction, cn } from '@theguild/components';
-import { BookIcon } from '../book-icon';
-import { Slider } from '../slider';
+import { useRef, useState } from "react";
+import { Content, Root, Trigger } from "@radix-ui/react-tooltip";
+import { CallToAction, cn } from "@theguild/components";
+import { BookIcon } from "../book-icon";
+import { Slider } from "../slider";
 
 export function PricingSlider({
   className,
@@ -22,11 +22,11 @@ export function PricingSlider({
     <div
       ref={rootRef}
       className={cn(
-        'relative isolate block select-none rounded-3xl border border-green-400 p-4 [counter-set:ops_calc(var(--ops))] sm:p-8',
+        "relative isolate block select-none rounded-3xl border border-green-400 p-4 [counter-set:ops_calc(var(--ops))] sm:p-8",
         className,
       )}
       // 10$ base price + 10$ per 1M
-      style={{ '--ops': min, '--price': 'calc(10 + var(--ops) * 10)' }}
+      style={{ "--ops": min, "--price": "calc(10 + var(--ops) * 10)" }}
       {...rest}
     >
       <div
@@ -42,7 +42,9 @@ export function PricingSlider({
           </div>
         </div>
         <div className="shrink-0 whitespace-pre"> operations </div>
-        <div className="whitespace-pre [@media(width<900px)]:hidden">per month </div>
+        <div className="whitespace-pre [@media(width<900px)]:hidden">
+          per month{" "}
+        </div>
         <div className="whitespace-pre opacity-[calc(2-var(--ops))] [transition-duration:350ms] motion-safe:transition">
           do you need?
         </div>
@@ -58,9 +60,9 @@ export function PricingSlider({
           step={1}
           defaultValue={min}
           counter="after:content-['$'_counter(price)_'_/_month'] after:[counter-set:price_calc(var(--price))]"
-          onChange={event => {
+          onChange={(event) => {
             const value = event.currentTarget.valueAsNumber;
-            rootRef.current!.style.setProperty('--ops', `${value}`);
+            rootRef.current!.style.setProperty("--ops", `${value}`);
             onChange(value);
           }}
         />
@@ -72,9 +74,9 @@ export function PricingSlider({
             variant="tertiary"
             className="mt-6 md:absolute md:right-8 md:top-8 md:mt-0"
             id="operations-button"
-            onClick={event => {
+            onClick={(event) => {
               // Radix doesn't open Tooltips on touch devices by design
-              if (window.matchMedia('(hover: none)').matches) {
+              if (window.matchMedia("(hover: none)").matches) {
                 event.preventDefault();
                 setPopoverOpen(true);
               }
@@ -89,9 +91,9 @@ export function PricingSlider({
           className="border-beige-400 bg-beige-100 text-green-1000 z-50 m-2 max-w-[328px] overflow-visible rounded-2xl border px-4 py-3 shadow-md sm:max-w-[420px]"
           avoidCollisions
         >
-          Every GraphQL request that is processed by your GraphQL API and reported to GraphQL Hive.
-          If your server receives 1M GraphQL requests, all of them will be reported to Hive
-          (assuming no sampling).
+          Every GraphQL request that is processed by your GraphQL API and
+          reported to GraphQL Hive. If your server receives 1M GraphQL requests,
+          all of them will be reported to Hive (assuming no sampling).
         </Content>
       </Root>
     </div>

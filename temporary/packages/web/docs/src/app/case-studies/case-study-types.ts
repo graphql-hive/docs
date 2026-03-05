@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { MdxFile } from '../../mdx-types';
+import { z } from "zod";
+import { MdxFile } from "../../mdx-types";
 
 export const CaseStudyAuthor = z.object({
   name: z.string(),
@@ -16,7 +16,7 @@ export const CaseStudyFrontmatter = z.object({
   authors: z.array(CaseStudyAuthor).default([]),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) as z.ZodType<
     `${number}-${number}-${number}`,
-    { description: 'date in YYYY-MM-DD format' }
+    { description: "date in YYYY-MM-DD format" }
   >,
 });
 

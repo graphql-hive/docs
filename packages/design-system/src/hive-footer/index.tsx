@@ -168,23 +168,23 @@ const DEFAULT_ITEMS: HiveFooterItems = {
     },
     {
       children: "Hive Updates",
-      href: "https://the-guild.dev/graphql/hive/product-updates",
+      href: "/product-updates",
       title: "Read most recent developments from Hive",
     },
     {
       children: "Blog",
-      href: "https://the-guild.dev/graphql/hive/blog",
+      href: "/blog",
       title: "Read our blog",
     },
   ],
   links: [
     {
       children: "OSS Friends",
-      href: "https://the-guild.dev/graphql/hive/oss-friends",
+      href: "/oss-friends",
     },
     {
       children: "Pricing",
-      href: "https://the-guild.dev/graphql/hive/pricing",
+      href: "/pricing",
     },
   ],
   resources: [],

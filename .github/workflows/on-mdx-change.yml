@@ -5,17 +5,13 @@ on:
       - "packages/documentation/content/**/*.mdx"
 
 jobs:
-  noop:
-    runs-on: ubuntu-24.04
-    steps:
-      - run: echo "Bun is not supported by the-guild-org/shared-config yet"
-  # validate-mdx-links:
-  #   uses: the-guild-org/shared-config/.github/workflows/validate-mdx-links.yaml@main
-  #   with:
-  #     packageManager: bun
-  #     cwd: packages/documentation
-  #     files: content/**/*.mdx
-  #     version: "1.1.0"
-  #   concurrency:
-  #     group: mdx-${{ github.workflow }}-${{ github.ref }}
-  #     cancel-in-progress: true
+  validate-mdx-links:
+    uses: the-guild-org/shared-config/.github/workflows/validate-mdx-links.yaml@v1
+    with:
+      node-version: "24"
+      cwd: packages/documentation
+      content-dir: content
+      version: "1.2.1"
+    concurrency:
+      group: mdx-${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true

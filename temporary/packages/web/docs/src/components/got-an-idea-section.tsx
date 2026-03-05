@@ -1,10 +1,15 @@
-import { cn, ContactButton, DecorationIsolation, Heading } from '@theguild/components';
+import {
+  cn,
+  ContactButton,
+  DecorationIsolation,
+  Heading,
+} from "@theguild/components";
 
 export function GotAnIdeaSection({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'bg-blueish-green relative flex flex-col items-center rounded-3xl px-4 py-6 lg:px-8 lg:py-16 xl:p-24',
+        "bg-blueish-green relative flex flex-col items-center rounded-3xl px-4 py-6 lg:px-8 lg:py-16 xl:p-24",
         className,
       )}
     >
@@ -33,8 +38,16 @@ export function GotAnIdeaSection({ className }: { className?: string }) {
               colorInterpolationFilters="sRGB"
             >
               <feFlood floodOpacity="0" result="BackgroundImageFix" />
-              <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-              <feGaussianBlur stdDeviation="125" result="effect1_foregroundBlur_2003_9852" />
+              <feBlend
+                mode="normal"
+                in="SourceGraphic"
+                in2="BackgroundImageFix"
+                result="shape"
+              />
+              <feGaussianBlur
+                stdDeviation="125"
+                result="effect1_foregroundBlur_2003_9852"
+              />
             </filter>
           </defs>
         </svg>

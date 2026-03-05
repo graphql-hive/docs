@@ -1,16 +1,16 @@
-import { z } from 'zod';
-import { AuthorOrId, staticImageDataSchema } from '../../authors';
-import { MdxFile } from '../../mdx-types';
+import { z } from "zod";
+import { AuthorOrId, staticImageDataSchema } from "../../authors";
+import { MdxFile } from "../../mdx-types";
 
 export const VideoPath = z
   .string()
-  .regex(/^.+\.(webm|mp4)$/) as z.ZodType<`${string}.${'webm' | 'mp4'}`>;
+  .regex(/^.+\.(webm|mp4)$/) as z.ZodType<`${string}.${"webm" | "mp4"}`>;
 
 export const ImagePath = z
   .string()
   .regex(
     /^.+\.(webp|png|jpg|jpeg|gif|svg)$/,
-  ) as z.ZodType<`${string}.${'webp' | 'png' | 'jpg' | 'jpeg' | 'gif' | 'svg'}`>;
+  ) as z.ZodType<`${string}.${"webp" | "png" | "jpg" | "jpeg" | "gif" | "svg"}`>;
 
 export type VideoPath = z.infer<typeof VideoPath>;
 export type ImagePath = z.infer<typeof ImagePath>;

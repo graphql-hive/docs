@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { cn, DecorationIsolation, Heading } from '@theguild/components';
-import { SmallAvatar } from '../../components/small-avatar';
-import { useFrontmatter } from '../../components/use-frontmatter';
-import { CaseStudyAuthor, CaseStudyFrontmatter } from './case-study-types';
-import { companyLogos } from './company-logos';
+import { cn, DecorationIsolation, Heading } from "@theguild/components";
+import { SmallAvatar } from "../../components/small-avatar";
+import { useFrontmatter } from "../../components/use-frontmatter";
+import { CaseStudyAuthor, CaseStudyFrontmatter } from "./case-study-types";
+import { companyLogos } from "./company-logos";
 
 export function CaseStudiesHeader(props: React.HTMLAttributes<HTMLDivElement>) {
   const { name, frontmatter } = useFrontmatter(CaseStudyFrontmatter);
 
   if (!name) {
-    throw new Error('unexpected');
+    throw new Error("unexpected");
   }
 
   const logo = companyLogos[name as keyof typeof companyLogos];
@@ -18,13 +18,19 @@ export function CaseStudiesHeader(props: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <header
       {...props}
-      className={cn('flex justify-between gap-8 pr-6 max-lg:flex-col lg:pr-2', props.className)}
+      className={cn(
+        "flex justify-between gap-8 pr-6 max-lg:flex-col lg:pr-2",
+        props.className,
+      )}
     >
       <div className="max-w-[640px]">
         <Heading as="h1" size="md" className="max-sm:text-[32px]">
           {frontmatter.title}
         </Heading>
-        <Authors authors={frontmatter.authors} className="max-lg:my-4 lg:mt-8" />
+        <Authors
+          authors={frontmatter.authors}
+          className="max-lg:my-4 lg:mt-8"
+        />
       </div>
       <LogoWithDecorations className="h-[224px] w-full max-w-[640px] shrink-0 max-lg:-order-1 max-sm:mb-6 lg:w-[320px] lg:max-xl:h-[180px] xl:w-[400px] lg:max-xl:[&>svg]:w-[140px] lg:max-xl:[&_svg]:h-[120px]">
         {logo}
@@ -33,10 +39,16 @@ export function CaseStudiesHeader(props: React.HTMLAttributes<HTMLDivElement>) {
   );
 }
 
-function Authors({ authors, className }: { authors: CaseStudyAuthor[]; className?: string }) {
+function Authors({
+  authors,
+  className,
+}: {
+  authors: CaseStudyAuthor[];
+  className?: string;
+}) {
   return (
-    <ul className={cn('flex flex-wrap gap-4 text-sm', className)}>
-      {authors.map(author => (
+    <ul className={cn("flex flex-wrap gap-4 text-sm", className)}>
+      {authors.map((author) => (
         <li className="flex items-center gap-3" key={author.name}>
           {author.avatar && <SmallAvatar src={author.avatar} />}
           <span className="font-medium">{author.name}</span>
@@ -55,7 +67,7 @@ function LogoWithDecorations({
   className?: string;
 }) {
   return (
-    <div className={cn('relative flex items-center justify-center', className)}>
+    <div className={cn("relative flex items-center justify-center", className)}>
       {children}
       <DecorationIsolation>
         <WideArchDecoration className="absolute right-0 top-0 dark:opacity-10" />

@@ -1,17 +1,17 @@
+import { mdxComponents } from "@/lib/mdx-components";
 import { DecorationIsolation } from "@hive/design-system/decorations";
 import { Heading } from "@hive/design-system/heading";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import browserCollections from "fumadocs-mdx:collections/browser";
-import defaultMdxComponents from "fumadocs-ui/mdx";
 
 import { CaseStudyCard } from "../../../components/case-studies/case-study-card";
 import { getCompanyLogo } from "../../../components/case-studies/company-logos";
 import { getCaseStudies } from "../../../components/case-studies/get-case-studies";
 import { LookingToUseHiveUpsellBlock } from "../../../components/case-studies/looking-to-use-hive-upsell-block";
 import { GetYourAPIGameWhite } from "../../../components/get-your-api-game-white";
-import { SmallAvatar } from "../../../components/small-avatar";
 import "../../../styles/hive-prose.css";
+import { SmallAvatar } from "../../../components/small-avatar";
 
 const serverLoader = createServerFn({ method: "GET" })
   .inputValidator((slug: string) => slug)
@@ -53,7 +53,7 @@ const clientLoader = browserCollections.caseStudies.createClientLoader<{
 
     return (
       <div className="prose dark:prose-invert min-w-0 w-(--article-max-width) max-w-full [&>h1:first-child]:hidden">
-        <MDX components={defaultMdxComponents} />
+        <MDX components={mdxComponents} />
       </div>
     );
   },
@@ -76,7 +76,7 @@ function CaseStudyHeader({
   }
 
   return (
-    <header className="mx-auto flex max-w-(--content-width) justify-between gap-8 pl-6 pr-6 max-lg:flex-col sm:my-12 md:pl-12 lg:my-24 lg:pr-2">
+    <header className="mx-auto flex max-w-(--content-width) justify-between gap-8 px-6 max-lg:flex-col sm:my-12 md:pl-12 lg:my-24 lg:pr-2">
       <div className="max-w-[640px]">
         <Heading as="h1" className="max-sm:text-[32px]" size="md">
           {title}
@@ -237,7 +237,7 @@ function CaseStudyDetail() {
         title={data.title}
       />
       <div className="mx-auto flex max-w-(--content-width)">
-        <div className="ml-0 min-w-0 flex-1 pl-6 max-sm:pr-6 md:pl-12">
+        <div className="ml-0 min-w-0 flex-1 pl-4 max-sm:pr-4 md:pl-12">
           {clientLoader.useContent(data.path, { slug: data.slug })}
         </div>
         <LookingToUseHiveUpsellBlock className="sticky right-2 top-[108px] mb-8 h-min max-lg:hidden lg:w-[320px] xl:w-[400px]" />

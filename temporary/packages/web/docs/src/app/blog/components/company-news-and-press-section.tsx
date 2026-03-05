@@ -1,9 +1,13 @@
-import { cn, Heading } from '@theguild/components';
-import { BlogCard } from './blog-card';
+import { cn, Heading } from "@theguild/components";
+import { BlogCard } from "./blog-card";
 
-export function CompanyNewsAndPressSection({ className }: { className?: string }) {
+export function CompanyNewsAndPressSection({
+  className,
+}: {
+  className?: string;
+}) {
   return (
-    <section className={cn('py-6 lg:py-24', className)}>
+    <section className={cn("py-6 lg:py-24", className)}>
       <Heading as="h3" size="md" className="text-balance text-center">
         Company News and Press
       </Heading>
@@ -12,12 +16,12 @@ export function CompanyNewsAndPressSection({ className }: { className?: string }
           <BlogCard
             variant="featured"
             post={{
-              route: '/blog/hive-platform-achieves-soc2-certification',
+              route: "/blog/hive-platform-achieves-soc2-certification",
               frontMatter: {
-                title: 'Hive Platform Achieves SOC-2 Type II Certification',
-                authors: ['dotan'],
-                tags: ['security'],
-                date: '2025-03-25',
+                title: "Hive Platform Achieves SOC-2 Type II Certification",
+                authors: ["dotan"],
+                tags: ["security"],
+                date: "2025-03-25",
               },
             }}
             className="h-full"
@@ -27,12 +31,12 @@ export function CompanyNewsAndPressSection({ className }: { className?: string }
           <BlogCard
             variant="featured"
             post={{
-              route: '/blog/stellate-acquisition',
+              route: "/blog/stellate-acquisition",
               frontMatter: {
-                title: 'The Guild acquires Stellate',
-                authors: ['uri'],
-                tags: ['Company', 'GraphQL'],
-                date: '2024-09-10',
+                title: "The Guild acquires Stellate",
+                authors: ["uri"],
+                tags: ["Company", "GraphQL"],
+                date: "2024-09-10",
               },
             }}
             className="h-full"
@@ -42,12 +46,12 @@ export function CompanyNewsAndPressSection({ className }: { className?: string }
           <BlogCard
             variant="featured"
             post={{
-              route: 'https://the-guild.dev/blog/rebranding-in-open-source',
+              route: "https://the-guild.dev/blog/rebranding-in-open-source",
               frontMatter: {
-                title: 'Rebranding in open source',
-                authors: ['uri'],
-                tags: ['branding'],
-                date: '2024-02-24',
+                title: "Rebranding in open source",
+                authors: ["uri"],
+                tags: ["branding"],
+                date: "2024-02-24",
               },
             }}
             className="h-full"

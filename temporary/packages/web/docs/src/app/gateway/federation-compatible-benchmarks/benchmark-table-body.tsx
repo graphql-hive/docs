@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { use } from 'react';
-import { cn, ComparisonTable as Table } from '@theguild/components';
-import { CheckmarkIcon, XIcon } from './icons';
+import { use } from "react";
+import { cn, ComparisonTable as Table } from "@theguild/components";
+import { CheckmarkIcon, XIcon } from "./icons";
 
 interface BenchmarkDatum {
   name: string;
@@ -17,9 +17,9 @@ interface BenchmarkDatum {
 }
 
 const dataJson = fetch(
-  'https://the-guild.dev/graphql/hive/federation-gateway-audit/data.json',
+  "https://the-guild.dev/graphql/hive/federation-gateway-audit/data.json",
 ).then(
-  res =>
+  (res) =>
     // we didn't parse this, because we trust @kamilkisiela
     res.json() as Promise<BenchmarkDatum[]>,
 );
@@ -31,34 +31,37 @@ export function BenchmarkTableBody() {
 
   return (
     <tbody className="">
-      {data.map(row => {
-        const compatibility = (row.cases.passed / (row.cases.passed + row.cases.failed)) * 100;
+      {data.map((row) => {
+        const compatibility =
+          (row.cases.passed / (row.cases.passed + row.cases.failed)) * 100;
 
         return (
-          <Table.Row key={row.name} highlight={row.name === 'Hive Gateway'}>
+          <Table.Row key={row.name} highlight={row.name === "Hive Gateway"}>
             <Table.Cell
               className={cn(
                 // todo: this is a bug in Components: we diverged from design
-                row.name === 'Hive Gateway' ? '!bg-green-100' : '',
-                'pl-5', // yes, the dot cuts in to the left per design
-                'max-sm:pr-1.5',
+                row.name === "Hive Gateway" ? "!bg-green-100" : "",
+                "pl-5", // yes, the dot cuts in to the left per design
+                "max-sm:pr-1.5",
               )}
             >
               <div className="flex items-center gap-2.5 whitespace-nowrap">
                 <div
                   className={cn(
-                    'size-3 rounded-full',
+                    "size-3 rounded-full",
                     compatibility > 99
-                      ? 'bg-positive-bright'
+                      ? "bg-positive-bright"
                       : compatibility > 90
-                        ? 'bg-warning-bright'
-                        : 'bg-critical-bright',
+                        ? "bg-warning-bright"
+                        : "bg-critical-bright",
                   )}
                 />
                 {row.name}
               </div>
             </Table.Cell>
-            <Table.Cell className="text-sm text-green-800">{compatibility.toFixed(2)}%</Table.Cell>
+            <Table.Cell className="text-sm text-green-800">
+              {compatibility.toFixed(2)}%
+            </Table.Cell>
             <Table.Cell>
               <span className="text-positive-dark inline-flex items-center gap-0.5 text-sm">
                 <CheckmarkIcon className="size-4" /> {row.cases.passed}

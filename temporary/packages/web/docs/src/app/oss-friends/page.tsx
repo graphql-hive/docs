@@ -1,4 +1,4 @@
-import NextLink from 'next/link';
+import NextLink from "next/link";
 import {
   ArchDecoration,
   CallToAction,
@@ -6,16 +6,17 @@ import {
   Heading,
   HighlightDecoration,
   LargeHiveIconDecoration,
-} from '@theguild/components';
-import { LandingPageContainer } from '../../components/landing-page-container';
+} from "@theguild/components";
+import { LandingPageContainer } from "../../components/landing-page-container";
 
 export const metadata = {
-  title: 'Our Open Source Friends',
-  description: 'We love open source. Meet our friends who share the same passion.',
+  title: "Our Open Source Friends",
+  description:
+    "We love open source. Meet our friends who share the same passion.",
 };
 
 async function fetchFriends() {
-  const response = await fetch('https://formbricks.com/api/oss-friends');
+  const response = await fetch("https://formbricks.com/api/oss-friends");
   const body: {
     data: {
       name: string;
@@ -36,7 +37,12 @@ export default async function OSSFriendsPage() {
         <DecorationIsolation>
           <ArchDecoration className="pointer-events-none absolute -top-5 left-[-46px] size-[200px] rotate-180 md:left-[-60px] md:top-[-188px] md:size-auto" />
           <ArchDecoration className="pointer-events-none absolute bottom-0 right-[-53px] size-[200px] md:-bottom-32 md:size-auto lg:bottom-[-188px] lg:right-0" />
-          <svg width="432" height="432" viewBox="0 0 432 432" className="absolute -z-10">
+          <svg
+            width="432"
+            height="432"
+            viewBox="0 0 432 432"
+            className="absolute -z-10"
+          >
             <defs>
               <linearGradient
                 id="arch-decoration-a"
@@ -63,7 +69,11 @@ export default async function OSSFriendsPage() {
             </defs>
           </svg>
         </DecorationIsolation>
-        <Heading as="h1" size="xl" className="text-green-1000 z-0 mx-auto max-w-3xl text-center">
+        <Heading
+          as="h1"
+          size="xl"
+          className="text-green-1000 z-0 mx-auto max-w-3xl text-center"
+        >
           Open Source Friends
         </Heading>
         <p className="z-0 mx-auto max-w-[80%] text-center leading-6 text-green-800">
@@ -82,7 +92,9 @@ export default async function OSSFriendsPage() {
                       key={i}
                       className="hover:bg-beige-200 bg-beige-100 relative block rounded-lg p-4 shadow-sm"
                     >
-                      <dt className="text-green-1000 font-medium">{friend.name}</dt>
+                      <dt className="text-green-1000 font-medium">
+                        {friend.name}
+                      </dt>
                       <dd className="mt-2 text-sm leading-5 text-green-800">
                         {friend.description}
                       </dd>
@@ -105,8 +117,8 @@ export default async function OSSFriendsPage() {
           Open Source GraphQL Platform
         </Heading>
         <p className="relative mt-4 text-white/80">
-          Start building your federated GraphQL API today, by following our guide, that will walk
-          you through the basics of Apollo Federation.
+          Start building your federated GraphQL API today, by following our
+          guide, that will walk you through the basics of Apollo Federation.
         </p>
         <CallToAction
           variant="primary-inverted"

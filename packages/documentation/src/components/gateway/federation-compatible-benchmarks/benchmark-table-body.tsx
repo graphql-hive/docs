@@ -17,19 +17,21 @@ interface BenchmarkDatum {
   };
 }
 
-/* eslint-disable unicorn/prefer-top-level-await -- intentional: start fetch without blocking module load */
-const dataJson = fetch(
-  "https://the-guild.dev/graphql/hive/federation-gateway-audit/data.json",
-).then(
-  (res) =>
-    // we didn't parse this, because we trust @kamilkisiela
-    res.json() as Promise<BenchmarkDatum[]>,
-);
+let dataJson: Promise<BenchmarkDatum[]> | null = null;
+function getDataJson() {
+  return (dataJson ??= fetch(
+    "https://the-guild.dev/graphql/hive/federation-gateway-audit/data.json",
+  ).then(
+    (res) =>
+      // we didn't parse this, because we trust @kamilkisiela
+      res.json() as Promise<BenchmarkDatum[]>,
+  ));
+}
 
 export function BenchmarkTableBody() {
   // we're fetching in client component to get fresh data without redeploy
   // if we don't need it THAT fresh, feel free to just await it in the parent component
-  const data = use(dataJson);
+  const data = use(getDataJson());
 
   return (
     <tbody className="">

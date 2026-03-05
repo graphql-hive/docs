@@ -1,9 +1,15 @@
-import { cn } from '@theguild/components';
-import { AligentLogo, KarrotLogo, LinktreeLogo, MeetupLogo, SoundYXZLogo } from './company-logos';
+import { cn } from "@theguild/components";
+import {
+  AligentLogo,
+  KarrotLogo,
+  LinktreeLogo,
+  MeetupLogo,
+  SoundYXZLogo,
+} from "./company-logos";
 
 export function TrustedBySection(props: React.HTMLAttributes<HTMLElement>) {
   return (
-    <div {...props} className={cn('max-w-[80%] text-center', props.className)}>
+    <div {...props} className={cn("max-w-[80%] text-center", props.className)}>
       <p className="text-base text-blue-800 dark:text-white/80">
         Trusted by global enterprises and fast-moving startups
       </p>
