@@ -29,7 +29,7 @@
   --nextra-primary-saturation: 70%;
   --nextra-primary-lightness: 40%;
   --nextra-bg: 255 255 255;
-  --color-fd-background: var(--color-beige-100);
+  --color-fd-background: white;
   --color-fd-border: var(--color-beige-400);
   --color-fd-muted-foreground: var(--color-beige-900);
   --color-fd-foreground: var(--color-green-1000);
@@ -394,15 +394,23 @@ button,
   }
 }
 
-:is(.flowchart, .statediagram, .sequenceDiagram) {
-  --mermaid-fg: var(--color-neutral-900);
-  --mermaid-fg-dim: var(--color-neutral-600);
-  --mermaid-node-fill: var(--color-neutral-100);
-  --mermaid-node-stroke: var(--color-neutral-200);
-  --mermaid-arrow: var(--color-neutral-500);
-  --mermaid-cluster-fill: var(--color-neutral-50);
-  --mermaid-cluster-stroke: var(--color-neutral-400);
+:is(
+  .flowchart,
+  .statediagram,
+  .sequenceDiagram,
+  [aria-roledescription="sequence"]
+) {
+  --mermaid-fg: var(--color-green-1000);
+  --mermaid-fg-dim: var(--color-green-700);
+  --mermaid-node-fill: var(--color-blue-200);
+  --mermaid-node-stroke: var(--color-blue-400);
+  --mermaid-arrow: var(--color-green-900);
+  --mermaid-cluster-fill: var(--color-beige-100);
+  --mermaid-cluster-stroke: var(--color-beige-400);
   --mermaid-edge-label-bg: var(--color-white);
+  --mermaid-note-fill: var(--color-beige-200);
+  --mermaid-note-stroke: var(--color-beige-400);
+  --mermaid-note-fg: var(--color-green-1000);
 
   margin: 1.5rem auto 0 auto;
 }
@@ -416,15 +424,24 @@ button,
   display: unset !important;
 }
 
-.dark :is(.flowchart, .statediagram, .sequenceDiagram) {
+.dark
+  :is(
+    .flowchart,
+    .statediagram,
+    .sequenceDiagram,
+    [aria-roledescription="sequence"]
+  ) {
   --mermaid-fg: var(--color-neutral-200);
   --mermaid-fg-dim: var(--color-neutral-400);
-  --mermaid-node-fill: oklch(from var(--color-neutral-50) l c h / 0.2);
+  --mermaid-node-fill: var(--color-neutral-800);
   --mermaid-node-stroke: var(--color-neutral-500);
   --mermaid-arrow: var(--color-neutral-400);
-  --mermaid-cluster-fill: oklch(from var(--color-neutral-50) l c h / 0.15);
+  --mermaid-cluster-fill: var(--color-neutral-800);
   --mermaid-cluster-stroke: var(--color-neutral-600);
   --mermaid-edge-label-bg: var(--color-neutral-900);
+  --mermaid-note-fill: var(--color-neutral-800);
+  --mermaid-note-stroke: var(--color-neutral-500);
+  --mermaid-note-fg: var(--color-neutral-200);
 }
 
 [data-docs] #hive-navigation {

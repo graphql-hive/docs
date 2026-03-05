@@ -43,11 +43,7 @@ export function Card({
     <Anchor
       {...props}
       className={cn(
-        "hive-card group",
-        "flex flex-col justify-start overflow-hidden rounded-lg border border-gray-200 no-underline",
-        "bg-transparent shadow-sm transition-all duration-200",
-        "hover:border-gray-300 hover:bg-slate-50 hover:shadow-md",
-        "dark:border-neutral-800 dark:shadow-none dark:hover:border-neutral-700 dark:hover:bg-neutral-900",
+        "hive-card group flex flex-col justify-start overflow-hidden rounded-lg border ring-beige-200 no-underline bg-white dark:bg-transparent shadow-sm transition-all duration-200 hover:shadow-md dark:ring-neutral-800 dark:shadow-none dark:hover:ring-neutral-700 dark:hover:bg-neutral-900",
         className,
       )}
       href={href}
@@ -56,14 +52,18 @@ export function Card({
       <span
         className={cn(
           "flex items-center gap-2 p-4 font-semibold text-gray-700 hover:text-gray-900",
-          "after:content-['→'] after:transition-transform after:duration-75",
-          "group-hover:after:translate-x-0.5",
           "dark:text-neutral-200 dark:hover:text-neutral-50",
         )}
         title={title}
       >
         {icon}
         <span className="truncate">{title}</span>
+        <span
+          aria-hidden
+          className="transition-transform duration-75 group-hover:translate-x-0.5"
+        >
+          →
+        </span>
       </span>
       {description ? (
         <p className="px-4 pb-4 text-sm text-gray-500 dark:text-neutral-400">

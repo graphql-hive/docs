@@ -41,12 +41,16 @@ export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(
     // Internal links - use TanStack Router Link
     // Filter out props that TanStack Router Link doesn't accept
     const { rel: _rel, target: _target, ...linkProps } = props;
+    const hashIndex = hrefString.indexOf("#");
+    const to = hashIndex === -1 ? hrefString : hrefString.slice(0, hashIndex);
+    const hash = hashIndex === -1 ? undefined : hrefString.slice(hashIndex + 1);
     return (
       <Link
         className={classes}
+        hash={hash}
         preload="intent"
         ref={forwardedRef}
-        to={hrefString}
+        to={to}
         {...linkProps}
       >
         {children}

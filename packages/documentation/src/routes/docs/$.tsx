@@ -85,7 +85,10 @@ function Page() {
   const data = useFumadocsLoader(Route.useLoaderData());
 
   return (
-    <div className="min-h-screen" data-docs>
+    <div
+      className="min-h-screen bg-beige-100 dark:bg-[rgb(var(--nextra-bg))]"
+      data-docs
+    >
       <DocsLayout
         {...baseOptions(data.pageTree)}
         nav={{

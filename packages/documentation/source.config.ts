@@ -216,6 +216,14 @@ function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {
           .messageLine0, .messageLine1 {
             stroke: var(--mermaid-arrow);
           }
+          defs marker#arrowhead path {
+            fill: var(--mermaid-arrow);
+            stroke: var(--mermaid-arrow);
+          }
+          defs marker#crosshead path {
+            fill: var(--mermaid-arrow);
+            stroke: var(--mermaid-arrow);
+          }
           .messageText {
             fill: var(--mermaid-fg);
           }
@@ -234,6 +242,13 @@ function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {
           }
           line[id*="actor"] {
             stroke: var(--mermaid-arrow);
+          }
+          .note {
+            fill: var(--mermaid-note-fill);
+            stroke: var(--mermaid-note-stroke);
+          }
+          .noteText, .noteText > tspan {
+            fill: var(--mermaid-note-fg);
           }
           .activation0 {
             fill: var(--mermaid-cluster-fill);
