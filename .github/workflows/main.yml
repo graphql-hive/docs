@@ -23,10 +23,14 @@ jobs:
 
   website:
     uses: ./.github/workflows/website.yml
+    with:
+      environment: production
     secrets: inherit
 
   storybook:
     uses: ./.github/workflows/storybook.yml
+    with:
+      environment: storybook
     secrets: inherit
 
   # release:
