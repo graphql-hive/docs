@@ -37,7 +37,7 @@ jobs:
           command: |
             pages deploy packages/design-system/storybook-static --project-name=the-guild-docs-storybook --branch=${{ github.event.pull_request.number != '' && format('pr-{0}', github.event.pull_request.number) || 'main' }}
 
-      - name: find pr comment
+      - name: find deployment comment
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
         id: fc
         if: ${{ github.event.pull_request.number != '' }}
@@ -45,7 +45,31 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: "github-actions[bot]"
-          body-includes: <!--- storybook-deployment --->
+          body-includes: <!--- deployment-previews --->
+
+      - name: build comment body
+        if: ${{ github.event.pull_request.number != '' }}
+        id: comment
+        env:
+          EXISTING_BODY: ${{ steps.fc.outputs.comment-body }}
+          STORYBOOK_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+        run: |
+          WEBSITE_URL=$(echo "$EXISTING_BODY" | grep -o 'website-url:[^ ]*' | head -1 | cut -d: -f2- || true)
+
+          {
+            echo "body<<ENDOFCOMMENT"
+            echo "<!--- deployment-previews --->"
+            [ -n "$WEBSITE_URL" ] && echo "<!--- website-url:${WEBSITE_URL} --->"
+            echo "<!--- storybook-url:${STORYBOOK_URL} --->"
+            echo ""
+            echo "### Deployments"
+            echo ""
+            echo "| | URL |"
+            echo "|:--|:--|"
+            [ -n "$WEBSITE_URL" ] && echo "| 🌐 Website | [${WEBSITE_URL}](${WEBSITE_URL}) |"
+            echo "| 📚 Storybook | [${STORYBOOK_URL}](${STORYBOOK_URL}) |"
+            echo "ENDOFCOMMENT"
+          } >> "$GITHUB_OUTPUT"
 
       - name: create/update comment
         uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
@@ -54,9 +78,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            <!--- storybook-deployment --->
-            ### 📚 Storybook Deployment
-
-            The latest changes are available as preview in: [${{ steps.deploy.outputs.pages-deployment-alias-url }}](${{ steps.deploy.outputs.pages-deployment-alias-url }})
+          body: ${{ steps.comment.outputs.body }}
           edit-mode: replace
