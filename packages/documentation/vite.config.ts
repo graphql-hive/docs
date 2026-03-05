@@ -23,7 +23,7 @@ export default defineConfig({
     nitro({
       preset: process.env["VERCEL"]
         ? "vercel"
-        : process.env["CI"]
+        : process.env["E2E"]
           ? "node-server"
           : "cloudflare-module",
       routeRules: await import("./redirects").then((m) => m.routeRules),
