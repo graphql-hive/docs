@@ -22,7 +22,6 @@ jobs:
     secrets: inherit
 
   website-preview:
-    needs: [test]
     uses: ./.github/workflows/website.yml
     with:
       environment: preview
