@@ -2,11 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 const PORT = 1440;
 const baseURL = `http://localhost:${PORT}`;
-const useWrangler =
-  !!process.env["CI"] || process.env["E2E_USE_WRANGLER"] === "true";
-const webServerCommand = useWrangler
-  ? `bunx wrangler dev -c .output/server/wrangler.json --port ${PORT}`
-  : "bun run dev";
+const webServerCommand = `bunx wrangler dev -c .output/server/wrangler.json --port ${PORT}`;
 
 export default defineConfig({
   expect: {
@@ -40,7 +36,7 @@ export default defineConfig({
   webServer: {
     command: webServerCommand,
     env: { PORT: String(PORT) },
-    reuseExistingServer: !useWrangler,
+    reuseExistingServer: !process.env["CI"],
     timeout: 120_000,
     url: baseURL,
   },
