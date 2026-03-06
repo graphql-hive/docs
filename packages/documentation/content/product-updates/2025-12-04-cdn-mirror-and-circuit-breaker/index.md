@@ -52,6 +52,6 @@ registry for your GraphQL APIs.
 
 **Further reading:**
 
-- [Running with Hive Console in Production: A High-Availability Guide](/docs/schema-registry/high-availability-resilence)
+- [Running with Hive Console in Production: A High-Availability Guide](/docs/schema-registry/high-availability-resilience)
 - [CDN Documentation](/docs/schema-registry/high-availability-cdn)
 - [Hive Client Configuration (including Circuit Breaker)](/docs/api-reference/client#circuitbreaker)
