@@ -1,7 +1,8 @@
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
+
 import { Heading } from "@hive/design-system/heading";
 import { MdxImage } from "@hive/design-system/mdx-components";
 import defaultMdxComponents from "fumadocs-ui/mdx";
-import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 import { MDXLink } from "../../../design-system/src/mdx-components/mdx-link";
 import { prefixBasePath } from "../../../design-system/src/mdx-components/prefix-base-path";
