@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { appPath, appPathPattern } from "./paths";
+import { appPath, appPathPrefixPattern } from "./paths";
 
 /**
  * Click the visible search button and wait for the search dialog to appear.
@@ -63,7 +63,7 @@ test.describe("Search User Journeys", () => {
     const result = await waitForSearchResults(page);
     await result.first().click();
 
-    await expect(page).toHaveURL(appPathPattern("/docs"));
+    await expect(page).toHaveURL(appPathPrefixPattern("/docs"));
   });
 
   test("search is available on pricing page", async ({ page }) => {
