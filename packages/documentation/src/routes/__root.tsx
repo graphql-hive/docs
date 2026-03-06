@@ -1,4 +1,5 @@
 import appCss from "@/styles/app.css?url";
+import ogImage from "../../public/opengraph-image.png";
 import {
   createRootRoute,
   type ErrorComponentProps,
@@ -31,7 +32,7 @@ export const Route = createRootRoute({
         property: "og:type",
       },
       {
-        content: "/opengraph-image.png",
+        content: ogImage,
         property: "og:image",
       },
     ],
