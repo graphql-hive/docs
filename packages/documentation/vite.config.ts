@@ -28,6 +28,7 @@ export default defineConfig({
     !process.env["CI"] && devtools(),
     nitro({
       baseURL: BASE_PATH,
+      plugins: ["./server/plugins/base-path-alias.ts"],
       preset: process.env["VERCEL"]
         ? "vercel"
         : process.env["E2E"]
