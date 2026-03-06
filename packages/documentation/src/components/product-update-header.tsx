@@ -33,10 +33,12 @@ function AuthorAvatar({ author }: { author: Author }) {
 }
 
 export function ProductUpdateAuthors({
+  align = "center",
   authors: rawAuthors,
   className,
   date,
 }: {
+  align?: "center" | "start";
   authors: ({ name: string } | string)[];
   className?: string;
   date: string;
@@ -80,13 +82,21 @@ export function ProductUpdateAuthors({
   return (
     <>
       <time
-        className="mt-5 block text-center text-xs text-[#777]"
+        className={cn(
+          "mt-5 block text-xs text-[#777]",
+          align === "center" ? "text-center" : "text-left",
+        )}
         dateTime={dateObj.toISOString()}
         title={`Posted ${dateFormat.format(dateObj)}`}
       >
         {dateFormat.format(dateObj)}
       </time>
-      <div className="my-5 flex flex-wrap justify-center gap-5">
+      <div
+        className={cn(
+          "my-5 flex flex-wrap gap-5",
+          align === "center" ? "justify-center" : "justify-start",
+        )}
+      >
         {resolved.map((author) => (
           <a
             className="text-green-1000 flex items-center font-semibold dark:text-neutral-200"
