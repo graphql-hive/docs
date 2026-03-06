@@ -66,6 +66,8 @@ export default defineConfig({
       prerender: {
         crawlLinks: true,
         enabled: true,
+        retryCount: 10,
+        retryDelay: 1000,
       },
       sitemap: {
         enabled: true,
