@@ -57,9 +57,6 @@ type WebSocketHandler = {
 };
 
 const LOCATION_HEADER = "location";
-const SERVER_FN_ACCEPT =
-  "application/x-tss-framed, application/x-ndjson, application/json";
-const SERVER_FN_HEADER = "x-tsr-serverfn";
 const nitroApp = useNitroApp();
 const nitroHooks = useNitroHooks();
 const importMeta = import.meta as ImportMeta & {
@@ -201,16 +198,6 @@ function stripBasePath(pathname: string) {
   return stripped === "" ? "/" : stripped;
 }
 
-function isServerFnPath(pathname: string) {
-  return (
-    pathname === "/_serverFn" ||
-    pathname.startsWith("/_serverFn/") ||
-    (baseURL !== "" &&
-      (pathname === `${baseURL}/_serverFn` ||
-        pathname.startsWith(`${baseURL}/_serverFn/`)))
-  );
-}
-
 function augmentReq(request: Request, ctx: RuntimeCloudflareContext) {
   const req = request as AugmentedRequest;
 
@@ -241,39 +228,6 @@ function aliasRequest(
   const aliasedRequest = new Request(nextURL, request);
   augmentReq(aliasedRequest, { context, env });
   return aliasedRequest;
-}
-
-function ensureServerFnHeaders(
-  request: Request,
-  env: CloudflareEnv,
-  context: CloudflareContext,
-) {
-  const url = new URL(request.url);
-
-  if (!isServerFnPath(url.pathname)) {
-    return request;
-  }
-
-  const headers = new Headers(request.headers);
-  let changed = false;
-
-  if (!headers.has(SERVER_FN_HEADER)) {
-    headers.set(SERVER_FN_HEADER, "true");
-    changed = true;
-  }
-
-  if (!headers.has("accept")) {
-    headers.set("accept", SERVER_FN_ACCEPT);
-    changed = true;
-  }
-
-  if (!changed) {
-    return request;
-  }
-
-  const nextRequest = new Request(request, { headers });
-  augmentReq(nextRequest, { context, env });
-  return nextRequest;
 }
 
 function rewriteLocation(location: string, requestURL: URL) {
@@ -373,10 +327,9 @@ async function runCronTasks(
 // eslint-disable-next-line import/no-default-export -- Cloudflare worker entry
 export default createHandler({
   async fetch(cfRequest, env, context, url) {
-    const aliasedRequest = aliasRequest(cfRequest, url, env, context);
-    const request = ensureServerFnHeaders(aliasedRequest, env, context);
+    const request = aliasRequest(cfRequest, url, env, context);
     const requestURL = new URL(request.url);
-    const isAliasedRequest = aliasedRequest !== cfRequest;
+    const isAliasedRequest = request !== cfRequest;
 
     if (env.ASSETS && isPublicAssetURL(requestURL.pathname)) {
       return rewriteAliasedResponse(
