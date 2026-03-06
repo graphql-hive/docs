@@ -8,6 +8,7 @@ const TEXT_FILE_ROUTES = new Set(["/llms-full.txt", "/llms.txt"]);
 
 export function getRouter() {
   return createRouter({
+    basepath: BASE_PATH,
     defaultNotFoundComponent: NotFound,
     defaultPreload: "intent",
     rewrite: {

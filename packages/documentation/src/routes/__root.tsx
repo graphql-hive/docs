@@ -9,6 +9,8 @@ import {
 } from "@tanstack/react-router";
 import { RootProvider } from "fumadocs-ui/provider/tanstack";
 
+import ogImage from "./opengraph-image.png";
+
 export const Route = createRootRoute({
   component: RootComponent,
   errorComponent: RootErrorComponent,
@@ -31,7 +33,7 @@ export const Route = createRootRoute({
         property: "og:type",
       },
       {
-        content: "/opengraph-image.png",
+        content: ogImage,
         property: "og:image",
       },
     ],

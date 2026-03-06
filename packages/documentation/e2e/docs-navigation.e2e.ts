@@ -1,4 +1,5 @@
 import { type Locator, expect, test } from "@playwright/test";
+import { appPath } from "./paths";
 
 /** Returns the visible sidebar container — desktop aside or mobile drawer. */
 async function getSidebar(
@@ -15,7 +16,9 @@ async function getSidebar(
 
 test.describe("Documentation User Journeys", () => {
   test.beforeEach(async ({ page }) => {
-    const response = await page.goto("/docs", { waitUntil: "networkidle" });
+    const response = await page.goto(appPath("/docs"), {
+      waitUntil: "networkidle",
+    });
     if (!response?.ok()) {
       test.skip(true, "Docs page not available (needs build)");
     }
@@ -38,7 +41,9 @@ test.describe("Documentation User Journeys", () => {
   }) => {
     if (isMobile) {
       // On mobile, verify the page loads directly instead
-      await page.goto("/docs/schema-registry", { waitUntil: "networkidle" });
+      await page.goto(appPath("/docs/schema-registry"), {
+        waitUntil: "networkidle",
+      });
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       return;
     }
@@ -48,7 +53,7 @@ test.describe("Documentation User Journeys", () => {
     // Click the "Hive Console" tab and wait for the section to expand.
     // Retry because sidebar tab handlers may not be hydrated yet on CI.
     const schemaRegistryLink = sidebar.locator(
-      'a[href="/docs/schema-registry"]',
+      `a[href="${appPath("/docs/schema-registry")}"]`,
     );
     // Wait for SPA hydration before interacting with sidebar tabs
     await page.waitForFunction(
@@ -71,7 +76,7 @@ test.describe("Documentation User Journeys", () => {
     isMobile,
   }) => {
     if (isMobile) {
-      await page.goto("/docs/gateway", { waitUntil: "networkidle" });
+      await page.goto(appPath("/docs/gateway"), { waitUntil: "networkidle" });
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       return;
     }
@@ -79,7 +84,9 @@ test.describe("Documentation User Journeys", () => {
     const sidebar = page.locator("#nd-sidebar");
 
     // Click the "Hive Gateway" tab and wait for the section to expand.
-    const gatewayLink = sidebar.locator('a[href="/docs/gateway"]');
+    const gatewayLink = sidebar.locator(
+      `a[href="${appPath("/docs/gateway")}"]`,
+    );
     // Wait for SPA hydration before interacting with sidebar tabs
     await page.waitForFunction(
       () => (window as any).__searchHydrated === true,
@@ -100,7 +107,9 @@ test.describe("Documentation User Journeys", () => {
   });
 
   test("documentation shows code examples", async ({ page }) => {
-    await page.goto("/docs/api-reference/cli", { waitUntil: "networkidle" });
+    await page.goto(appPath("/docs/api-reference/cli"), {
+      waitUntil: "networkidle",
+    });
 
     const codeBlock = page.locator("pre").first();
     await expect(codeBlock).toBeVisible({ timeout: 10_000 });
@@ -110,7 +119,9 @@ test.describe("Documentation User Journeys", () => {
     page,
     isMobile,
   }) => {
-    await page.goto("/docs/schema-registry", { waitUntil: "networkidle" });
+    await page.goto(appPath("/docs/schema-registry"), {
+      waitUntil: "networkidle",
+    });
 
     const sidebar = await getSidebar(page, isMobile);
 
@@ -124,7 +135,7 @@ test.describe("Documentation User Journeys", () => {
 
 test.describe("Documentation API Reference", () => {
   test("CLI reference page loads", async ({ page }) => {
-    const response = await page.goto("/docs/api-reference/cli", {
+    const response = await page.goto(appPath("/docs/api-reference/cli"), {
       waitUntil: "networkidle",
     });
     if (!response?.ok()) {

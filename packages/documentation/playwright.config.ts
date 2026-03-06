@@ -2,6 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 const PORT = 1440;
 const baseURL = `http://localhost:${PORT}`;
+const webServerCommand = `bunx wrangler dev -c .output/server/wrangler.json --port ${PORT}`;
 
 export default defineConfig({
   expect: {
@@ -33,7 +34,7 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: process.env["CI"] ? `bun run start` : "bun run dev",
+    command: webServerCommand,
     env: { PORT: String(PORT) },
     reuseExistingServer: !process.env["CI"],
     timeout: 120_000,

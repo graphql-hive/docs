@@ -1,4 +1,3 @@
-export * from "./hive-mdx-components";
-export * from "./mdx-components";
-export * from "./mdx-link";
-export * from "./types";
+export { MdxImage } from "./mdx-image";
+export { MDXLink } from "./mdx-link";
+export { MdxVideo } from "./mdx-video";

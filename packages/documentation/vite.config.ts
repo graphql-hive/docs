@@ -9,7 +9,10 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
+const BASE_PATH = "/graphql/hive-testing";
+
 export default defineConfig({
+  base: BASE_PATH,
   build: {
     rollupOptions: {
       onwarn(warning, defaultHandler) {
@@ -18,9 +21,13 @@ export default defineConfig({
       },
     },
   },
+  define: {
+    BASE_PATH: JSON.stringify(BASE_PATH),
+  },
   plugins: [
     !process.env["CI"] && devtools(),
     nitro({
+      baseURL: BASE_PATH,
       preset: process.env["VERCEL"]
         ? "vercel"
         : process.env["E2E"]
@@ -59,6 +66,8 @@ export default defineConfig({
       prerender: {
         crawlLinks: true,
         enabled: true,
+        retryCount: 10,
+        retryDelay: 1000,
       },
       sitemap: {
         enabled: true,

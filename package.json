@@ -40,7 +40,7 @@
     "typescript": "5.9.3"
   },
   "overrides": {
-    "nitro": "npm:nitro-nightly@latest"
+    "nitro": "npm:nitro-nightly@3.0.1-20260227-181935-bfbb207c"
   },
   "engines": {
     "node": ">=24"

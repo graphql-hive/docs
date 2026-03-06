@@ -3,8 +3,22 @@
  * nitro-nightly imports from "nitro/meta" expecting self-reference,
  * but its package name is "nitro-nightly", not "nitro".
  * This creates a symlink so the import resolves correctly.
+ *
+ * Also patches a bug in nitro's cloudflare-module preset where
+ * `"..".repeat(n)` produces `"...."` instead of `"../.."` when
+ * generating the wrangler assets directory for baseURL with multiple
+ * path segments. We replace it with a variadic resolve call that walks
+ * back to `.output/public`, not `.output/public/<baseURL>`.
+ * See: https://github.com/unjs/nitro/issues/XXXX
  */
-import { readdirSync, symlinkSync, existsSync, lstatSync } from "node:fs";
+import {
+  existsSync,
+  lstatSync,
+  readFileSync,
+  readdirSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { join } from "node:path";
 
 const bunCache = join(process.cwd(), "node_modules", ".bun");
@@ -43,6 +57,34 @@ for (const nitroNightlyDir of nitroNightlyDirs) {
     } else {
       console.error("[fix-nitro-nightly] Failed:", err.message);
       process.exit(1);
+    }
+  }
+
+  // Patch the wrangler assets.directory bug in cloudflare-module preset.
+  // `"..".repeat(n)` produces `"...."` instead of `"../.."`.
+  const presetsPath = join(nitroNightlyPkg, "dist", "_presets.mjs");
+  if (existsSync(presetsPath)) {
+    const buggy =
+      'resolve$1(nitro.options.output.publicDir, "..".repeat(nitro.options.baseURL.split("/").filter(Boolean).length))';
+    const fixed =
+      'resolve$1(nitro.options.output.publicDir, ...nitro.options.baseURL.split("/").filter(Boolean).map(() => ".."))';
+    const wrongPatched =
+      "directory: relative(wranglerConfigDir, nitro.options.output.publicDir)";
+    const correctedPatched = `directory: relative(wranglerConfigDir, ${fixed})`;
+    const content = readFileSync(presetsPath, "utf8");
+    if (content.includes(buggy)) {
+      writeFileSync(presetsPath, content.replace(buggy, fixed));
+      console.log(
+        `[fix-nitro-nightly] Patched wrangler assets.directory bug in ${nitroNightlyDir}`,
+      );
+    } else if (content.includes(wrongPatched)) {
+      writeFileSync(
+        presetsPath,
+        content.replace(wrongPatched, correctedPatched),
+      );
+      console.log(
+        `[fix-nitro-nightly] Corrected wrangler assets.directory patch in ${nitroNightlyDir}`,
+      );
     }
   }
 }
