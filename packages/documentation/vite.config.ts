@@ -10,6 +10,14 @@ import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
 const BASE_PATH = "/graphql/hive-testing";
+const NITRO_PRESET = process.env["VERCEL"]
+  ? "vercel"
+  : process.env["E2E"]
+    ? "node-server"
+    : "cloudflare-module";
+const CLOUDFLARE_ENTRY = fileURLToPath(
+  new URL("src/server/cloudflare-entry.ts", import.meta.url),
+);
 
 export default defineConfig({
   base: BASE_PATH,
@@ -28,12 +36,9 @@ export default defineConfig({
     !process.env["CI"] && devtools(),
     nitro({
       baseURL: BASE_PATH,
-      plugins: ["./server/plugins/base-path-alias.ts"],
-      preset: process.env["VERCEL"]
-        ? "vercel"
-        : process.env["E2E"]
-          ? "node-server"
-          : "cloudflare-module",
+      entry:
+        NITRO_PRESET === "cloudflare-module" ? CLOUDFLARE_ENTRY : undefined,
+      preset: NITRO_PRESET,
       routeRules: await import("./redirects").then((m) => m.routeRules),
     }),
     mdx(await import("./source.config")),
