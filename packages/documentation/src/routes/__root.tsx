@@ -1,5 +1,4 @@
 import appCss from "@/styles/app.css?url";
-import ogImage from "../../public/opengraph-image.png";
 import {
   createRootRoute,
   type ErrorComponentProps,
@@ -9,6 +8,8 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { RootProvider } from "fumadocs-ui/provider/tanstack";
+
+import ogImage from "./opengraph-image.png";
 
 export const Route = createRootRoute({
   component: RootComponent,
