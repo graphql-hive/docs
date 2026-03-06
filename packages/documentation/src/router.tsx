@@ -8,6 +8,7 @@ const TEXT_FILE_ROUTES = new Set(["/llms-full.txt", "/llms.txt"]);
 
 export function getRouter() {
   return createRouter({
+    basepath: BASE_PATH,
     defaultNotFoundComponent: NotFound,
     defaultPreload: "intent",
     rewrite: {
@@ -31,3 +32,8 @@ export function getRouter() {
     scrollRestoration: true,
   });
 }
+
+/**
+ * defined in vite.config.ts
+ */
+declare const BASE_PATH: string;

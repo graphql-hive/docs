@@ -9,7 +9,10 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
+const BASE_PATH = "/graphql/hive";
+
 export default defineConfig({
+  base: BASE_PATH,
   build: {
     rollupOptions: {
       onwarn(warning, defaultHandler) {
@@ -17,6 +20,9 @@ export default defineConfig({
         defaultHandler(warning);
       },
     },
+  },
+  define: {
+    BASE_PATH: JSON.stringify(BASE_PATH),
   },
   plugins: [
     !process.env["CI"] && devtools(),
