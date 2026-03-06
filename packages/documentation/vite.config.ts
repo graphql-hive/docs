@@ -9,7 +9,8 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
-const BASE_PATH = "/graphql/hive-testing";
+import { BASE_PATH, SITE_URL } from "./src/base-path";
+
 const NITRO_PRESET = process.env["VERCEL"]
   ? "vercel"
   : process.env["E2E"]
@@ -77,7 +78,7 @@ export default defineConfig({
       },
       sitemap: {
         enabled: true,
-        host: "https://the-guild.dev/graphql/hive",
+        host: SITE_URL,
       },
       spa: {
         enabled: true,
