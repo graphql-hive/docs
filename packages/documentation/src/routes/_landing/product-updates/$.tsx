@@ -44,6 +44,7 @@ const clientLoader = browserCollections.productUpdates.createClientLoader<{
           {props.title}
         </Heading>
         <ProductUpdateAuthors
+          align="start"
           authors={props.authors}
           className="mb-4"
           date={props.date}
