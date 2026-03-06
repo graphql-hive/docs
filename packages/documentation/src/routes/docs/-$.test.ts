@@ -5,6 +5,8 @@
  */
 import { spawn, type Subprocess } from "bun";
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 
 const TEST_PORT = 14_401;
 const BASE_URL = process.env["TEST_URL"] || `http://localhost:${TEST_PORT}`;
@@ -29,19 +31,42 @@ async function waitForServer(maxAttempts = 30): Promise<void> {
 beforeAll(async () => {
   if (process.env["TEST_URL"]) return; // user-provided server
 
-  const command = process.env["CI"]
-    ? ["bun", "run", "start"]
-    : ["bun", "--bun", "vite", "dev", "--port", String(TEST_PORT)];
+  const cwd = join(import.meta.dir, "../../..");
+  const wranglerConfig = join(cwd, ".output/server/wrangler.json");
 
-  devServer = spawn(command, {
-    cwd: import.meta.dir + "/../../..",
-    env: { ...process.env, PORT: String(TEST_PORT) },
-    stderr: "ignore",
-    stdout: "ignore",
-  });
+  if (!existsSync(wranglerConfig)) {
+    const build = spawn(["bun", "run", "build"], {
+      cwd,
+      stderr: "inherit",
+      stdout: "inherit",
+    });
+
+    const exitCode = await build.exited;
+    if (exitCode !== 0) {
+      throw new Error(`Build failed with exit code ${exitCode}`);
+    }
+  }
+
+  devServer = spawn(
+    [
+      "bunx",
+      "wrangler",
+      "dev",
+      "-c",
+      ".output/server/wrangler.json",
+      "--port",
+      String(TEST_PORT),
+    ],
+    {
+      cwd,
+      env: { ...process.env, PORT: String(TEST_PORT) },
+      stderr: "ignore",
+      stdout: "ignore",
+    },
+  );
 
   await waitForServer();
-}, 60_000);
+}, 60_000 * 10);
 
 afterAll(() => {
   devServer?.kill();
