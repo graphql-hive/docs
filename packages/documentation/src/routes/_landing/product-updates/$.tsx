@@ -1,38 +1,19 @@
 import type { Root } from "fumadocs-core/page-tree";
 
 import { ProductUpdateAuthors } from "@/components/product-update-header";
+import { getProductUpdateBySlug } from "@/lib/landing-content";
 import { mdxComponents } from "@/lib/mdx-components";
-import { pathToSlug } from "@/lib/path-to-slug";
 import { Heading } from "@hive/design-system";
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 import browserCollections from "fumadocs-mdx:collections/browser";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { DocsBody, DocsPage } from "fumadocs-ui/layouts/docs/page";
-
-const findEntry = createServerFn({ method: "GET" })
-  .inputValidator((slug: string) => slug)
-  .handler(async ({ data: slug }) => {
-    const collections = await import("fumadocs-mdx:collections/server");
-    const entry = collections.productUpdates.find(
-      (e) => pathToSlug(e.info.path) === slug,
-    );
-    if (!entry) return null;
-
-    return {
-      authors: entry.authors,
-      date: entry.date,
-      description: entry.description ?? "",
-      path: entry.info.path,
-      title: entry.title ?? slug,
-    };
-  });
 
 export const Route = createFileRoute("/_landing/product-updates/$")({
   component: ProductUpdateDetail,
   loader: async ({ params }) => {
     const slug = params._splat ?? "";
-    const data = await findEntry({ data: slug });
+    const data = getProductUpdateBySlug(slug);
     if (!data) throw notFound();
     return data;
   },

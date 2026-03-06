@@ -1,47 +1,33 @@
+import { getCaseStudyBySlug, getOtherCaseStudies } from "@/lib/landing-content";
 import { mdxComponents } from "@/lib/mdx-components";
 import { DecorationIsolation } from "@hive/design-system/decorations";
 import { Heading } from "@hive/design-system/heading";
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 import browserCollections from "fumadocs-mdx:collections/browser";
 
 import { CaseStudyCard } from "../../../components/case-studies/case-study-card";
 import { getCompanyLogo } from "../../../components/case-studies/company-logos";
-import { getCaseStudies } from "../../../components/case-studies/get-case-studies";
 import { LookingToUseHiveUpsellBlock } from "../../../components/case-studies/looking-to-use-hive-upsell-block";
 import { GetYourAPIGameWhite } from "../../../components/get-your-api-game-white";
 import "../../../styles/hive-prose.css";
 import { SmallAvatar } from "../../../components/small-avatar";
 
-const serverLoader = createServerFn({ method: "GET" })
-  .inputValidator((slug: string) => slug)
-  .handler(async ({ data: slug }) => {
-    const allCaseStudies = await getCaseStudies();
-    const entry = allCaseStudies.find((cs) => cs.name === slug);
+export const Route = createFileRoute("/_landing/case-studies/$")({
+  component: CaseStudyDetail,
+  loader: async ({ params }) => {
+    const slug = params._splat ?? "";
+    const entry = getCaseStudyBySlug(slug);
     if (!entry) throw notFound();
-
-    const otherCaseStudies = allCaseStudies
-      .filter((cs) => cs.name !== slug)
-      .slice(0, 3);
-
     return {
       authors: entry.frontMatter.authors ?? [],
       category: entry.frontMatter.category,
       date: entry.frontMatter.date,
       excerpt: entry.frontMatter.excerpt ?? "",
-      otherCaseStudies,
+      otherCaseStudies: getOtherCaseStudies(slug),
       path: entry.path,
       slug,
       title: entry.frontMatter.title ?? slug,
     };
-  });
-
-export const Route = createFileRoute("/_landing/case-studies/$")({
-  component: CaseStudyDetail,
-  loader: async ({ params }) => {
-    const slug = params._splat ?? "";
-    const data = await serverLoader({ data: slug });
-    return data;
   },
 });
 

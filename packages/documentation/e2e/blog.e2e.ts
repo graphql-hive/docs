@@ -21,6 +21,21 @@ test.describe("Content User Journeys", () => {
     await expect(caseStudyLinks.first()).toBeVisible();
   });
 
+  test("case study detail opens without server function requests", async ({
+    page,
+  }) => {
+    await page.goto(appPath("/case-studies"));
+
+    await page.route("**/_serverFn/**", (route) => route.abort());
+    await page
+      .locator(`a[href^="${appPath("/case-studies/")}"]`)
+      .first()
+      .click();
+
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "404" })).toHaveCount(0);
+  });
+
   test("user checks product updates to see recent improvements", async ({
     page,
   }) => {
@@ -31,6 +46,21 @@ test.describe("Content User Journeys", () => {
     // Sees list of product update entries
     const updates = page.locator(`a[href^="${appPath("/product-updates/")}"]`);
     await expect(updates.first()).toBeVisible();
+  });
+
+  test("product update detail opens without server function requests", async ({
+    page,
+  }) => {
+    await page.goto(appPath("/product-updates"));
+
+    await page.route("**/_serverFn/**", (route) => route.abort());
+    await page
+      .locator(`a[href^="${appPath("/product-updates/")}"]`)
+      .first()
+      .click();
+
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "404" })).toHaveCount(0);
   });
 
   test("user explores ecosystem page and discovers libraries", async ({
@@ -98,5 +128,20 @@ test.describe("Content User Journeys", () => {
     const friendCards = page.locator("a[href^='http'] dt");
     await expect(friendCards.first()).toBeVisible();
     expect(await friendCards.count()).toBeGreaterThan(5);
+  });
+
+  test("blog detail opens without server function requests", async ({
+    page,
+  }) => {
+    await page.goto(appPath("/blog"));
+
+    await page.route("**/_serverFn/**", (route) => route.abort());
+    await page
+      .locator(`a[href^="${appPath("/blog/")}"]`)
+      .first()
+      .click();
+
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "404" })).toHaveCount(0);
   });
 });
