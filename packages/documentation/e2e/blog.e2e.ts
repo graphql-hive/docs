@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { appPath } from "./paths";
 
 test.describe("Content User Journeys", () => {
   test("user reads case study to evaluate Hive for their company", async ({
@@ -13,7 +14,9 @@ test.describe("Content User Journeys", () => {
     const storiesSection = page.locator("section", {
       has: page.getByRole("heading", { name: "Explore customer stories" }),
     });
-    const caseStudyLinks = storiesSection.locator('a[href^="/case-studies/"]');
+    const caseStudyLinks = storiesSection.locator(
+      `a[href^="${appPath("/case-studies/")}"]`,
+    );
     await caseStudyLinks.first().scrollIntoViewIfNeeded();
     await expect(caseStudyLinks.first()).toBeVisible();
   });
@@ -26,7 +29,7 @@ test.describe("Content User Journeys", () => {
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
     // Sees list of product update entries
-    const updates = page.locator('a[href^="/product-updates/"]');
+    const updates = page.locator(`a[href^="${appPath("/product-updates/")}"]`);
     await expect(updates.first()).toBeVisible();
   });
 

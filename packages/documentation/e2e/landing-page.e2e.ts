@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { appPathPattern } from "./paths";
 
 test.describe("Landing Page User Journeys", () => {
   test("new visitor explores Hive and decides to sign up", async ({
@@ -41,9 +42,9 @@ test.describe("Landing Page User Journeys", () => {
       .getByRole("link", { name: /federation/i })
       .first();
     await federationLink.click();
-    await page.waitForURL("/federation");
+    await page.waitForURL(appPathPattern("/federation"));
 
-    await expect(page).toHaveURL("/federation");
+    await expect(page).toHaveURL(appPathPattern("/federation"));
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
 
@@ -51,9 +52,9 @@ test.describe("Landing Page User Journeys", () => {
     await page.goto("/");
 
     await page.getByRole("link", { name: "gateway", exact: true }).click();
-    await page.waitForURL("/gateway");
+    await page.waitForURL(appPathPattern("/gateway"));
 
-    await expect(page).toHaveURL("/gateway");
+    await expect(page).toHaveURL(appPathPattern("/gateway"));
     await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
   });
 
@@ -71,9 +72,9 @@ test.describe("Landing Page User Journeys", () => {
       const nav = page.getByRole("navigation", { name: "Navigation Menu" });
       await nav.getByRole("link", { name: /pricing/i }).click();
     }
-    await page.waitForURL("/pricing");
+    await page.waitForURL(appPathPattern("/pricing"));
 
-    await expect(page).toHaveURL("/pricing");
+    await expect(page).toHaveURL(appPathPattern("/pricing"));
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   });
 

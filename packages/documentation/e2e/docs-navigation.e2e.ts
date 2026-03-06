@@ -1,4 +1,5 @@
 import { type Locator, expect, test } from "@playwright/test";
+import { appPath } from "./paths";
 
 /** Returns the visible sidebar container — desktop aside or mobile drawer. */
 async function getSidebar(
@@ -48,7 +49,7 @@ test.describe("Documentation User Journeys", () => {
     // Click the "Hive Console" tab and wait for the section to expand.
     // Retry because sidebar tab handlers may not be hydrated yet on CI.
     const schemaRegistryLink = sidebar.locator(
-      'a[href="/docs/schema-registry"]',
+      `a[href="${appPath("/docs/schema-registry")}"]`,
     );
     // Wait for SPA hydration before interacting with sidebar tabs
     await page.waitForFunction(
@@ -79,7 +80,9 @@ test.describe("Documentation User Journeys", () => {
     const sidebar = page.locator("#nd-sidebar");
 
     // Click the "Hive Gateway" tab and wait for the section to expand.
-    const gatewayLink = sidebar.locator('a[href="/docs/gateway"]');
+    const gatewayLink = sidebar.locator(
+      `a[href="${appPath("/docs/gateway")}"]`,
+    );
     // Wait for SPA hydration before interacting with sidebar tabs
     await page.waitForFunction(
       () => (window as any).__searchHydrated === true,
