@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { appPath, appPathPattern } from "./paths";
 
 /**
  * Click the visible search button and wait for the search dialog to appear.
@@ -38,7 +39,7 @@ async function waitForSearchResults(
 
 test.describe("Search User Journeys", () => {
   test("developer uses search to find federation info", async ({ page }) => {
-    await page.goto("/", { waitUntil: "networkidle" });
+    await page.goto(appPath("/"), { waitUntil: "networkidle" });
 
     await openSearch(page);
 
@@ -52,7 +53,7 @@ test.describe("Search User Journeys", () => {
   });
 
   test("search results navigate to docs", async ({ page }) => {
-    await page.goto("/", { waitUntil: "networkidle" });
+    await page.goto(appPath("/"), { waitUntil: "networkidle" });
 
     await openSearch(page);
 
@@ -62,11 +63,11 @@ test.describe("Search User Journeys", () => {
     const result = await waitForSearchResults(page);
     await result.first().click();
 
-    await expect(page).toHaveURL(/docs/);
+    await expect(page).toHaveURL(appPathPattern("/docs"));
   });
 
   test("search is available on pricing page", async ({ page }) => {
-    await page.goto("/pricing", { waitUntil: "networkidle" });
+    await page.goto(appPath("/pricing"), { waitUntil: "networkidle" });
 
     const searchButton = page
       .getByRole("button", { name: "Search documentation" })

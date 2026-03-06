@@ -5,7 +5,7 @@ test.describe("Content User Journeys", () => {
   test("user reads case study to evaluate Hive for their company", async ({
     page,
   }) => {
-    await page.goto("/case-studies");
+    await page.goto(appPath("/case-studies"));
 
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
@@ -24,7 +24,7 @@ test.describe("Content User Journeys", () => {
   test("user checks product updates to see recent improvements", async ({
     page,
   }) => {
-    await page.goto("/product-updates");
+    await page.goto(appPath("/product-updates"));
 
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
@@ -36,7 +36,7 @@ test.describe("Content User Journeys", () => {
   test("user explores ecosystem page and discovers libraries", async ({
     page,
   }) => {
-    await page.goto("/ecosystem");
+    await page.goto(appPath("/ecosystem"));
 
     await expect(
       page.getByRole("heading", {
@@ -62,7 +62,7 @@ test.describe("Content User Journeys", () => {
   });
 
   test("user checks partner page and sees solutions", async ({ page }) => {
-    await page.goto("/partners");
+    await page.goto(appPath("/partners"));
 
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
@@ -85,7 +85,7 @@ test.describe("Content User Journeys", () => {
   test("user checks OSS friends page and discovers related projects", async ({
     page,
   }) => {
-    await page.goto("/oss-friends");
+    await page.goto(appPath("/oss-friends"));
 
     await expect(
       page.getByRole("heading", {

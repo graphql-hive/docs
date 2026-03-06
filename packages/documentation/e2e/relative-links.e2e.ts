@@ -6,7 +6,7 @@ test.describe("Relative link resolution", () => {
     page,
   }) => {
     const response = await page.goto(
-      "/docs/router/plugin-system/execution-and-lifecycle",
+      appPath("/docs/router/plugin-system/execution-and-lifecycle"),
       { waitUntil: "networkidle" },
     );
     if (!response?.ok()) {
@@ -27,8 +27,10 @@ test.describe("Relative link resolution", () => {
     page,
   }) => {
     const response = await page.goto(
-      "/docs/router/guides/extending-the-router",
-      { waitUntil: "networkidle" },
+      appPath("/docs/router/guides/extending-the-router"),
+      {
+        waitUntil: "networkidle",
+      },
     );
     if (!response?.ok()) {
       test.skip(true, "Page not available (needs build)");
@@ -48,8 +50,10 @@ test.describe("Relative link resolution", () => {
     page,
   }) => {
     const response = await page.goto(
-      "/docs/router/guides/extending-the-router",
-      { waitUntil: "networkidle" },
+      appPath("/docs/router/guides/extending-the-router"),
+      {
+        waitUntil: "networkidle",
+      },
     );
     if (!response?.ok()) {
       test.skip(true, "Page not available (needs build)");

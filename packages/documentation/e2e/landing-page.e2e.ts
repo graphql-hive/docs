@@ -1,12 +1,12 @@
 import { expect, test } from "@playwright/test";
-import { appPathPattern } from "./paths";
+import { appPath, appPathPattern } from "./paths";
 
 test.describe("Landing Page User Journeys", () => {
   test("new visitor explores Hive and decides to sign up", async ({
     page,
     isMobile,
   }) => {
-    await page.goto("/");
+    await page.goto(appPath("/"));
 
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
@@ -35,7 +35,7 @@ test.describe("Landing Page User Journeys", () => {
   });
 
   test("developer navigates to federation page", async ({ page }) => {
-    await page.goto("/");
+    await page.goto(appPath("/"));
 
     const federationLink = page
       .locator("p")
@@ -49,7 +49,7 @@ test.describe("Landing Page User Journeys", () => {
   });
 
   test("developer navigates to gateway page", async ({ page }) => {
-    await page.goto("/");
+    await page.goto(appPath("/"));
 
     await page.getByRole("link", { name: "gateway", exact: true }).click();
     await page.waitForURL(appPathPattern("/gateway"));
@@ -59,7 +59,7 @@ test.describe("Landing Page User Journeys", () => {
   });
 
   test("user navigates to pricing via nav", async ({ page, isMobile }) => {
-    await page.goto("/");
+    await page.goto(appPath("/"));
 
     if (isMobile) {
       // On mobile, the nav is hidden — navigate via footer link
@@ -79,7 +79,7 @@ test.describe("Landing Page User Journeys", () => {
   });
 
   test("FAQ accordion expands on click", async ({ page }) => {
-    await page.goto("/");
+    await page.goto(appPath("/"));
 
     const faqHeading = page.getByRole("heading", {
       name: "Frequently Asked Questions",
@@ -98,7 +98,7 @@ test.describe("Landing Page User Journeys", () => {
   });
 
   test("testimonials section shows company tabs", async ({ page }) => {
-    await page.goto("/");
+    await page.goto(appPath("/"));
 
     const tabLists = page.getByRole("tablist");
     const testimonialTabs = tabLists.nth(1);
@@ -111,7 +111,7 @@ test.describe("Landing Page User Journeys", () => {
   });
 
   test("visual regression", async ({ page }) => {
-    await page.goto("/", { waitUntil: "networkidle" });
+    await page.goto(appPath("/"), { waitUntil: "networkidle" });
     await expect(page).toHaveScreenshot("landing-page.png", {
       fullPage: true,
       maxDiffPixelRatio: 0.05,
@@ -119,7 +119,7 @@ test.describe("Landing Page User Journeys", () => {
   });
 
   test("navigation menu is accessible", async ({ page, isMobile }) => {
-    await page.goto("/");
+    await page.goto(appPath("/"));
 
     if (isMobile) {
       // On mobile, the full nav is hidden — verify the compact top bar is present
