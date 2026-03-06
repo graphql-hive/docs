@@ -47,6 +47,7 @@ export const Route = createFileRoute("/_landing/blog/$")({
     const slug = params._splat ?? "";
     const data = await getBlogDetailBySlug(slug);
     if (!data) throw notFound();
+    await clientLoader.preload(data.path);
     return {
       ...data,
       allPosts: landingPosts,

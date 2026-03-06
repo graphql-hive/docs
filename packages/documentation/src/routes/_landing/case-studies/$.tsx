@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_landing/case-studies/$")({
     const slug = params._splat ?? "";
     const entry = getCaseStudyBySlug(slug);
     if (!entry) throw notFound();
-    return {
+    const data = {
       authors: entry.frontMatter.authors ?? [],
       category: entry.frontMatter.category,
       date: entry.frontMatter.date,
@@ -28,6 +28,8 @@ export const Route = createFileRoute("/_landing/case-studies/$")({
       slug,
       title: entry.frontMatter.title ?? slug,
     };
+    await clientLoader.preload(data.path);
+    return data;
   },
 });
 

@@ -15,6 +15,7 @@ export const Route = createFileRoute("/_landing/product-updates/$")({
     const slug = params._splat ?? "";
     const data = getProductUpdateBySlug(slug);
     if (!data) throw notFound();
+    await clientLoader.preload(data.path);
     return data;
   },
 });
