@@ -9,7 +9,7 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
-const BASE_PATH = "/graphql/hive";
+const BASE_PATH = "/graphql/hive-testing";
 
 export default defineConfig({
   base: BASE_PATH,
