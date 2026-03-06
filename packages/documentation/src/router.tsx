@@ -32,8 +32,3 @@ export function getRouter() {
     scrollRestoration: true,
   });
 }
-
-/**
- * defined in vite.config.ts
- */
-declare const BASE_PATH: string;
