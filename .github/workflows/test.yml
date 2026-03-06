@@ -21,7 +21,7 @@ jobs:
         working-directory: packages/documentation
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
-        timeout-minutes: 10
+        timeout-minutes: 20
 
       - name: run integration and unit tests
         run: bun test:bun
