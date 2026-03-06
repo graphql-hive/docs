@@ -1,4 +1,4 @@
-const BASE_PATH = "/graphql/hive-testing";
+const BASE_PATH = "/graphql/hive";
 
 export function appPath(path: string) {
   return `${BASE_PATH}${path}`;

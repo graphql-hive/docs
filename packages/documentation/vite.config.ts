@@ -9,7 +9,7 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
-const BASE_PATH = "/graphql/hive-testing";
+const BASE_PATH = "/graphql/hive";
 const NITRO_PRESET = process.env["VERCEL"]
   ? "vercel"
   : process.env["E2E"]
