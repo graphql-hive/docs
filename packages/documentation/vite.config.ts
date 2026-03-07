@@ -1,3 +1,5 @@
+import type { LoggingFunction, RollupLog } from "rollup";
+
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -20,11 +22,12 @@ const NITRO_PRESET = process.env["VERCEL"]
 const CLOUDFLARE_ENTRY = fileURLToPath(
   new URL("src/server/cloudflare-entry.ts", import.meta.url),
 );
+
 export default defineConfig(async ({ command }) => ({
   base: BASE_PATH,
   build: {
     rollupOptions: {
-      onwarn(warning, defaultHandler) {
+      onwarn(warning: RollupLog, defaultHandler: LoggingFunction) {
         if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
         defaultHandler(warning);
       },
