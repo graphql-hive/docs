@@ -100,6 +100,7 @@
         "@types/react-dom": "19.2.3",
         "@types/rss": "^0.0.32",
         "@vitejs/plugin-react": "5.1.2",
+        "rollup": "^4.43.0",
         "tailwindcss": "4.1.18",
         "typescript": "5.9.3",
         "vite-plugin-svgr": "4.5.0",
