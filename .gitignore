@@ -36,3 +36,4 @@ npm-debug.log*
 # screenshots
 packages/documentation/tmp/
 test-results/
+debug-storybook.log
