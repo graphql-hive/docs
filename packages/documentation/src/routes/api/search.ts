@@ -1,6 +1,10 @@
 import type { StructuredData } from "fumadocs-core/mdx-plugins/remark-structure";
 import type { AdvancedIndex } from "fumadocs-core/search/server";
 
+import {
+  CHANGELOG_PAGE_URL,
+  fetchChangelogMarkdown,
+} from "@/lib/deployment-changelog";
 import { pathToSlug } from "@/lib/path-to-slug";
 import { getSource } from "@/lib/source";
 import { createFileRoute } from "@tanstack/react-router";
@@ -45,20 +49,10 @@ async function resolveStructuredData(data: any): Promise<StructuredData> {
   throw new Error("Cannot resolve structuredData from page");
 }
 
-const CHANGELOG_URL =
-  "https://raw.githubusercontent.com/graphql-hive/console/main/deployment/CHANGELOG.md";
-const CHANGELOG_PAGE_URL = "/docs/schema-registry/self-hosting/changelog";
-
 async function getChangelogStructuredData(): Promise<StructuredData> {
-  try {
-    const res = await fetch(CHANGELOG_URL);
-    if (!res.ok) return { contents: [], headings: [] };
-    let markdown = await res.text();
-    markdown = markdown.replace(/^#\s+.*\n/, "");
-    return structure(markdown);
-  } catch {
-    return { contents: [], headings: [] };
-  }
+  const markdown = await fetchChangelogMarkdown();
+  if (!markdown) return { contents: [], headings: [] };
+  return structure(markdown);
 }
 
 async function buildIndexes(): Promise<AdvancedIndex[]> {
