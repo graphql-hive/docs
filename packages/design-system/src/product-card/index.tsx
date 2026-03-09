@@ -77,8 +77,8 @@ export function MainProductCard({
                   </>
                 ) : (
                   <>
-                    <stop stopColor="white" stopOpacity="0.07" />
-                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
+                    <stop stopColor="white" stopOpacity="0.1" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.4" />
                   </>
                 )}
               </linearGradient>
