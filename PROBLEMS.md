@@ -83,6 +83,7 @@ tool waits only 2s after load, which may not be enough for wrangler dev SSR.
 
 Top 5 pages manually compared (28.65% down to 19.26%). All content is identical
 between old and new sites. Diffs come from:
+
 - Header/nav/sidebar/footer design differences (Nextra → Fumadocs)
 - Code block syntax highlighting theme
 - Font rendering
@@ -91,34 +92,34 @@ No missing sections, no missing text, no broken components.
 
 ### Large (10-30% diff) — layout/footer, not content
 
-| Diff | Page |
-|------|------|
-| 28.65% | `/docs/api-reference/usage-reports` |
-| 21.75% | `/docs/gateway/other-features/security/block-field-suggestions` |
-| 20.50% | `/docs/gateway/other-features/performance/request-batching` |
-| 19.30% | `/docs/gateway/other-features/security/aws-sigv4` |
-| 19.26% | `/docs/gateway/other-features/security/character-limit` |
-| 17.96% | `/docs/api-reference/gateway-config` |
-| 17.25% | `/docs/gateway/other-features/security/audit-documents` |
-| 16.75% | `/docs/api-reference/graphql-api/member-management` |
-| 16.14% | `/docs/gateway/other-features/security/hmac-signature` |
-| 15.91% | `/docs/gateway/other-features/security/csrf-prevention` |
-| 15.71% | `/docs/gateway/other-features/security/disable-introspection` |
-| 15.02% | `/docs/gateway/other-features/security/demand-control` |
-| 14.85% | `/docs/gateway/other-features/security/cors` |
-| 14.57% | `/docs/api-reference/graphql-api/access-token-management` |
-| 14.46% | `/docs/gateway/other-features/progressive-override` |
-| 14.18% | `/docs/api-reference/graphql-api/project-management` |
-| 14.15% | `/docs/api-reference/graphql-api/contract-management` |
-| 13.60% | `/docs/gateway` |
-| 13.52% | `/docs` |
-| 13.06% | `/docs/gateway/other-features/security` |
+| Diff   | Page                                                             |
+| ------ | ---------------------------------------------------------------- |
+| 28.65% | `/docs/api-reference/usage-reports`                              |
+| 21.75% | `/docs/gateway/other-features/security/block-field-suggestions`  |
+| 20.50% | `/docs/gateway/other-features/performance/request-batching`      |
+| 19.30% | `/docs/gateway/other-features/security/aws-sigv4`                |
+| 19.26% | `/docs/gateway/other-features/security/character-limit`          |
+| 17.96% | `/docs/api-reference/gateway-config`                             |
+| 17.25% | `/docs/gateway/other-features/security/audit-documents`          |
+| 16.75% | `/docs/api-reference/graphql-api/member-management`              |
+| 16.14% | `/docs/gateway/other-features/security/hmac-signature`           |
+| 15.91% | `/docs/gateway/other-features/security/csrf-prevention`          |
+| 15.71% | `/docs/gateway/other-features/security/disable-introspection`    |
+| 15.02% | `/docs/gateway/other-features/security/demand-control`           |
+| 14.85% | `/docs/gateway/other-features/security/cors`                     |
+| 14.57% | `/docs/api-reference/graphql-api/access-token-management`        |
+| 14.46% | `/docs/gateway/other-features/progressive-override`              |
+| 14.18% | `/docs/api-reference/graphql-api/project-management`             |
+| 14.15% | `/docs/api-reference/graphql-api/contract-management`            |
+| 13.60% | `/docs/gateway`                                                  |
+| 13.52% | `/docs`                                                          |
+| 13.06% | `/docs/gateway/other-features/security`                          |
 | 12.94% | `/docs/gateway/other-features/performance/upstream-cancellation` |
-| 12.61% | `/docs/gateway/other-features/rust-query-planner` |
-| 12.25% | `/docs/api-reference/client` |
-| 12.17% | `/docs/api-reference/graphql-api/target-management` |
-| 12.15% | `/docs/api-reference/link-specifications` |
-| 10.67% | `/docs/api-reference/graphql-api` |
+| 12.61% | `/docs/gateway/other-features/rust-query-planner`                |
+| 12.25% | `/docs/api-reference/client`                                     |
+| 12.17% | `/docs/api-reference/graphql-api/target-management`              |
+| 12.15% | `/docs/api-reference/link-specifications`                        |
+| 10.67% | `/docs/api-reference/graphql-api`                                |
 
 ### Medium (1-5%) — 63 pages, sidebar/font/spacing differences
 
