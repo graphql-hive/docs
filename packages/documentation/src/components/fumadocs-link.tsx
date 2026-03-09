@@ -7,6 +7,8 @@ type FumadocsLinkProps = React.ComponentProps<"a"> & {
   prefetch?: boolean;
 };
 
+// Eventually this should reuse the design-system Anchor, but first its
+// callsites need to stop depending on Nextra/Fumadocs-style anchor props.
 export const FumadocsLink = forwardRef<HTMLAnchorElement, FumadocsLinkProps>(
   function FumadocsLink(
     { children, href = "#", prefetch = true, rel, target, ...props },

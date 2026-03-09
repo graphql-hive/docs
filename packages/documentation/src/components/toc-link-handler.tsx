@@ -5,6 +5,8 @@ import { useLayoutEffect } from "react";
 const TOC_LINK_SELECTOR =
   "#nd-toc a[href^='#'], [data-toc-popover-content] a[href^='#']";
 
+// Sorry: these ToC anchors get hijacked somewhere between Fumadocs and the
+// client router, turning hashes into "?" and jumping back to the top.
 export function TocLinkHandler() {
   useLayoutEffect(() => {
     function onClick(event: MouseEvent) {
