@@ -3,7 +3,7 @@
   "sourceRepo": ".context/hive-console",
   "sourceBranch": "main",
   "targetSubdirectory": "temporary",
-  "lastSyncedCommit": "14e3d434cfa8",
+  "lastSyncedCommit": "14e3d434cfa80910286c2bb1f33cbb82f1def78a",
   "migrations": [
     {
       "commit": "f09052749e7ec7a5f759566fac8e13eb3f833067",
