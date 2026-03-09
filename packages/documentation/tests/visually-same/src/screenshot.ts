@@ -38,7 +38,7 @@ async function isPageBlank(page: Page): Promise<boolean> {
     if (!body) return true;
     // Blank if body has no visible content (just whitespace or empty)
     return (
-      body.innerText.trim().length < 50 &&
+      (body.textContent?.trim().length ?? 0) < 50 &&
       body.querySelectorAll("img, svg, canvas").length === 0
     );
   });
