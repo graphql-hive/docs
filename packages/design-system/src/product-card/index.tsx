@@ -45,7 +45,7 @@ export function MainProductCard({
       >
         <p className="font-medium">{product.name}</p>
         <Icon className="mt-8" />
-        <ArrowIcon className="relative z-10 absolute bottom-8 right-8" />
+        <ArrowIcon className="absolute z-10 bottom-8 right-8" />
         <DecorationIsolation>
           {Decoration && (
             <Decoration
