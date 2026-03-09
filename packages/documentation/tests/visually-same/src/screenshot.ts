@@ -32,6 +32,18 @@ export async function setupBrowser(): Promise<{
   return { browser, context, page };
 }
 
+async function isPageBlank(page: Page): Promise<boolean> {
+  return page.evaluate(() => {
+    const body = document.body;
+    if (!body) return true;
+    // Blank if body has no visible content (just whitespace or empty)
+    return (
+      body.innerText.trim().length < 50 &&
+      body.querySelectorAll("img, svg, canvas").length === 0
+    );
+  });
+}
+
 export async function navigateAndScreenshot(
   page: Page,
   url: string,
@@ -46,14 +58,19 @@ export async function navigateAndScreenshot(
         waitUntil: "load",
       });
 
-      // Wait for any dynamic content to settle
+      // Wait for dynamic content to settle
       await page.waitForTimeout(waitMs);
+
+      // Retry if page rendered blank (SSR timeout / hydration not done)
+      if (attempt < retries && (await isPageBlank(page))) {
+        await page.waitForTimeout(3000);
+        continue;
+      }
 
       await captureScreenshot(page, outputPath);
       return;
     } catch (error: unknown) {
       if (attempt === retries) throw error;
-      // Wait for dev server to recover
       await page.waitForTimeout(5000);
     }
   }
