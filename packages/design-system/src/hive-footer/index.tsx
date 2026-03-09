@@ -12,7 +12,7 @@ import {
   YouTubeIcon,
 } from "../icons/index";
 import { HiveCombinationMark } from "../logos";
-import { FOUR_MAIN_PRODUCTS, SIX_HIGHLIGHTED_PRODUCTS } from "../products";
+import { FIVE_MAIN_PRODUCTS, SIX_HIGHLIGHTED_PRODUCTS } from "../products";
 import { ILink } from "../types/components";
 import { SecurityBadges } from "./security-badges";
 
@@ -224,7 +224,7 @@ const SOCIAL_ICONS: SocialLink[] = [
   },
 ];
 
-const productLinks = [...FOUR_MAIN_PRODUCTS, ...SIX_HIGHLIGHTED_PRODUCTS].map(
+const productLinks = [...FIVE_MAIN_PRODUCTS, ...SIX_HIGHLIGHTED_PRODUCTS].map(
   ({ href, name, title }) => ({
     children: name,
     href,

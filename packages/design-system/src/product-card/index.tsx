@@ -3,15 +3,17 @@ import { useId } from "react";
 import { cn } from "../cn";
 import { DecorationIsolation, HighlightDecoration } from "../decorations";
 import { ArrowIcon } from "../icons";
-import { FOUR_MAIN_PRODUCTS, ProductInfo, PRODUCTS } from "../products";
+import { FIVE_MAIN_PRODUCTS, ProductInfo, PRODUCTS } from "../products";
 import HiveDecoration from "./hive-decoration.svg?svgr";
 import HiveGatewayDecoration from "./hive-gateway-decoration.svg?svgr";
+import HiveRouterDecoration from "./hive-router-decoration.svg?svgr";
 import MeshDecoration from "./mesh-decoration.svg?svgr";
 import YogaDecoration from "./yoga-decoration.svg?svgr";
 
 const cardDecorations = {
   [PRODUCTS.HIVE.name]: HiveDecoration,
   [PRODUCTS.HIVE_GATEWAY.name]: HiveGatewayDecoration,
+  [PRODUCTS.HIVE_ROUTER.name]: HiveRouterDecoration,
   [PRODUCTS.MESH.name]: MeshDecoration,
   [PRODUCTS.YOGA.name]: YogaDecoration,
 };
@@ -130,7 +132,7 @@ export interface ProductCardProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export function ProductCard(props: ProductCardProps) {
-  const isMainProduct = FOUR_MAIN_PRODUCTS.some(
+  const isMainProduct = FIVE_MAIN_PRODUCTS.some(
     (p) => p.name === props.product.name,
   );
 

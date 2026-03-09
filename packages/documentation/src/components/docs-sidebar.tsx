@@ -17,7 +17,7 @@ import { cn } from "@hive/design-system";
 import { siteOrigin } from "@hive/design-system/constants";
 import { ArrowIcon, GitHubIcon } from "@hive/design-system/icons";
 import {
-  FOUR_MAIN_PRODUCTS,
+  FIVE_MAIN_PRODUCTS,
   SIX_HIGHLIGHTED_PRODUCTS,
 } from "@hive/design-system/products";
 import { cva } from "class-variance-authority";
@@ -358,7 +358,7 @@ function MobileProductsList() {
       <p className="py-2 text-xs font-medium uppercase tracking-wide text-fd-muted-foreground/60">
         The GraphQL Stack
       </p>
-      {FOUR_MAIN_PRODUCTS.map((product) => {
+      {FIVE_MAIN_PRODUCTS.map((product) => {
         const Logo = product.logo;
         return (
           <Link

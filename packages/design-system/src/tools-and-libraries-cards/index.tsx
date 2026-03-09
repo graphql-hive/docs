@@ -4,7 +4,7 @@ import { CallToAction } from "../call-to-action";
 import { cn } from "../cn";
 import { Heading } from "../heading";
 import { AncillaryProductCard, MainProductCard } from "../product-card";
-import { FOUR_MAIN_PRODUCTS, SIX_HIGHLIGHTED_PRODUCTS } from "../products";
+import { FIVE_MAIN_PRODUCTS, SIX_HIGHLIGHTED_PRODUCTS } from "../products";
 
 export interface ToolsAndLibrariesCardsProps extends HTMLAttributes<HTMLDivElement> {
   isHive?: boolean;
@@ -26,8 +26,8 @@ export function ToolsAndLibrariesCards({
         Discover the complete ecosystem of tools and libraries
       </Heading>
       <p className="text-green-800">Complete GraphQL Federation Stack</p>
-      <ul className="nextra-scrollbar -mx-12 -my-2 flex grid-cols-2 gap-[22px] overflow-auto px-12 py-2 lg:grid xl:grid-cols-4">
-        {FOUR_MAIN_PRODUCTS.map((product) => (
+      <ul className="nextra-scrollbar -mx-12 -my-2 flex grid-cols-2 gap-[22px] overflow-auto px-12 py-2 lg:grid xl:grid-cols-5">
+        {FIVE_MAIN_PRODUCTS.map((product) => (
           <MainProductCard as="li" key={product.name} product={product} />
         ))}
       </ul>

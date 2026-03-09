@@ -4,7 +4,7 @@ import { cn } from "./cn";
 import { Heading } from "./heading";
 import { ArrowIcon } from "./icons";
 import { MainProductCard } from "./product-card";
-import { FOUR_MAIN_PRODUCTS } from "./products";
+import { FIVE_MAIN_PRODUCTS } from "./products";
 import { TextLink } from "./text-link";
 
 export interface ExploreMainProductCardsProps extends HTMLAttributes<HTMLDivElement> {
@@ -40,8 +40,8 @@ export function ExploreMainProductCards({
           <ArrowIcon />
         </TextLink>
       </div>
-      <ul className="nextra-scrollbar -mx-12 -my-2 flex shrink-0 grow gap-[22px] overflow-auto px-12 py-2 [@media(max-width:1490px)]:w-full [@media(min-width:1490px)]:overflow-visible [&>:nth-child(n+4)]:[@media(min-width:1490px)]:hidden">
-        {FOUR_MAIN_PRODUCTS.map((product) => (
+      <ul className="nextra-scrollbar -mx-12 -my-2 flex shrink-0 grow gap-[22px] overflow-auto px-12 py-2 [@media(max-width:1490px)]:w-full [@media(min-width:1490px)]:overflow-visible [&>:nth-child(n+5)]:[@media(min-width:1490px)]:hidden">
+        {FIVE_MAIN_PRODUCTS.map((product) => (
           <MainProductCard as="li" key={product.name} product={product} />
         ))}
       </ul>

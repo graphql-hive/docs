@@ -254,12 +254,16 @@ export const PRODUCTS: Record<ProductType, ProductInfo> = {
   },
 };
 
-export const FOUR_MAIN_PRODUCTS = [
+export const FIVE_MAIN_PRODUCTS = [
   PRODUCTS.HIVE,
   PRODUCTS.HIVE_GATEWAY,
+  PRODUCTS.HIVE_ROUTER,
   PRODUCTS.YOGA,
   PRODUCTS.MESH,
 ];
+
+/** @deprecated Use `FIVE_MAIN_PRODUCTS` instead. */
+export const FOUR_MAIN_PRODUCTS = FIVE_MAIN_PRODUCTS;
 
 export const SIX_HIGHLIGHTED_PRODUCTS = [
   PRODUCTS.CODEGEN,
@@ -284,7 +288,7 @@ export const PRODUCTS_MENU_LIST = Object.fromEntries<
   (
     [
       "The GraphQL Stack",
-      ...FOUR_MAIN_PRODUCTS,
+      ...FIVE_MAIN_PRODUCTS,
       "Libraries",
       ...SIX_HIGHLIGHTED_PRODUCTS,
     ] as const
@@ -319,7 +323,7 @@ export const PRODUCTS_MENU_LIST = Object.fromEntries<
             <div
               className={cn(
                 "flex translate-y-[0.25px]",
-                i > 6 && "rounded-xs bg-gray-500 text-white dark:bg-white/10",
+                i > 7 && "rounded-xs bg-gray-500 text-white dark:bg-white/10",
               )}
             >
               <item.logo className="size-4 text-[8px]" />
