@@ -19,17 +19,17 @@ You can provide an array of paths to redact specific fields in your log attribut
 for nested properties and bracket notation with wildcards (`[*]`) for arrays.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
 const logger = new Logger({
-  redact: ['password', 'headers.authorization', 'users[*].secret']
-})
+  redact: ["password", "headers.authorization", "users[*].secret"],
+});
 
 logger.info({
-  password: 'super-secret',
-  headers: { authorization: 'Bearer token', host: 'example.com' },
-  users: [{ secret: 'hidden', name: 'alice' }]
-})
+  password: "super-secret",
+  headers: { authorization: "Bearer token", host: "example.com" },
+  users: [{ secret: "hidden", name: "alice" }],
+});
 // attrs: {
 //   password: '[Redacted]',
 //   headers: { authorization: '[Redacted]', host: 'example.com' },
@@ -42,19 +42,19 @@ logger.info({
 You can specify a custom string to use instead of the default `[Redacted]` censor value.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
 const logger = new Logger({
   redact: {
-    paths: ['password', 'headers.authorization'],
-    censor: '**REDACTED**'
-  }
-})
+    paths: ["password", "headers.authorization"],
+    censor: "**REDACTED**",
+  },
+});
 
 logger.info({
-  password: 'super-secret',
-  headers: { authorization: 'Bearer token', host: 'example.com' }
-})
+  password: "super-secret",
+  headers: { authorization: "Bearer token", host: "example.com" },
+});
 // attrs: {
 //   password: '**REDACTED**',
 //   headers: { authorization: '**REDACTED**', host: 'example.com' },
@@ -67,16 +67,17 @@ For more advanced use cases, you can provide a function that receives the origin
 and returns the censored value.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
 const logger = new Logger({
   redact: {
-    paths: ['password'],
-    censor: (value, path) => `[${path.join('.')}=${String(value).length} chars]`
-  }
-})
+    paths: ["password"],
+    censor: (value, path) =>
+      `[${path.join(".")}=${String(value).length} chars]`,
+  },
+});
 
-logger.info({ password: 'super-secret' })
+logger.info({ password: "super-secret" });
 // attrs: { password: '[password=12 chars]' }
 ```
 
@@ -94,18 +95,18 @@ because the JSON serializer handles `undefined` by omitting it.
 </Callout>
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
 const logger = new Logger({
   redact: {
-    paths: ['password', 'headers.authorization'],
-    remove: true
-  }
-})
+    paths: ["password", "headers.authorization"],
+    remove: true,
+  },
+});
 
 logger.info({
-  password: 'super-secret',
-  headers: { authorization: 'Bearer token', host: 'example.com' }
-})
+  password: "super-secret",
+  headers: { authorization: "Bearer token", host: "example.com" },
+});
 // attrs: { password: undefined, headers: { authorization: undefined, host: 'example.com' } }
 ```
