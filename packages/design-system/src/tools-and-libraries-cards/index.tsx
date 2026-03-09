@@ -26,7 +26,7 @@ export function ToolsAndLibrariesCards({
         Discover the complete ecosystem of tools and libraries
       </Heading>
       <p className="text-green-800">Complete GraphQL Federation Stack</p>
-      <ul className="nextra-scrollbar -mx-12 -my-2 flex grid-cols-2 gap-[22px] overflow-auto px-12 py-2 lg:grid xl:grid-cols-5">
+      <ul className="nextra-scrollbar -mx-12 -my-2 flex grid-cols-2 gap-[22px] overflow-auto px-12 py-2 lg:grid xl:grid-cols-3">
         {FIVE_MAIN_PRODUCTS.map((product) => (
           <MainProductCard as="li" key={product.name} product={product} />
         ))}
