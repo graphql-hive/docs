@@ -53,6 +53,7 @@
   --color-fd-foreground: hsl(0, 0%, 92%);
   --color-fd-primary: var(--color-neutral-100);
   --color-fd-card: var(--color-neutral-900);
+  --color-fd-secondary: var(--color-neutral-800);
   --color-fd-muted-foreground: var(--color-beige-800);
   --color-fd-popover-foreground: var(--color-neutral-200);
   --color-fd-popover: hsl(0, 0%, 7.04%);
