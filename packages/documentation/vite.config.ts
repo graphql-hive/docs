@@ -38,6 +38,9 @@ export default defineConfig({
       baseURL: BASE_PATH,
       entry:
         NITRO_PRESET === "cloudflare-module" ? CLOUDFLARE_ENTRY : undefined,
+      prerender: {
+        ignore: [/[?&]utm_/],
+      },
       preset: NITRO_PRESET,
       routeRules: await import("./redirects").then((m) => m.routeRules),
     }),
