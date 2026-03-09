@@ -71,19 +71,25 @@ tool waits only 2s after load, which may not be enough for wrangler dev SSR.
   had GraphQL queries overflowing horizontally way beyond the viewport. New site
   wraps them properly.
 
-### Expected styling differences (not content bugs)
+### Minor rendering regression: usage-reports JSON schema
 
-The remaining 10-38% diffs are systemic design differences between old
-(Nextra) and new (Fumadocs) sites:
-- Header/nav bar styling
-- Sidebar layout and ordering
+- `/docs/api-reference/usage-reports` (28.65%) — The JSON Schema `<details>`
+  section uses raw `<pre><code>{JSON.stringify(...)}</code></pre>` instead of the
+  old site's `<MDXRemote>` + `compileMdx()` which gave syntax highlighting and a
+  copy button. Not visible in screenshot diff (details collapsed), but degraded UX
+  when expanded. Should render as a fenced code block.
+
+### Investigated top diffs — all content-complete
+
+Top 5 pages manually compared (28.65% down to 19.26%). All content is identical
+between old and new sites. Diffs come from:
+- Header/nav/sidebar/footer design differences (Nextra → Fumadocs)
 - Code block syntax highlighting theme
-- Footer design
-- Font rendering differences
+- Font rendering
 
-These appear on most pages and are expected. No content is missing.
+No missing sections, no missing text, no broken components.
 
-### Large (10-30% diff) — layout shifts or component differences
+### Large (10-30% diff) — layout/footer, not content
 
 | Diff | Page |
 |------|------|
@@ -114,7 +120,7 @@ These appear on most pages and are expected. No content is missing.
 | 12.15% | `/docs/api-reference/link-specifications` |
 | 10.67% | `/docs/api-reference/graphql-api` |
 
-### Medium (1-5%) — 63 pages, likely sidebar/font/spacing differences
+### Medium (1-5%) — 63 pages, sidebar/font/spacing differences
 
 ### Tiny (<1%) — 52 pages, negligible
 
