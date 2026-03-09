@@ -15,6 +15,7 @@ import { Route as FeedDotxmlRouteImport } from './routes/feed[.]xml'
 import { Route as LandingRouteImport } from './routes/_landing'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
+import { Route as ApiDeploymentChangelogRouteImport } from './routes/api/deployment-changelog'
 import { Route as LandingLightOnlyRouteImport } from './routes/_landing/_light-only'
 import { Route as LandingProductUpdatesIndexRouteImport } from './routes/_landing/product-updates/index'
 import { Route as LandingCaseStudiesIndexRouteImport } from './routes/_landing/case-studies/index'
@@ -60,6 +61,11 @@ const DocsSplatRoute = DocsSplatRouteImport.update({
 const ApiSearchRoute = ApiSearchRouteImport.update({
   id: '/api/search',
   path: '/api/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiDeploymentChangelogRoute = ApiDeploymentChangelogRouteImport.update({
+  id: '/api/deployment-changelog',
+  path: '/api/deployment-changelog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LandingLightOnlyRoute = LandingLightOnlyRouteImport.update({
@@ -154,9 +160,11 @@ const LandingBlogTagSplatRoute = LandingBlogTagSplatRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof LandingLightOnlyIndexRoute
   '/feed.xml': typeof FeedDotxmlRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
+  '/api/deployment-changelog': typeof ApiDeploymentChangelogRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/ecosystem': typeof LandingLightOnlyEcosystemRoute
@@ -169,17 +177,18 @@ export interface FileRoutesByFullPath {
   '/case-studies/$': typeof LandingCaseStudiesSplatRoute
   '/product-updates/$': typeof LandingProductUpdatesSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
-  '/': typeof LandingLightOnlyIndexRoute
-  '/blog': typeof LandingBlogIndexRoute
-  '/case-studies': typeof LandingCaseStudiesIndexRoute
-  '/product-updates': typeof LandingProductUpdatesIndexRoute
+  '/blog/': typeof LandingBlogIndexRoute
+  '/case-studies/': typeof LandingCaseStudiesIndexRoute
+  '/product-updates/': typeof LandingProductUpdatesIndexRoute
   '/blog/tag/$': typeof LandingBlogTagSplatRoute
-  '/federation': typeof LandingLightOnlyFederationIndexRoute
+  '/federation/': typeof LandingLightOnlyFederationIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof LandingLightOnlyIndexRoute
   '/feed.xml': typeof FeedDotxmlRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
+  '/api/deployment-changelog': typeof ApiDeploymentChangelogRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/ecosystem': typeof LandingLightOnlyEcosystemRoute
@@ -192,7 +201,6 @@ export interface FileRoutesByTo {
   '/case-studies/$': typeof LandingCaseStudiesSplatRoute
   '/product-updates/$': typeof LandingProductUpdatesSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
-  '/': typeof LandingLightOnlyIndexRoute
   '/blog': typeof LandingBlogIndexRoute
   '/case-studies': typeof LandingCaseStudiesIndexRoute
   '/product-updates': typeof LandingProductUpdatesIndexRoute
@@ -206,6 +214,7 @@ export interface FileRoutesById {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/_landing/_light-only': typeof LandingLightOnlyRouteWithChildren
+  '/api/deployment-changelog': typeof ApiDeploymentChangelogRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/_landing/_light-only/ecosystem': typeof LandingLightOnlyEcosystemRoute
@@ -228,9 +237,11 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/feed.xml'
     | '/llms-full.txt'
     | '/llms.txt'
+    | '/api/deployment-changelog'
     | '/api/search'
     | '/docs/$'
     | '/ecosystem'
@@ -243,17 +254,18 @@ export interface FileRouteTypes {
     | '/case-studies/$'
     | '/product-updates/$'
     | '/llms.mdx/docs/$'
-    | '/'
-    | '/blog'
-    | '/case-studies'
-    | '/product-updates'
+    | '/blog/'
+    | '/case-studies/'
+    | '/product-updates/'
     | '/blog/tag/$'
-    | '/federation'
+    | '/federation/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/feed.xml'
     | '/llms-full.txt'
     | '/llms.txt'
+    | '/api/deployment-changelog'
     | '/api/search'
     | '/docs/$'
     | '/ecosystem'
@@ -266,7 +278,6 @@ export interface FileRouteTypes {
     | '/case-studies/$'
     | '/product-updates/$'
     | '/llms.mdx/docs/$'
-    | '/'
     | '/blog'
     | '/case-studies'
     | '/product-updates'
@@ -279,6 +290,7 @@ export interface FileRouteTypes {
     | '/llms-full.txt'
     | '/llms.txt'
     | '/_landing/_light-only'
+    | '/api/deployment-changelog'
     | '/api/search'
     | '/docs/$'
     | '/_landing/_light-only/ecosystem'
@@ -304,6 +316,7 @@ export interface RootRouteChildren {
   FeedDotxmlRoute: typeof FeedDotxmlRoute
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
+  ApiDeploymentChangelogRoute: typeof ApiDeploymentChangelogRoute
   ApiSearchRoute: typeof ApiSearchRoute
   DocsSplatRoute: typeof DocsSplatRoute
   LlmsDotmdxDocsSplatRoute: typeof LlmsDotmdxDocsSplatRoute
@@ -335,7 +348,7 @@ declare module '@tanstack/react-router' {
     '/_landing': {
       id: '/_landing'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof LandingRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -353,31 +366,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/deployment-changelog': {
+      id: '/api/deployment-changelog'
+      path: '/api/deployment-changelog'
+      fullPath: '/api/deployment-changelog'
+      preLoaderRoute: typeof ApiDeploymentChangelogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_landing/_light-only': {
       id: '/_landing/_light-only'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof LandingLightOnlyRouteImport
       parentRoute: typeof LandingRoute
     }
     '/_landing/product-updates/': {
       id: '/_landing/product-updates/'
       path: '/product-updates'
-      fullPath: '/product-updates'
+      fullPath: '/product-updates/'
       preLoaderRoute: typeof LandingProductUpdatesIndexRouteImport
       parentRoute: typeof LandingRoute
     }
     '/_landing/case-studies/': {
       id: '/_landing/case-studies/'
       path: '/case-studies'
-      fullPath: '/case-studies'
+      fullPath: '/case-studies/'
       preLoaderRoute: typeof LandingCaseStudiesIndexRouteImport
       parentRoute: typeof LandingRoute
     }
     '/_landing/blog/': {
       id: '/_landing/blog/'
       path: '/blog'
-      fullPath: '/blog'
+      fullPath: '/blog/'
       preLoaderRoute: typeof LandingBlogIndexRouteImport
       parentRoute: typeof LandingRoute
     }
@@ -461,7 +481,7 @@ declare module '@tanstack/react-router' {
     '/_landing/_light-only/federation/': {
       id: '/_landing/_light-only/federation/'
       path: '/federation'
-      fullPath: '/federation'
+      fullPath: '/federation/'
       preLoaderRoute: typeof LandingLightOnlyFederationIndexRouteImport
       parentRoute: typeof LandingLightOnlyRoute
     }
@@ -530,6 +550,7 @@ const rootRouteChildren: RootRouteChildren = {
   FeedDotxmlRoute: FeedDotxmlRoute,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
+  ApiDeploymentChangelogRoute: ApiDeploymentChangelogRoute,
   ApiSearchRoute: ApiSearchRoute,
   DocsSplatRoute: DocsSplatRoute,
   LlmsDotmdxDocsSplatRoute: LlmsDotmdxDocsSplatRoute,
@@ -537,13 +558,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

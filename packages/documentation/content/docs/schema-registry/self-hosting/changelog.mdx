@@ -2,10 +2,21 @@
 title: Self Hosting Changelog
 sidebarTitle: Changelog
 description: Changelog for self-hosting Hive
+toc: false
 ---
 
-Here you can find all the recent improvements and updates about the self-hosting images. The Docker
-images published to the GitHub registry using the same tags. For a high-level overview of
-improvements please refer to [our product updates](/product-updates).
+import { DeploymentChangelog } from "@/components/deployment-changelog"
+import { Suspense } from "react"
 
-{/* TODO: Source this from the deployment CHANGELOG.md — needs a build-time script to inline it */}
+Here you can find all the recent improvements and updates about the self-hosting
+images. The Docker images published to the GitHub registry using the same tags.
+For a high-level overview of improvements please refer to
+[our product updates](/product-updates).
+
+<Suspense fallback={<div className="animate-pulse space-y-4 py-8">
+  <div className="h-6 w-48 rounded bg-fd-muted" />
+  <div className="h-4 w-full rounded bg-fd-muted" />
+  <div className="h-4 w-3/4 rounded bg-fd-muted" />
+</div>}>
+  <DeploymentChangelog />
+</Suspense>
