@@ -4,11 +4,12 @@ import {
   ProductCard,
   PRODUCTS,
 } from "@hive/design-system";
+import type { MDXComponents } from "mdx/types";
 
 import EcosystemPageContent from "./content.mdx";
 import { EcosystemPageNavH2 } from "./ecosystem-page-nav-h2";
 
-export const components = {
+export const components: MDXComponents = {
   EcosystemHeader: (props: React.HTMLAttributes<HTMLDivElement>) => (
     <header
       className="relative isolate flex max-w-360 flex-col items-center gap-6 overflow-visible rounded-3xl bg-blue-400 px-4 py-6 text-center sm:py-12 md:mx-2 md:gap-8 md:py-24 [&>h1]:max-w-[800px] [&>p]:max-w-[520px]"

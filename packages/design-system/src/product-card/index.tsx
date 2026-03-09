@@ -6,12 +6,14 @@ import { ArrowIcon } from "../icons";
 import { FOUR_MAIN_PRODUCTS, ProductInfo, PRODUCTS } from "../products";
 import HiveDecoration from "./hive-decoration.svg?svgr";
 import HiveGatewayDecoration from "./hive-gateway-decoration.svg?svgr";
+import HiveRouterDecoration from "./hive-router-decoration.svg?svgr";
 import MeshDecoration from "./mesh-decoration.svg?svgr";
 import YogaDecoration from "./yoga-decoration.svg?svgr";
 
 const cardDecorations = {
   [PRODUCTS.HIVE.name]: HiveDecoration,
   [PRODUCTS.HIVE_GATEWAY.name]: HiveGatewayDecoration,
+  [PRODUCTS.HIVE_ROUTER.name]: HiveRouterDecoration,
   [PRODUCTS.MESH.name]: MeshDecoration,
   [PRODUCTS.YOGA.name]: YogaDecoration,
 };
@@ -41,14 +43,14 @@ export function MainProductCard({
         className="relative z-10 flex h-full flex-1 flex-col justify-between p-8 outline-hidden focus-visible:outline-hidden"
         href={product.href}
       >
-        <p className="font-medium">{product.name}</p>
-        <Icon className="mt-8" />
+        <p className="font-medium relative z-10">{product.name}</p>
+        <Icon className="mt-8 relative z-0" />
         <ArrowIcon className="absolute bottom-8 right-8" />
-        <DecorationIsolation>
+        <DecorationIsolation className="-z-10">
           {Decoration && (
             <Decoration
               className={cn(
-                "stroke-white/70",
+                "stroke-white/70 md:translate-x-12",
                 "pointer-events-none absolute bottom-0 right-0 h-full opacity-0 transition-opacity duration-500 group-focus-within:opacity-100 group-hover:opacity-100",
               )}
               fill={`url(#${id})`}
@@ -113,7 +115,7 @@ export function AncillaryProductCard({
           <p className="mt-2 text-sm text-green-800">{product.title}</p>
         </div>
         <div
-          className="mt-8 flex size-8 items-center justify-center rounded-sm bg-green-1000 p-[5px] text-sm/5 font-medium text-white"
+          className="mt-8 flex size-8 items-center justify-center rounded-sm bg-green-1000 p-1.25 text-sm/5 font-medium text-white"
           role="presentation"
         >
           <Logo />
