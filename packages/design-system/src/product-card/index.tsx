@@ -77,7 +77,7 @@ export function MainProductCard({
                   </>
                 ) : (
                   <>
-                    <stop stopColor="white" stopOpacity="0.15" />
+                    <stop stopColor="white" stopOpacity="0.07" />
                     <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </>
                 )}
