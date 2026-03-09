@@ -12,6 +12,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "format": "oxfmt",
+    "fmt": "oxfmt",
     "format:check": "oxfmt --check",
     "fix": "bun lint:fix && bun format",
     "typecheck": "turbo run typecheck",

@@ -35,8 +35,9 @@
   --color-fd-foreground: var(--color-green-1000);
   --color-fd-primary: var(--color-green-1000);
   --color-fd-card: var(--color-white);
-  --color-fd-secondary: var(--color-beige-100);
+  --color-fd-secondary: var(--color-beige-300);
   --color-fd-sidebar-active: var(--color-blue-900);
+  --color-fd-popover: #fff;
   --color-fd-popover-foreground: var(--color-green-1000);
   --color-fd-sidebar-active-bg: color-mix(
     in oklab,
@@ -53,9 +54,10 @@
   --color-fd-foreground: hsl(0, 0%, 92%);
   --color-fd-primary: var(--color-neutral-100);
   --color-fd-card: var(--color-neutral-900);
+  --color-fd-secondary: var(--color-neutral-800);
   --color-fd-muted-foreground: var(--color-beige-800);
   --color-fd-popover-foreground: var(--color-neutral-200);
-  --color-fd-popover: hsl(0, 0%, 7.04%);
+  --color-fd-popover: #000;
   --color-fd-sidebar-active: var(--color-primary);
   --color-fd-sidebar-active-bg: color-mix(
     in oklab,
@@ -465,13 +467,20 @@ a.text-fd-muted-foreground.prose.text-sm:hover {
 }
 
 [data-radix-popper-content-wrapper] {
-  background-color: hsl(var(--nextra-bg));
-  --color-fd-accent: var(--color-beige-100);
+  --color-fd-accent: #eeedec94;
 }
 
 .dark [data-radix-popper-content-wrapper] {
-  --color-fd-accent: inherit;
+  --color-fd-accent: var(--color-neutral-900);
   color: var(--color-white);
   background-color: var(--color-neutral-800);
   border-radius: 1rem;
+}
+
+[data-toc-popover] {
+  --color-fd-background: var(--color-beige-100);
+}
+
+.dark [data-toc-popover] {
+  --color-fd-background: unset;
 }
