@@ -373,6 +373,13 @@ async function runCronTasks(
 // eslint-disable-next-line import/no-default-export -- Cloudflare worker entry
 export default createHandler({
   async fetch(cfRequest, env, context, url) {
+    // Serve /sitemap.xml from the base-prefixed path where TanStack Start generates it
+    if (url.pathname === "/sitemap.xml" && env.ASSETS) {
+      const sitemapUrl = new URL(cfRequest.url);
+      sitemapUrl.pathname = withBasePath("/sitemap.xml");
+      return env.ASSETS.fetch(new Request(sitemapUrl, cfRequest));
+    }
+
     const aliasedRequest = aliasRequest(cfRequest, url, env, context);
     const request = ensureServerFnHeaders(aliasedRequest, env, context);
     const requestURL = new URL(request.url);
