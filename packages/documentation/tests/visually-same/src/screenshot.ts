@@ -37,16 +37,26 @@ export async function navigateAndScreenshot(
   url: string,
   outputPath: string,
   waitMs = 2000,
+  retries = 3,
 ): Promise<void> {
-  await page.goto(url, {
-    timeout: 30_000,
-    waitUntil: "load",
-  });
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      await page.goto(url, {
+        timeout: 30_000,
+        waitUntil: "load",
+      });
 
-  // Wait for any dynamic content to settle
-  await page.waitForTimeout(waitMs);
+      // Wait for any dynamic content to settle
+      await page.waitForTimeout(waitMs);
 
-  await captureScreenshot(page, outputPath);
+      await captureScreenshot(page, outputPath);
+      return;
+    } catch (error: unknown) {
+      if (attempt === retries) throw error;
+      // Wait for dev server to recover
+      await page.waitForTimeout(5000);
+    }
+  }
 }
 
 export async function takeScreenshot(
@@ -95,7 +105,13 @@ export async function takeAllScreenshots(
         onProgress(i + 1, pages.length, pageConfig.name);
       }
 
-      await navigateAndScreenshot(page, url, outputPath);
+      try {
+        await navigateAndScreenshot(page, url, outputPath);
+      } catch (error: unknown) {
+        process.stderr.write(
+          `  ⚠ Failed to screenshot ${pageConfig.name}: ${error instanceof Error ? error.message.split("\n")[0] : error}\n`,
+        );
+      }
     }
   } finally {
     await context.close();
