@@ -19,12 +19,13 @@
   `nitro.prerender.ignore: [/[?&]utm_/]`. Upstream fix needed in TanStack Start's
   sitemap generator to strip query params.
 
-- **No `robots.txt`** — The site returns a 404 / SPA shell for `/robots.txt`. Should
-  serve a proper robots.txt that references the sitemap.
+- **No `robots.txt`** (fixed) — Added `public/robots.txt` and serve it at `/robots.txt`
+  via the Cloudflare entry, same as sitemap.
 
-- **Missing `additionalPaths` equivalent** — Old site's `next-sitemap.config.js` added
-  `/federation-gateway-audit` and `/federation-gateway-performance` explicitly. These
-  special pages need equivalent treatment in the new site.
+- ~~**Missing `additionalPaths` equivalent**~~ — Old site's `next-sitemap.config.js`
+  added `/federation-gateway-audit` and `/federation-gateway-performance`. These pages
+  don't actually exist in either site (both return 404). They're likely served by the
+  parent the-guild.dev site. Not our problem.
 
 ## Pricing Table
 
