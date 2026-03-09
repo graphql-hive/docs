@@ -77,7 +77,7 @@ export default defineConfig({
       },
       sitemap: {
         enabled: true,
-        host: "https://the-guild.dev/graphql/hive",
+        host: "https://the-guild.dev",
       },
       spa: {
         enabled: true,
