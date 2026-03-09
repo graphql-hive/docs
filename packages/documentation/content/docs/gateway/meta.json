@@ -1,6 +1,6 @@
 {
   "title": "Hive Gateway",
-  "description": "Federated GraphQL gateway with subscriptions and built-in security",
+  "description": "JavaScript GraphQL gateway",
   "icon": "HiveGateway",
   "root": true,
   "pages": [
