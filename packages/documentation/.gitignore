@@ -17,3 +17,7 @@ node_modules
 
 .source
 .wrangler
+
+# visually-same test artifacts
+tests/visually-same/report.json
+tests/visually-same/stderr.log
