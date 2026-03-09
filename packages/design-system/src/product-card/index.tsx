@@ -45,7 +45,7 @@ export function MainProductCard({
       >
         <p className="font-medium">{product.name}</p>
         <Icon className="mt-8" />
-        <ArrowIcon className="absolute bottom-8 right-8" />
+        <ArrowIcon className="relative z-10 absolute bottom-8 right-8" />
         <DecorationIsolation>
           {Decoration && (
             <Decoration
@@ -77,8 +77,8 @@ export function MainProductCard({
                   </>
                 ) : (
                   <>
-                    <stop stopColor="white" stopOpacity="0.1" />
-                    <stop offset="1" stopColor="white" stopOpacity="0.4" />
+                    <stop stopColor="white" stopOpacity="0.15" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.5" />
                   </>
                 )}
               </linearGradient>
