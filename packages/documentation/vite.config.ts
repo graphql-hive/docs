@@ -10,11 +10,7 @@ import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
 const BASE_PATH = "/graphql/hive-testing";
-const NITRO_PRESET = process.env["VERCEL"]
-  ? "vercel"
-  : process.env["E2E"]
-    ? "node-server"
-    : "cloudflare-module";
+const NITRO_PRESET = process.env["VERCEL"] ? "vercel" : "cloudflare-module";
 const CLOUDFLARE_ENTRY = fileURLToPath(
   new URL("src/server/cloudflare-entry.ts", import.meta.url),
 );
