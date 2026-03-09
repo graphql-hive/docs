@@ -1,10 +1,11 @@
+import type { MDXComponents } from "mdx/types";
+
 import {
   DecorationIsolation,
   Heading,
   ProductCard,
   PRODUCTS,
 } from "@hive/design-system";
-import type { MDXComponents } from "mdx/types";
 
 import EcosystemPageContent from "./content.mdx";
 import { EcosystemPageNavH2 } from "./ecosystem-page-nav-h2";
