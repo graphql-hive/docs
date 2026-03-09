@@ -262,9 +262,6 @@ export const FIVE_MAIN_PRODUCTS = [
   PRODUCTS.MESH,
 ];
 
-/** @deprecated Use `FIVE_MAIN_PRODUCTS` instead. */
-export const FOUR_MAIN_PRODUCTS = FIVE_MAIN_PRODUCTS;
-
 export const SIX_HIGHLIGHTED_PRODUCTS = [
   PRODUCTS.CODEGEN,
   PRODUCTS.INSPECTOR,
