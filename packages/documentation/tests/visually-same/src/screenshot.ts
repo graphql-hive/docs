@@ -34,7 +34,7 @@ export async function setupBrowser(): Promise<{
 
 async function isPageBlank(page: Page): Promise<boolean> {
   return page.evaluate(() => {
-    const body = document.body;
+    const { body } = document;
     if (!body) return true;
     // Blank if body has no visible content (just whitespace or empty)
     return (
