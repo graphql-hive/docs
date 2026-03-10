@@ -1,53 +1,84 @@
-import rehypeSanitize from "rehype-sanitize";
-import rehypeStringify from "rehype-stringify";
-import { remark } from "remark";
+import { compile } from "@mdx-js/mdx";
+import type { CompileOptions } from "@mdx-js/mdx";
 import remarkGfm from "remark-gfm";
-import remarkRehype from "remark-rehype";
 
-export const CHANGELOG_URL =
+const DEFAULT_CHANGELOG_URL =
   "https://raw.githubusercontent.com/graphql-hive/console/main/deployment/CHANGELOG.md";
 
 export const CHANGELOG_PAGE_URL =
   "/docs/schema-registry/self-hosting/changelog";
 
-export async function fetchChangelogMarkdown(): Promise<string | null> {
+const ONE_HOUR = 3_600_000;
+const CHANGELOG_PATH = "deployment/CHANGELOG.md";
+
+let markdownCache: { markdown: string; timestamp: number } | null = null;
+let compiledCache: { code: string; markdown: string } | null = null;
+let runtimeCompileOptionsPromise: Promise<CompileOptions> | undefined;
+
+function getChangelogUrl() {
+  return process.env["DEPLOYMENT_CHANGELOG_URL"] ?? DEFAULT_CHANGELOG_URL;
+}
+
+function stripTopLevelHeading(markdown: string) {
+  return markdown.replace(/^#\s+.*\n/, "");
+}
+
+async function getRuntimeCompileOptions(): Promise<CompileOptions> {
+  runtimeCompileOptionsPromise ||= (async () => {
+    return {
+      development: false,
+      format: "md",
+      outputFormat: "function-body",
+      remarkPlugins: [remarkGfm],
+    };
+  })();
+
+  return runtimeCompileOptionsPromise;
+}
+
+export async function getDeploymentChangelogMarkdown(): Promise<string | null> {
+  if (markdownCache && Date.now() - markdownCache.timestamp < ONE_HOUR) {
+    return markdownCache.markdown;
+  }
+
   try {
-    const res = await fetch(CHANGELOG_URL);
+    const res = await fetch(getChangelogUrl());
     if (!res.ok) return null;
-    let markdown = await res.text();
-    // Strip the top-level "# hive" heading
-    markdown = markdown.replace(/^#\s+.*\n/, "");
+    const markdown = stripTopLevelHeading(await res.text());
+    markdownCache = { markdown, timestamp: Date.now() };
     return markdown;
   } catch {
-    return null;
+    return markdownCache?.markdown ?? null;
   }
 }
 
-let cache: { html: string; timestamp: number } | null = null;
-const ONE_HOUR = 3_600_000;
+export async function compileDeploymentChangelogToCode(markdown: string) {
+  const compiled = await compile(
+    { path: CHANGELOG_PATH, value: markdown },
+    await getRuntimeCompileOptions(),
+  );
+  return String(compiled);
+}
 
-export async function fetchAndRenderChangelog(): Promise<string> {
-  if (cache && Date.now() - cache.timestamp < ONE_HOUR) {
-    return cache.html;
+export async function getDeploymentChangelogCode(): Promise<string> {
+  const markdown = await getDeploymentChangelogMarkdown();
+  if (!markdown) return "";
+
+  if (compiledCache?.markdown === markdown) {
+    return compiledCache.code;
   }
 
-  const markdown = await fetchChangelogMarkdown();
-
-  if (markdown != null) {
-    const html = String(
-      await remark()
-        .use(remarkGfm)
-        .use(remarkRehype)
-        .use(rehypeSanitize)
-        .use(rehypeStringify)
-        .process(markdown),
-    );
-
-    cache = { html, timestamp: Date.now() };
-    return html;
+  try {
+    const code = await compileDeploymentChangelogToCode(markdown);
+    compiledCache = { code, markdown };
+    return code;
+  } catch {
+    return compiledCache?.code ?? "";
   }
+}
 
-  // Serve stale cache on failure
-  if (cache) return cache.html;
-  return "";
+export function __resetDeploymentChangelogCacheForTests() {
+  markdownCache = null;
+  compiledCache = null;
+  runtimeCompileOptionsPromise = undefined;
 }

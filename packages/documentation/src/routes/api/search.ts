@@ -3,7 +3,7 @@ import type { AdvancedIndex } from "fumadocs-core/search/server";
 
 import {
   CHANGELOG_PAGE_URL,
-  fetchChangelogMarkdown,
+  getDeploymentChangelogMarkdown,
 } from "@/lib/deployment-changelog";
 import { pathToSlug } from "@/lib/path-to-slug";
 import { getSource } from "@/lib/source";
@@ -50,7 +50,7 @@ async function resolveStructuredData(data: any): Promise<StructuredData> {
 }
 
 async function getChangelogStructuredData(): Promise<StructuredData> {
-  const markdown = await fetchChangelogMarkdown();
+  const markdown = await getDeploymentChangelogMarkdown();
   if (!markdown) return { contents: [], headings: [] };
   return structure(markdown);
 }

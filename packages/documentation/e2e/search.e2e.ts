@@ -1,5 +1,9 @@
 import { expect, test } from "@playwright/test";
-import { appPath, appPathPrefixPattern } from "./paths";
+import { appPath, appPathPattern, appPathPrefixPattern } from "./paths";
+
+const CHANGELOG_SEARCH_TERM =
+  process.env["DEPLOYMENT_CHANGELOG_SEARCH_TERM"] ??
+  "SUPERTOKENS_ACCESS_TOKEN_KEY";
 
 /**
  * Click the visible search button and wait for the search dialog to appear.
@@ -73,5 +77,27 @@ test.describe("Search User Journeys", () => {
       .getByRole("button", { name: "Search documentation" })
       .first();
     await expect(searchButton).toBeVisible();
+  });
+
+  test("search finds the self-hosting changelog", async ({ page }) => {
+    await page.goto(appPath("/"), { waitUntil: "networkidle" });
+
+    await openSearch(page);
+
+    const searchInput = page.getByRole("textbox");
+    await searchInput.fill(CHANGELOG_SEARCH_TERM);
+
+    await waitForSearchResults(page);
+    const changelogResult = page
+      .getByRole("dialog")
+      .getByText("Self-hosting Changelog")
+      .first();
+
+    await expect(changelogResult).toBeVisible();
+    await changelogResult.click();
+
+    await expect(page).toHaveURL(
+      appPathPattern("/docs/schema-registry/self-hosting/changelog"),
+    );
   });
 });

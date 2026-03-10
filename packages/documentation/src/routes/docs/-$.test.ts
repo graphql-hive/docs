@@ -9,9 +9,27 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 
 const TEST_PORT = 14_401;
+const CHANGELOG_STUB_PORT = 14_402;
 const BASE_URL = process.env["TEST_URL"] || `http://localhost:${TEST_PORT}`;
+const CHANGELOG_STUB_URL =
+  process.env["DEPLOYMENT_CHANGELOG_URL"] ||
+  `http://127.0.0.1:${CHANGELOG_STUB_PORT}/CHANGELOG.md`;
+const CHANGELOG_UNIQUE_TERM = "changelog-octopus-token";
+const CHANGELOG_FIXTURE = `# hive
+
+## 9.9.9
+
+### Patch Changes
+
+- Added ${CHANGELOG_UNIQUE_TERM} for deterministic search coverage.
+
+\`\`\`sh
+echo "${CHANGELOG_UNIQUE_TERM}"
+\`\`\`
+`;
 
 let devServer: Subprocess | null = null;
+let changelogStub: ReturnType<typeof Bun.serve> | null = null;
 
 // TODO: Move to a util file
 async function waitForServer(maxAttempts = 30): Promise<void> {
@@ -34,9 +52,23 @@ beforeAll(async () => {
   const cwd = join(import.meta.dir, "../../..");
   const wranglerConfig = join(cwd, ".output/server/wrangler.json");
 
+  changelogStub = Bun.serve({
+    fetch() {
+      return new Response(CHANGELOG_FIXTURE, {
+        headers: { "content-type": "text/markdown; charset=utf-8" },
+      });
+    },
+    hostname: "127.0.0.1",
+    port: CHANGELOG_STUB_PORT,
+  });
+
   if (!existsSync(wranglerConfig)) {
     const build = spawn(["bun", "run", "build"], {
       cwd,
+      env: {
+        ...process.env,
+        DEPLOYMENT_CHANGELOG_URL: CHANGELOG_STUB_URL,
+      },
       stderr: "inherit",
       stdout: "inherit",
     });
@@ -59,7 +91,11 @@ beforeAll(async () => {
     ],
     {
       cwd,
-      env: { ...process.env, PORT: String(TEST_PORT) },
+      env: {
+        ...process.env,
+        DEPLOYMENT_CHANGELOG_URL: CHANGELOG_STUB_URL,
+        PORT: String(TEST_PORT),
+      },
       stderr: "ignore",
       stdout: "ignore",
     },
@@ -70,6 +106,7 @@ beforeAll(async () => {
 
 afterAll(() => {
   devServer?.kill();
+  changelogStub?.stop(true);
 });
 
 describe("llms.txt", () => {
@@ -209,6 +246,36 @@ describe("Accept header negotiation", () => {
     expect(res.headers.get("content-type")).not.toBe("text/markdown");
     const text = await res.text();
     expect(text).toContain("<!DOCTYPE html>");
+  });
+});
+
+describe("deployment changelog", () => {
+  test("renders changelog html with mdx code-block chrome", async () => {
+    const res = await fetch(
+      `${BASE_URL}/docs/schema-registry/self-hosting/changelog`,
+    );
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/html");
+
+    const text = await res.text();
+    expect(text).toContain(CHANGELOG_UNIQUE_TERM);
+    expect(text).toContain("Copy Text");
+    expect(text).toContain("echo");
+  });
+
+  test("api search indexes the changelog source", async () => {
+    const res = await fetch(
+      `${BASE_URL}/api/search?query=${CHANGELOG_UNIQUE_TERM}`,
+      { redirect: "follow" },
+    );
+    expect(res.status).toBe(200);
+
+    const json = (await res.json()) as Array<{ url: string }>;
+    expect(
+      json.some(
+        (entry) => entry.url === "/docs/schema-registry/self-hosting/changelog",
+      ),
+    ).toBe(true);
   });
 });
 

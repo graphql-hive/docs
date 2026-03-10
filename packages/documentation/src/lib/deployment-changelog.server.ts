@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 
-import { fetchAndRenderChangelog } from "./deployment-changelog";
+import { getDeploymentChangelogCode } from "./deployment-changelog";
 
-export const getChangelogHtml = createServerFn({ method: "GET" }).handler(
+export const getChangelogCode = createServerFn({ method: "GET" }).handler(
   async (): Promise<string> => {
-    return fetchAndRenderChangelog();
+    return getDeploymentChangelogCode();
   },
 );

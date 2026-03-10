@@ -35,7 +35,7 @@ export default defineConfig({
   },
   webServer: {
     command: webServerCommand,
-    env: { PORT: String(PORT) },
+    env: { ...process.env, PORT: String(PORT) },
     reuseExistingServer: !process.env["CI"],
     timeout: 120_000,
     url: baseURL,

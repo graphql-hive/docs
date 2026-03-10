@@ -1,18 +1,38 @@
 "use client";
 
+import { runSync } from "@mdx-js/mdx";
+import { mdxComponents } from "@/lib/mdx-components";
+import type { MDXContent } from "mdx/types";
+import * as Twoslash from "fumadocs-twoslash/ui";
 import { use } from "react";
+import * as jsxRuntime from "react/jsx-runtime";
 
-import { getChangelogHtml } from "../lib/deployment-changelog.server";
+import { getChangelogCode } from "../lib/deployment-changelog.server";
 
 const GITHUB_URL =
   "https://github.com/graphql-hive/console/blob/main/deployment/CHANGELOG.md";
 
-let htmlPromise: Promise<string> | null = null;
+let codePromise: Promise<string> | null = null;
+const contentCache = new Map<string, MDXContent>();
+
+function getContent(code: string): MDXContent {
+  let cached = contentCache.get(code);
+  if (cached) return cached;
+
+  const module = runSync(code, {
+    ...jsxRuntime,
+    baseUrl: import.meta.url,
+  });
+
+  cached = module.default;
+  contentCache.set(code, cached);
+  return cached;
+}
 
 export function DeploymentChangelog() {
-  const html = use((htmlPromise ??= getChangelogHtml()));
+  const code = use((codePromise ??= getChangelogCode()));
 
-  if (!html) {
+  if (!code) {
     return (
       <p>
         Unable to load the changelog. Please view it on{" "}
@@ -21,5 +41,7 @@ export function DeploymentChangelog() {
     );
   }
 
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  const Content = getContent(code);
+
+  return <Content components={{ ...mdxComponents, ...Twoslash }} />;
 }
