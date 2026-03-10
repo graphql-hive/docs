@@ -14,7 +14,11 @@ import {
   DocsDescription,
   DocsPage,
   DocsTitle,
+  PageLastUpdate,
 } from "fumadocs-ui/layouts/docs/page";
+
+// page.data.lastModified;
+const lastModifiedTime: Date | undefined = undefined;
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
@@ -39,6 +43,8 @@ const serverLoader = createServerFn({
       pageTree: await source.serializePageTree(source.getPageTree()),
       path: page.path,
       url: page.url,
+      // @ts-expect-error - the type should codegen in a sec
+      lastModified: page.data.lastModified,
     };
   });
 
@@ -49,13 +55,16 @@ const clientLoader = browserCollections.docs.createClientLoader<{
 }>({
   component(loaded, props) {
     const { default: MDX, toc } = loaded;
+
     const frontmatter = loaded.frontmatter as {
       description?: string;
       title: string;
     };
+
     return (
       <DocsPage
         tableOfContent={{
+          // toc handler should become the full component here
           footer: (
             <PageActions
               githubUrl={props.githubUrl}
@@ -75,6 +84,16 @@ const clientLoader = browserCollections.docs.createClientLoader<{
               ...Twoslash,
             }}
           />
+          {/* todo: test these two */}
+          {/* <a
+    href={`${githubUrl}/blob/main/content/docs/${page.path}`}
+    rel="noreferrer noopener"
+    target="_blank"
+    className="w-fit border rounded-xl p-2 font-medium text-sm text-fd-secondary-foreground bg-fd-secondary transition-colors hover:text-fd-accent-foreground hover:bg-fd-accent"
+  >
+    Edit on GitHub
+  </a> */}
+          {lastModifiedTime && <PageLastUpdate date={lastModifiedTime} />}
         </DocsBody>
       </DocsPage>
     );
