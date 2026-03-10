@@ -112,6 +112,7 @@ function DocsTocItem({
         item.depth >= 4 && "ps-8",
       )}
       data-active={isActive}
+      data-toc-anchor={hash}
       hash={hash}
       hashScrollIntoView
       ref={anchorRef}
@@ -194,12 +195,14 @@ function calc(container: HTMLElement, activeAnchors: string[]) {
 
   let upper = Number.MAX_VALUE;
   let lower = 0;
+  let matched = false;
 
   for (const anchor of activeAnchors) {
     const element = container.querySelector<HTMLAnchorElement>(
-      `a[href="#${anchor}"]`,
+      `[data-toc-anchor="${anchor}"]`,
     );
     if (!element) continue;
+    matched = true;
 
     const styles = getComputedStyle(element);
     upper = Math.min(
@@ -213,6 +216,8 @@ function calc(container: HTMLElement, activeAnchors: string[]) {
         Number.parseFloat(styles.paddingBottom),
     );
   }
+
+  if (!matched) return [0, 0];
 
   return [upper, lower - upper];
 }
