@@ -9,6 +9,7 @@ import lastModified from "fumadocs-mdx/plugins/last-modified";
 import { transformerTwoslash } from "fumadocs-twoslash";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 
+import { DOCS_CODE_LANGS, DOCS_CODE_THEMES } from "./src/lib/docs-code-config";
 import { autoImage, remarkAutoImage } from "./source-plugins/auto-image";
 import { remarkRelativeLinks } from "./source-plugins/remark-relative-links";
 
@@ -80,33 +81,8 @@ export const blog = defineCollections({
 export default defineConfig({
   mdxOptions: {
     rehypeCodeOptions: {
-      langs: [
-        "bash",
-        "diff",
-        "dockerfile",
-        "go",
-        "graphql",
-        "javascript",
-        "js",
-        "json",
-        "json5",
-        "jsonc",
-        "jsx",
-        "php",
-        "python",
-        "ruby",
-        "rust",
-        "sh",
-        "toml",
-        "ts",
-        "tsx",
-        "typescript",
-        "yaml",
-      ],
-      themes: {
-        dark: "github-dark",
-        light: "github-light",
-      },
+      langs: [...DOCS_CODE_LANGS],
+      themes: DOCS_CODE_THEMES,
       transformers: [
         ...(rehypeCodeDefaultOptions.transformers ?? []),
         transformerTwoslash({ explicitTrigger: true }),
