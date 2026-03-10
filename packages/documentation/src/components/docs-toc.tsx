@@ -65,9 +65,10 @@ export function DocsTableOfContent({
 }
 
 function DocsTocItem({ item }: { item: TOCItemType }) {
+  const activeAnchors = useActiveAnchors();
   const hashIndex = item.url.indexOf("#");
   const hash = hashIndex === -1 ? undefined : item.url.slice(hashIndex + 1);
-  const isActive = hash ? useActiveAnchors().includes(hash) : false;
+  const isActive = hash ? activeAnchors.includes(hash) : false;
   const to = hashIndex <= 0 ? "." : item.url.slice(0, hashIndex);
 
   return (
