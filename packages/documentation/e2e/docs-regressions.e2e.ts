@@ -8,15 +8,6 @@ async function waitForHydration(page: import("@playwright/test").Page) {
   });
 }
 
-async function waitForTocLinkHandler(page: import("@playwright/test").Page) {
-  await page.waitForFunction(
-    () => (window as any).__tocLinkHandlerReady === true,
-    {
-      timeout: 30_000,
-    },
-  );
-}
-
 test.describe("Documentation regressions", () => {
   test("copy markdown uses the base-prefixed markdown endpoint", async ({
     browserName,
@@ -57,12 +48,12 @@ test.describe("Documentation regressions", () => {
       waitUntil: "networkidle",
     });
     await waitForHydration(page);
-    await waitForTocLinkHandler(page);
+    await page.getByRole("link", { name: "Execution Rejection" }).waitFor();
 
     await page.getByRole("link", { name: "Execution Rejection" }).click();
 
     await expect(page).toHaveURL(
-      /\/graphql\/hive-testing\/docs\/gateway\/authorization-authentication#execution-rejection$/,
+      /\/graphql\/hive-testing\/docs\/gateway\/authorization-authentication\/?#execution-rejection$/,
     );
     await expect(page.locator("#execution-rejection")).toBeInViewport();
   });

@@ -1,6 +1,6 @@
+import { DocsTableOfContent } from "@/components/docs-toc";
 import { Footer, Navigation } from "@/components/navigation";
 import { EditOnGitHub, PageActions } from "@/components/page-actions";
-import { TocLinkHandler } from "@/components/toc-link-handler";
 import { baseOptions } from "@/lib/layout.shared";
 import { mdxComponents } from "@/lib/mdx-components";
 import { getSource } from "@/lib/source";
@@ -58,7 +58,15 @@ const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
     return (
       <DocsPage
         tableOfContent={{
-          // toc handler should become the full component here
+          component: (
+            <DocsTableOfContent
+              githubUrl={props.githubUrl}
+              markdownUrl={props.markdownUrl}
+              toc={toc}
+            />
+          ),
+        }}
+        tableOfContentPopover={{
           footer: (
             <PageActions
               githubUrl={props.githubUrl}
@@ -69,7 +77,6 @@ const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
         toc={toc}
         {...props}
       >
-        <TocLinkHandler />
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <DocsBody>
