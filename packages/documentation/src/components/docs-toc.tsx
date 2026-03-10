@@ -2,9 +2,14 @@
 
 import { PageActions } from "@/components/page-actions";
 import { Link } from "@tanstack/react-router";
-import { TOCItemType, useActiveAnchors } from "fumadocs-core/toc";
+import {
+  ScrollProvider,
+  TOCItemType,
+  useActiveAnchors,
+} from "fumadocs-core/toc";
+import { I18nLabel, useI18n } from "fumadocs-ui/contexts/i18n";
 import { Text } from "lucide-react";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 
 interface DocsTocProps {
   githubUrl: string;
@@ -17,23 +22,9 @@ export function DocsTableOfContent({
   markdownUrl,
   toc,
 }: DocsTocProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const activeAnchor = useActiveAnchors()[0];
-
-  useLayoutEffect(() => {
-    if (!activeAnchor) return;
-
-    containerRef.current
-      ?.querySelector<HTMLElement>(`[data-hash="${activeAnchor}"]`)
-      ?.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-      });
-  }, [activeAnchor]);
-
   return (
     <div
-      className="sticky top-(--fd-docs-row-1) hidden h-[calc(var(--fd-docs-height)-var(--fd-docs-row-1))] w-(--fd-toc-width) flex-col [grid-area:toc] pt-12 pe-4 pb-2 xl:flex"
+      className="sticky top-(--fd-docs-row-1) h-[calc(var(--fd-docs-height)-var(--fd-docs-row-1))] flex flex-col [grid-area:toc] w-(--fd-toc-width) pt-12 pe-4 pb-2 max-xl:hidden"
       id="nd-toc"
     >
       <h3
@@ -41,54 +32,187 @@ export function DocsTableOfContent({
         id="toc-title"
       >
         <Text className="size-4" />
-        On this page
+        <I18nLabel label="toc" />
       </h3>
-      <div className="overflow-y-auto pt-4">
-        {toc.length === 0 ? (
-          <div className="rounded-lg border bg-fd-card p-3 text-xs text-fd-muted-foreground">
-            No headings found on this page.
-          </div>
-        ) : (
-          <div
-            className="flex flex-col border-s border-fd-foreground/10"
-            ref={containerRef}
-          >
-            {toc.map((item) => (
-              <DocsTocItem item={item} key={item.url} />
-            ))}
-          </div>
-        )}
-      </div>
+      <TOCScrollArea>
+        <DocsTocItems toc={toc} />
+      </TOCScrollArea>
       <PageActions githubUrl={githubUrl} markdownUrl={markdownUrl} />
     </div>
   );
 }
 
-function DocsTocItem({ item }: { item: TOCItemType }) {
+function DocsTocItems({ toc }: { toc: TOCItemType[] }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { text } = useI18n();
+
+  if (toc.length === 0) {
+    return (
+      <div className="rounded-lg border bg-fd-card p-3 text-xs text-fd-muted-foreground">
+        {text.tocNoHeadings}
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <TocThumb
+        className="absolute top-(--fd-top) h-(--fd-height) w-0.5 rounded-e-sm bg-fd-primary transition-[top,height] ease-linear"
+        containerRef={containerRef}
+      />
+      <div
+        className="flex flex-col border-s border-fd-foreground/10"
+        ref={containerRef}
+      >
+        {toc.map((item) => (
+          <DocsTocItem containerRef={containerRef} item={item} key={item.url} />
+        ))}
+      </div>
+    </>
+  );
+}
+
+function DocsTocItem({
+  containerRef,
+  item,
+}: {
+  containerRef: ReturnType<typeof useRef<HTMLDivElement | null>>;
+  item: TOCItemType;
+}) {
   const activeAnchors = useActiveAnchors();
+  const anchorRef = useRef<HTMLAnchorElement>(null);
   const hashIndex = item.url.indexOf("#");
   const hash = hashIndex === -1 ? undefined : item.url.slice(hashIndex + 1);
-  const isActive = hash ? activeAnchors.includes(hash) : false;
+  const activeOrder = hash ? activeAnchors.indexOf(hash) : -1;
+  const isActive = activeOrder !== -1;
+  const shouldScroll = activeOrder === 0;
   const to = hashIndex <= 0 ? "." : item.url.slice(0, hashIndex);
+
+  useLayoutEffect(() => {
+    if (!shouldScroll) return;
+
+    const anchor = anchorRef.current;
+    const container = containerRef.current;
+
+    if (anchor && container) {
+      anchor.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }
+  }, [containerRef, shouldScroll]);
 
   return (
     <Link
-      className={[
+      className={cx(
         "prose py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere first:pt-0 last:pb-0 data-[active=true]:text-fd-primary",
-        item.depth <= 2 ? "ps-3" : "",
-        item.depth === 3 ? "ps-6" : "",
-        item.depth >= 4 ? "ps-8" : "",
-      ]
-        .filter(Boolean)
-        .join(" ")}
+        item.depth <= 2 && "ps-3",
+        item.depth === 3 && "ps-6",
+        item.depth >= 4 && "ps-8",
+      )}
       data-active={isActive}
-      data-hash={hash}
       hash={hash}
       hashScrollIntoView
+      ref={anchorRef}
       resetScroll={false}
       to={to || "."}
     >
       {item.title}
     </Link>
   );
+}
+
+function cx(...parts: (false | string | null | undefined)[]) {
+  return parts.filter(Boolean).join(" ");
+}
+
+function TOCScrollArea({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const viewRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div
+      className={cx(
+        "relative min-h-0 text-sm ms-px overflow-auto [scrollbar-width:none] mask-[linear-gradient(to_bottom,transparent,white_16px,white_calc(100%-16px),transparent)] py-3",
+        className,
+      )}
+      ref={viewRef}
+    >
+      <ScrollProvider containerRef={viewRef}>{children}</ScrollProvider>
+    </div>
+  );
+}
+
+function TocThumb({
+  className,
+  containerRef,
+}: {
+  className?: string;
+  containerRef: React.RefObject<HTMLElement | null>;
+}) {
+  const thumbRef = useRef<HTMLDivElement>(null);
+  const activeAnchors = useActiveAnchors();
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const update = () => {
+      const thumb = thumbRef.current;
+      if (!thumb) return;
+
+      const [top, height] = calc(container, activeAnchors);
+      thumb.style.setProperty("--fd-top", `${top}px`);
+      thumb.style.setProperty("--fd-height", `${height}px`);
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(container);
+    return () => {
+      observer.disconnect();
+    };
+  }, [activeAnchors, containerRef]);
+
+  return (
+    <div
+      className={className}
+      data-hidden={activeAnchors.length === 0}
+      ref={thumbRef}
+    />
+  );
+}
+
+function calc(container: HTMLElement, activeAnchors: string[]) {
+  if (activeAnchors.length === 0 || container.clientHeight === 0) return [0, 0];
+
+  let upper = Number.MAX_VALUE;
+  let lower = 0;
+
+  for (const anchor of activeAnchors) {
+    const element = container.querySelector<HTMLAnchorElement>(
+      `a[href="#${anchor}"]`,
+    );
+    if (!element) continue;
+
+    const styles = getComputedStyle(element);
+    upper = Math.min(
+      upper,
+      element.offsetTop + Number.parseFloat(styles.paddingTop),
+    );
+    lower = Math.max(
+      lower,
+      element.offsetTop +
+        element.clientHeight -
+        Number.parseFloat(styles.paddingBottom),
+    );
+  }
+
+  return [upper, lower - upper];
 }
