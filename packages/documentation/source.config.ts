@@ -5,6 +5,7 @@ import {
   defineConfig,
   defineDocs,
 } from "fumadocs-mdx/config";
+import lastModified from "fumadocs-mdx/plugins/last-modified";
 import { transformerTwoslash } from "fumadocs-twoslash";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 
@@ -130,7 +131,7 @@ export default defineConfig({
       ...plugins,
     ],
   },
-  plugins: [autoImage()],
+  plugins: [autoImage(), lastModified()],
 });
 
 function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {
@@ -263,4 +264,10 @@ function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {
       },
     },
   ];
+}
+
+declare module "fumadocs-core/source" {
+  interface PageData {
+    lastModified: Date | undefined;
+  }
 }

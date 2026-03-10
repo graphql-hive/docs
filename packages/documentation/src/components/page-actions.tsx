@@ -5,7 +5,7 @@ import { Check, Copy, Github } from "lucide-react";
 import { useRef, useState } from "react";
 
 const cache = new Map<string, string>();
-const actionClass =
+const actionLinkClass =
   "inline-flex items-center gap-2 text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-green-500/50 disabled:pointer-events-none disabled:opacity-50";
 
 export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
@@ -45,7 +45,7 @@ export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
   if (checked) hasToggled.current = true;
 
   return (
-    <button className={actionClass} disabled={loading} onClick={onClick}>
+    <button className={actionLinkClass} disabled={loading} onClick={onClick}>
       <span className="relative size-3.5 in-active:scale-90 transition-transform">
         <Check
           className="absolute inset-0 size-3.5 fill-mode-forwards"
@@ -88,7 +88,7 @@ export function PageActions({
     <div className="flex flex-col items-start gap-2">
       <LLMCopyButton markdownUrl={markdownUrl} />
       <a
-        className={actionClass}
+        className={actionLinkClass}
         href={githubUrl}
         rel="noreferrer noopener"
         target="_blank"
@@ -97,5 +97,19 @@ export function PageActions({
         View on GitHub
       </a>
     </div>
+  );
+}
+
+export function EditOnGitHub({ githubUrl }: { githubUrl: string }) {
+  return (
+    <a
+      className={actionLinkClass}
+      href={githubUrl.replace("/blob/", "/edit/")}
+      rel="noreferrer noopener"
+      target="_blank"
+    >
+      <Github className="size-3.5" />
+      Edit on GitHub
+    </a>
   );
 }

@@ -1,5 +1,5 @@
 import { Footer, Navigation } from "@/components/navigation";
-import { PageActions } from "@/components/page-actions";
+import { EditOnGitHub, PageActions } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
 import { mdxComponents } from "@/lib/mdx-components";
 import { getSource } from "@/lib/source";
@@ -16,9 +16,6 @@ import {
   DocsTitle,
   PageLastUpdate,
 } from "fumadocs-ui/layouts/docs/page";
-
-// page.data.lastModified;
-const lastModifiedTime: Date | undefined = undefined;
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
@@ -40,19 +37,14 @@ const serverLoader = createServerFn({
     if (!page) throw notFound();
 
     return {
+      lastModified: page.data.lastModified,
       pageTree: await source.serializePageTree(source.getPageTree()),
       path: page.path,
       url: page.url,
-      // @ts-expect-error - the type should codegen in a sec
-      lastModified: page.data.lastModified,
     };
   });
 
-const clientLoader = browserCollections.docs.createClientLoader<{
-  className?: string;
-  githubUrl: string;
-  markdownUrl: string;
-}>({
+const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
   component(loaded, props) {
     const { default: MDX, toc } = loaded;
 
@@ -84,16 +76,12 @@ const clientLoader = browserCollections.docs.createClientLoader<{
               ...Twoslash,
             }}
           />
-          {/* todo: test these two */}
-          {/* <a
-    href={`${githubUrl}/blob/main/content/docs/${page.path}`}
-    rel="noreferrer noopener"
-    target="_blank"
-    className="w-fit border rounded-xl p-2 font-medium text-sm text-fd-secondary-foreground bg-fd-secondary transition-colors hover:text-fd-accent-foreground hover:bg-fd-accent"
-  >
-    Edit on GitHub
-  </a> */}
-          {lastModifiedTime && <PageLastUpdate date={lastModifiedTime} />}
+          <div className="flex justify-between">
+            {props.lastModified ? (
+              <PageLastUpdate date={new Date(props.lastModified)} />
+            ) : null}
+            <EditOnGitHub githubUrl={props.githubUrl} />
+          </div>
         </DocsBody>
       </DocsPage>
     );
@@ -121,12 +109,19 @@ function Page() {
         searchToggle={{ enabled: false }}
       >
         {clientLoader.useContent(data.path, {
-          className: "",
           githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,
+          lastModified: data.lastModified?.getTime() ?? 0,
           markdownUrl: `${data.url}.mdx`,
         })}
       </DocsLayout>
       <Footer className="border-t border-fd-border" />
     </div>
   );
+}
+
+interface DocsPageProps {
+  className?: string;
+  githubUrl: string;
+  lastModified: number;
+  markdownUrl: string;
 }
