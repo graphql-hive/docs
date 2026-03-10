@@ -4,7 +4,8 @@ import React, {
   ComponentPropsWithoutRef,
   ReactElement,
   ReactNode,
-  use,
+  useEffect,
+  useState,
 } from "react";
 import Markdown from "react-markdown";
 import { deploymentChangelogSnapshot } from "virtual:deployment-changelog-snapshot";
@@ -20,31 +21,60 @@ const GITHUB_URL =
 
 const ONE_HOUR = 3_600_000;
 
-let markdownPromiseCache: {
-  promise: Promise<string>;
+let markdownCache: {
+  markdown: string;
   timestamp: number;
 } | null = null;
+let markdownRefreshPromise: Promise<string> | null = null;
 
-async function loadChangelogMarkdown() {
-  return (await getChangelogMarkdown()) || deploymentChangelogSnapshot;
+type ChangelogState = {
+  markdown: string;
+  showGitHubCta: boolean;
+};
+
+function getInitialState(): ChangelogState {
+  return {
+    markdown: deploymentChangelogSnapshot,
+    showGitHubCta: !deploymentChangelogSnapshot,
+  };
 }
 
-function getChangelogMarkdownPromise() {
-  if (typeof window === "undefined") {
-    return loadChangelogMarkdown();
+function getCachedMarkdown() {
+  if (!markdownCache) {
+    return null;
   }
 
-  if (
-    !markdownPromiseCache ||
-    Date.now() - markdownPromiseCache.timestamp >= ONE_HOUR
-  ) {
-    markdownPromiseCache = {
-      promise: loadChangelogMarkdown(),
-      timestamp: Date.now(),
-    };
+  if (Date.now() - markdownCache.timestamp >= ONE_HOUR) {
+    markdownCache = null;
+    return null;
   }
 
-  return markdownPromiseCache.promise;
+  return markdownCache.markdown;
+}
+
+async function refreshMarkdown() {
+  const cachedMarkdown = getCachedMarkdown();
+  if (cachedMarkdown !== null) {
+    return cachedMarkdown;
+  }
+
+  if (!markdownRefreshPromise) {
+    markdownRefreshPromise = getChangelogMarkdown()
+      .then((markdown) => {
+        if (markdown) {
+          markdownCache = {
+            markdown,
+            timestamp: Date.now(),
+          };
+        }
+        return markdown;
+      })
+      .finally(() => {
+        markdownRefreshPromise = null;
+      });
+  }
+
+  return markdownRefreshPromise;
 }
 
 const changelogMdxComponents = {
@@ -69,9 +99,36 @@ const changelogMdxComponents = {
 };
 
 export function DeploymentChangelog() {
-  const markdown = use(getChangelogMarkdownPromise());
+  const [state, setState] = useState(getInitialState);
 
-  if (!markdown) {
+  useEffect(() => {
+    let isCancelled = false;
+
+    void refreshMarkdown().then((markdown) => {
+      if (isCancelled) {
+        return;
+      }
+
+      if (markdown) {
+        setState({
+          markdown,
+          showGitHubCta: false,
+        });
+        return;
+      }
+
+      setState((prev) => ({
+        markdown: prev.markdown || deploymentChangelogSnapshot,
+        showGitHubCta: true,
+      }));
+    });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
+  if (!state.markdown) {
     return (
       <CallToAction href={GITHUB_URL} variant="secondary">
         View the changelog on GitHub
@@ -80,12 +137,21 @@ export function DeploymentChangelog() {
   }
 
   return (
-    <Markdown
-      components={changelogMdxComponents}
-      rehypePlugins={[...DEPLOYMENT_CHANGELOG_REHYPE_PLUGINS]}
-      remarkPlugins={[...DEPLOYMENT_CHANGELOG_MARKDOWN_PLUGINS]}
-    >
-      {markdown}
-    </Markdown>
+    <>
+      <Markdown
+        components={changelogMdxComponents}
+        rehypePlugins={[...DEPLOYMENT_CHANGELOG_REHYPE_PLUGINS]}
+        remarkPlugins={[...DEPLOYMENT_CHANGELOG_MARKDOWN_PLUGINS]}
+      >
+        {state.markdown}
+      </Markdown>
+      {state.showGitHubCta ? (
+        <div className="mt-6">
+          <CallToAction href={GITHUB_URL} variant="secondary">
+            View the changelog on GitHub
+          </CallToAction>
+        </div>
+      ) : null}
+    </>
   );
 }

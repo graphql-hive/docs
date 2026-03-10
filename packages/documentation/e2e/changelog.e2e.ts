@@ -15,7 +15,14 @@ test("changelog page renders remote markdown with mdx components", async ({
 
   await expect(page.getByText(CHANGELOG_SEARCH_TERM).first()).toBeVisible();
   await expect(page.locator(".shiki").first()).toBeVisible();
-  await expect(page.getByText("SELECT").first()).toBeVisible();
+  await expect(page.locator(".animate-pulse")).toHaveCount(0);
+  await expect(
+    page
+      .locator("figure.shiki")
+      .filter({ hasText: "supertokens_key_value" })
+      .locator(".line")
+      .first(),
+  ).toBeVisible();
 
   // I know this looks stupid, because we just called `.goto` but we're ensuring
   // we didn't get redirected.
@@ -38,5 +45,23 @@ test("client-side navigation keeps changelog content", async ({ page }) => {
     appPathPattern("/docs/schema-registry/self-hosting/changelog"),
   );
   await expect(page.getByText(CHANGELOG_SEARCH_TERM).first()).toBeVisible();
+  await expect(page.locator(".animate-pulse")).toHaveCount(0);
   await expect(page.locator(".shiki").first()).toBeVisible();
+});
+
+test("changelog code blocks respect dark theme", async ({ page }) => {
+  await page.goto(appPath("/docs/schema-registry/self-hosting/changelog"), {
+    waitUntil: "load",
+  });
+
+  await page.getByRole("button", { name: "dark" }).click();
+
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  await expect(
+    page
+      .locator("figure.shiki")
+      .filter({ hasText: "supertokens_key_value" })
+      .locator(".line span")
+      .first(),
+  ).toHaveCSS("color", "rgb(249, 117, 131)");
 });

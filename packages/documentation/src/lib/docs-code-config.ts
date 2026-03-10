@@ -14,6 +14,7 @@ export const DOCS_CODE_LANGS = [
   "python",
   "ruby",
   "rust",
+  "sql",
   "sh",
   "toml",
   "ts",

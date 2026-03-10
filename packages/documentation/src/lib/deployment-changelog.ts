@@ -15,6 +15,7 @@ import php from "shiki/dist/langs/php.mjs";
 import python from "shiki/dist/langs/python.mjs";
 import ruby from "shiki/dist/langs/ruby.mjs";
 import rust from "shiki/dist/langs/rust.mjs";
+import sql from "shiki/dist/langs/sql.mjs";
 import sh from "shiki/dist/langs/sh.mjs";
 import toml from "shiki/dist/langs/toml.mjs";
 import ts from "shiki/dist/langs/ts.mjs";
@@ -63,6 +64,7 @@ const LANGUAGE_IMPORTS = {
   python,
   ruby,
   rust,
+  sql,
   sh,
   toml,
   ts,
@@ -159,6 +161,7 @@ function highlightCodeBlock(
   }
 
   const highlighted = highlighter.codeToHast(getNodeText(codeNode), {
+    defaultColor: false,
     lang,
     themes: DOCS_CODE_THEMES,
   });

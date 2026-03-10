@@ -80,12 +80,22 @@ describe("getDeploymentChangelogMarkdown", () => {
 });
 
 describe("markdown rendering", () => {
-  test("renders supported fenced code blocks with shiki markup", () => {
+  test("renders supported fenced code blocks with dual-theme shiki markup", () => {
     const html = renderMarkdown("```sh\necho hi\n```\n");
 
     expect(html).toContain("shiki");
     expect(html).toContain("github-dark");
+    expect(html).toContain("--shiki-light");
+    expect(html).toContain("--shiki-dark");
     expect(html).toContain("echo");
+  });
+
+  test("renders sql fenced code blocks with shiki line spans", () => {
+    const html = renderMarkdown("```sql\nSELECT 1;\n```\n");
+
+    expect(html).toContain("shiki");
+    expect(html).toContain('class="line"');
+    expect(html).not.toContain('class="language-sql"');
   });
 
   test("keeps unknown languages as plain code blocks", () => {
