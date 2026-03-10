@@ -52,7 +52,7 @@ function MdxVideoElement({
   );
 }
 
-function MdxImg(props: React.ComponentProps<typeof MdxImage>) {
+function MdxImageWithBasePath(props: React.ComponentProps<typeof MdxImage>) {
   return <MdxImage {...props} src={prefixBasePath(props.src)} />;
 }
 
@@ -74,7 +74,8 @@ export const mdxComponents = {
       {...props}
     />
   ),
-  img: MdxImg,
+  img: MdxImageWithBasePath,
+  MdxImage: MdxImageWithBasePath,
   source: MdxSource,
   video: MdxVideoElement,
 };
