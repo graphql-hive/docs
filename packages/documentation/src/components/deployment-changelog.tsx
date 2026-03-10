@@ -2,18 +2,15 @@
 
 import { use } from "react";
 
+import { getChangelogHtml } from "../lib/deployment-changelog.server";
+
 const GITHUB_URL =
   "https://github.com/graphql-hive/console/blob/main/deployment/CHANGELOG.md";
 
 let htmlPromise: Promise<string> | null = null;
-function getChangelogHtml() {
-  return (htmlPromise ??= fetch(`${BASE_PATH}/api/deployment-changelog`).then(
-    (res) => (res.ok ? res.text() : ""),
-  ));
-}
 
 export function DeploymentChangelog() {
-  const html = use(getChangelogHtml());
+  const html = use((htmlPromise ??= getChangelogHtml()));
 
   if (!html) {
     return (

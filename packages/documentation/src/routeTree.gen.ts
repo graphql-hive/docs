@@ -15,7 +15,6 @@ import { Route as FeedDotxmlRouteImport } from './routes/feed[.]xml'
 import { Route as LandingRouteImport } from './routes/_landing'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
-import { Route as ApiDeploymentChangelogRouteImport } from './routes/api/deployment-changelog'
 import { Route as LandingLightOnlyRouteImport } from './routes/_landing/_light-only'
 import { Route as LandingProductUpdatesIndexRouteImport } from './routes/_landing/product-updates/index'
 import { Route as LandingCaseStudiesIndexRouteImport } from './routes/_landing/case-studies/index'
@@ -61,11 +60,6 @@ const DocsSplatRoute = DocsSplatRouteImport.update({
 const ApiSearchRoute = ApiSearchRouteImport.update({
   id: '/api/search',
   path: '/api/search',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiDeploymentChangelogRoute = ApiDeploymentChangelogRouteImport.update({
-  id: '/api/deployment-changelog',
-  path: '/api/deployment-changelog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LandingLightOnlyRoute = LandingLightOnlyRouteImport.update({
@@ -163,7 +157,6 @@ export interface FileRoutesByFullPath {
   '/feed.xml': typeof FeedDotxmlRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
-  '/api/deployment-changelog': typeof ApiDeploymentChangelogRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/ecosystem': typeof LandingLightOnlyEcosystemRoute
@@ -187,7 +180,6 @@ export interface FileRoutesByTo {
   '/feed.xml': typeof FeedDotxmlRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
-  '/api/deployment-changelog': typeof ApiDeploymentChangelogRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/ecosystem': typeof LandingLightOnlyEcosystemRoute
@@ -214,7 +206,6 @@ export interface FileRoutesById {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/_landing/_light-only': typeof LandingLightOnlyRouteWithChildren
-  '/api/deployment-changelog': typeof ApiDeploymentChangelogRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/_landing/_light-only/ecosystem': typeof LandingLightOnlyEcosystemRoute
@@ -240,7 +231,6 @@ export interface FileRouteTypes {
     | '/feed.xml'
     | '/llms-full.txt'
     | '/llms.txt'
-    | '/api/deployment-changelog'
     | '/api/search'
     | '/docs/$'
     | '/ecosystem'
@@ -264,7 +254,6 @@ export interface FileRouteTypes {
     | '/feed.xml'
     | '/llms-full.txt'
     | '/llms.txt'
-    | '/api/deployment-changelog'
     | '/api/search'
     | '/docs/$'
     | '/ecosystem'
@@ -290,7 +279,6 @@ export interface FileRouteTypes {
     | '/llms-full.txt'
     | '/llms.txt'
     | '/_landing/_light-only'
-    | '/api/deployment-changelog'
     | '/api/search'
     | '/docs/$'
     | '/_landing/_light-only/ecosystem'
@@ -316,7 +304,6 @@ export interface RootRouteChildren {
   FeedDotxmlRoute: typeof FeedDotxmlRoute
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
-  ApiDeploymentChangelogRoute: typeof ApiDeploymentChangelogRoute
   ApiSearchRoute: typeof ApiSearchRoute
   DocsSplatRoute: typeof DocsSplatRoute
   LlmsDotmdxDocsSplatRoute: typeof LlmsDotmdxDocsSplatRoute
@@ -364,13 +351,6 @@ declare module '@tanstack/react-router' {
       path: '/api/search'
       fullPath: '/api/search'
       preLoaderRoute: typeof ApiSearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/deployment-changelog': {
-      id: '/api/deployment-changelog'
-      path: '/api/deployment-changelog'
-      fullPath: '/api/deployment-changelog'
-      preLoaderRoute: typeof ApiDeploymentChangelogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_landing/_light-only': {
@@ -550,7 +530,6 @@ const rootRouteChildren: RootRouteChildren = {
   FeedDotxmlRoute: FeedDotxmlRoute,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
-  ApiDeploymentChangelogRoute: ApiDeploymentChangelogRoute,
   ApiSearchRoute: ApiSearchRoute,
   DocsSplatRoute: DocsSplatRoute,
   LlmsDotmdxDocsSplatRoute: LlmsDotmdxDocsSplatRoute,
