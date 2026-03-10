@@ -69,6 +69,10 @@
 
 .prose.prose {
   --tw-prose-bold: inherit;
+
+  & :not(pre) > code {
+    overflow-wrap: break-word;
+  }
 }
 
 a,
