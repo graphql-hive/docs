@@ -1,3 +1,4 @@
+import { DeploymentChangelogMarkdownContext } from "@/components/deployment-changelog";
 import { Footer, Navigation } from "@/components/navigation";
 import { EditOnGitHub, PageActions } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
@@ -36,7 +37,16 @@ const serverLoader = createServerFn({
     const page = source.getPage(slugs);
     if (!page) throw notFound();
 
+    // todo: can't we localize it to the changelog page file itself?
+    const deploymentChangelogMarkdown =
+      page.url === "/docs/schema-registry/self-hosting/changelog"
+        ? await import("@/lib/deployment-changelog").then((module) =>
+            module.getDeploymentChangelogMarkdown(),
+          )
+        : null;
+
     return {
+      deploymentChangelogMarkdown,
       lastModified: page.data.lastModified,
       pageTree: await source.serializePageTree(source.getPageTree()),
       path: page.path,
@@ -56,7 +66,6 @@ const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
     return (
       <DocsPage
         tableOfContent={{
-          // toc handler should become the full component here
           footer: (
             <PageActions
               githubUrl={props.githubUrl}
@@ -70,12 +79,16 @@ const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <DocsBody>
-          <MDX
-            components={{
-              ...mdxComponents,
-              ...Twoslash,
-            }}
-          />
+          <DeploymentChangelogMarkdownContext.Provider
+            value={props.deploymentChangelogMarkdown}
+          >
+            <MDX
+              components={{
+                ...mdxComponents,
+                ...Twoslash,
+              }}
+            />
+          </DeploymentChangelogMarkdownContext.Provider>
           <div className="flex justify-between">
             {props.lastModified ? (
               <PageLastUpdate date={new Date(props.lastModified)} />
@@ -109,6 +122,7 @@ function Page() {
         searchToggle={{ enabled: false }}
       >
         {clientLoader.useContent(data.path, {
+          deploymentChangelogMarkdown: data.deploymentChangelogMarkdown,
           githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,
           lastModified: data.lastModified?.getTime() ?? 0,
           markdownUrl: `${data.url}.mdx`,
@@ -121,6 +135,7 @@ function Page() {
 
 interface DocsPageProps {
   className?: string;
+  deploymentChangelogMarkdown: string | null;
   githubUrl: string;
   lastModified: number;
   markdownUrl: string;

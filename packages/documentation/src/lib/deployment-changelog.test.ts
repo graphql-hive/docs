@@ -1,9 +1,29 @@
 import { afterEach, describe, expect, test } from "bun:test";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 
 import {
+  DEPLOYMENT_CHANGELOG_MARKDOWN_PLUGINS,
+  DEPLOYMENT_CHANGELOG_REHYPE_PLUGINS,
   __resetDeploymentChangelogCacheForTests,
   getDeploymentChangelogMarkdown,
 } from "./deployment-changelog";
+import { mdxComponents } from "./mdx-components";
+import Markdown from "react-markdown";
+
+function renderMarkdown(markdown: string) {
+  return renderToStaticMarkup(
+    createElement(
+      Markdown,
+      {
+        components: mdxComponents,
+        rehypePlugins: [...DEPLOYMENT_CHANGELOG_REHYPE_PLUGINS],
+        remarkPlugins: [...DEPLOYMENT_CHANGELOG_MARKDOWN_PLUGINS],
+      },
+      markdown,
+    ),
+  );
+}
 
 const originalFetch = globalThis.fetch;
 const originalDateNow = Date.now;
@@ -22,7 +42,7 @@ describe("getDeploymentChangelogMarkdown", () => {
     globalThis.fetch = (async () => {
       calls++;
       return new Response("# hive\n\n## 9.9.9\n\nhello\n");
-    }) as typeof fetch;
+    }) as unknown as typeof fetch;
 
     const first = await getDeploymentChangelogMarkdown();
     const second = await getDeploymentChangelogMarkdown();
@@ -44,7 +64,7 @@ describe("getDeploymentChangelogMarkdown", () => {
         throw new Error("boom");
       }
       return new Response("# hive\n\n## 1.0.0\n\nstable\n");
-    }) as typeof fetch;
+    }) as unknown as typeof fetch;
 
     const first = await getDeploymentChangelogMarkdown();
 
@@ -56,5 +76,30 @@ describe("getDeploymentChangelogMarkdown", () => {
     expect(first).toBe("\n## 1.0.0\n\nstable\n");
     expect(second).toBe(first);
     expect(calls).toBe(2);
+  });
+});
+
+describe("markdown rendering", () => {
+  test("renders supported fenced code blocks with shiki markup", () => {
+    const html = renderMarkdown("```sh\necho hi\n```\n");
+
+    expect(html).toContain("shiki");
+    expect(html).toContain("github-dark");
+    expect(html).toContain("echo");
+  });
+
+  test("keeps unknown languages as plain code blocks", () => {
+    const html = renderMarkdown("```not-a-real-lang\nhello\n```\n");
+
+    expect(html).not.toContain("shiki-themes");
+    expect(html).toContain("language-not-a-real-lang");
+    expect(html).toContain("hello");
+  });
+
+  test("uses shared mdx link component mapping", () => {
+    const html = renderMarkdown("[Schema Registry](https://the-guild.dev)\n");
+
+    expect(html).toContain("underline-offset-2");
+    expect(html).toContain('href="https://the-guild.dev"');
   });
 });
