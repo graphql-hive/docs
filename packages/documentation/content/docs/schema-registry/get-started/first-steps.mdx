@@ -12,10 +12,14 @@ import { Step, Steps } from "fumadocs-ui/components/steps";
 <Step>
 ### Create Hive Account
 
-To get started with Hive, first sign up and create your Hive account if you haven't already.
+To get started with Hive, first sign up and create your Hive account if you haven't already. \
 [You can use this page to login or sign up](https://app.graphql-hive.com/auth).
 
-<Screenshot>![Login/Signup view](./signup.png)</Screenshot>
+<MdxImage
+  src={new URL("./signup.png", import.meta.url)}
+  style={{ maxHeight: 640 }}
+  alt="Login/Signup view"
+/>
 
 <Callout type="info">
   At the moment, Hive Cloud supports GitHub and Google authentication, or you
@@ -34,7 +38,11 @@ GraphQL APIs. Hive organizations are used to manage access, integrations, and bi
 
 To create a new organization, [you use this page](https://app.graphql-hive.com/org/new).
 
-<Screenshot>![Create Organization Form](./org.png)</Screenshot>
+<MdxImage
+  src={new URL("./org.png", import.meta.url)}
+  style={{ maxHeight: 380 }}
+  alt="Create Organization Form"
+/>
 
 Once you've successfully created your organization, you'll be able to expand your organization by
 inviting other members to join and collaborate on projects.
@@ -145,7 +153,13 @@ Hive supports the following project types:
 To get started with your Hive **project**, click on **Create Project +** button from the
 organization's main page:
 
-<Screenshot>![Create Project Form](./project.png)</Screenshot>
+<MdxImage
+  src={new URL("./project.png", import.meta.url)}
+  alt="Create Project Form"
+  style={{
+    maxHeight: 640,
+  }}
+/>
 
 Continue with one of the following guide based on the type of project you selected.
 
