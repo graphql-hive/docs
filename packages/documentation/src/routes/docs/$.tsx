@@ -75,7 +75,7 @@ const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
               ...Twoslash,
             }}
           />
-          <div className="flex justify-between">
+          <div className="flex justify-between mt-12">
             {props.lastModified ? (
               <PageLastUpdate date={new Date(props.lastModified)} />
             ) : null}
