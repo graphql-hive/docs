@@ -2,13 +2,12 @@ import { mdxComponents } from "@/lib/mdx-components";
 import { CallToAction } from "@hive/design-system/call-to-action";
 import React, {
   ComponentPropsWithoutRef,
-  createContext,
   ReactElement,
   ReactNode,
   use,
-  useContext,
 } from "react";
 import Markdown from "react-markdown";
+import { deploymentChangelogSnapshot } from "virtual:deployment-changelog-snapshot";
 
 import {
   DEPLOYMENT_CHANGELOG_MARKDOWN_PLUGINS,
@@ -19,19 +18,34 @@ import { getChangelogMarkdown } from "../lib/deployment-changelog.server";
 const GITHUB_URL =
   "https://github.com/graphql-hive/console/blob/main/deployment/CHANGELOG.md";
 
-let markdownPromise: Promise<string> | null = null;
+const ONE_HOUR = 3_600_000;
+
+let markdownPromiseCache: {
+  promise: Promise<string>;
+  timestamp: number;
+} | null = null;
 
 async function loadChangelogMarkdown() {
-  const markdown = await getChangelogMarkdown();
-  if (!markdown) {
-    markdownPromise = null;
-  }
-  return markdown;
+  return (await getChangelogMarkdown()) || deploymentChangelogSnapshot;
 }
 
-export const DeploymentChangelogMarkdownContext = createContext<
-  string | null | undefined
->(undefined);
+function getChangelogMarkdownPromise() {
+  if (typeof window === "undefined") {
+    return loadChangelogMarkdown();
+  }
+
+  if (
+    !markdownPromiseCache ||
+    Date.now() - markdownPromiseCache.timestamp >= ONE_HOUR
+  ) {
+    markdownPromiseCache = {
+      promise: loadChangelogMarkdown(),
+      timestamp: Date.now(),
+    };
+  }
+
+  return markdownPromiseCache.promise;
+}
 
 const changelogMdxComponents = {
   ...mdxComponents,
@@ -55,11 +69,7 @@ const changelogMdxComponents = {
 };
 
 export function DeploymentChangelog() {
-  const prefetchedMarkdown = useContext(DeploymentChangelogMarkdownContext);
-  const markdown =
-    prefetchedMarkdown == null
-      ? use((markdownPromise ??= loadChangelogMarkdown()))
-      : prefetchedMarkdown;
+  const markdown = use(getChangelogMarkdownPromise());
 
   if (!markdown) {
     return (

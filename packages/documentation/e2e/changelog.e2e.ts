@@ -10,7 +10,7 @@ test("changelog page renders remote markdown with mdx components", async ({
   page,
 }) => {
   await page.goto(appPath("/docs/schema-registry/self-hosting/changelog"), {
-    waitUntil: "networkidle",
+    waitUntil: "load",
   });
 
   await expect(page.getByText(CHANGELOG_SEARCH_TERM).first()).toBeVisible();
@@ -26,7 +26,7 @@ test("changelog page renders remote markdown with mdx components", async ({
 
 test("client-side navigation keeps changelog content", async ({ page }) => {
   await page.goto(appPath("/docs/schema-registry/self-hosting/get-started"), {
-    waitUntil: "networkidle",
+    waitUntil: "load",
   });
 
   await page
