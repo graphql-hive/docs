@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@hive/design-system";
 import { useCopyButton } from "fumadocs-ui/utils/use-copy-button";
 import { Check, Copy, Github } from "lucide-react";
 import { useRef, useState } from "react";
@@ -103,7 +104,7 @@ export function PageActions({
 export function EditOnGitHub({ githubUrl }: { githubUrl: string }) {
   return (
     <a
-      className={actionLinkClass}
+      className={cn(actionLinkClass, "no-underline")}
       href={githubUrl.replace("/blob/", "/edit/")}
       rel="noreferrer noopener"
       target="_blank"
