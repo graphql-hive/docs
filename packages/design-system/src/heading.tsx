@@ -3,10 +3,9 @@
 import { ComponentPropsWithoutRef, useCallback, useRef, useState } from "react";
 
 import { cn } from "./cn";
+import { headingSlug } from "./heading-slug";
 
-export function headingSlug(text: string): string {
-  return text.replaceAll(/[\s.,]+/g, "-").toLowerCase();
-}
+export { headingSlug } from "./heading-slug";
 
 export interface HeadingProps extends ComponentPropsWithoutRef<"h1"> {
   as: "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span";
