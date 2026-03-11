@@ -34,9 +34,11 @@ export function DocsTableOfContent({
         <Text className="size-4" />
         <I18nLabel label="toc" />
       </h3>
-      <TOCScrollArea>
-        <DocsTocItems toc={toc} />
-      </TOCScrollArea>
+      {toc.length > 0 ? (
+        <TOCScrollArea>
+          <DocsTocItems toc={toc} />
+        </TOCScrollArea>
+      ) : null}
       <PageActions githubUrl={githubUrl} markdownUrl={markdownUrl} />
     </div>
   );
@@ -44,15 +46,6 @@ export function DocsTableOfContent({
 
 function DocsTocItems({ toc }: { toc: TOCItemType[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { text } = useI18n();
-
-  if (toc.length === 0) {
-    return (
-      <div className="rounded-lg border bg-fd-card p-3 text-xs text-fd-muted-foreground">
-        {text.tocNoHeadings}
-      </div>
-    );
-  }
 
   return (
     <>
