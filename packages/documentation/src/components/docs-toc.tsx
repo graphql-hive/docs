@@ -7,7 +7,7 @@ import {
   TOCItemType,
   useActiveAnchors,
 } from "fumadocs-core/toc";
-import { I18nLabel, useI18n } from "fumadocs-ui/contexts/i18n";
+import { I18nLabel } from "fumadocs-ui/contexts/i18n";
 import { Text } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef } from "react";
 
