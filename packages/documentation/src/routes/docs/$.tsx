@@ -1,3 +1,5 @@
+import type { TableOfContents } from "fumadocs-core/toc";
+
 import { DocsTableOfContent } from "@/components/docs-toc";
 import { Footer, Navigation } from "@/components/navigation";
 import { EditOnGitHub, PageActions } from "@/components/page-actions";
@@ -11,7 +13,6 @@ import { useFumadocsLoader } from "fumadocs-core/source/client";
 import browserCollections from "fumadocs-mdx:collections/browser";
 import * as Twoslash from "fumadocs-twoslash/ui";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import type { TableOfContents } from "fumadocs-core/toc";
 import {
   DocsBody,
   DocsDescription,
@@ -60,6 +61,9 @@ const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
 
     return (
       <DocsPage
+        breadcrumb={{
+          includeRoot: true,
+        }}
         tableOfContent={{
           component: (
             <DocsTableOfContent
