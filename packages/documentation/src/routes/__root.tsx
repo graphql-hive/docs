@@ -1,3 +1,5 @@
+import { FumadocsLink } from "@/components/fumadocs-link";
+import { withBasePath } from "@/lib/with-base-path";
 import appCss from "@/styles/app.css?url";
 import {
   createRootRoute,
@@ -93,6 +95,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         style={{ fontFamily: "'PP Neue Montreal', system-ui, sans-serif" }}
       >
         <RootProvider
+          components={{ Link: FumadocsLink }}
+          search={{ options: { api: withBasePath("/api/search") } }}
           theme={
             isLightOnlyPage
               ? { ...themeConfig, forcedTheme: "light" }

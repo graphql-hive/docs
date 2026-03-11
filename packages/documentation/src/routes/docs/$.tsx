@@ -1,8 +1,10 @@
+import { DocsTableOfContent } from "@/components/docs-toc";
 import { Footer, Navigation } from "@/components/navigation";
 import { EditOnGitHub, PageActions } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
 import { mdxComponents } from "@/lib/mdx-components";
 import { getSource } from "@/lib/source";
+import { withBasePath } from "@/lib/with-base-path";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
@@ -56,6 +58,15 @@ const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
     return (
       <DocsPage
         tableOfContent={{
+          component: (
+            <DocsTableOfContent
+              githubUrl={props.githubUrl}
+              markdownUrl={props.markdownUrl}
+              toc={toc}
+            />
+          ),
+        }}
+        tableOfContentPopover={{
           footer: (
             <PageActions
               githubUrl={props.githubUrl}
@@ -110,7 +121,7 @@ function Page() {
         {clientLoader.useContent(data.path, {
           githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,
           lastModified: data.lastModified?.getTime() ?? 0,
-          markdownUrl: `${data.url}.mdx`,
+          markdownUrl: withBasePath(`${data.url}.mdx`),
         })}
       </DocsLayout>
       <Footer className="border-t border-fd-border" />

@@ -1,0 +1,147 @@
+diff --git a/dist/_chunks/nitro3.mjs b/dist/_chunks/nitro3.mjs
+--- a/dist/_chunks/nitro3.mjs
++++ b/dist/_chunks/nitro3.mjs
+@@ -76,52 +76,96 @@ async function runPreviewCommand(opts) {
+ 	consola$1.info(opts.command);
+ 	console.log("");
+ 	const { getRandomPort, waitForPort } = await import("get-port-please");
+-	const randomPort = await getRandomPort();
+-	const child = spawn(arg0, [
+-		...args,
+-		"--port",
+-		String(randomPort),
+-		"--host",
+-		"localhost"
+-	], {
+-		stdio: "inherit",
+-		cwd: opts.rootDir,
+-		env: {
+-			...process.env,
+-			...Object.fromEntries(opts.env ?? []),
+-			PORT: String(randomPort)
+-		}
+-	});
+-	const killChild = (signal) => {
+-		if (child && !child.killed) child.kill(signal);
+-	};
+-	for (const sig of ["SIGINT", "SIGHUP"]) process.once(sig, () => {
+-		killChild(sig);
+-	});
+-	child.once("exit", (code) => {
+-		if (code && code !== 0) consola$1.error(`[nitro] Preview server exited with code ${code}`);
+-	});
+-	await waitForPort(randomPort, {
+-		retries: 20,
+-		delay: 500,
+-		host: "localhost"
+-	});
+-	return {
+-		fetch(req) {
+-			return proxyFetch({
+-				port: randomPort,
+-				host: "localhost"
+-			}, req);
+-		},
+-		async upgrade(req, socket, head, opts) {
+-			await proxyUpgrade({
+-				port: randomPort,
+-				host: "localhost"
+-			}, req, socket, head, opts);
+-		},
+-		async close() {
+-			killChild("SIGTERM");
+-		}
+-	};
++	for (let attempt = 1; attempt <= 3; attempt++) {
++		const randomPort = await getRandomPort();
++		let childExited = false;
++		let stderr = "";
++		const child = spawn(arg0, [
++			...args,
++			"--port",
++			String(randomPort),
++			"--host",
++			"localhost"
++		], {
++			stdio: ["ignore", "inherit", "pipe"],
++			cwd: opts.rootDir,
++			env: {
++				...process.env,
++				...Object.fromEntries(opts.env ?? []),
++				PORT: String(randomPort)
++			}
++		});
++		child.stderr?.setEncoding("utf8");
++		child.stderr?.on("data", (chunk) => {
++			stderr += chunk;
++			if (stderr.length > 8192) stderr = stderr.slice(-8192);
++			process.stderr.write(chunk);
++		});
++		const killChild = (signal) => {
++			if (child && !child.killed) child.kill(signal);
++		};
++		const signalHandlers = ["SIGINT", "SIGHUP"].map((sig) => {
++			const handler = () => {
++				killChild(sig);
++			};
++			process.once(sig, handler);
++			return [sig, handler];
++		});
++		const removeSignalHandlers = () => {
++			for (const [sig, handler] of signalHandlers) process.off(sig, handler);
++		};
++		let ready = false;
++		const childDone = new Promise((resolve) => {
++			child.once("exit", (code) => {
++				childExited = true;
++				removeSignalHandlers();
++				if (code && code !== 0) consola$1.error(`[nitro] Preview server exited with code ${code}`);
++				resolve(code ?? 0);
++			});
++		});
++		const startupExit = childDone.then((code) => {
++			if (!ready) throw new Error(`[nitro] Preview server exited with code ${code}`);
++		});
++		try {
++			await Promise.race([
++				waitForPort(randomPort, {
++					retries: 20,
++					delay: 500,
++					host: "localhost"
++				}),
++				startupExit
++			]);
++			ready = true;
++			return {
++				fetch(req) {
++					return proxyFetch({
++						port: randomPort,
++						host: "localhost"
++					}, req);
++				},
++				async upgrade(req, socket, head, opts) {
++					await proxyUpgrade({
++						port: randomPort,
++						host: "localhost"
++					}, req, socket, head, opts);
++				},
++				async close() {
++					removeSignalHandlers();
++					killChild("SIGTERM");
++				}
++			};
++		} catch (error) {
++			const shouldRetry = attempt < 3 && /Address already in use|EADDRINUSE/i.test(stderr);
++			removeSignalHandlers();
++			killChild("SIGTERM");
++			if (!childExited) await childDone;
++			if (shouldRetry) {
++				consola$1.warn(`[nitro] Preview server failed to bind port ${randomPort}, retrying...`);
++				continue;
++			}
++			throw error;
++		}
++	}
++	throw new Error("[nitro] Preview server failed to start after 3 attempts");
+ }
+ export { startPreview as t };
