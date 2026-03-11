@@ -12,7 +12,49 @@ async function openSidebarIfNeeded(
 ) {
   if (!isMobile) return;
 
-  await page.getByRole("button", { name: "Open Sidebar" }).click();
+  const openSidebarButton = page
+    .locator("#hive-navigation")
+    .getByRole("button", { name: "Open Sidebar" });
+  const mobileSidebar = page.locator("#nd-sidebar-mobile");
+
+  await expect(openSidebarButton).toBeVisible();
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    await openSidebarButton.click();
+
+    try {
+      await expect(
+        mobileSidebar.getByRole("button", { name: "Documentation" }),
+      ).toBeVisible({ timeout: 2000 });
+      return;
+    } catch {}
+  }
+
+  await expect(
+    mobileSidebar.getByRole("button", { name: "Documentation" }),
+  ).toBeVisible();
+}
+
+async function clickChangelogSidebarLink(
+  page: import("@playwright/test").Page,
+  isMobile: boolean,
+) {
+  const changelogHref = appPath("/docs/schema-registry/self-hosting/changelog");
+  const mobileSidebar = page.locator("#nd-sidebar-mobile");
+
+  if (isMobile) {
+    const documentationButton = mobileSidebar.getByRole("button", {
+      name: "Documentation",
+    });
+
+    if ((await documentationButton.getAttribute("data-state")) !== "open") {
+      await documentationButton.click();
+    }
+  }
+
+  await (isMobile ? mobileSidebar : page)
+    .locator(`a[href="${changelogHref}"]`)
+    .click();
 }
 
 test("changelog page renders remote markdown with mdx components", async ({
@@ -49,10 +91,7 @@ test("client-side navigation keeps changelog content", async ({
   });
 
   await openSidebarIfNeeded(page, isMobile);
-  await page
-    .getByRole("link", { name: "Self-hosting Changelog" })
-    .first()
-    .click();
+  await clickChangelogSidebarLink(page, isMobile);
 
   await expect(page).toHaveURL(
     appPathPattern("/docs/schema-registry/self-hosting/changelog"),
