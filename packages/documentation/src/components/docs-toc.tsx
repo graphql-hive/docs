@@ -11,34 +11,31 @@ import { Text } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 interface DocsTocProps {
-  githubUrl: string;
-  markdownUrl: string;
+  children: React.ReactNode;
   toc: TOCItemType[];
 }
 
-export function DocsTableOfContent({
-  githubUrl,
-  markdownUrl,
-  toc,
-}: DocsTocProps) {
+export function DocsTableOfContent({ children, toc }: DocsTocProps) {
   return (
     <div
       className="sticky top-(--fd-docs-row-1) h-[calc(var(--fd-docs-height)-var(--fd-docs-row-1))] flex flex-col [grid-area:toc] w-(--fd-toc-width) pt-12 pe-4 pb-2 max-xl:hidden"
       id="nd-toc"
     >
-      <h3
-        className="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground"
-        id="toc-title"
-      >
-        <Text className="size-4" />
-        <I18nLabel label="toc" />
-      </h3>
       {toc.length > 0 ? (
-        <TOCScrollArea>
-          <DocsTocItems toc={toc} />
-        </TOCScrollArea>
+        <>
+          <h3
+            className="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground"
+            id="toc-title"
+          >
+            <Text className="size-4" />
+            <I18nLabel label="toc" />
+          </h3>
+          <TOCScrollArea>
+            <DocsTocItems toc={toc} />
+          </TOCScrollArea>
+        </>
       ) : null}
-      <PageActions githubUrl={githubUrl} markdownUrl={markdownUrl} />
+      {children}
     </div>
   );
 }

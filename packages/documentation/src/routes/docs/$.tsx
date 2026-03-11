@@ -2,7 +2,7 @@ import type { TableOfContents } from "fumadocs-core/toc";
 
 import { DocsTableOfContent } from "@/components/docs-toc";
 import { Footer, Navigation } from "@/components/navigation";
-import { EditOnGitHub } from "@/components/page-actions";
+import { EditOnGitHub, PageActions } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
 import { mdxComponents } from "@/lib/mdx-components";
 import { getSource } from "@/lib/source";
@@ -66,12 +66,14 @@ const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
         }}
         tableOfContent={{
           component: (
-            <DocsTableOfContent
-              githubUrl={props.githubUrl}
-              markdownUrl={props.markdownUrl}
-              toc={toc}
-            />
+            <DocsTableOfContent toc={toc}>
+              <PageActions
+                githubUrl={props.githubUrl}
+                markdownUrl={props.markdownUrl}
+              />
+            </DocsTableOfContent>
           ),
+          footer: true,
         }}
         toc={toc}
         {...props}
