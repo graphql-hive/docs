@@ -1,7 +1,6 @@
 "use client";
 
 import { PageActions } from "@/components/page-actions";
-import { Link } from "@tanstack/react-router";
 import {
   ScrollProvider,
   TOCItemType,
@@ -79,7 +78,6 @@ function DocsTocItem({
   const activeOrder = hash ? activeAnchors.indexOf(hash) : -1;
   const isActive = activeOrder !== -1;
   const shouldScroll = activeOrder === 0;
-  const to = hashIndex <= 0 ? "." : item.url.slice(0, hashIndex);
   const href = hash ? `#${hash}` : item.url;
 
   useLayoutEffect(() => {
@@ -97,27 +95,8 @@ function DocsTocItem({
     }
   }, [containerRef, shouldScroll]);
 
-  if (hash && to === ".") {
-    return (
-      <a
-        className={cx(
-          "prose py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere first:pt-0 last:pb-0 data-[active=true]:text-fd-primary",
-          item.depth <= 2 && "ps-3",
-          item.depth === 3 && "ps-6",
-          item.depth >= 4 && "ps-8",
-        )}
-        data-active={isActive}
-        data-toc-anchor={hash}
-        href={href}
-        ref={anchorRef}
-      >
-        {item.title}
-      </a>
-    );
-  }
-
   return (
-    <Link
+    <a
       className={cx(
         "prose py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere first:pt-0 last:pb-0 data-[active=true]:text-fd-primary",
         item.depth <= 2 && "ps-3",
@@ -126,14 +105,11 @@ function DocsTocItem({
       )}
       data-active={isActive}
       data-toc-anchor={hash}
-      hash={hash}
-      hashScrollIntoView
+      href={href}
       ref={anchorRef}
-      resetScroll={false}
-      to={to || "."}
     >
       {item.title}
-    </Link>
+    </a>
   );
 }
 
