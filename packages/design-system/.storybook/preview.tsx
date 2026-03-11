@@ -1,4 +1,10 @@
 import React from "react";
+import {
+  createBrowserHistory,
+  createRootRoute,
+  createRouter,
+  RouterProvider,
+} from "@tanstack/react-router";
 import { ThemeProvider } from "next-themes";
 import { useDarkMode } from "storybook-dark-mode";
 import { Preview } from "@storybook/react";
@@ -25,9 +31,21 @@ export const parameters: Preview["parameters"] = {
 export const decorators: Preview["decorators"] = [
   (Story) => {
     const theme = useDarkMode() ? "dark" : "light";
+    const router = React.useMemo(() => {
+      const routeTree = createRootRoute({
+        component: Story,
+      });
+
+      return createRouter({
+        basepath: globalThis.location.pathname,
+        history: createBrowserHistory(),
+        routeTree,
+      });
+    }, [Story]);
+
     return (
       <ThemeProvider attribute="class" forcedTheme={theme}>
-        <Story />
+        <RouterProvider router={router} />
       </ThemeProvider>
     );
   },

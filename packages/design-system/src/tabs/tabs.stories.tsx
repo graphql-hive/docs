@@ -487,10 +487,7 @@ export const ContentInHiddenPanelOpensByHash: Story = {
     children: (
       <>
         <Tabs.Tab>
-          <CallToAction
-            href={`${window.location.href}#binary`}
-            variant="tertiary"
-          >
+          <CallToAction href="#binary" variant="tertiary">
             Navigate to #binary
           </CallToAction>
         </Tabs.Tab>
@@ -502,12 +499,17 @@ export const ContentInHiddenPanelOpensByHash: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const url = new URL(window.location.href);
+    url.hash = "";
+    window.history.replaceState(null, "", url.toString());
 
     const link = canvas.getByRole("link", { name: "Navigate to #binary" });
     await userEvent.click(link);
 
     await expect(window.location.hash).toBe("#binary");
-    await expect(canvas.getByText("Binary")).toBeVisible();
+    await expect(
+      canvas.getByRole("tabpanel", { name: "Binary" }),
+    ).toBeVisible();
   },
 };
 
@@ -517,10 +519,7 @@ export const KeepsHashWhenChangingTabs: Story = {
     children: (
       <>
         <Tabs.Tab>
-          <CallToAction
-            href={`${window.location.href}#binary`}
-            variant="tertiary"
-          >
+          <CallToAction href="#binary" variant="tertiary">
             Navigate to #binary
           </CallToAction>
         </Tabs.Tab>
@@ -532,6 +531,9 @@ export const KeepsHashWhenChangingTabs: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const url = new URL(window.location.href);
+    url.hash = "";
+    window.history.replaceState(null, "", url.toString());
 
     await userEvent.click(
       canvas.getByRole("link", { name: "Navigate to #binary" }),
