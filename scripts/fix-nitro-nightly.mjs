@@ -31,51 +31,9 @@ if (!existsSync(bunCache)) {
 const nitroNightlyDirs = readdirSync(bunCache).filter((d) =>
   d.startsWith("nitro-nightly@"),
 );
-const wranglerDirs = readdirSync(bunCache).filter((d) =>
-  d.startsWith("wrangler@"),
-);
 
 if (nitroNightlyDirs.length === 0) {
   console.log("[fix-nitro-nightly] nitro-nightly not found, skipping");
-}
-
-function patchWranglerAssetsWatcher() {
-  const buggy = "this.#assetsWatcher = watch(config.assets.directory, {";
-  const fixed =
-    'this.#assetsWatcher = process.env.TSS_PRERENDERING === "true" ? void 0 : watch(config.assets.directory, {';
-
-  for (const wranglerDir of wranglerDirs) {
-    const cliPath = join(
-      bunCache,
-      wranglerDir,
-      "node_modules",
-      "wrangler",
-      "wrangler-dist",
-      "cli.js",
-    );
-
-    if (!existsSync(cliPath)) {
-      continue;
-    }
-
-    const content = readFileSync(cliPath, "utf8");
-
-    if (content.includes(fixed)) {
-      continue;
-    }
-
-    if (!content.includes(buggy)) {
-      console.warn(
-        `[fix-nitro-nightly] Wrangler assets watcher pattern not found in ${wranglerDir}`,
-      );
-      continue;
-    }
-
-    writeFileSync(cliPath, content.replace(buggy, fixed));
-    console.log(
-      `[fix-nitro-nightly] Patched Wrangler assets watcher in ${wranglerDir}`,
-    );
-  }
 }
 
 for (const nitroNightlyDir of nitroNightlyDirs) {
@@ -129,5 +87,3 @@ for (const nitroNightlyDir of nitroNightlyDirs) {
     }
   }
 }
-
-patchWranglerAssetsWatcher();

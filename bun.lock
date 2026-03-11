@@ -117,6 +117,7 @@
   },
   "patchedDependencies": {
     "@tanstack/start-plugin-core@1.147.1": "patches/@tanstack%2Fstart-plugin-core@1.147.1.patch",
+    "wrangler@4.71.0": "patches/wrangler@4.71.0.patch",
     "nitro-nightly@3.0.1-20260227-181935-bfbb207c": "patches/nitro-nightly@3.0.1-20260227-181935-bfbb207c.patch",
   },
   "overrides": {
