@@ -492,3 +492,9 @@ a.text-fd-muted-foreground.prose.text-sm:hover {
 .dark [data-toc-popover] {
   --color-fd-background: unset;
 }
+
+/* Lower Crisp chat widget z-index so it doesn't cover the cookie consent banner.
+   Crisp defaults to z-index: 1000000. Our cookie consent uses z-50. */
+#crisp-chatbox {
+  z-index: 40 !important;
+}

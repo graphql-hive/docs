@@ -3,7 +3,7 @@ import { useId } from "react";
 import { cn } from "../cn";
 import { DecorationIsolation, HighlightDecoration } from "../decorations";
 import { ArrowIcon } from "../icons";
-import { FOUR_MAIN_PRODUCTS, ProductInfo, PRODUCTS } from "../products";
+import { FIVE_MAIN_PRODUCTS, ProductInfo, PRODUCTS } from "../products";
 import HiveDecoration from "./hive-decoration.svg?svgr";
 import HiveGatewayDecoration from "./hive-gateway-decoration.svg?svgr";
 import HiveRouterDecoration from "./hive-router-decoration.svg?svgr";
@@ -45,7 +45,7 @@ export function MainProductCard({
       >
         <p className="font-medium relative z-10">{product.name}</p>
         <Icon className="mt-8 relative z-0" />
-        <ArrowIcon className="absolute bottom-8 right-8" />
+        <ArrowIcon className="absolute z-10 bottom-8 right-8" />
         <DecorationIsolation className="-z-10">
           {Decoration && (
             <Decoration
@@ -132,7 +132,7 @@ export interface ProductCardProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export function ProductCard(props: ProductCardProps) {
-  const isMainProduct = FOUR_MAIN_PRODUCTS.some(
+  const isMainProduct = FIVE_MAIN_PRODUCTS.some(
     (p) => p.name === props.product.name,
   );
 
