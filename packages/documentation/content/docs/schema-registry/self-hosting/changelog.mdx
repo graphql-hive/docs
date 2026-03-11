@@ -4,6 +4,9 @@ sidebarTitle: Changelog
 ---
 
 import { DeploymentChangelog } from "@/components/deployment-changelog";
+import { deploymentChangelogToc } from "virtual:deployment-changelog-toc";
+
+export const extraToc = deploymentChangelogToc;
 
 Here you can find all the recent improvements and updates about the self-hosting
 images. The Docker images published to the GitHub registry using the same tags.

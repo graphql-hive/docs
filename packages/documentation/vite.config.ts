@@ -9,9 +9,12 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
+import { extractFilteredChangelogToc } from "./src/lib/changelog-toc";
+
 const BASE_PATH = "/graphql/hive-testing";
 const DEPLOYMENT_CHANGELOG_SNAPSHOT_ID =
   "virtual:deployment-changelog-snapshot";
+const DEPLOYMENT_CHANGELOG_TOC_ID = "virtual:deployment-changelog-toc";
 const NITRO_PRESET = process.env["VERCEL"] ? "vercel" : "cloudflare-module";
 const CLOUDFLARE_ENTRY = fileURLToPath(
   new URL("src/server/cloudflare-entry.ts", import.meta.url),
@@ -35,28 +38,35 @@ async function getDeploymentChangelogSnapshot() {
   }
 }
 
-function deploymentChangelogSnapshotPlugin() {
-  const resolvedId = `\0${DEPLOYMENT_CHANGELOG_SNAPSHOT_ID}`;
+function deploymentChangelogPlugin() {
+  const resolvedSnapshotId = `\0${DEPLOYMENT_CHANGELOG_SNAPSHOT_ID}`;
+  const resolvedTocId = `\0${DEPLOYMENT_CHANGELOG_TOC_ID}`;
   let snapshotPromise: Promise<string> | undefined;
 
   return {
-    name: "deployment-changelog-snapshot",
+    name: "deployment-changelog",
     resolveId(source: string) {
-      if (source === DEPLOYMENT_CHANGELOG_SNAPSHOT_ID) {
-        return resolvedId;
-      }
+      if (source === DEPLOYMENT_CHANGELOG_SNAPSHOT_ID)
+        return resolvedSnapshotId;
+      if (source === DEPLOYMENT_CHANGELOG_TOC_ID) return resolvedTocId;
       return null;
     },
     load(id: string) {
-      if (id !== resolvedId) {
-        return null;
+      if (id === resolvedSnapshotId) {
+        snapshotPromise ||= getDeploymentChangelogSnapshot();
+        return snapshotPromise.then(
+          (snapshot) =>
+            `export const deploymentChangelogSnapshot = ${JSON.stringify(snapshot)};`,
+        );
       }
-
-      snapshotPromise ||= getDeploymentChangelogSnapshot();
-      return snapshotPromise.then(
-        (snapshot) =>
-          `export const deploymentChangelogSnapshot = ${JSON.stringify(snapshot)};`,
-      );
+      if (id === resolvedTocId) {
+        snapshotPromise ||= getDeploymentChangelogSnapshot();
+        return snapshotPromise.then((snapshot) => {
+          const toc = extractFilteredChangelogToc(snapshot);
+          return `export const deploymentChangelogToc = ${JSON.stringify(toc)};`;
+        });
+      }
+      return null;
     },
   };
 }
@@ -76,7 +86,7 @@ export default defineConfig({
   },
   plugins: [
     !process.env["CI"] && devtools(),
-    deploymentChangelogSnapshotPlugin(),
+    deploymentChangelogPlugin(),
     nitro({
       baseURL: BASE_PATH,
       entry:
