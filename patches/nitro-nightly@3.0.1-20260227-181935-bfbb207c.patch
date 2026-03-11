@@ -1,7 +1,8 @@
 diff --git a/dist/_chunks/nitro3.mjs b/dist/_chunks/nitro3.mjs
+index 910cf5280ab2159eeacbfdf72a5fe9d20589e853..46d80ac414c3c7b1b24cbcc266c4bd9a5ccf4e48 100644
 --- a/dist/_chunks/nitro3.mjs
 +++ b/dist/_chunks/nitro3.mjs
-@@ -76,52 +76,96 @@ async function runPreviewCommand(opts) {
+@@ -76,52 +76,119 @@ async function runPreviewCommand(opts) {
  	consola$1.info(opts.command);
  	console.log("");
  	const { getRandomPort, waitForPort } = await import("get-port-please");
@@ -56,6 +57,10 @@ diff --git a/dist/_chunks/nitro3.mjs b/dist/_chunks/nitro3.mjs
 +		const randomPort = await getRandomPort();
 +		let childExited = false;
 +		let stderr = "";
++		let childDoneResolve;
++		const childDone = new Promise((resolve) => {
++			childDoneResolve = resolve;
++		});
 +		const child = spawn(arg0, [
 +			...args,
 +			"--port",
@@ -65,6 +70,7 @@ diff --git a/dist/_chunks/nitro3.mjs b/dist/_chunks/nitro3.mjs
 +		], {
 +			stdio: ["ignore", "inherit", "pipe"],
 +			cwd: opts.rootDir,
++			detached: process.platform !== "win32",
 +			env: {
 +				...process.env,
 +				...Object.fromEntries(opts.env ?? []),
@@ -78,8 +84,21 @@ diff --git a/dist/_chunks/nitro3.mjs b/dist/_chunks/nitro3.mjs
 +			process.stderr.write(chunk);
 +		});
 +		const killChild = (signal) => {
-+			if (child && !child.killed) child.kill(signal);
++			if (!child || child.killed || !child.pid) return;
++			if (process.platform !== "win32") {
++				try {
++					process.kill(-child.pid, signal);
++					return;
++				} catch {}
++			}
++			child.kill(signal);
 +		};
++		const waitForChildExit = async (timeout = 5e3) => await Promise.race([
++			childDone,
++			new Promise((resolve) => {
++				setTimeout(() => resolve(void 0), timeout);
++			})
++		]);
 +		const signalHandlers = ["SIGINT", "SIGHUP"].map((sig) => {
 +			const handler = () => {
 +				killChild(sig);
@@ -91,13 +110,11 @@ diff --git a/dist/_chunks/nitro3.mjs b/dist/_chunks/nitro3.mjs
 +			for (const [sig, handler] of signalHandlers) process.off(sig, handler);
 +		};
 +		let ready = false;
-+		const childDone = new Promise((resolve) => {
-+			child.once("exit", (code) => {
-+				childExited = true;
-+				removeSignalHandlers();
-+				if (code && code !== 0) consola$1.error(`[nitro] Preview server exited with code ${code}`);
-+				resolve(code ?? 0);
-+			});
++		child.once("exit", (code) => {
++			childExited = true;
++			removeSignalHandlers();
++			if (code && code !== 0) consola$1.error(`[nitro] Preview server exited with code ${code}`);
++			childDoneResolve(code ?? 0);
 +		});
 +		const startupExit = childDone.then((code) => {
 +			if (!ready) throw new Error(`[nitro] Preview server exited with code ${code}`);
@@ -128,13 +145,20 @@ diff --git a/dist/_chunks/nitro3.mjs b/dist/_chunks/nitro3.mjs
 +				async close() {
 +					removeSignalHandlers();
 +					killChild("SIGTERM");
++					if (await waitForChildExit() === void 0) {
++						killChild("SIGKILL");
++						await waitForChildExit(1e3);
++					}
 +				}
 +			};
 +		} catch (error) {
 +			const shouldRetry = attempt < 3 && /Address already in use|EADDRINUSE/i.test(stderr);
 +			removeSignalHandlers();
 +			killChild("SIGTERM");
-+			if (!childExited) await childDone;
++			if (!childExited && await waitForChildExit() === void 0) {
++				killChild("SIGKILL");
++				await waitForChildExit(1e3);
++			}
 +			if (shouldRetry) {
 +				consola$1.warn(`[nitro] Preview server failed to bind port ${randomPort}, retrying...`);
 +				continue;
