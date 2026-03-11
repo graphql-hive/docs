@@ -241,7 +241,7 @@ describe("deployment changelog", () => {
     );
     expect(res.status).toBe(200);
 
-    const json = (await res.json()) as Array<{ url: string }>;
+    const json = (await res.json()) as { url: string }[];
     expect(
       json.some(
         (entry) => entry.url === "/docs/schema-registry/self-hosting/changelog",

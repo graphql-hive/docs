@@ -106,7 +106,7 @@ function getNodeText(node: HastNode): string {
 function getCodeLanguage(node: HastNode): string | null {
   if (!isElement(node)) return null;
 
-  const className = node.properties["className"];
+  const { className } = node.properties;
   const classNames =
     typeof className === "string"
       ? className.split(/\s+/)
@@ -165,7 +165,7 @@ function highlightCodeBlock(
     lang,
     themes: DOCS_CODE_THEMES,
   });
-  const result = highlighted.children[0];
+  const [result] = highlighted.children;
 
   return isElement(result) ? result : preNode;
 }

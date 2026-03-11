@@ -183,7 +183,10 @@ will be triggered every time data is inserted into the local SQLite database.
 Brick follows an optimistic offline-first practice: data is inserted locally before it reaches the
 server. If the data doesn't exist, Brick requests it from your GraphQL server:
 
-![image](https://user-images.githubusercontent.com/865897/72176226-cdd8ca00-3392-11ea-867d-42f5f4620153.jpg)
+<img
+  alt="Brick offline-first architecture"
+  src="https://user-images.githubusercontent.com/865897/72176226-cdd8ca00-3392-11ea-867d-42f5f4620153.jpg"
+/>
 
 > It says REST, but it's the same architecture for GraphQL
 
@@ -196,7 +199,10 @@ If the app is offline when a mutation operation is made, the operation is added 
 queue will reattempt until it receives a successful response from the server. And it will try. And
 try. And try. We've seen queues retry for 30 days.
 
-![image](https://user-images.githubusercontent.com/865897/72175823-f44a3580-3391-11ea-8961-bbeccd74fe7b.jpg)
+<img
+  alt="Brick retry queue flow"
+  src="https://user-images.githubusercontent.com/865897/72175823-f44a3580-3391-11ea-8961-bbeccd74fe7b.jpg"
+/>
 
 > Not your jam? Synchronous execution can be requested (circumventing the queue) by applying the
 > `OfflineFirstUpsertPolicy.awaitRemote` policy.

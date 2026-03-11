@@ -1,15 +1,15 @@
 import { afterEach, describe, expect, test } from "bun:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import Markdown from "react-markdown";
 
 import {
+  __resetDeploymentChangelogCacheForTests,
   DEPLOYMENT_CHANGELOG_MARKDOWN_PLUGINS,
   DEPLOYMENT_CHANGELOG_REHYPE_PLUGINS,
-  __resetDeploymentChangelogCacheForTests,
   getDeploymentChangelogMarkdown,
 } from "./deployment-changelog";
 import { mdxComponents } from "./mdx-components";
-import Markdown from "react-markdown";
 
 function renderMarkdown(markdown: string) {
   return renderToStaticMarkup(

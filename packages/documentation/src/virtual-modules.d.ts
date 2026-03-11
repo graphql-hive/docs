@@ -3,9 +3,9 @@ declare module "virtual:deployment-changelog-snapshot" {
 }
 
 declare module "virtual:deployment-changelog-toc" {
-  export const deploymentChangelogToc: Array<{
+  export const deploymentChangelogToc: {
     depth: number;
     title: string;
     url: string;
-  }>;
+  }[];
 }

@@ -50,7 +50,7 @@ const serverLoader = createServerFn({
 const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
   component(loaded, props) {
     const { default: MDX, toc: mdxToc } = loaded;
-    const extraToc = (loaded as { extraToc?: TableOfContents }).extraToc;
+    const { extraToc } = loaded as { extraToc?: TableOfContents };
     const toc: TableOfContents = extraToc ? [...mdxToc, ...extraToc] : mdxToc;
 
     const frontmatter = loaded.frontmatter as {

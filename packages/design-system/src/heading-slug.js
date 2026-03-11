@@ -1,3 +1,3 @@
-export function headingSlug(text: string): string {
+export function headingSlug(text) {
   return text.replaceAll(/[\s.,]+/g, "-").toLowerCase();
 }

@@ -1,4 +1,4 @@
-import { headingSlug } from "@hive/design-system/heading-slug";
+import { headingSlug } from "@hive/design-system/heading-slug.js";
 
 type Version = { major: number; minor: number; patch: number; raw: string };
 

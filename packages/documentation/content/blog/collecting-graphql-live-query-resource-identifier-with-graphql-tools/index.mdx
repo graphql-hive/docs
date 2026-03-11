@@ -93,7 +93,10 @@ If a specific user updates his login we shouldn't invalidate and re-execute any 
 that has a viewer selection set for any connected user who might not even be affected by that
 change!
 
-![All queries are invalidated](https://dev-to-uploads.s3.amazonaws.com/i/f5s5de59uvkbjwbuwrou.png)
+<img
+  alt="All queries are invalidated"
+  src="https://dev-to-uploads.s3.amazonaws.com/i/f5s5de59uvkbjwbuwrou.png"
+/>
 
 At the same time, the user could also be referenced in another operation e.g. a list of all
 available users (`Query.onlineUsers`). The `Query.viewer` event would not cover and schedule a
@@ -116,18 +119,27 @@ My current implementation just traversed the AST of the query operation and extr
 [schema coordinates](https://github.com/graphql/graphql-spec/pull/746) on the root query type. E.g.
 `Query.viewer` for the `viewer` live query operation from above.
 
-![Live Query Store with schema coordinates on operation context](https://dev-to-uploads.s3.amazonaws.com/i/ft60prjse6pcqnlin4qv.png)
+<img
+  alt="Live Query Store with schema coordinates on operation context"
+  src="https://dev-to-uploads.s3.amazonaws.com/i/ft60prjse6pcqnlin4qv.png"
+/>
 
 However, in case we would want to identify the user via the id we must also add something like
 `User:1` to the set of resources the live query operation selects. This requires schema knowledge as
 the live query store needs to know which type has an id field and if included in the selection set,
 gather the corresponding resource identifier.
 
-![Live Query Store with resource identifiers and schema coordinates on operation context](https://dev-to-uploads.s3.amazonaws.com/i/cdicogp30k34ml9o3ccg.png)
+<img
+  alt="Live Query Store with resource identifiers and schema coordinates on operation context"
+  src="https://dev-to-uploads.s3.amazonaws.com/i/cdicogp30k34ml9o3ccg.png"
+/>
 
 As mentioned above this allows more granular query invalidations.
 
-![More granular updates are now possible](https://dev-to-uploads.s3.amazonaws.com/i/sde19ha6upubo0ofyg8a.png)
+<img
+  alt="More granular updates are now possible"
+  src="https://dev-to-uploads.s3.amazonaws.com/i/sde19ha6upubo0ofyg8a.png"
+/>
 
 The first drawback I had in mind is that if an operation does not specify the `id` field on the
 selection set, the resource cannot be tracked by the live query store.
