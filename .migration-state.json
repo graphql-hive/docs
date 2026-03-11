@@ -3,7 +3,7 @@
   "sourceRepo": ".context/hive-console",
   "sourceBranch": "main",
   "targetSubdirectory": "temporary",
-  "lastSyncedCommit": "14e3d434cfa80910286c2bb1f33cbb82f1def78a",
+  "lastSyncedCommit": "cc63497c7130ae130913430146693a32d86deb72",
   "migrations": [
     {
       "commit": "f09052749e7ec7a5f759566fac8e13eb3f833067",
@@ -436,6 +436,22 @@
       "author": "manual",
       "syncedAt": "2026-03-09T13:17:38.076Z",
       "mergeCommit": "943b224aa5b318c1576374bd9b0a61cfe2ed85a6"
+    },
+    {
+      "commit": "ee6051fe8df4edfc8ffc41f30c8a2ede0646aa04",
+      "date": "2026-03-11 10:03:27 +0100",
+      "message": "docs: give some examples for contract composition (#7816)",
+      "author": "Laurin",
+      "syncedAt": "2026-03-11T18:24:51.231Z",
+      "mergeCommit": "dc0292c7be001909816ae90c31e9f3ec728962b7"
+    },
+    {
+      "commit": "cc63497c7130ae130913430146693a32d86deb72",
+      "date": "2026-03-11 13:20:02 +0200",
+      "message": "Upcoming Release Changes (#7809)",
+      "author": "TheGuildBot",
+      "syncedAt": "2026-03-11T18:24:51.476Z",
+      "mergeCommit": "b861ebd05f2b85c3376d53239c4a60008caaa115"
     }
   ]
 }
