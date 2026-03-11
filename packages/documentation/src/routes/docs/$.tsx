@@ -7,7 +7,7 @@ import { baseOptions } from "@/lib/layout.shared";
 import { mdxComponents } from "@/lib/mdx-components";
 import { getSource } from "@/lib/source";
 import { withBasePath } from "@/lib/with-base-path";
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, useLocation } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
 import browserCollections from "fumadocs-mdx:collections/browser";
@@ -138,12 +138,17 @@ interface DocsPageProps {
 }
 
 function DocsHashScroller() {
+  const { hash, pathname } = useLocation();
+
   useEffect(() => {
     let frame = 0;
 
-    const scrollToCurrentHash = () => {
-      const id = decodeURIComponent(globalThis.location.hash.slice(1));
-      if (!id) return;
+    const scrollToCurrentLocation = () => {
+      const id = decodeURIComponent(hash.slice(1));
+      if (!id) {
+        globalThis.scrollTo({ left: 0, top: 0 });
+        return;
+      }
 
       let attempts = 0;
       const scroll = () => {
@@ -164,12 +169,14 @@ function DocsHashScroller() {
       });
     };
 
-    scrollToCurrentHash();
+    frame = requestAnimationFrame(() => {
+      frame = requestAnimationFrame(scrollToCurrentLocation);
+    });
 
     return () => {
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [hash, pathname]);
 
   return null;
 }
