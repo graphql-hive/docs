@@ -57,4 +57,51 @@ test.describe("Documentation regressions", () => {
     );
     await expect(page.locator("#execution-rejection")).toBeInViewport();
   });
+
+  test("direct hash load scrolls gateway docs to the target heading", async ({
+    browserName,
+    page,
+  }) => {
+    test.skip(
+      browserName !== "chromium",
+      "Covers desktop initial hash navigation behavior",
+    );
+
+    await page.goto(
+      appPath("/docs/gateway/authorization-authentication#execution-rejection"),
+      {
+        waitUntil: "networkidle",
+      },
+    );
+    await waitForHydration(page);
+
+    await expect(page).toHaveURL(
+      /\/graphql\/hive-testing\/docs\/gateway\/authorization-authentication\/?#execution-rejection$/,
+    );
+    await expect(page.locator("#execution-rejection")).toBeInViewport();
+  });
+
+  test("direct hash load scrolls changelog docs to the target heading", async ({
+    browserName,
+    page,
+  }) => {
+    test.skip(
+      browserName !== "chromium",
+      "Covers desktop initial hash navigation on async changelog docs",
+    );
+
+    await page.goto(
+      appPath("/docs/schema-registry/self-hosting/changelog#8-14-1"),
+      {
+        waitUntil: "networkidle",
+      },
+    );
+    await waitForHydration(page);
+    await expect(page.locator(".animate-pulse")).toHaveCount(0);
+
+    await expect(page).toHaveURL(
+      /\/graphql\/hive-testing\/docs\/schema-registry\/self-hosting\/changelog\/?#8-14-1$/,
+    );
+    await expect(page.locator('[id="8-14-1"]')).toBeInViewport();
+  });
 });
