@@ -5,6 +5,7 @@ import React, {
   ReactElement,
   ReactNode,
   useEffect,
+  useLayoutEffect,
   useState,
 } from "react";
 import Markdown from "react-markdown";
@@ -14,65 +15,35 @@ import {
   DEPLOYMENT_CHANGELOG_MARKDOWN_PLUGINS,
   DEPLOYMENT_CHANGELOG_REHYPE_PLUGINS,
 } from "../lib/deployment-changelog";
+import {
+  type ChangelogState,
+  getClientRenderState,
+  getFallbackState,
+  resetClientChangelogCache,
+  resolveStateAfterRefresh,
+  seedClientChangelogCache,
+} from "../lib/deployment-changelog-client-cache";
 import { getChangelogMarkdown } from "../lib/deployment-changelog.server";
 
 const GITHUB_URL =
   "https://github.com/graphql-hive/console/blob/main/deployment/CHANGELOG.md";
 
-const ONE_HOUR = 3_600_000;
-
-let markdownCache: {
-  markdown: string;
-  timestamp: number;
-} | null = null;
 let markdownRefreshPromise: Promise<string> | null = null;
 
-type ChangelogState = {
-  markdown: string;
-  showGitHubCta: boolean;
-};
+const useBrowserLayoutEffect =
+  globalThis.window === undefined ? useEffect : useLayoutEffect;
 
-function getInitialState(): ChangelogState {
-  return {
-    markdown: deploymentChangelogSnapshot,
-    showGitHubCta: !deploymentChangelogSnapshot,
-  };
-}
-
-function getCachedMarkdown() {
-  if (!markdownCache) {
-    return null;
-  }
-
-  if (Date.now() - markdownCache.timestamp >= ONE_HOUR) {
-    markdownCache = null;
-    return null;
-  }
-
-  return markdownCache.markdown;
-}
-
-async function refreshMarkdown() {
-  const cachedMarkdown = getCachedMarkdown();
-  if (cachedMarkdown !== null) {
-    return cachedMarkdown;
-  }
-
-  if (!markdownRefreshPromise) {
-    markdownRefreshPromise = getChangelogMarkdown()
-      .then((markdown) => {
-        if (markdown) {
-          markdownCache = {
-            markdown,
-            timestamp: Date.now(),
-          };
-        }
-        return markdown;
-      })
-      .finally(() => {
-        markdownRefreshPromise = null;
-      });
-  }
+async function refreshMarkdown(loadMarkdown = getChangelogMarkdown) {
+  markdownRefreshPromise ||= loadMarkdown()
+    .then((markdown) => {
+      if (markdown) {
+        seedClientChangelogCache(markdown, Date.now());
+      }
+      return markdown;
+    })
+    .finally(() => {
+      markdownRefreshPromise = null;
+    });
 
   return markdownRefreshPromise;
 }
@@ -99,28 +70,38 @@ const changelogMdxComponents = {
 };
 
 export function DeploymentChangelog() {
-  const [state, setState] = useState(getInitialState);
+  const [state, setState] = useState(() =>
+    getFallbackState(deploymentChangelogSnapshot),
+  );
 
-  useEffect(() => {
+  useBrowserLayoutEffect(() => {
     let isCancelled = false;
+    const nextState = getClientRenderState(deploymentChangelogSnapshot);
+
+    setState((prev) =>
+      prev.markdown === nextState.markdown &&
+      prev.showGitHubCta === nextState.showGitHubCta
+        ? prev
+        : {
+            markdown: nextState.markdown,
+            showGitHubCta: nextState.showGitHubCta,
+          },
+    );
+
+    if (!nextState.shouldRefresh) {
+      return () => {
+        isCancelled = true;
+      };
+    }
 
     void refreshMarkdown().then((markdown) => {
       if (isCancelled) {
         return;
       }
 
-      if (markdown) {
-        setState({
-          markdown,
-          showGitHubCta: false,
-        });
-        return;
-      }
-
-      setState((prev) => ({
-        markdown: prev.markdown || deploymentChangelogSnapshot,
-        showGitHubCta: true,
-      }));
+      setState((prev) =>
+        resolveStateAfterRefresh(prev, deploymentChangelogSnapshot, markdown),
+      );
     });
 
     return () => {
@@ -154,4 +135,31 @@ export function DeploymentChangelog() {
       ) : null}
     </>
   );
+}
+
+export function __getClientRenderStateForTests(
+  snapshot: string,
+  now = Date.now(),
+) {
+  return getClientRenderState(snapshot, now);
+}
+
+export function __resetClientChangelogCacheForTests() {
+  resetClientChangelogCache();
+  markdownRefreshPromise = null;
+}
+
+export function __resolveStateAfterRefreshForTests(
+  previousState: ChangelogState,
+  snapshot: string,
+  markdown: string,
+) {
+  return resolveStateAfterRefresh(previousState, snapshot, markdown);
+}
+
+export function __seedClientChangelogCacheForTests(
+  markdown: string,
+  timestamp = Date.now(),
+) {
+  seedClientChangelogCache(markdown, timestamp);
 }

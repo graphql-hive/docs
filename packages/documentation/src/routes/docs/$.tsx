@@ -68,19 +68,19 @@ const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
       >
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
-        <DocsBody>
+        <DocsBody className="relative">
           <MDX
             components={{
               ...mdxComponents,
               ...Twoslash,
             }}
           />
-          <div className="flex justify-between mt-12">
+          <AboveFooter>
             {props.lastModified ? (
               <PageLastUpdate date={new Date(props.lastModified)} />
             ) : null}
             <EditOnGitHub githubUrl={props.githubUrl} />
-          </div>
+          </AboveFooter>
         </DocsBody>
       </DocsPage>
     );
@@ -123,4 +123,17 @@ interface DocsPageProps {
   githubUrl: string;
   lastModified: number;
   markdownUrl: string;
+}
+
+// workaround for the fact that we can't use flex-1 in .prose docs body
+function AboveFooter({ children }: { children: React.ReactNode }) {
+  return (
+    // mt-16 reserves space
+    <div className="mt-16">
+      {/* absolute bottom-0 hugs footer */}
+      <div className="flex justify-between absolute bottom-0 inset-x-0">
+        {children}
+      </div>
+    </div>
+  );
 }

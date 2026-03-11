@@ -4,6 +4,10 @@ import { ComponentPropsWithoutRef, useCallback, useRef, useState } from "react";
 
 import { cn } from "./cn";
 
+export function headingSlug(text: string): string {
+  return text.replaceAll(/[\s.,]+/g, "-").toLowerCase();
+}
+
 export interface HeadingProps extends ComponentPropsWithoutRef<"h1"> {
   as: "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span";
   size?: "lg" | "md" | "sm" | "xl" | "xs";
@@ -41,9 +45,7 @@ export function Heading({
   }
 
   const autoId =
-    typeof children === "string"
-      ? children.replaceAll(/[\s.,]+/g, "-").toLowerCase()
-      : undefined;
+    typeof children === "string" ? headingSlug(children) : undefined;
   const id = idProp ?? autoId;
 
   return (

@@ -138,11 +138,11 @@ export const Tabs = ({
       // and finally, we add the clicked tab
       searchParams.append(searchParamKey, getTabKey(items, index, id));
 
-      globalThis.history.replaceState(
-        null,
-        "",
-        `${globalThis.location.pathname}?${searchParams.toString()}`,
-      );
+      // globalThis.history.replaceState(
+      //   null,
+      //   "",
+      //   `${globalThis.location.pathname}?${searchParams.toString()}`,
+      // );
     }
   };
 
@@ -275,11 +275,11 @@ function useActiveTabFromURL(
     return function cleanUpTabFromSearchParams() {
       const newSearchParams = new URLSearchParams(globalThis.location.search);
       newSearchParams.delete(searchParamKey);
-      globalThis.history.replaceState(
-        null,
-        "",
-        `${globalThis.location.pathname}?${newSearchParams.toString()}`,
-      );
+      // globalThis.history.replaceState(
+      //   null,
+      //   "",
+      //   `${globalThis.location.pathname}?${newSearchParams.toString()}`,
+      // );
     };
     // tabPanelsRef is a ref, so it's not a dependency
   }, [hash, tabsInSearchParams.join(",")]);
