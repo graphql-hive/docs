@@ -1,7 +1,6 @@
 "use client";
 
 import { PageActions } from "@/components/page-actions";
-import { Link } from "@tanstack/react-router";
 import {
   ScrollProvider,
   TOCItemType,
@@ -79,7 +78,7 @@ function DocsTocItem({
   const activeOrder = hash ? activeAnchors.indexOf(hash) : -1;
   const isActive = activeOrder !== -1;
   const shouldScroll = activeOrder === 0;
-  const to = hashIndex <= 0 ? "." : item.url.slice(0, hashIndex);
+  const href = hashIndex <= 0 && hash ? `#${hash}` : item.url;
 
   useLayoutEffect(() => {
     if (!shouldScroll) return;
@@ -97,7 +96,7 @@ function DocsTocItem({
   }, [containerRef, shouldScroll]);
 
   return (
-    <Link
+    <a
       className={cx(
         "prose py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere first:pt-0 last:pb-0 data-[active=true]:text-fd-primary",
         item.depth <= 2 && "ps-3",
@@ -106,14 +105,11 @@ function DocsTocItem({
       )}
       data-active={isActive}
       data-toc-anchor={hash}
-      hash={hash}
-      hashScrollIntoView
+      href={href}
       ref={anchorRef}
-      resetScroll={false}
-      to={to || "."}
     >
       {item.title}
-    </Link>
+    </a>
   );
 }
 
