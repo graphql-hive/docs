@@ -1,3 +1,5 @@
+import type { LoggingFunction, RollupLog } from "rollup";
+
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -9,6 +11,8 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
+import { tanstackDevStylesBasePathPlugin } from "./source-plugins/tanstack-dev-styles-base-path";
+
 const BASE_PATH = "/graphql/hive-testing";
 const NITRO_PRESET = process.env["VERCEL"]
   ? "vercel"
@@ -19,11 +23,11 @@ const CLOUDFLARE_ENTRY = fileURLToPath(
   new URL("src/server/cloudflare-entry.ts", import.meta.url),
 );
 
-export default defineConfig({
+export default defineConfig(async ({ command }) => ({
   base: BASE_PATH,
   build: {
     rollupOptions: {
-      onwarn(warning, defaultHandler) {
+      onwarn(warning: RollupLog, defaultHandler: LoggingFunction) {
         if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
         defaultHandler(warning);
       },
@@ -33,7 +37,12 @@ export default defineConfig({
     BASE_PATH: JSON.stringify(BASE_PATH),
   },
   plugins: [
-    !process.env["CI"] && devtools(),
+    // `serve` is vite dev server, not prod
+    command === "serve" && !process.env["E2E"] && devtools(),
+    command === "serve" &&
+      (process.env["HIVE_ENABLE_TANSTACK_DEV_STYLES_BASE_PATH"] === "1" ||
+        !process.env["E2E"]) &&
+      tanstackDevStylesBasePathPlugin(BASE_PATH),
     nitro({
       baseURL: BASE_PATH,
       entry:
@@ -102,4 +111,4 @@ export default defineConfig({
   ssr: {
     noExternal: ["@hive/design-system", "tailwind-merge"],
   },
-});
+}));
