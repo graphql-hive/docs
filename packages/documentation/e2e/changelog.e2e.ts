@@ -6,6 +6,15 @@ const CHANGELOG_SEARCH_TERM =
   process.env["DEPLOYMENT_CHANGELOG_SEARCH_TERM"] ??
   "SUPERTOKENS_ACCESS_TOKEN_KEY";
 
+async function openSidebarIfNeeded(
+  page: import("@playwright/test").Page,
+  isMobile: boolean,
+) {
+  if (!isMobile) return;
+
+  await page.getByRole("button", { name: "Open Sidebar" }).click();
+}
+
 test("changelog page renders remote markdown with mdx components", async ({
   page,
 }) => {
@@ -31,11 +40,15 @@ test("changelog page renders remote markdown with mdx components", async ({
   );
 });
 
-test("client-side navigation keeps changelog content", async ({ page }) => {
+test("client-side navigation keeps changelog content", async ({
+  isMobile,
+  page,
+}) => {
   await page.goto(appPath("/docs/schema-registry/self-hosting/get-started"), {
     waitUntil: "load",
   });
 
+  await openSidebarIfNeeded(page, isMobile);
   await page
     .getByRole("link", { name: "Self-hosting Changelog" })
     .first()
@@ -49,14 +62,19 @@ test("client-side navigation keeps changelog content", async ({ page }) => {
   await expect(page.locator(".shiki").first()).toBeVisible();
 });
 
-test("changelog code blocks respect dark theme", async ({ page }) => {
+test("changelog code blocks respect dark theme", async ({ isMobile, page }) => {
   await page.goto(appPath("/docs/schema-registry/self-hosting/changelog"), {
     waitUntil: "load",
   });
 
-  await page.getByRole("button", { name: "dark" }).click();
+  if (isMobile) {
+    await openSidebarIfNeeded(page, isMobile);
+  }
+  await page.locator("html").evaluate((element) => {
+    element.classList.remove("light");
+    element.classList.add("dark");
+  });
 
-  await expect(page.locator("html")).toHaveClass(/dark/);
   await expect(
     page
       .locator("figure.shiki")

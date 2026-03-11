@@ -98,6 +98,13 @@ describe("markdown rendering", () => {
     expect(html).not.toContain('class="language-sql"');
   });
 
+  test("trims blank lines around highlighted changelog code blocks", () => {
+    const html = renderMarkdown("```sql\n\nSELECT 1;\n\n```\n");
+
+    expect(html.match(/class="line"/g)?.length).toBe(1);
+    expect(html).toContain("SELECT");
+  });
+
   test("keeps unknown languages as plain code blocks", () => {
     const html = renderMarkdown("```not-a-real-lang\nhello\n```\n");
 

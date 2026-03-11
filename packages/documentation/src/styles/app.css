@@ -22,6 +22,10 @@
   html {
     scroll-behavior: smooth;
   }
+
+  html:has([data-docs]) {
+    scroll-behavior: auto;
+  }
 }
 
 :root {

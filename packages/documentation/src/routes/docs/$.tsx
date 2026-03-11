@@ -2,7 +2,7 @@ import type { TableOfContents } from "fumadocs-core/toc";
 
 import { DocsTableOfContent } from "@/components/docs-toc";
 import { Footer, Navigation } from "@/components/navigation";
-import { EditOnGitHub, PageActions } from "@/components/page-actions";
+import { EditOnGitHub } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
 import { mdxComponents } from "@/lib/mdx-components";
 import { getSource } from "@/lib/source";
@@ -20,6 +20,7 @@ import {
   DocsTitle,
   PageLastUpdate,
 } from "fumadocs-ui/layouts/docs/page";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
@@ -73,17 +74,10 @@ const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
             />
           ),
         }}
-        tableOfContentPopover={{
-          footer: (
-            <PageActions
-              githubUrl={props.githubUrl}
-              markdownUrl={props.markdownUrl}
-            />
-          ),
-        }}
         toc={toc}
         {...props}
       >
+        <DocsHashScroller />
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <DocsBody className="relative">
@@ -141,6 +135,43 @@ interface DocsPageProps {
   githubUrl: string;
   lastModified: number;
   markdownUrl: string;
+}
+
+function DocsHashScroller() {
+  useEffect(() => {
+    let frame = 0;
+
+    const scrollToCurrentHash = () => {
+      const id = decodeURIComponent(globalThis.location.hash.slice(1));
+      if (!id) return;
+
+      let attempts = 0;
+      const scroll = () => {
+        const heading = document.getElementById(id);
+        if (heading) {
+          heading.scrollIntoView();
+          return;
+        }
+
+        if (attempts < 10) {
+          attempts += 1;
+          frame = requestAnimationFrame(scroll);
+        }
+      };
+
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(scroll);
+      });
+    };
+
+    scrollToCurrentHash();
+
+    return () => {
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return null;
 }
 
 // workaround for the fact that we can't use flex-1 in .prose docs body

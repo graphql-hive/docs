@@ -128,6 +128,10 @@ function getCodeLanguage(node: HastNode): string | null {
   return null;
 }
 
+function getCodeText(node: HastNode): string {
+  return getNodeText(node).trim();
+}
+
 function getHighlighter() {
   if (highlighter) {
     return highlighter;
@@ -160,7 +164,7 @@ function highlightCodeBlock(
     return preNode;
   }
 
-  const highlighted = highlighter.codeToHast(getNodeText(codeNode), {
+  const highlighted = highlighter.codeToHast(getCodeText(codeNode), {
     defaultColor: false,
     lang,
     themes: DOCS_CODE_THEMES,
