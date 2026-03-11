@@ -9,6 +9,7 @@ import { useFumadocsLoader } from "fumadocs-core/source/client";
 import browserCollections from "fumadocs-mdx:collections/browser";
 import * as Twoslash from "fumadocs-twoslash/ui";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import type { TableOfContents } from "fumadocs-core/toc";
 import {
   DocsBody,
   DocsDescription,
@@ -46,7 +47,9 @@ const serverLoader = createServerFn({
 
 const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
   component(loaded, props) {
-    const { default: MDX, toc } = loaded;
+    const { default: MDX, toc: mdxToc } = loaded;
+    const extraToc = (loaded as { extraToc?: TableOfContents }).extraToc;
+    const toc: TableOfContents = extraToc ? [...mdxToc, ...extraToc] : mdxToc;
 
     const frontmatter = loaded.frontmatter as {
       description?: string;
