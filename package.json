@@ -49,6 +49,8 @@
   "packageManager": "bun@1.3.5",
   "patchedDependencies": {
     "mermaid-isomorphic@3.0.4": "patches/mermaid-isomorphic@3.0.4.patch",
-    "@tanstack/start-plugin-core@1.147.1": "patches/@tanstack%2Fstart-plugin-core@1.147.1.patch"
+    "@tanstack/start-plugin-core@1.147.1": "patches/@tanstack%2Fstart-plugin-core@1.147.1.patch",
+    "nitro-nightly@3.0.1-20260227-181935-bfbb207c": "patches/nitro-nightly@3.0.1-20260227-181935-bfbb207c.patch",
+    "wrangler@4.71.0": "patches/wrangler@4.71.0.patch"
   }
 }

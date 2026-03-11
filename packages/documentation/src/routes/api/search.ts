@@ -1,9 +1,14 @@
 import type { StructuredData } from "fumadocs-core/mdx-plugins/remark-structure";
 import type { AdvancedIndex } from "fumadocs-core/search/server";
 
+import {
+  CHANGELOG_PAGE_URL,
+  getDeploymentChangelogMarkdown,
+} from "@/lib/deployment-changelog";
 import { pathToSlug } from "@/lib/path-to-slug";
 import { getSource } from "@/lib/source";
 import { createFileRoute } from "@tanstack/react-router";
+import { structure } from "fumadocs-core/mdx-plugins/remark-structure";
 import { findPath } from "fumadocs-core/page-tree";
 import { createSearchAPI } from "fumadocs-core/search/server";
 
@@ -44,17 +49,28 @@ async function resolveStructuredData(data: any): Promise<StructuredData> {
   throw new Error("Cannot resolve structuredData from page");
 }
 
+async function getChangelogStructuredData(): Promise<StructuredData> {
+  const markdown = await getDeploymentChangelogMarkdown();
+  if (!markdown) return { contents: [], headings: [] };
+  return structure(markdown);
+}
+
 async function buildIndexes(): Promise<AdvancedIndex[]> {
   const source = await getSource();
   const { blog, caseStudies, productUpdates } =
     await import("fumadocs-mdx:collections/server");
+
+  const changelogStructuredData = getChangelogStructuredData();
 
   const docsIndexes = await Promise.all(
     source.getPages().map(async (page) => ({
       breadcrumbs: getDocsBreadcrumbs(source, page.url),
       description: page.data.description,
       id: page.url,
-      structuredData: await resolveStructuredData(page.data),
+      structuredData:
+        page.url === CHANGELOG_PAGE_URL
+          ? await changelogStructuredData
+          : await resolveStructuredData(page.data),
       title: page.data.title ?? page.url,
       url: page.url,
     })),

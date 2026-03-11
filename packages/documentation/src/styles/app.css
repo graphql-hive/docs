@@ -22,6 +22,10 @@
   html {
     scroll-behavior: smooth;
   }
+
+  html:has([data-docs]) {
+    scroll-behavior: auto;
+  }
 }
 
 :root {
@@ -65,6 +69,14 @@
     var(--color-primary) 4.5%
   );
   --tw-prose-body: color-mix(in oklab, hsl(0, 0%, 92%) 90%, transparent);
+}
+
+.prose.prose {
+  --tw-prose-bold: inherit;
+
+  & :not(pre) > code {
+    overflow-wrap: break-word;
+  }
 }
 
 a,

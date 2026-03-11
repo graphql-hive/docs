@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const PORT = 1440;
+const PORT = Number(process.env["PORT"] ?? 1440);
 const baseURL = `http://localhost:${PORT}`;
 const webServerCommand = `bunx wrangler dev -c .output/server/wrangler.json --port ${PORT}`;
 
@@ -35,7 +35,7 @@ export default defineConfig({
   },
   webServer: {
     command: webServerCommand,
-    env: { PORT: String(PORT) },
+    env: { ...process.env, PORT: String(PORT) },
     reuseExistingServer: !process.env["CI"],
     timeout: 120_000,
     url: baseURL,

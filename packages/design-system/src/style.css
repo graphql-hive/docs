@@ -1,25 +1,20 @@
-/* Guild Components Styles */
-/* Essential styles for HiveNavigation, HiveFooter, and other guild components */
-
-@layer components {
-  .hive-focus {
-    &:focus {
-      outline: none;
-    }
-
-    &:focus-visible {
-      @apply ring ring-blue-300 ring-offset-1 ring-offset-blue-400 dark:ring-blue-700 dark:ring-offset-blue-600;
-    }
+@utility hive-focus {
+  &:focus {
+    outline: none;
   }
 
-  .hive-focus-within {
-    &:focus {
-      outline: none;
-    }
+  &:focus-visible {
+    @apply ring ring-blue-300 ring-offset-1 ring-offset-blue-400 dark:ring-blue-700 dark:ring-offset-blue-600;
+  }
+}
 
-    &:focus-within {
-      @apply ring ring-blue-300 ring-offset-1 ring-offset-blue-400 dark:ring-blue-700 dark:ring-offset-blue-600;
-    }
+@utility hive-focus-within {
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-within {
+    @apply ring ring-blue-300 ring-offset-1 ring-offset-blue-400 dark:ring-blue-700 dark:ring-offset-blue-600;
   }
 }
 

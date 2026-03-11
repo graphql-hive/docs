@@ -32,9 +32,9 @@ const cli = meow(
 
 const validCommands = [
   "compare",
+  "report",
   "screenshot-production",
   "update-baseline",
-  "report",
 ] as const;
 type Command = (typeof validCommands)[number];
 

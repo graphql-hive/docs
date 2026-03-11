@@ -1,9 +1,6 @@
+import { withBasePath } from "@/lib/with-base-path";
 import { createMiddleware, createStart } from "@tanstack/react-start";
 import { isMarkdownPreferred, rewritePath } from "fumadocs-core/negotiation";
-
-function withBasePath(path: string) {
-  return `${BASE_PATH}${path}`;
-}
 
 const acceptRewrites = [
   rewritePath("/docs", "/llms.mdx/docs"),

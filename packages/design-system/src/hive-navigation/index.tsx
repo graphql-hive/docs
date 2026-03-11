@@ -163,7 +163,12 @@ export function HiveNavigation({
       )}
 
       {/* mobile menu */}
-      <div className="flex items-center justify-between md:hidden p-4">
+      <div
+        className={cn(
+          "flex items-center justify-between md:hidden p-4",
+          className,
+        )}
+      >
         {resolvedLogo}
         <div className="flex items-center gap-1">
           {search}

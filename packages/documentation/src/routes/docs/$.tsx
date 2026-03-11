@@ -1,8 +1,12 @@
+import type { TableOfContents } from "fumadocs-core/toc";
+
+import { DocsTableOfContent } from "@/components/docs-toc";
 import { Footer, Navigation } from "@/components/navigation";
-import { PageActions } from "@/components/page-actions";
+import { EditOnGitHub } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
 import { mdxComponents } from "@/lib/mdx-components";
 import { getSource } from "@/lib/source";
+import { withBasePath } from "@/lib/with-base-path";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
@@ -14,7 +18,9 @@ import {
   DocsDescription,
   DocsPage,
   DocsTitle,
+  PageLastUpdate,
 } from "fumadocs-ui/layouts/docs/page";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
@@ -36,45 +42,57 @@ const serverLoader = createServerFn({
     if (!page) throw notFound();
 
     return {
+      lastModified: page.data.lastModified,
       pageTree: await source.serializePageTree(source.getPageTree()),
       path: page.path,
       url: page.url,
     };
   });
 
-const clientLoader = browserCollections.docs.createClientLoader<{
-  className?: string;
-  githubUrl: string;
-  markdownUrl: string;
-}>({
+const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
   component(loaded, props) {
-    const { default: MDX, toc } = loaded;
+    const { default: MDX, toc: mdxToc } = loaded;
+    const { extraToc } = loaded as { extraToc?: TableOfContents };
+    const toc: TableOfContents = extraToc ? [...mdxToc, ...extraToc] : mdxToc;
+
     const frontmatter = loaded.frontmatter as {
       description?: string;
       title: string;
     };
+
     return (
       <DocsPage
+        breadcrumb={{
+          includeRoot: true,
+        }}
         tableOfContent={{
-          footer: (
-            <PageActions
+          component: (
+            <DocsTableOfContent
               githubUrl={props.githubUrl}
               markdownUrl={props.markdownUrl}
+              toc={toc}
             />
           ),
         }}
         toc={toc}
         {...props}
       >
+        <DocsHashScroller />
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
-        <DocsBody>
+        <DocsBody className="relative">
           <MDX
             components={{
               ...mdxComponents,
               ...Twoslash,
             }}
           />
+          <AboveFooter>
+            {props.lastModified ? (
+              <PageLastUpdate date={new Date(props.lastModified)} />
+            ) : null}
+            <EditOnGitHub githubUrl={props.githubUrl} />
+          </AboveFooter>
         </DocsBody>
       </DocsPage>
     );
@@ -102,12 +120,69 @@ function Page() {
         searchToggle={{ enabled: false }}
       >
         {clientLoader.useContent(data.path, {
-          className: "",
           githubUrl: `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${data.path}`,
-          markdownUrl: `${data.url}.mdx`,
+          lastModified: data.lastModified?.getTime() ?? 0,
+          markdownUrl: withBasePath(`${data.url}.mdx`),
         })}
       </DocsLayout>
       <Footer className="border-t border-fd-border" />
+    </div>
+  );
+}
+
+interface DocsPageProps {
+  className?: string;
+  githubUrl: string;
+  lastModified: number;
+  markdownUrl: string;
+}
+
+function DocsHashScroller() {
+  useEffect(() => {
+    let frame = 0;
+
+    const scrollToCurrentHash = () => {
+      const id = decodeURIComponent(globalThis.location.hash.slice(1));
+      if (!id) return;
+
+      let attempts = 0;
+      const scroll = () => {
+        const heading = document.getElementById(id);
+        if (heading) {
+          heading.scrollIntoView();
+          return;
+        }
+
+        if (attempts < 10) {
+          attempts += 1;
+          frame = requestAnimationFrame(scroll);
+        }
+      };
+
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(scroll);
+      });
+    };
+
+    scrollToCurrentHash();
+
+    return () => {
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return null;
+}
+
+// workaround for the fact that we can't use flex-1 in .prose docs body
+function AboveFooter({ children }: { children: React.ReactNode }) {
+  return (
+    // mt-16 reserves space
+    <div className="mt-16">
+      {/* absolute bottom-0 hugs footer */}
+      <div className="flex justify-between absolute bottom-0 inset-x-0">
+        {children}
+      </div>
     </div>
   );
 }

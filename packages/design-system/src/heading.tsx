@@ -3,6 +3,9 @@
 import { ComponentPropsWithoutRef, useCallback, useRef, useState } from "react";
 
 import { cn } from "./cn";
+import { headingSlug } from "./heading-slug.js";
+
+export { headingSlug } from "./heading-slug.js";
 
 export interface HeadingProps extends ComponentPropsWithoutRef<"h1"> {
   as: "div" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span";
@@ -41,9 +44,7 @@ export function Heading({
   }
 
   const autoId =
-    typeof children === "string"
-      ? children.replaceAll(/[\s.,]+/g, "-").toLowerCase()
-      : undefined;
+    typeof children === "string" ? headingSlug(children) : undefined;
   const id = idProp ?? autoId;
 
   return (

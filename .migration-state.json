@@ -3,7 +3,7 @@
   "sourceRepo": ".context/hive-console",
   "sourceBranch": "main",
   "targetSubdirectory": "temporary",
-  "lastSyncedCommit": "9ca7071dc699d7c38e66eeccb8f8c017c681e209",
+  "lastSyncedCommit": "cc63497c7130ae130913430146693a32d86deb72",
   "migrations": [
     {
       "commit": "f09052749e7ec7a5f759566fac8e13eb3f833067",
@@ -404,6 +404,54 @@
       "author": "Dotan Simha",
       "syncedAt": "2026-03-05T19:56:46.148Z",
       "mergeCommit": "34948d9751239ab3d783506adfd823024f26ac35"
+    },
+    {
+      "commit": "08c70a20de1c94f495aec2d555b45940fb5d1b45",
+      "date": "2026-03-06 12:55:52 +0100",
+      "message": "fix: bump dompurify (#7795)",
+      "author": "Laurin",
+      "syncedAt": "2026-03-09T13:16:24.568Z",
+      "mergeCommit": "08869bbd6dad7dd93de233146b487c8c11c69d0f"
+    },
+    {
+      "commit": "0ea0b4f02391083c1807588f36de26068d5d2528",
+      "date": "2026-03-06 16:09:05 +0200",
+      "message": "Upcoming Release Changes (#7798)",
+      "author": "TheGuildBot",
+      "syncedAt": "2026-03-09T13:16:24.889Z",
+      "mergeCommit": "ba6a854ff7a472df6321e0b834f111a5fe195c43"
+    },
+    {
+      "commit": "b0fdabeb4c60c2da0b959f4d2305780b34169b5c",
+      "date": "2026-03-06 16:12:05 +0100",
+      "message": "docs: Redacting sensitive data from Hive Logger's output (#7674)",
+      "author": "Denis Badurina",
+      "syncedAt": "2026-03-09T13:16:25.130Z",
+      "mergeCommit": "4b4bfd682d6f2280afad614c5bcfec3bbf51eb67"
+    },
+    {
+      "commit": "14e3d434cfa80910286c2bb1f33cbb82f1def78a",
+      "date": "2026-03-07",
+      "message": "docs: add clarification to cdn artifacts (#7799)",
+      "author": "manual",
+      "syncedAt": "2026-03-09T13:17:38.076Z",
+      "mergeCommit": "943b224aa5b318c1576374bd9b0a61cfe2ed85a6"
+    },
+    {
+      "commit": "ee6051fe8df4edfc8ffc41f30c8a2ede0646aa04",
+      "date": "2026-03-11 10:03:27 +0100",
+      "message": "docs: give some examples for contract composition (#7816)",
+      "author": "Laurin",
+      "syncedAt": "2026-03-11T18:24:51.231Z",
+      "mergeCommit": "dc0292c7be001909816ae90c31e9f3ec728962b7"
+    },
+    {
+      "commit": "cc63497c7130ae130913430146693a32d86deb72",
+      "date": "2026-03-11 13:20:02 +0200",
+      "message": "Upcoming Release Changes (#7809)",
+      "author": "TheGuildBot",
+      "syncedAt": "2026-03-11T18:24:51.476Z",
+      "mergeCommit": "b861ebd05f2b85c3376d53239c4a60008caaa115"
     }
   ]
 }

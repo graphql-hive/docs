@@ -1,6 +1,6 @@
 {
   "title": "Hive Console",
-  "description": "Schema registry, analytics, and federation platform",
+  "description": "Schema registry and performance insights",
   "icon": "Hive",
   "root": true,
   "pages": [

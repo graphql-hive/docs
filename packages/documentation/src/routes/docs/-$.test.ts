@@ -5,11 +5,15 @@
  */
 import { spawn, type Subprocess } from "bun";
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
-import { existsSync } from "node:fs";
 import { join } from "node:path";
 
 const TEST_PORT = 14_401;
 const BASE_URL = process.env["TEST_URL"] || `http://localhost:${TEST_PORT}`;
+const CHANGELOG_CONTENT_TERM =
+  process.env["DEPLOYMENT_CHANGELOG_CONTENT_TERM"] ??
+  "SUPERTOKENS_ACCESS_TOKEN_KEY";
+const CHANGELOG_SEARCH_TERM =
+  process.env["DEPLOYMENT_CHANGELOG_SEARCH_TERM"] ?? "self-hosting changelog";
 
 let devServer: Subprocess | null = null;
 
@@ -32,19 +36,19 @@ beforeAll(async () => {
   if (process.env["TEST_URL"]) return; // user-provided server
 
   const cwd = join(import.meta.dir, "../../..");
-  const wranglerConfig = join(cwd, ".output/server/wrangler.json");
+  const build = spawn(["bun", "run", "build"], {
+    cwd,
+    env: {
+      ...process.env,
+      NODE_ENV: "production",
+    },
+    stderr: "inherit",
+    stdout: "inherit",
+  });
 
-  if (!existsSync(wranglerConfig)) {
-    const build = spawn(["bun", "run", "build"], {
-      cwd,
-      stderr: "inherit",
-      stdout: "inherit",
-    });
-
-    const exitCode = await build.exited;
-    if (exitCode !== 0) {
-      throw new Error(`Build failed with exit code ${exitCode}`);
-    }
+  const exitCode = await build.exited;
+  if (exitCode !== 0) {
+    throw new Error(`Build failed with exit code ${exitCode}`);
   }
 
   devServer = spawn(
@@ -59,7 +63,11 @@ beforeAll(async () => {
     ],
     {
       cwd,
-      env: { ...process.env, PORT: String(TEST_PORT) },
+      env: {
+        ...process.env,
+        NODE_ENV: "production",
+        PORT: String(TEST_PORT),
+      },
       stderr: "ignore",
       stdout: "ignore",
     },
@@ -209,6 +217,36 @@ describe("Accept header negotiation", () => {
     expect(res.headers.get("content-type")).not.toBe("text/markdown");
     const text = await res.text();
     expect(text).toContain("<!DOCTYPE html>");
+  });
+});
+
+describe("deployment changelog", () => {
+  test("renders changelog html with mdx code-block chrome", async () => {
+    const res = await fetch(
+      `${BASE_URL}/docs/schema-registry/self-hosting/changelog`,
+    );
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/html");
+
+    const text = await res.text();
+    expect(text).toContain("<!DOCTYPE html>");
+    expect(text).toContain(CHANGELOG_CONTENT_TERM);
+    expect(text).toContain("shiki");
+  });
+
+  test("api search indexes the changelog source", async () => {
+    const res = await fetch(
+      `${BASE_URL}/api/search?query=${encodeURIComponent(CHANGELOG_SEARCH_TERM)}`,
+      { redirect: "follow" },
+    );
+    expect(res.status).toBe(200);
+
+    const json = (await res.json()) as { url: string }[];
+    expect(
+      json.some(
+        (entry) => entry.url === "/docs/schema-registry/self-hosting/changelog",
+      ),
+    ).toBe(true);
   });
 });
 

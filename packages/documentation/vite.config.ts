@@ -9,15 +9,67 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
+import { extractFilteredChangelogToc } from "./src/lib/changelog-toc";
+
 const BASE_PATH = "/graphql/hive-testing";
-const NITRO_PRESET = process.env["VERCEL"]
-  ? "vercel"
-  : process.env["E2E"]
-    ? "node-server"
-    : "cloudflare-module";
+const DEPLOYMENT_CHANGELOG_SNAPSHOT_ID =
+  "virtual:deployment-changelog-snapshot";
+const DEPLOYMENT_CHANGELOG_TOC_ID = "virtual:deployment-changelog-toc";
+const NITRO_PRESET = process.env["VERCEL"] ? "vercel" : "cloudflare-module";
 const CLOUDFLARE_ENTRY = fileURLToPath(
   new URL("src/server/cloudflare-entry.ts", import.meta.url),
 );
+const DEFAULT_CHANGELOG_URL =
+  "https://raw.githubusercontent.com/graphql-hive/console/main/deployment/CHANGELOG.md";
+
+function stripTopLevelHeading(markdown: string) {
+  return markdown.replace(/^#\s+.*\n/, "");
+}
+
+async function getDeploymentChangelogSnapshot() {
+  try {
+    const res = await fetch(
+      process.env["DEPLOYMENT_CHANGELOG_URL"] ?? DEFAULT_CHANGELOG_URL,
+    );
+    if (!res.ok) return "";
+    return stripTopLevelHeading(await res.text());
+  } catch {
+    return "";
+  }
+}
+
+function deploymentChangelogPlugin() {
+  const resolvedSnapshotId = `\0${DEPLOYMENT_CHANGELOG_SNAPSHOT_ID}`;
+  const resolvedTocId = `\0${DEPLOYMENT_CHANGELOG_TOC_ID}`;
+  let snapshotPromise: Promise<string> | undefined;
+
+  return {
+    name: "deployment-changelog",
+    resolveId(source: string) {
+      if (source === DEPLOYMENT_CHANGELOG_SNAPSHOT_ID)
+        return resolvedSnapshotId;
+      if (source === DEPLOYMENT_CHANGELOG_TOC_ID) return resolvedTocId;
+      return null;
+    },
+    load(id: string) {
+      if (id === resolvedSnapshotId) {
+        snapshotPromise ||= getDeploymentChangelogSnapshot();
+        return snapshotPromise.then(
+          (snapshot) =>
+            `export const deploymentChangelogSnapshot = ${JSON.stringify(snapshot)};`,
+        );
+      }
+      if (id === resolvedTocId) {
+        snapshotPromise ||= getDeploymentChangelogSnapshot();
+        return snapshotPromise.then((snapshot) => {
+          const toc = extractFilteredChangelogToc(snapshot);
+          return `export const deploymentChangelogToc = ${JSON.stringify(toc)};`;
+        });
+      }
+      return null;
+    },
+  };
+}
 
 export default defineConfig({
   base: BASE_PATH,
@@ -34,10 +86,14 @@ export default defineConfig({
   },
   plugins: [
     !process.env["CI"] && devtools(),
+    deploymentChangelogPlugin(),
     nitro({
       baseURL: BASE_PATH,
       entry:
         NITRO_PRESET === "cloudflare-module" ? CLOUDFLARE_ENTRY : undefined,
+      prerender: {
+        ignore: [/[?&]utm_/],
+      },
       preset: NITRO_PRESET,
       routeRules: await import("./redirects").then((m) => m.routeRules),
     }),
@@ -77,7 +133,7 @@ export default defineConfig({
       },
       sitemap: {
         enabled: true,
-        host: "https://the-guild.dev/graphql/hive",
+        host: "https://the-guild.dev",
       },
       spa: {
         enabled: true,

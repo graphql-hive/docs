@@ -487,10 +487,7 @@ export const ContentInHiddenPanelOpensByHash: Story = {
     children: (
       <>
         <Tabs.Tab>
-          <CallToAction
-            href={`${window.location.href}#binary`}
-            variant="tertiary"
-          >
+          <CallToAction href="#binary" variant="tertiary">
             Navigate to #binary
           </CallToAction>
         </Tabs.Tab>
@@ -499,6 +496,96 @@ export const ContentInHiddenPanelOpensByHash: Story = {
         </Tabs.Tab>
       </>
     ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const url = new URL(window.location.href);
+    url.hash = "";
+    window.history.replaceState(null, "", url.toString());
+
+    const link = canvas.getByRole("link", { name: "Navigate to #binary" });
+    await userEvent.click(link);
+
+    await expect(window.location.hash).toBe("#binary");
+    await expect(
+      canvas.getByRole("tabpanel", { name: "Binary" }),
+    ).toBeVisible();
+  },
+};
+
+export const KeepsHashWhenChangingTabs: Story = {
+  args: {
+    items: ["Docker", "Binary"],
+    children: (
+      <>
+        <Tabs.Tab>
+          <CallToAction href="#binary" variant="tertiary">
+            Navigate to #binary
+          </CallToAction>
+        </Tabs.Tab>
+        <Tabs.Tab>
+          <div id="binary">Binary</div>
+        </Tabs.Tab>
+      </>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const url = new URL(window.location.href);
+    url.hash = "";
+    window.history.replaceState(null, "", url.toString());
+
+    await userEvent.click(
+      canvas.getByRole("link", { name: "Navigate to #binary" }),
+    );
+    await expect(window.location.hash).toBe("#binary");
+
+    await userEvent.click(canvas.getByRole("tab", { name: "Docker" }));
+    await expect(window.location.hash).toBe("#binary");
+  },
+};
+
+export const UnmountCleanupPreservesHash: Story = {
+  args: {
+    items: ["Overview", "API Reference"],
+    searchParamKey: "section",
+    children: (
+      <>
+        <Tabs.Tab>Overview content</Tabs.Tab>
+        <Tabs.Tab>API Reference content</Tabs.Tab>
+      </>
+    ),
+  },
+  render(args) {
+    const [mounted, setMounted] = React.useState(true);
+
+    return (
+      <div className="space-y-4">
+        <CallToAction href="#outside-hash" variant="tertiary">
+          Navigate to #outside-hash
+        </CallToAction>
+        <CallToAction onClick={() => setMounted(false)} variant="tertiary">
+          Unmount Tabs
+        </CallToAction>
+        {mounted ? <Tabs {...args} /> : null}
+        <div id="outside-hash">Outside hash target</div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole("tab", { name: "API Reference" }));
+    await expect(window.location.search).toContain("section=api-reference");
+
+    await userEvent.click(
+      canvas.getByRole("link", { name: "Navigate to #outside-hash" }),
+    );
+    await expect(window.location.hash).toBe("#outside-hash");
+
+    await userEvent.click(canvas.getByRole("button", { name: "Unmount Tabs" }));
+    await expect(window.location.search).not.toContain("section=");
+    await expect(window.location.hash).toBe("#outside-hash");
   },
 };
 

@@ -4,7 +4,6 @@ title: Self-Hosting Hive Console
 
 import { Callout } from "@hive/design-system/hive-components/callout";
 import { Card, Cards } from "@hive/design-system/hive-components/card";
-import { Image } from "@hive/design-system/image";
 import { Tabs } from "@hive/design-system/tabs";
 
 import diagram from "./diagram.png";
@@ -67,9 +66,9 @@ ClickHouse) and storage (S3) with managed database/storage (Cloud-based or in-ho
 
 The following diagram shows the architecture of a self-hosted Hive Console instance:
 
-<Image
+<MdxImage
   alt="Self-hosting diagram"
-  className="mt-10 w-full rounded-lg drop-shadow-md"
+  className="mt-10 w-full rounded-lg drop-shadow-md dark:opacity-90"
   src={diagram}
 />
 
@@ -160,7 +159,7 @@ using the link below
 <Tabs.Tab>
 
 ```sh
-curl -O https://raw.githubusercontent.com/graphql-hive/console/hive@9.6.0/docker/docker-compose.community.yml
+curl -O https://raw.githubusercontent.com/graphql-hive/console/hive@9.7.0/docker/docker-compose.community.yml
 ```
 
 </Tabs.Tab>
@@ -168,7 +167,7 @@ curl -O https://raw.githubusercontent.com/graphql-hive/console/hive@9.6.0/docker
 <Tabs.Tab>
 
 ```sh
-wget https://raw.githubusercontent.com/graphql-hive/console/hive@9.6.0/docker/docker-compose.community.yml
+wget https://raw.githubusercontent.com/graphql-hive/console/hive@9.7.0/docker/docker-compose.community.yml
 ```
 
 </Tabs.Tab>
@@ -187,7 +186,7 @@ We recommend sticking to a specific version to avoid breaking changes. The `late
 corresponds to the latest stable release.
 
 ```sh
-export DOCKER_TAG=":9.6.0"
+export DOCKER_TAG=":9.7.0"
 ```
 
 After picking a version set the `DOCKER_TAG` environment variable to that value.
@@ -196,7 +195,7 @@ After picking a version set the `DOCKER_TAG` environment variable to that value.
 
 ```bash
 export DOCKER_REGISTRY="ghcr.io/graphql-hive/"
-export DOCKER_TAG=":9.6.0" # Pin this to an exact version
+export DOCKER_TAG=":9.7.0" # Pin this to an exact version
 export HIVE_ENCRYPTION_SECRET=$(openssl rand -hex 16)
 export HIVE_APP_BASE_URL="http://localhost:8080"
 export HIVE_EMAIL_FROM="no-reply@graphql-hive.com"

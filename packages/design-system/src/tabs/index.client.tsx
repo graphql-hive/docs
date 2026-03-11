@@ -1,25 +1,19 @@
 "use client";
 
-import {
-  Tab as HeadlessTab,
-  TabProps as HeadlessTabProps,
-  TabGroup,
-  TabGroupProps,
-  TabList,
-  TabListProps,
-  TabPanel,
-  TabPanelProps,
-  TabPanels,
-  // this component is almost verbatim copied from Nextra, so we keep @headlessui/react to guarantee it works the same
-} from "@headlessui/react";
+import * as Primitive from "@radix-ui/react-tabs";
 import { useLocation } from "@tanstack/react-router";
 import {
+  ComponentPropsWithoutRef,
+  createContext,
   FC,
+  FocusEvent,
   ReactElement,
   ReactNode,
+  useContext,
   useEffect,
   useId,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -35,23 +29,43 @@ type TabObjectItem = {
   label: TabItem;
 };
 
+type TabKey = string & { __brand: "TabKey" };
+type TabClassNameArgs = {
+  disabled: boolean;
+  focus: boolean;
+  hover: boolean;
+  selected: boolean;
+};
+type TabPanelClassNameArgs = {
+  focus: boolean;
+};
+type ResolvedClassName<Args> = ((args: Args) => string | undefined) | string;
+
+type TabsContextValue = {
+  collection: string[];
+  id: string;
+  items: (TabItem | TabObjectItem)[];
+};
+
+const TabsContext = createContext<TabsContextValue | undefined>(undefined);
+
 function isTabObjectItem(item: unknown): item is TabObjectItem {
   return !!item && typeof item === "object" && "label" in item;
 }
 
-export interface TabsProps extends Pick<
-  TabGroupProps,
-  "defaultIndex" | "onChange" | "selectedIndex"
-> {
+export interface TabsProps {
   children: ReactNode;
   /** Tabs CSS class name. */
-  className?: TabListProps["className"];
+  className?: ResolvedClassName<Record<string, never>>;
+  defaultIndex?: number;
   items: (TabItem | TabObjectItem)[];
+  onChange?: (index: number) => void;
   /**
    * URLSearchParams key for persisting the selected tab.
    * @default "tab"
    */
   searchParamKey?: string;
+  selectedIndex?: number;
   /**
    * LocalStorage key for persisting the selected tab.
    * Set to `true` to use the default key `tabs-${id}`.
@@ -60,7 +74,15 @@ export interface TabsProps extends Pick<
    */
   storageKey?: true | string | null;
   /** Tab CSS class name. */
-  tabClassName?: HeadlessTabProps["className"];
+  tabClassName?: ResolvedClassName<TabClassNameArgs>;
+}
+
+export interface TabProps extends Omit<
+  ComponentPropsWithoutRef<typeof Primitive.Content>,
+  "className" | "forceMount" | "value"
+> {
+  className?: ResolvedClassName<TabPanelClassNameArgs>;
+  unmount?: boolean;
 }
 
 export const Tabs = ({
@@ -86,6 +108,12 @@ export const Tabs = ({
   }
 
   const tabPanelsRef = useRef<HTMLDivElement>(null!);
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const tabsContext = useMemo(
+    () => ({ collection: [], id, items }),
+    [id, items],
+  );
 
   const tabIndexFromSearchParams = useActiveTabFromURL(
     tabPanelsRef,
@@ -102,6 +130,7 @@ export const Tabs = ({
     tabIndexFromSearchParams !== -1,
     id,
   );
+  useTabSearchParamCleanup(searchParamKey, items, id);
 
   const handleChange = (index: number) => {
     onChange?.(index);
@@ -120,107 +149,122 @@ export const Tabs = ({
     }
 
     if (searchParamKey) {
-      const searchParams = new URLSearchParams(globalThis.location.search);
-      const tabKeys = new Set(searchParams.getAll(searchParamKey));
-
-      // we remove only tabs from this list from search params
-      for (let i = 0; i < items.length; i++) {
-        const key = getTabKey(items, i, id);
-        tabKeys.delete(key);
-      }
-
-      // we add tabs from outside of this list back
-      searchParams.delete(searchParamKey);
-      for (const key of tabKeys) {
-        searchParams.append(searchParamKey, key);
-      }
-
-      // and finally, we add the clicked tab
-      searchParams.append(searchParamKey, getTabKey(items, index, id));
-
-      globalThis.history.replaceState(
-        null,
-        "",
-        `${globalThis.location.pathname}?${searchParams.toString()}`,
-      );
+      replaceTabSearchParam(searchParamKey, items, id, index);
     }
   };
 
   return (
-    <TabGroup
-      defaultIndex={defaultIndex}
-      onChange={handleChange}
-      selectedIndex={selectedIndex}
-    >
-      <TabList
-        className={(args) =>
-          cn(
-            "nextra-scrollbar overflow-x-auto overflow-y-hidden overscroll-x-contain",
-            "mt-4 flex w-full gap-2 pb-px shadow-[inset_0_-1px_0_var(--color-beige-400)] dark:shadow-[inset_0_-1px_0_var(--color-neutral-800)]",
-            "focus-visible:hive-focus",
-            typeof className === "function" ? className(args) : className,
-          )
+    <Primitive.Root
+      defaultValue={getTabKey(items, defaultIndex, id)}
+      onValueChange={(value: string) => {
+        const index = items.findIndex(
+          (_, itemIndex) => getTabKey(items, itemIndex, id) === value,
+        );
+        if (index !== -1) {
+          handleChange(index);
         }
+      }}
+      value={getTabKey(items, selectedIndex, id)}
+    >
+      <Primitive.List
+        className={cn(
+          "nextra-scrollbar overflow-x-auto overflow-y-hidden overscroll-x-contain",
+          "mt-4 flex w-full gap-2 pb-px shadow-[inset_0_-1px_0_var(--color-beige-400)] dark:shadow-[inset_0_-1px_0_var(--color-neutral-800)]",
+          "focus-visible:hive-focus",
+          resolveClassName(className, {}),
+        )}
       >
         {items.map((item, index) => (
-          <HeadlessTab
-            className={(args) => {
-              const { disabled, focus, hover, selected } = args;
-              return cn(
-                focus && "hive-focus ring-inset",
-                "cursor-pointer whitespace-nowrap relative",
-                "rounded-t p-2 font-medium leading-5 transition-colors",
-                "-mb-px select-none border-b",
-                selected
-                  ? "border-current outline-hidden"
-                  : hover
-                    ? "border-beige-400 dark:border-neutral-800"
-                    : "border-transparent",
-                selected
-                  ? "text-green-900 dark:text-primary"
-                  : disabled
-                    ? "pointer-events-none text-beige-600 dark:text-neutral-600"
-                    : hover
-                      ? "text-black dark:text-white"
-                      : "text-beige-800 dark:text-beige-200",
-                typeof tabClassName === "function"
-                  ? tabClassName(args)
-                  : tabClassName,
-              );
-            }}
+          <Primitive.Trigger
+            className={cn(
+              focusedIndex === index && "hive-focus ring-inset",
+              "cursor-pointer whitespace-nowrap relative",
+              "rounded-t p-2 font-medium leading-5 transition-colors",
+              "-mb-px select-none border-b",
+              selectedIndex === index
+                ? "border-current outline-hidden"
+                : hoveredIndex === index
+                  ? "border-beige-400 dark:border-neutral-800"
+                  : "border-transparent",
+              selectedIndex === index
+                ? "text-green-900 dark:text-primary"
+                : isTabObjectItem(item) && item.disabled
+                  ? "pointer-events-none text-beige-600 dark:text-neutral-600"
+                  : hoveredIndex === index
+                    ? "text-black dark:text-white"
+                    : "text-beige-800 dark:text-beige-200",
+              resolveClassName(tabClassName, {
+                disabled: isTabObjectItem(item) && item.disabled,
+                focus: focusedIndex === index,
+                hover: hoveredIndex === index,
+                selected: selectedIndex === index,
+              }),
+            )}
             disabled={isTabObjectItem(item) && item.disabled}
             key={index}
+            onBlur={() => {
+              setFocusedIndex((current) =>
+                current === index ? null : current,
+              );
+            }}
+            onFocus={() => {
+              setFocusedIndex(index);
+            }}
+            onMouseEnter={() => {
+              setHoveredIndex(index);
+            }}
+            onMouseLeave={() => {
+              setHoveredIndex((current) =>
+                current === index ? null : current,
+              );
+            }}
+            value={getTabKey(items, index, id)}
           >
             {isTabObjectItem(item) ? item.label : item}
-          </HeadlessTab>
+          </Primitive.Trigger>
         ))}
-      </TabList>
-      <TabPanels ref={tabPanelsRef}>{children}</TabPanels>
-    </TabGroup>
+      </Primitive.List>
+      <TabsContext.Provider value={tabsContext}>
+        <div ref={tabPanelsRef}>{children}</div>
+      </TabsContext.Provider>
+    </Primitive.Root>
   );
 };
 
-export const Tab: FC<TabPanelProps> = ({
+export const Tab: FC<TabProps> = ({
   children,
   // For SEO display all the Panel in the DOM and set `display: none;` for those that are not selected
   className,
   unmount = false,
   ...props
 }) => {
+  const [focused, setFocused] = useState(false);
+  const { collection, id, items } = useTabsContext();
+  const index = useCollectionIndex(collection);
+  const value = getTabKey(items, index, id);
+
   return (
-    <TabPanel
+    <Primitive.Content
       {...props}
-      className={(args) =>
-        cn(
-          "mt-[1.25em] rounded-sm",
-          args.focus && "hive-focus",
-          typeof className === "function" ? className(args) : className,
-        )
-      }
-      unmount={unmount}
+      className={cn(
+        "mt-[1.25em] rounded-sm",
+        focused && "hive-focus",
+        resolveClassName(className, { focus: focused }),
+      )}
+      data-tab-index={index}
+      forceMount={unmount ? undefined : true}
+      onBlur={(event: FocusEvent<HTMLDivElement>) => {
+        props["onBlur"]?.(event);
+        setFocused(false);
+      }}
+      onFocus={(event: FocusEvent<HTMLDivElement>) => {
+        props["onFocus"]?.(event);
+        setFocused(true);
+      }}
+      value={value}
     >
       {children}
-    </TabPanel>
+    </Primitive.Content>
   );
 };
 
@@ -242,9 +286,7 @@ function useActiveTabFromURL(
 
   useIsomorphicLayoutEffect(() => {
     const tabPanel = hash
-      ? tabPanelsRef.current?.querySelector(
-          `[role=tabpanel]:has([id="${hash}"])`,
-        )
+      ? findTabPanelByHash(tabPanelsRef.current, hash)
       : null;
 
     if (tabPanel) {
@@ -253,16 +295,12 @@ function useActiveTabFromURL(
         if (el === tabPanel) {
           setSelectedIndex(Number(index));
           // Note for posterity:
-          //   This is not an infinite loop. Clearing and restoring the hash is necessary
-          //   for the browser to scroll to the element. The intermediate empty hash triggers
-          //   a hashchange event, but we don't look for a tab panel if there is no hash.
-
-          // Clear hash first, otherwise page isn't scrolled
-          // eslint-disable-next-line react-hooks/immutability -- updating URL hash is intentional side effect
-          globalThis.location.hash = "";
-          // Execute on next tick after `selectedIndex` update
+          //   We still need to scroll to the hash target after switching the hidden panel,
+          //   but clearing/restoring `location.hash` interferes with ToC state.
+          //
+          //   Instead, switch the panel first and then scroll the revealed target directly.
           requestAnimationFrame(() => {
-            globalThis.location.hash = `#${hash}`;
+            scrollHashTargetIntoView(hash);
           });
         }
         index++;
@@ -271,16 +309,6 @@ function useActiveTabFromURL(
       // if we don't have content to scroll to, we look at the search params
       setSelectedIndex(tabIndexFromSearchParams);
     }
-
-    return function cleanUpTabFromSearchParams() {
-      const newSearchParams = new URLSearchParams(globalThis.location.search);
-      newSearchParams.delete(searchParamKey);
-      globalThis.history.replaceState(
-        null,
-        "",
-        `${globalThis.location.pathname}?${newSearchParams.toString()}`,
-      );
-    };
     // tabPanelsRef is a ref, so it's not a dependency
   }, [hash, tabsInSearchParams.join(",")]);
 
@@ -329,7 +357,28 @@ function useActiveTabFromStorage(
   }, [storageKey, items, setSelectedIndex, id]);
 }
 
-type TabKey = string & { __brand: "TabKey" };
+function useTabSearchParamCleanup(
+  searchParamKey: string,
+  items: (TabItem | TabObjectItem)[],
+  id: string,
+) {
+  const latestRef = useRef({ id, items, searchParamKey });
+
+  useEffect(() => {
+    latestRef.current = { id, items, searchParamKey };
+  }, [id, items, searchParamKey]);
+
+  useEffect(() => {
+    return () => {
+      const { id, items, searchParamKey } = latestRef.current;
+      if (!searchParamKey) {
+        return;
+      }
+
+      replaceTabSearchParam(searchParamKey, items, id);
+    };
+  }, []);
+}
 
 function getTabKey(
   items: (TabItem | TabObjectItem)[],
@@ -359,6 +408,113 @@ function slugify(label: string) {
     .replaceAll(/[\u0300-\u036F]/g, "") // strip accents
     .replaceAll(/[^a-z0-9]+/g, "-")
     .replaceAll(/^-+|-+$/g, "");
+}
+
+function useTabsContext() {
+  const value = useContext(TabsContext);
+  if (!value) {
+    throw new Error("useTabsContext must be used within Tabs");
+  }
+  return value;
+}
+
+function useCollectionIndex(collection: string[]) {
+  const key = useId();
+
+  useEffect(() => {
+    return () => {
+      const index = collection.indexOf(key);
+      if (index !== -1) {
+        collection.splice(index, 1);
+      }
+    };
+  }, [collection, key]);
+
+  if (!collection.includes(key)) {
+    collection.push(key);
+  }
+
+  return collection.indexOf(key);
+}
+
+function resolveClassName<Args>(
+  className: ResolvedClassName<Args> | undefined,
+  args: Args,
+) {
+  return typeof className === "function" ? className(args) : className;
+}
+
+function replaceTabSearchParam(
+  searchParamKey: string,
+  items: (TabItem | TabObjectItem)[],
+  id: string,
+  selectedIndex?: number,
+) {
+  const searchParams = new URLSearchParams(globalThis.location.search);
+  const tabKeys = new Set(searchParams.getAll(searchParamKey));
+
+  // we remove only tabs from this list from search params
+  for (let i = 0; i < items.length; i++) {
+    tabKeys.delete(getTabKey(items, i, id));
+  }
+
+  // we add tabs from outside of this list back
+  searchParams.delete(searchParamKey);
+  for (const key of tabKeys) {
+    searchParams.append(searchParamKey, key);
+  }
+
+  // and finally, we add the clicked tab
+  if (selectedIndex !== undefined) {
+    searchParams.append(searchParamKey, getTabKey(items, selectedIndex, id));
+  }
+
+  replaceCurrentURL(
+    `${globalThis.location.pathname}${searchParams.size > 0 ? `?${searchParams.toString()}` : ""}${globalThis.location.hash}`,
+  );
+}
+
+function replaceCurrentURL(url: string) {
+  const currentURL = `${globalThis.location.pathname}${globalThis.location.search}${globalThis.location.hash}`;
+  if (currentURL === url) {
+    return;
+  }
+
+  globalThis.history.replaceState(null, "", url);
+}
+
+function findTabPanelByHash(tabPanelsRef: HTMLDivElement | null, hash: string) {
+  if (!tabPanelsRef) {
+    return null;
+  }
+
+  const escapedHash = escapeSelector(hash);
+  for (const el of tabPanelsRef.children) {
+    if (
+      el instanceof HTMLElement &&
+      (el.id === hash || el.querySelector(`[id="${escapedHash}"]`))
+    ) {
+      return el;
+    }
+  }
+
+  return null;
+}
+
+function scrollHashTargetIntoView(hash: string) {
+  if (!hash) {
+    return;
+  }
+
+  globalThis.document.getElementById(hash)?.scrollIntoView();
+}
+
+function escapeSelector(value: string) {
+  if (typeof CSS !== "undefined" && typeof CSS.escape === "function") {
+    return CSS.escape(value);
+  }
+
+  return value.replaceAll(/["\\]/g, String.raw`\$&`);
 }
 
 const useIsomorphicLayoutEffect =

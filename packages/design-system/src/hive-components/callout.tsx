@@ -30,8 +30,8 @@ const calloutConfig: Record<
     text: "text-critical-800 dark:text-[#ffc6bb]",
   },
   info: {
-    bg: "bg-info-100 dark:bg-[rgba(231,247,255,0.1)]",
-    border: "border border-info-500 dark:border-[rgba(159,201,220,0.2)]",
+    bg: "bg-info-100 dark:bg-info-500/3",
+    border: "border border-info-500 dark:border-info-500/25",
     Icon: CalloutInfoIcon,
     text: "text-info-800 dark:text-[#e7f7ff]",
   },
@@ -103,9 +103,8 @@ export function Callout({
         )}
         <div
           className={cn(
-            "text-base leading-[1.75] text-neutral-900 [&>p:first-child]:mt-0 [&>p:last-child]:mb-0 [&_a]:decoration-current",
+            "text-base leading-[1.75] text-neutral-900 [&>p:first-child]:mt-0 [&>*:last-child]:mb-0 [&_a]:decoration-current [&_li]:my-0 [&_*:last-child]:mb-0 **:leading-[inherit]! [&_li::marker]:text-current",
             config.text,
-            "**:leading-[inherit]!",
           )}
         >
           {children}

@@ -34,7 +34,6 @@ const nitroNightlyDirs = readdirSync(bunCache).filter((d) =>
 
 if (nitroNightlyDirs.length === 0) {
   console.log("[fix-nitro-nightly] nitro-nightly not found, skipping");
-  process.exit(0);
 }
 
 for (const nitroNightlyDir of nitroNightlyDirs) {

@@ -1,6 +1,6 @@
 {
   "title": "Hive Router",
-  "description": "High-performance GraphQL federation router built with Rust",
+  "description": "Rust GraphQL router built for high-performance",
   "icon": "HiveRouter",
   "root": true,
   "pages": [
