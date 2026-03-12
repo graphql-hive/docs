@@ -29,6 +29,5 @@ export function getRouter() {
       },
     },
     routeTree,
-    scrollRestoration: true,
   });
 }

@@ -8,37 +8,34 @@ import {
 } from "fumadocs-core/toc";
 import { I18nLabel } from "fumadocs-ui/contexts/i18n";
 import { Text } from "lucide-react";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface DocsTocProps {
-  githubUrl: string;
-  markdownUrl: string;
+  children: React.ReactNode;
   toc: TOCItemType[];
 }
 
-export function DocsTableOfContent({
-  githubUrl,
-  markdownUrl,
-  toc,
-}: DocsTocProps) {
+export function DocsTableOfContent({ children, toc }: DocsTocProps) {
   return (
     <div
       className="sticky top-(--fd-docs-row-1) h-[calc(var(--fd-docs-height)-var(--fd-docs-row-1))] flex flex-col [grid-area:toc] w-(--fd-toc-width) pt-12 pe-4 pb-2 max-xl:hidden"
       id="nd-toc"
     >
-      <h3
-        className="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground"
-        id="toc-title"
-      >
-        <Text className="size-4" />
-        <I18nLabel label="toc" />
-      </h3>
       {toc.length > 0 ? (
-        <TOCScrollArea>
-          <DocsTocItems toc={toc} />
-        </TOCScrollArea>
+        <>
+          <h3
+            className="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground"
+            id="toc-title"
+          >
+            <Text className="size-4" />
+            <I18nLabel label="toc" />
+          </h3>
+          <TOCScrollArea>
+            <DocsTocItems toc={toc} />
+          </TOCScrollArea>
+        </>
       ) : null}
-      <PageActions githubUrl={githubUrl} markdownUrl={markdownUrl} />
+      {children}
     </div>
   );
 }
@@ -57,43 +54,20 @@ function DocsTocItems({ toc }: { toc: TOCItemType[] }) {
         ref={containerRef}
       >
         {toc.map((item) => (
-          <DocsTocItem containerRef={containerRef} item={item} key={item.url} />
+          <DocsTocItem item={item} key={item.url} />
         ))}
       </div>
     </>
   );
 }
 
-function DocsTocItem({
-  containerRef,
-  item,
-}: {
-  containerRef: ReturnType<typeof useRef<HTMLDivElement | null>>;
-  item: TOCItemType;
-}) {
+function DocsTocItem({ item }: { item: TOCItemType }) {
   const activeAnchors = useActiveAnchors();
-  const anchorRef = useRef<HTMLAnchorElement>(null);
   const hashIndex = item.url.indexOf("#");
   const hash = hashIndex === -1 ? undefined : item.url.slice(hashIndex + 1);
   const activeOrder = hash ? activeAnchors.indexOf(hash) : -1;
   const isActive = activeOrder !== -1;
-  const shouldScroll = activeOrder === 0;
   const href = hash ? `#${hash}` : item.url;
-
-  useLayoutEffect(() => {
-    if (!shouldScroll) return;
-
-    const anchor = anchorRef.current;
-    const container = containerRef.current;
-
-    if (anchor && container) {
-      anchor.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
-    }
-  }, [containerRef, shouldScroll]);
 
   return (
     <a
@@ -106,7 +80,6 @@ function DocsTocItem({
       data-active={isActive}
       data-toc-anchor={hash}
       href={href}
-      ref={anchorRef}
     >
       {item.title}
     </a>
