@@ -124,6 +124,8 @@ async function buildIndexes(): Promise<AdvancedIndex[]> {
   ];
 }
 
+// In prod this is usually paid during build via prerendered `/api/search`.
+// In local dev, the first hit can still be slow because Vite computes it on demand.
 const searchAPIPromise = buildSearchAPI();
 
 async function buildSearchAPI() {
