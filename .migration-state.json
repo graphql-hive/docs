@@ -3,7 +3,7 @@
   "sourceRepo": ".context/hive-console",
   "sourceBranch": "main",
   "targetSubdirectory": "temporary",
-  "lastSyncedCommit": "cc63497c7130ae130913430146693a32d86deb72",
+  "lastSyncedCommit": "7fe129d096a640810a5b140a13a5c828fcbb9e38",
   "migrations": [
     {
       "commit": "f09052749e7ec7a5f759566fac8e13eb3f833067",
@@ -452,6 +452,30 @@
       "author": "TheGuildBot",
       "syncedAt": "2026-03-11T18:24:51.476Z",
       "mergeCommit": "b861ebd05f2b85c3376d53239c4a60008caaa115"
+    },
+    {
+      "commit": "99a3e186fed3b6bf09a651ea9bed6fa52affbf0d",
+      "date": "2026-03-12 10:53:39 +0200",
+      "message": "Upcoming Release Changes (#7830)",
+      "author": "TheGuildBot",
+      "syncedAt": "2026-03-12T16:32:24.395Z",
+      "mergeCommit": "fea739a6a61d51c7fc7b42f8fd433114dfc13422"
+    },
+    {
+      "commit": "653fe98cc54d1bec0d5419d82309ec5cad40b4f1",
+      "date": "2026-03-12 10:19:16 +0100",
+      "message": "feat: remove supertokens-core and supertokens-node (#7705)",
+      "author": "Laurin",
+      "syncedAt": "2026-03-12T16:32:24.398Z",
+      "mergeCommit": "0dbccd028fdaf3772ef5c07ec3a9a434169a1dae"
+    },
+    {
+      "commit": "7fe129d096a640810a5b140a13a5c828fcbb9e38",
+      "date": "2026-03-12 10:32:41 +0100",
+      "message": "docs(router): metrics (#7696)",
+      "author": "Kamil Kisiela",
+      "syncedAt": "2026-03-12T16:32:24.398Z",
+      "mergeCommit": "3369ab191b92beab5b07cc9e1caea8e302fac98b"
     }
   ]
 }
