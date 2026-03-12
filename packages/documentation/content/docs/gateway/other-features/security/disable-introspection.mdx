@@ -18,7 +18,7 @@ GraphQL features it supports (e.g. defer/stream or subscriptions).
 However, you may want to not expose your schema to the outside world. You can disable schema
 introspection with the `disableIntrospection` option.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -40,7 +40,7 @@ Sometimes you want to allow introspectition for certain users. You can access th
 and determine based on that whether introspection should be enabled or not. E.g. you can check the
 headers.
 
-```ts filename="gateway.config.ts" {6}
+```ts title="gateway.config.ts" {6}
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -70,7 +70,7 @@ will disable these smart suggestions and therefore prevent schema leaking.
 
 Combined with the `disableIntrospection` option, you can make your schema more secure.
 
-```ts filename="gateway.config.ts" {7}
+```ts title="gateway.config.ts" {7}
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({

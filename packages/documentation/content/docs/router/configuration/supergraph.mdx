@@ -27,7 +27,7 @@ Load the Supergraph schema from [Hive Console](/docs/schema-registry) CDN.
 The [_Hive CDN Endpoint_](/docs/schema-registry/get-started/apollo-federation#cdn-access) of your
 target.
 
-```yaml {3} filename="router.config.yaml"
+```yaml {3}title="router.config.yaml"
 supergraph:
   source: hive
   endpoint: https://cdn.graphql-hive.com/artifacts/v1/...
@@ -43,7 +43,7 @@ supergraph:
 The [_Hive CDN key/token_](/docs/schema-registry/management/targets#creating-a-cdn-access-token) of
 your target.
 
-```yaml {4} filename="router.config.yaml"
+```yaml {4}title="router.config.yaml"
 supergraph:
   source: hive
   # ...
@@ -60,7 +60,7 @@ supergraph:
 A human-readable string representing the interval at which the router should poll Hive CDN for
 changes.
 
-```yaml {4} filename="router.config.yaml"
+```yaml {4}title="router.config.yaml"
 supergraph:
   source: hive
   # ...
@@ -75,7 +75,7 @@ supergraph:
 
 A human-readable string representing the request timeout for Hive CDN requests.
 
-```yaml {4} filename="router.config.yaml"
+```yaml {4}title="router.config.yaml"
 supergraph:
   source: hive
   # ...
@@ -90,7 +90,7 @@ supergraph:
 
 A human-readable string representing the connection timeout for Hive CDN requests.
 
-```yaml {4} filename="router.config.yaml"
+```yaml {4}title="router.config.yaml"
 supergraph:
   source: hive
   # ...
@@ -106,7 +106,7 @@ supergraph:
 Max retries amount for Hive CDN requests. Exponential backoff is used to calculate the delay between
 retries.
 
-```yaml {4-5} filename="router.config.yaml"
+```yaml {4-5}title="router.config.yaml"
 supergraph:
   source: hive
   # ...
@@ -123,7 +123,7 @@ supergraph:
 If set to `true`, allows accepting invalid TLS certificates when connecting to Hive CDN. Useful for
 development or testing environments.
 
-```yaml {4} filename="router.config.yaml"
+```yaml {4}title="router.config.yaml"
 supergraph:
   source: hive
   # ...
@@ -150,7 +150,7 @@ Load the schema from a local file.
 
 Path to your supergraph schema file. Can be absolute or relative to where you're running the router.
 
-```yaml {3} filename="router.config.yaml"
+```yaml {3}title="router.config.yaml"
 supergraph:
   source: file
   path: ./supergraph.graphql
@@ -171,7 +171,7 @@ changes.
 The reloading process depends on the file system's ability to detect changes based on the
 file-system metadata (modified-at attribute).
 
-```yaml {4} filename="router.config.yaml"
+```yaml {4}title="router.config.yaml"
 supergraph:
   source: file
   path: ./supergraph.graphql

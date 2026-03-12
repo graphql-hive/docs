@@ -405,7 +405,7 @@ Hive client supports resolving persisted documents. For getting started please r
 
 For enabling you need to provide the `persistedDocuments` as follows.
 
-```ts filename="Hive Persisted Documents Basic Configuration"
+```ts title="Hive Persisted Documents Basic Configuration"
 useHive({
   persistedDocuments: {
     cdn: {
@@ -426,7 +426,7 @@ By default, Hive client plugins will only allow executing documents that are reg
 Schema Registry. If you want to allow arbitrary documents to be executed, you can set the
 `allowArbitraryDocuments` option to `true`.
 
-```typescript filename="Hive Persisted Documents Allow Arbitrary Documents" {8}
+```typescript title="Hive Persisted Documents Allow Arbitrary Documents" {8}
 useHive({
   persistedDocuments: {
     cdn: {
@@ -444,7 +444,7 @@ useHive({
 
 Furthermore, you can also allow arbitrary documents based on the incoming HTTP request.
 
-```typescript filename="Hive Persisted Documents Allow Arbitrary Documents Based on Request" {8-9}
+```typescript title="Hive Persisted Documents Allow Arbitrary Documents Based on Request" {8-9}
 useHive({
   persistedDocuments: {
     cdn: {
@@ -467,7 +467,7 @@ By default, the client will cache up to 10.000 documents loaded from the CDN in 
 redundant lookups and speedup reoccuring document executions. You can change this value by setting
 the `cache` option.
 
-```typescript filename="Hive Persisted Documents Cache Size" {8-9}
+```typescript title="Hive Persisted Documents Cache Size" {8-9}
 useHive({
   persistedDocuments: {
     cdn: {
@@ -529,7 +529,7 @@ endpoint.
 - Type: `boolean`
 - Default: `false`
 
-```ts filename="Example: Opt into processing variables"
+```ts title="Example: Opt into processing variables"
 import { createHive } from "@graphql-hive/core";
 
 const client = createHive({
@@ -557,7 +557,7 @@ It is possible to provide the following options:
 - `'warn'`
 - `'error'`
 
-```ts filename="Example: Set debug level based on environment variable"
+```ts title="Example: Set debug level based on environment variable"
 import { createHive } from "@graphql-hive/core";
 
 const client = createHive({

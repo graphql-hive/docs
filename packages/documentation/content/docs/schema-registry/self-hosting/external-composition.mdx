@@ -21,7 +21,7 @@ version of Apollo Federation v2.
 For self-hosting we recommend adding the external composition federation container configuration to
 your `docker-compose.community.yml`:
 
-```yaml filename="docker-compose.community.yml"
+```yaml title="docker-compose.community.yml"
 services:
   # ... other services
   external-composition:
@@ -43,7 +43,7 @@ services:
 
 Make sure to set the `EXTERNAL_COMPOSITION_SECRET` environment variable to a secure value.
 
-```bash filename="Secure external composition secret example"
+```bash title="Secure external composition secret example"
 export EXTERNAL_COMPOSITION_SECRET=$(openssl rand -hex 16)
 ```
 

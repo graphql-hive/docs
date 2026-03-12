@@ -14,7 +14,7 @@ Configure how Hive Router identifies calling clients in telemetry, based on requ
 | `name_header`    | `string` | HTTP header used to read client name for usage reporting.    |
 | `version_header` | `string` | HTTP header used to read client version for usage reporting. |
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   client_identification:
     name_header: graphql-client-name # default
@@ -30,7 +30,7 @@ version, or environment.
 | ------------ | -------- | ------- | -------------------------------------------- |
 | `attributes` | `object` | `{}`    | Additional OpenTelemetry resource attributes |
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   resource:
     attributes:
@@ -73,7 +73,7 @@ Allows you to control how the Hive Router does
 | `request_timeout`      | `string`   | `15s`                                | Timeout for the full request.                                 |
 | `flush_interval`       | `string`   | `5s`                                 | Buffer flush interval.                                        |
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   hive:
     usage_reporting:
@@ -110,7 +110,7 @@ Batching settings for traces sent to Hive Console:
 | `scheduled_delay`        | `string`  | `5s`    | Maximum delay before exporting ready traces.  |
 | `max_concurrent_exports` | `integer` | `1`     | Maximum number of concurrent export tasks.    |
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   hive:
     tracing:
@@ -195,7 +195,7 @@ OTLP over HTTP:
 | `protocol`     | `string` | `http`          | OTLP transport protocol.                                      |
 | `http.headers` | `object` | `{}`            | Map of header names to values (`string` or `{ expression }`). |
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   tracing:
     exporters:
@@ -218,7 +218,7 @@ OTLP over gRPC:
 | `grpc.tls.cert`        | `string` | -               | Path to the client certificate file (PEM).                                   |
 | `grpc.tls.ca`          | `string` | -               | Path to the CA certificate file (PEM) used to verify the server certificate. |
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   tracing:
     exporters:

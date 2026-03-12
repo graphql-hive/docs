@@ -25,7 +25,7 @@ To send usage reports, set `telemetry.hive.usage_reporting.enabled: true` in `ro
 
 Example configuration:
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   hive:
     usage_reporting:
@@ -39,7 +39,7 @@ telemetry:
 To identify who's calling your GraphQL API and view traffic distribution and operation volume per
 client in Hive Console, set up client identification in `router.config.yaml`.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   client_identification:
     name_header: "graphql-client-name" # default value

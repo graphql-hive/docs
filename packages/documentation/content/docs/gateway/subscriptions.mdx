@@ -96,7 +96,7 @@ subgraph.
 Please note that WebSocket for communications between Hive Gateway and subgraphs are suboptimal
 compared to other possible transports. We recommend using either SSE or HTTP Callbacks instead.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig, type WSTransportOptions } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -122,7 +122,7 @@ If your subgraph uses
 [HTTP Callback protocol for subscriptions](https://www.apollographql.com/docs/router/executing-operations/subscription-callback-protocol/),
 Hive Gateway will need additional configuration.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import {
   defineConfig,
   type HTTPCallbackTransportOptions,
@@ -176,7 +176,7 @@ For example, let be 4 subgraphs:
 - stocks: using `http` transport for queries, and WS for subscriptions
 - stores: using `mysql` transport
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig, type WSTransportOptions } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -257,7 +257,7 @@ WebSocket upgrade request.
 
 <Tabs.Tab>
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig, type WSTransportOptions } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -309,7 +309,7 @@ It is still possible to forward headers if your subgraph is not compatible with 
 The headers will be sent only with the upgrade request. They will not be sent again during the
 lifecycle of the subscription.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig, type WSTransportOptions } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -406,7 +406,7 @@ Those 2 services needs to be run in parallel of the gateway.
 
 <Tabs.Tab>
 
-```ts filename="products.ts"
+```ts title="products.ts"
 import { createServer } from "http";
 import { parse } from "graphql";
 import { createYoga } from "graphql-yoga";
@@ -440,7 +440,7 @@ server.listen(40001, () => {
 
 <Tabs.Tab>
 
-```ts filename="reviews.ts"
+```ts title="reviews.ts"
 import { createServer } from "http";
 import { parse } from "graphql";
 import { createYoga } from "graphql-yoga";
@@ -486,7 +486,7 @@ You can generate this schema with either [GraphQL Mesh](https://graphql-mesh.com
 To generate a supergraph with Apollo Rover, you first need to create a configuration file describing the
 list of subgraphs:
 
-```yaml filename="supergraph.yaml"
+```yaml title="supergraph.yaml"
 federation_version: =2.3.2
 subgraphs:
   products:
@@ -513,7 +513,7 @@ For more details about how to use Apollo Rover, please refer to the
 <Tabs.Tab>
 To generate a supergraph schema with GraphQL Mesh, you first need a configuration file describing the list of subgraphs:
 
-```ts filename="mesh.config.ts"
+```ts title="mesh.config.ts"
 import {
   defineConfig,
   loadGraphQLHTTPSubgraph,
@@ -615,7 +615,7 @@ To enable SSE support using Apollo Client, you can create a simple
 [Apollo Link](https://www.apollographql.com/docs/react/api/link/introduction) using
 [`graphql-sse`](https://the-guild.dev/graphql/sse) library.
 
-```ts filename="client.ts"
+```ts title="client.ts"
 import { GraphQLError, print } from "graphql";
 import { Client, ClientOptions, createClient } from "graphql-sse";
 import { ApolloClient } from "@apollo/client";
@@ -664,7 +664,7 @@ To enable support of SSE using Relay, you can create a custom
 [Network Layer](https://relay.dev/docs/router/guides/network-layer/) with
 [`graphql-sse`](https://the-guild.dev/graphql/sse) library.
 
-```ts filename="network.ts"
+```ts title="network.ts"
 import { createClient } from "graphql-sse";
 import {
   Network,
@@ -744,7 +744,7 @@ You will need to use a
 link to either use classic HTTP for queries and mutation, or WebSockets for subscriptions if you
 don't want to use WebSockets for all operations (which is the most common approach).
 
-```ts filename="client.ts"
+```ts title="client.ts"
 import { createClient } from "graphql-ws";
 import { HttpLink, split } from "@apollo/client";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
@@ -777,7 +777,7 @@ Relay doesn't support WebSockets out of the box, but you can easily enable this 
 up a [Network Layer](https://relay.dev/docs/router/guides/network-layer/) using
 [`graphql-ws`](https://github.com/enisdenjo/graphql-ws) library.
 
-```ts filename="network.ts"
+```ts title="network.ts"
 import { createClient } from "graphql-ws";
 import { Network, Observable } from "relay-runtime";
 
@@ -831,7 +831,7 @@ subscription fields to the schema.
 First we need to make sure we have a "products" subgraph ready and running on
 `http://localhost:3000/graphql`:
 
-```gql filename="products.graphql"
+```gql title="products.graphql"
 type Query {
   hello: String!
 }
@@ -844,7 +844,7 @@ type Product @key(fields: "id") {
 
 And then we need to add the subscription fields like this:
 
-```ts filename="mesh.config.ts"
+```ts title="mesh.config.ts"
 import {
   defineConfig,
   loadGraphQLHTTPSubgraph,
@@ -889,7 +889,7 @@ install first:
 npm i @graphql-hive/pubsub @nats-io/transport-node
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { NATSPubSub } from "@graphql-hive/pubsub/nats";
 import { connect } from "@nats-io/transport-node";
@@ -1030,7 +1030,7 @@ in-memory engine, Redis and NATS engine.
 The in-memory PubSub engine is the default engine used when subscriptions are detected. It can also
 be used explicitly by setting it in the configuration.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { MemPubSub } from "@graphql-hive/pubsub";
 // or from the Hive Gateway package
@@ -1059,7 +1059,7 @@ transport dependency of `@nats-io/transport-node` for Node or Bun which you need
 npm i @graphql-hive/pubsub @nats-io/transport-node
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { NATSPubSub } from "@graphql-hive/pubsub/nats";
 import { connect } from "@nats-io/transport-node";
@@ -1103,7 +1103,7 @@ peer dependency of `ioredis` which you need to install first:
 npm i @graphql-hive/pubsub ioredis
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import Redis from "ioredis";
 import { defineConfig } from "@graphql-hive/gateway";
 import { RedisPubSub } from "@graphql-hive/pubsub/redis";

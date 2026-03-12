@@ -22,7 +22,7 @@ how to load the supergraph and `transports` option.
 In the following example, we showcase how Hive Gateway can be used in a serverless environment with
 Cloudflare Workers.
 
-```ts filename="index.js"
+```ts title="index.js"
 import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 import http from "@graphql-mesh/transport-http";
 import supergraph from "./supergraph";
@@ -43,7 +43,7 @@ export default {
 };
 ```
 
-```js filename="supergraph.js"
+```js title="supergraph.js"
 export default /* GraphQL */ `
   PLACE YOUR SUPERGRAPH SDL HERE
 `;

@@ -226,7 +226,7 @@ The `payload.context` API is simple:
 The following snippet shows the simplest example of creating a custom plugin, registering it, and
 configuring it with Hive Router:
 
-```rust filename="main.rs"
+```rust title="main.rs"
 use hive_router::{
     configure_global_allocator, error::RouterInitError, init_rustls_crypto_provider,
     router_entrypoint, PluginRegistry, RouterGlobalAllocator,

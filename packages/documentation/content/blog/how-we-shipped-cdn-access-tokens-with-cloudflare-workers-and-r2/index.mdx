@@ -85,13 +85,13 @@ sequenceDiagram;
 
 E.g. a request for fetching the access token would look like the following with `cURL`.
 
-```bash filename="cUrl command for fetching an CDN artifact"
+```bash title="cUrl command for fetching an CDN artifact"
 curl -v \
   -H 'X-Hive-CDN-Key: kAZlQN8U7q8pMsAMVpA0fBeRvvbaKt1h9JniZbi3+5k=' \
   https://cdn.graphql-hive.com/v1/c7ce447c-f5e6-4f13-87b8-d3051ba3fc45/sdl
 ```
 
-```bash filename="cUrl output"
+```bash title="cUrl output"
 /artifacts/v1/c7ce447c-f5e6-4f13-87b8-d3051ba3fc45/sdl > GET
 302 < Found
 location < Header: https://6d5bc18cd8d13babe7ed321adba3d8ae.r2.cloudflarestorage.com/artifacts/c7ce447c-f5e6-4f13-87b8-d3051ba3fc45/sdl
@@ -146,7 +146,7 @@ all the legacy access tokens into both the R2 bucket and our PostgreSQL database
 For this we just used a cursor paginated SQL query for reading the targets (to which a CDN access
 token is related to) and then run some logic for writing the data to the designated locations.
 
-```ts filename="Slonik and Zod for safely reading paginated results from PostgreSQL"
+```ts title="Slonik and Zod for safely reading paginated results from PostgreSQL"
 import { CommonQueryMethods } from "slonik";
 import * as zod from "zod";
 
@@ -219,7 +219,7 @@ That means if an access token is invalidated (the R2 key is deleted), it might t
 until the change is propagated. However, we felt like this is a great trade-off for by-passing
 reading from R2 and running bcrypt for verifying the access token against the hash.
 
-```ts filename="Using the Cache API for caching access token verification"
+```ts title="Using the Cache API for caching access token verification"
 const validateLegacyCDNAccessToken = async (args: {
   targetId: string;
   accessToken: string;
@@ -356,7 +356,7 @@ E.g. for the URL `/artifacts/v1/c7ce447c-f5e6-4f13-87b8-d3051ba3fc45/sdl`, we wo
 
 We can read the `accessKeyId` from the `X-Hive-CDN-Key` header value.
 
-```ts filename="Logic for decoding the incoming CDN access token"
+```ts title="Logic for decoding the incoming CDN access token"
 export interface CDNToken {
   keyId: string;
   privateKey: string;

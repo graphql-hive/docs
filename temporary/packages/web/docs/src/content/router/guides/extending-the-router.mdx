@@ -88,7 +88,7 @@ curl -sSL https://federation-demo.theguild.workers.dev/supergraph.graphql > supe
 
 Then, point to your Supergraph in your `router.config.yaml`:
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 supergraph:
   source: file
   path: ./supergraph.graphql
@@ -198,7 +198,7 @@ async fn main() -> Result<(), RouterInitError> {
 With the plugin registered, the Router is ready to use it. Enable and configure your plugin in the
 `router.config.yaml` file:
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 supergraph:
   source: file
   path: ./supergraph.graphql

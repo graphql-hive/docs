@@ -602,7 +602,7 @@ need to import it or maintain it in the same file.
 
 For example:
 
-```graphql filename="user.query.graphql"
+```graphql title="user.query.graphql"
 query user {
   userById {
     ...UserFields # We don't need to import this, just use the name
@@ -610,7 +610,7 @@ query user {
 }
 ```
 
-```graphql filename="userfields.fragment.graphql"
+```graphql title="userfields.fragment.graphql"
 fragment UserFields on User {
   id
   name
@@ -649,7 +649,7 @@ src/
 
 Then, your GraphQL `query` files can just build it's self based on the nested fragments it needs:
 
-```graphql filename="todo-list.query.graphql"
+```graphql title="todo-list.query.graphql"
 query todoList {
   todos {
     ...TodoItemFields
@@ -658,7 +658,7 @@ query todoList {
 }
 ```
 
-```graphql filename="me.query.graphql"
+```graphql title="me.query.graphql"
 query me {
   me {
     ...AuthenticatedUserFields
@@ -672,7 +672,7 @@ on the fragment or query that it needs.
 So you can use the generated fragment type as the input for your components, and pass it directly
 from the parent component easily, with type-safety:
 
-```tsx filename="todo-list.tsx"
+```tsx title="todo-list.tsx"
 import React from "react";
 import { useTodoList } from "../generated-types";
 import { TodoItem } from "./todo-item";
@@ -690,7 +690,7 @@ export const TodoList: React.FC = () => {
 };
 ```
 
-```tsx filename="todo-item.tsx"
+```tsx title="todo-item.tsx"
 import React from "react";
 import { TodoItemFieldsFragment } from "../generated-types";
 

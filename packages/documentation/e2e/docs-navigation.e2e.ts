@@ -106,6 +106,47 @@ test.describe("Documentation User Journeys", () => {
     });
   });
 
+  test("router configuration sidebar shows nested articles and resets scroll", async ({
+    page,
+    isMobile,
+  }) => {
+    if (isMobile) {
+      return;
+    }
+
+    await page.goto(appPath("/docs/router/configuration"), {
+      waitUntil: "networkidle",
+    });
+
+    const sidebar = page.locator("#nd-sidebar");
+
+    await page.waitForFunction(
+      () => (window as any).__searchHydrated === true,
+      { timeout: 30_000 },
+    );
+
+    const headersLink = sidebar.locator(
+      `a[href="${appPath("/docs/router/configuration/headers")}"]`,
+    );
+
+    await expect(headersLink).toBeVisible();
+
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY))
+      .toBeGreaterThan(400);
+
+    await headersLink.click();
+
+    await page.waitForURL(/\/docs\/router\/configuration\/headers$/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(
+      "headers",
+    );
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY))
+      .toBeLessThan(80);
+  });
+
   test("documentation shows code examples", async ({ page }) => {
     await page.goto(appPath("/docs/api-reference/cli"), {
       waitUntil: "networkidle",

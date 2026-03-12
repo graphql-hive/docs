@@ -127,7 +127,7 @@ not support public queries. So we're just trying to get a user and a token, and 
 Apollo-Server, so it will use it as the context for our resolvers. If something went wrong with the
 validation — we just return `null` for the `user` and `authToken`.
 
-```ts filename="auth-helpers.ts"
+```ts title="auth-helpers.ts"
 export interface User {
   _id: string;
   username: string;
@@ -259,7 +259,7 @@ So let's implement a simple guard, and use it in our server. I also added a _pub
 schema (`Query.serverTime`), that should be public, and not effected by the authentication flow. So
 it's not wrapped with our guard.
 
-```ts filename="authenticated-guard.ts"
+```ts title="authenticated-guard.ts"
 export const authenticated = (next) => (root, args, context, info) => {
   if (!context.currentUser) {
     throw new Error(`Unauthenticated!`);
@@ -417,7 +417,7 @@ server.listen().then(({ url }) => {
 });
 ```
 
-```ts filename="validate-role.ts"
+```ts title="validate-role.ts"
 export const validateRole = (role) => (next) => (root, args, context, info) => {
   if (context.currentUser.role !== role) {
     throw new Error(`Unauthorized!`);
@@ -450,7 +450,7 @@ general parts, and articles to manage the articles features.
 
 ### This Way — Each Module Is in Charge of a Different Feature of Our App
 
-```ts filename="articles-module.ts"
+```ts title="articles-module.ts"
 import { GraphQLModule } from "@graphql-modules/core";
 
 export const articlesModule = new GraphQLModule({
@@ -476,7 +476,7 @@ export const articlesModule = new GraphQLModule({
 });
 ```
 
-```ts filename="auth-module.ts"
+```ts title="auth-module.ts"
 import { GraphQLModule } from "@graphql-modules/core";
 import { tradeTokenForUser } from "./auth-helpers";
 
@@ -524,7 +524,7 @@ export const authModule = new GraphQLModule({
 });
 ```
 
-```ts filename="common-module.ts"
+```ts title="common-module.ts"
 import { GraphQLModule } from "@graphql-modules/core";
 
 export const commonModule = new GraphQLModule({
@@ -542,7 +542,7 @@ export const commonModule = new GraphQLModule({
 });
 ```
 
-```ts filename="resolvers-composition.ts"
+```ts title="resolvers-composition.ts"
 import { authenticated } from "./authenticated-guard";
 import { validateRole } from "./validate-role";
 
@@ -552,7 +552,7 @@ export const resolversComposition = {
 };
 ```
 
-```ts filename="server.ts"
+```ts title="server.ts"
 import { ApolloServer } from "apollo-server";
 import { resolversComposition } from "./resolvers-composition";
 

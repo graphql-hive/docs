@@ -31,7 +31,7 @@ flowchart TD
 You can enable AWS SigV4 signing by setting the `awsSigv4.outgoing` option to `true` in the Gateway
 configuration.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -46,7 +46,7 @@ export const gatewayConfig = defineConfig({
 By default, Hive Gateway will use the standard environment variables to get the AWS credentials. But
 you can also provide the credentials directly in the configuration.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -64,7 +64,7 @@ export const gatewayConfig = defineConfig({
 
 You can provide the `roleArn` and `roleSessionName` to assume a role using the provided credentials.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -85,7 +85,7 @@ You can use AWS SDK's credential providers from
 [`@aws-sdk/credential-providers`](https://www.npmjs.com/package/@aws-sdk/credential-providers) such
 as SSO support etc.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { fromNodeProviderChain } from "@aws-sdk/credential-providers";
 import { defineConfig } from "@graphql-hive/gateway";
 
@@ -107,7 +107,7 @@ export const gatewayConfig = defineConfig({
 By default, the plugin extracts the service and region from the URL of the subgraph. But you can
 also provide the service and region directly in the configuration.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -128,7 +128,7 @@ export const gatewayConfig = defineConfig({
 You can also configure the SigV4 signing for specific subgraphs by setting the `awsSigv4` option in
 the subgraph configuration.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -141,7 +141,7 @@ export const gatewayConfig = defineConfig({
 
 or you can provide the credentials directly per subgraph.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -180,7 +180,7 @@ Hive Gateway can also mimic AWS services by validating the incoming requests wit
 But you have to provide some credentials using environment variables or directly in the
 configuration.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -208,7 +208,7 @@ the `Authorization` header.
 In this case if the `Authorization` header starts with `Bearer`, the JWT will be used for
 authentication, otherwise, the request will be validated with AWS SigV4.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({

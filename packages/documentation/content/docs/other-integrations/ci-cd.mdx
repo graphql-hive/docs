@@ -48,7 +48,7 @@ hive schema:check \
 The following workflow will run the check workflow for every Pull Request, and will associated the
 check results with the Pull Request.
 
-```yaml filename=".github/workflows/ci.yml"
+```yaml title=".github/workflows/ci.yml"
 on:
   pull_request:
     branches: [main]
@@ -81,7 +81,7 @@ We recommend using a fixed CLI version for your workflows. Please refer to our C
 The following workflow will run the publish the latest schema to the schema registry for every push
 to `main` branch.
 
-```yaml filename=".github/workflows/cd.yml"
+```yaml title=".github/workflows/cd.yml"
 on:
   push:
     branches: [main]

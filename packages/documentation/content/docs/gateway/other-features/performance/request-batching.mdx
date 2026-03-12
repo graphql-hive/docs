@@ -18,7 +18,7 @@ The Batching functionality is described via the
 
 Batching is disabled by default, but you can enable it by setting the `batching` option to `true`:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -26,7 +26,7 @@ export const gatewayConfig = defineConfig({
 });
 ```
 
-```bash filename="Execute batched operation"
+```bash title="Execute batched operation"
 curl -X POST -H 'Content-Type: application/json' http://localhost:4000/graphql \
   -d '[{"query": "{ hee: __typename }"}, {"query": "{ ho: __typename }"}]'
 ```
@@ -37,7 +37,7 @@ By default up to 10 GraphQL requests are allowed within a single HTTP request. I
 exceeded an error will be raised. You can customize this option by passing an object to the
 `batching` configuration option:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -47,7 +47,7 @@ export const gatewayConfig = defineConfig({
 });
 ```
 
-```bash filename="Execute batched operation (exceed limit)"
+```bash title="Execute batched operation (exceed limit)"
 curl -X POST -H 'Content-Type: application/json' -i http://localhost:4000/graphql \
   -d '[{"query": "{ hee: __typename }"}, {"query": "{ ho: __typename }"}, {"query": "{ holla: __typename }"}]'
 ```
@@ -55,7 +55,7 @@ curl -X POST -H 'Content-Type: application/json' -i http://localhost:4000/graphq
 When exceeding the batching limit the HTTP status code will be
 [`413` (Payload Too Large)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/413).
 
-```json filename="GraphQL Error response"
+```json title="GraphQL Error response"
 {
   "errors": [{ "message": "Batching is limited to 2 operations per request." }]
 }

@@ -17,7 +17,7 @@ target, on which you want to deploy your app.
 
 Once the pre-requisites are met, you can create an app deployment by running the following command.
 
-```bash filename="Create an App Deployment via CLI"
+```bash title="Create an App Deployment via CLI"
 hive app:create \
   --registry.accessToken "<ACCESS_TOKEN>" \
   --target "<ORGANIZATION>/<PROJECT>/<TARGET>" \
@@ -62,7 +62,7 @@ Gateway or GraphQL API for serving persisted documents to your app.
 To publish an app deployment, you can run the following command. Make sure you utilize the same
 `--name` and `--version` parameters as you used when creating the app deployment.
 
-```bash filename="Publish an App Deployment via CLI"
+```bash title="Publish an App Deployment via CLI"
 hive app:publish \
   --registry.accessToken "<ACCESS_TOKEN>" \
   --target "<ORGANIZATION>/<PROJECT>/<TARGET>" \
@@ -127,7 +127,7 @@ depending on the tools you are using.
 The persisted documents must stored in a JSON file, which includes the documents along with their
 corresponding hashes. This JSON file will be uploaded to the Hive Registry.
 
-```json filename="persisted-operations.json"
+```json title="persisted-operations.json"
 {
   "d9a00ec0c1ce": "query UsageEstimationQuery($input: UsageEstimationInput!) { __typename usageEstimation(input: $input) { __typename operations } }",
   "b8d98e796421": "mutation GenerateStripeLinkMutation($selector: OrganizationSelectorInput!) { __typename generateStripePortalLink(selector: $selector) }"
@@ -148,7 +148,7 @@ specific app version and therefore be an unsafe/breaking change.
 For GraphQL Code Generator, you can configure the client preset to generate the persisted document
 manifest.
 
-```typescript filename="codegen.ts" {9-11}
+```typescript title="codegen.ts" {9-11}
 import { type CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
@@ -177,7 +177,7 @@ For more information,
 
 For Relay Compiler, you can configure the compiler to generate the persisted document manifest.
 
-```js filename="relay.config.js" {6-8}
+```js title="relay.config.js" {6-8}
 module.exports = {
   src: "./src",
   language: "javascript",
@@ -230,7 +230,7 @@ your app.
 To retire an app deployment, you can run the following command. Make sure you utilize the same
 `--name` and `--version` parameters as you used when creating the app deployment.
 
-```bash filename="Retire an App Deployment via CLI"
+```bash title="Retire an App Deployment via CLI"
 hive app:retire \
   --registry.accessToken "<ACCESS_TOKEN>" \
   --target "<ORGANIZATION>/<PROJECT>/<TARGET>" \
@@ -396,7 +396,7 @@ fetching these documents as they are requested.
 For Hive Gateway you can use the Hive configuration for resolving persisted documents. Adjust your
 `gateway.config.ts` file as follows.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -428,7 +428,7 @@ For GraphQL Yoga you can use the Hive CDN for resolving persisted documents via 
 npm i -D @graphql-hive/yoga
 ```
 
-```typescript filename="Persisted Documents with GraphQL Yoga" {10-16}
+```typescript title="Persisted Documents with GraphQL Yoga" {10-16}
 import { createYoga } from "graphql-hive";
 import { useHive } from "@graphql-hive/yoga";
 import schema from "./schema.js";
@@ -462,7 +462,7 @@ For serverless environments or multi-instance deployments, you can add a Layer 2
 the in-memory cache and the CDN. This is useful when in-memory cache is lost between invocations or
 to share cached documents across server instances.
 
-```typescript filename="Persisted Documents with L2 Cache (Redis)" {14-24}
+```typescript title="Persisted Documents with L2 Cache (Redis)" {14-24}
 import { createYoga } from "graphql-hive";
 import { createClient } from "redis";
 import { useHive } from "@graphql-hive/yoga";
@@ -522,7 +522,7 @@ For Apollo Server you can use the Hive CDN for resolving persisted documents via
 npm i -D @graphql-hive/apollo
 ```
 
-```typescript filename="Persisted Documents with Apollo Server" {10-16}
+```typescript title="Persisted Documents with Apollo Server" {10-16}
 import { ApolloServer } from "@apollo/server";
 import { useHive } from "@graphql-hive/apollo";
 import schema from "./schema.js";
@@ -552,7 +552,7 @@ Apollo Server automatically uses the server's
 [cache backend](https://www.apollographql.com/docs/apollo-server/performance/cache-backends) for L2
 caching if available. You can also configure a custom L2 cache:
 
-```typescript filename="Persisted Documents with L2 Cache" {10-20}
+```typescript title="Persisted Documents with L2 Cache" {10-20}
 import { createClient } from "redis";
 import { ApolloServer } from "@apollo/server";
 import { useHive } from "@graphql-hive/apollo";
@@ -603,7 +603,7 @@ alternative to the official Apollo Router.
 
 Enable the Persisted Document plugin by adding the following to your `router.yaml` configuration.
 
-```yaml filename="router.yaml"
+```yaml title="router.yaml"
 # ... the rest of your configuration
 plugins:
   hive.usage:
@@ -627,7 +627,7 @@ For additional information and configuration options, please refer to the
 Any published app deployment is available via the Hive CDN. You can fetch a the persisted documents
 by doing a HTTP GET request.
 
-```text filename="Fetch Persisted Document via HTTP"
+```text title="Fetch Persisted Document via HTTP"
 GET https://cdn.graphql-hive.com/artifacts/v1/<target_id>/apps/<app_name>/<app_version>/<document_hash>
 ```
 
@@ -640,7 +640,7 @@ GET https://cdn.graphql-hive.com/artifacts/v1/<target_id>/apps/<app_name>/<app_v
 
 **Example curl request:**
 
-```bash filename="Example curl request"
+```bash title="Example curl request"
 curl \
   -L \
   -H 'X-Hive-CDN-Key: CDN_ACCESS_TOKEN' \
@@ -668,7 +668,7 @@ GraphQL request with the persisted document ID following the GraphQL over HTTP s
 
 <Tabs.Tab>
 
-```text filename="GraphQL Request with Persisted Document"
+```text title="GraphQL Request with Persisted Document"
 POST /graphql
 Content-Type: application/json
 {
@@ -684,7 +684,7 @@ Content-Type: application/json
 
 **Example curl request:**
 
-```bash filename="Example curl request"
+```bash title="Example curl request"
 curl \
   -X POST \
   -H 'Content-Type: application/json' \
@@ -699,7 +699,7 @@ curl \
 The code demonstrates how to send a persisted document request using Apollo Client. Make sure to
 replace the placeholders with your actual values.
 
-```typescript filename="Apollo Client Persisted Document Configuration"
+```typescript title="Apollo Client Persisted Document Configuration"
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { createPersistedQueryLink } from "@apollo/client/link/persisted-queries";
 
@@ -751,7 +751,7 @@ const client = new ApolloClient({
 The code demonstrates how to send a persisted document request using Urql. Make sure to replace the
 placeholders with your actual values.
 
-```typescript filename="Urql Persisted Document Configuration"
+```typescript title="Urql Persisted Document Configuration"
 import { createClient, fetchExchange, mapExchange } from "urql";
 
 // replace <app_name>, <app_version>, and with your values
@@ -796,7 +796,7 @@ const urqlClient = createClient({
 Update your Relay environment configuration to send persisted document requests instead of the
 document.
 
-```typescript filename="Relay Persisted Document Configuration"
+```typescript title="Relay Persisted Document Configuration"
 // replace <app_name>, <app_version>, and with your values
 const appVersionPrefix = "<app_name>~<app_version>~";
 

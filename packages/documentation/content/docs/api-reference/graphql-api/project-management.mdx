@@ -10,7 +10,7 @@ Projects can be managed via the Hive Console GraphQL API. For more information, 
 
 Use the `Query.project` field to retrieve a project either by its `id` or `slug` selector.
 
-```graphql filename="Example: Retrieve a single Project via Slug"
+```graphql title="Example: Retrieve a single Project via Slug"
 query ProjectBySlug($organizationSlug: String!, $projectSlug: String!) {
   project(
     reference: {
@@ -31,7 +31,7 @@ query ProjectBySlug($organizationSlug: String!, $projectSlug: String!) {
 Use the `Organization.projects` field for retrieving a list of projects within the organization.
 **Note:** This field will currently return all projects within the organization.
 
-```graphql filename="Example: Retrieve a List of Projects within an Organization"
+```graphql title="Example: Retrieve a List of Projects within an Organization"
 query OrganizationProjects($organizationSlug: String!) {
   organization(
     reference: { bySelector: { organizationSlug: $organziationSlug } }
@@ -57,7 +57,7 @@ query OrganizationProjects($organizationSlug: String!) {
 
 Use the `Mutation.createProject` field for creating a new project.
 
-```graphql filename="Example: Create a Project"
+```graphql title="Example: Create a Project"
 mutation CreateProject($input: CreateProjectInput!) {
   createProject(input: $input) {
     ok {
@@ -80,7 +80,7 @@ mutation CreateProject($input: CreateProjectInput!) {
 
 Use the `Mutation.deleteProject` field for creating a new project.
 
-```graphql filename="Example: Delete a Project"
+```graphql title="Example: Delete a Project"
 mutation DeleteProject($input: DeleteProjectInput!) {
   deleteProject(input: $input) {
     ok {

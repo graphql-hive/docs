@@ -44,7 +44,7 @@ Controls how the router handles unauthorized field access:
 With `filter` mode, unauthorized fields are silently removed from the operation, but the query
 continues to execute and return the data the user can access:
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 authorization:
   directives:
     enabled: true
@@ -88,7 +88,7 @@ If the user is not authenticated, the response might look like:
 
 With `reject` mode, if any field is unauthorized, the entire request is rejected:
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 authorization:
   directives:
     enabled: true

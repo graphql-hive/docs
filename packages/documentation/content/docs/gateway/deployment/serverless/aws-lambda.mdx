@@ -15,7 +15,7 @@ the AWS cloud. Hive Gateway is platform agnostic so they can fit together easily
 See [Bundling Problems](/docs/gateway/deployment/serverless#bundling-problem) for more details about
 how to load the supergraph and `transports` option.
 
-```js filename="gateway.ts"
+```js title="gateway.ts"
 import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 import http from "@graphql-mesh/transport-http";
 import supergraph from "./supergraph.js";
@@ -29,7 +29,7 @@ export const gateway = createGatewayRuntime({
 });
 ```
 
-```ts filename="index.ts"
+```ts title="index.ts"
 import { APIGatewayEvent, APIGatewayProxyResult, Context } from "aws-lambda";
 import { gateway } from "./gateway";
 

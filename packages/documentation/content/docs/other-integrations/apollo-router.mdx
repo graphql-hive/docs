@@ -109,7 +109,7 @@ will be used for authenticating the supergraph polling from the CDN.
 
     Once your project is ready, update `Cargo.toml` file with the [`hive_apollo_router_plugin`](https://crates.io/crates/hive-apollo-router-plugin) Crate dependency:
 
-    ```toml filename="Cargo.toml"
+    ```toml title="Cargo.toml"
     [dependencies]
     # You can find the version additional information in Crates.io:
     # https://crates.io/crates/hive-apollo-router-plugin
@@ -118,7 +118,7 @@ will be used for authenticating the supergraph polling from the CDN.
 
     Alternatively, you can point to a Git if you need a specific commit or version of the plugin:
 
-    ```toml filename="Cargo.toml"
+    ```toml title="Cargo.toml"
     [dependencies]
     # You can use a "branch", or commit id with "rev" key
     hive_apollo_router_plugin = { git = "https://github.com/graphql-hive/console", branch = "main" }
@@ -126,7 +126,7 @@ will be used for authenticating the supergraph polling from the CDN.
 
     Next, update `src/main.rs` file with the following content to add GraphQL Hive:
 
-    ```diff filename="src/main.rs"
+    ```diff title="src/main.rs"
       mod plugins;
 
       use anyhow::Result;
@@ -235,7 +235,7 @@ You can send usage reporting to Hive registry by enabling `hive.usage` plugin in
 
     Once your project is ready, update `Cargo.toml` file with the [`hive_apollo_router_plugin`](https://crates.io/crates/hive-apollo-router-plugin) Crate dependency:
 
-    ```toml filename="Cargo.toml"
+    ```toml title="Cargo.toml"
     [dependencies]
     # You can find the version additional information in Crates.io:
     # https://crates.io/crates/hive-apollo-router-plugin
@@ -244,7 +244,7 @@ You can send usage reporting to Hive registry by enabling `hive.usage` plugin in
 
     Alternatively, you can point to a Git if you need a specific commit or version of the plugin:
 
-    ```toml filename="Cargo.toml"
+    ```toml title="Cargo.toml"
     [dependencies]
     # You can use a "branch", or commit id with "rev" key
     hive_apollo_router_plugin = { git = "https://github.com/graphql-hive/console", branch = "main" }
@@ -252,7 +252,7 @@ You can send usage reporting to Hive registry by enabling `hive.usage` plugin in
 
     Next, update `src/main.rs` file with the following content to add GraphQL Hive:
 
-    ```diff filename="src/main.rs"
+    ```diff title="src/main.rs"
       mod plugins;
 
       use anyhow::Result;
@@ -284,7 +284,7 @@ You can send usage reporting to Hive registry by enabling `hive.usage` plugin in
   </Tabs.Tab>
 </Tabs>
 
-```yaml filename="router.yaml"
+```yaml title="router.yaml"
 supergraph:
   listen: 0.0.0.0:4000
 plugins:
@@ -338,7 +338,7 @@ To activate [App Deployments](/docs/schema-registry/app-deployments) in your Apo
 to enable the `hive.persisted_documents` plugin. The plugin uses the `HIVE_CDN_ENDPOINT` and
 `HIVE_CDN_KEY` environment variables to resolve the persisted documents IDs.
 
-```yaml filename="router.yaml"
+```yaml title="router.yaml"
 # ... the rest of your configuration
 plugins:
   hive.usage: {}
@@ -361,7 +361,7 @@ The following environment variables are required:
 
 You may configure the plugin with the following options:
 
-```yaml filename="router.yaml"
+```yaml title="router.yaml"
 # ... the rest of your configuration
 plugins:
   hive.usage: {}
@@ -401,7 +401,7 @@ plugins:
 
 You may also add the persisted-documents plugin:
 
-```toml filename="Cargo.toml"
+```toml title="Cargo.toml"
 [dependencies]
 # You can use a "branch", or commit id with "rev" key
 hive_apollo_router_plugin = { git = "https://github.com/graphql-hive/console", branch = "main" }
@@ -409,7 +409,7 @@ hive_apollo_router_plugin = { git = "https://github.com/graphql-hive/console", b
 
 Next, update `src/main.rs` file with the following content to add GraphQL Hive:
 
-```diff filename="src/main.rs"
+```diff title="src/main.rs"
   mod plugins;
 
   use anyhow::Result;

@@ -33,7 +33,7 @@ configuration file.
 
 <Tabs.Tab>
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -93,7 +93,7 @@ hive-gateway supergraph <graph_id>[@<variant>] --apollo-key <api_key>
 
 <Tabs.Tab>
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from '@graphql-hive/gateway'
 
 export const gatewayConfig = defineConfig({
@@ -147,7 +147,7 @@ export const gatewayConfig = defineConfig({
 You can provide a custom supergraph source, along with other options to customize the polling/retry
 behavior.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -190,7 +190,7 @@ hive-gateway supergraph ./supergraph.graphql
 
 <Tabs.Tab>
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -210,7 +210,7 @@ export const gatewayConfig = defineConfig({
 
 You can configure the polling interval for the supergraph source.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -255,7 +255,7 @@ and control, or any other feature relying on directives.
 
 <Tabs.Tab>
 
-```sh filename="Proxy GraphQL API"
+```sh title="Proxy GraphQL API"
 hive-gateway proxy https://example.com/graphql
 ```
 
@@ -265,7 +265,7 @@ hive-gateway proxy https://example.com/graphql
 
 <Tabs.Tab>
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({

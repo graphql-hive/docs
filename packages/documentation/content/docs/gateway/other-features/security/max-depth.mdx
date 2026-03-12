@@ -19,7 +19,7 @@ lead to overfetching or **DOS attack**.
 Hive Gateway ships with the basic "max depth" security features. You can enable it by setting the
 `maxDepth` option to `true` or configure the allowed depth by passing a `number` to the option.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -37,7 +37,7 @@ you need more control, you can configure more by installing the
 npm install @escape.tech/graphql-armor-max-depth
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { maxDepthPlugin } from "@escape.tech/graphql-armor-max-depth";
 import { defineConfig } from "@graphql-hive/gateway";
 

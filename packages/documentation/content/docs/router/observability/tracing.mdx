@@ -35,7 +35,7 @@ human-readable slug (`$organizationSlug/$projectSlug/$targetSlug`) or a target U
 With those values available as environment variables (`HIVE_TARGET` and `HIVE_ACCESS_TOKEN`), enable
 Hive tracing in the config file:
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   hive:
     tracing:
@@ -61,7 +61,7 @@ understands OTLP.
 
 <Tabs.Tab>
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   tracing:
     exporters:
@@ -82,7 +82,7 @@ Once configured, send normal requests through the router and check your backend 
 
 <Tabs.Tab>
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   tracing:
     exporters:
@@ -116,7 +116,7 @@ If gRPC export fails, metadata credentials and TLS files are usually the first p
 For production workloads, define a clear service identity, begin with conservative sampling rates,
 and use a single primary propagation format.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   resource:
     attributes:
@@ -193,7 +193,7 @@ attribute set is written to spans:
 - `deprecated` - emits only the deprecated attributes
 - `spec_and_deprecated` - emits both stable and deprecated attributes
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 telemetry:
   tracing:
     instrumentation:

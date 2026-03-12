@@ -27,7 +27,7 @@ This allows you to gradually migrate traffic while maintaining reliability.
 
 The most common approach is to use a feature flag mechanism to control when the override is active:
 
-```graphql filename="fulfillment-subgraph.graphql"
+```graphql title="fulfillment-subgraph.graphql"
 extend schema
   @link(
     url: "https://specs.apollo.dev/federation/v2.7"
@@ -48,7 +48,7 @@ original `orders` subgraph.
 The `progressiveOverride` configuration in the gateway is the mechanism that determines which labels
 are active for any given request.
 
-```ts filename="gateway-config.ts"
+```ts title="gateway-config.ts"
 import { defineConfig, type GatewayContext } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -109,7 +109,7 @@ dynamically per request.
 For simple percentage-based rollouts, you can use the built-in `percent(x)` label syntax without
 writing custom logic.
 
-```graphql filename="fulfillment-subgraph.graphql"
+```graphql title="fulfillment-subgraph.graphql"
 extend schema
   @link(
     url: "https://specs.apollo.dev/federation/v2.7"
@@ -155,7 +155,7 @@ minimize external calls.
 
 ### Example: External Feature Flag Service
 
-```ts filename="gateway-config.ts"
+```ts title="gateway-config.ts"
 import { defineConfig, type GatewayContext } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -209,7 +209,7 @@ export const gatewayConfig = defineConfig({
 
 ### Example: With Caching
 
-```ts filename="gateway-config.ts"
+```ts title="gateway-config.ts"
 import { defineConfig, type GatewayContext } from "@graphql-hive/gateway";
 
 // Simple in-memory cache (use Redis in production)
@@ -259,7 +259,7 @@ subgraph:
 
 ### Step 1: Add Field to New Subgraph
 
-```graphql filename="fulfillment-subgraph.graphql"
+```graphql title="fulfillment-subgraph.graphql"
 extend schema
   @link(
     url: "https://specs.apollo.dev/federation/v2.7"
@@ -275,7 +275,7 @@ type Order @key(fields: "id") {
 
 ### Step 2: Configure Gateway
 
-```ts filename="gateway-config.ts"
+```ts title="gateway-config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -303,7 +303,7 @@ export const gatewayConfig = defineConfig({
 
 After successful migration:
 
-```graphql filename="orders-subgraph.graphql" diff
+```graphql title="orders-subgraph.graphql" diff
 type Order @key(fields: "id") {
   id: ID!
 - # This can be removed now

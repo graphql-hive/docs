@@ -25,7 +25,7 @@ Keeping the [aforementioned project layout](https://kit.svelte.dev/docs/project-
 create a new server route in `my-project/src/routes/graphql/+server.ts` to expose the GraphQL server
 at `/graphql` and implement using the Hive Gateway runtime like this:
 
-```ts filename="my-project/src/routes/graphql/+server.ts"
+```ts title="my-project/src/routes/graphql/+server.ts"
 import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 
 const serve = createGatewayRuntime({

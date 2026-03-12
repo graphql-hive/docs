@@ -63,7 +63,7 @@ files on your machine.
 
 <Tabs.Tab>
 
-```graphql filename="subgraphs/users.graphql"
+```graphql title="subgraphs/users.graphql"
 extend type Query {
   me: User
   user(id: ID!): User
@@ -81,7 +81,7 @@ type User @key(fields: "id") {
 
 <Tabs.Tab>
 
-```graphql filename="subgraphs/products.graphql"
+```graphql title="subgraphs/products.graphql"
 extend type Query {
   topProducts(first: Int = 5): [Product]
 }
@@ -97,7 +97,7 @@ type Product @key(fields: "upc") {
 </Tabs.Tab>
 <Tabs.Tab>
 
-```graphql filename="subgraphs/reviews.graphql"
+```graphql title="subgraphs/reviews.graphql"
 type Review @key(fields: "id") {
   id: ID!
   body: String
@@ -589,7 +589,7 @@ npm install @graphql-hive/gateway
 
 You can then run the Gateway CLI from your existing Hive target using the following command.
 
-```sh filename="Run Hive Gateway"
+```sh title="Run Hive Gateway"
 npx hive-gateway supergraph \
   "https://cdn.graphql-hive.com/artifacts/v1/<target_id>" \
   --hive-cdn-key "<hive_cdn_access_key>"
@@ -627,7 +627,7 @@ subgraph services.
 
 Here is a sample query to execute:
 
-```graphql filename="Sample Query using multiple Subgraphs"
+```graphql title="Sample Query using multiple Subgraphs"
 query TopProductsWithReview {
   topProducts(first: 2) {
     upc
@@ -655,7 +655,7 @@ Hive Router either as a Docker image or binary.
 
 To start, create a configuration file `router.config.yaml` with the following content:
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 supergraph:
   type: hive
   endpoint: "<hive_cdn_endpoint>"
@@ -722,7 +722,7 @@ single subgraph services.
 
 Here is a sample query to execute:
 
-```graphql filename="Sample Query using multiple Subgraphs"
+```graphql title="Sample Query using multiple Subgraphs"
 query TopProductsWithReview {
   topProducts(first: 2) {
     upc
@@ -778,7 +778,7 @@ or target.
 
 <Tabs.Tab>
 
-```sh filename="Run Mesh Gateway with registry token"
+```sh title="Run Mesh Gateway with registry token"
 hive-gateway supergraph \
   "https://cdn.graphql-hive.com/artifacts/v1/<target_id>" \
   --hive-cdn-key "<hive_cdn_access_key>" \
@@ -824,7 +824,7 @@ docker run --name hive-gateway -rm \
 
 <Tabs.Tab>
 
-```sh filename="Run Mesh Gateway with registry token"
+```sh title="Run Mesh Gateway with registry token"
 npx hive-gateway supergraph \
   "https://cdn.graphql-hive.com/artifacts/v1/<target_id>" \
   --hive-cdn-key "<hive_cdn_access_key>" \
@@ -849,7 +849,7 @@ npx hive-gateway supergraph \
 
 To enable usage reporting, we need to update our configuration file:
 
-```diff filename="router.config.yaml"
+```diff title="router.config.yaml"
 supergraph:
   type: hive
   endpoint: "https://cdn.graphql-hive.com/artifacts/v1/<target_id>"
@@ -904,7 +904,7 @@ docker run \
 After starting the gateway with the usage reporting token, we can now execute some queries using the
 built-in GraphiQL interface.
 
-```graphql filename="Sample Query using multiple Subgraphs"
+```graphql title="Sample Query using multiple Subgraphs"
 query TopProductsWithReview {
   topProducts(first: 2) {
     upc
@@ -944,7 +944,7 @@ To see how schema checks works, let's make a small change to our local schema fi
 start with a non-breaking change - we'll add a new field to the `Review` type under the **Reviews**
 subgraph:
 
-```graphql {6} filename="subgraphs/reviews.graphql"
+```graphql {6}title="subgraphs/reviews.graphql"
 type Review @key(fields: "id") {
   id: ID!
   body: String
@@ -1031,7 +1031,7 @@ meaning that the schema is compatible, valid and has no breaking changes:
 Now, are going to try introduce a breaking change. To do that, we'll rename an existing field in the
 GraphQL schema of the **Reviews** subgraph:
 
-```graphql {3} filename="subgraphs/reviews.graphql"
+```graphql {3}title="subgraphs/reviews.graphql"
 type Review @key(fields: "id") {
   id: ID!
   bodyContents: String # renamed from body
@@ -1123,7 +1123,7 @@ schema.
 We are going to add a conflict to the **Reviews** service. We are going to add a new field (`price`)
 to the `Product` type, that conflicts with the `Products` type in the **Products** service.
 
-```graphql {17} filename="subgraphs/reviews.graphql"
+```graphql {17}title="subgraphs/reviews.graphql"
 type Review @key(fields: "id") {
   id: ID!
   body: String

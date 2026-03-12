@@ -42,7 +42,7 @@ queries a field, the server executes the resolver function to resolve the field.
 
 Given this example schema:
 
-```graphql filename="src/graphql/schema.graphql"
+```graphql title="src/graphql/schema.graphql"
 type Query {
   movie(id: ID!): Movie
 }
@@ -61,7 +61,7 @@ type Actor {
 
 We can write a **resolver map** like this:
 
-```ts filename="src/graphql/resolvers.ts"
+```ts title="src/graphql/resolvers.ts"
 const resolvers = {
   Query: {
     movie: () => {}, // `Query.movie` resolver
@@ -371,7 +371,7 @@ npm i -D @graphql-codegen/cli @eddeee888/gcg-typescript-resolver-files
 
 Next, create a `codegen.ts` file at the root of your project:
 
-```ts filename="codegen.ts"
+```ts title="codegen.ts"
 import { defineConfig } from "@eddeee888/gcg-typescript-resolver-files";
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
@@ -388,7 +388,7 @@ export default config;
 
 Then, add mappers into `schema.mappers.ts` file, in the same directory as `schema.graphql`:
 
-```ts filename="src/graphql/schema.mappers.ts"
+```ts title="src/graphql/schema.mappers.ts"
 type MovieMapper = {
   id: string;
   movieName: string;
@@ -413,7 +413,7 @@ npm run graphql-codegen
 
 We will see generated resolver files in `src/graphql` directory:
 
-```ts filename="src/graphql/resolvers/Query/movie.ts"
+```ts title="src/graphql/resolvers/Query/movie.ts"
 import type { QueryResolvers } from "./../../types.generated";
 
 export const movie: NonNullable<QueryResolvers["movie"]> = async (
@@ -425,7 +425,7 @@ export const movie: NonNullable<QueryResolvers["movie"]> = async (
 };
 ```
 
-```ts filename="src/graphql/resolvers/Movie.ts"
+```ts title="src/graphql/resolvers/Movie.ts"
 import type { MovieResolvers } from "./../types.generated";
 
 export const Movie: MovieResolvers = {
@@ -439,7 +439,7 @@ export const Movie: MovieResolvers = {
 };
 ```
 
-```ts filename="src/graphql/resolvers/Actor.ts"
+```ts title="src/graphql/resolvers/Actor.ts"
 import type { ActorResolvers } from "./../types.generated";
 
 export const Actor: ActorResolvers = {

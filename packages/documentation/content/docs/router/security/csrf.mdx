@@ -41,7 +41,7 @@ If neither condition is met, the router blocks the request.
 A simple and effective way to protect against CSRF is to require a custom header that browsers don't
 send by default. This forces the client to be aware of your API's security requirements.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 csrf:
   enabled: true
   required_headers:
@@ -60,7 +60,7 @@ extra frontend code.
 
 Simply tell the router to require one of the headers that Apollo Client sends.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 csrf:
   enabled: true
   required_headers:
@@ -75,7 +75,7 @@ No additional configuration needed - Apollo Client handles the headers automatic
 If you have different types of clients (web, mobile, partner APIs), you can configure multiple
 acceptable headers.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 csrf:
   enabled: true
   required_headers:

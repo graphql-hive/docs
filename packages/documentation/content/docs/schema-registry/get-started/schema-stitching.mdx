@@ -63,7 +63,7 @@ to be built into the gateway schema.
 
 </Callout>
 
-```graphql filename="subschemas/users.graphql"
+```graphql title="subschemas/users.graphql"
 directive @merge(
   keyField: String
   keyArg: String
@@ -96,7 +96,7 @@ type Query {
 
 </Callout>
 
-```graphql filename="subschemas/posts.graphql"
+```graphql title="subschemas/posts.graphql"
 directive @merge(
   keyField: String
   keyArg: String
@@ -281,7 +281,7 @@ when a Stitching project is used.
 To see how schema checks works, let's make a small change to our schema. First, we'll start with a
 non-breaking change - we'll add a new field to the `User` type under the **Users** service:
 
-```graphql {15} filename="subschemas/users.graphql"
+```graphql {15}title="subschemas/users.graphql"
 directive @merge(
   keyField: String
   keyArg: String
@@ -327,7 +327,7 @@ meaning that the schema is compatible, valid and has no breaking changes:
 Now, are going to try introduce a breaking change. To do that, we'll rename an existing field in the
 GraphQL schema of the **Users** service:
 
-```graphql {14} filename="subschemas/users.graphql"
+```graphql {14}title="subschemas/users.graphql"
 directive @merge(
   keyField: String
   keyArg: String
@@ -380,7 +380,7 @@ across your services. To see how it works, let's make a small change to our sche
 We are going to add a conflict to the **Users** service. We are going to add a new field (`posts`)
 to the `User` type, that conflicts with the `User` type in the **Posts** service.
 
-```graphql {15} filename="subschemas/users.graphql"
+```graphql {15}title="subschemas/users.graphql"
 directive @merge(
   keyField: String
   keyArg: String
@@ -434,7 +434,7 @@ and implement new capabilities for your consumers.
 
 Let's make a valid change in our schema and push it again to the registry:
 
-```graphql {15} filename="subschemas/users.graphql"
+```graphql {15}title="subschemas/users.graphql"
 directive @merge(
   keyField: String
   keyArg: String

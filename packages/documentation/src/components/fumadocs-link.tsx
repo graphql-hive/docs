@@ -57,6 +57,7 @@ export const FumadocsLink = forwardRef<HTMLAnchorElement, FumadocsLinkProps>(
         hash={hash}
         preload={prefetch ? "intent" : false}
         ref={forwardedRef}
+        resetScroll={hash === undefined}
         to={to || "."}
         {...props}
       >

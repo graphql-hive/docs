@@ -43,7 +43,7 @@ Most Hive Gateway plugins takes an object as a parameter, and expect some common
 advised to spread the plugin's factory context into the plugins options, this way plugins will have
 access to all components they need.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import useNewRelic from "@graphql-mesh/plugin-newrelic";
 import { useSOFA } from "@graphql-yoga/plugin-sofa";
@@ -549,7 +549,7 @@ If the result is an `AsyncIterable`, you can hook into incremental result delive
 object with `onNext` and `onEnd` methods (see
 [`AsyncIterable` results hooks](#asynciterable-results)).
 
-```ts filename="my-plugin.ts"
+```ts title="my-plugin.ts"
 const useMyPlugin() = () => ({
   onExecute: () => ({
     onExecuteDone: payload => {
@@ -622,7 +622,7 @@ it is possible to hook into the delivery of each intermediate results and the en
 To hook into those phases, return an object with `onNext` and/or `onEnd` methods from
 [`onExecuteDone`](#onexecutedone) or [`onSubscriptionResult`](#onsubscriptionresult) hooks.
 
-```ts filename="plugin.ts"
+```ts title="plugin.ts"
 export const useMyPlugin = () => ({
   // For queries and mutations (defer and stream)
   onExecute: () => ({
@@ -1076,7 +1076,7 @@ Hive Gateway comes with ready-to-use `log`, `fetch`, cache storage and etc that 
 different components. We'd highly recommend you to use those available context values instead of
 creating your own for a specific plugin.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({

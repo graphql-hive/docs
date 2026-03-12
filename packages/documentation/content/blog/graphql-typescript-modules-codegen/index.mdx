@@ -22,7 +22,7 @@ let's export typeDefs without any business logic that includes resolvers, DI, pr
 
 You can create a `schema.ts` file to expose `typeDefs` to GraphQL Code Generator:
 
-```ts filename="schema.ts"
+```ts title="schema.ts"
 import { AppModule } from "./modules/app";
 
 export default AppModule.typeDefs;
@@ -38,7 +38,7 @@ Create a `codegen.yml` config file, including `schema.ts` as a schema source, an
 We use `transpile-only` to prevent errors related to TypeScript on typing generation phase to let
 `ts-node` handle this on running the actual application.
 
-```yaml filename="codegen.yml"
+```yaml title="codegen.yml"
 overwrite: true
 schema: ./src/schema.ts
 require:

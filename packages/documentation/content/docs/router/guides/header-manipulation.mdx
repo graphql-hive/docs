@@ -27,7 +27,7 @@ lets you set defaults and then override them for specific subgraphs.
 
 The most common use case is forwarding headers from client requests to your subgraphs.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 headers:
   all:
     request:
@@ -52,7 +52,7 @@ This forwards `Authorization` and `X-User-ID` headers if they exist, and always 
 
 Sometimes you need to add headers that weren't in the original request.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 headers:
   all:
     request:
@@ -71,7 +71,7 @@ headers:
 
 You might want to strip certain headers before they reach specific subgraphs.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 headers:
   # By default, pass internal headers to all subgraphs
   all:
@@ -95,7 +95,7 @@ headers:
 
 You can also transform header values on the fly using [expressions](/docs/router/configuration/expressions).
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 headers:
   all:
     request:
@@ -116,7 +116,7 @@ supports for advanced transformations. List of available functions can be found 
 
 Control what headers get sent back to clients.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 headers:
   all:
     response:
@@ -145,7 +145,7 @@ router will use the value from the last subgraph that responded.
 Apply different rules based on request properties, using
 [expressions](/docs/router/configuration/expressions).
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 headers:
   all:
     request:

@@ -54,7 +54,7 @@ hive-gateway supergraph --hive-router-runtime
 
 or use the Rust Query Planner in your config file:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { unifiedGraphHandler } from "@graphql-hive/router-runtime";
 
@@ -67,7 +67,7 @@ export const gatewayConfig = defineConfig({
 
 <Tabs.Tab>
 
-```ts filename="index.ts"
+```ts title="index.ts"
 import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 import { unifiedGraphHandler } from "@graphql-hive/router-runtime";
 
@@ -98,7 +98,7 @@ docker run \
 To view the generated query plan when using the Rust Query Planner, you can use the `useQueryPlan`
 plugin from `@graphql-hive/router-runtime` as follows:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import {
   unifiedGraphHandler,

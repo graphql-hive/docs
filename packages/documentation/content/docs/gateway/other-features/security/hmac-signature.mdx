@@ -126,7 +126,7 @@ npm i @graphql-hive/gateway
 
 Now, configure your Apollo Server with the HMAC verification plugin:
 
-```ts filename="apollo-subgraph.ts"
+```ts title="apollo-subgraph.ts"
 import { createHmac } from "crypto";
 import { ApolloServer, ApolloServerPlugin } from "@apollo/server";
 import { defaultParamsSerializer } from "@graphql-hive/gateway";

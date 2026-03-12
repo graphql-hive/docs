@@ -73,7 +73,7 @@ There are 3 steps to create a custom GraphQL Scalar:
 
 We can declare custom GraphQL Scalars using the `scalar` keyword:
 
-```graphql filename="schema.graphql"
+```graphql title="schema.graphql"
 scalar CustomScalar
 ```
 
@@ -86,7 +86,7 @@ Now, we can create a resolver for the scalar using `GraphQLScalarType` from the 
 yarn add graphql
 ```
 
-```tsx filename="resolvers/CustomScalar.ts"
+```tsx title="resolvers/CustomScalar.ts"
 import { GraphQLScalarType } from "graphql";
 
 export const CustomScalar = new GraphQLScalarType({
@@ -213,7 +213,7 @@ yarn add -D @graphql-codegen/cli @graphql-codegen/typescript
 
 Here's an example config that generates native scalar types and `CustomScalar` scalar for clients:
 
-```tsx filename="codegen.ts"
+```tsx title="codegen.ts"
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
@@ -245,7 +245,7 @@ export default config;
 Running `yarn graphql-codegen` generates the following Scalar type:
 
 {/* prettier-ignore */}
-```tsx filename="src/schema/types.generated.ts"
+```tsx title="src/schema/types.generated.ts"
 export type Scalars = {
   ID: { input: string | number; output: string };
   String: { input: string; output: string };
@@ -380,7 +380,7 @@ yarn add graphql-scalars
 
 2.  Declare `DateTime` in the schema:
 
-```graphql filename="schema.graphql"
+```graphql title="schema.graphql"
 scalar DateTime
 ```
 
@@ -411,7 +411,7 @@ server.listen(4000, () => {
 Most scalar resolvers from `graphql-scalars` come with recommended server type that can be used in
 Codegen config. We can import a resolver and use said type very easily:
 
-```tsx filename="codegen.ts"
+```tsx title="codegen.ts"
 import { DateTimeResolver } from "graphql-scalars";
 // 1. Import scalar resolver
 import type { CodegenConfig } from "@graphql-codegen/cli";
@@ -477,7 +477,7 @@ yarn add graphql-scalars
 
 2.  Use Server Preset in the Codegen config:
 
-```ts filename="codegen.ts"
+```ts title="codegen.ts"
 import { defineConfig } from "@eddeee888/gcg-typescript-resolver-files";
 import type { CodegenConfig } from "@graphql-codegen/cli";
 

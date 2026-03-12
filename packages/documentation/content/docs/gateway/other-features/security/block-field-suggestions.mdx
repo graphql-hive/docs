@@ -20,7 +20,7 @@ the introspection is disabled.
 Hive Gateway ships with the basic "block field suggestion" security feature. You can enable it by
 setting the `blockFieldSuggestions` option to `true`.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -38,7 +38,7 @@ you need more control, you can configure more by installing the
 npm install @escape.tech/graphql-armor-block-field-suggestions
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { blockFieldSuggestionsPlugin } from "@escape.tech/graphql-armor-block-field-suggestions";
 import { defineConfig } from "@graphql-hive/gateway";
 

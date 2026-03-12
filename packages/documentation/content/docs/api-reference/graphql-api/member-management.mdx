@@ -13,7 +13,7 @@ A list of permissions that are assignable to member roles can be retrieved via t
 `Organization.availableMemberPermissionGroups` field. It returns a list of all permission groups and
 their permissions.
 
-```graphql filename="Example: Retrieve permissions by group"
+```graphql title="Example: Retrieve permissions by group"
 query OrganizationPermissions($organizationSlug: String!) {
   organization(
     reference: { bySelector: { organizationSlug: $organizationSlug } }
@@ -42,7 +42,7 @@ role via the `CreateMemberRoleInput.selectedPermissions` field.
 **Note:** A member role only has permissions and not resources assigned. Resources are assigned when
 assigning a member role to a user.
 
-```graphql filename="Example: Create a Member Role"
+```graphql title="Example: Create a Member Role"
 mutation CreateMemberRole($input: CreateMemberRoleInput!) {
   createMemberRole(input: $input) {
     ok {
@@ -68,7 +68,7 @@ mutation CreateMemberRole($input: CreateMemberRoleInput!) {
 
 Use the `Mutation.updateMemberRole` field for updating a member role.
 
-```graphql filename="Example: Update Member Role"
+```graphql title="Example: Update Member Role"
 mutation UpdatedMemberRole($input: UpdateMemberRoleInput!) {
   updateMemberRole(input: $input) {
     ok {
@@ -94,7 +94,7 @@ mutation UpdatedMemberRole($input: UpdateMemberRoleInput!) {
 
 Use the `Mutation.deleteMemberRole` field for deleting a member role.
 
-```graphql filename="Example: Delete a Member Role"
+```graphql title="Example: Delete a Member Role"
 mutation UpdatedMemberRole($input: DeleteMemberRoleInput!) {
   deleteMemberRole(input: $input) {
     ok {
@@ -111,7 +111,7 @@ mutation UpdatedMemberRole($input: DeleteMemberRoleInput!) {
 
 Use the `Mutation.assignMemberRole` field for assigning a member role to a user.
 
-```graphql filename="Example: Assign a Member Role"
+```graphql title="Example: Assign a Member Role"
 mutation AssignMemberRole($input: AssignMemberRoleInput!) {
   assignMemberRole(input: $input) {
     ok {
@@ -137,14 +137,14 @@ Use the `AssignMemberRoleInput.resources` field to optionally specify on which r
 permissions granted by the role should apply. Permissions are inherited by all subresources
 (organization, project, target, service, app deployment).
 
-```json5 filename="Example: Grant permissions on all resources"
+```json5 title="Example: Grant permissions on all resources"
 {
   mode: "ALL",
   projects: [],
 }
 ```
 
-```json5 filename="Example: Grant permissions on specific project"
+```json5 title="Example: Grant permissions on specific project"
 {
   mode: "GRANULAR",
   projects: [
@@ -159,7 +159,7 @@ permissions granted by the role should apply. Permissions are inherited by all s
 }
 ```
 
-```json5 filename="Example: Grant permissions on specific target"
+```json5 title="Example: Grant permissions on specific target"
 {
   mode: "GRANULAR",
   projects: [
@@ -185,7 +185,7 @@ permissions granted by the role should apply. Permissions are inherited by all s
 
 ## Retrieve list of Member Invitations
 
-```graphql filename="Example: Member Invitations"
+```graphql title="Example: Member Invitations"
 query Invitations($organizationSlug: String!, $after: String) {
   organization(
     reference: { bySelector: { organizationSlug: $organizationSlug } }
@@ -208,7 +208,7 @@ query Invitations($organizationSlug: String!, $after: String) {
 Use the `Mutation.inviteToOrganizationByEmail` field for sending an email invite to the
 organization.
 
-```graphql filename="Example: Invite Members"
+```graphql title="Example: Invite Members"
 mutation InviteUserToOrganization($input: InviteToOrganizationByEmailInput!) {
   inviteToOrganizationByEmail(input: $input) {
     ok {

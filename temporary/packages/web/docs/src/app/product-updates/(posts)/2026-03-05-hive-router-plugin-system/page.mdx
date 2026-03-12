@@ -24,14 +24,14 @@ attach hooks for the lifecycle stages you care about, and register your plugin a
 
 ### 1. Add the dependency
 
-```toml filename="Cargo.toml"
+```toml title="Cargo.toml"
 [dependencies]
 hive-router = "0.0.40"
 ```
 
 ### 2. Implement a plugin
 
-```rust filename="src/plugin.rs"
+```rust title="src/plugin.rs"
 use hive_router::plugins::plugin_trait::RouterPlugin;
 
 // Declare and implement a simple plugin with no configuration and no hooks.
@@ -52,7 +52,7 @@ impl RouterPlugin for MyPlugin {
 
 ### 3. Register the plugin
 
-```rust filename="src/main.rs"
+```rust title="src/main.rs"
 use hive_router::{
     configure_global_allocator, error::RouterInitError, init_rustls_crypto_provider,
     router_entrypoint, PluginRegistry, RouterGlobalAllocator,
@@ -76,7 +76,7 @@ async fn main() -> Result<(), RouterInitError> {
 
 ### 4. Enable in configuration
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 plugins:
   my_plugin:
     enabled: true

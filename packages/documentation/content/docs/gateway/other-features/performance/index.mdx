@@ -35,7 +35,7 @@ LocalForage is a library that improves the existing storage mechanism in the bro
 Even if it is known as a browser storage, Hive Gateway provides you as a platform-agnostic cache
 storage to leverage the well-known storage APIs that are available in most JavaScript environments.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from '@graphql-hive/gateway'
 
 export const gatewayConfig = defineConfig({
@@ -62,7 +62,7 @@ use Redis as a cache storage for your Hive Gateway.
 
 <Callout>The Redis cache currently only works in Node.js environments.</Callout>
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -87,7 +87,7 @@ If you are using
 [Redis Sentinel](https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/), You can
 use the `sentinels` option to connect to the Redis Sentinel.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -110,7 +110,7 @@ export const gatewayConfig = defineConfig({
 If you are using [Redis Cluster](http://redis.io/topics/cluster-tutorial), You can use the
 `startupNodes` option to connect to the Redis Cluster.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -144,7 +144,7 @@ Gateway. [Learn more about KV here.](https://developers.cloudflare.com/workers/r
   documentation](/docs/gateway/deployment/serverless/cloudflare-workers).
 </Callout>
 
-```ts filename="worker.ts"
+```ts title="worker.ts"
 import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 import CloudflareKVCacheStorage from "@graphql-mesh/cache-cfw-kv";
 import supergraph from "./my-remote-supergraph-config";
@@ -173,7 +173,7 @@ export default {
 You can also implement your own cache storage by extending the `CacheStorage` class. It needs to
 match `KeyValueCache` interface from `@graphql-hive/gateway`.
 
-```ts filename="my-cache-storage.ts"
+```ts title="my-cache-storage.ts"
 import { LRUCache } from "lru-cache";
 import { KeyValueCache } from "@graphql-hive/gateway";
 

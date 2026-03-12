@@ -140,7 +140,7 @@ We assume that the `gzip` function is a function that compresses the data using 
 
 In your gateway configuration, you need to enable the compression for the gateway.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -237,7 +237,7 @@ In this case, gateway will always send a compressed request to the defined subgr
 
 In your gateway configuration, you need to enable the compression.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({

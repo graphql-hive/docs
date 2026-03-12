@@ -45,7 +45,7 @@ Instead of configuring Hive Gateway with CLI arguments, we support configuring w
 You're recommended to use the `gateway.config.ts` file to configure Hive Gateway. Simply mount the
 config file when running the image.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -137,7 +137,7 @@ For example, adding
 [Block Field Suggestions Plugin](/docs/gateway/other-features/security/block-field-suggestions) to
 the container would look like this:
 
-```dockerfile filename="Dockerfile"
+```dockerfile title="Dockerfile"
 FROM ghcr.io/graphql-hive/gateway
 
 RUN npm i @escape.tech/graphql-armor-block-field-suggestions
@@ -149,7 +149,7 @@ docker build -t hive-gateway-w-block-suggestions .
 
 Configure to use the block field suggestions plugin:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { blockFieldSuggestionsPlugin } from "@escape.tech/graphql-armor-block-field-suggestions";
 import { defineConfig } from "@graphql-hive/gateway";
 
@@ -182,7 +182,7 @@ copying over your project's files is the way to go.
 In the following example, we're developing a `useTiming` plugin that will add a human readable
 execution duration to the GraphQL result `extensions` property.
 
-```json filename="package.json"
+```json title="package.json"
 {
   "name": "my-timing",
   "dependencies": {
@@ -195,7 +195,7 @@ execution duration to the GraphQL result `extensions` property.
 }
 ```
 
-```ts filename="my-timing.ts"
+```ts title="my-timing.ts"
 import moment from "moment";
 import type { GatewayPlugin } from "@graphql-hive/gateway";
 
@@ -232,7 +232,7 @@ export function useTiming(): GatewayPlugin {
 }
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { useTiming } from "./my-timing";
 
@@ -243,7 +243,7 @@ export const gatewayConfig = defineConfig({
 
 Your Dockerfile should then look something like this:
 
-```dockerfile filename="Dockerfile"
+```dockerfile title="Dockerfile"
 FROM ghcr.io/graphql-hive/gateway
 
 # we dont install dev deps because:
@@ -289,7 +289,7 @@ another image.
 
 Say you have the following files:
 
-```json filename="package.json"
+```json title="package.json"
 {
   "name": "my-time",
   "dependencies": {
@@ -301,7 +301,7 @@ Say you have the following files:
 }
 ```
 
-```js filename="my-time.ts"
+```js title="my-time.ts"
 import moment from "moment";
 
 export const additionalResolvers = {
@@ -313,7 +313,7 @@ export const additionalResolvers = {
 };
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { additionalResolvers } from "./my-time";
 
@@ -322,7 +322,7 @@ export const gatewayConfig = defineConfig({ additionalResolvers });
 
 Your Dockerfile should then look something like this:
 
-```dockerfile filename="Dockerfile"
+```dockerfile title="Dockerfile"
 FROM ghcr.io/graphql-hive/gateway
 
 # we dont install dev deps because:
