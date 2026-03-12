@@ -1,32 +1,33 @@
-'use client';
+"use client";
 
-import { useId, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
-import { LabelCard } from './label-card';
-import { MetricCard } from './metric-card';
+import { ChevronDown } from "lucide-react";
+import { useId, useState } from "react";
+
+import { LabelCard } from "./label-card";
+import { MetricCard } from "./metric-card";
 
 interface Metric {
-  name: string;
-  type: 'Counter' | 'Histogram' | 'UpDownCounter' | 'Gauge';
-  unit?: string;
   description?: string;
   labels?: string[];
+  name: string;
+  type: "Counter" | "Gauge" | "Histogram" | "UpDownCounter";
+  unit?: string;
 }
 
 interface Label {
-  name: string;
   meaning: string;
-  typicalValues: string[];
+  name: string;
   notes?: string;
+  typicalValues: string[];
 }
 
 interface MetricsSectionProps {
-  title?: string;
   description?: string;
-  metrics?: Metric[];
   labels?: Label[];
+  metrics?: Metric[];
+  title?: string;
 }
-export function MetricsSection({ metrics, labels }: MetricsSectionProps) {
+export function MetricsSection({ labels, metrics }: MetricsSectionProps) {
   const [isLabelsOpen, setIsLabelsOpen] = useState(false);
   const labelsRegionId = useId();
 
@@ -38,7 +39,7 @@ export function MetricsSection({ metrics, labels }: MetricsSectionProps) {
             Metrics
           </h4>
           <div className="grid gap-4">
-            {metrics.map(metric => (
+            {metrics.map((metric) => (
               <MetricCard key={metric.name} {...metric} />
             ))}
           </div>
@@ -48,25 +49,25 @@ export function MetricsSection({ metrics, labels }: MetricsSectionProps) {
       {labels && labels.length > 0 && (
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
           <button
-            type="button"
-            onClick={() => setIsLabelsOpen(current => !current)}
-            aria-expanded={isLabelsOpen}
             aria-controls={labelsRegionId}
+            aria-expanded={isLabelsOpen}
             className="hive-focus flex w-full items-center justify-between px-5 py-4 text-left text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100"
+            onClick={() => setIsLabelsOpen((current) => !current)}
+            type="button"
           >
             <span>Labels Reference</span>
             <ChevronDown
-              className={`h-5 w-5 transition-transform duration-200 ${isLabelsOpen ? 'rotate-180' : ''}`}
+              className={`h-5 w-5 transition-transform duration-200 ${isLabelsOpen ? "rotate-180" : ""}`}
             />
           </button>
           <div
+            className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${isLabelsOpen ? "max-h-[4000px] opacity-100" : "max-h-0 opacity-90"}`}
             id={labelsRegionId}
-            className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${isLabelsOpen ? 'max-h-[4000px] opacity-100' : 'max-h-0 opacity-90'}`}
           >
             <div className="border-t border-gray-100 px-5 pb-5 dark:border-neutral-800">
               <div className="divide-y divide-gray-100 pt-2 dark:divide-neutral-800">
-                {labels.map(label => (
-                  <div key={label.name} className="py-6">
+                {labels.map((label) => (
+                  <div className="py-6" key={label.name}>
                     <LabelCard {...label} />
                   </div>
                 ))}
