@@ -1,5 +1,6 @@
 import { getCaseStudyBySlug, getOtherCaseStudies } from "@/lib/landing-content";
 import { mdxComponents } from "@/lib/mdx-components";
+import { seo } from "@/lib/seo";
 import { DecorationIsolation } from "@hive/design-system/decorations";
 import { Heading } from "@hive/design-system/heading";
 import { createFileRoute, notFound } from "@tanstack/react-router";
@@ -12,9 +13,41 @@ import { GetYourAPIGameWhite } from "../../../components/get-your-api-game-white
 import "../../../styles/hive-prose.css";
 import { SmallAvatar } from "../../../components/small-avatar";
 
+interface CaseStudyLoaderData {
+  authors: { avatar?: string; name: string; position?: string }[];
+  category: string;
+  date: string;
+  excerpt: string;
+  otherCaseStudies: {
+    frontMatter: { category: string; excerpt: string };
+    name: string;
+    route: string;
+  }[];
+  path: string;
+  slug: string;
+  title: string;
+}
+
 export const Route = createFileRoute("/_landing/case-studies/$")({
   component: CaseStudyDetail,
-  loader: async ({ params }) => {
+  head: ({ params }: { params: { _splat?: string } }) => {
+    const slug = params._splat ?? "";
+    const entry = getCaseStudyBySlug(slug);
+    if (!entry) return {};
+    return seo({
+      breadcrumbs: [
+        { name: "Case Studies", pathname: "/case-studies" },
+        {
+          name: entry.frontMatter.title ?? slug,
+          pathname: `/case-studies/${slug}`,
+        },
+      ],
+      description: entry.frontMatter.excerpt ?? "",
+      pathname: entry.frontMatter.canonical ?? `/case-studies/${slug}`,
+      title: entry.frontMatter.title ?? slug,
+    });
+  },
+  loader: async ({ params }): Promise<CaseStudyLoaderData> => {
     const slug = params._splat ?? "";
     const entry = getCaseStudyBySlug(slug);
     if (!entry) throw notFound();

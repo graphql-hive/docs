@@ -21,6 +21,7 @@ const CLOUDFLARE_ENTRY = fileURLToPath(
 );
 const DEFAULT_CHANGELOG_URL =
   "https://raw.githubusercontent.com/graphql-hive/console/main/deployment/CHANGELOG.md";
+const DEV_SERVER_PORT = Number(process.env["PORT"] || 0);
 
 function stripTopLevelHeading(markdown: string) {
   return markdown.replace(/^#\s+.*\n/, "");
@@ -153,7 +154,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 1440,
+    port: Number.isNaN(DEV_SERVER_PORT) ? 0 : DEV_SERVER_PORT,
   },
   ssr: {
     noExternal: ["@hive/design-system", "tailwind-merge"],

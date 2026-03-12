@@ -38,6 +38,7 @@ export const caseStudies = defineCollections({
   dir: "content/case-studies",
   schema: type({
     authors: author.array().default(() => []),
+    "canonical?": "string",
     category: "string",
     date: dateString,
     excerpt: "string",
@@ -51,6 +52,7 @@ export const productUpdates = defineCollections({
   dir: "content/product-updates",
   schema: type({
     authors: author.array().default(() => []),
+    "canonical?": "string",
     date: dateString,
     description: "string",
     title: "string",
@@ -68,10 +70,12 @@ export const blog = defineCollections({
   dir: "content/blog",
   schema: type({
     authors: stringOrStringArray,
+    "canonical?": "string",
     date: dateString,
     "description?": "string",
     "featured?": "boolean",
     "image?": "string",
+    "ogImage?": "string",
     tags: stringOrStringArray,
     title: "string",
   }),

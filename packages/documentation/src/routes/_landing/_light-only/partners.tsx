@@ -10,9 +10,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import { FrequentlyAskedPartnersQuestions } from "../../../components/frequently-asked-questions";
 import { Hero, HeroLinks } from "../../../components/hero";
 import { LandingPageContainer } from "../../../components/landing-page-container";
+import { seo } from "../../../lib/seo";
+import ogImage from "./partners.opengraph-image.png";
 
 export const Route = createFileRoute("/_landing/_light-only/partners")({
   component: PartnersPage,
+  head: () =>
+    seo({
+      breadcrumbs: [{ name: "Partnerships", pathname: "/partners" }],
+      description:
+        "Accelerate GraphQL Federation adoption with the Hive Partner Network. Access enterprise-grade tools and expertise to build scalable, unified APIs across distributed systems. Join our network of federation experts.",
+      image: ogImage,
+      pathname: "/partners",
+      title: "Partnerships",
+    }),
 });
 
 function PartnersPage() {

@@ -16,6 +16,7 @@ import { GetYourAPIGameWhite } from "../../../components/get-your-api-game-white
 import { HeroLinks } from "../../../components/hero";
 import { LandingPageContainer } from "../../../components/landing-page-container";
 import { TrustedBySection } from "../../../components/trusted-by-section";
+import { seo } from "../../../lib/seo";
 
 const serverGetCaseStudies = createServerFn({ method: "GET" }).handler(
   async () => getCaseStudies(),
@@ -23,6 +24,14 @@ const serverGetCaseStudies = createServerFn({ method: "GET" }).handler(
 
 export const Route = createFileRoute("/_landing/case-studies/")({
   component: CaseStudiesPage,
+  head: () =>
+    seo({
+      breadcrumbs: [{ name: "Case Studies", pathname: "/case-studies" }],
+      description:
+        "See the results our customers achieved by switching to Hive.",
+      pathname: "/case-studies",
+      title: "Case Studies",
+    }),
   loader: () => serverGetCaseStudies(),
 });
 

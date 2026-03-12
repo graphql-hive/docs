@@ -5,6 +5,7 @@ import { Footer, Navigation } from "@/components/navigation";
 import { EditOnGitHub, PageActions } from "@/components/page-actions";
 import { baseOptions } from "@/lib/layout.shared";
 import { mdxComponents } from "@/lib/mdx-components";
+import { createTitleWithSection, seo } from "@/lib/seo";
 import { getSource } from "@/lib/source";
 import { withBasePath } from "@/lib/with-base-path";
 import { createFileRoute, notFound } from "@tanstack/react-router";
@@ -23,7 +24,25 @@ import {
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
-  loader: async ({ params }) => {
+  head: ({ params }: { params: { _splat?: string } }) => {
+    const slug = normalizeDocsSlug(params._splat);
+    const page = docsMetadataBySlug[slug];
+    if (!page) return {};
+    const section =
+      slug.split("/")[0] === "gateway"
+        ? "Hive Gateway"
+        : slug.split("/")[0] === "router"
+          ? "Hive Router"
+          : undefined;
+
+    return seo({
+      breadcrumbs: getDocsBreadcrumbs(slug),
+      description: page.description,
+      pathname: slug ? `/docs/${slug}` : "/docs",
+      title: createTitleWithSection(page.title, section),
+    });
+  },
+  loader: async ({ params }): Promise<DocsLoaderData> => {
     const slugs = params._splat?.split("/").filter(Boolean) ?? [];
     const data = await serverLoader({ data: slugs });
     await clientLoader.preload(data.path);
@@ -41,9 +60,11 @@ const serverLoader = createServerFn({
     if (!page) throw notFound();
 
     return {
+      description: page.data.description,
       lastModified: page.data.lastModified,
       pageTree: await source.serializePageTree(source.getPageTree()),
       path: page.path,
+      title: page.data.title ?? page.url,
       url: page.url,
     };
   });
@@ -130,11 +151,77 @@ function Page() {
   );
 }
 
+type DocsFrontmatter = {
+  description?: string;
+  title?: string;
+};
+
+const docsFrontmatters = import.meta.glob(
+  "../../../content/docs/**/*.{md,mdx}",
+  {
+    eager: true,
+    import: "frontmatter",
+    query: {
+      collection: "docs",
+      only: "frontmatter",
+    },
+  },
+) as Record<string, DocsFrontmatter>;
+
+const docsMetadataBySlug = Object.fromEntries(
+  Object.entries(docsFrontmatters).map(([file, frontmatter]) => [
+    normalizeDocsFile(file),
+    {
+      description: frontmatter.description,
+      title: frontmatter.title ?? "Documentation",
+    },
+  ]),
+) as Record<string, { description?: string; title: string }>;
+
+function normalizeDocsSlug(slug?: string) {
+  return slug?.split("/").filter(Boolean).join("/") ?? "";
+}
+
+function normalizeDocsFile(file: string) {
+  return file
+    .replace(/^.*content\/docs\//, "")
+    .replace(/\.(md|mdx)$/, "")
+    .replace(/\/index$/, "");
+}
+
+function getDocsBreadcrumbs(slug: string) {
+  const crumbs = [{ name: "Docs", pathname: "/docs" }];
+  const segments = slug ? slug.split("/") : [];
+  let current = "";
+
+  for (const segment of segments) {
+    current = current ? `${current}/${segment}` : segment;
+    const page = docsMetadataBySlug[current];
+    crumbs.push({
+      name: page?.title ?? segment,
+      pathname: `/docs/${current}`,
+    });
+  }
+
+  return crumbs;
+}
+
 interface DocsPageProps {
   className?: string;
   githubUrl: string;
   lastModified: number;
   markdownUrl: string;
+}
+
+interface DocsLoaderData {
+  description?: string;
+  lastModified?: Date;
+  pageTree: Awaited<
+    ReturnType<Awaited<ReturnType<typeof getSource>>["serializePageTree"]>
+  >;
+  path: string;
+  title: string;
+  url: string;
 }
 
 // workaround for the fact that we can't use flex-1 in .prose docs body

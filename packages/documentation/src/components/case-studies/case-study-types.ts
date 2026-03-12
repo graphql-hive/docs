@@ -10,6 +10,7 @@ export type CaseStudyAuthor = typeof CaseStudyAuthor.infer;
 
 export const CaseStudyFrontmatter = type({
   "authors?": CaseStudyAuthor.array(),
+  "canonical?": "string",
   category: "string",
   date: /^\d{4}-\d{2}-\d{2}$/ as type.cast<`${number}-${number}-${number}`>,
   excerpt: "string",
