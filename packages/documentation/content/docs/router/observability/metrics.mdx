@@ -1,11 +1,11 @@
 ---
-title: 'OpenTelemetry Metrics'
+title: "OpenTelemetry Metrics"
 ---
 
-import { Callout } from '@hive/design-system/hive-components/callout'
-import { Tabs } from '@hive/design-system/tabs'
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
 
-import { MetricsSection } from '#components/otel-metrics/metrics-section'
+import { MetricsSection } from "#components/otel-metrics/metrics-section";
 
 Hive Router exposes OpenTelemetry metrics for gateway traffic, subgraph traffic, cache behavior,
 supergraph lifecycle, and GraphQL errors.
@@ -98,9 +98,10 @@ be able to reach that address from its runtime environment (local network, Kuber
 network path).
 
 <Callout type="note">
-  If `port` is not set, or is the same as the main HTTP server port, the Router exposes metrics
-  through the same HTTP server that serves the GraphQL API. If the port is different, the Router
-  starts a separate HTTP server dedicated solely to the Prometheus metrics endpoint.
+  If `port` is not set, or is the same as the main HTTP server port, the Router
+  exposes metrics through the same HTTP server that serves the GraphQL API. If
+  the port is different, the Router starts a separate HTTP server dedicated
+  solely to the Prometheus metrics endpoint.
 </Callout>
 
 In production, make sure this endpoint is reachable only by trusted scrapers (for example via
@@ -180,9 +181,9 @@ telemetry:
 You can override behavior per metric under `telemetry.metrics.instrumentation.instruments`.
 
 <Callout type="tip">
-  Disable non-essential labels to control cost, since each additional label value increases active
-  time-series cardinality - a primary billing and performance driver in platforms like Grafana and
-  Datadog.
+  Disable non-essential labels to control cost, since each additional label
+  value increases active time-series cardinality - a primary billing and
+  performance driver in platforms like Grafana and Datadog.
 </Callout>
 
 For production guidance on label cardinality (especially `graphql.operation.name`), see
@@ -243,42 +244,42 @@ telemetry:
           seconds:
             buckets:
               [
-                '5ms',
-                '10ms',
-                '25ms',
-                '50ms',
-                '75ms',
-                '100ms',
-                '250ms',
-                '500ms',
-                '750ms',
-                '1s',
-                '2.5s',
-                '5s',
-                '7.5s',
-                '10s'
+                "5ms",
+                "10ms",
+                "25ms",
+                "50ms",
+                "75ms",
+                "100ms",
+                "250ms",
+                "500ms",
+                "750ms",
+                "1s",
+                "2.5s",
+                "5s",
+                "7.5s",
+                "10s",
               ]
             record_min_max: false
           bytes:
             buckets:
               [
-                '128B',
-                '512B',
-                '1KB',
-                '2KB',
-                '4KB',
-                '8KB',
-                '16KB',
-                '32KB',
-                '64KB',
-                '128KB',
-                '256KB',
-                '512KB',
-                '1MB',
-                '2MB',
-                '3MB',
-                '4MB',
-                '5MB'
+                "128B",
+                "512B",
+                "1KB",
+                "2KB",
+                "4KB",
+                "8KB",
+                "16KB",
+                "32KB",
+                "64KB",
+                "128KB",
+                "256KB",
+                "512KB",
+                "1MB",
+                "2MB",
+                "3MB",
+                "4MB",
+                "5MB",
               ]
             record_min_max: false
 ```
@@ -293,27 +294,27 @@ lifecycle.
 <MetricsSection
   labels={[
     {
-      meaning: 'GraphQL error code',
-      name: 'code',
+      meaning: "GraphQL error code",
+      name: "code",
       notes: `Uses "extensions.code" values and router's error codes. "UNKNOWN" is used when no code is available.`,
       typicalValues: [
-        'GRAPHQL_PARSE_FAILED',
-        'GRAPHQL_VALIDATION_FAILED',
-        'PLAN_EXECUTION_FAILED',
-        'UNKNOWN',
-        '...'
-      ]
-    }
+        "GRAPHQL_PARSE_FAILED",
+        "GRAPHQL_VALIDATION_FAILED",
+        "PLAN_EXECUTION_FAILED",
+        "UNKNOWN",
+        "...",
+      ],
+    },
   ]}
   metrics={[
     {
       description:
-        'Total count of GraphQL errors encountered during query processing and execution, categorized by error code.',
-      labels: ['code'],
-      name: 'hive.router.graphql.errors_total',
-      type: 'Counter',
-      unit: '{error}'
-    }
+        "Total count of GraphQL errors encountered during query processing and execution, categorized by error code.",
+      labels: ["code"],
+      name: "hive.router.graphql.errors_total",
+      type: "Counter",
+      unit: "{error}",
+    },
   ]}
 />
 
@@ -324,39 +325,42 @@ Supergraph metrics cover polling and processing lifecycle of schema updates.
 <MetricsSection
   labels={[
     {
-      meaning: 'Result of the poll',
-      name: 'result',
+      meaning: "Result of the poll",
+      name: "result",
       notes: 'Used by "hive.router.supergraph.poll.*" metrics only',
-      typicalValues: ['updated', 'not_modified', 'error']
+      typicalValues: ["updated", "not_modified", "error"],
     },
     {
-      meaning: 'Supergraph processing status',
-      name: 'status',
+      meaning: "Supergraph processing status",
+      name: "status",
       notes: 'Used by "hive.router.supergraph.process.*" metrics only',
-      typicalValues: ['ok', 'error']
-    }
+      typicalValues: ["ok", "error"],
+    },
   ]}
   metrics={[
     {
-      description: 'Total number of supergraph polling attempts, categorized by poll result.',
-      labels: ['result'],
-      name: 'hive.router.supergraph.poll.total',
-      type: 'Counter'
+      description:
+        "Total number of supergraph polling attempts, categorized by poll result.",
+      labels: ["result"],
+      name: "hive.router.supergraph.poll.total",
+      type: "Counter",
     },
     {
-      description: 'Duration of supergraph polling attempts, categorized by poll result.',
-      labels: ['result'],
-      name: 'hive.router.supergraph.poll.duration',
-      type: 'Histogram',
-      unit: 'Seconds'
+      description:
+        "Duration of supergraph polling attempts, categorized by poll result.",
+      labels: ["result"],
+      name: "hive.router.supergraph.poll.duration",
+      type: "Histogram",
+      unit: "Seconds",
     },
     {
-      description: 'Time spent processing supergraph updates, categorized by status.',
-      labels: ['status'],
-      name: 'hive.router.supergraph.process.duration',
-      type: 'Histogram',
-      unit: 'Seconds'
-    }
+      description:
+        "Time spent processing supergraph updates, categorized by status.",
+      labels: ["status"],
+      name: "hive.router.supergraph.process.duration",
+      type: "Histogram",
+      unit: "Seconds",
+    },
   ]}
 />
 
@@ -367,138 +371,139 @@ HTTP server metrics capture inbound client traffic processed by the router.
 <MetricsSection
   labels={[
     {
-      meaning: 'HTTP method',
-      name: 'http.request.method',
-      notes: '_OTHER is fallback for unknown methods',
+      meaning: "HTTP method",
+      name: "http.request.method",
+      notes: "_OTHER is fallback for unknown methods",
       typicalValues: [
-        'GET',
-        'POST',
-        'PUT',
-        'PATCH',
-        'DELETE',
-        'HEAD',
-        'OPTIONS',
-        'CONNECT',
-        'TRACE',
-        'QUERY',
-        '_OTHER'
-      ]
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "HEAD",
+        "OPTIONS",
+        "CONNECT",
+        "TRACE",
+        "QUERY",
+        "_OTHER",
+      ],
     },
     {
-      meaning: 'Response status code',
-      name: 'http.response.status_code',
-      typicalValues: ['200', '400', '500', '...']
+      meaning: "Response status code",
+      name: "http.response.status_code",
+      typicalValues: ["200", "400", "500", "..."],
     },
     {
-      meaning: 'Normalized router path',
-      name: 'http.route',
-      typicalValues: ['/graphql']
+      meaning: "Normalized router path",
+      name: "http.route",
+      typicalValues: ["/graphql"],
     },
     {
-      meaning: 'Protocol name',
-      name: 'network.protocol.name',
-      typicalValues: ['http']
+      meaning: "Protocol name",
+      name: "network.protocol.name",
+      typicalValues: ["http"],
     },
     {
-      meaning: 'Protocol version',
-      name: 'network.protocol.version',
-      typicalValues: ['0.9', '1.0', '1.1', '2', '3']
+      meaning: "Protocol version",
+      name: "network.protocol.version",
+      typicalValues: ["0.9", "1.0", "1.1", "2", "3"],
     },
     {
-      meaning: 'URL scheme',
-      name: 'url.scheme',
-      typicalValues: ['http', 'https']
+      meaning: "URL scheme",
+      name: "url.scheme",
+      typicalValues: ["http", "https"],
     },
     {
-      meaning: 'Error classification for failed requests',
-      name: 'error.type',
-      notes: 'Only set for failed requests',
-      typicalValues: ['status code >= 400']
+      meaning: "Error classification for failed requests",
+      name: "error.type",
+      notes: "Only set for failed requests",
+      typicalValues: ["status code >= 400"],
     },
     {
-      meaning: 'GraphQL operation name associated with the HTTP request',
-      name: 'graphql.operation.name',
+      meaning: "GraphQL operation name associated with the HTTP request",
+      name: "graphql.operation.name",
       notes:
-        'Used by http.server.request.duration, http.server.request.body.size, and http.server.response.body.size. High-cardinality risk: value is client-controlled and can explode without persisted operations.',
-      typicalValues: ['UsersQuery', 'IntrospectionQuery', 'UNKNOWN']
+        "Used by http.server.request.duration, http.server.request.body.size, and http.server.response.body.size. High-cardinality risk: value is client-controlled and can explode without persisted operations.",
+      typicalValues: ["UsersQuery", "IntrospectionQuery", "UNKNOWN"],
     },
     {
-      meaning: 'GraphQL operation type',
-      name: 'graphql.operation.type',
+      meaning: "GraphQL operation type",
+      name: "graphql.operation.type",
       notes:
-        'Used by http.server.request.duration, http.server.request.body.size, and http.server.response.body.size. Omitted when unknown',
-      typicalValues: ['query', 'mutation', 'subscription']
+        "Used by http.server.request.duration, http.server.request.body.size, and http.server.response.body.size. Omitted when unknown",
+      typicalValues: ["query", "mutation", "subscription"],
     },
     {
-      meaning: 'GraphQL response status for the request',
-      name: 'graphql.response.status',
+      meaning: "GraphQL response status for the request",
+      name: "graphql.response.status",
       notes:
         'Used by http.server.request.duration, http.server.request.body.size, and http.server.response.body.size. "error" indicates the GraphQL response contains at least one error',
-      typicalValues: ['ok', 'error']
-    }
+      typicalValues: ["ok", "error"],
+    },
   ]}
   metrics={[
     {
-      description: 'Duration of inbound HTTP requests handled by the router.',
+      description: "Duration of inbound HTTP requests handled by the router.",
       labels: [
-        'http.request.method',
-        'http.response.status_code',
-        'http.route',
-        'network.protocol.name',
-        'network.protocol.version',
-        'url.scheme',
-        'error.type',
-        'graphql.operation.name',
-        'graphql.operation.type',
-        'graphql.response.status'
+        "http.request.method",
+        "http.response.status_code",
+        "http.route",
+        "network.protocol.name",
+        "network.protocol.version",
+        "url.scheme",
+        "error.type",
+        "graphql.operation.name",
+        "graphql.operation.type",
+        "graphql.response.status",
       ],
-      name: 'http.server.request.duration',
-      type: 'Histogram',
-      unit: 'Seconds'
+      name: "http.server.request.duration",
+      type: "Histogram",
+      unit: "Seconds",
     },
     {
-      description: 'Size of inbound HTTP request bodies handled by the router.',
+      description: "Size of inbound HTTP request bodies handled by the router.",
       labels: [
-        'http.request.method',
-        'http.response.status_code',
-        'http.route',
-        'network.protocol.name',
-        'network.protocol.version',
-        'url.scheme',
-        'error.type',
-        'graphql.operation.name',
-        'graphql.operation.type',
-        'graphql.response.status'
+        "http.request.method",
+        "http.response.status_code",
+        "http.route",
+        "network.protocol.name",
+        "network.protocol.version",
+        "url.scheme",
+        "error.type",
+        "graphql.operation.name",
+        "graphql.operation.type",
+        "graphql.response.status",
       ],
-      name: 'http.server.request.body.size',
-      type: 'Histogram',
-      unit: 'Bytes'
+      name: "http.server.request.body.size",
+      type: "Histogram",
+      unit: "Bytes",
     },
     {
-      description: 'Size of outbound HTTP response bodies returned by the router.',
+      description:
+        "Size of outbound HTTP response bodies returned by the router.",
       labels: [
-        'http.request.method',
-        'http.response.status_code',
-        'http.route',
-        'network.protocol.name',
-        'network.protocol.version',
-        'url.scheme',
-        'error.type',
-        'graphql.operation.name',
-        'graphql.operation.type',
-        'graphql.response.status'
+        "http.request.method",
+        "http.response.status_code",
+        "http.route",
+        "network.protocol.name",
+        "network.protocol.version",
+        "url.scheme",
+        "error.type",
+        "graphql.operation.name",
+        "graphql.operation.type",
+        "graphql.response.status",
       ],
-      name: 'http.server.response.body.size',
-      type: 'Histogram',
-      unit: 'Bytes'
+      name: "http.server.response.body.size",
+      type: "Histogram",
+      unit: "Bytes",
     },
     {
-      description: 'Current number of in-flight inbound HTTP requests.',
-      labels: ['http.request.method', 'network.protocol.name', 'url.scheme'],
-      name: 'http.server.active_requests',
-      type: 'UpDownCounter',
-      unit: '{request}'
-    }
+      description: "Current number of in-flight inbound HTTP requests.",
+      labels: ["http.request.method", "network.protocol.name", "url.scheme"],
+      name: "http.server.active_requests",
+      type: "UpDownCounter",
+      unit: "{request}",
+    },
   ]}
 />
 
@@ -509,143 +514,145 @@ HTTP client metrics capture outbound requests the router makes to subgraphs.
 <MetricsSection
   labels={[
     {
-      meaning: 'HTTP method',
-      name: 'http.request.method',
-      notes: '_OTHER is fallback for unknown methods',
+      meaning: "HTTP method",
+      name: "http.request.method",
+      notes: "_OTHER is fallback for unknown methods",
       typicalValues: [
-        'GET',
-        'POST',
-        'PUT',
-        'PATCH',
-        'DELETE',
-        'HEAD',
-        'OPTIONS',
-        'CONNECT',
-        'TRACE',
-        'QUERY',
-        '_OTHER'
-      ]
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "HEAD",
+        "OPTIONS",
+        "CONNECT",
+        "TRACE",
+        "QUERY",
+        "_OTHER",
+      ],
     },
     {
-      meaning: 'Response status code',
-      name: 'http.response.status_code',
-      typicalValues: ['200', '400', '500', '...']
+      meaning: "Response status code",
+      name: "http.response.status_code",
+      typicalValues: ["200", "400", "500", "..."],
     },
     {
-      meaning: 'Protocol name',
-      name: 'network.protocol.name',
-      typicalValues: ['http']
+      meaning: "Protocol name",
+      name: "network.protocol.name",
+      typicalValues: ["http"],
     },
     {
-      meaning: 'Protocol version',
-      name: 'network.protocol.version',
-      typicalValues: ['0.9', '1.0', '1.1', '2', '3']
+      meaning: "Protocol version",
+      name: "network.protocol.version",
+      typicalValues: ["0.9", "1.0", "1.1", "2", "3"],
     },
     {
-      meaning: 'URL scheme',
-      name: 'url.scheme',
-      typicalValues: ['http', 'https']
+      meaning: "URL scheme",
+      name: "url.scheme",
+      typicalValues: ["http", "https"],
     },
     {
-      meaning: 'Subgraph host',
-      name: 'server.address',
-      notes: 'URI host, or unknown fallback',
-      typicalValues: ['URI host', 'unknown']
+      meaning: "Subgraph host",
+      name: "server.address",
+      notes: "URI host, or unknown fallback",
+      typicalValues: ["URI host", "unknown"],
     },
     {
-      meaning: 'Subgraph port',
-      name: 'server.port',
-      notes: 'Explicit URI port, or fallback 80/443',
-      typicalValues: ['80', '443']
+      meaning: "Subgraph port",
+      name: "server.port",
+      notes: "Explicit URI port, or fallback 80/443",
+      typicalValues: ["80", "443"],
     },
     {
-      meaning: 'Subgraph identifier',
-      name: 'subgraph.name',
+      meaning: "Subgraph identifier",
+      name: "subgraph.name",
       notes: 'Configured names (for example "accounts")',
-      typicalValues: ['accounts']
+      typicalValues: ["accounts"],
     },
     {
-      meaning: 'Error classification',
-      name: 'error.type',
-      notes: 'Numeric status code >= 400 or execution error code string',
-      typicalValues: ['400', 'SUBGRAPH_REQUEST_FAILURE', '...']
+      meaning: "Error classification",
+      name: "error.type",
+      notes: "Numeric status code >= 400 or execution error code string",
+      typicalValues: ["400", "SUBGRAPH_REQUEST_FAILURE", "..."],
     },
     {
-      meaning: 'GraphQL response status for the subgraph request',
-      name: 'graphql.response.status',
+      meaning: "GraphQL response status for the subgraph request",
+      name: "graphql.response.status",
       notes:
         'Set to "ok" when the parsed subgraph response has no GraphQL errors. Set to "error" when the subgraph response includes GraphQL errors or when transport/deserialization fails.',
-      typicalValues: ['ok', 'error']
-    }
+      typicalValues: ["ok", "error"],
+    },
   ]}
   metrics={[
     {
-      description: 'Duration of outbound HTTP requests sent from router to subgraphs.',
+      description:
+        "Duration of outbound HTTP requests sent from router to subgraphs.",
       labels: [
-        'http.request.method',
-        'server.address',
-        'server.port',
-        'network.protocol.name',
-        'network.protocol.version',
-        'url.scheme',
-        'subgraph.name',
-        'http.response.status_code',
-        'error.type',
-        'graphql.response.status'
+        "http.request.method",
+        "server.address",
+        "server.port",
+        "network.protocol.name",
+        "network.protocol.version",
+        "url.scheme",
+        "subgraph.name",
+        "http.response.status_code",
+        "error.type",
+        "graphql.response.status",
       ],
-      name: 'http.client.request.duration',
-      type: 'Histogram',
-      unit: 'Seconds'
+      name: "http.client.request.duration",
+      type: "Histogram",
+      unit: "Seconds",
     },
     {
-      description: 'Size of outbound HTTP request bodies sent to subgraphs.',
+      description: "Size of outbound HTTP request bodies sent to subgraphs.",
       labels: [
-        'http.request.method',
-        'server.address',
-        'server.port',
-        'network.protocol.name',
-        'network.protocol.version',
-        'url.scheme',
-        'subgraph.name',
-        'http.response.status_code',
-        'error.type',
-        'graphql.response.status'
+        "http.request.method",
+        "server.address",
+        "server.port",
+        "network.protocol.name",
+        "network.protocol.version",
+        "url.scheme",
+        "subgraph.name",
+        "http.response.status_code",
+        "error.type",
+        "graphql.response.status",
       ],
-      name: 'http.client.request.body.size',
-      type: 'Histogram',
-      unit: 'Bytes'
+      name: "http.client.request.body.size",
+      type: "Histogram",
+      unit: "Bytes",
     },
     {
-      description: 'Size of HTTP response bodies returned by subgraphs.',
+      description: "Size of HTTP response bodies returned by subgraphs.",
       labels: [
-        'http.request.method',
-        'server.address',
-        'server.port',
-        'network.protocol.name',
-        'network.protocol.version',
-        'url.scheme',
-        'subgraph.name',
-        'http.response.status_code',
-        'error.type',
-        'graphql.response.status'
+        "http.request.method",
+        "server.address",
+        "server.port",
+        "network.protocol.name",
+        "network.protocol.version",
+        "url.scheme",
+        "subgraph.name",
+        "http.response.status_code",
+        "error.type",
+        "graphql.response.status",
       ],
-      name: 'http.client.response.body.size',
-      type: 'Histogram',
-      unit: 'Bytes'
+      name: "http.client.response.body.size",
+      type: "Histogram",
+      unit: "Bytes",
     },
     {
-      description: 'Current number of in-flight outbound HTTP requests to subgraphs.',
+      description:
+        "Current number of in-flight outbound HTTP requests to subgraphs.",
       labels: [
-        'http.request.method',
-        'server.address',
-        'server.port',
-        'url.scheme',
-        'subgraph.name'
+        "http.request.method",
+        "server.address",
+        "server.port",
+        "url.scheme",
+        "subgraph.name",
       ],
-      name: 'http.client.active_requests',
-      type: 'UpDownCounter',
-      unit: '{request}'
-    }
+      name: "http.client.active_requests",
+      type: "UpDownCounter",
+      unit: "{request}",
+    },
   ]}
 />
 
@@ -661,23 +668,24 @@ Parsing cache metrics measure query parse cache hit/miss behavior and cache size
 <MetricsSection
   metrics={[
     {
-      description: 'Total number of parsing cache lookups, categorized by result.',
-      labels: ['result'],
-      name: 'hive.router.parse_cache.requests_total',
-      type: 'Counter'
+      description:
+        "Total number of parsing cache lookups, categorized by result.",
+      labels: ["result"],
+      name: "hive.router.parse_cache.requests_total",
+      type: "Counter",
     },
     {
-      description: 'Duration of parsing cache lookups, categorized by result.',
-      labels: ['result'],
-      name: 'hive.router.parse_cache.duration',
-      type: 'Histogram',
-      unit: 'Seconds'
+      description: "Duration of parsing cache lookups, categorized by result.",
+      labels: ["result"],
+      name: "hive.router.parse_cache.duration",
+      type: "Histogram",
+      unit: "Seconds",
     },
     {
-      description: 'Current number of entries stored in the parsing cache.',
-      name: 'hive.router.parse_cache.size',
-      type: 'Gauge'
-    }
+      description: "Current number of entries stored in the parsing cache.",
+      name: "hive.router.parse_cache.size",
+      type: "Gauge",
+    },
   ]}
 />
 
@@ -688,23 +696,25 @@ Validation cache metrics measure query validation cache hit/miss behavior and ca
 <MetricsSection
   metrics={[
     {
-      description: 'Total number of validation cache lookups, categorized by result.',
-      labels: ['result'],
-      name: 'hive.router.validate_cache.requests_total',
-      type: 'Counter'
+      description:
+        "Total number of validation cache lookups, categorized by result.",
+      labels: ["result"],
+      name: "hive.router.validate_cache.requests_total",
+      type: "Counter",
     },
     {
-      description: 'Duration of validation cache lookups, categorized by result.',
-      labels: ['result'],
-      name: 'hive.router.validate_cache.duration',
-      type: 'Histogram',
-      unit: 'Seconds'
+      description:
+        "Duration of validation cache lookups, categorized by result.",
+      labels: ["result"],
+      name: "hive.router.validate_cache.duration",
+      type: "Histogram",
+      unit: "Seconds",
     },
     {
-      description: 'Current number of entries stored in the validation cache.',
-      name: 'hive.router.validate_cache.size',
-      type: 'Gauge'
-    }
+      description: "Current number of entries stored in the validation cache.",
+      name: "hive.router.validate_cache.size",
+      type: "Gauge",
+    },
   ]}
 />
 
@@ -715,23 +725,26 @@ Normalization cache metrics measure query normalization cache hit/miss behavior 
 <MetricsSection
   metrics={[
     {
-      description: 'Total number of normalization cache lookups, categorized by result.',
-      labels: ['result'],
-      name: 'hive.router.normalize_cache.requests_total',
-      type: 'Counter'
+      description:
+        "Total number of normalization cache lookups, categorized by result.",
+      labels: ["result"],
+      name: "hive.router.normalize_cache.requests_total",
+      type: "Counter",
     },
     {
-      description: 'Duration of normalization cache lookups, categorized by result.',
-      labels: ['result'],
-      name: 'hive.router.normalize_cache.duration',
-      type: 'Histogram',
-      unit: 'Seconds'
+      description:
+        "Duration of normalization cache lookups, categorized by result.",
+      labels: ["result"],
+      name: "hive.router.normalize_cache.duration",
+      type: "Histogram",
+      unit: "Seconds",
     },
     {
-      description: 'Current number of entries stored in the normalization cache.',
-      name: 'hive.router.normalize_cache.size',
-      type: 'Gauge'
-    }
+      description:
+        "Current number of entries stored in the normalization cache.",
+      name: "hive.router.normalize_cache.size",
+      type: "Gauge",
+    },
   ]}
 />
 
@@ -742,23 +755,24 @@ Planning cache metrics measure query planning cache hit/miss behavior and cache 
 <MetricsSection
   metrics={[
     {
-      description: 'Total number of planning cache lookups, categorized by result.',
-      labels: ['result'],
-      name: 'hive.router.plan_cache.requests_total',
-      type: 'Counter'
+      description:
+        "Total number of planning cache lookups, categorized by result.",
+      labels: ["result"],
+      name: "hive.router.plan_cache.requests_total",
+      type: "Counter",
     },
     {
-      description: 'Duration of planning cache lookups, categorized by result.',
-      labels: ['result'],
-      name: 'hive.router.plan_cache.duration',
-      type: 'Histogram',
-      unit: 'Seconds'
+      description: "Duration of planning cache lookups, categorized by result.",
+      labels: ["result"],
+      name: "hive.router.plan_cache.duration",
+      type: "Histogram",
+      unit: "Seconds",
     },
     {
-      description: 'Current number of entries stored in the planning cache.',
-      name: 'hive.router.plan_cache.size',
-      type: 'Gauge'
-    }
+      description: "Current number of entries stored in the planning cache.",
+      name: "hive.router.plan_cache.size",
+      type: "Gauge",
+    },
   ]}
 />
 
@@ -770,11 +784,11 @@ These labels are shared by cache lookup counters and duration histograms.
   <MetricsSection
     labels={[
       {
-        meaning: 'Cache lookup outcome',
-        name: 'result',
-        notes: 'Used by cache `requests_total` and `duration` metrics',
-        typicalValues: ['hit', 'miss']
-      }
+        meaning: "Cache lookup outcome",
+        name: "result",
+        notes: "Used by cache `requests_total` and `duration` metrics",
+        typicalValues: ["hit", "miss"],
+      },
     ]}
   />
 </div>
