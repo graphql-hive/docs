@@ -40,7 +40,7 @@ Using Automatic Persisted Queries requires installing a separate package.e.
 npm i @graphql-yoga/plugin-apq
 ```
 
-```ts filename="Automatic Persisted Queries Gateway setup" {3, 13}
+```ts title="Automatic Persisted Queries Gateway setup" {3, 13}
 import { defineConfig } from "@graphql-hive/gateway";
 import { useAPQ } from "@graphql-yoga/plugin-apq";
 
@@ -51,14 +51,14 @@ export const gatewayConfig = defineConfig({
 
 Start your Hive Gateway and send a request for priming the cache (register the operation).
 
-```bash filename="Execute GraphQL Operation to prime the cache"
+```bash title="Execute GraphQL Operation to prime the cache"
 curl -X POST -H 'Content-Type: application/json' http://localhost:4000/graphql \
   -d '{"query":"{__typename}","extensions":{"persistedQuery":{"version":1,"sha256Hash":"ecf4edb46db40b5132295c0291d62fb65d6759a9eedfa4d5d612dd5ec54a6b38"}}}'
 ```
 
 Afterwards, we can send the same payload again, but this time omit the `query` field.
 
-```bash filename="Execute GraphQL Operation without query payload"
+```bash title="Execute GraphQL Operation without query payload"
 curl -X POST -H 'Content-Type: application/json' http://localhost:4000/graphql \
   -d '{"extensions":{"persistedQuery":{"version":1,"sha256Hash":"ecf4edb46db40b5132295c0291d62fb65d6759a9eedfa4d5d612dd5ec54a6b38"}}}'
 ```
@@ -80,7 +80,7 @@ unique entries.
 
 A custom store implementation can be provided via the `store` option.
 
-```ts filename="Automatic Persisted Operations with a custom store" {16}
+```ts title="Automatic Persisted Operations with a custom store" {16}
 import { useAPQ, type APQStore } from "@graphql-yoga/plugin-apq";
 
 // Note: this store grows infinitely, so it is not a good idea to use it in production.
@@ -96,7 +96,7 @@ For external stores the `set` and `get` properties on the store can also return 
   Instead of raising an error, returning undefined or null will allow the server to continue to
   respond to requests if the store goes down.
 
-```ts filename="Automatic Persisted Operations with a redis store" {16}
+```ts title="Automatic Persisted Operations with a redis store" {16}
 import Keyv from "keyv";
 
 const store = new Keyv("redis://user:pass@localhost:6379");
@@ -143,7 +143,7 @@ For example:
 
 You can force the error responses to use 200 OK status code:
 
-```ts filename="Automatic Persisted Operations with a custom store" {18-20}
+```ts title="Automatic Persisted Operations with a custom store" {18-20}
 useAPQ({
   responseConfig: {
     forceStatusCodeOk: true,
@@ -157,7 +157,7 @@ The examples above describe the usage of APQ between the gateway and the client,
 benefit from APQ between the gateway and the subgraphs. If you have configured APQ in your
 subgraphs, the gateway can handle it automatically with the following configuration;
 
-```ts filename="Automatic Persisted Operations with a custom store"
+```ts title="Automatic Persisted Operations with a custom store"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({

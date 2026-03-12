@@ -24,7 +24,7 @@ For each request, the router evaluates your expression and routes to the URL it 
 
 Simple example configuration that routes based on a runtime condition:
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 override_subgraph_urls:
   subgraph_name:
     url:
@@ -51,7 +51,7 @@ to all users.
 
 <Tabs.Tab>
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 override_subgraph_urls:
   products:
     url:
@@ -71,7 +71,7 @@ users.
 
 <Tabs.Tab>
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 override_subgraph_urls:
   products:
     url:
@@ -93,7 +93,7 @@ override_subgraph_urls:
 If your application is deployed globally, you likely have subgraph instances in multiple geographic
 regions. Routing users to the instance closest to them can significantly reduce latency.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 override_subgraph_urls:
   reviews:
     url:

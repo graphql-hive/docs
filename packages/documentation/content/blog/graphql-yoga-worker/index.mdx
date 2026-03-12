@@ -150,13 +150,13 @@ npm install graphql graphql-yoga @pothos/core
 
 Create a schema with a Query that will be used as a sample.
 
-```ts filename="src/builder.ts"
+```ts title="src/builder.ts"
 import SchemaBuilder from "@pothos/core";
 
 export const builder = new SchemaBuilder({});
 ```
 
-```ts filename="src/schema.ts"
+```ts title="src/schema.ts"
 import { builder } from "./builder";
 
 builder.queryType({
@@ -172,7 +172,7 @@ export const schema = builder.toSchema();
 
 Load the created schema and create a GraphQL endpoint with GraphQL Yoga.
 
-```ts filename="src/workers.ts"
+```ts title="src/workers.ts"
 import { createYoga } from "graphql-yoga";
 import { schema } from "./schema";
 
@@ -219,7 +219,7 @@ npm install kysely
 
 Create a schema for the database with a `User` model by using Prisma.
 
-```prisma filename="prisma/schema.prisma"
+```prisma title="prisma/schema.prisma"
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -261,7 +261,7 @@ npm install pg
 
 Writing the code for the connection using the installed `pg`.
 
-```ts filename="src/context.ts"
+```ts title="src/context.ts"
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 import type { DB } from "./types";
@@ -300,7 +300,7 @@ Cloudflare Workers' TCP connection is broken, it cannot connect to the database 
 So the code dares to instantiate Kysely in order to reconnect. The following configuration is
 required for `pg` to work on Cloudflare Workers.
 
-```toml filename="wrangler.toml"
+```toml title="wrangler.toml"
 node_compat = true
 ```
 
@@ -314,11 +314,11 @@ Finally, write the GraphQL code to fetch data from the database and return it to
 the code was [suggested](https://github.com/chimame/graphql-yoga-worker-with-pothos/pull/1) by
 [hayes](https://github.com/hayes), the author of `Pothos`, while I was working on this article.
 
-```ts filename="src/models/index.ts"
+```ts title="src/models/index.ts"
 export * from "./User";
 ```
 
-```ts filename="src/models/User.ts"
+```ts title="src/models/User.ts"
 import { AllSelection } from "kysely/dist/cjs/parser/select-parser";
 import { builder } from "../builder";
 import { DB } from "../types";
@@ -338,15 +338,15 @@ UserType.implement({
 });
 ```
 
-```ts filename="src/resolvers/index.ts"
+```ts title="src/resolvers/index.ts"
 export * from "./User";
 ```
 
-```ts filename="src/resolvers/Users/index.ts"
+```ts title="src/resolvers/Users/index.ts"
 export * from "./query";
 ```
 
-```ts filename="src/resolvers/User/query.ts"
+```ts title="src/resolvers/User/query.ts"
 import { builder } from "../../builder";
 import { connection } from "../../context";
 import { UserType } from "../../models/User";
@@ -363,7 +363,7 @@ builder.queryFields((t) => ({
 }));
 ```
 
-```diff filename="src/schema.ts"
+```diff title="src/schema.ts"
 import { builder } from './builder'
 
 builder.queryType({

@@ -1,6 +1,5 @@
 "use client";
 
-import { PageActions } from "@/components/page-actions";
 import {
   ScrollProvider,
   TOCItemType,
@@ -15,6 +14,8 @@ interface DocsTocProps {
   toc: TOCItemType[];
 }
 
+// TODO: The active anchor left bar is animating on all navigations, but it's upstream in Fumadocs.
+//       It would be nice to only animate it on scroll and hash link clicks in the same page, not when nagivating between pages.
 export function DocsTableOfContent({ children, toc }: DocsTocProps) {
   return (
     <div

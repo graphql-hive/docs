@@ -70,7 +70,7 @@ yarn add @graphql-mesh/cli @graphql-mesh/graphql @graphql-mesh/transform-resolve
 
 ### 3. Add `.meshrc.yaml` File in the Root Folder With
 
-```yaml filename=".meshrc.yaml"
+```yaml title=".meshrc.yaml"
 sources:
   - name: spacexGQL
     handler:
@@ -101,7 +101,7 @@ Where I
 
 ### 4. Add `./src/composition/insert_user.js` File with All the Logic for This New Mutation Composition
 
-```js filename="insert_user.js"
+```js title="insert_user.js"
 module.exports = (next) => async (root, args, context, info) => {
   // add returning.id to the selection
   info.operation.selectionSet.selections[0].selectionSet.selections.push({

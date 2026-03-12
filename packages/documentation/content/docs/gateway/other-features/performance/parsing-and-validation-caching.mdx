@@ -15,7 +15,7 @@ Using the parser cache can improve performance up to ~60%, and using the validat
 This behavior is built-in and can be optionally disabled using the `parserAndValidationCache`
 options:
 
-```ts filename="gateway.config.ts" {4,5}
+```ts title="gateway.config.ts" {4,5}
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -43,7 +43,7 @@ interface CacheStore<T> {
 
 You can then pass your cache store to the `parserAndValidationCache` options:
 
-```ts filename="gateway.config.ts" {9-13}
+```ts title="gateway.config.ts" {9-13}
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({

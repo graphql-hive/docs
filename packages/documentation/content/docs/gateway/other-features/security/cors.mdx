@@ -41,7 +41,7 @@ export type CORSOptions =
 
 ### Example configuration using CORSOptions
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -68,7 +68,7 @@ Access-Control-Allow-Headers: X-Custom-Header
 You can also pass a function to the cors property, that takes your request and constructs the
 options
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -100,7 +100,7 @@ You can disable CORS on your gateway by simply passing `false` as the cors prope
 
 **For example:**
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({

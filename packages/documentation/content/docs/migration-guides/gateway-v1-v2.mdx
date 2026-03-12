@@ -67,7 +67,7 @@ considered an anti-pattern.
 To enable file uploads, you need to explicitly enable the multipart support by setting the
 `multipart` Hive Gateway option to `true`.
 
-```diff filename="gateway.config.ts"
+```diff title="gateway.config.ts"
 import { defineConfig } from '@graphql-hive/gateway';
 
 export const gatewayConfig = defineConfig({
@@ -88,7 +88,7 @@ npm i @graphql-mesh/plugin-mock
 
 and then use it in your Hive Gateway configuration:
 
-```diff filename="gateway.config.ts"
+```diff title="gateway.config.ts"
 import {
   defineConfig,
 - useMock
@@ -241,7 +241,7 @@ The `logging` option has been changed to accept either:
 
 <Tabs.Tab>
 
-```diff filename="gateway.config.ts"
+```diff title="gateway.config.ts"
 import {
   defineConfig,
 - LogLevel,
@@ -257,7 +257,7 @@ export const gatewayConfig = defineConfig({
 
 <Tabs.Tab>
 
-```diff filename="index.ts"
+```diff title="index.ts"
 import {
   createGatewayRuntime,
 - LogLevel,
@@ -288,7 +288,7 @@ details and an example.
 
 <Tabs.Tab>
 
-```diff filename="gateway.config.ts"
+```diff title="gateway.config.ts"
 import {
   defineConfig,
 - DefaultLogger,
@@ -306,7 +306,7 @@ export const gatewayConfig = defineConfig({
 
 <Tabs.Tab>
 
-```diff filename="index.ts"
+```diff title="index.ts"
 import {
   createGatewayRuntime,
 - DefaultLogger,
@@ -367,7 +367,7 @@ easier to understand and use.
 The context object passed to plugins and hooks now uses `log` instead of `logger`. Basically, the
 `GatewayConfigContext` interface has been changed to:
 
-```diff filename="@graphql-hive/gateway"
+```diff title="@graphql-hive/gateway"
 - import type { Logger as LegacyLogger } from '@graphql-mesh/types';
 + import type { Logger as HiveLogger } from '@graphql-hive/logger';
 
@@ -381,7 +381,7 @@ export interface GatewayConfigContext {
 Same goes for all of the transports' contexts. Each of the transport contexts now has a `log` prop
 instead of `logger`. Additionally, the logger is required and will always be provided.
 
-```diff filename="@graphql-mesh/transport-common"
+```diff title="@graphql-mesh/transport-common"
 - import type { Logger as LegacyLogger } from '@graphql-mesh/types';
 + import type { Logger as HiveLogger } from '@graphql-hive/logger';
 
@@ -394,7 +394,7 @@ export interface TransportContext {
 
 ##### Plugin Setup
 
-```diff filename="gateway.config.ts"
+```diff title="gateway.config.ts"
 import { defineConfig } from '@graphql-hive/gateway';
 import { myPlugins } from './my-plugins';
 
@@ -415,7 +415,7 @@ be provided.
 It is now the highly recommended to use the logger from the context at all times because it contains
 the necessary metadata for increased observability, like the request ID or the execution step.
 
-```diff filename="gateway.config.ts"
+```diff title="gateway.config.ts"
 import { defineConfig } from '@graphql-hive/gateway';
 
 export const gatewayConfig = defineConfig({
@@ -479,7 +479,7 @@ Will log with the necessary metadata for increased observability, like this:
 The monitoring plugin `usePrometheus` has been updated to use the new logger API. The `logger` prop
 has been replaced with the `log` prop when using Hive Gateway runtime.
 
-```diff filename="index.ts"
+```diff title="index.ts"
 import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
 import usePrometheus from '@graphql-mesh/plugin-prometheus'
 
@@ -503,7 +503,7 @@ is simply spread to the plugin options - you don't have to change anything.
 If you have implemented and been using a custom transport of yours, you will need to update the
 `logger` prop to `log` in the `getSubgraphExecutor` method.
 
-```diff filename="letter-transport.ts"
+```diff title="letter-transport.ts"
 import type { Transport } from '@graphql-mesh/transport-common';
 import { letterExecutor } from './my-letter-executor';
 
@@ -563,7 +563,7 @@ Since we're using a custom log writer, you have to install the Hive Logger packa
 npm i @graphql-hive/logger
 ```
 
-```diff filename="gateway.config.ts"
+```diff title="gateway.config.ts"
 import pino from 'pino'
 - import { defineConfig } from '@graphql-hive/gateway'
 - import { createLoggerFromPino } from '@graphql-hive/logger-pino'
@@ -601,7 +601,7 @@ Since we're using a custom log writer, you have to install the Hive Logger packa
 npm i @graphql-hive/logger
 ```
 
-```diff filename="gateway.config.ts"
+```diff title="gateway.config.ts"
 import { createLogger, format, transports } from 'winston'
 - import { defineConfig } from '@graphql-hive/gateway'
 - import { createLoggerFromWinston } from '@graphql-hive/winston'
@@ -679,7 +679,7 @@ information.
 
 All tracing related options has been moved to a `traces` option.
 
-```diff filename="gateway.config"
+```diff title="gateway.config"
 import { defineConfig } from '@grahpl-hive/gateway'
 
 export const gatewayConfig = defineConfig({
@@ -795,7 +795,7 @@ The only breaking change relating to Hive Gateway is the renaming of `PubSub` to
 better reflect its in-memory nature. In case you have been using `PubSub`, you need to replace it
 with `MemPubSub`:
 
-```diff filename="gateway.config.ts"
+```diff title="gateway.config.ts"
 import { defineConfig } from '@graphql-hive/gateway';
 - import { PubSub } from '@graphql-hive/gateway';
 + import { MemPubSub } from '@graphql-hive/gateway';

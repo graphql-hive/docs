@@ -63,7 +63,7 @@ potential inconsistencies.
 In GraphQXL this would look something like:
 
 <Comparison>
-```graphql filename="Source GraphQXL" copy=false
+```graphql title="Source GraphQXL" copy=false
 type _CommonFields {
   id: ID!
   name: String!
@@ -76,7 +76,7 @@ type Product { ...\_CommonFields }
 type User { ...\_CommonFields }
 
 ````
-```graphql filename="Compiled GraphQL" copy=false
+```graphql title="Compiled GraphQL" copy=false
 type Product {
   id: ID!
   name: String!

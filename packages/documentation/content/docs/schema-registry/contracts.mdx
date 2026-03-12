@@ -42,7 +42,7 @@ For each contract definition, Hive runs:
 
 In [Federation](/federation) subgraphs, fields can be tagged with the `@tag` directive.
 
-```graphql filename="Example Subgraph" {6,11,12,13}
+```graphql title="Example Subgraph" {6,11,12,13}
 extend schema
   @link(
     url: "https://specs.apollo.dev/federation/v2.0"
@@ -87,7 +87,7 @@ type Query {
 
 The public graph will look like the following.
 
-```graphql filename="Supergraph"
+```graphql title="Supergraph"
 type Query {
   a(id: ID!): Int
   b(id: ID!): Int
@@ -97,7 +97,7 @@ type Query {
 If you now set up a contract that only includes fields tagged with `@tag(name: "public")` the
 contract graph will look like the following.
 
-```graphql filename="Contract Graph"
+```graphql title="Contract Graph"
 type Query {
   a(id: ID!): Int
 }
@@ -237,7 +237,7 @@ import hiveCdnAccessContractImage from "./hive-cdn-access-contract.png";
 
 Point your Hive Gateway or Apollo Router instance to the supergraph of the contract schema:
 
-```text filename="Example: Contract Supergraph Endpoint"
+```text title="Example: Contract Supergraph Endpoint"
 https://cdn.graphql-hive.com/artifacts/v1/<target_id>/contracts/<contract_name>/supergraph
 ```
 

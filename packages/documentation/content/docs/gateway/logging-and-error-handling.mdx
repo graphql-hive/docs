@@ -36,7 +36,7 @@ transport contexts now has a `log` prop.
 
 The `log` property in the plugin setup function contains the root-most logger instance.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { myPlugins } from "./my-plugins";
 
@@ -55,7 +55,7 @@ Across all plugins, hooks and contexts, the `log` property will always be provid
 It is now the highly recommended to use the logger from the context at all times because it contains
 the necessary metadata for increased observability, like the request ID or the execution step.
 
-```diff filename="gateway.config.ts"
+```diff title="gateway.config.ts"
 import { defineConfig } from '@graphql-hive/gateway';
 
 export const gatewayConfig = defineConfig({
@@ -137,7 +137,7 @@ The `logging` option during Hive Gateway setup accepts:
 
 <Tabs.Tab>
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -149,7 +149,7 @@ export const gatewayConfig = defineConfig({
 
 <Tabs.Tab>
 
-```ts filename="index.ts"
+```ts title="index.ts"
 import { createGatewayRuntime } from "@graphql-hive/runtime-gateway";
 
 export const gateway = createGatewayRuntime({
@@ -178,7 +178,7 @@ and proper security measures.**
 
 </Callout>
 
-```ts filename="toggle-debug.ts"
+```ts title="toggle-debug.ts"
 import { GatewayPlugin, Logger } from "@graphql-hive/gateway";
 
 interface ToggleDebugOptions {
@@ -221,7 +221,7 @@ export function useToggleDebug(opts: ToggleDebugOptions): GatewayPlugin {
 
 And finally use the plugin with Hive Gateway:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { useToggleDebug } from "./toggle-debug";
 
@@ -260,7 +260,7 @@ To enable JSON logs, pass the `LOG_JSON=1` as an environment variable to enable 
 
 You can also use the JSON writer directly in your configuration.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig, JSONLogWriter, Logger } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -305,7 +305,7 @@ winston, but also implement custom writers that send logs to a HTTP consumer or 
 Here is an example of a custom log writer that writes logs to a daily log file. It will write to a
 file for each day in a given directory.
 
-```ts filename="daily-file-log-writer.ts"
+```ts title="daily-file-log-writer.ts"
 import fs from "node:fs/promises";
 import path from "node:path";
 import {
@@ -334,7 +334,7 @@ export class DailyFileLogWriter implements LogWriter {
 
 And using it as simple as plugging it into an instance of Hive Logger to the `logging` option:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig, JSONLogWriter, Logger } from "@graphql-hive/gateway";
 import { DailyFileLogWriter } from "./daily-file-log-writer";
 
@@ -368,7 +368,7 @@ Since we're using a custom log writer, you have to install the Hive Logger packa
 npm i @graphql-hive/logger
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import pino from "pino";
 import { defineConfig } from "@graphql-hive/gateway";
 import { Logger } from "@graphql-hive/logger";
@@ -404,7 +404,7 @@ Since we're using a custom log writer, you have to install the Hive Logger packa
 npm i @graphql-hive/logger
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { createLogger, format, transports } from "winston";
 import { defineConfig } from "@graphql-hive/gateway";
 import { Logger } from "@graphql-hive/logger";
@@ -510,7 +510,7 @@ For debugging purpose, exposing errors to the client can be needed depending on 
 
 Error masking can be disabled using the `maskedErrors` option:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -535,7 +535,7 @@ On unix and windows systems the environment variable can be set when starting th
 NODE_ENV=development hive-gateway supergraph MY_SUPERGRAPH
 ```
 
-```json filename="GraphQL Error Response with original error extensions"
+```json title="GraphQL Error Response with original error extensions"
 {
   "errors": [
     {

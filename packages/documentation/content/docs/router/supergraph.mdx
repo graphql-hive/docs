@@ -33,7 +33,7 @@ Console's dashboard:
 Once you have both, configure Hive Router to use the `supergraph` configuration with `source: hive`
 field:
 
-```yaml {2-4} filename="router.config.yaml"
+```yaml {2-4}title="router.config.yaml"
 supergraph:
   source: hive
   endpoint: https://cdn.graphql-hive.com/artifacts/v1/... # Use your Hive CDN endpoint here
@@ -43,7 +43,7 @@ supergraph:
 By default, Hive Router will reload the Supergraph from Hive Console CDN every `10s`. You can change
 this behaviour by adding `poll_interval` field:
 
-```yaml {5} filename="router.config.yaml"
+```yaml {5}title="router.config.yaml"
 supergraph:
   source: hive
   endpoint: https://cdn.graphql-hive.com/artifacts/v1/... # Use your Hive CDN endpoint here
@@ -59,7 +59,7 @@ For additional configuration options, refer to the
 If you wish to load the Supergraph from the file-system, use the `supergraph` configuration with
 `source: file` field:
 
-```yaml {2-3} filename="router.config.yaml"
+```yaml {2-3}title="router.config.yaml"
 supergraph:
   source: file
   path: ./supergraph.graphql # point to your local supergraph file
@@ -68,7 +68,7 @@ supergraph:
 If you wish the router to reload the supergraph from the file-system periodically, add
 `poll_interval` field:
 
-```yaml {4} filename="router.config.yaml"
+```yaml {4}title="router.config.yaml"
 supergraph:
   source: file
   path: ./supergraph.graphql # point to your local supergraph file

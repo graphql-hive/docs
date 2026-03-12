@@ -21,7 +21,7 @@ Hive Gateway ships with the basic "max tokens" security features. You can enable
 `maxTokens` option to `true` or configure the amount of allowed tokens by passing a `number` to the
 option.
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -39,7 +39,7 @@ you need more control, you can configure more by installing the
 npm install @escape.tech/graphql-armor-max-tokens
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { maxTokensPlugin } from "@escape.tech/graphql-armor-max-tokens";
 import { defineConfig } from "@graphql-hive/gateway";
 

@@ -539,7 +539,7 @@ individual subschemas are only exposing their own types.
 The gateway becomes responsible for merging and enriching the final schema by using Schema
 Extensions:
 
-```ts filename="gateway.ts"
+```ts title="gateway.ts"
 // ...
 export const schema = stitchSchemas({
   subschemas: [postsSubschema, usersSubschema],

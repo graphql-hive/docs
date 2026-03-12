@@ -41,7 +41,7 @@ Hive with code-first approach.
 If you don't have a schema, you can use the following schema in this guide. Copy the contents into a
 `schema.graphql` file and save it to your filesystem:
 
-```graphql filename="schema.graphql" showLineNumbers
+```graphql title="schema.graphql" showLineNumbers
 type Query {
   viewer: ViewerQuery!
   user(id: ID!): User!
@@ -183,7 +183,7 @@ Open the `schema.graphql` and make some breaking changes to your GraphQL schema.
 
 First, we'll start with a non-breaking change - we'll add a new field to the `User` type:
 
-```graphql {15} filename="schema.graphql" showLineNumbers
+```graphql {15}title="schema.graphql" showLineNumbers
 type Query {
   viewer: ViewerQuery!
   user(id: ID!): User!
@@ -228,7 +228,7 @@ meaning that the schema is compatible, valid and has no breaking changes:
 Now, are going to introduce a breaking change. To do that, we'll change the type named `ViewerQuery`
 to `Viewer`, and change the type of the `id` from `ID` to `String`:
 
-```graphql {14,7,2} filename="schema.graphql" showLineNumbers
+```graphql {14,7,2}title="schema.graphql" showLineNumbers
 type Query {
   viewer: Viewer!
   user(id: ID!): User!

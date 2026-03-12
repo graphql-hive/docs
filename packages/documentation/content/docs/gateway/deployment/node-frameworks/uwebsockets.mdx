@@ -15,7 +15,7 @@ with a simple configuration.
 
 ## Example
 
-```ts filename="index.ts"
+```ts title="index.ts"
 import { App, HttpRequest, HttpResponse } from "uWebSockets.js";
 import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 
@@ -42,7 +42,7 @@ You can also use WebSockets instead of SSE with `graphql-ws`;
 npm i graphql-ws
 ```
 
-```ts filename="index.ts"
+```ts title="index.ts"
 import { execute, ExecutionArgs, subscribe } from "graphql";
 import { makeBehavior } from "graphql-ws/lib/use/uWebSockets";
 import { App, HttpRequest, HttpResponse } from "uWebSockets.js";

@@ -116,7 +116,7 @@ client information HTTP headers for requests sent to your GraphQL Yoga server. T
 `x-graphql-client-name` (or `graphql-client-name`) and `x-graphql-client-version` (or
 `graphql-client-version`).
 
-```bash filename="Example HTTP Request with client headers" {2-3}
+```bash title="Example HTTP Request with client headers" {2-3}
 curl \
   -H "x-graphql-client-name: my-client" \
   -H "x-graphql-client-version: 1.0.0" \
@@ -136,7 +136,7 @@ No additional configuration is required for sending usage reporting to Hive when
 [`graphql-sse` plugin](https://the-guild.dev/graphql/yoga-server/docs/features/subscriptions#single-connection-mode).
 Just add the SSE plugin to your Yoga server and the usage reporting will be sent automatically.
 
-```ts filename="SSE HTTP Request Client info" {4,10}
+```ts title="SSE HTTP Request Client info" {4,10}
 import { createServer } from "node:http";
 import { createYoga, type YogaInitialContext } from "graphql-yoga";
 import { useHive } from "@graphql-hive/yoga";
@@ -169,7 +169,7 @@ server.listen(4000, () => {
 The same rules apply for any other HTTP client, such as Apollo Client, Relay, or any other HTTP.
 Just forward send the headers to your server.
 
-```bash filename="SSE HTTP Request with headers" {2-3}
+```bash title="SSE HTTP Request with headers" {2-3}
 curl \
   -H "x-graphql-client-name: my-client" \
   -H "x-graphql-client-version: 1.0.0" \
@@ -187,7 +187,7 @@ and Query) operations.
 Use the following example for sending usage reporting to Hive with GraphQL Yoga and `graphql-ws`
 ([using the official recipe](https://the-guild.dev/graphql/yoga-server/docs/features/subscriptions#graphql-over-websocket-protocol-via-graphql-ws)).
 
-```ts filename="GraphQL Yoga HTTP and WebSocket Setup"
+```ts title="GraphQL Yoga HTTP and WebSocket Setup"
 import { createServer } from "node:http";
 import { useServer } from "graphql-ws/lib/use/ws";
 import { createYoga } from "graphql-yoga";
@@ -260,7 +260,7 @@ httpServer.listen(4000, () => {
 When using the `graphql-ws` client, you can use the `connectionParams` object to forward the client
 information to the server.
 
-```ts filename="GraphQL over WebSocket client configuration"
+```ts title="GraphQL over WebSocket client configuration"
 import { createClient } from "graphql-ws";
 
 const client = createClient({

@@ -81,7 +81,7 @@ The maximum allowed number of aliases in incoming GraphQL operations.
 
 ### Limit Query Depth to 2
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 limits:
   max_depth:
     n: 2
@@ -106,7 +106,7 @@ The above query has a depth of 3 (`user` -> `posts` -> `comments`), so it would 
 
 ### Limit Directives to 5
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 limits:
   max_directives:
     n: 5
@@ -132,7 +132,7 @@ The above query contains 4 directives, so it would be accepted. If an operation 
 
 ### Limit Tokens to 10
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 limits:
   max_tokens:
     n: 10
@@ -155,7 +155,7 @@ The above operation contains 8 tokens, so it would be accepted. If an operation 
 
 ### Limit Aliases to 3
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 limits:
   max_aliases:
     n: 3

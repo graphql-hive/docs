@@ -54,7 +54,7 @@ your GraphQL server setup the configuration might differ.
 
 You can send usage reporting to Hive registry by using the `usage` section of the configuration:
 
-```ts filename="Node.js Apollo Server S setup" {8-12,19-21}
+```ts title="Node.js Apollo Server S setup" {8-12,19-21}
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { useHive } from "@graphql-hive/apollo";
@@ -93,7 +93,7 @@ your client. Those are `x-graphql-client-name` (or `graphql-client-name`) and
 `x-graphql-client-version` (or `graphql-client-version`). You must include both of these headers,
 otherwise the data will not be passed along.
 
-```bash filename="Example HTTP Request with client headers" {2-3}
+```bash title="Example HTTP Request with client headers" {2-3}
 curl \
   -H "x-graphql-client-name: my-client" \
   -H "x-graphql-client-version: 1.0.0" \
@@ -127,7 +127,7 @@ WebSocket setup is required for proper usage reporting to GraphQL Hive.
 
 The following example demonstrates how to set up the Apollo Server with `graphql-ws` and reporting.
 
-```ts filename="Node.js Apollo Server WebSocket setup" {4,9,22-26,31,32,59}
+```ts title="Node.js Apollo Server WebSocket setup" {4,9,22-26,31,32,59}
 import { createServer } from "http";
 import bodyParser from "body-parser";
 import express from "express";
@@ -208,7 +208,7 @@ information to the server.
 Please make sure that you follow the GraphQL over WebSocket recipe for the server from the section
 above.
 
-```ts filename="GraphQL over WebSocket client configuration"
+```ts title="GraphQL over WebSocket client configuration"
 import { createClient } from "graphql-ws";
 
 const client = createClient({

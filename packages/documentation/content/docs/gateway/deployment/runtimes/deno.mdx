@@ -21,7 +21,7 @@ Create a `deno.json` file.
 
 Create a `deno-hive-gateway.ts` file:
 
-```json filename="deno.json" {3}
+```json title="deno.json" {3}
 {
   "imports": {
     "@graphql-hive/gateway-runtime": "npm:@graphql-hive/gateway-runtime@latest"
@@ -29,7 +29,7 @@ Create a `deno-hive-gateway.ts` file:
 }
 ```
 
-```ts filename="deno-hive-gateway.ts"
+```ts title="deno-hive-gateway.ts"
 import { serve } from "https://deno.land/std@0.157.0/http/server.ts";
 import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 

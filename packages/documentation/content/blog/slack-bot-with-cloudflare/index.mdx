@@ -62,7 +62,7 @@ This function will fetch any change in the URL of the worker.
 Cloudflare also provides the option to schedule some functions. You can add this function to the
 index file:
 
-```ts filename="index.ts"
+```ts title="index.ts"
 async function scheduled(
   controller: ScheduledController,
   env: Env,
@@ -78,7 +78,7 @@ the code we create.
 Here you can see the `run` function, we can write any code we want to schedule in the Cloudflare
 Workers. We create a Slack bot that sends a daily message about all open pull requests.
 
-```ts filename="index.ts"
+```ts title="index.ts"
 export async function run(env: Env) {
   const slack = createSlackClient(env.SLACK_TOKEN);
   // We use Slack Client to send messages

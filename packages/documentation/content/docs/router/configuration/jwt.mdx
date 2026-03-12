@@ -91,7 +91,7 @@ services access user information from the token.
 
 ### Basic Auth0/Okta Setup
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 jwt:
   require_authentication: true
   jwks_providers:
@@ -106,7 +106,7 @@ jwt:
 
 ### Multiple Token Locations
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 jwt:
   require_authentication: false
   jwks_providers:
@@ -127,7 +127,7 @@ jwt:
 
 ### Forward Claims to Subgraphs
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 jwt:
   require_authentication: true
   jwks_providers:
@@ -155,7 +155,7 @@ With this setup, your subgraphs receive the JWT claims like this:
 
 ### Local Development with File-based Keys
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 jwt:
   require_authentication: false
   jwks_providers:

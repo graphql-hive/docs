@@ -67,7 +67,7 @@ The new version introduces 4 new rules:
 
 Require `input` or `type` fields to be non-nullable with `@oneOf` directive
 
-```json filename=".eslintrc.json"
+```json title=".eslintrc.json"
 {
   "rules": {
     "@graphql-eslint/require-nullable-fields-with-oneof": "error"
@@ -76,13 +76,13 @@ Require `input` or `type` fields to be non-nullable with `@oneOf` directive
 ```
 
 <Comparison>
-```graphql filename="❌ Incorrect"
+```graphql title="❌ Incorrect"
 input Input @oneOf {
   foo: String!
   bar: [Int!]!
 }
 ```
-```graphql filename="✅ Correct"
+```graphql title="✅ Correct"
 input Input @oneOf {
   foo: String
   bar: [Int!]
@@ -99,7 +99,7 @@ Enforce types with `@oneOf` directive have `error` and `ok` fields.
   on)
 - Reduce the need to use `... on Error` and so on, no need to specify type names in the query
 
-```json filename=".eslintrc.json"
+```json title=".eslintrc.json"
 {
   "rules": {
     "@graphql-eslint/require-type-pattern-with-oneof": "error"
@@ -108,13 +108,13 @@ Enforce types with `@oneOf` directive have `error` and `ok` fields.
 ```
 
 <Comparison>
-```graphql filename="❌ Incorrect"
+```graphql title="❌ Incorrect"
 type DoSomethingMutationResult @oneOf {
   notok: DoSomethingSuccess
   noterror: Error
 }
 ```
-```graphql filename="✅ Correct"
+```graphql title="✅ Correct"
 type DoSomethingMutationResult @oneOf {
   ok: DoSomethingSuccess
   error: Error
@@ -126,7 +126,7 @@ type DoSomethingMutationResult @oneOf {
 
 Require queries, mutations, subscriptions or fragments to be located in separate files.
 
-```json filename=".eslintrc.json"
+```json title=".eslintrc.json"
 {
   "rules": {
     "@graphql-eslint/lone-executable-definition": "error"
@@ -135,7 +135,7 @@ Require queries, mutations, subscriptions or fragments to be located in separate
 ```
 
 <Comparison>
-```graphql filename="❌ Incorrect"
+```graphql title="❌ Incorrect"
 
 query Users {
 users {
@@ -147,7 +147,7 @@ id
 }
 
 ````
-```graphql filename="✅ Correct"
+```graphql title="✅ Correct"
 # users.graphql
 query Users {
   users {
@@ -164,7 +164,7 @@ An original proposal for a rule to suggest inline fragments that are spread only
 asked [2 years ago](https://github.com/dimaMachina/graphql-eslint/issues/72#issue-715054179) and
 finally, this rule is a part of GraphQL-ESLint.
 
-```json filename=".eslintrc.json"
+```json title=".eslintrc.json"
 {
   "rules": {
     "@graphql-eslint/no-one-place-fragments": "error"
@@ -173,7 +173,7 @@ finally, this rule is a part of GraphQL-ESLint.
 ```
 
 <Comparison>
-```graphql filename="❌ Incorrect"
+```graphql title="❌ Incorrect"
 fragment UserFields on User {
   id
 }
@@ -181,7 +181,7 @@ fragment UserFields on User {
 { user { ...UserFields } }
 
 ````
-```graphql filename="✅ Correct"
+```graphql title="✅ Correct"
 {
   user {
     ...UserFields
@@ -206,7 +206,7 @@ end, but now it was fixed with new option `groups`.
 
 Here is an example of configuration and cases:
 
-```json filename=".eslintrc.json"
+```json title=".eslintrc.json"
 {
   "rules": {
     "@graphql-eslint/alphabetize": [
@@ -225,7 +225,7 @@ Here is an example of configuration and cases:
 </Callout>
 
 <Comparison>
-```graphql filename="❌ Incorrect"
+```graphql title="❌ Incorrect"
 type User {
   createdAt: DateTime!
   email: Email!
@@ -235,7 +235,7 @@ type User {
   updatedAt: DateTime!
 }
 ```
-```graphql filename="✅ Correct"
+```graphql title="✅ Correct"
 type User {
   id: ID!
   email: Email!
@@ -252,7 +252,7 @@ type User {
 This option enforces each field of root type (`Query`, `Mutation` and `Subscription`) to have a
 description.
 
-```json filename=".eslintrc.json"
+```json title=".eslintrc.json"
 {
   "rules": {
     "@graphql-eslint/require-description": ["error", { "rootField": true }]
@@ -261,7 +261,7 @@ description.
 ```
 
 <Comparison>
-```graphql filename="❌ Incorrect"
+```graphql title="❌ Incorrect"
 type Mutation {
   createUser: User
 }
@@ -269,7 +269,7 @@ type Mutation {
 type User { name: String }
 
 ````
-```graphql filename="✅ Correct"
+```graphql title="✅ Correct"
 type Mutation {
   "Create a new user"
   createUser: User
@@ -290,7 +290,7 @@ Previously in this rule, we had only a `suffix` option but in our open-source SA
 
 Now, everybody can take benefit from this new option 🎉.
 
-```json filename=".eslintrc.json"
+```json title=".eslintrc.json"
 {
   "rules": {
     "@graphql-eslint/match-document-filename": [
@@ -307,7 +307,7 @@ Now, everybody can take benefit from this new option 🎉.
 ```
 
 <Comparison>
-```graphql filename="❌ Incorrect"
+```graphql title="❌ Incorrect"
 # createUser.graphql
 
 mutation CreateUser {
@@ -317,7 +317,7 @@ mutation CreateUser {
 }
 
 ````
-```graphql filename="✅ Correct"
+```graphql title="✅ Correct"
 # mutation.create-user.graphql
 
 mutation CreateUser {

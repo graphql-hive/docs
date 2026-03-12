@@ -175,7 +175,7 @@ Every CDN artifact response includes the `x-hive-schema-version-id` header, whic
 version ID of the schema being served. This header is present in responses from both latest and
 versioned endpoints.
 
-```bash copy=false filename="Example response"
+```bash copy=false title="Example response"
 curl -v -L -H 'X-Hive-CDN-Key: CDN_ACCESS_TOKEN' \
   "https://cdn.graphql-hive.com/artifacts/v1/TARGET_ID/sdl"
 
@@ -212,7 +212,7 @@ CDN Storage->>Consumer: Sends Artifact
 
 Here's an example for
 
-```bash copy=false filename="Example curl Request for accessing SDL"
+```bash copy=false title="Example curl Request for accessing SDL"
 curl -v -H 'X-Hive-CDN-Key: CDN_ACCESS_TOKEN' \
   https://cdn.graphql-hive.com/v1/HIVE_TARGET_ID/sdl
 
@@ -228,7 +228,7 @@ provided URL in the `location` header. The link is valid for 60 seconds.
 
 Adding `-L` to the `curl` command will follow the redirect and return the artifact itself:
 
-```bash copy=false filename="Example curl Request for accessing SDL"
+```bash copy=false title="Example curl Request for accessing SDL"
 curl -L -H 'X-Hive-CDN-Key: CDN_ACCESS_TOKEN' \
   https://cdn.graphql-hive.com/v1/HIVE_TARGET_ID/sdl
 

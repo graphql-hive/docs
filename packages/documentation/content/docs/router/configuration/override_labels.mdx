@@ -15,7 +15,7 @@ The `@override` directive in Apollo Federation is used for this, but making this
 traffic at once can be risky. Progressive override allows for a safer, incremental migration by
 using a `label` on the directive:
 
-```graphql filename="fulfillment-subgraph.graphql"
+```graphql title="fulfillment-subgraph.graphql"
 extend schema
   @link(
     url: "https://specs.apollo.dev/federation/v2.7"

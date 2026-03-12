@@ -36,7 +36,7 @@ When a request arrives, the router validates the JWT token and extracts scopes f
 (in the `scope` field). It then checks the authorization directives in your schema against these
 extracted scopes to determine if the query should proceed or fail.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 jwt:
   require_authentication: false
   jwks_providers:
@@ -161,14 +161,14 @@ Consider a `Product` type split across inventory and pricing services. Each subg
 authorization directive, and when the type is composed in the supergraph, both requirements must be
 met.
 
-```graphql filename="Inventory subgraph"
+```graphql title="Inventory subgraph"
 type Product @key(fields: "id") @authenticated {
   id: ID!
   inStock: Int
 }
 ```
 
-```graphql filename="Pricing subgraph"
+```graphql title="Pricing subgraph"
 type Product @key(fields: "id") @requiresScopes(scopes: [["pricing:read"]]) {
   id: ID!
   price: Float
@@ -177,7 +177,7 @@ type Product @key(fields: "id") @requiresScopes(scopes: [["pricing:read"]]) {
 
 To access `Product`, user must be authenticated **AND** have `pricing:read` scope.
 
-```graphql filename="Supergraph"
+```graphql title="Supergraph"
 type Product @authenticated @requiresScopes(scopes: [["pricing:read"]]) {
   id: ID!
   price: Float
@@ -191,14 +191,14 @@ When the same field exists in multiple subgraphs with different authorization di
 requirements are merged. Consider a `username` field that appears in both the accounts and profile
 services with different access controls:
 
-```graphql filename="Accounts subgraph"
+```graphql title="Accounts subgraph"
 type User @key(fields: "id") {
   id: ID!
   username: String @shareable @requiresScopes(scopes: [["user:read"]])
 }
 ```
 
-```graphql filename="Profile subgraph"
+```graphql title="Profile subgraph"
 type User @key(fields: "id") {
   id: ID!
   username: String @shareable @requiresScopes(scopes: [["profile:read"]])
@@ -208,7 +208,7 @@ type User @key(fields: "id") {
 
 In the supergraph, both requirements are combined using `AND`:
 
-```graphql filename="Supergraph"
+```graphql title="Supergraph"
 type User {
   id: ID!
   username: String @requiresScopes(scopes: [["user:read", "profile:read"]])
@@ -232,11 +232,11 @@ by combining scope groups with logical AND. The simplified composition process i
 Let's illustrate this with an example, where two subgraphs define different scope requirements for
 the same entity.
 
-```graphql filename="Subgraph A"
+```graphql title="Subgraph A"
 @requiresScopes(scopes:[["user:read", "user:email:read"], ["admin"]])
 ```
 
-```graphql filename="Subgraph B"
+```graphql title="Subgraph B"
 @requiresScopes(scopes:[["user:read", "billing:read"], ["admin", "billing:invoice:read"]])
 ```
 
@@ -279,7 +279,7 @@ types using logical `AND`.
 Look at this example with an `Item` interface implemented by `Book` and `Video` types, each with its
 own authorization requirements:
 
-```graphql filename="Subgraph Schema"
+```graphql title="Subgraph Schema"
 interface Item {
   id: ID!
   title: String
@@ -299,7 +299,7 @@ type Video implements Item @requiresScopes(scopes: [["video:read"]]) {
 After the composition phase, the `Item` interface will have the combined authorization requirements
 from both `Book` and `Video`.
 
-```graphql filename="Supergraph Schema"
+```graphql title="Supergraph Schema"
 interface Item @authenticated @requiresScopes(scopes: [["video:read"]]) {
   id: ID!
   title: String @requiresScopes(scopes: [["book:read"]])
@@ -315,14 +315,14 @@ A field using `@requires` to access fields from another subgraph must define an 
 that is a **superset** of the policies on all required fields. This prevents bypassing security
 policies by accessing protected fields through other fields.
 
-```graphql filename="Users subgraph"
+```graphql title="Users subgraph"
 type User @key(fields: "id") @authenticated {
   id: ID!
   email: String @requiresScopes(scopes: [["email:read"]])
 }
 ```
 
-```graphql filename="Orders subgraph"
+```graphql title="Orders subgraph"
 type Order {
   id: ID!
   cost: Float
@@ -369,7 +369,7 @@ returned.
 Unauthorized fields are removed from the response, but the query continues processing. An error is
 added for each removed field.
 
-```graphql filename="GraphQL query"
+```graphql title="GraphQL query"
 query {
   dashboard {
     publicMetrics { ... }   # Authorized
@@ -378,7 +378,7 @@ query {
 }
 ```
 
-```json filename="GraphQL response"
+```json title="GraphQL response"
 {
   "data": {
     "dashboard": {
@@ -402,7 +402,7 @@ query {
 If a user tries to access any unauthorized field, the entire request is rejected and no data is
 returned.
 
-```graphql filename="GraphQL query"
+```graphql title="GraphQL query"
 query {
   dashboard {
     publicMetrics { ... }   # Authorized
@@ -411,7 +411,7 @@ query {
 }
 ```
 
-```json filename="GraphQL response"
+```json title="GraphQL response"
 {
   "data": null,
   "errors": [
@@ -425,7 +425,7 @@ query {
 
 Enable reject mode by setting `unauthorized.mode: reject` in your router configuration:
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 authorization:
   directives:
     unauthorized:

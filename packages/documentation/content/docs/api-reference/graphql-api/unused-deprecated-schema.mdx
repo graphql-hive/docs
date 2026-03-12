@@ -13,7 +13,7 @@ The `SchemaVersion.unusedSchema(period:)` argument specifies the period to look 
 identify whether a schema part is unused. If the argument is omitted a period of the last 30 days is
 used.
 
-```graphql filename="Example: Retrieve a list of unused schema parts"
+```graphql title="Example: Retrieve a list of unused schema parts"
 query UnusedSchemaQuery(
   $organizationSlug: String!
   $projectSlug: String!
@@ -128,7 +128,7 @@ The `SchemaVersion.deprecatedSchema(period:)` argument specifies the period to f
 contextual schema usage data in order to determine while the deprecated field is still being used or
 can be removed safely. If the argument is omitted a period of the last 30 days is used.
 
-```graphql filename="Example: Retrieve a list of deprecated schema parts with statistics about usage"
+```graphql title="Example: Retrieve a list of deprecated schema parts with statistics about usage"
 query DeprecatedSchemaQuery(
   $organizationSlug: String!
   $projectSlug: String!

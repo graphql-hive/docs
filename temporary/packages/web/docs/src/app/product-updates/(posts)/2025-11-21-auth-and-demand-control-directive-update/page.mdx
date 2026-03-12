@@ -36,7 +36,7 @@ Interface types and fields now inherit `@authenticated`, `@requiresScopes`, and 
 from the object types that implement them. This reduces configuration overhead and ensures
 consistent security policies across your schema.
 
-```graphql filename="Authorization directives are not allowed on interfaces"
+```graphql title="Authorization directives are not allowed on interfaces"
 
 interface Node @authenticated {
   id: ID!
@@ -47,7 +47,7 @@ type User implements Node {
 }
 ```
 
-```graphql filename="Authorization directives"
+```graphql title="Authorization directives"
 # ✅ Node interface inherits the auth directive
 interface Node {
   id: ID!
@@ -60,7 +60,7 @@ type User implements Node @authenticated {
 
 The composed schema will pass authorization directives from implementing object types to interfaces.
 
-```graphql filename="Supergraph"
+```graphql title="Supergraph"
 interface Node @authenticated {
   id: ID!
 }
@@ -82,7 +82,7 @@ of all fields they depend on.
 If a field doesn't carry forward the `@authenticated`, `@requiresScopes`, or `@policy` requirements
 from its dependencies, composition fails with a clear `MISSING_TRANSITIVE_AUTH_REQUIREMENTS` error.
 
-```graphql filename="Subgraph A"
+```graphql title="Subgraph A"
 type User @key(fields: "id") {
   id: ID!
   email: String @requiresScopes(scopes: [["email:read"]])

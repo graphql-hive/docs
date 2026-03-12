@@ -297,7 +297,7 @@ await log.flush(); // make sure all async writes settle
 Here is an example of a custom log writer that writes logs to a daily log file. It will write to a
 file for each day in a given directory.
 
-```ts filename="daily-file-log-writer.ts"
+```ts title="daily-file-log-writer.ts"
 import fs from "node:fs/promises";
 import path from "node:path";
 import {

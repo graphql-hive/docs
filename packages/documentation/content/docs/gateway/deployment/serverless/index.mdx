@@ -45,7 +45,7 @@ When running in a bundled environment like Serevless and Edge, you need to stati
 transports needed to communicate with your upstream services. This way, the transport modules are
 statically referenced and will be included into the bundle.
 
-```ts filename="index.ts"
+```ts title="index.ts"
 import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
 import http from "@graphql-mesh/transport-http";
 import supergraph from "./supergraph.js";
@@ -89,7 +89,7 @@ We explain in following sections how to obtain a supergraph as a `.js` or `.ts` 
 [GraphQL Mesh](https://the-guild.dev/graphql/mesh) can save the supergraph as a JavaScript file by
 providing an output file name ending with `.js`:
 
-```ts filename="mesh.config.ts"
+```ts title="mesh.config.ts"
 import { defineConfig } from "@graphql-mesh/compose-cli";
 
 export const composeConfig = defineConfig({

@@ -31,7 +31,7 @@ The most common scenario is allowing your web application to access the API.
 - Local development environment works too
 - Block everyone else
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 cors:
   enabled: true
   policies:
@@ -55,7 +55,7 @@ origins.
 By default, browsers don't send cookies or authentication headers in cross-origin requests. You need
 to explicitly allow this.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 cors:
   enabled: true
   allow_credentials: true # Allow cookies and auth headers
@@ -78,7 +78,7 @@ specify exact domains.
 
 Sometimes you need different CORS rules for different types of clients.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 cors:
   enabled: true
   # Default settings for most origins

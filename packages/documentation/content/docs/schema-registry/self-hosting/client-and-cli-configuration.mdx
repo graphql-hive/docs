@@ -15,7 +15,7 @@ Instantiate your Gateway or client to point to the self-hosting endpoints.
 
 <Tabs.Tab>
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 const config = defineConfig({
@@ -34,7 +34,7 @@ const config = defineConfig({
 
 <Tabs.Tab>
 
-```yml filename="router.config.yml"
+```yml title="router.config.yml"
 usage_reporting:
   endpoint: http://localhost:8081
 ```
@@ -43,7 +43,7 @@ usage_reporting:
 
 <Tabs.Tab>
 
-```ts filename="custom.ts"
+```ts title="custom.ts"
 import { createHive } from "@graphql-hive/core";
 
 const hive = createHive({
@@ -63,7 +63,7 @@ const hive = createHive({
 
 <Tabs.Tab>
 
-```ts filename="graphql-yoga.ts"
+```ts title="graphql-yoga.ts"
 import { createYoga } from "graphql-yoga";
 import { useHive } from "@graphql-hive/yoga";
 
@@ -88,7 +88,7 @@ const yoga = createYoga({
 
 <Tabs.Tab>
 
-```ts filename="apollo-server.ts"
+```ts title="apollo-server.ts"
 import { createYoga } from "@apollo/server";
 import { useHive } from "@graphql-hive/apollo";
 
@@ -113,7 +113,7 @@ const apollo = new ApolloServer({
 
 <Tabs.Tab>
 
-```ts filename="envelop.ts"
+```ts title="envelop.ts"
 import { createYoga } from "graphql-yoga";
 import { useHive } from "@graphql-hive/envelop";
 
@@ -142,7 +142,7 @@ const yoga = createYoga({
 
 Place a `hive.json` file within the root of your project.
 
-```json filename="hive.json"
+```json title="hive.json"
 {
   "registry": {
     "endpoint": "http://localhost:8082/graphql"

@@ -21,7 +21,7 @@ npm i @graphql-mesh/plugin-mock
 
 Add it to your plugins:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { useMock } from "@graphql-mesh/plugin-mock";
 
@@ -46,7 +46,7 @@ The example above will replace the resolver of `User.firstName` with a mock that
 
 You can also provide a custom function to generate the mock value for a field:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { useMock } from "@graphql-mesh/plugin-mock";
 import { fullName } from "./user-mocks.js";
@@ -69,7 +69,7 @@ export const gatewayConfig = defineConfig({
 
 You can mock types with custom mock functions like below;
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { useMock } from "@graphql-mesh/plugin-mock";
 import { user } from "./user-mocks.js";
@@ -88,7 +88,7 @@ export const gatewayConfig = defineConfig({
 });
 ```
 
-```ts filename="user-mocks.ts"
+```ts title="user-mocks.ts"
 export const mockFullName = () => {
   return `John Doe`;
 };
@@ -98,7 +98,7 @@ When defined manually, properties can return values either directly or through a
 useful when defining static mocks because a mock property will be called as many times as there are
 items in an array. Here’s an example on how this could be achieved:
 
-```ts filename="user-mocks.ts"
+```ts title="user-mocks.ts"
 function* generateNames() {
   while (true) {
     yield "John Doe";
@@ -126,7 +126,7 @@ type User {
 }
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { useMock } from "@graphql-mesh/plugin-mock";
 
@@ -174,7 +174,7 @@ using the store provided in the context `context.mockStore`;
 
 When having a schema that returns a list, in this case, a list of users:
 
-```ts filename="init-store.ts"
+```ts title="init-store.ts"
 import type { IMockStore } from "@graphql-mesh/plugin-mock";
 
 export function initializeStore(mockStore: IMockStore) {
@@ -200,7 +200,7 @@ type Query {
 }
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { useMock } from "@graphql-mesh/plugin-mock";
 import { initializeStore } from "./init-store.js";
@@ -238,7 +238,7 @@ type Mutation {
 }
 ```
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 import { useMock } from "@graphql-mesh/plugin-mock";
 import { initializeStore } from "./init-store.js";

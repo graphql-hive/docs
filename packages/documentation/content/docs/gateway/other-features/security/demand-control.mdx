@@ -20,7 +20,7 @@ This feature allows you to customize cost limiting on both gateway and subgraph 
 
 ## How to use?
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -129,7 +129,7 @@ directive @cost(
 
 Let's say we annotated the `Address` type with a cost of `5` like below;
 
-```graphql filename="subgraph.graphql" {20}
+```graphql title="subgraph.graphql" {20}
 type Query {
   book(id: ID): Book
 }
@@ -218,7 +218,7 @@ directive @listSize(
 We tell the gateway that the `bestsellers` field returns a list of `Book` with an assumed size of
 `5`.
 
-```graphql filename="subgraph.graphql" {4}
+```graphql title="subgraph.graphql" {4}
 # The rest of the subgraph schema is the same with the example above
 type Query {
   book(id: ID): Book
@@ -257,7 +257,7 @@ query BestsellersQuery {
 If the size of the list is determined by the arguments of the field, you can use the
 `slicingArguments` option. It is useful when you have paginated fields.
 
-```graphql filename="subgraph.graphql" {5}
+```graphql title="subgraph.graphql" {5}
 # The rest of the subgraph schema is the same with the example above
 type Query {
   book(id: ID): Book
@@ -300,7 +300,7 @@ If you have multiple pagination parameters, the length of the list can be calcul
 input values. You can pass multiple arguments to `slicingArguments` and the gateway will use the
 highest value. In this case `requireOneSlicingArgument` should be set to `false`.
 
-```graphql filename="subgraph.graphql" {6}
+```graphql title="subgraph.graphql" {6}
 # The rest of the subgraph schema is the same with the example above
 type Query {
   book(id: ID): Book
@@ -342,7 +342,7 @@ query NewestAdditions {
 If you have cursor-based pagination, you can use the `sizedFields` option to provide the cost of the
 fields under each cursor.
 
-```graphql filename="subgraph.graphql" {4}
+```graphql title="subgraph.graphql" {4}
 # The rest of the subgraph schema is the same with the example above
 type Query {
   newestAdditionsByCursor(after: ID, limit: Int!): Cursor!

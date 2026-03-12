@@ -46,7 +46,7 @@ gateway, and no other entity can execute requests to the subgraph on behalf of t
 Here's a minimal example for configuring the JWT plugin with a local signing key, and looking for
 the token in the `authorization` header:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import {
   createInlineSigningKeyProvider,
   defineConfig,
@@ -74,7 +74,7 @@ export const gatewayConfig = defineConfig({
 You can also pass
 [additional configuration options to the Yoga plugin](https://the-guild.dev/graphql/yoga-server/docs/features/jwt#additional-configuration):
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig, createInlineSigningKeyProvider, createRemoteJwksSigningKeyProvider, extractFromHeader, extractFromCookie } from '@graphql-hive/gateway'
 
 export const gatewayConfig = defineConfig({
@@ -233,7 +233,7 @@ For example, with a plugin like Operation Field Permissions, you can use the `jw
 context to access the decoded JWT token, and decide what permissions to allow to the user based on
 identity or token claims:
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { useOperationFieldPermissions } from "@envelop/operation-field-permissions";
 import { defineConfig } from "@graphql-hive/gateway";
 
@@ -279,7 +279,7 @@ the rest of the API with JWT authentication.
   API.
 </Callout>
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { useOperationFieldPermissions } from "@envelop/operation-field-permissions";
 import { defineConfig } from "@graphql-hive/gateway";
 
@@ -329,7 +329,7 @@ To access the JWT token and claims in your upstream service resolvers/execution,
 If you are using [GraphQL-Yoga](https://the-guild.dev/graphql/yoga-server) for your upstream
 subgraph implementation, you can use a built-in utility for extracting it for you in an easy way:
 
-```ts filename="yoga-subgraph.ts"
+```ts title="yoga-subgraph.ts"
 import { useForwardedJWT } from "@graphql-hive/gateway";
 
 const myYogaSubgraphServer = createYoga({
@@ -360,7 +360,7 @@ execution.
 With Apollo-Server, you can access the forwarded claims/token, using a custom Apollo-Server plugin
 that extracts `extensions` and injects it into the context:
 
-```ts filename="apollo-subgraph.ts"
+```ts title="apollo-subgraph.ts"
 import { ApolloServer, ApolloServerPlugin } from "@apollo/server";
 
 const extractJwtPlugin = {

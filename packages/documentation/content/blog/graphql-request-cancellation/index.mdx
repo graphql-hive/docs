@@ -28,7 +28,7 @@ data using the `useEffect` hook. The `fetch` call receives the `AbortSignal` fro
 component containing this hook unmounts, the request is aborted via the call of the `abort` method
 on the `AbortController`.
 
-```tsx filename="React AbortController example"
+```tsx title="React AbortController example"
 function useProfileData() {
   const [state, setState] = useState();
 
@@ -126,7 +126,7 @@ service or database.
 
 Here is an example GraphQL operation causing the server to call several services in sequence.
 
-```graphql filename="Example GraphQL Operation"
+```graphql title="Example GraphQL Operation"
 query Profile($userId: ID!) {
   user(id: $userId) {
     id
@@ -243,7 +243,7 @@ GraphQL API).
 
 For now, opting into this feature is achieved via a plugin.
 
-```ts filename="GraphQL Yoga cancelation plugin"
+```ts title="GraphQL Yoga cancelation plugin"
 import { createYoga, useExecutionCancellation } from "graphql-yoga";
 import { schema } from "./schema";
 

@@ -35,7 +35,7 @@ endpoint.
 - Validate tokens using your provider's public keys
 - Make sure tokens are meant for your API
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 jwt:
   # Reject requests without valid tokens
   require_authentication: true
@@ -67,7 +67,7 @@ Replace `your-domain.auth0.com` and `https://your-api.com` with your actual valu
 Your subgraphs often need to know who the user is to handle authorization or return personalized
 data. The router can extract this information from the JWT and pass it along.
 
-```json filename="Example JWT Payload"
+```json title="Example JWT Payload"
 {
   "sub": "user-123",
   "email": "user@example.com",
@@ -76,7 +76,7 @@ data. The router can extract this information from the JWT and pass it along.
 }
 ```
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 jwt:
   require_authentication: true
   jwks_providers:
@@ -112,7 +112,7 @@ Now your subgraph resolvers can access `extensions.user.sub` to identify the cur
 Sometimes you want to allow both authenticated and anonymous requests. Set
 `require_authentication: false` and your subgraphs can check if user claims were provided.
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 jwt:
   require_authentication: false # Allow anonymous requests
   jwks_providers:
@@ -132,7 +132,7 @@ can adapt their behavior accordingly.
 By default, the router looks for tokens in the `Authorization` header with a `Bearer` prefix. You
 can configure it to check multiple places:
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 jwt:
   require_authentication: true
   jwks_providers:
@@ -160,7 +160,7 @@ The router checks these in order and uses the first token it finds.
 
 For development, you might want to use a local JWKS file instead of hitting a remote endpoint:
 
-```yaml filename="router.config.yaml"
+```yaml title="router.config.yaml"
 jwt:
   require_authentication: false # More flexible for dev
   jwks_providers:

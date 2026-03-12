@@ -120,7 +120,7 @@ supergraph from the Hive schema registry.
 
 <Tabs.Tab>
 
-```sh filename="Run Apollo Federation Gateway with the Hive Gateway Binary"
+```sh title="Run Apollo Federation Gateway with the Hive Gateway Binary"
 hive-gateway supergraph \
   http://cdn.graphql-hive.com/artifacts/v1/12713322-4f6a-459b-9d7c-8aa3cf039c2e/supergraph \
   --hive-cdn-key "YOUR HIVE CDN KEY"
@@ -132,7 +132,7 @@ hive-gateway supergraph \
 
 <Tabs.Tab>
 
-```sh filename="Run Apollo Federation Gateway with the Hive Gateway Docker Image"
+```sh title="Run Apollo Federation Gateway with the Hive Gateway Docker Image"
 docker run --rm --name hive-gateway -p 4000:4000 \
   ghcr.io/graphql-hive/gateway supergraph \
   http://cdn.graphql-hive.com/artifacts/v1/12713322-4f6a-459b-9d7c-8aa3cf039c2e/supergraph \
@@ -147,7 +147,7 @@ docker run --rm --name hive-gateway -p 4000:4000 \
 
 If you installed the JavaScript package, you can use `npx` for running the CLI.
 
-```sh filename="Run Apollo Federation Gateway with npx"
+```sh title="Run Apollo Federation Gateway with npx"
 npx hive-gateway supergraph \
   http://cdn.graphql-hive.com/artifacts/v1/12713322-4f6a-459b-9d7c-8aa3cf039c2e/supergraph \
   --hive-cdn-key "YOUR HIVE CDN KEY"
@@ -173,7 +173,7 @@ will be used instead of instrospecting the proxied API.
 
 <Tabs.Tab>
 
-```sh filename="Run Proxy Gateway with the Hive Gateway Binary"
+```sh title="Run Proxy Gateway with the Hive Gateway Binary"
 hive-gateway proxy https://localhost:3000/graphql \
   --hive-cdn-endpoint http://cdn.graphql-hive.com/artifacts/v1/12713322-4f6a-459b-9d7c-8aa3cf039c2e/sdl \
   --hive-cdn-key "YOUR HIVE CDN KEY"
@@ -185,7 +185,7 @@ hive-gateway proxy https://localhost:3000/graphql \
 
 <Tabs.Tab>
 
-```sh filename="Run Proxy Gateway with the Hive Gateway Binary"
+```sh title="Run Proxy Gateway with the Hive Gateway Binary"
 docker run --rm --name hive-gateway -p 4000:4000 \
   ghcr.io/graphql-hive/gateway proxy https://localhost:3000/graphql \
   --hive-cdn-endpoint http://cdn.graphql-hive.com/artifacts/v1/12713322-4f6a-459b-9d7c-8aa3cf039c2e/sdl \
@@ -198,7 +198,7 @@ docker run --rm --name hive-gateway -p 4000:4000 \
 
 <Tabs.Tab>
 
-```sh filename="Run Proxy Gateway with the Hive Gateway Binary"
+```sh title="Run Proxy Gateway with the Hive Gateway Binary"
 npx hive-gateway proxy https://localhost:3000/graphql \
   --hive-cdn-endpoint http://cdn.graphql-hive.com/artifacts/v1/12713322-4f6a-459b-9d7c-8aa3cf039c2e/sdl \
   --hive-cdn-key "YOUR HIVE CDN KEY"
@@ -229,7 +229,7 @@ We can provide the CLI configuration parameters, also via the configuration file
 
 <Tabs.Tab>
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -254,7 +254,7 @@ Hive Gateway will automatically load the default config file and apply the setti
 
 <Tabs.Tab>
 
-```sh filename="Run Proxy Gateway with the Hive Gateway Binary using configuration file"
+```sh title="Run Proxy Gateway with the Hive Gateway Binary using configuration file"
 hive-gateway supergraph
 ```
 
@@ -266,7 +266,7 @@ hive-gateway supergraph
 
 For docker, we need to mount the configuration file into the container.
 
-```sh filename="Run Proxy Gateway with the Hive Gateway Binary" {2}
+```sh title="Run Proxy Gateway with the Hive Gateway Binary" {2}
 docker run --rm --name hive-gateway -p 4000:4000 \
   -v $(pwd)/gateway.config.ts:/gateway/gateway.config.ts \
   ghcr.io/graphql-hive/gateway supergraph
@@ -278,7 +278,7 @@ docker run --rm --name hive-gateway -p 4000:4000 \
 
 <Tabs.Tab>
 
-```sh filename="Run Proxy Gateway with the Hive Gateway Binary"
+```sh title="Run Proxy Gateway with the Hive Gateway Binary"
 npx hive-gateway supergraph
 ```
 
@@ -292,7 +292,7 @@ npx hive-gateway supergraph
 
 <Tabs.Tab>
 
-```ts filename="gateway.config.ts"
+```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -310,7 +310,7 @@ Hive Gateway will automatically load the default config file and apply the setti
 
 <Tabs.Tab>
 
-```sh filename="Run Proxy Gateway with the Hive Gateway Binary using configuration file"
+```sh title="Run Proxy Gateway with the Hive Gateway Binary using configuration file"
 hive-gateway proxy
 ```
 
@@ -322,7 +322,7 @@ hive-gateway proxy
 
 For docker, we need to mount the configuration file into the container.
 
-```sh filename="Run Proxy Gateway with the Hive Gateway Binary" {2}
+```sh title="Run Proxy Gateway with the Hive Gateway Binary" {2}
 docker run --rm --name hive-gateway -p 4000:4000 \
   -v $(pwd)/gateway.config.ts:/gateway/gateway.config.ts \
   ghcr.io/graphql-hive/gateway proxy https://localhost:3000/graphql \
@@ -336,7 +336,7 @@ docker run --rm --name hive-gateway -p 4000:4000 \
 
 <Tabs.Tab>
 
-```sh filename="Run Proxy Gateway with the Hive Gateway Binary"
+```sh title="Run Proxy Gateway with the Hive Gateway Binary"
 npx hive-gateway proxy
 ```
 
