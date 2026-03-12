@@ -249,6 +249,7 @@ export const Tab: FC<TabProps> = ({
       className={cn(
         "mt-[1.25em] rounded-sm",
         focused && "hive-focus",
+        !unmount && "data-[state=inactive]:hidden",
         resolveClassName(className, { focus: focused }),
       )}
       data-tab-index={index}
