@@ -1,16 +1,14 @@
 import type { StructuredData } from "fumadocs-core/mdx-plugins/remark-structure";
 import type { AdvancedIndex } from "fumadocs-core/search/server";
 
-import {
-  CHANGELOG_PAGE_URL,
-  getDeploymentChangelogMarkdown,
-} from "@/lib/deployment-changelog";
+import { CHANGELOG_PAGE_URL } from "@/lib/deployment-changelog";
 import { pathToSlug } from "@/lib/path-to-slug";
 import { getSource } from "@/lib/source";
 import { createFileRoute } from "@tanstack/react-router";
 import { structure } from "fumadocs-core/mdx-plugins/remark-structure";
 import { findPath } from "fumadocs-core/page-tree";
 import { createSearchAPI } from "fumadocs-core/search/server";
+import { deploymentChangelogSnapshot } from "virtual:deployment-changelog-snapshot";
 
 function getDocsBreadcrumbs(
   source: Awaited<ReturnType<typeof getSource>>,
@@ -35,10 +33,6 @@ function getDocsBreadcrumbs(
   return breadcrumbs;
 }
 
-/**
- * Resolve structuredData from a page — handles both sync (DocCollectionEntry)
- * and async (AsyncDocCollectionEntry) docs, matching fumadocs' defaultBuildIndex.
- */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mirrors fumadocs' defaultBuildIndex runtime check for sync/async DocCollectionEntry
 async function resolveStructuredData(data: any): Promise<StructuredData> {
   if ("structuredData" in data) return data.structuredData;
@@ -50,9 +44,8 @@ async function resolveStructuredData(data: any): Promise<StructuredData> {
 }
 
 async function getChangelogStructuredData(): Promise<StructuredData> {
-  const markdown = await getDeploymentChangelogMarkdown();
-  if (!markdown) return { contents: [], headings: [] };
-  return structure(markdown);
+  if (!deploymentChangelogSnapshot) return { contents: [], headings: [] };
+  return structure(deploymentChangelogSnapshot);
 }
 
 async function buildIndexes(): Promise<AdvancedIndex[]> {
@@ -123,7 +116,6 @@ async function buildIndexes(): Promise<AdvancedIndex[]> {
     }),
   );
 
-  // TODO: index landing pages (/, /federation, /schema-registry, etc.) once they have structuredData
   return [
     ...docsIndexes,
     ...caseStudyIndexes,
@@ -132,22 +124,21 @@ async function buildIndexes(): Promise<AdvancedIndex[]> {
   ];
 }
 
-let _searchAPI: ReturnType<typeof createSearchAPI> | undefined;
+const searchAPIPromise = buildSearchAPI();
 
-async function getSearchAPI() {
-  _searchAPI ||= createSearchAPI("advanced", {
+async function buildSearchAPI() {
+  return createSearchAPI("advanced", {
     indexes: await buildIndexes(),
     language: "english",
   });
-  return _searchAPI;
 }
 
 export const Route = createFileRoute("/api/search")({
   server: {
     handlers: {
-      GET: async ({ request }) => {
-        const server = await getSearchAPI();
-        return server.GET(request);
+      GET: async () => {
+        const server = await searchAPIPromise;
+        return server.staticGET();
       },
     },
   },
