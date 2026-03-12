@@ -7,7 +7,7 @@ import { baseOptions } from "@/lib/layout.shared";
 import { mdxComponents } from "@/lib/mdx-components";
 import { getSource } from "@/lib/source";
 import { withBasePath } from "@/lib/with-base-path";
-import { createFileRoute, notFound, useLocation } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useFumadocsLoader } from "fumadocs-core/source/client";
 import browserCollections from "fumadocs-mdx:collections/browser";
