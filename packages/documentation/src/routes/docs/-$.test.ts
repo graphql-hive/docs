@@ -12,8 +12,6 @@ const BASE_URL = process.env["TEST_URL"] || `http://localhost:${TEST_PORT}`;
 const CHANGELOG_CONTENT_TERM =
   process.env["DEPLOYMENT_CHANGELOG_CONTENT_TERM"] ??
   "SUPERTOKENS_ACCESS_TOKEN_KEY";
-const CHANGELOG_SEARCH_TERM =
-  process.env["DEPLOYMENT_CHANGELOG_SEARCH_TERM"] ?? "self-hosting changelog";
 
 let devServer: Subprocess | null = null;
 
@@ -235,18 +233,11 @@ describe("deployment changelog", () => {
   });
 
   test("api search indexes the changelog source", async () => {
-    const res = await fetch(
-      `${BASE_URL}/api/search?query=${encodeURIComponent(CHANGELOG_SEARCH_TERM)}`,
-      { redirect: "follow" },
-    );
+    const res = await fetch(`${BASE_URL}/api/search`, { redirect: "follow" });
     expect(res.status).toBe(200);
 
-    const json = (await res.json()) as { url: string }[];
-    expect(
-      json.some(
-        (entry) => entry.url === "/docs/schema-registry/self-hosting/changelog",
-      ),
-    ).toBe(true);
+    const text = await res.text();
+    expect(text).toContain("/docs/schema-registry/self-hosting/changelog");
   });
 });
 

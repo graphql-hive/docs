@@ -96,7 +96,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       >
         <RootProvider
           components={{ Link: FumadocsLink }}
-          search={{ options: { api: withBasePath("/api/search") } }}
+          search={{
+            options: {
+              api: withBasePath("/api/search"),
+              type: "static",
+            },
+          }}
           theme={
             isLightOnlyPage
               ? { ...themeConfig, forcedTheme: "light" }
