@@ -77,7 +77,6 @@ const clientLoader = browserCollections.docs.createClientLoader<DocsPageProps>({
         toc={toc}
         {...props}
       >
-        <DocsHashScroller />
         <DocsTitle>{frontmatter.title}</DocsTitle>
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <DocsBody className="relative">
@@ -135,50 +134,6 @@ interface DocsPageProps {
   githubUrl: string;
   lastModified: number;
   markdownUrl: string;
-}
-
-function DocsHashScroller() {
-  const { hash, pathname } = useLocation();
-
-  useEffect(() => {
-    let frame = 0;
-
-    const scrollToCurrentLocation = () => {
-      const id = decodeURIComponent(hash.slice(1));
-      if (!id) {
-        globalThis.scrollTo({ left: 0, top: 0 });
-        return;
-      }
-
-      let attempts = 0;
-      const scroll = () => {
-        const heading = document.getElementById(id);
-        if (heading) {
-          heading.scrollIntoView();
-          return;
-        }
-
-        if (attempts < 10) {
-          attempts += 1;
-          frame = requestAnimationFrame(scroll);
-        }
-      };
-
-      frame = requestAnimationFrame(() => {
-        frame = requestAnimationFrame(scroll);
-      });
-    };
-
-    frame = requestAnimationFrame(() => {
-      frame = requestAnimationFrame(scrollToCurrentLocation);
-    });
-
-    return () => {
-      cancelAnimationFrame(frame);
-    };
-  }, [hash, pathname]);
-
-  return null;
 }
 
 // workaround for the fact that we can't use flex-1 in .prose docs body
