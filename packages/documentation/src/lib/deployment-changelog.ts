@@ -15,8 +15,8 @@ import php from "shiki/dist/langs/php.mjs";
 import python from "shiki/dist/langs/python.mjs";
 import ruby from "shiki/dist/langs/ruby.mjs";
 import rust from "shiki/dist/langs/rust.mjs";
-import sql from "shiki/dist/langs/sql.mjs";
 import sh from "shiki/dist/langs/sh.mjs";
+import sql from "shiki/dist/langs/sql.mjs";
 import toml from "shiki/dist/langs/toml.mjs";
 import ts from "shiki/dist/langs/ts.mjs";
 import tsx from "shiki/dist/langs/tsx.mjs";
@@ -64,8 +64,8 @@ const LANGUAGE_IMPORTS = {
   python,
   ruby,
   rust,
-  sql,
   sh,
+  sql,
   toml,
   ts,
   tsx,

@@ -55,11 +55,9 @@ export function extractFilteredChangelogToc(markdown: string): TocEntry[] {
         seenMinors.add(v.minor);
         selectedVersions.add(v.raw);
       }
-    } else {
-      if (!seenMajors.has(v.major)) {
-        seenMajors.add(v.major);
-        selectedVersions.add(v.raw);
-      }
+    } else if (!seenMajors.has(v.major)) {
+      seenMajors.add(v.major);
+      selectedVersions.add(v.raw);
     }
   }
 

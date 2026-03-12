@@ -53,7 +53,7 @@ describe("getDeploymentChangelogMarkdown", () => {
   });
 
   test("serves stale markdown when refresh fails after ttl", async () => {
-    let now = 1_000;
+    let now = 1000;
     let shouldFail = false;
     let calls = 0;
 

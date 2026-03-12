@@ -44,13 +44,6 @@ function deploymentChangelogPlugin() {
   let snapshotPromise: Promise<string> | undefined;
 
   return {
-    name: "deployment-changelog",
-    resolveId(source: string) {
-      if (source === DEPLOYMENT_CHANGELOG_SNAPSHOT_ID)
-        return resolvedSnapshotId;
-      if (source === DEPLOYMENT_CHANGELOG_TOC_ID) return resolvedTocId;
-      return null;
-    },
     load(id: string) {
       if (id === resolvedSnapshotId) {
         snapshotPromise ||= getDeploymentChangelogSnapshot();
@@ -66,6 +59,13 @@ function deploymentChangelogPlugin() {
           return `export const deploymentChangelogToc = ${JSON.stringify(toc)};`;
         });
       }
+      return null;
+    },
+    name: "deployment-changelog",
+    resolveId(source: string) {
+      if (source === DEPLOYMENT_CHANGELOG_SNAPSHOT_ID)
+        return resolvedSnapshotId;
+      if (source === DEPLOYMENT_CHANGELOG_TOC_ID) return resolvedTocId;
       return null;
     },
   };
