@@ -35,29 +35,20 @@ interface BlogLoaderData {
 
 export const Route = createFileRoute("/_landing/blog/$")({
   component: BlogPostDetail,
-  head: ({
-    match,
-    params,
-  }: {
-    match: { pathname: string };
-    params: { _splat?: string };
-  }) => {
-    const slug = params._splat ?? "";
+  head: seo(({ match, params }) => {
+    const slug = params["_splat"] ?? "";
     const data = getBlogSeoBySlug(slug);
-    if (!data) return {};
-    return seo({
-      breadcrumbs: [
-        { name: "Blog", pathname: "/blog" },
-        { name: data.title, pathname: match.pathname },
-      ],
+    if (!data) return null;
+    return {
+      breadcrumbs: [{ name: "Blog", pathname: "/blog" }],
       description: data.description,
       image: data.ogImage,
       pathname: data.canonical ?? match.pathname,
       title: data.title,
-    });
-  },
+    };
+  }),
   loader: async ({ params }): Promise<BlogLoaderData> => {
-    const slug = params._splat ?? "";
+    const slug = params["_splat"] ?? "";
     const data = await getBlogDetailBySlug(slug);
     if (!data) throw notFound();
     await clientLoader.preload(data.path);

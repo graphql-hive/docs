@@ -17,26 +17,21 @@ const serverGetPostsByTag = createServerFn({ method: "GET" })
 
 export const Route = createFileRoute("/_landing/blog/tag/$")({
   component: BlogTagRoute,
-  head: ({
-    match,
-    params,
-  }: {
-    match: { pathname: string };
-    params: { _splat?: string };
-  }) => {
-    const tag = params._splat ?? "";
-    return seo({
+  head: seo(({ match, params }) => {
+    const tag = params["_splat"] ?? "";
+    return {
       breadcrumbs: [
         { name: "Blog", pathname: "/blog" },
         { name: tag, pathname: match.pathname },
       ],
       description: `Posts tagged ${tag} in the Hive Blog.`,
-      pathname: match.pathname,
       title: `Hive Blog - ${tag}`,
-    });
-  },
+    };
+  }),
   loader: ({ params }) =>
-    serverGetPostsByTag({ data: params._splat ?? "" }) as Promise<BlogPost[]>,
+    serverGetPostsByTag({ data: params["_splat"] ?? "" }) as Promise<
+      BlogPost[]
+    >,
 });
 
 function BlogTagRoute() {

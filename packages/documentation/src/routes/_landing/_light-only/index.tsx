@@ -5,9 +5,5 @@ import { seo } from "../../../lib/seo";
 
 export const Route = createFileRoute("/_landing/_light-only/")({
   component: IndexPage,
-  head: ({ match }) =>
-    seo({
-      breadcrumbs: [{ name: "Hive", pathname: match.pathname }],
-      pathname: match.pathname,
-    }),
+  head: seo(() => ({})),
 });

@@ -1,6 +1,7 @@
 import defaultOgImage from "../routes/opengraph-image.png";
 
 type MetaTag = {
+  charSet?: string;
   content?: string;
   name?: string;
   property?: string;
@@ -22,6 +23,13 @@ type Breadcrumb = {
   pathname: string;
 };
 
+type SeoHeadContext = {
+  match: {
+    pathname: string;
+  };
+  params: Record<string, string | undefined>;
+};
+
 export const SITE_NAME = "Hive";
 export const SITE_URL = "https://the-guild.dev/graphql/hive";
 export const SITE_ORIGIN = "https://the-guild.dev";
@@ -40,7 +48,11 @@ type SeoOptions = {
   breadcrumbs?: Breadcrumb[];
   description?: string;
   image?: string;
+  links?: LinkTag[];
+  meta?: MetaTag[];
   pathname?: string;
+  pathnameOverride?: never;
+  scripts?: ScriptTag[];
   title?: string;
   type?: string;
 };
@@ -74,11 +86,39 @@ function absoluteImage(image?: string) {
   return absoluteUrl(normalized);
 }
 
-export function seo({
+function titleToBreadcrumbName(title: string, pathname?: string) {
+  if (pathname === "/") {
+    return SITE_NAME;
+  }
+
+  if (title.includes("|")) {
+    return title.split("|")[0]?.trim() ?? title;
+  }
+
+  if (title !== DEFAULT_TITLE) {
+    return title;
+  }
+
+  const fallback = pathname?.split("/").filter(Boolean).at(-1);
+  if (!fallback) {
+    return SITE_NAME;
+  }
+
+  return fallback
+    .split(/[-_]/g)
+    .filter(Boolean)
+    .map((part) => part[0]?.toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function buildSeo({
   breadcrumbs,
   description = DEFAULT_DESCRIPTION,
   image,
+  links = [],
+  meta = [],
   pathname,
+  scripts = [],
   title = DEFAULT_TITLE,
   type = DEFAULT_OG_TYPE,
 }: SeoOptions = {}): {
@@ -92,14 +132,33 @@ export function seo({
     title === DEFAULT_TITLE || title.includes("|")
       ? title
       : `${title} | ${SITE_NAME}`;
+  const resolvedBreadcrumbs =
+    pathname == null
+      ? []
+      : breadcrumbs && breadcrumbs.length > 0
+        ? breadcrumbs.at(-1)?.pathname === pathname
+          ? breadcrumbs
+          : [
+              ...breadcrumbs,
+              {
+                name: titleToBreadcrumbName(title, pathname),
+                pathname,
+              },
+            ]
+        : [
+            {
+              name: titleToBreadcrumbName(title, pathname),
+              pathname,
+            },
+          ];
   const breadcrumbScripts =
-    breadcrumbs && breadcrumbs.length > 0
+    resolvedBreadcrumbs.length > 0
       ? [
           {
             children: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "BreadcrumbList",
-              itemListElement: breadcrumbs.map((item, index) => ({
+              itemListElement: resolvedBreadcrumbs.map((item, index) => ({
                 "@type": "ListItem",
                 item: absoluteUrl(item.pathname),
                 name: item.name,
@@ -112,8 +171,12 @@ export function seo({
       : [];
 
   return {
-    links: canonical ? [{ href: canonical, rel: "canonical" }] : [],
+    links: [
+      ...links,
+      ...(canonical ? [{ href: canonical, rel: "canonical" }] : []),
+    ],
     meta: [
+      ...meta,
       { title: resolvedTitle },
       { content: description, name: "description" },
       { content: resolvedTitle, property: "og:title" },
@@ -130,7 +193,36 @@ export function seo({
       { content: ogImage, name: "twitter:image" },
       ...(canonical ? [{ content: canonical, property: "og:url" }] : []),
     ],
-    scripts: breadcrumbScripts,
+    scripts: [...scripts, ...breadcrumbScripts],
+  };
+}
+
+type SeoFactoryOptions = Omit<SeoOptions, "breadcrumbs" | "pathname"> & {
+  breadcrumbs?: Breadcrumb[] | null;
+  pathname?: string | null;
+};
+
+export function seo(
+  resolve: (
+    head: SeoHeadContext,
+  ) => SeoFactoryOptions | null | undefined = () => ({}),
+) {
+  return (head: SeoHeadContext) => {
+    const resolved = resolve(head);
+    if (!resolved) {
+      return {};
+    }
+
+    const pathname =
+      resolved.pathname === undefined
+        ? head.match?.pathname
+        : (resolved.pathname ?? undefined);
+
+    return buildSeo({
+      ...resolved,
+      breadcrumbs: resolved.breadcrumbs ?? undefined,
+      pathname,
+    });
   };
 }
 

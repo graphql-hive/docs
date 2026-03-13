@@ -8,13 +8,10 @@ import { seo } from "../../../lib/seo";
 
 export const Route = createFileRoute("/_landing/_light-only/ecosystem")({
   component: EcosystemPage,
-  head: ({ match }) =>
-    seo({
-      breadcrumbs: [{ name: "The Ecosystem", pathname: match.pathname }],
-      description: "Everything you need to scale your API infrastructure",
-      pathname: match.pathname,
-      title: "The Ecosystem",
-    }),
+  head: seo(() => ({
+    description: "Everything you need to scale your API infrastructure",
+    title: "The Ecosystem",
+  })),
 });
 
 function EcosystemPage() {

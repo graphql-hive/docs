@@ -24,16 +24,10 @@ import {
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
-  head: ({
-    match,
-    params,
-  }: {
-    match: { pathname: string };
-    params: { _splat?: string };
-  }) => {
-    const slug = normalizeDocsSlug(params._splat);
+  head: seo(({ params }) => {
+    const slug = normalizeDocsSlug(params["_splat"]);
     const page = docsMetadataBySlug[slug];
-    if (!page) return {};
+    if (!page) return null;
     const section =
       slug.split("/")[0] === "gateway"
         ? "Hive Gateway"
@@ -41,15 +35,14 @@ export const Route = createFileRoute("/docs/$")({
           ? "Hive Router"
           : undefined;
 
-    return seo({
-      breadcrumbs: getDocsBreadcrumbs(slug, match.pathname),
+    return {
+      breadcrumbs: getDocsBreadcrumbs(slug),
       description: page.description,
-      pathname: match.pathname,
       title: createTitleWithSection(page.title, section),
-    });
-  },
+    };
+  }),
   loader: async ({ params }): Promise<DocsLoaderData> => {
-    const slugs = params._splat?.split("/").filter(Boolean) ?? [];
+    const slugs = params["_splat"]?.split("/").filter(Boolean) ?? [];
     const data = await serverLoader({ data: slugs });
     await clientLoader.preload(data.path);
     return data;
@@ -195,17 +188,20 @@ function normalizeDocsFile(file: string) {
     .replace(/(^|\/)index$/, "");
 }
 
-function getDocsBreadcrumbs(slug: string, pathname: string) {
+function getDocsBreadcrumbs(slug: string) {
   const crumbs = [{ name: "Docs", pathname: "/docs" }];
   const segments = slug ? slug.split("/") : [];
   let current = "";
 
   for (const segment of segments) {
     current = current ? `${current}/${segment}` : segment;
+    if (current === slug) {
+      break;
+    }
     const page = docsMetadataBySlug[current];
     crumbs.push({
       name: page?.title ?? segment,
-      pathname: current === slug ? pathname : `/docs/${current}`,
+      pathname: `/docs/${current}`,
     });
   }
 

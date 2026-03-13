@@ -15,24 +15,20 @@ import { RootProvider } from "fumadocs-ui/provider/tanstack";
 export const Route = createRootRoute({
   component: RootComponent,
   errorComponent: RootErrorComponent,
-  head: () => {
-    const tags = seo();
-    return {
-      links: [{ href: appCss, rel: "stylesheet" }, ...tags.links],
-      meta: [
-        {
-          // eslint-disable-next-line unicorn/text-encoding-identifier-case
-          charSet: "utf-8",
-        },
-        {
-          content: "width=device-width, initial-scale=1",
-          name: "viewport",
-        },
-        ...tags.meta,
-      ],
-      scripts: tags.scripts,
-    };
-  },
+  head: seo(() => ({
+    links: [{ href: appCss, rel: "stylesheet" }],
+    meta: [
+      {
+        // eslint-disable-next-line unicorn/text-encoding-identifier-case
+        charSet: "utf-8",
+      },
+      {
+        content: "width=device-width, initial-scale=1",
+        name: "viewport",
+      },
+    ],
+    pathname: null,
+  })),
 });
 
 function RootComponent() {

@@ -30,31 +30,19 @@ interface CaseStudyLoaderData {
 
 export const Route = createFileRoute("/_landing/case-studies/$")({
   component: CaseStudyDetail,
-  head: ({
-    match,
-    params,
-  }: {
-    match: { pathname: string };
-    params: { _splat?: string };
-  }) => {
-    const slug = params._splat ?? "";
+  head: seo(({ match, params }) => {
+    const slug = params["_splat"] ?? "";
     const entry = getCaseStudyBySlug(slug);
-    if (!entry) return {};
-    return seo({
-      breadcrumbs: [
-        { name: "Case Studies", pathname: "/case-studies" },
-        {
-          name: entry.frontMatter.title ?? slug,
-          pathname: match.pathname,
-        },
-      ],
+    if (!entry) return null;
+    return {
+      breadcrumbs: [{ name: "Case Studies", pathname: "/case-studies" }],
       description: entry.frontMatter.excerpt ?? "",
       pathname: entry.frontMatter.canonical ?? match.pathname,
       title: entry.frontMatter.title ?? slug,
-    });
-  },
+    };
+  }),
   loader: async ({ params }): Promise<CaseStudyLoaderData> => {
-    const slug = params._splat ?? "";
+    const slug = params["_splat"] ?? "";
     const entry = getCaseStudyBySlug(slug);
     if (!entry) throw notFound();
     const data = {

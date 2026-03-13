@@ -19,14 +19,11 @@ import { seo } from "../../../lib/seo";
 
 export const Route = createFileRoute("/_landing/_light-only/gateway")({
   component: HiveGatewayPage,
-  head: ({ match }) =>
-    seo({
-      breadcrumbs: [{ name: "Hive Gateway", pathname: match.pathname }],
-      description:
-        "Unify and accelerate your data graph with Hive Gateway, which seamlessly integrates with Apollo Federation.",
-      pathname: match.pathname,
-      title: "Hive Gateway",
-    }),
+  head: seo(() => ({
+    description:
+      "Unify and accelerate your data graph with Hive Gateway, which seamlessly integrates with Apollo Federation.",
+    title: "Hive Gateway",
+  })),
 });
 
 function HiveGatewayPage() {

@@ -21,28 +21,19 @@ interface ProductUpdateLoaderData {
 
 export const Route = createFileRoute("/_landing/product-updates/$")({
   component: ProductUpdateDetail,
-  head: ({
-    match,
-    params,
-  }: {
-    match: { pathname: string };
-    params: { _splat?: string };
-  }) => {
-    const slug = params._splat ?? "";
+  head: seo(({ match, params }) => {
+    const slug = params["_splat"] ?? "";
     const data = getProductUpdateBySlug(slug);
-    if (!data) return {};
-    return seo({
-      breadcrumbs: [
-        { name: "Product Updates", pathname: "/product-updates" },
-        { name: data.title, pathname: match.pathname },
-      ],
+    if (!data) return null;
+    return {
+      breadcrumbs: [{ name: "Product Updates", pathname: "/product-updates" }],
       description: data.description,
       pathname: data.canonical ?? match.pathname,
       title: data.title,
-    });
-  },
+    };
+  }),
   loader: async ({ params }): Promise<ProductUpdateLoaderData> => {
-    const slug = params._splat ?? "";
+    const slug = params["_splat"] ?? "";
     const data = getProductUpdateBySlug(slug);
     if (!data) throw notFound();
     await clientLoader.preload(data.path);

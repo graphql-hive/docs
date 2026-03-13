@@ -24,14 +24,10 @@ const serverGetCaseStudies = createServerFn({ method: "GET" }).handler(
 
 export const Route = createFileRoute("/_landing/case-studies/")({
   component: CaseStudiesPage,
-  head: ({ match }) =>
-    seo({
-      breadcrumbs: [{ name: "Case Studies", pathname: match.pathname }],
-      description:
-        "See the results our customers achieved by switching to Hive.",
-      pathname: match.pathname,
-      title: "Case Studies",
-    }),
+  head: seo(() => ({
+    description: "See the results our customers achieved by switching to Hive.",
+    title: "Case Studies",
+  })),
   loader: () => serverGetCaseStudies(),
 });
 
