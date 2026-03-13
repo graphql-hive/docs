@@ -1,0 +1,31 @@
+diff --git a/dist/breadcrumb.js b/dist/breadcrumb.js
+index ec6ab6043fce49a5143ee6120c2789f3fb3cd917..0355942cbf956a84cf44a63db1fd9540fd494276 100644
+--- a/dist/breadcrumb.js
++++ b/dist/breadcrumb.js
+@@ -26,8 +26,14 @@ function getBreadcrumbItemsFromPath(tree, path, options) {
+ 				});
+ 				break;
+ 			case "folder":
+-				if (item.root && !includeRoot) {
++				if (item.root) {
+ 					items = [];
++					if (includeRoot) {
++						items.push({
++							name: tree.name,
++							url: typeof includeRoot === "object" ? includeRoot.url : item.index?.url
++						});
++					}
+ 					break;
+ 				}
+ 				if (i === path.length - 1 || item.index !== path[i + 1]) items.push({
+@@ -40,10 +46,6 @@ function getBreadcrumbItemsFromPath(tree, path, options) {
+ 				break;
+ 		}
+ 	}
+-	if (includeRoot) items.unshift({
+-		name: tree.name,
+-		url: typeof includeRoot === "object" ? includeRoot.url : void 0
+-	});
+ 	return items;
+ }
+ /**

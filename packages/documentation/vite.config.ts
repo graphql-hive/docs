@@ -126,6 +126,7 @@ export default defineConfig({
       projects: ["./tsconfig.json"],
     }),
     tanstackStart({
+      pages: [{ path: "/api/search" }],
       prerender: {
         crawlLinks: true,
         enabled: true,
