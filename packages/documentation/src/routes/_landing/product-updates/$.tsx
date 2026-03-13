@@ -21,17 +21,23 @@ interface ProductUpdateLoaderData {
 
 export const Route = createFileRoute("/_landing/product-updates/$")({
   component: ProductUpdateDetail,
-  head: ({ params }: { params: { _splat?: string } }) => {
+  head: ({
+    match,
+    params,
+  }: {
+    match: { pathname: string };
+    params: { _splat?: string };
+  }) => {
     const slug = params._splat ?? "";
     const data = getProductUpdateBySlug(slug);
     if (!data) return {};
     return seo({
       breadcrumbs: [
         { name: "Product Updates", pathname: "/product-updates" },
-        { name: data.title, pathname: `/product-updates/${slug}` },
+        { name: data.title, pathname: match.pathname },
       ],
       description: data.description,
-      pathname: data.canonical ?? `/product-updates/${slug}`,
+      pathname: data.canonical ?? match.pathname,
       title: data.title,
     });
   },

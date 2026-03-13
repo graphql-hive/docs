@@ -33,14 +33,14 @@ const getOSSFriends = createServerFn({ method: "GET" }).handler(
 
 export const Route = createFileRoute("/_landing/_light-only/oss-friends")({
   component: OSSFriendsPage,
-  head: () =>
+  head: ({ match }) =>
     seo({
       breadcrumbs: [
-        { name: "Our Open Source Friends", pathname: "/oss-friends" },
+        { name: "Our Open Source Friends", pathname: match.pathname },
       ],
       description:
         "We love open source. Meet our friends who share the same passion.",
-      pathname: "/oss-friends",
+      pathname: match.pathname,
       title: "Our Open Source Friends",
     }),
   loader: () => getOSSFriends(),

@@ -17,12 +17,12 @@ import { seo } from "../../../lib/seo";
 
 export const Route = createFileRoute("/_landing/_light-only/pricing")({
   component: PricingPage,
-  head: () =>
+  head: ({ match }) =>
     seo({
-      breadcrumbs: [{ name: "Pricing", pathname: "/pricing" }],
+      breadcrumbs: [{ name: "Pricing", pathname: match.pathname }],
       description:
         "Honest pricing plans for GraphQL Federation and other GraphQL APIs, supporting developers to enterprise with Open-Source schema registry, analytics, and gateway solutions",
-      pathname: "/pricing",
+      pathname: match.pathname,
       title: "Hive Platform Pricing",
     }),
 });

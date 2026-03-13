@@ -15,13 +15,13 @@ import ogImage from "./partners.opengraph-image.png";
 
 export const Route = createFileRoute("/_landing/_light-only/partners")({
   component: PartnersPage,
-  head: () =>
+  head: ({ match }) =>
     seo({
-      breadcrumbs: [{ name: "Partnerships", pathname: "/partners" }],
+      breadcrumbs: [{ name: "Partnerships", pathname: match.pathname }],
       description:
         "Accelerate GraphQL Federation adoption with the Hive Partner Network. Access enterprise-grade tools and expertise to build scalable, unified APIs across distributed systems. Join our network of federation experts.",
       image: ogImage,
-      pathname: "/partners",
+      pathname: match.pathname,
       title: "Partnerships",
     }),
 });

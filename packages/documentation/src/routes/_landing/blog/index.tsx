@@ -13,12 +13,12 @@ const serverGetBlogPosts = createServerFn({ method: "GET" }).handler(async () =>
 
 export const Route = createFileRoute("/_landing/blog/")({
   component: BlogListRoute,
-  head: () =>
+  head: ({ match }) =>
     seo({
-      breadcrumbs: [{ name: "Blog", pathname: "/blog" }],
+      breadcrumbs: [{ name: "Blog", pathname: match.pathname }],
       description:
         "Articles, product updates, and case studies from GraphQL Hive.",
-      pathname: "/blog",
+      pathname: match.pathname,
       title: "Hive Blog",
     }),
   loader: () => serverGetBlogPosts(),

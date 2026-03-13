@@ -30,7 +30,13 @@ interface CaseStudyLoaderData {
 
 export const Route = createFileRoute("/_landing/case-studies/$")({
   component: CaseStudyDetail,
-  head: ({ params }: { params: { _splat?: string } }) => {
+  head: ({
+    match,
+    params,
+  }: {
+    match: { pathname: string };
+    params: { _splat?: string };
+  }) => {
     const slug = params._splat ?? "";
     const entry = getCaseStudyBySlug(slug);
     if (!entry) return {};
@@ -39,11 +45,11 @@ export const Route = createFileRoute("/_landing/case-studies/$")({
         { name: "Case Studies", pathname: "/case-studies" },
         {
           name: entry.frontMatter.title ?? slug,
-          pathname: `/case-studies/${slug}`,
+          pathname: match.pathname,
         },
       ],
       description: entry.frontMatter.excerpt ?? "",
-      pathname: entry.frontMatter.canonical ?? `/case-studies/${slug}`,
+      pathname: entry.frontMatter.canonical ?? match.pathname,
       title: entry.frontMatter.title ?? slug,
     });
   },

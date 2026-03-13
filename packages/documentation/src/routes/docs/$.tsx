@@ -24,7 +24,13 @@ import {
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
-  head: ({ params }: { params: { _splat?: string } }) => {
+  head: ({
+    match,
+    params,
+  }: {
+    match: { pathname: string };
+    params: { _splat?: string };
+  }) => {
     const slug = normalizeDocsSlug(params._splat);
     const page = docsMetadataBySlug[slug];
     if (!page) return {};
@@ -36,9 +42,9 @@ export const Route = createFileRoute("/docs/$")({
           : undefined;
 
     return seo({
-      breadcrumbs: getDocsBreadcrumbs(slug),
+      breadcrumbs: getDocsBreadcrumbs(slug, match.pathname),
       description: page.description,
-      pathname: slug ? `/docs/${slug}` : "/docs",
+      pathname: match.pathname,
       title: createTitleWithSection(page.title, section),
     });
   },
@@ -157,7 +163,7 @@ type DocsFrontmatter = {
 };
 
 const docsFrontmatters = import.meta.glob(
-  "../../../content/docs/**/*.{md,mdx}",
+  "../../../content/docs/{*,**/*}.{md,mdx}",
   {
     eager: true,
     import: "frontmatter",
@@ -186,10 +192,10 @@ function normalizeDocsFile(file: string) {
   return file
     .replace(/^.*content\/docs\//, "")
     .replace(/\.(md|mdx)$/, "")
-    .replace(/\/index$/, "");
+    .replace(/(^|\/)index$/, "");
 }
 
-function getDocsBreadcrumbs(slug: string) {
+function getDocsBreadcrumbs(slug: string, pathname: string) {
   const crumbs = [{ name: "Docs", pathname: "/docs" }];
   const segments = slug ? slug.split("/") : [];
   let current = "";
@@ -199,7 +205,7 @@ function getDocsBreadcrumbs(slug: string) {
     const page = docsMetadataBySlug[current];
     crumbs.push({
       name: page?.title ?? segment,
-      pathname: `/docs/${current}`,
+      pathname: current === slug ? pathname : `/docs/${current}`,
     });
   }
 
