@@ -9,68 +9,14 @@ import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
-import { extractFilteredChangelogToc } from "./src/lib/changelog-toc";
+import { deploymentChangelogPlugin } from "./source-plugins/deployment-changelog-plugin";
 
 const BASE_PATH = "/graphql/hive-testing";
-const DEPLOYMENT_CHANGELOG_SNAPSHOT_ID =
-  "virtual:deployment-changelog-snapshot";
-const DEPLOYMENT_CHANGELOG_TOC_ID = "virtual:deployment-changelog-toc";
+
 const NITRO_PRESET = process.env["VERCEL"] ? "vercel" : "cloudflare-module";
 const CLOUDFLARE_ENTRY = fileURLToPath(
   new URL("src/server/cloudflare-entry.ts", import.meta.url),
 );
-const DEFAULT_CHANGELOG_URL =
-  "https://raw.githubusercontent.com/graphql-hive/console/main/deployment/CHANGELOG.md";
-const DEV_SERVER_PORT = Number(process.env["PORT"] || 0);
-
-function stripTopLevelHeading(markdown: string) {
-  return markdown.replace(/^#\s+.*\n/, "");
-}
-
-async function getDeploymentChangelogSnapshot() {
-  try {
-    const res = await fetch(
-      process.env["DEPLOYMENT_CHANGELOG_URL"] ?? DEFAULT_CHANGELOG_URL,
-    );
-    if (!res.ok) return "";
-    return stripTopLevelHeading(await res.text());
-  } catch {
-    return "";
-  }
-}
-
-function deploymentChangelogPlugin() {
-  const resolvedSnapshotId = `\0${DEPLOYMENT_CHANGELOG_SNAPSHOT_ID}`;
-  const resolvedTocId = `\0${DEPLOYMENT_CHANGELOG_TOC_ID}`;
-  let snapshotPromise: Promise<string> | undefined;
-
-  return {
-    load(id: string) {
-      if (id === resolvedSnapshotId) {
-        snapshotPromise ||= getDeploymentChangelogSnapshot();
-        return snapshotPromise.then(
-          (snapshot) =>
-            `export const deploymentChangelogSnapshot = ${JSON.stringify(snapshot)};`,
-        );
-      }
-      if (id === resolvedTocId) {
-        snapshotPromise ||= getDeploymentChangelogSnapshot();
-        return snapshotPromise.then((snapshot) => {
-          const toc = extractFilteredChangelogToc(snapshot);
-          return `export const deploymentChangelogToc = ${JSON.stringify(toc)};`;
-        });
-      }
-      return null;
-    },
-    name: "deployment-changelog",
-    resolveId(source: string) {
-      if (source === DEPLOYMENT_CHANGELOG_SNAPSHOT_ID)
-        return resolvedSnapshotId;
-      if (source === DEPLOYMENT_CHANGELOG_TOC_ID) return resolvedTocId;
-      return null;
-    },
-  };
-}
 
 export default defineConfig({
   base: BASE_PATH,
@@ -155,7 +101,8 @@ export default defineConfig({
     },
   },
   server: {
-    port: Number.isNaN(DEV_SERVER_PORT) ? 0 : DEV_SERVER_PORT,
+    // Vite will increment the port if 1440 is taken.
+    port: 1440,
   },
   ssr: {
     noExternal: ["@hive/design-system", "tailwind-merge"],
