@@ -13,10 +13,10 @@ const serverGetChangelogs = createServerFn({ method: "GET" }).handler(
 
 export const Route = createFileRoute("/_landing/product-updates/")({
   component: ProductUpdatesRoute,
-  head: seo(() => ({
+  head: seo({
     description: "The most recent developments from GraphQL Hive.",
     title: "Product Updates",
-  })),
+  }),
   loader: () => serverGetChangelogs(),
 });
 

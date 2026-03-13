@@ -5,5 +5,5 @@ import { seo } from "../../../lib/seo";
 
 export const Route = createFileRoute("/_landing/_light-only/")({
   component: IndexPage,
-  head: seo(() => ({})),
+  head: seo({}),
 });

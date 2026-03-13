@@ -22,12 +22,12 @@ import supergraphSchemaImage from "./supergraph-schema.png";
 
 export const Route = createFileRoute("/_landing/_light-only/federation/")({
   component: FederationPage,
-  head: seo(() => ({
+  head: seo({
     description:
       "Discover what GraphQL Federation is, how it unifies multiple APIs into a Supergraph, its core benefits, and the building blocks like subgraphs, schema composition and gateway.",
     image: ogImage,
     title: "What is GraphQL Federation?",
-  })),
+  }),
 });
 
 function FederationPage(): ReactElement {

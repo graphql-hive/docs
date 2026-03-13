@@ -15,12 +15,12 @@ import ogImage from "./partners.opengraph-image.png";
 
 export const Route = createFileRoute("/_landing/_light-only/partners")({
   component: PartnersPage,
-  head: seo(() => ({
+  head: seo({
     description:
       "Accelerate GraphQL Federation adoption with the Hive Partner Network. Access enterprise-grade tools and expertise to build scalable, unified APIs across distributed systems. Join our network of federation experts.",
     image: ogImage,
     title: "Partnerships",
-  })),
+  }),
 });
 
 function PartnersPage() {

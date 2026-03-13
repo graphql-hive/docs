@@ -17,11 +17,11 @@ import { seo } from "../../../lib/seo";
 
 export const Route = createFileRoute("/_landing/_light-only/pricing")({
   component: PricingPage,
-  head: seo(() => ({
+  head: seo({
     description:
       "Honest pricing plans for GraphQL Federation and other GraphQL APIs, supporting developers to enterprise with Open-Source schema registry, analytics, and gateway solutions",
     title: "Hive Platform Pricing",
-  })),
+  }),
 });
 
 function PricingPage() {

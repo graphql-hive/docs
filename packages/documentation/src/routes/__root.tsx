@@ -15,7 +15,7 @@ import { RootProvider } from "fumadocs-ui/provider/tanstack";
 export const Route = createRootRoute({
   component: RootComponent,
   errorComponent: RootErrorComponent,
-  head: seo(() => ({
+  head: seo({
     meta: [
       {
         // eslint-disable-next-line unicorn/text-encoding-identifier-case
@@ -27,7 +27,7 @@ export const Route = createRootRoute({
       },
     ],
     pathname: null,
-  })),
+  }),
 });
 
 function RootComponent() {

@@ -23,6 +23,10 @@ type Breadcrumb = {
   pathname: string;
 };
 
+/**
+ * Matches Parameters<UpdatableRouteOptions['head']>[0], but there's a ton of generics there,
+ * so a more readable error will be surfaced if we write it explicitly.
+ */
 type SeoHeadContext = {
   match: {
     pathname: string;
@@ -202,13 +206,13 @@ type SeoFactoryOptions = Omit<SeoOptions, "breadcrumbs" | "pathname"> & {
   pathname?: string | null;
 };
 
-export function seo(
-  resolve: (
-    head: SeoHeadContext,
-  ) => SeoFactoryOptions | null | undefined = () => ({}),
-) {
+type Options =
+  | ((head: SeoHeadContext) => SeoFactoryOptions | null | undefined)
+  | SeoFactoryOptions;
+
+export function seo(context: Options) {
   return (head: SeoHeadContext) => {
-    const resolved = resolve(head);
+    const resolved = typeof context === "function" ? context(head) : context;
     if (!resolved) {
       return {};
     }
