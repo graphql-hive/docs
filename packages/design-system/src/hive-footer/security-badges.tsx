@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 import { cn } from "../cn";
 import CSAStarLevelOneIcon from "../icons/csa-star-level-one.svg?svgr";
-import soc2Badge from "./soc2-badge.webp?url";
+import soc2Badge from "./soc2-badge.webp";
 
 function SecurityBadge({
   children,
@@ -39,7 +39,7 @@ export function SecurityBadges() {
           alt="AICPA SOC 2"
           className="size-22 dark:opacity-95"
           loading="lazy"
-          src={soc2Badge}
+          src={soc2Badge.src}
         />
       </SecurityBadge>
     </div>
