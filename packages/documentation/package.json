@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "bun --bun vite dev",
     "build": "node --max-old-space-size=8192 ./node_modules/vite/bin/vite.js build",
-    "seo:check": "node ./scripts/check-seo.mjs",
+    "check-seo": "node ./scripts/check-seo.ts",
     "start": "bun .output/server/index.mjs",
     "typecheck": "bun --bun fumadocs-mdx && bun --bun tsc --noEmit",
     "postinstall": "bun --bun fumadocs-mdx && bun playwright install chromium",

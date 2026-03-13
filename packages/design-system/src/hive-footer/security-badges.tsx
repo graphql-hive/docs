@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 
 import { cn } from "../cn";
 import CSAStarLevelOneIcon from "../icons/csa-star-level-one.svg?svgr";
+import soc2Badge from "./soc2-badge.webp?url";
 
 function SecurityBadge({
   children,
@@ -31,13 +32,14 @@ export function SecurityBadges() {
   return (
     <div className="flex flex-wrap gap-4 max-lg:flex-col">
       <SecurityBadge href="https://cloudsecurityalliance.org/star/registry/software-products-guild-ltd-the-guild/services/graphql-hive">
-        <CSAStarLevelOneIcon className="size-[88px] dark:opacity-95" />
+        <CSAStarLevelOneIcon className="size-22 dark:opacity-95" />
       </SecurityBadge>
       <SecurityBadge href="https://security.graphql-hive.com/">
         <img
           alt="AICPA SOC 2"
-          className="size-[88px] dark:opacity-95"
-          src="https://storage.piotrbox.monwid-olechnowicz.com/soc2-badge.webp"
+          className="size-22 dark:opacity-95"
+          loading="lazy"
+          src={soc2Badge}
         />
       </SecurityBadge>
     </div>

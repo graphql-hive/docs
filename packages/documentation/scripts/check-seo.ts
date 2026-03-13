@@ -1,6 +1,10 @@
+/* eslint-disable no-console */
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+const verbose =
+  process.env["VERBOSE"] === "true" || process.argv.includes("--verbose");
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUTPUT_DIR = path.resolve(
@@ -26,7 +30,7 @@ const REQUIRED_TAGS = [
   "twitter:image",
 ];
 
-async function* walk(dir) {
+async function* walk(dir: string): AsyncGenerator<string> {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
@@ -39,45 +43,51 @@ async function* walk(dir) {
   }
 }
 
-function getAttributes(attrs) {
+function getAttributes(attrs: string): Record<string, string | undefined> {
   return Object.fromEntries(
     [...attrs.matchAll(/(\w+)=("|')(.*?)\2/gis)].map((match) => [
-      match[1].toLowerCase(),
+      match[1]?.toLowerCase(),
       match[3],
     ]),
   );
 }
 
-function parseHead(html) {
+function parseHead(
+  html: string,
+): { jsonldCount: number; parsed: Record<string, string | undefined> } | null {
   const headMatch = html.match(/<head[^>]*>(.*?)<\/head>/is);
   if (!headMatch) return null;
 
   const head = headMatch[1];
-  const parsed = {};
+  const parsed: Record<string, string | undefined> = {};
 
-  const titleMatch = head.match(/<title>(.*?)<\/title>/is);
+  const titleMatch = head?.match(/<title>(.*?)<\/title>/is);
   parsed["title"] = titleMatch?.[1]?.trim();
 
-  for (const match of head.matchAll(/<link\s+([^>]+?)\s*\/?>/gis)) {
+  for (const match of head?.matchAll(/<link\s+([^>]+?)\s*\/?>/gis) || []) {
+    if (!match[1]) continue;
     const attrs = getAttributes(match[1]);
-    if (attrs.rel && attrs.href) {
-      parsed[`link:${attrs.rel}`] = attrs.href;
+    if (attrs["rel"] && attrs["href"]) {
+      parsed[`link:${attrs["rel"]}`] = attrs["href"];
     }
   }
 
-  for (const match of head.matchAll(/<meta\s+([^>]+?)\s*\/?>/gis)) {
+  for (const match of head?.matchAll(/<meta\s+([^>]+?)\s*\/?>/gis) || []) {
+    if (!match[1]) continue;
     const attrs = getAttributes(match[1]);
-    const key = attrs.name ?? attrs.property;
+    const key = attrs["name"] ?? attrs["property"];
     if (key) {
-      parsed[key] = attrs.content;
+      parsed[key] = attrs["content"];
     }
   }
 
-  parsed.jsonldCount = [
-    ...head.matchAll(/<script[^>]*type=("|')application\/ld\+json\1/gi),
-  ].length;
-
-  return parsed;
+  return {
+    jsonldCount: [
+      ...(head?.matchAll(/<script[^>]*type=("|')application\/ld\+json\1/gi) ||
+        []),
+    ].length,
+    parsed,
+  };
 }
 
 const issues = [];
@@ -89,7 +99,16 @@ for await (const filePath of walk(OUTPUT_DIR)) {
 
   scanned += 1;
   const html = await readFile(filePath, "utf8");
-  const parsed = parseHead(html);
+
+  const { jsonldCount, parsed } = parseHead(html) ?? {
+    jsonldCount: 0,
+    parsed: {},
+  };
+
+  if (verbose) {
+    console.log(filePath, { jsonldCount }, parsed);
+  }
+
   const relativePath = path.relative(OUTPUT_DIR, filePath);
 
   if (!parsed) {
@@ -103,7 +122,7 @@ for await (const filePath of walk(OUTPUT_DIR)) {
     }
   }
 
-  if (parsed.jsonldCount < 1) {
+  if (jsonldCount < 1) {
     issues.push(`${relativePath}: missing application/ld+json`);
   }
 }
