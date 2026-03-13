@@ -1,7 +1,7 @@
 import { FumadocsLink } from "@/components/fumadocs-link";
 import { seo } from "@/lib/seo";
 import { withBasePath } from "@/lib/with-base-path";
-import appCss from "@/styles/app.css?url";
+import "@/styles/app.css";
 import {
   createRootRoute,
   type ErrorComponentProps,
@@ -16,7 +16,6 @@ export const Route = createRootRoute({
   component: RootComponent,
   errorComponent: RootErrorComponent,
   head: seo(() => ({
-    links: [{ href: appCss, rel: "stylesheet" }],
     meta: [
       {
         // eslint-disable-next-line unicorn/text-encoding-identifier-case
