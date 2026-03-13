@@ -1,4 +1,5 @@
 import defaultOgImage from "../routes/opengraph-image.png";
+import { withBasePath } from "./with-base-path";
 
 type MetaTag = {
   charSet?: string;
@@ -37,7 +38,11 @@ type SeoHeadContext = {
 export const SITE_NAME = "Hive";
 export const SITE_URL = "https://the-guild.dev/graphql/hive";
 export const SITE_ORIGIN = "https://the-guild.dev";
-export const SITE_PATHNAME = new URL(SITE_URL).pathname.replace(/\/$/, "");
+export const SITE_PATHNAME = (
+  typeof BASE_PATH === "string" && BASE_PATH
+    ? BASE_PATH
+    : new URL(SITE_URL).pathname
+).replace(/\/$/, "");
 export const DEFAULT_TITLE = "Open-Source GraphQL Federation Platform";
 export const DEFAULT_DESCRIPTION =
   "Fully Open-source schema registry, analytics and gateway for GraphQL federation and other GraphQL APIs";
@@ -77,13 +82,9 @@ function absoluteImage(image?: string) {
     return image;
   }
 
-  const basePath = typeof BASE_PATH === "string" ? BASE_PATH : "";
-  const normalized =
-    basePath && image.startsWith(basePath)
-      ? `${SITE_PATHNAME}${image.slice(basePath.length)}`
-      : image;
+  const normalized = image.startsWith("/assets") ? withBasePath(image) : image;
 
-  if (normalized.startsWith(SITE_PATHNAME)) {
+  if (normalized.startsWith("/")) {
     return `${SITE_ORIGIN}${normalized}`;
   }
 
