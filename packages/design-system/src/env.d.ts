@@ -15,3 +15,8 @@ interface Window {
     push(cmd: string[]): void;
   };
 }
+
+declare module "*.webp?url" {
+  const src: string;
+  export default src;
+}
