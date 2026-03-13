@@ -10,6 +10,7 @@ type ProductUpdateAuthor = { name: string };
 
 type ProductUpdateFrontmatter = {
   authors: ProductUpdateAuthor[];
+  canonical?: string;
   date: string;
   description: string;
   title: string;
@@ -17,16 +18,19 @@ type ProductUpdateFrontmatter = {
 
 type BlogFrontmatter = {
   authors: string[];
+  canonical?: string;
   date: string;
   description?: string;
   featured?: boolean;
   image?: string;
+  ogImage?: string;
   tags: string[];
   title: string;
 };
 
 type BlogDetail = {
   authors: string[];
+  canonical?: string;
   date: string;
   description: string;
   image?: string;
@@ -40,7 +44,6 @@ type BlogDetail = {
 type BlogModule = {
   _headerImage?: string;
   _mobileImage?: string;
-  _ogImage?: string;
 };
 
 const productUpdateFrontmatters = import.meta.glob(
@@ -63,6 +66,14 @@ const blogFrontmatters = import.meta.glob("../../content/blog/**/*.{mdx,md}", {
     only: "frontmatter",
   },
 }) as Record<string, BlogFrontmatter>;
+
+const blogOgImageFiles = import.meta.glob(
+  "../../content/blog/**/opengraph-image.png",
+  {
+    eager: true,
+    import: "default",
+  },
+) as Record<string, string>;
 
 const blogModules = import.meta.glob("../../content/blog/**/*.{mdx,md}", {
   query: {
@@ -92,6 +103,7 @@ const productUpdates = Object.entries(productUpdateFrontmatters)
     const slug = pathToSlug(path);
     return {
       authors: frontMatter.authors,
+      canonical: frontMatter.canonical,
       date: frontMatter.date,
       description: frontMatter.description ?? "",
       path,
@@ -102,6 +114,13 @@ const productUpdates = Object.entries(productUpdateFrontmatters)
   })
   .sort((a, b) => (a.date < b.date ? 1 : -1));
 
+const blogOgImagesBySlug = Object.fromEntries(
+  Object.entries(blogOgImageFiles).map(([file, image]) => [
+    stripContentPrefix(file, "blog").replace(/\/opengraph-image\.png$/, ""),
+    image,
+  ]),
+) as Record<string, string>;
+
 const blogDetails = Object.fromEntries(
   Object.entries(blogFrontmatters).map(([file, frontMatter]) => {
     const path = stripContentPrefix(file, "blog");
@@ -110,9 +129,11 @@ const blogDetails = Object.fromEntries(
       slug,
       {
         authors: frontMatter.authors,
+        canonical: frontMatter.canonical,
         date: frontMatter.date,
         description: frontMatter.description ?? "",
         image: frontMatter.image,
+        ogImage: frontMatter.ogImage ?? blogOgImagesBySlug[slug],
         path,
         tags: frontMatter.tags,
         title: frontMatter.title ?? slug,
@@ -185,6 +206,10 @@ export function getProductUpdateBySlug(slug: string) {
   return productUpdates.find((item) => item.slug === slug);
 }
 
+export function getBlogSeoBySlug(slug: string) {
+  return blogDetails[slug];
+}
+
 export async function getBlogDetailBySlug(slug: string) {
   const detail = blogDetails[slug];
   if (!detail) return;
@@ -195,9 +220,10 @@ export async function getBlogDetailBySlug(slug: string) {
 
   return {
     ...detail,
+    canonical: detail.canonical,
     image: detail.image ?? media?._headerImage,
     mobileImage: media?._mobileImage,
-    ogImage: media?._ogImage,
+    ogImage: detail.ogImage,
   };
 }
 

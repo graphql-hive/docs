@@ -134,7 +134,7 @@ export function MetricCard({
             <div
               className={`flex items-center gap-1.5 rounded-md border px-2.5 py-1 ${config.color}`}
             >
-              <Icon className="h-3.5 w-3.5" />
+              <Icon className="size-3.5" />
               <span className="text-xs font-medium">{type}</span>
             </div>
           </div>

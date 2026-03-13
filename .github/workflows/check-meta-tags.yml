@@ -1,0 +1,26 @@
+on:
+  workflow_call:
+
+jobs:
+  check-seo:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: build documentation
+        run: bun run build
+        working-directory: packages/documentation
+        env:
+          NODE_OPTIONS: "--max-old-space-size=8192"
+        timeout-minutes: 20
+
+      - name: check seo
+        run: bun run check-seo
+        working-directory: packages/documentation

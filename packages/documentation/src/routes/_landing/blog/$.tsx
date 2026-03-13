@@ -11,46 +11,51 @@ import { SimilarPosts } from "../../../components/blog/similar-posts";
 import { LandingPageContainer } from "../../../components/landing-page-container";
 import {
   getBlogDetailBySlug,
+  getBlogSeoBySlug,
   landingPosts,
 } from "../../../lib/landing-content";
 import { mdxComponents } from "../../../lib/mdx-components";
+import { seo } from "../../../lib/seo";
 import "../../../styles/hive-prose.css";
 
 interface BlogLoaderData {
   allPosts: import("../../../components/blog/blog-card").BlogPost[];
   authors: string[];
+  canonical?: string;
   date: string;
   description: string;
   image?: string;
   mobileImage?: string;
   ogImage?: string;
   path: string;
+  route: string;
   tags: string[];
   title: string;
 }
 
 export const Route = createFileRoute("/_landing/blog/$")({
   component: BlogPostDetail,
-  head: ({ loaderData: d }: { loaderData?: BlogLoaderData }) => {
-    if (!d) return {};
+  head: seo(({ match, params }) => {
+    const slug = params["_splat"] ?? "";
+    const data = getBlogSeoBySlug(slug);
+    if (!data) return null;
     return {
-      meta: [
-        { title: d.title },
-        { content: d.description, name: "description" },
-        { content: d.title, property: "og:title" },
-        { content: d.description, property: "og:description" },
-        ...(d.ogImage ? [{ content: d.ogImage, property: "og:image" }] : []),
-      ],
+      breadcrumbs: [{ name: "Blog", pathname: "/blog" }],
+      description: data.description,
+      image: data.ogImage,
+      pathname: data.canonical ?? match.pathname,
+      title: data.title,
     };
-  },
+  }),
   loader: async ({ params }): Promise<BlogLoaderData> => {
-    const slug = params._splat ?? "";
+    const slug = params["_splat"] ?? "";
     const data = await getBlogDetailBySlug(slug);
     if (!data) throw notFound();
     await clientLoader.preload(data.path);
     return {
       ...data,
       allPosts: landingPosts,
+      route: `/blog/${slug}`,
     };
   },
 });

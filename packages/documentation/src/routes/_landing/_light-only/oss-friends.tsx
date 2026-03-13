@@ -10,6 +10,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 
 import { LandingPageContainer } from "../../../components/landing-page-container";
+import { seo } from "../../../lib/seo";
 
 type OSSFriend = {
   description: string;
@@ -32,6 +33,11 @@ const getOSSFriends = createServerFn({ method: "GET" }).handler(
 
 export const Route = createFileRoute("/_landing/_light-only/oss-friends")({
   component: OSSFriendsPage,
+  head: seo({
+    description:
+      "We love open source. Meet our friends who share the same passion.",
+    title: "Our Open Source Friends",
+  }),
   loader: () => getOSSFriends(),
 });
 

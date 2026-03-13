@@ -11,7 +11,9 @@ import { ArrowIcon } from "../../../../components/arrow-icon";
 import { FrequentlyAskedFederationQuestions } from "../../../../components/frequently-asked-questions";
 import { Hero, HeroLinks } from "../../../../components/hero";
 import { LandingPageContainer } from "../../../../components/landing-page-container";
+import { seo } from "../../../../lib/seo";
 import federationDiagram from "./federation-diagram.png";
+import ogImage from "./opengraph-image.png";
 import queryResultImage from "./query-result.png";
 import queryImage from "./query.png";
 import subgraphsProductsImage from "./subgraphs-products.png";
@@ -20,6 +22,12 @@ import supergraphSchemaImage from "./supergraph-schema.png";
 
 export const Route = createFileRoute("/_landing/_light-only/federation/")({
   component: FederationPage,
+  head: seo({
+    description:
+      "Discover what GraphQL Federation is, how it unifies multiple APIs into a Supergraph, its core benefits, and the building blocks like subgraphs, schema composition and gateway.",
+    image: ogImage,
+    title: "What is GraphQL Federation?",
+  }),
 });
 
 function FederationPage(): ReactElement {

@@ -3,16 +3,37 @@ import type { Root } from "fumadocs-core/page-tree";
 import { ProductUpdateAuthors } from "@/components/product-update-header";
 import { getProductUpdateBySlug } from "@/lib/landing-content";
 import { mdxComponents } from "@/lib/mdx-components";
+import { seo } from "@/lib/seo";
 import { Heading } from "@hive/design-system";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import browserCollections from "fumadocs-mdx:collections/browser";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { DocsBody, DocsPage } from "fumadocs-ui/layouts/docs/page";
 
+interface ProductUpdateLoaderData {
+  authors: ({ name: string } | string)[];
+  date: string;
+  description: string;
+  path: string;
+  slug: string;
+  title: string;
+}
+
 export const Route = createFileRoute("/_landing/product-updates/$")({
   component: ProductUpdateDetail,
-  loader: async ({ params }) => {
-    const slug = params._splat ?? "";
+  head: seo(({ match, params }) => {
+    const slug = params["_splat"] ?? "";
+    const data = getProductUpdateBySlug(slug);
+    if (!data) return null;
+    return {
+      breadcrumbs: [{ name: "Product Updates", pathname: "/product-updates" }],
+      description: data.description,
+      pathname: data.canonical ?? match.pathname,
+      title: data.title,
+    };
+  }),
+  loader: async ({ params }): Promise<ProductUpdateLoaderData> => {
+    const slug = params["_splat"] ?? "";
     const data = getProductUpdateBySlug(slug);
     if (!data) throw notFound();
     await clientLoader.preload(data.path);

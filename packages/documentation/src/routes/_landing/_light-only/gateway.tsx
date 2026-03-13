@@ -15,9 +15,15 @@ import { LetsGetAdvancedSection } from "../../../components/gateway/lets-get-adv
 import { OrchestrateYourWay } from "../../../components/gateway/orchestrate-your-way";
 import { GetYourAPIGameRightList } from "../../../components/get-your-api-game-right-list";
 import { LandingPageContainer } from "../../../components/landing-page-container";
+import { seo } from "../../../lib/seo";
 
 export const Route = createFileRoute("/_landing/_light-only/gateway")({
   component: HiveGatewayPage,
+  head: seo({
+    description:
+      "Unify and accelerate your data graph with Hive Gateway, which seamlessly integrates with Apollo Federation.",
+    title: "Hive Gateway",
+  }),
 });
 
 function HiveGatewayPage() {

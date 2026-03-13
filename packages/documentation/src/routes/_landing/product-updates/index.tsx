@@ -5,6 +5,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getChangelogs } from "../../../components/get-changelogs";
 import { LandingPageContainer } from "../../../components/landing-page-container";
 import { ProductUpdatesPage } from "../../../components/product-updates";
+import { seo } from "../../../lib/seo";
 
 const serverGetChangelogs = createServerFn({ method: "GET" }).handler(
   async () => getChangelogs(),
@@ -12,6 +13,10 @@ const serverGetChangelogs = createServerFn({ method: "GET" }).handler(
 
 export const Route = createFileRoute("/_landing/product-updates/")({
   component: ProductUpdatesRoute,
+  head: seo({
+    description: "The most recent developments from GraphQL Hive.",
+    title: "Product Updates",
+  }),
   loader: () => serverGetChangelogs(),
 });
 

@@ -1,6 +1,7 @@
 import { FumadocsLink } from "@/components/fumadocs-link";
+import { seo } from "@/lib/seo";
 import { withBasePath } from "@/lib/with-base-path";
-import appCss from "@/styles/app.css?url";
+import "@/styles/app.css";
 import {
   createRootRoute,
   type ErrorComponentProps,
@@ -11,13 +12,10 @@ import {
 } from "@tanstack/react-router";
 import { RootProvider } from "fumadocs-ui/provider/tanstack";
 
-import ogImage from "./opengraph-image.png";
-
 export const Route = createRootRoute({
   component: RootComponent,
   errorComponent: RootErrorComponent,
-  head: () => ({
-    links: [{ href: appCss, rel: "stylesheet" }],
+  head: seo({
     meta: [
       {
         // eslint-disable-next-line unicorn/text-encoding-identifier-case
@@ -27,18 +25,8 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
         name: "viewport",
       },
-      {
-        title: "Open-Source GraphQL Federation Platform",
-      },
-      {
-        content: "website",
-        property: "og:type",
-      },
-      {
-        content: ogImage,
-        property: "og:image",
-      },
     ],
+    pathname: null,
   }),
 });
 

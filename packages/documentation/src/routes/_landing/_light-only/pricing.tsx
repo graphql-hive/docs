@@ -13,9 +13,15 @@ import { LandingPageContainer } from "../../../components/landing-page-container
 import { PlanComparison } from "../../../components/plan-comparison";
 import { Pricing } from "../../../components/pricing";
 import { PlansTable } from "../../../components/pricing/plans-table";
+import { seo } from "../../../lib/seo";
 
 export const Route = createFileRoute("/_landing/_light-only/pricing")({
   component: PricingPage,
+  head: seo({
+    description:
+      "Honest pricing plans for GraphQL Federation and other GraphQL APIs, supporting developers to enterprise with Open-Source schema registry, analytics, and gateway solutions",
+    title: "Hive Platform Pricing",
+  }),
 });
 
 function PricingPage() {
