@@ -1,3 +1,5 @@
+import defaultOgImage from "../routes/opengraph-image.png";
+
 type MetaTag = {
   content?: string;
   name?: string;
@@ -26,8 +28,8 @@ export const SITE_ORIGIN = "https://the-guild.dev";
 export const SITE_PATHNAME = new URL(SITE_URL).pathname.replace(/\/$/, "");
 export const DEFAULT_TITLE = "Open-Source GraphQL Federation Platform";
 export const DEFAULT_DESCRIPTION =
-  "Fully Open-Source schema registry, analytics and gateway for GraphQL federation and other GraphQL APIs";
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/opengraph-image.png`;
+  "Fully Open-source schema registry, analytics and gateway for GraphQL federation and other GraphQL APIs";
+export const DEFAULT_OG_IMAGE = defaultOgImage;
 export const DEFAULT_OG_TYPE = "website";
 export const DEFAULT_LOCALE = "en_US";
 export const DEFAULT_TWITTER_CARD = "summary_large_image";
@@ -53,9 +55,7 @@ export function absoluteUrl(pathname = "/") {
 }
 
 function absoluteImage(image?: string) {
-  if (!image) {
-    return DEFAULT_OG_IMAGE;
-  }
+  image ??= DEFAULT_OG_IMAGE;
 
   if (/^https?:\/\//.test(image)) {
     return image;
@@ -88,6 +88,10 @@ export function seo({
 } {
   const canonical = pathname ? absoluteUrl(pathname) : undefined;
   const ogImage = absoluteImage(image);
+  const resolvedTitle =
+    title === DEFAULT_TITLE || title.includes("|")
+      ? title
+      : `${title} | ${SITE_NAME}`;
   const breadcrumbScripts =
     breadcrumbs && breadcrumbs.length > 0
       ? [
@@ -110,9 +114,9 @@ export function seo({
   return {
     links: canonical ? [{ href: canonical, rel: "canonical" }] : [],
     meta: [
-      { title },
+      { title: resolvedTitle },
       { content: description, name: "description" },
-      { content: title, property: "og:title" },
+      { content: resolvedTitle, property: "og:title" },
       { content: description, property: "og:description" },
       { content: SITE_NAME, property: "og:site_name" },
       { content: DEFAULT_LOCALE, property: "og:locale" },
@@ -121,7 +125,7 @@ export function seo({
       { content: DEFAULT_TWITTER_CARD, name: "twitter:card" },
       { content: DEFAULT_TWITTER_SITE, name: "twitter:site" },
       { content: DEFAULT_TWITTER_CREATOR, name: "twitter:creator" },
-      { content: title, name: "twitter:title" },
+      { content: resolvedTitle, name: "twitter:title" },
       { content: description, name: "twitter:description" },
       { content: ogImage, name: "twitter:image" },
       ...(canonical ? [{ content: canonical, property: "og:url" }] : []),

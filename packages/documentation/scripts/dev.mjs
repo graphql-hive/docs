@@ -1,5 +1,5 @@
-import { createServer } from "node:net";
 import { spawn } from "node:child_process";
+import { createServer } from "node:net";
 
 async function getPort() {
   return await new Promise((resolve, reject) => {
@@ -34,5 +34,5 @@ child.on("exit", (code, signal) => {
     process.kill(process.pid, signal);
     return;
   }
-  process.exit(code ?? 0);
+  process.exitCode = code ?? 0;
 });
