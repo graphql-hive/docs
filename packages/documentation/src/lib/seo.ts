@@ -99,7 +99,7 @@ function titleToBreadcrumbName(title: string, pathname?: string) {
     return title;
   }
 
-  const fallback = pathname?.split("/").filter(Boolean).at(-1);
+  const fallback = pathname?.split("/").findLast(Boolean);
   if (!fallback) {
     return SITE_NAME;
   }
