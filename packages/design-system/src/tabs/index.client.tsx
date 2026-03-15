@@ -1,7 +1,7 @@
 "use client";
 
 import * as Primitive from "@radix-ui/react-tabs";
-import { useLocation } from "@tanstack/react-router";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import {
   ComponentPropsWithoutRef,
   createContext,
@@ -132,6 +132,8 @@ export const Tabs = ({
   );
   useTabSearchParamCleanup(searchParamKey, items, id);
 
+  const navigate = useNavigate();
+
   const handleChange = (index: number) => {
     onChange?.(index);
 
@@ -149,7 +151,7 @@ export const Tabs = ({
     }
 
     if (searchParamKey) {
-      replaceTabSearchParam(searchParamKey, items, id, index);
+      replaceTabSearchParam(searchParamKey, items, id, index, navigate);
     }
   };
 
@@ -450,6 +452,7 @@ function replaceTabSearchParam(
   items: (TabItem | TabObjectItem)[],
   id: string,
   selectedIndex?: number,
+  navigate?: ReturnType<typeof useNavigate>,
 ) {
   const searchParams = new URLSearchParams(globalThis.location.search);
   const tabKeys = new Set(searchParams.getAll(searchParamKey));
@@ -470,18 +473,21 @@ function replaceTabSearchParam(
     searchParams.append(searchParamKey, getTabKey(items, selectedIndex, id));
   }
 
-  replaceCurrentURL(
-    `${globalThis.location.pathname}${searchParams.size > 0 ? `?${searchParams.toString()}` : ""}${globalThis.location.hash}`,
-  );
-}
-
-function replaceCurrentURL(url: string) {
+  const url = `${globalThis.location.pathname}${searchParams.size > 0 ? `?${searchParams.toString()}` : ""}${globalThis.location.hash}`;
   const currentURL = `${globalThis.location.pathname}${globalThis.location.search}${globalThis.location.hash}`;
   if (currentURL === url) {
     return;
   }
 
-  globalThis.history.replaceState(null, "", url);
+  if (navigate) {
+    // Use TanStack Router's navigate to avoid scroll reset.
+    // Raw history.replaceState gets monkey-patched by the router
+    // and triggers scrollRestoration.
+    void navigate({ to: url, replace: true, resetScroll: false });
+  } else {
+    // Fallback for cleanup effects where navigate isn't available.
+    globalThis.history.replaceState(null, "", url);
+  }
 }
 
 function findTabPanelByHash(tabPanelsRef: HTMLDivElement | null, hash: string) {
