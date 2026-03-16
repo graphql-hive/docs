@@ -54,10 +54,10 @@ const calloutConfig: Record<
     text: "text-beige-900 dark:text-[#dedacf]",
   },
   warning: {
-    bg: "bg-warning-100/50 dark:bg-[rgba(251,248,203,0.2)]",
+    bg: "bg-warning-100/35 dark:bg-[rgba(251,248,203,0.2)]",
     border: "border border-warning-500 dark:border-[rgba(231,222,98,0.2)]",
     Icon: CalloutWarningIcon,
-    text: "text-warning-800 dark:text-[#e7de62]",
+    text: "text-warning-800 dark:text-[#d7cf53]",
   },
 };
 
