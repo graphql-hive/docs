@@ -21,10 +21,10 @@ function walkDir(dir: string): string[] {
   return results;
 }
 
-let cachedResult: { missing: string[] } | undefined;
+let cachedResult: { error?: string; missing: string[] } | undefined;
 
-function getMissingFiles(cwd: string): string[] {
-  if (cachedResult) return cachedResult.missing;
+function getMissingFiles(cwd: string): { error?: string; missing: string[] } {
+  if (cachedResult) return cachedResult;
 
   const manifestPath = join(cwd, MANIFEST_FILENAME);
   const publicDir = join(cwd, PUBLIC_DIR);
@@ -33,21 +33,27 @@ function getMissingFiles(cwd: string): string[] {
   try {
     manifestFiles = new Set(parseStaticFilesManifest(manifestPath));
   } catch {
-    cachedResult = { missing: [] };
-    return [];
+    cachedResult = {
+      error: `Cannot read ${MANIFEST_FILENAME}`,
+      missing: [],
+    };
+    return cachedResult;
   }
 
   let allPublicFiles: string[];
   try {
     allPublicFiles = walkDir(publicDir).map((f) => relative(publicDir, f));
   } catch {
-    cachedResult = { missing: [] };
-    return [];
+    cachedResult = {
+      error: `Cannot read ${PUBLIC_DIR}/ directory`,
+      missing: [],
+    };
+    return cachedResult;
   }
 
   const missing = allPublicFiles.filter((f) => !manifestFiles.has(f));
   cachedResult = { missing };
-  return missing;
+  return cachedResult;
 }
 
 const rule: Rule.RuleModule = {
@@ -60,10 +66,17 @@ const rule: Rule.RuleModule = {
 
     return {
       Program(node) {
-        const missing = getMissingFiles(cwd as string);
-        if (missing.length > 0) {
+        const result = getMissingFiles(cwd as string);
+        if (result.error) {
           context.report({
-            data: { files: missing.join(", ") },
+            data: { error: result.error },
+            messageId: "readError",
+            node,
+          });
+        }
+        if (result.missing.length > 0) {
+          context.report({
+            data: { files: result.missing.join(", ") },
             messageId: "missingFromManifest",
             node,
           });
@@ -79,6 +92,7 @@ const rule: Rule.RuleModule = {
     messages: {
       missingFromManifest:
         "Public file(s) not in PUBLIC_STATIC_FILES_MANIFEST.md: {{ files }}",
+      readError: "{{ error }}",
     },
     schema: [],
     type: "problem",
