@@ -89,7 +89,7 @@ export function MetricCard({
 
   return (
     <div
-      className="group scroll-mt-20 overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow duration-200 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:shadow-black/30"
+      className="not-prose group scroll-mt-20 overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow duration-200 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:shadow-black/30"
       id={metricId}
     >
       <div className="p-5">
