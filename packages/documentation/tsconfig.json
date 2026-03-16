@@ -5,7 +5,8 @@
     "src/**/*.tsx",
     ".source/**/*.ts",
     "*.config.ts",
-    "content/**/*.ts"
+    "content/**/*.ts",
+    "tools/**/*.ts"
   ],
   "compilerOptions": {
     "types": ["vite/client", "bun"],
