@@ -1,7 +1,7 @@
 "use client";
 
 import * as Primitive from "@radix-ui/react-tabs";
-import { useLocation } from "@tanstack/react-router";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import {
   ComponentPropsWithoutRef,
   createContext,
@@ -130,7 +130,7 @@ export const Tabs = ({
     tabIndexFromSearchParams !== -1,
     id,
   );
-  useTabSearchParamCleanup(searchParamKey, items, id);
+  const navigate = useNavigate();
 
   const handleChange = (index: number) => {
     onChange?.(index);
@@ -149,7 +149,7 @@ export const Tabs = ({
     }
 
     if (searchParamKey) {
-      replaceTabSearchParam(searchParamKey, items, id, index);
+      replaceTabSearchParam(searchParamKey, items, id, index, navigate);
     }
   };
 
@@ -279,7 +279,10 @@ function useActiveTabFromURL(
   const hash = useHash();
   const { searchStr } = useLocation();
   const searchParams = new URLSearchParams(searchStr);
-  const tabsInSearchParams = searchParams.getAll(searchParamKey).sort();
+  const tabsInSearchParams = searchParams
+    .getAll(searchParamKey)
+    .flatMap((v) => v.split(","))
+    .sort();
 
   const tabIndexFromSearchParams = items.findIndex((_, index) =>
     tabsInSearchParams.includes(getTabKey(items, index, id)),
@@ -358,29 +361,6 @@ function useActiveTabFromStorage(
   }, [storageKey, items, setSelectedIndex, id]);
 }
 
-function useTabSearchParamCleanup(
-  searchParamKey: string,
-  items: (TabItem | TabObjectItem)[],
-  id: string,
-) {
-  const latestRef = useRef({ id, items, searchParamKey });
-
-  useEffect(() => {
-    latestRef.current = { id, items, searchParamKey };
-  }, [id, items, searchParamKey]);
-
-  useEffect(() => {
-    return () => {
-      const { id, items, searchParamKey } = latestRef.current;
-      if (!searchParamKey) {
-        return;
-      }
-
-      replaceTabSearchParam(searchParamKey, items, id);
-    };
-  }, []);
-}
-
 function getTabKey(
   items: (TabItem | TabObjectItem)[],
   index: number,
@@ -450,38 +430,72 @@ function replaceTabSearchParam(
   items: (TabItem | TabObjectItem)[],
   id: string,
   selectedIndex?: number,
+  navigate?: ReturnType<typeof useNavigate>,
 ) {
-  const searchParams = new URLSearchParams(globalThis.location.search);
-  const tabKeys = new Set(searchParams.getAll(searchParamKey));
+  if (navigate) {
+    // Use TanStack Router's navigate to avoid scroll reset.
+    // Raw history.replaceState gets monkey-patched by the router
+    // and triggers scrollRestoration.
 
-  // we remove only tabs from this list from search params
-  for (let i = 0; i < items.length; i++) {
-    tabKeys.delete(getTabKey(items, i, id));
+    void navigate({
+      replace: true,
+      resetScroll: false,
+      search: ((prev: Record<string, unknown>) => {
+        const raw = prev?.[searchParamKey];
+        const tabKeys = new Set(
+          typeof raw === "string"
+            ? raw.split(",")
+            : Array.isArray(raw)
+              ? raw
+              : [],
+        );
+
+        // remove only tabs belonging to this tab group
+        for (let i = 0; i < items.length; i++) {
+          tabKeys.delete(getTabKey(items, i, id));
+        }
+
+        // add the clicked tab
+        if (selectedIndex !== undefined) {
+          tabKeys.add(getTabKey(items, selectedIndex, id));
+        }
+
+        const values = [...tabKeys];
+        return {
+          ...prev,
+          [searchParamKey]: values.length > 0 ? values.join(",") : undefined,
+        };
+      }) as unknown as true,
+    });
+  } else {
+    const searchParams = new URLSearchParams(globalThis.location.search);
+    const tabKeys = new Set(searchParams.getAll(searchParamKey));
+
+    // we remove only tabs from this list from search params
+    for (let i = 0; i < items.length; i++) {
+      tabKeys.delete(getTabKey(items, i, id));
+    }
+
+    // we add tabs from outside of this list back
+    searchParams.delete(searchParamKey);
+    for (const key of tabKeys) {
+      searchParams.append(searchParamKey, key);
+    }
+
+    // and finally, we add the clicked tab
+    if (selectedIndex !== undefined) {
+      searchParams.append(searchParamKey, getTabKey(items, selectedIndex, id));
+    }
+
+    const url = `${globalThis.location.pathname}${searchParams.size > 0 ? `?${searchParams.toString()}` : ""}${globalThis.location.hash}`;
+    const currentURL = `${globalThis.location.pathname}${globalThis.location.search}${globalThis.location.hash}`;
+    if (currentURL === url) {
+      return;
+    }
+
+    // Fallback for cleanup effects where navigate isn't available.
+    globalThis.history.replaceState(null, "", url);
   }
-
-  // we add tabs from outside of this list back
-  searchParams.delete(searchParamKey);
-  for (const key of tabKeys) {
-    searchParams.append(searchParamKey, key);
-  }
-
-  // and finally, we add the clicked tab
-  if (selectedIndex !== undefined) {
-    searchParams.append(searchParamKey, getTabKey(items, selectedIndex, id));
-  }
-
-  replaceCurrentURL(
-    `${globalThis.location.pathname}${searchParams.size > 0 ? `?${searchParams.toString()}` : ""}${globalThis.location.hash}`,
-  );
-}
-
-function replaceCurrentURL(url: string) {
-  const currentURL = `${globalThis.location.pathname}${globalThis.location.search}${globalThis.location.hash}`;
-  if (currentURL === url) {
-    return;
-  }
-
-  globalThis.history.replaceState(null, "", url);
 }
 
 function findTabPanelByHash(tabPanelsRef: HTMLDivElement | null, hash: string) {

@@ -3,7 +3,7 @@ title: "Extending the Router"
 ---
 
 import { Callout } from "@hive/design-system/hive-components/callout";
-import { Steps } from "fumadocs-ui/components/steps";
+import { Step, Steps } from "fumadocs-ui/components/steps";
 
 Hive Router is designed to be flexible and extensible, allowing you to customize its behavior to fit
 your specific needs. This guide demonstrates how to extend the router's functionality using
@@ -19,6 +19,7 @@ features of Hive Router is the ability to create custom builds with your own Rus
 enables you to add new capabilities or modify existing ones to better suit your requirements.
 
 <Steps>
+<Step>
 
 ### Create a new Rust project
 
@@ -32,6 +33,9 @@ cargo new --bin my_custom_router
 cd my_custom_router
 ```
 
+</Step>
+<Step>
+
 ### Install Dependencies
 
 Add `hive-router` and `serde` as dependencies in your `Cargo.toml` file:
@@ -41,6 +45,9 @@ Add `hive-router` and `serde` as dependencies in your `Cargo.toml` file:
 hive-router = "<HIVE_ROUTER_VERSION>" # see https://crates.io/crates/hive-router for latest version
 serde = "1"
 ```
+
+</Step>
+<Step>
 
 ### `main` and router entrypoint
 
@@ -67,6 +74,9 @@ async fn main() -> Result<(), RouterInitError> {
     router_entrypoint(PluginRegistry::new()).await
 }
 ```
+
+</Step>
+<Step>
 
 ### Configure your Router
 
@@ -100,6 +110,9 @@ details.
 
 </Callout>
 
+</Step>
+<Step>
+
 ### Run your custom router
 
 At this point, you should be able to run your router by executing the following command:
@@ -111,6 +124,9 @@ cargo run
 By default, the Router serves on port `4000`. Open
 [`http://localhost:4000/graphql`](http://localhost:4000/graphql) in your browser to access the
 interactive GraphQL playground.
+
+</Step>
+<Step>
 
 ### Create a custom plugin
 
@@ -166,6 +182,9 @@ You can find a complete plugin template in the
 
 </Callout>
 
+</Step>
+<Step>
+
 ### Register your plugin
 
 Now, register your plugin in `main.rs`:
@@ -191,6 +210,9 @@ async fn main() -> Result<(), RouterInitError> {
 }
 ```
 
+</Step>
+<Step>
+
 ### Enable and configure your plugin
 
 With the plugin registered, the Router is ready to use it. Enable and configure your plugin in the
@@ -204,6 +226,9 @@ plugins:
   my_plugin:
     enabled: true
 ```
+
+</Step>
+<Step>
 
 ### Try your plugin
 
@@ -230,6 +255,9 @@ query testQuery {
 
 </Callout>
 
+</Step>
+<Step>
+
 ### Build your Router
 
 Now that you have a custom plugin that extends the Router's behavior, you'll need to compile it in
@@ -251,6 +279,9 @@ cargo build --release
 
 Your artifact will now be located in `./target/release/hive_router_with_my_plugin` and you can run
 it as-is.
+
+</Step>
+<Step>
 
 ### Distribute your custom Router
 
@@ -293,6 +324,7 @@ docker run \
   my-custom-router
 ```
 
+</Step>
 </Steps>
 
 ## Additional Resources

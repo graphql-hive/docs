@@ -30,7 +30,7 @@ const calloutConfig: Record<
     text: "text-critical-800 dark:text-[#ffc6bb]",
   },
   info: {
-    bg: "bg-info-100 dark:bg-info-500/3",
+    bg: "bg-info-100/50 dark:bg-info-500/3",
     border: "border border-info-500 dark:border-info-500/25",
     Icon: CalloutInfoIcon,
     text: "text-info-800 dark:text-[#e7f7ff]",
@@ -54,10 +54,10 @@ const calloutConfig: Record<
     text: "text-beige-900 dark:text-[#dedacf]",
   },
   warning: {
-    bg: "bg-warning-100/50 dark:bg-[rgba(251,248,203,0.2)]",
+    bg: "bg-warning-100/35 dark:bg-[rgba(251,248,203,0.2)]",
     border: "border border-warning-500 dark:border-[rgba(231,222,98,0.2)]",
     Icon: CalloutWarningIcon,
-    text: "text-warning-800 dark:text-[#e7de62]",
+    text: "text-warning-800 dark:text-[#d7cf53]",
   },
 };
 
@@ -78,7 +78,7 @@ export function Callout({
   return (
     <div
       className={cn(
-        "mt-6 flex min-h-12 gap-2 rounded-lg px-[13px] py-[9px]",
+        "mt-6 flex min-h-12 gap-2 rounded-lg px-[13px] py-[9px] hive-callout",
         config.bg,
         config.border,
         className,
