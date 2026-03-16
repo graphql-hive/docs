@@ -135,6 +135,9 @@ function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {
             fill: var(--mermaid-fg);
             color: var(--mermaid-fg);
           }
+          .nodeLabel, .statediagram-note .nodeLabel, .label div .edgeLabel  {
+            color: var(--mermaid-fg);
+          }
           .cluster rect {
             fill: var(--mermaid-cluster-fill);
             stroke: var(--mermaid-cluster-stroke);
