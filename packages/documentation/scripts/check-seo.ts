@@ -7,10 +7,7 @@ const verbose =
   process.env["VERBOSE"] === "true" || process.argv.includes("--verbose");
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const OUTPUT_DIR = path.resolve(
-  __dirname,
-  "../.output/public/graphql/hive-testing",
-);
+const OUTPUT_DIR = path.resolve(__dirname, "../.output/public/graphql/hive");
 const REQUIRED_TAGS = [
   "title",
   "link:canonical",

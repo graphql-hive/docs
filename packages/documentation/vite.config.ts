@@ -11,7 +11,7 @@ import tsConfigPaths from "vite-tsconfig-paths";
 
 import { deploymentChangelogPlugin } from "./source-plugins/deployment-changelog-plugin";
 
-const BASE_PATH = "/graphql/hive-testing";
+const BASE_PATH = "/graphql/hive";
 
 const NITRO_PRESET = process.env["VERCEL"] ? "vercel" : "cloudflare-module";
 const CLOUDFLARE_ENTRY = fileURLToPath(

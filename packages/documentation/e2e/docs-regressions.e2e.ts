@@ -24,7 +24,7 @@ test.describe("Documentation regressions", () => {
     await waitForHydration(page);
 
     const markdownResponse = page.waitForResponse((response) =>
-      response.url().includes("/graphql/hive-testing/docs.mdx"),
+      response.url().includes("/graphql/hive/docs.mdx"),
     );
 
     await page.getByRole("button", { name: "Copy Markdown" }).click();
@@ -53,7 +53,7 @@ test.describe("Documentation regressions", () => {
     await page.getByRole("link", { name: "Execution Rejection" }).click();
 
     await expect(page).toHaveURL(
-      /\/graphql\/hive-testing\/docs\/gateway\/authorization-authentication\/?#execution-rejection$/,
+      /\/graphql\/hive\/docs\/gateway\/authorization-authentication\/?#execution-rejection$/,
     );
     await expect(page.locator("#execution-rejection")).toBeInViewport();
   });
@@ -76,7 +76,7 @@ test.describe("Documentation regressions", () => {
     await waitForHydration(page);
 
     await expect(page).toHaveURL(
-      /\/graphql\/hive-testing\/docs\/gateway\/authorization-authentication\/?#execution-rejection$/,
+      /\/graphql\/hive\/docs\/gateway\/authorization-authentication\/?#execution-rejection$/,
     );
     await expect(page.locator("#execution-rejection")).toBeInViewport();
   });
@@ -100,7 +100,7 @@ test.describe("Documentation regressions", () => {
     await expect(page.locator(".animate-pulse")).toHaveCount(0);
 
     await expect(page).toHaveURL(
-      /\/graphql\/hive-testing\/docs\/schema-registry\/self-hosting\/changelog\/?#8-14-1$/,
+      /\/graphql\/hive\/docs\/schema-registry\/self-hosting\/changelog\/?#8-14-1$/,
     );
     await expect(page.locator('[id="8-14-1"]')).toBeInViewport();
   });
