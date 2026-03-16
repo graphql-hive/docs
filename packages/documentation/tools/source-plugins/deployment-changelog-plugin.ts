@@ -1,4 +1,4 @@
-import { extractFilteredChangelogToc } from "../src/lib/changelog-toc";
+import { extractFilteredChangelogToc } from "../../src/lib/changelog-toc";
 
 const DEPLOYMENT_CHANGELOG_SNAPSHOT_ID =
   "virtual:deployment-changelog-snapshot";

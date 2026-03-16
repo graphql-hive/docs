@@ -2,9 +2,16 @@ import type { Linter } from "eslint";
 
 import baseConfig from "@hasparus/eslint-config/the-guild";
 
+import { plugin as publicFilesPlugin } from "./tools/lint-rules/public-files-in-manifest";
+
 const config: Linter.Config[] = [
   { ignores: ["e2e/**", "storybook-static/**", "playwright-report/**"] },
   ...baseConfig,
+  {
+    files: ["eslint.config.ts"],
+    plugins: { local: publicFilesPlugin },
+    rules: { "local/public-files-in-manifest": "error" },
+  },
   {
     files: ["**/*.tsx", "**/*.jsx"],
     rules: {
@@ -68,7 +75,7 @@ const config: Linter.Config[] = [
     },
   },
   {
-    files: ["scripts/**/*.mjs"],
+    files: ["tools/**/*.mjs"],
     rules: {
       "no-console": "off",
     },
@@ -77,12 +84,7 @@ const config: Linter.Config[] = [
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: [
-            "*.mjs",
-            "*.js",
-            "scripts/*.mjs",
-            "scripts/*.ts",
-          ],
+          allowDefaultProject: ["*.mjs", "*.js", "tools/*.mjs", "tools/*.ts"],
         },
       },
     },
