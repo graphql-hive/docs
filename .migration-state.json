@@ -3,7 +3,7 @@
   "sourceRepo": ".context/hive-console",
   "sourceBranch": "main",
   "targetSubdirectory": "temporary",
-  "lastSyncedCommit": "7fe129d096a640810a5b140a13a5c828fcbb9e38",
+  "lastSyncedCommit": "5ce922637",
   "migrations": [
     {
       "commit": "f09052749e7ec7a5f759566fac8e13eb3f833067",
@@ -289,7 +289,7 @@
       "commit": "295a16ca710b3c90b051020c795d57f2cfb766f1",
       "date": "2026-02-20 21:35:54 +0900",
       "message": "Publish auth improvements product update (#7681)",
-      "author": "Iha Shin (신의하)",
+      "author": "Iha Shin (\uc2e0\uc758\ud558)",
       "syncedAt": "2026-03-05T19:56:26.471Z",
       "mergeCommit": "b10de2c5e287f1f6072e552d2d629b6e3e66ca2e"
     },

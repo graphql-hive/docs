@@ -87,6 +87,7 @@ function DocsTocItem({ item }: { item: TOCItemType }) {
   );
 }
 
+// TODO: Use `cn` instead.
 function cx(...parts: (false | string | null | undefined)[]) {
   return parts.filter(Boolean).join(" ");
 }
