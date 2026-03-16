@@ -130,8 +130,6 @@ export const Tabs = ({
     tabIndexFromSearchParams !== -1,
     id,
   );
-  useTabSearchParamCleanup(searchParamKey, items, id);
-
   const navigate = useNavigate();
 
   const handleChange = (index: number) => {
@@ -360,29 +358,6 @@ function useActiveTabFromStorage(
   }, [storageKey, items, setSelectedIndex, id]);
 }
 
-function useTabSearchParamCleanup(
-  searchParamKey: string,
-  items: (TabItem | TabObjectItem)[],
-  id: string,
-) {
-  const latestRef = useRef({ id, items, searchParamKey });
-
-  useEffect(() => {
-    latestRef.current = { id, items, searchParamKey };
-  }, [id, items, searchParamKey]);
-
-  useEffect(() => {
-    return () => {
-      const { id, items, searchParamKey } = latestRef.current;
-      if (!searchParamKey) {
-        return;
-      }
-
-      replaceTabSearchParam(searchParamKey, items, id);
-    };
-  }, []);
-}
-
 function getTabKey(
   items: (TabItem | TabObjectItem)[],
   index: number,
@@ -454,37 +429,63 @@ function replaceTabSearchParam(
   selectedIndex?: number,
   navigate?: ReturnType<typeof useNavigate>,
 ) {
-  const searchParams = new URLSearchParams(globalThis.location.search);
-  const tabKeys = new Set(searchParams.getAll(searchParamKey));
-
-  // we remove only tabs from this list from search params
-  for (let i = 0; i < items.length; i++) {
-    tabKeys.delete(getTabKey(items, i, id));
-  }
-
-  // we add tabs from outside of this list back
-  searchParams.delete(searchParamKey);
-  for (const key of tabKeys) {
-    searchParams.append(searchParamKey, key);
-  }
-
-  // and finally, we add the clicked tab
-  if (selectedIndex !== undefined) {
-    searchParams.append(searchParamKey, getTabKey(items, selectedIndex, id));
-  }
-
-  const url = `${globalThis.location.pathname}${searchParams.size > 0 ? `?${searchParams.toString()}` : ""}${globalThis.location.hash}`;
-  const currentURL = `${globalThis.location.pathname}${globalThis.location.search}${globalThis.location.hash}`;
-  if (currentURL === url) {
-    return;
-  }
-
   if (navigate) {
     // Use TanStack Router's navigate to avoid scroll reset.
     // Raw history.replaceState gets monkey-patched by the router
     // and triggers scrollRestoration.
-    void navigate({ to: url, replace: true, resetScroll: false });
+
+    void navigate({
+      replace: true,
+      resetScroll: false,
+      search: ((prev: Record<string, unknown>) => {
+        const raw = prev?.[searchParamKey];
+        const tabKeys = new Set(
+          Array.isArray(raw) ? raw : typeof raw === "string" ? [raw] : [],
+        );
+
+        // remove only tabs belonging to this tab group
+        for (let i = 0; i < items.length; i++) {
+          tabKeys.delete(getTabKey(items, i, id));
+        }
+
+        // add the clicked tab
+        if (selectedIndex !== undefined) {
+          tabKeys.add(getTabKey(items, selectedIndex, id));
+        }
+
+        const values = [...tabKeys];
+        return {
+          ...prev,
+          [searchParamKey]: values.length > 0 ? values : undefined,
+        };
+      }) as unknown as true,
+    });
   } else {
+    const searchParams = new URLSearchParams(globalThis.location.search);
+    const tabKeys = new Set(searchParams.getAll(searchParamKey));
+
+    // we remove only tabs from this list from search params
+    for (let i = 0; i < items.length; i++) {
+      tabKeys.delete(getTabKey(items, i, id));
+    }
+
+    // we add tabs from outside of this list back
+    searchParams.delete(searchParamKey);
+    for (const key of tabKeys) {
+      searchParams.append(searchParamKey, key);
+    }
+
+    // and finally, we add the clicked tab
+    if (selectedIndex !== undefined) {
+      searchParams.append(searchParamKey, getTabKey(items, selectedIndex, id));
+    }
+
+    const url = `${globalThis.location.pathname}${searchParams.size > 0 ? `?${searchParams.toString()}` : ""}${globalThis.location.hash}`;
+    const currentURL = `${globalThis.location.pathname}${globalThis.location.search}${globalThis.location.hash}`;
+    if (currentURL === url) {
+      return;
+    }
+
     // Fallback for cleanup effects where navigate isn't available.
     globalThis.history.replaceState(null, "", url);
   }
