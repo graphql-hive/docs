@@ -30,7 +30,7 @@ const calloutConfig: Record<
     text: "text-critical-800 dark:text-[#ffc6bb]",
   },
   info: {
-    bg: "bg-info-100 dark:bg-info-500/3",
+    bg: "bg-info-100/50 dark:bg-info-500/3",
     border: "border border-info-500 dark:border-info-500/25",
     Icon: CalloutInfoIcon,
     text: "text-info-800 dark:text-[#e7f7ff]",
