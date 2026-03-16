@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
  * Matches rows like: | `some/file.ext` | Use case |
  */
 export function parseStaticFilesManifest(manifestPath: string): string[] {
-  const content = readFileSync(manifestPath, "utf-8");
+  const content = readFileSync(manifestPath, "utf8");
   const files: string[] = [];
 
   for (const line of content.split("\n")) {

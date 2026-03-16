@@ -9,9 +9,9 @@ import lastModified from "fumadocs-mdx/plugins/last-modified";
 import { transformerTwoslash } from "fumadocs-twoslash";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
 
+import { DOCS_CODE_LANGS, DOCS_CODE_THEMES } from "./src/lib/docs-code-config";
 import { autoImage, remarkAutoImage } from "./tools/source-plugins/auto-image";
 import { remarkRelativeLinks } from "./tools/source-plugins/remark-relative-links";
-import { DOCS_CODE_LANGS, DOCS_CODE_THEMES } from "./src/lib/docs-code-config";
 
 export const docs = defineDocs({
   dir: "content/docs",

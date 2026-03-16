@@ -84,7 +84,7 @@ const config: Linter.Config[] = [
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ["*.mjs", "*.js", "tools/*.mjs", "tools/*.ts"],
+          allowDefaultProject: ["*.mjs", "*.js", "tools/*.mjs"],
         },
       },
     },
