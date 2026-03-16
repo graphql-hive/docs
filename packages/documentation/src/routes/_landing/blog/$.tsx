@@ -96,6 +96,9 @@ function BlogPostDetail() {
         title={data.title}
       />
       <DocsLayout
+        containerProps={{
+          className: "[--fd-sidebar-width:var(--fd-toc-width)]",
+        }}
         nav={{ enabled: false }}
         sidebar={{ enabled: false }}
         tree={emptyTree}

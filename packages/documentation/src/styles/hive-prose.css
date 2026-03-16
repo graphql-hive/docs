@@ -9,7 +9,10 @@
     @apply text-white;
   }
 
-  & > :is(h2, h3, h4, h5, h6, p, ol, ul) {
+  &
+    > :is(h2, h3, h4, h5, h6, p, ol, ul, figure, hr, .hive-callout):not(
+      .hive-bleed
+    ) {
     max-width: var(--article-max-width);
     margin-inline: auto;
   }
@@ -71,6 +74,24 @@
 
   & :is(h2, h3, h4, h5, h6) {
     @apply border-none;
+  }
+
+  & figure.shiki > .backdrop-blur-lg:has(> button) {
+    @apply bg-beige-100 -translate-y-1 text-green-900 dark:bg-neutral-800/50 dark:text-white;
+  }
+
+  @media (hover: hover) {
+    & figure.shiki > :is(button, .backdrop-blur-lg:has(> button)) {
+      transition:
+        opacity 100ms ease,
+        transform 100ms ease;
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    & figure.shiki:hover > :is(button, .backdrop-blur-lg:has(> button)) {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 }
 

@@ -6,7 +6,7 @@ import { CompanyNewsAndPressSection } from "./company-news-and-press-section";
 
 export function BlogPageLayout({ children }: { children: React.ReactNode }) {
   return (
-    <LandingPageContainer className="text-green-1000 mx-auto max-w-360 overflow-hidden dark:text-white">
+    <LandingPageContainer className="text-green-1000 mx-auto w-360 max-w-full overflow-hidden dark:text-white">
       <BlogPageHero className="mx-4 max-sm:mt-2 md:mx-6" />
       {children}
       <CompanyNewsAndPressSection className="mx-4 md:mx-6" />

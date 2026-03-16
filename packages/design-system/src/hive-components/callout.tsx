@@ -78,7 +78,7 @@ export function Callout({
   return (
     <div
       className={cn(
-        "mt-6 flex min-h-12 gap-2 rounded-lg px-[13px] py-[9px]",
+        "mt-6 flex min-h-12 gap-2 rounded-lg px-[13px] py-[9px] hive-callout",
         config.bg,
         config.border,
         className,
