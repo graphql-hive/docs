@@ -279,7 +279,10 @@ function useActiveTabFromURL(
   const hash = useHash();
   const { searchStr } = useLocation();
   const searchParams = new URLSearchParams(searchStr);
-  const tabsInSearchParams = searchParams.getAll(searchParamKey).sort();
+  const tabsInSearchParams = searchParams
+    .getAll(searchParamKey)
+    .flatMap((v) => v.split(","))
+    .sort();
 
   const tabIndexFromSearchParams = items.findIndex((_, index) =>
     tabsInSearchParams.includes(getTabKey(items, index, id)),
@@ -440,7 +443,11 @@ function replaceTabSearchParam(
       search: ((prev: Record<string, unknown>) => {
         const raw = prev?.[searchParamKey];
         const tabKeys = new Set(
-          Array.isArray(raw) ? raw : typeof raw === "string" ? [raw] : [],
+          typeof raw === "string"
+            ? raw.split(",")
+            : Array.isArray(raw)
+              ? raw
+              : [],
         );
 
         // remove only tabs belonging to this tab group
@@ -456,7 +463,7 @@ function replaceTabSearchParam(
         const values = [...tabKeys];
         return {
           ...prev,
-          [searchParamKey]: values.length > 0 ? values : undefined,
+          [searchParamKey]: values.length > 0 ? values.join(",") : undefined,
         };
       }) as unknown as true,
     });
