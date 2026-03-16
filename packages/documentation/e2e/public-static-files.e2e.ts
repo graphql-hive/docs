@@ -1,6 +1,7 @@
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { expect, test } from "@playwright/test";
+
 import { parseStaticFilesManifest } from "../tools/parse-static-files-manifest";
 import { appPath } from "./paths";
 
