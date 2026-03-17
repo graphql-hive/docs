@@ -17,7 +17,7 @@ export function LabelCard({
     <div>
       <div className="mb-3 flex items-start gap-3">
         <div className="shrink-0 rounded-md border border-gray-200 bg-gray-100 p-1.5 dark:border-neutral-700 dark:bg-neutral-800">
-          <Tag className="h-4 w-4 text-gray-600 dark:text-slate-100" />
+          <Tag className="size-4 text-gray-600 dark:text-slate-100" />
         </div>
         <div className="min-w-0 flex-1">
           <code className="break-all text-sm font-semibold text-gray-900 dark:text-slate-100">
@@ -52,7 +52,7 @@ export function LabelCard({
         {notes && (
           <div className="pt-1">
             <div className="flex items-start gap-2">
-              <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
+              <Lightbulb className="mt-0.5 size-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
               <p className="text-sm/relaxed text-gray-600 dark:text-slate-100">
                 {notes}
               </p>

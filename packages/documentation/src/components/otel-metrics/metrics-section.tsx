@@ -57,7 +57,7 @@ export function MetricsSection({ labels, metrics }: MetricsSectionProps) {
           >
             <span>Labels Reference</span>
             <ChevronDown
-              className={`h-5 w-5 transition-transform duration-200 ${isLabelsOpen ? "rotate-180" : ""}`}
+              className={`size-5 transition-transform duration-200 ${isLabelsOpen ? "rotate-180" : ""}`}
             />
           </button>
           <div
