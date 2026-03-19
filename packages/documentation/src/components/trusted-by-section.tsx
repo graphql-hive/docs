@@ -16,7 +16,7 @@ export function TrustedBySection(props: React.HTMLAttributes<HTMLElement>) {
       <p className="text-base text-blue-800 dark:text-white/80">
         Trusted by global enterprises and fast-moving startups
       </p>
-      <div className="text-blue-1000 mt-6 flex flex-row flex-wrap items-center justify-center gap-x-16 gap-y-6 dark:text-white">
+      <div className="text-blue-1000 mt-6 grid grid-cols-2 place-items-center sm:flex flex-row flex-wrap items-center justify-center gap-x-16 gap-y-6 dark:text-white">
         <MeetupLogo className="translate-y-[5px]" height={32} title="Meetup" />
         <LinktreeLogo height={22} title="Linktree" />
         <KarrotLogo height={28} title="Karrot" />
