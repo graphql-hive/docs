@@ -35,7 +35,7 @@ function CaseStudiesPage() {
   const caseStudies = Route.useLoaderData();
 
   return (
-    <LandingPageContainer className="mx-auto max-w-360 overflow-hidden px-6">
+    <LandingPageContainer className="mx-auto max-w-360 overflow-hidden px-4">
       <header className="bg-primary dark:bg-primary/1 dark:border-primary/5 relative isolate flex flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 max-sm:mt-2 sm:py-12 md:gap-8 lg:py-24">
         <Heading
           as="h1"
