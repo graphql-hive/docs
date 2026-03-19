@@ -1,7 +1,6 @@
 ---
 title: "How Hemnet Migrated Its GraphQL Backend Without Anyone Noticing"
-excerpt:
-  "Hemnet is Sweden’s largest property platform, serving millions of users who browse, save, and search through real estate listings every day. Behind the scenes, a GraphQL API handles the bulk of these interactions, powering everything from listing pages and search results to user accounts and saved properties."
+excerpt: "Hemnet is Sweden’s largest property platform, serving millions of users who browse, save, and search through real estate listings every day. Behind the scenes, a GraphQL API handles the bulk of these interactions, powering everything from listing pages and search results to user accounts and saved properties."
 category: Real Estate
 date: 2026-03-19
 canonical: https://career.hemnet.se/posts/how-hemnet-migrated-its-graphql-backend-without-anyone-noticing
@@ -13,13 +12,16 @@ import { DocsIcon, LargeCallout } from "#components/large-callout";
 import { Lede } from "#components/lede";
 
 <Lede>
-  [Hemnet](https://hemnet.se/) is Sweden’s largest property platform, serving millions of users who browse, save, and search
-through real estate listings every day. Behind the scenes, a GraphQL API handles the bulk of these
-interactions, powering everything from listing pages and search results to user accounts and saved
-properties. For years, this API ran on a monolithic GraphQL layer built on top of a Rails stack with
-PostgreSQL. As the platform grew, so did the pain points, particularly the difficulty of splitting
-concerns into smaller, independently maintainable chunks. But how do you introduce separation into a
-backend that was designed to operate as a single entity?
+  [Hemnet](https://hemnet.se/) is Sweden’s largest property platform, serving
+  millions of users who browse, save, and search through real estate listings
+  every day. Behind the scenes, a GraphQL API handles the bulk of these
+  interactions, powering everything from listing pages and search results to
+  user accounts and saved properties. For years, this API ran on a monolithic
+  GraphQL layer built on top of a Rails stack with PostgreSQL. As the platform
+  grew, so did the pain points, particularly the difficulty of splitting
+  concerns into smaller, independently maintainable chunks. But how do you
+  introduce separation into a backend that was designed to operate as a single
+  entity?
 </Lede>
 
 The idea of GraphQL federation had been floating around the engineering organization for some time.
