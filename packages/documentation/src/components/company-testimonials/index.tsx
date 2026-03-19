@@ -9,12 +9,14 @@ import React, { Fragment, useRef, useState } from "react";
 
 import { ArrowIcon } from "../arrow-icon";
 import {
+  HemnetLogo,
   KarrotLogo,
   type LogoProps,
   NacelleLogo,
   ProdigyLogo,
   WealthsimpleLogo,
 } from "../company-logos";
+import hemnetPicture from "./hemnet-picture.webp";
 import karrotPicture from "./karrot-picture.webp";
 import nacellePicture from "./nacelle-picture.webp";
 import prodigyPicture from "./prodigy-picture.webp";
@@ -43,21 +45,27 @@ type Testimonial = {
 
 const testimonials: Testimonial[] = [
   {
-    company: "nacelle",
-    logo: NacelleLogo,
-    picture: { img: nacellePicture },
-    text: "Our migration from Apollo GraphOS to Hive was incredibly straightforward. In less than a month, we had about 20 subgraphs running on Hive in production. The process was smooth, and the Hive team's friendly demeanor made it even more pleasant. Although we haven't needed direct assistance with our implementation, their openness to feedback and generally nice attitude has fostered a sense of collaboration and partnership.",
-    // data: [
-    //   { numbers: '65M+', description: 'daily events processed' },
-    //   { numbers: '40%', description: 'more resource efficient' },
-    // ],
-    // caseStudyHref: ""
-  },
-  {
-    company: "Karrot",
-    logo: KarrotLogo,
-    picture: { img: karrotPicture },
-    text: "We use Hive as schema registry and monitoring tool. As a schema registry, we can publish GraphQL Schema with decoupled any application code. As a monitoring tool, we can find useful metrics. For example operation latency, usage of deprecated field. The great thing about GraphQL Hive is that it is easy to use, we have already integrated many tools like Slack or Github.",
+    caseStudyHref: "/case-studies/hemnet",
+    company: "Hemnet",
+    logo: ({ className, ...props }) => (
+      <div
+        className={cn("flex h-8 w-min items-center justify-center", className)}
+      >
+        <HemnetLogo {...props} className="" height={37} />
+      </div>
+    ),
+    picture: {
+      img: hemnetPicture,
+    },
+    text: (
+      <>
+        We expected that moving from Apollo Router to a Hive Gateway would come
+        with a measurable performance cost, but found the Hive Gateway running
+        with less than 30% resource usage than Apollo Router, and it was holding
+        tens of thousands of requests per minute. The resource efficiency
+        reflected strong engineering from the Hive team.
+      </>
+    ),
   },
   {
     caseStudyHref: "/case-studies/wealthsimple",
@@ -73,6 +81,23 @@ const testimonials: Testimonial[] = [
       img: wealthsimplePicture,
     },
     text: "Hive enables Wealthsimple to build flexible and resilient GraphQL APIs. The GitHub integration provides feedback in a format developers are familiar with and conditional breaking changes enable us to focus our discussion on schema design rather than maintenance. Hive empowers us to confidently evolve our schemas by ensuring seamless API updates, detecting potential breaking changes, and guiding developers.",
+  },
+  {
+    company: "nacelle",
+    logo: NacelleLogo,
+    picture: { img: nacellePicture },
+    text: "Our migration from Apollo GraphOS to Hive was incredibly straightforward. In less than a month, we had about 20 subgraphs running on Hive in production. The process was smooth, and the Hive team's friendly demeanor made it even more pleasant. Although we haven't needed direct assistance with our implementation, their openness to feedback and generally nice attitude has fostered a sense of collaboration and partnership.",
+    // data: [
+    //   { numbers: '65M+', description: 'daily events processed' },
+    //   { numbers: '40%', description: 'more resource efficient' },
+    // ],
+    // caseStudyHref: ""
+  },
+  {
+    company: "Karrot",
+    logo: KarrotLogo,
+    picture: { img: karrotPicture },
+    text: "We use Hive as schema registry and monitoring tool. As a schema registry, we can publish GraphQL Schema with decoupled any application code. As a monitoring tool, we can find useful metrics. For example operation latency, usage of deprecated field. The great thing about GraphQL Hive is that it is easy to use, we have already integrated many tools like Slack or Github.",
   },
   {
     company: "Prodigy",

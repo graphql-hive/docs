@@ -1,9 +1,15 @@
-import { SoundYXZLogo, ToastLogo, WealthsimpleLogo } from "../company-logos";
+import {
+  HemnetLogo,
+  SoundYXZLogo,
+  ToastLogo,
+  WealthsimpleLogo,
+} from "../company-logos";
 
 /**
  * Take note that these logos may have different dimensions than logos used elsewhere.
  */
 export const companyLogos = {
+  hemnet: <HemnetLogo height={64} width={212} />,
   "sound-xyz": <SoundYXZLogo height={64} width={193} />,
   toast: <ToastLogo height={64} width={158} />,
   wealthsimple: <WealthsimpleLogo height={64} width={212} />,

@@ -1,7 +1,9 @@
+import { Anchor } from "@hive/design-system";
 import { cn } from "@hive/design-system/cn";
 
 import {
   AligentLogo,
+  HemnetLogo,
   KarrotLogo,
   LinktreeLogo,
   MeetupLogo,
@@ -20,6 +22,9 @@ export function TrustedBySection(props: React.HTMLAttributes<HTMLElement>) {
         <KarrotLogo height={28} title="Karrot" />
         <AligentLogo height={32} title="Aligent" />
         <SoundYXZLogo height={32} title="SoundXYZ" />
+        <Anchor href="/case-studies/hemnet">
+          <HemnetLogo height={32} title="Hemnet" />
+        </Anchor>
       </div>
     </div>
   );
