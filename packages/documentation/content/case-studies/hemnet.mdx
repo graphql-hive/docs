@@ -1,13 +1,7 @@
 ---
 title: "How Hemnet Migrated Its GraphQL Backend Without Anyone Noticing"
 excerpt:
-  "Hemnet is Sweden’s largest property platform, serving millions of users who browse, save, and
-  search through real estate listings every day. Behind the scenes, a GraphQL API handles the bulk
-  of these interactions, powering everything from listing pages and search results to user accounts
-  and saved properties. For years, this API ran on a monolithic GraphQL layer built on top of a
-  Rails stack with PostgreSQL. As the platform grew, so did the pain points, particularly the
-  difficulty of splitting concerns into smaller, independently maintainable chunks. But how do you
-  introduce separation into a backend that was designed to operate as a single entity?"
+  "Hemnet is Sweden’s largest property platform, serving millions of users who browse, save, and search through real estate listings every day. Behind the scenes, a GraphQL API handles the bulk of these interactions, powering everything from listing pages and search results to user accounts and saved properties."
 category: Real Estate
 date: 2026-03-19
 canonical: https://career.hemnet.se/posts/how-hemnet-migrated-its-graphql-backend-without-anyone-noticing
@@ -140,7 +134,7 @@ under Hive Gateway.
 The single biggest concern going into this migration was latency. Adding any network layer to a
 production request path is a risk, especially for a platform where page load times directly affect
 user engagement and, ultimately, real estate transactions. **We expected that moving from a compiled
-Rust-based router to a [Node.js](http://Node.js)\-based one with Hive would come with a measurable
+Rust-based router to a [Node.js](https://nodejs.org/)\-based one with Hive would come with a measurable
 performance cost. Oh\! We were wrong.**
 
 ### Resource Usage and Scale
@@ -156,14 +150,14 @@ a request hovered well below the 100ms mark, and this included the full round tr
 planning, executing against the monolithic schema, and returning the response.
 
 This was a particularly notable finding because we had explicitly discussed that if the
-[**Node.js**](http://Node.js)**\-based** gateway proved too slow, we could fall back to the Apollo
+[**Node.js**](https://nodejs.org/)**\-based** gateway proved too slow, we could fall back to the Apollo
 Router or explore Hive’s Rust-based query planner. **In practice, neither was necessary**. We also
 noted that with the **Rust-based query planner feature from Hive**, there was potential to reduce
 the average response time even further below the 60ms mark, but this optimization was not yet
 critical enough to prioritize. We might still do it in the future.
 
 **Beyond latency, the resource footprint was another pleasant surprise.** We expected the
-[Node.js](http://Node.js) gateway to consume significantly more CPU and memory since it's more
+[Node.js](https://nodejs.org/) gateway to consume significantly more CPU and memory since it's more
 resource-intensive than a Rust-based one. Instead, we found the **Hive Gateway running with less
 than 30% resource usage than Apollo Router**, and it was holding **tens of** **thousands of requests
 per minute**. The resource efficiency reflected strong engineering from the Hive team. The gateway
