@@ -33,7 +33,9 @@ export const Route = createFileRoute("/_landing/case-studies/$")({
   head: seo(({ match, params }) => {
     const slug = params["_splat"] ?? "";
     const entry = getCaseStudyBySlug(slug);
+
     if (!entry) return null;
+
     return {
       breadcrumbs: [{ name: "Case Studies", pathname: "/case-studies" }],
       description: entry.frontMatter.excerpt ?? "",
