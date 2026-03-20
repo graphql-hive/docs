@@ -18,16 +18,6 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
-  html:has([data-docs]) {
-    scroll-behavior: auto;
-  }
-}
-
 :root {
   --nextra-primary-hue: 164deg;
   --nextra-primary-saturation: 70%;
