@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { appPath, appPathPattern } from "./paths";
 
-test.describe("Landing Page User Journeys", () => {
+test.describe("user journeys", () => {
   test("new visitor explores Hive and decides to sign up", async ({
     page,
     isMobile,
@@ -96,46 +96,46 @@ test.describe("Landing Page User Journeys", () => {
     // After clicking, a region (panel) should become visible
     await expect(faqSection.getByRole("region").first()).toBeVisible();
   });
+});
 
-  test("testimonials section shows company tabs", async ({ page }) => {
-    await page.goto(appPath("/"));
-
-    const tabLists = page.getByRole("tablist");
-    const testimonialTabs = tabLists.nth(1);
-    await expect(testimonialTabs).toBeAttached();
-    await testimonialTabs.scrollIntoViewIfNeeded();
-
-    const tabs = testimonialTabs.getByRole("tab");
-    await expect(tabs.first()).toBeVisible();
-    expect(await tabs.count()).toBeGreaterThan(0);
+test("visual regression", async ({ page }) => {
+  await page.goto(appPath("/"), { waitUntil: "networkidle" });
+  await expect(page).toHaveScreenshot("landing-page.png", {
+    fullPage: true,
+    maxDiffPixelRatio: 0.05,
   });
+});
 
-  test("visual regression", async ({ page }) => {
-    await page.goto(appPath("/"), { waitUntil: "networkidle" });
-    await expect(page).toHaveScreenshot("landing-page.png", {
-      fullPage: true,
-      maxDiffPixelRatio: 0.05,
+test("testimonials section shows company tabs", async ({ page }) => {
+  await page.goto(appPath("/"));
+
+  const tabLists = page.getByRole("tablist");
+  const testimonialTabs = tabLists.nth(1);
+  await expect(testimonialTabs).toBeAttached();
+  await testimonialTabs.scrollIntoViewIfNeeded();
+
+  const tabs = testimonialTabs.getByRole("tab");
+  await expect(tabs.first()).toBeVisible();
+  expect(await tabs.count()).toBeGreaterThan(0);
+});
+
+test("navigation menu is accessible", async ({ page, isMobile }) => {
+  await page.goto(appPath("/"));
+
+  if (isMobile) {
+    // On mobile, the full nav is hidden — verify the compact top bar is present
+    const searchButton = page
+      .getByRole("button", { name: "Search documentation" })
+      .first();
+    await expect(searchButton).toBeVisible();
+
+    const sidebarButton = page.getByRole("button", {
+      name: "Open Sidebar",
     });
-  });
-
-  test("navigation menu is accessible", async ({ page, isMobile }) => {
-    await page.goto(appPath("/"));
-
-    if (isMobile) {
-      // On mobile, the full nav is hidden — verify the compact top bar is present
-      const searchButton = page
-        .getByRole("button", { name: "Search documentation" })
-        .first();
-      await expect(searchButton).toBeVisible();
-
-      const sidebarButton = page.getByRole("button", {
-        name: "Open Sidebar",
-      });
-      await expect(sidebarButton).toBeVisible();
-    } else {
-      const nav = page.getByRole("navigation", { name: "Navigation Menu" });
-      await expect(nav).toBeVisible();
-      await expect(nav.getByRole("link", { name: /pricing/i })).toBeVisible();
-    }
-  });
+    await expect(sidebarButton).toBeVisible();
+  } else {
+    const nav = page.getByRole("navigation", { name: "Navigation Menu" });
+    await expect(nav).toBeVisible();
+    await expect(nav.getByRole("link", { name: /pricing/i })).toBeVisible();
+  }
 });
