@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@hive/design-system/cn";
 import {
   ScrollProvider,
   TOCItemType,
@@ -72,7 +73,7 @@ function DocsTocItem({ item }: { item: TOCItemType }) {
 
   return (
     <a
-      className={cx(
+      className={cn(
         "prose py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere first:pt-0 last:pb-0 data-[active=true]:text-fd-primary",
         item.depth <= 2 && "ps-3",
         item.depth === 3 && "ps-6",
@@ -87,11 +88,6 @@ function DocsTocItem({ item }: { item: TOCItemType }) {
   );
 }
 
-// TODO: Use `cn` instead.
-function cx(...parts: (false | string | null | undefined)[]) {
-  return parts.filter(Boolean).join(" ");
-}
-
 function TOCScrollArea({
   children,
   className,
@@ -103,7 +99,7 @@ function TOCScrollArea({
 
   return (
     <div
-      className={cx(
+      className={cn(
         "relative min-h-0 text-sm ms-px overflow-auto [scrollbar-width:none] mask-[linear-gradient(to_bottom,transparent,white_16px,white_calc(100%-16px),transparent)] py-3",
         className,
       )}
