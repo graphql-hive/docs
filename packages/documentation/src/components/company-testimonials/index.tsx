@@ -263,7 +263,7 @@ export function CompanyTestimonialsSection({
                     )}
                     {caseStudyHref && (
                       <CallToAction
-                        className="absolute bottom-0 w-full md:w-fit"
+                        className="absolute bottom-0 w-full max-sm:hidden md:w-fit"
                         href={caseStudyHref}
                         variant="primary"
                       >
