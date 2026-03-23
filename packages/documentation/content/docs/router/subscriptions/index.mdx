@@ -6,7 +6,7 @@ import { Callout } from "@hive/design-system/hive-components/callout";
 
 GraphQL subscriptions enable your clients to receive real-time data. This is essential for applications that need live updates - like notifications, live chat, stock tickers, collaborative editing, or IoT dashboards.
 
-Hive Router provides full support for federated subscriptions out of the box, with no additional configuration required. It works as a drop-in replacement for other federation routers, making it easy to add real-time capabilities to your federated GraphQL architecture.
+Hive Router provides full support for federated subscriptions out of the box. It works as a drop-in replacement for other federation routers, making it easy to add real-time capabilities to your federated GraphQL architecture.
 
 ## How Subscriptions Work
 
@@ -85,8 +85,35 @@ Hive Router supports **all** subscriptions protocols in the ecosystem, both for 
 - [WebSockets](/docs/router/subscriptions/websockets) - Implementing the GraphQL over WebSocket protocol from the [GraphQL over WebSocket](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md).
 - [HTTP Callback](/docs/router/subscriptions/http-callback) (⚠️ for subgraphs) - The scalable subscriptions protocol for router-to-subgraph communication implementing [Apollo's HTTP Callback Protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/callback-protocol).
 
-<Callout>
+## Protocol Negotiation
 
-When dealing with HTTP subscriptions, the router automatically determines which protocol to use based on the `Accept` header in the request. When subscribing to subgraphs, the router prefers multipart first, then falls back to SSE.
+For HTTP-based subscriptions (SSE, Incremental Delivery, and Multipart HTTP), the router automatically determines which protocol to use based on the `Accept` header in the client's request:
 
-</Callout>
+| `Accept` header                          | Protocol                                                                          |
+| ---------------------------------------- | --------------------------------------------------------------------------------- |
+| `text/event-stream`                      | [Server-Sent Events (SSE)](/docs/router/subscriptions/sse)                        |
+| `multipart/mixed`                        | [Incremental Delivery over HTTP](/docs/router/subscriptions/incremental-delivery) |
+| `multipart/mixed;subscriptionSpec="1.0"` | [Multipart HTTP](/docs/router/subscriptions/multipart-http)                       |
+
+The protocols used between the router and subgraphs are independent from those used between clients and the router. For example, a client can use SSE while the router communicates with a subgraph over multipart HTTP. When connecting to subgraphs, the router prefers multipart first, then falls back to SSE.
+
+If a client requests a subscription over an unsupported transport, the router returns `406 Not Acceptable`.
+
+## Configuration
+
+Subscriptions are disabled by default. To enable them, set `enabled: true` in the `subscriptions` section of your router configuration:
+
+```yaml
+subscriptions:
+  enabled: true
+```
+
+You can also enable subscriptions using the `SUBSCRIPTIONS_ENABLED` environment variable:
+
+```bash
+SUBSCRIPTIONS_ENABLED=true
+```
+
+Once enabled, all HTTP-based subscription protocols (SSE, Incremental Delivery, and Multipart HTTP) are available automatically with no additional configuration. Protocol selection happens at request time via the `Accept` header.
+
+For WebSocket and HTTP Callback protocols, additional configuration is required. See their respective pages for details.

@@ -2,11 +2,17 @@
 title: Incremental Delivery over HTTP
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
+
+Incremental Delivery over HTTP is a multipart HTTP protocol defined in the [Official GraphQL over HTTP spec RFC](https://github.com/graphql/graphql-over-http/blob/main/rfcs/IncrementalDelivery.md). The router supports it for both client-to-router and router-to-subgraph communication.
+
 ## Subgraphs
 
-TODO: a few remarks and how to enable it in subgraphs
+Subgraphs don't require any special configuration to use Incremental Delivery. When the router connects to a subgraph for a subscription, it will automatically negotiate Incremental Delivery if the subgraph supports it. The router prefers multipart first, then falls back to SSE.
 
 ## Clients
+
+HTTP subscriptions are enabled automatically when [subscriptions are enabled](/docs/router/subscriptions#configuration). No additional configuration is needed to use Incremental Delivery on the client side.
 
 Using incremental delivery requires clients to send requests with the following `Accept` header:
 
@@ -15,6 +21,8 @@ Accept: multipart/mixed
 ```
 
 The router responds with multipart HTTP responses conforming to [the Official GraphQL over HTTP Incremental Delivery over HTTP RFC](https://github.com/graphql/graphql-over-http/blob/main/rfcs/IncrementalDelivery.md).
+
+If an error occurs, the router emits an error event and completes the stream. If the requested subscription transport is not supported, the router returns `406 Not Acceptable`.
 
 ### Try It
 
