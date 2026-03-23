@@ -4,13 +4,9 @@ title: Overview
 
 import { Callout } from "@hive/design-system/hive-components/callout";
 
-GraphQL subscriptions enable your clients to receive real-time data. This is essential for
-applications that need live updates - like notifications, live chat, stock tickers, collaborative
-editing, or IoT dashboards.
+GraphQL subscriptions enable your clients to receive real-time data. This is essential for applications that need live updates - like notifications, live chat, stock tickers, collaborative editing, or IoT dashboards.
 
-Hive Router provides full support for federated subscriptions out of the box, with no additional
-configuration required. It works as a drop-in replacement for other federation routers, making it
-easy to add real-time capabilities to your federated GraphQL architecture.
+Hive Router provides full support for federated subscriptions out of the box, with no additional configuration required. It works as a drop-in replacement for other federation routers, making it easy to add real-time capabilities to your federated GraphQL architecture.
 
 ## How Subscriptions Work
 
@@ -42,48 +38,13 @@ flowchart LR;
   class client secondary;
 ```
 
-Your client executes a subscription operation against Hive Router over HTTP using either Server-Sent
-Events (SSE) or multipart responses. The router then executes the same subscription against
-whichever subgraph defines the requested field - in this case, the Reviews subgraph that provides
-the `reviewAdded` field. The router communicates with subgraphs using the same protocols: SSE or
-multipart.
+Your client executes a subscription operation against Hive Router over HTTP using either Server-Sent Events (SSE) or multipart responses. The router then executes the same subscription against whichever subgraph defines the requested field - in this case, the Reviews subgraph that provides the `reviewAdded` field. The router communicates with subgraphs using the same protocols: SSE or multipart.
 
-When the Reviews subgraph sends new data, the router receives it and forwards it to the client. If
-the subscription includes federated entity fields from other subgraphs - like the `author` field
-that comes from the Users subgraph in this example - the router automatically resolves those fields
-by querying the corresponding subgraphs over HTTP. This allows you to subscribe to data that spans
-multiple subgraphs while maintaining a single subscription connection from your client.
-
-## Supported Protocols
-
-Hive Router supports **all** subscriptions protocols in the ecosystem, both for client-to-router and
-router-to-subgraph communication:
-
-- [Server-Sent Events (SSE)](/docs/router/subscriptions/sse) - A simple, efficient protocol built on
-  standard HTTP
-- [Incremental Delivery over HTTP](/docs/router/subscriptions/incremental-delivery) - From the
-  [Official GraphQL over HTTP spec RFC](https://github.com/graphql/graphql-over-http/blob/main/rfcs/IncrementalDelivery.md)
-- [Multipart HTTP](/docs/router/subscriptions/multipart-http) - Based on
-  [Apollo's Multipart HTTP protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/multipart-protocol)
-
-<Callout type="warning">
-
-[GraphQL over WebSocket](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md) and
-[HTTP Callback (for subgraphs)](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/callback-protocol)
-support is coming soon. We want to ensure they meet our standards for reliability and performance
-before making them generally available.
-
-</Callout>
-
-When dealing with HTTP subscriptions, the router automatically determines which protocol to use
-based on the `Accept` header in the request. When subscribing to subgraphs, the router prefers
-multipart first, then falls back to SSE.
+When the Reviews subgraph sends new data, the router receives it and forwards it to the client. If the subscription includes federated entity fields from other subgraphs - like the `author` field that comes from the Users subgraph in this example - the router automatically resolves those fields by querying the corresponding subgraphs over HTTP. This allows you to subscribe to data that spans multiple subgraphs while maintaining a single subscription connection from your client.
 
 ## Entity Resolution
 
-One of the most powerful features of federated subscriptions is automatic entity resolution. Your
-subscription can include fields from multiple subgraphs, and Hive Router handles all the
-coordination automatically.
+One of the most powerful features of federated subscriptions is automatic entity resolution. Your subscription can include fields from multiple subgraphs, and Hive Router handles all the coordination automatically.
 
 ```graphql
 subscription {
@@ -112,6 +73,20 @@ In this example:
 - The `product` fields are resolved from the **products** subgraph
 - The `author` fields are resolved from the **users** subgraph
 
-Hive Router intelligently determines the optimal way to resolve these entity fields, querying the
-necessary subgraphs as subscription events arrive. This works exactly like entity resolution for
-regular queries - no special configuration or considerations needed.
+Hive Router intelligently determines the optimal way to resolve these entity fields, querying the necessary subgraphs as subscription events arrive. This works exactly like entity resolution for regular queries - no special configuration or considerations needed.
+
+## Supported Protocols
+
+Hive Router supports **all** subscriptions protocols in the ecosystem, both for client-to-router and router-to-subgraph communication:
+
+- [Server-Sent Events (SSE)](/docs/router/subscriptions/sse) - A simple, efficient protocol built on standard HTTP
+- [Incremental Delivery over HTTP](/docs/router/subscriptions/incremental-delivery) - From the [Official GraphQL over HTTP spec RFC](https://github.com/graphql/graphql-over-http/blob/main/rfcs/IncrementalDelivery.md)
+- [Multipart HTTP](/docs/router/subscriptions/multipart-http) - Based on [Apollo's Multipart HTTP protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/multipart-protocol)
+- [WebSockets](/docs/router/subscriptions/websockets) - Implementing the GraphQL over WebSocket protocol from the [GraphQL over WebSocket](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md).
+- [HTTP Callback](/docs/router/subscriptions/http-callback) (⚠️ for subgraphs) - The scalable subscriptions protocol for router-to-subgraph communication implementing [Apollo's HTTP Callback Protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/callback-protocol).
+
+<Callout>
+
+When dealing with HTTP subscriptions, the router automatically determines which protocol to use based on the `Accept` header in the request. When subscribing to subgraphs, the router prefers multipart first, then falls back to SSE.
+
+</Callout>

@@ -8,8 +8,7 @@ To use multipart responses, clients should send requests with the following `Acc
 Accept: multipart/mixed;subscriptionSpec=1.0
 ```
 
-The router will respond with multipart HTTP responses conforming to
-[Apollo's Multipart HTTP protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/multipart-protocol).
+The router will respond with multipart HTTP responses conforming to [Apollo's Multipart HTTP protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/multipart-protocol).
 
 ### Try It
 
@@ -32,8 +31,7 @@ curl 'http://localhost:4000/graphql' \
   }'
 ```
 
-This command creates an HTTP multipart request and keeps an open connection that receives new
-subscription data in response "chunks":
+This command creates an HTTP multipart request and keeps an open connection that receives new subscription data in response "chunks":
 
 ```text
 --graphql
@@ -55,13 +53,11 @@ content-type: application/json
 --graphql--
 ```
 
-This example subscription emits three events and then closes the connection. Notice how the
-`product` and `author` fields are automatically resolved from their respective subgraphs.
+This example subscription emits three events and then closes the connection. Notice how the `product` and `author` fields are automatically resolved from their respective subgraphs.
 
 ### Apollo Client
 
-The required headers are automatically added by Apollo Client.
-[Multipart subscriptions are supported out-of-the-box.](https://www.apollographql.com/docs/react/data/subscriptions#subscriptions-via-multipart-http)
+The required headers are automatically added by Apollo Client. [Multipart subscriptions are supported out-of-the-box.](https://www.apollographql.com/docs/react/data/subscriptions#subscriptions-via-multipart-http)
 
 ```sh npm2yarn
 npm install @apollo/client graphql rxjs
@@ -99,8 +95,8 @@ client
 
 ### Relay
 
-We recommend using [Incremental Delivery over HTTP with Relay instead](#relay-1).
+We recommend using [Incremental Delivery over HTTP with Relay instead](#relay).
 
 ### urql
 
-We recommend using [Incremental Delivery over HTTP with urql instead](#urql-1).
+We recommend using [Incremental Delivery over HTTP with urql instead](#urql).

@@ -8,9 +8,7 @@ To use SSE, clients should send requests with the following `Accept` header:
 Accept: text/event-stream
 ```
 
-The router will respond with a stream of events implementing
-[the "distinct subscriptions mode" of the GraphQL over SSE spec](https://github.com/enisdenjo/graphql-sse/blob/master/PROTOCOL.md#distinct-connections-mode)
-.
+The router will respond with a stream of events implementing [the "distinct subscriptions mode" of the GraphQL over SSE spec](https://github.com/enisdenjo/graphql-sse/blob/master/PROTOCOL.md#distinct-connections-mode) .
 
 ### Try It
 
@@ -33,8 +31,7 @@ curl 'http://localhost:4000/graphql' \
   }'
 ```
 
-This command creates an SSE connection and keeps it open to receive new subscription data as
-server-sent events:
+This command creates an SSE connection and keeps it open to receive new subscription data as server-sent events:
 
 ```text
 event: next
@@ -94,16 +91,13 @@ source.addEventListener("complete", () => {
 
 ### graphql-sse
 
-We highly recommend using [`graphql-sse`](https://the-guild.dev/graphql/sse), the zero-dependency,
-HTTP/1 safe, simple, GraphQL over Server-Sent Events spec client library.
+We highly recommend using [`graphql-sse`](https://the-guild.dev/graphql/sse), the zero-dependency, HTTP/1 safe, simple, GraphQL over Server-Sent Events spec client library.
 
-It offers reliable handling of connection management, message parsing, and error handling, as well
-as silent retries and exponential backoff for improved resilience.
+It offers reliable handling of connection management, message parsing, and error handling, as well as silent retries and exponential backoff for improved resilience.
 
 #### Apollo Client
 
-Please advise the
-[Apollo Client integration recipe](https://the-guild.dev/graphql/sse/recipes#with-apollo).
+Please advise the [Apollo Client integration recipe](https://the-guild.dev/graphql/sse/recipes#with-apollo).
 
 #### Relay
 
@@ -115,7 +109,6 @@ Please advise the [urql integration recipe](https://the-guild.dev/graphql/sse/re
 
 <Callout type="tip">
 
-urql also supports SSE out of the box! Just make sure to
-[enable subscriptions over fetch](https://nearform.com/open-source/urql/docs/advanced/subscriptions/#using-fetch-for-subscriptions).
+urql also supports SSE out of the box! Just make sure to [enable subscriptions over fetch](https://nearform.com/open-source/urql/docs/advanced/subscriptions/#using-fetch-for-subscriptions).
 
 </Callout>
