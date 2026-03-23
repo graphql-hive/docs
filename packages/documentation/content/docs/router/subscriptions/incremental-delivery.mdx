@@ -1,0 +1,99 @@
+---
+title: Incremental Delivery over HTTP
+---
+
+Using incremental delivery requires clients to send requests with the following `Accept` header:
+
+```text
+Accept: multipart/mixed
+```
+
+The router responds with multipart HTTP responses conforming to
+[the Official GraphQL over HTTP Incremental Delivery over HTTP RFC](https://github.com/graphql/graphql-over-http/blob/main/rfcs/IncrementalDelivery.md).
+
+### Apollo Client
+
+<Callout type="info">
+
+Please instead advise the [multipart HTTP example](#apollo-client-2) since Apollo Client supports
+multipart HTTP out-of-the-box.
+
+</Callout>
+
+### Relay
+
+[`meros`](https://github.com/maraisr/meros) is a fast utility that makes reading multipart responses
+simple. It works in both the browser and Node.js.
+
+Using it with Relay is quite straightforward, here's an example setup:
+
+```sh npm2yarn
+npm install meros
+```
+
+```ts
+import { meros } from "meros/browser";
+import {
+  GraphQLResponse,
+  Network,
+  Observable,
+  RequestParameters,
+  Variables,
+} from "relay-runtime";
+
+// Supports both queries/mutations and subscriptions.
+function fetchOrSubscribe(operation: RequestParameters, variables: Variables) {
+  return Observable.create<GraphQLResponse>((sink) => {
+    const ctrl = new AbortController();
+
+    (async () => {
+      const parts = await fetch("http://localhost:4000/graphql", {
+        signal: ctrl.signal,
+        method: "POST",
+        body: JSON.stringify({
+          query: operation.text,
+          variables,
+        }),
+        headers: {
+          "content-type": "application/json",
+          accept: "application/json, multipart/mixed",
+        },
+      }).then(meros);
+
+      if (parts instanceof Response) {
+        // query/mutation
+        return parts.json();
+      }
+
+      // subscription
+      for await (const part of parts) {
+        sink.next(part);
+      }
+    })()
+      .then(() => sink.complete())
+      .catch((error) => sink.error(error));
+
+    return () => ctrl.abort();
+  });
+}
+
+export const network = Network.create(fetchOrSubscribe, fetchOrSubscribe);
+```
+
+<Callout type="tip">
+
+Alternatively, you can also use
+[`fetch-multipart-graphql`](https://github.com/relay-tools/fetch-multipart-graphql) for Relay
+clients to add support for incremental delivery over HTTP. It's a library maintained by Relay
+Tools - community-built tools for working with Relay.
+
+</Callout>
+
+### urql
+
+<Callout type="info">
+
+urql supports incremental delivery over HTTP out of the box! Just make sure to
+[enable subscriptions over fetch](https://nearform.com/open-source/urql/docs/advanced/subscriptions/#using-fetch-for-subscriptions).
+
+</Callout>
