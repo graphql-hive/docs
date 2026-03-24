@@ -1,5 +1,5 @@
 diff --git a/dist/breadcrumb.js b/dist/breadcrumb.js
-index ec6ab6043fce49a5143ee6120c2789f3fb3cd917..0355942cbf956a84cf44a63db1fd9540fd494276 100644
+index ec6ab6043..0355942cb 100644
 --- a/dist/breadcrumb.js
 +++ b/dist/breadcrumb.js
 @@ -26,8 +26,14 @@ function getBreadcrumbItemsFromPath(tree, path, options) {
@@ -29,3 +29,101 @@ index ec6ab6043fce49a5143ee6120c2789f3fb3cd917..0355942cbf956a84cf44a63db1fd9540
  	return items;
  }
  /**
+diff --git a/dist/toc.js b/dist/toc.js
+index 652f48b53..8d9bbc547 100644
+--- a/dist/toc.js
++++ b/dist/toc.js
+@@ -13,6 +13,20 @@ function mergeRefs(...refs) {
+ 		});
+ 	};
+ }
++function hasLayoutBox(element) {
++	return element.getClientRects().length > 0;
++}
++function resolveWatchElements(watch) {
++	const resolved = [];
++	for (const id of watch) {
++		const element = document.getElementById(id);
++		if (element) resolved.push({
++			id,
++			element
++		});
++	}
++	return resolved;
++}
+ 
+ //#endregion
+ //#region src/toc.tsx
+@@ -84,29 +98,30 @@ function TOCItem({ ref, onActiveChange = () => null, ...props }) {
+ */
+ function useAnchorObserver(watch, single) {
+ 	const observerRef = useRef(null);
++	const elementsRef = useRef([]);
+ 	const [activeAnchor, setActiveAnchor] = useState(() => []);
+ 	const stateRef = useRef(null);
+ 	const onChange = useEffectEvent((entries) => {
+ 		stateRef.current ??= { visible: /* @__PURE__ */ new Set() };
+ 		const state = stateRef.current;
+-		for (const entry of entries) if (entry.isIntersecting) state.visible.add(entry.target.id);
++		const elements = elementsRef.current;
++		for (const entry of entries) if (entry.isIntersecting && hasLayoutBox(entry.target)) state.visible.add(entry.target.id);
+ 		else state.visible.delete(entry.target.id);
+ 		if (state.visible.size === 0) {
+ 			const viewTop = entries.length > 0 ? entries[0]?.rootBounds?.top ?? 0 : 0;
+ 			let fallback;
+-			let min = -1;
+-			for (const id of watch) {
+-				const element = document.getElementById(id);
+-				if (!element) continue;
+-				const d = Math.abs(viewTop - element.getBoundingClientRect().top);
+-				if (min === -1 || d < min) {
+-					fallback = element;
+-					min = d;
++			for (const item of elements) {
++				const element = item.element;
++				if (!hasLayoutBox(element)) continue;
++				if (element.getBoundingClientRect().top <= viewTop) fallback = item;
++				else {
++					fallback ??= item;
++					break;
+ 				}
+ 			}
+ 			setActiveAnchor(fallback ? [fallback.id] : []);
+ 		} else {
+-			const items = watch.filter((item) => state.visible.has(item));
++			const items = elements.flatMap((item) => state.visible.has(item.id) && hasLayoutBox(item.element) ? [item.id] : []);
+ 			setActiveAnchor(single ? items.slice(0, 1) : items);
+ 		}
+ 	});
+@@ -124,15 +139,25 @@ function useAnchorObserver(watch, single) {
+ 	useEffect(() => {
+ 		const observer = observerRef.current;
+ 		if (!observer) return;
+-		const elements = watch.flatMap((heading) => document.getElementById(heading) ?? []);
+-		for (const element of elements) observer.observe(element);
++		const elements = resolveWatchElements(watch);
++		elementsRef.current = elements;
++		stateRef.current = {
++			visible: new Set(elements.flatMap((item) => stateRef.current?.visible.has(item.id) ? [item.id] : []))
++		};
++		setActiveAnchor((current) => {
++			const items = elements.flatMap((item) => stateRef.current.visible.has(item.id) && hasLayoutBox(item.element) ? [item.id] : []);
++			const next = single ? items.slice(0, 1) : items;
++			if (current.length === next.length && current.every((item, index) => item === next[index])) return current;
++			return next;
++		});
++		for (const item of elements) observer.observe(item.element);
+ 		return () => {
+-			for (const element of elements) observer.unobserve(element);
++			for (const item of elements) observer.unobserve(item.element);
+ 		};
+-	}, [watch]);
++	}, [single, watch]);
+ 	return activeAnchor;
+ }
+ 
+ //#endregion
+ export { AnchorProvider, ScrollProvider, TOCItem, useActiveAnchor, useActiveAnchors };
+-//# sourceMappingURL=toc.js.map
+\ No newline at end of file
++//# sourceMappingURL=toc.js.map
