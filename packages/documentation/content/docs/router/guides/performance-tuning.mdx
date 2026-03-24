@@ -2,6 +2,8 @@
 title: "Performance Tuning & Traffic Shaping"
 ---
 
+import { Tabs } from "@hive/design-system/tabs";
+
 Hive Router is built for performance right out of the box, but every production setup is different.
 Tuning the router's traffic management settings to match your specific workload and subgraph
 capabilities can unlock significantly better throughput and reliability.
@@ -121,6 +123,10 @@ Two requests are considered identical when the following all match:
 By default all headers are included in the fingerprint, so requests with different `Authorization`
 or `Cookie` headers are **not** deduplicated with each other. You can narrow this down:
 
+<Tabs items={["all (default)", "none", "include"]}>
+
+<Tabs.Tab>
+
 ```yaml
 traffic_shaping:
   router:
@@ -129,6 +135,10 @@ traffic_shaping:
       headers: all # default — include every header
 ```
 
+</Tabs.Tab>
+
+<Tabs.Tab>
+
 ```yaml
 traffic_shaping:
   router:
@@ -136,6 +146,10 @@ traffic_shaping:
       enabled: true
       headers: none # ignore all headers (requests from any user may be deduplicated)
 ```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
 
 ```yaml
 traffic_shaping:
@@ -147,6 +161,10 @@ traffic_shaping:
           - authorization
           - cookie
 ```
+
+</Tabs.Tab>
+
+</Tabs>
 
 **When to enable it:**
 

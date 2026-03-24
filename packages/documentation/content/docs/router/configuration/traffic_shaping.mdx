@@ -2,6 +2,8 @@
 title: "traffic_shaping"
 ---
 
+import { Tabs } from "@hive/design-system/tabs";
+
 The `traffic_shaping` configuration object provides control over how the Hive Router manages
 connections and executes requests to your subgraph services.
 
@@ -62,6 +64,10 @@ case-insensitive and validated as standard HTTP header names.
 | `none` | No headers are included — requests from different users may share an execution. |
 | `{ include: [...] }` | Only the listed header names are included. |
 
+<Tabs items={["all (default)", "none", "include"]}>
+
+<Tabs.Tab>
+
 ```yaml
 traffic_shaping:
   router:
@@ -70,6 +76,10 @@ traffic_shaping:
       headers: all
 ```
 
+</Tabs.Tab>
+
+<Tabs.Tab>
+
 ```yaml
 traffic_shaping:
   router:
@@ -77,6 +87,10 @@ traffic_shaping:
       enabled: true
       headers: none
 ```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
 
 ```yaml
 traffic_shaping:
@@ -88,6 +102,10 @@ traffic_shaping:
           - authorization
           - cookie
 ```
+
+</Tabs.Tab>
+
+</Tabs>
 
 ## Subgraph Specific Options
 
