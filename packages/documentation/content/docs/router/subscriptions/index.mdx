@@ -3,9 +3,10 @@ title: Overview
 description: How Hive Router handles federated GraphQL subscriptions, supported protocols, protocol negotiation, and configuration.
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout";
-import { ArrowIcon } from "../../../../src/components/arrow-icon.tsx";
 import { CallToAction } from "@hive/design-system/call-to-action";
+import { Callout } from "@hive/design-system/hive-components/callout";
+
+import { ArrowIcon } from "../../../../src/components/arrow-icon.tsx";
 
 GraphQL subscriptions enable your clients to receive real-time data. This is essential for applications that need live updates - like notifications, live chat, stock tickers, collaborative editing, or IoT dashboards.
 
@@ -155,7 +156,7 @@ Instead of keeping a long-lived connection open to a subgraph, the router regist
 
 ## Protocol Negotiation
 
-For HTTP-based subscriptions (SSE, Incremental Delivery, and Multipart HTTP), the router automatically determines which protocol to use based on the `Accept` header in the client's request:
+HTTP-based subscription protocols (SSE, Incremental Delivery, and Multipart HTTP) are not individually activated or configured. Once subscriptions are enabled, all three are available simultaneously - the router determines which one to use for each request based on the client's `Accept` header:
 
 | `Accept` header                          | Protocol                                                                          |
 | ---------------------------------------- | --------------------------------------------------------------------------------- |
@@ -181,7 +182,3 @@ You can also enable subscriptions using the `SUBSCRIPTIONS_ENABLED` environment 
 ```bash
 SUBSCRIPTIONS_ENABLED=true
 ```
-
-Once enabled, all HTTP-based subscription protocols (SSE, Incremental Delivery, and Multipart HTTP) are available automatically with no additional configuration. Protocol selection happens at request time via the `Accept` header.
-
-For WebSocket and HTTP Callback protocols, additional configuration is required. See their respective pages for details.

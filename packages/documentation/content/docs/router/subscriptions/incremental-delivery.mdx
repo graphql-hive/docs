@@ -11,9 +11,13 @@ Subgraphs don't require any special configuration to use Incremental Delivery. W
 
 ## Clients
 
-HTTP subscriptions are enabled automatically when [subscriptions are enabled](/docs/router/subscriptions#configuration). No additional configuration is needed to use Incremental Delivery on the client side.
+<Callout type="tip">
 
-Using incremental delivery requires clients to send requests with the following `Accept` header:
+Incremental Delivery is not a mode you activate or configure on the router. Once [subscriptions are enabled](/docs/router/subscriptions#configuration), SSE, Incremental Delivery, and Multipart HTTP are all available simultaneously. The router negotiates the protocol per request based on the client's `Accept` header - see [Protocol Negotiation](/docs/router/subscriptions#protocol-negotiation).
+
+</Callout>
+
+To use Incremental Delivery, send requests with the following `Accept` header:
 
 ```text
 Accept: multipart/mixed

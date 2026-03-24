@@ -3,15 +3,21 @@ title: Multipart HTTP
 description: Use Apollo's Multipart HTTP protocol for GraphQL subscriptions with Hive Router, for both client-to-router and router-to-subgraph communication.
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
+
 ## Subgraphs
 
 Subgraphs don't require any special configuration to use multipart HTTP. When the router connects to a subgraph for a subscription, it will automatically negotiate multipart HTTP if the subgraph supports it, as it's the preferred protocol.
 
 ## Clients
 
-HTTP subscriptions are enabled automatically when [subscriptions are enabled](/docs/router/subscriptions#configuration). No additional configuration is needed to use multipart HTTP on the client side.
+<Callout type="tip">
 
-To use multipart responses, clients should send requests with the following `Accept` header:
+Multipart HTTP is not a mode you activate or configure on the router. Once [subscriptions are enabled](/docs/router/subscriptions#configuration), SSE, Incremental Delivery, and Multipart HTTP are all available simultaneously. The router negotiates the protocol per request based on the client's `Accept` header - see [Protocol Negotiation](/docs/router/subscriptions#protocol-negotiation).
+
+</Callout>
+
+To use Multipart HTTP, send requests with the following `Accept` header:
 
 ```text
 Accept: multipart/mixed;subscriptionSpec=1.0
