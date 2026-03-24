@@ -3,6 +3,8 @@ title: Overview
 description: How Hive Router handles federated GraphQL subscriptions, supported protocols, protocol negotiation, and configuration.
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
+
 GraphQL subscriptions enable your clients to receive real-time data. This is essential for applications that need live updates - like notifications, live chat, stock tickers, collaborative editing, or IoT dashboards.
 
 Hive Router provides full support for federated subscriptions out of the box. It works as a drop-in replacement for other federation routers, making it easy to add real-time capabilities to your federated GraphQL architecture.
@@ -80,23 +82,39 @@ Hive Router supports **all** subscriptions protocols in the ecosystem, both for 
 
 ### Server-Sent Events (SSE)
 
-A simple, efficient protocol built on standard HTTP that streams events from the router to the client over a persistent connection. [Learn more](/docs/router/subscriptions/sse)
+A simple, unidirectional protocol built on standard HTTP where the server streams events to the client over a persistent connection. Clients send a regular HTTP request with `Accept: text/event-stream` and the router keeps the response open, responding with a stream of events implementing the ["distinct connections mode" of the GraphQL over SSE spec](https://github.com/enisdenjo/graphql-sse/blob/master/PROTOCOL.md#distinct-connections-mode). No special transport library is needed - it works with the browser-native `EventSource` API or any HTTP client.
+
+[Learn more](/docs/router/subscriptions/sse)
 
 ### Incremental Delivery over HTTP
 
-Delivers subscription events as multipart HTTP chunks, conforming to the [Official GraphQL over HTTP spec RFC](https://github.com/graphql/graphql-over-http/blob/main/rfcs/IncrementalDelivery.md). [Learn more](/docs/router/subscriptions/incremental-delivery)
+A multipart HTTP protocol from the [Official GraphQL over HTTP spec RFC](https://github.com/graphql/graphql-over-http/blob/main/rfcs/IncrementalDelivery.md) where each subscription event is delivered as a separate part in a streamed `multipart/mixed` response. Clients send `Accept: multipart/mixed` and the router streams JSON payloads separated by boundary markers.
+
+[Learn more](/docs/router/subscriptions/incremental-delivery)
 
 ### Multipart HTTP
 
-Streams subscription events as multipart HTTP responses, based on [Apollo's Multipart HTTP protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/multipart-protocol). [Learn more](/docs/router/subscriptions/multipart-http)
+[Apollo's Multipart HTTP protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/multipart-protocol) where subscription events are streamed as `multipart/mixed` response chunks with `subscriptionSpec=1.0`. Clients send `Accept: multipart/mixed;subscriptionSpec=1.0` and the router delivers events as boundary-separated JSON payloads. This is the router's preferred protocol when connecting to subgraphs, and it is supported natively by Apollo Client with no extra configuration.
+
+[Learn more](/docs/router/subscriptions/multipart-http)
 
 ### WebSockets
 
-Runs subscriptions over a persistent WebSocket connection, implementing the [GraphQL over WebSocket protocol](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md). [Learn more](/docs/router/subscriptions/websockets)
+A full-duplex transport where clients and the router communicate over a persistent WebSocket connection using the [GraphQL over WebSocket protocol](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md). Unlike HTTP-based protocols, a single WebSocket connection can carry multiple concurrent operations - queries, mutations, and subscriptions alike. Every operation is treated as a synthetic HTTP request so all plugins, authorization, and header propagation apply uniformly. Requires explicit configuration and is disabled by default.
+
+[Learn more](/docs/router/subscriptions/websockets)
 
 ### HTTP Callback
 
-A subgraph-only protocol where the router registers a callback URL and subgraphs push events to it, implementing [Apollo's HTTP Callback Protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/callback-protocol). [Learn more](/docs/router/subscriptions/http-callback)
+<Callout type="info">
+
+Subgraph-only protocol. It controls how Hive Router communicates with subgraphs - not how clients connect to the router.
+
+</Callout>
+
+Instead of keeping a long-lived connection open to a subgraph, the router registers a callback URL with the subgraph over HTTP and the subgraph pushes events to that URL as they become available, as defined in the [Apollo HTTP Callback Protocol spec](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/callback-protocol). This avoids the overhead of maintaining persistent connections per subscription, making it a better fit than WebSockets or HTTP streams at high subscription counts. Subgraphs send periodic heartbeats to confirm the subscription is still alive, and the router can bind the callback endpoint to a dedicated port to isolate subgraph traffic from client traffic.
+
+[Learn more](/docs/router/subscriptions/http-callback)
 
 ## Protocol Negotiation
 
