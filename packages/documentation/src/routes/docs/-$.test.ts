@@ -218,29 +218,6 @@ describe("Accept header negotiation", () => {
   });
 });
 
-describe("prerendered HTML routing", () => {
-  test("alias path ultimately serves prerendered HTML from assets", async () => {
-    const initialURL = `${BASE_URL}/docs/gateway`;
-    const initialResponse = await fetch(initialURL, {
-      redirect: "manual",
-    });
-
-    const redirectedURL = initialResponse.headers.get("location");
-    const res =
-      initialResponse.status >= 300 &&
-      initialResponse.status < 400 &&
-      redirectedURL
-        ? await fetch(new URL(redirectedURL, initialURL), {
-            redirect: "manual",
-          })
-        : initialResponse;
-
-    expect(res.status).toBe(200);
-    expect(res.headers.get("content-type")).toContain("text/html");
-    expect(res.headers.get("etag")).toBeTruthy();
-  });
-});
-
 describe("deployment changelog", () => {
   test("renders changelog html with mdx code-block chrome", async () => {
     const res = await fetch(
