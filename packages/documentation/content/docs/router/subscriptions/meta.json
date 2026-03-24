@@ -1,4 +1,11 @@
 {
   "title": "Subscriptions",
-  "pages": ["index", "sse", "incremental-delivery", "multipart-http", "websockets", "http-callback"]
+  "pages": [
+    "index",
+    "sse",
+    "incremental-delivery",
+    "multipart-http",
+    "websockets",
+    "http-callback"
+  ]
 }
