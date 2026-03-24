@@ -86,9 +86,84 @@ how aggressively the router reuses existing connections versus closing them to f
 
 ## Request Deduplication
 
-The `dedupe_enabled` setting turns on in-flight request deduplication. When multiple identical
-GraphQL operations arrive simultaneously, the router sends only one request to subgraphs and shares
-the response with all waiting clients.
+The router supports two complementary levels of in-flight request deduplication that can be enabled
+independently: **router-level** (new in recent versions) and **subgraph-level**.
+
+### Router-Level Deduplication
+
+Router-level deduplication (`traffic_shaping.router.dedupe`) operates at the entry point of the
+router. When multiple clients send identical GraphQL `query` operations simultaneously, the router
+executes the operation only once and shares the result with all waiting clients — subgraphs receive
+just a single request regardless of how many clients are waiting.
+
+- **Default:** `false` (opt-in)
+
+```yaml
+traffic_shaping:
+  router:
+    dedupe:
+      enabled: true
+```
+
+**Deduplication key**
+
+Two requests are considered identical when the following all match:
+
+- HTTP method and path
+- Normalized operation text (whitespace/comment differences are ignored)
+- GraphQL variables
+- GraphQL extensions
+- Schema checksum (prevents sharing across schema reload transitions)
+- Selected request headers (controlled by the `headers` policy below)
+
+**Header policy**
+
+By default all headers are included in the fingerprint, so requests with different `Authorization`
+or `Cookie` headers are **not** deduplicated with each other. You can narrow this down:
+
+```yaml
+traffic_shaping:
+  router:
+    dedupe:
+      enabled: true
+      headers: all # default — include every header
+```
+
+```yaml
+traffic_shaping:
+  router:
+    dedupe:
+      enabled: true
+      headers: none # ignore all headers (requests from any user may be deduplicated)
+```
+
+```yaml
+traffic_shaping:
+  router:
+    dedupe:
+      enabled: true
+      headers:
+        include: # include only these headers in the fingerprint
+          - authorization
+          - cookie
+```
+
+**When to enable it:**
+
+- Many clients frequently issue the same popular queries (dashboards, landing pages, product
+  listings)
+- You want to reduce overall query execution pressure on your subgraphs under concurrent load
+
+**When you might leave it disabled:**
+
+- All queries are highly personalised and rarely identical
+- You're debugging and want every request to execute independently
+
+### Subgraph-Level Deduplication
+
+The `dedupe_enabled` setting turns on in-flight request deduplication for requests the router makes
+to individual subgraphs. When the router would send multiple identical requests to the same subgraph
+simultaneously, it sends only one and fans the response back to all waiting parallel fetches.
 
 - **Default Value:** `true`
 
