@@ -333,9 +333,9 @@ async function tryServeAsset(
   env: CloudflareEnv,
   context: CloudflareContext,
   requestURL: URL,
-) {
+): Promise<Response | undefined> {
   if (!env.ASSETS) {
-    return;
+    return undefined;
   }
 
   const assetPathname = getAssetPathname({
@@ -345,7 +345,7 @@ async function tryServeAsset(
     pathname: requestURL.pathname,
   });
   if (!assetPathname) {
-    return;
+    return undefined;
   }
 
   const assetURL = new URL(request.url);
@@ -355,12 +355,10 @@ async function tryServeAsset(
   augmentReq(assetRequest, { context, env });
 
   const assetResponse = await env.ASSETS.fetch(assetRequest);
-  if (
-    assetResponse.ok ||
+  return assetResponse.ok ||
     (assetResponse.status >= 300 && assetResponse.status < 400)
-  ) {
-    return assetResponse;
-  }
+    ? assetResponse
+    : undefined;
 }
 
 async function getWebsocketHandler() {
