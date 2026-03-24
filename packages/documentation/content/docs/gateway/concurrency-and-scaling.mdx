@@ -30,7 +30,9 @@ graph TD
   Primary -->|forks| WorkerN["Worker N (HTTP server)"]
 ```
 
-Each worker is a completely independent Node.js process. They do not share memory.
+Each worker is a completely independent Node.js process with its own full HTTP server. They do not
+share memory - every worker holds its own separate copy of all in-memory data such as
+caches, schema, and connection pools.
 
 ## Configuring Forking
 
