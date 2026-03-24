@@ -76,13 +76,27 @@ Hive Router intelligently determines the optimal way to resolve these entity fie
 
 ## Supported Protocols
 
-Hive Router supports **all** subscriptions protocols in the ecosystem, both for client-to-router and router-to-subgraph communication:
+Hive Router supports **all** subscriptions protocols in the ecosystem, both for client-to-router and router-to-subgraph communication.
 
-- [Server-Sent Events (SSE)](/docs/router/subscriptions/sse) - A simple, efficient protocol built on standard HTTP
-- [Incremental Delivery over HTTP](/docs/router/subscriptions/incremental-delivery) - From the [Official GraphQL over HTTP spec RFC](https://github.com/graphql/graphql-over-http/blob/main/rfcs/IncrementalDelivery.md)
-- [Multipart HTTP](/docs/router/subscriptions/multipart-http) - Based on [Apollo's Multipart HTTP protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/multipart-protocol)
-- [WebSockets](/docs/router/subscriptions/websockets) - Implementing the GraphQL over WebSocket protocol from the [GraphQL over WebSocket](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md).
-- [HTTP Callback](/docs/router/subscriptions/http-callback) (⚠️ for subgraphs) - The scalable subscriptions protocol for router-to-subgraph communication implementing [Apollo's HTTP Callback Protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/callback-protocol).
+### Server-Sent Events (SSE)
+
+A simple, efficient protocol built on standard HTTP that streams events from the router to the client over a persistent connection. [Learn more](/docs/router/subscriptions/sse)
+
+### Incremental Delivery over HTTP
+
+Delivers subscription events as multipart HTTP chunks, conforming to the [Official GraphQL over HTTP spec RFC](https://github.com/graphql/graphql-over-http/blob/main/rfcs/IncrementalDelivery.md). [Learn more](/docs/router/subscriptions/incremental-delivery)
+
+### Multipart HTTP
+
+Streams subscription events as multipart HTTP responses, based on [Apollo's Multipart HTTP protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/multipart-protocol). [Learn more](/docs/router/subscriptions/multipart-http)
+
+### WebSockets
+
+Runs subscriptions over a persistent WebSocket connection, implementing the [GraphQL over WebSocket protocol](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md). [Learn more](/docs/router/subscriptions/websockets)
+
+### HTTP Callback
+
+A subgraph-only protocol where the router registers a callback URL and subgraphs push events to it, implementing [Apollo's HTTP Callback Protocol](https://www.apollographql.com/docs/graphos/routing/operations/subscriptions/callback-protocol). [Learn more](/docs/router/subscriptions/http-callback)
 
 ## Protocol Negotiation
 
