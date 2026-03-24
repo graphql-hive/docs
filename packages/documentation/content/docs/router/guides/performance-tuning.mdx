@@ -89,11 +89,11 @@ how aggressively the router reuses existing connections versus closing them to f
 ## Request Deduplication
 
 The router supports two complementary levels of in-flight request deduplication that can be enabled
-independently: **router-level** and **subgraph-level**.
+independently: **inbound** and **outbound**.
 
-### Router-Level Deduplication
+### Inbound Deduplication
 
-Router-level deduplication (`traffic_shaping.router.dedupe`) operates at the entry point of the
+Inbound deduplication (`traffic_shaping.router.dedupe`) operates at the entry point of the
 router. When multiple clients send identical GraphQL `query` operations simultaneously, the router
 executes the operation only once and shares the result with all waiting clients — subgraphs receive
 just a single request regardless of how many clients are waiting.
@@ -177,9 +177,9 @@ traffic_shaping:
 - All queries are highly personalised and rarely identical
 - You're debugging and want every request to execute independently
 
-### Subgraph-Level Deduplication
+### Outbound Deduplication
 
-The `dedupe_enabled` setting turns on in-flight request deduplication for requests the router makes
+Outbound deduplication (`dedupe_enabled`) deduplicates the requests the router makes
 to individual subgraphs. When the router would send multiple identical requests to the same subgraph
 simultaneously, it sends only one and fans the response back to all waiting parallel fetches.
 
