@@ -2,13 +2,6 @@ function isSafeAssetMethod(method: string) {
   return method === "GET" || method === "HEAD";
 }
 
-function hasPathExtension(pathname: string) {
-  const lastSlash = pathname.lastIndexOf("/");
-  const lastSegment =
-    lastSlash === -1 ? pathname : pathname.slice(lastSlash + 1);
-  return lastSegment.includes(".");
-}
-
 function isServerFnPath(pathname: string, baseURL: string) {
   return (
     pathname === "/_serverFn" ||
@@ -28,14 +21,12 @@ function isApiPath(pathname: string, baseURL: string) {
   );
 }
 
-export function getAssetPathname({
+export function shouldTryAssetRequest({
   baseURL,
-  isKnownAsset,
   method,
   pathname,
 }: {
   baseURL: string;
-  isKnownAsset: boolean;
   method: string;
   pathname: string;
 }) {
@@ -44,16 +35,7 @@ export function getAssetPathname({
     isApiPath(pathname, baseURL) ||
     isServerFnPath(pathname, baseURL)
   ) {
-    return;
+    return false;
   }
-
-  if (pathname.endsWith("/")) {
-    return pathname;
-  }
-
-  if (isKnownAsset || hasPathExtension(pathname)) {
-    return pathname;
-  }
-
-  return `${pathname}/index.html`;
+  return true;
 }

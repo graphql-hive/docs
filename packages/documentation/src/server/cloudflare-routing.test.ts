@@ -1,71 +1,75 @@
 import { describe, expect, test } from "bun:test";
 
-import { getAssetPathname } from "./cloudflare-routing";
+import { shouldTryAssetRequest } from "./cloudflare-routing";
 
 const baseURL = "/graphql/hive";
 
-describe("getAssetPathname", () => {
-  test("maps no-slash doc routes to index.html", () => {
+describe("shouldTryAssetRequest", () => {
+  test("tries extensionless doc routes as exact asset requests", () => {
     expect(
-      getAssetPathname({
+      shouldTryAssetRequest({
         baseURL,
-        isKnownAsset: false,
         method: "GET",
         pathname: "/graphql/hive/docs/gateway",
       }),
-    ).toBe("/graphql/hive/docs/gateway/index.html");
+    ).toBe(true);
   });
 
-  test("preserves trailing slash requests for platform canonicalization", () => {
+  test("tries trailing slash requests too", () => {
     expect(
-      getAssetPathname({
+      shouldTryAssetRequest({
         baseURL,
-        isKnownAsset: false,
         method: "GET",
         pathname: "/graphql/hive/docs/gateway/",
       }),
-    ).toBe("/graphql/hive/docs/gateway/");
+    ).toBe(true);
   });
 
-  test("serves generated files with extensions directly", () => {
+  test("tries generated files with extensions directly", () => {
     expect(
-      getAssetPathname({
+      shouldTryAssetRequest({
         baseURL,
-        isKnownAsset: false,
         method: "GET",
         pathname: "/graphql/hive/sitemap.xml",
       }),
-    ).toBe("/graphql/hive/sitemap.xml");
+    ).toBe(true);
   });
 
-  test("serves known public assets directly", () => {
+  test("tries known public assets directly", () => {
     expect(
-      getAssetPathname({
+      shouldTryAssetRequest({
         baseURL,
-        isKnownAsset: true,
-        method: "GET",
-        pathname: "/graphql/hive/assets/app",
+        method: "HEAD",
+        pathname: "/graphql/hive/assets/app.js",
       }),
-    ).toBe("/graphql/hive/assets/app");
+    ).toBe(true);
   });
 
   test("skips api and server function routes", () => {
     expect(
-      getAssetPathname({
+      shouldTryAssetRequest({
         baseURL,
-        isKnownAsset: false,
         method: "GET",
         pathname: "/graphql/hive/api/search",
       }),
-    ).toBeUndefined();
+    ).toBe(false);
 
     expect(
-      getAssetPathname({
+      shouldTryAssetRequest({
         baseURL,
-        isKnownAsset: false,
         method: "GET",
         pathname: "/graphql/hive/_serverFn/test",
       }),
-    ).toBeUndefined();
+    ).toBe(false);
+  });
+
+  test("skips unsafe methods", () => {
+    expect(
+      shouldTryAssetRequest({
+        baseURL,
+        method: "POST",
+        pathname: "/graphql/hive/docs/gateway",
+      }),
+    ).toBe(false);
   });
 });

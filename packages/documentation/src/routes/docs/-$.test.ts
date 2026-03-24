@@ -219,21 +219,20 @@ describe("Accept header negotiation", () => {
 });
 
 describe("prerendered HTML routing", () => {
-  test("alias path ultimately serves prerendered HTML from assets", async () => {
-    const initialURL = `${BASE_URL}/docs/gateway`;
-    const initialResponse = await fetch(initialURL, {
+  test("base-path route serves prerendered HTML without redirect", async () => {
+    const res = await fetch(`${BASE_URL}/graphql/hive/docs/gateway`, {
       redirect: "manual",
     });
 
-    const redirectedURL = initialResponse.headers.get("location");
-    const res =
-      initialResponse.status >= 300 &&
-      initialResponse.status < 400 &&
-      redirectedURL
-        ? await fetch(new URL(redirectedURL, initialURL), {
-            redirect: "manual",
-          })
-        : initialResponse;
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/html");
+    expect(res.headers.get("etag")).toBeTruthy();
+  });
+
+  test("alias route serves prerendered HTML without redirect", async () => {
+    const res = await fetch(`${BASE_URL}/docs/gateway`, {
+      redirect: "manual",
+    });
 
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("text/html");

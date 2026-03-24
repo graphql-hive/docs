@@ -30,5 +30,7 @@ export function getRouter() {
     },
     routeTree,
     scrollRestoration: true,
+    // matches website-router
+    trailingSlash: "never",
   });
 }

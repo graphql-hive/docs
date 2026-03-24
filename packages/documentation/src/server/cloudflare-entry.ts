@@ -5,10 +5,9 @@ import wsAdapter from "crossws/adapters/cloudflare";
 import { useNitroApp, useNitroHooks } from "nitro/app";
 import { runTask } from "nitro/task";
 
-import { isPublicAssetURL } from "#nitro/virtual/public-assets";
 import { scheduledTasks } from "#nitro/virtual/tasks";
 
-import { getAssetPathname } from "./cloudflare-routing";
+import { shouldTryAssetRequest } from "./cloudflare-routing";
 
 type AssetFetcher = {
   fetch(request: Request): Promise<Response>;
@@ -334,31 +333,83 @@ async function tryServeAsset(
   context: CloudflareContext,
   requestURL: URL,
 ): Promise<Response | undefined> {
-  if (!env.ASSETS) {
+  if (
+    !env.ASSETS ||
+    !shouldTryAssetRequest({
+      baseURL,
+      method: request.method,
+      pathname: requestURL.pathname,
+    })
+  ) {
     return undefined;
   }
 
-  const assetPathname = getAssetPathname({
-    baseURL,
-    isKnownAsset: isPublicAssetURL(requestURL.pathname),
-    method: request.method,
-    pathname: requestURL.pathname,
-  });
-  if (!assetPathname) {
+  augmentReq(request, { context, env });
+
+  const assetResponse = await env.ASSETS.fetch(request);
+  if (assetResponse.status === 404) {
     return undefined;
   }
 
-  const assetURL = new URL(request.url);
-  assetURL.pathname = assetPathname;
+  const redirectedAssetResponse = await followTrailingSlashAssetRedirect(
+    assetResponse,
+    request,
+    env,
+    context,
+    requestURL,
+  );
 
-  const assetRequest = new Request(assetURL, request);
-  augmentReq(assetRequest, { context, env });
+  return redirectedAssetResponse || assetResponse;
+}
 
-  const assetResponse = await env.ASSETS.fetch(assetRequest);
-  return assetResponse.ok ||
-    (assetResponse.status >= 300 && assetResponse.status < 400)
-    ? assetResponse
-    : undefined;
+function getTrailingSlashRedirectURL(response: Response, requestURL: URL) {
+  if (
+    requestURL.pathname.endsWith("/") ||
+    response.status < 300 ||
+    response.status >= 400
+  ) {
+    return;
+  }
+
+  const location = response.headers.get(LOCATION_HEADER);
+  if (!location) {
+    return;
+  }
+
+  const redirectedURL = new URL(location, requestURL);
+  if (
+    redirectedURL.origin !== requestURL.origin ||
+    redirectedURL.search !== requestURL.search ||
+    redirectedURL.hash !== requestURL.hash ||
+    redirectedURL.pathname !== `${requestURL.pathname}/`
+  ) {
+    return;
+  }
+
+  return redirectedURL;
+}
+
+async function followTrailingSlashAssetRedirect(
+  response: Response,
+  request: Request,
+  env: CloudflareEnv,
+  context: CloudflareContext,
+  requestURL: URL,
+) {
+  const redirectedURL = getTrailingSlashRedirectURL(response, requestURL);
+  if (!redirectedURL) {
+    return;
+  }
+
+  const redirectedRequest = new Request(redirectedURL, request);
+  augmentReq(redirectedRequest, { context, env });
+
+  const redirectedResponse = await env.ASSETS?.fetch(redirectedRequest);
+  if (!redirectedResponse || redirectedResponse.status === 404) {
+    return;
+  }
+
+  return redirectedResponse;
 }
 
 async function getWebsocketHandler() {
