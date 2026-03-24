@@ -87,6 +87,7 @@ export default defineConfig({
         enabled: true,
         prerender: {
           crawlLinks: true,
+          enabled: true,
         },
       },
     }),
