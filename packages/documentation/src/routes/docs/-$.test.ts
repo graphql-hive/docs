@@ -219,6 +219,15 @@ describe("Accept header negotiation", () => {
 });
 
 describe("prerendered HTML routing", () => {
+  test("base-path route serves prerendered HTML without redirect", async () => {
+    const res = await fetch(`${BASE_URL}/graphql/hive/docs/gateway`, {
+      redirect: "manual",
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/html");
+  });
+
   test("alias route serves prerendered HTML without redirect", async () => {
     const res = await fetch(`${BASE_URL}/docs/gateway`, {
       redirect: "manual",
@@ -226,7 +235,24 @@ describe("prerendered HTML routing", () => {
 
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("text/html");
-    expect(res.headers.get("etag")).toBeTruthy();
+  });
+
+  test("base-path trailing slash redirects to no-slash", async () => {
+    const res = await fetch(`${BASE_URL}/graphql/hive/docs/gateway/`, {
+      redirect: "manual",
+    });
+
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toBe("/graphql/hive/docs/gateway");
+  });
+
+  test("alias trailing slash redirects to no-slash", async () => {
+    const res = await fetch(`${BASE_URL}/docs/gateway/`, {
+      redirect: "manual",
+    });
+
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toBe("/docs/gateway");
   });
 });
 

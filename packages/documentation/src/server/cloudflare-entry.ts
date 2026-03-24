@@ -349,69 +349,7 @@ async function tryServeAsset(
   augmentReq(request, { context, env });
 
   const assetResponse = await env.ASSETS.fetch(request);
-  if (assetResponse.status === 404) {
-    return undefined;
-  }
-
-  const redirectedAssetResponse = await followTrailingSlashAssetRedirect(
-    assetResponse,
-    request,
-    env,
-    context,
-    requestURL,
-  );
-
-  return redirectedAssetResponse || assetResponse;
-}
-
-function getTrailingSlashRedirectURL(response: Response, requestURL: URL) {
-  if (
-    requestURL.pathname.endsWith("/") ||
-    response.status < 300 ||
-    response.status >= 400
-  ) {
-    return;
-  }
-
-  const location = response.headers.get(LOCATION_HEADER);
-  if (!location) {
-    return;
-  }
-
-  const redirectedURL = new URL(location, requestURL);
-  if (
-    redirectedURL.origin !== requestURL.origin ||
-    redirectedURL.search !== requestURL.search ||
-    redirectedURL.hash !== requestURL.hash ||
-    redirectedURL.pathname !== `${requestURL.pathname}/`
-  ) {
-    return;
-  }
-
-  return redirectedURL;
-}
-
-async function followTrailingSlashAssetRedirect(
-  response: Response,
-  request: Request,
-  env: CloudflareEnv,
-  context: CloudflareContext,
-  requestURL: URL,
-) {
-  const redirectedURL = getTrailingSlashRedirectURL(response, requestURL);
-  if (!redirectedURL) {
-    return;
-  }
-
-  const redirectedRequest = new Request(redirectedURL, request);
-  augmentReq(redirectedRequest, { context, env });
-
-  const redirectedResponse = await env.ASSETS?.fetch(redirectedRequest);
-  if (!redirectedResponse || redirectedResponse.status === 404) {
-    return;
-  }
-
-  return redirectedResponse;
+  return assetResponse.status === 404 ? undefined : assetResponse;
 }
 
 async function getWebsocketHandler() {

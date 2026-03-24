@@ -36,6 +36,16 @@ export default defineConfig({
     deploymentChangelogPlugin(),
     nitro({
       baseURL: BASE_PATH,
+      cloudflare:
+        NITRO_PRESET === "cloudflare-module"
+          ? {
+              wrangler: {
+                assets: {
+                  html_handling: "drop-trailing-slash",
+                },
+              },
+            }
+          : undefined,
       entry:
         NITRO_PRESET === "cloudflare-module" ? CLOUDFLARE_ENTRY : undefined,
       prerender: {
