@@ -13,6 +13,7 @@
     "[Incremental Delivery (Defer & Stream)](/docs/gateway/defer-stream)",
     "[Subscriptions](/docs/gateway/subscriptions)",
     "logging-and-error-handling",
+    "concurrency-and-scaling",
     "other-features",
     "deployment"
   ]
