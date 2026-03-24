@@ -87,7 +87,7 @@ function hasBasePath(pathname: string) {
 }
 
 function withBasePath(pathname: string) {
-  return pathname === "/" ? `${baseURL}/` : `${baseURL}${pathname}`;
+  return pathname === "/" ? baseURL : `${baseURL}${pathname}`;
 }
 
 function normalizeDocsPathname(pathname: string) {
