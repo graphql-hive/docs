@@ -139,3 +139,45 @@ That said, forking does work on Bun since it implements the Node.js `cluster` mo
 [not yet battle-tested](https://bun.com/reference/node/cluster). Notably, handles and file
 descriptors cannot be passed between workers, which limits TCP server load-balancing across
 processes to Linux only.
+
+## Scaling Considerations for Multiple Instances
+
+When running multiple gateway workers (via forking) or multiple gateway instances (e.g. multiple
+pods in Kubernetes), any state that lives in-memory is local to that process only. Two workers will
+not see each other's in-memory caches, rate limit counters, or subscription state. This has two
+important implications.
+
+### Distributed Cache
+
+Features like [response caching](/docs/gateway/other-features/performance/response-caching),
+[rate limiting](/docs/gateway/other-features/security/rate-limiting), and
+[persisted documents](/docs/gateway/persisted-documents) rely on a shared cache storage. With
+multiple workers or instances, each process would maintain its own isolated cache, making those
+features much less effective - or outright incorrect in the case of rate limiting.
+
+To share cache state across all workers and instances, configure a
+[Redis cache](/docs/gateway/other-features/performance#redis) as the cache storage:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  fork: 4,
+  cache: {
+    type: "redis",
+    url: "redis://localhost:6379",
+  },
+});
+```
+
+### Subscriptions and EDFS
+
+Subscriptions have the same problem. By default, Hive Gateway uses an in-memory PubSub engine,
+meaning a subscription event published to one worker will not reach subscribers connected to a
+different worker or instance.
+
+For multi-worker or multi-instance setups, use
+[Event-Driven Federated Subscriptions (EDFS)](/docs/gateway/subscriptions#event-driven-federated-subscriptions-edfs)
+with a message broker such as Redis, NATS, or Kafka. Events are published to the broker and all
+workers subscribe to it, so every connected client receives the event regardless of which worker is
+handling their connection.
