@@ -8,6 +8,8 @@ import { runTask } from "nitro/task";
 import { isPublicAssetURL } from "#nitro/virtual/public-assets";
 import { scheduledTasks } from "#nitro/virtual/tasks";
 
+import { getAssetPathname } from "./cloudflare-routing";
+
 type AssetFetcher = {
   fetch(request: Request): Promise<Response>;
 };
@@ -72,6 +74,60 @@ const baseURL = normalizeBaseURL(
 );
 
 let websocketHandlerPromise: Promise<WebSocketHandler | undefined> | undefined;
+
+function normalizeBaseURL(pathname: string) {
+  if (!/^\/[^/]/.test(pathname)) {
+    return "";
+  }
+
+  return pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+}
+
+function hasBasePath(pathname: string) {
+  return pathname === baseURL || pathname.startsWith(`${baseURL}/`);
+}
+
+function withBasePath(pathname: string) {
+  return pathname === "/" ? `${baseURL}/` : `${baseURL}${pathname}`;
+}
+
+function normalizeDocsPathname(pathname: string) {
+  return pathname !== "/docs/" && pathname.endsWith("/")
+    ? pathname.slice(0, -1)
+    : pathname;
+}
+
+function shouldAliasMarkdownDocs(request: Request, pathname: string) {
+  if (
+    pathname !== "/docs" &&
+    pathname !== "/docs/" &&
+    !pathname.startsWith("/docs/")
+  ) {
+    return false;
+  }
+
+  if (/\.(md|mdx|txt)$/.test(pathname)) {
+    return false;
+  }
+
+  const accept = request.headers.get("accept") || "";
+  return accept.includes("text/markdown") || accept.includes("text/plain");
+}
+
+function stripBasePath(pathname: string) {
+  const stripped = pathname.slice(baseURL.length);
+  return stripped === "" ? "/" : stripped;
+}
+
+function isServerFnPath(pathname: string) {
+  return (
+    pathname === "/_serverFn" ||
+    pathname.startsWith("/_serverFn/") ||
+    (baseURL !== "" &&
+      (pathname === `${baseURL}/_serverFn` ||
+        pathname.startsWith(`${baseURL}/_serverFn/`)))
+  );
+}
 
 function createHandler(hooks: HandlerHooks) {
   return {
@@ -157,66 +213,6 @@ function createHandler(hooks: HandlerHooks) {
   };
 }
 
-function normalizeBaseURL(pathname: string) {
-  if (!/^\/[^/]/.test(pathname)) {
-    return "";
-  }
-
-  return pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
-}
-
-function hasBasePath(pathname: string) {
-  return pathname === baseURL || pathname.startsWith(`${baseURL}/`);
-}
-
-function withBasePath(pathname: string) {
-  return pathname === "/" ? `${baseURL}/` : `${baseURL}${pathname}`;
-}
-
-function normalizeDocsPathname(pathname: string) {
-  return pathname !== "/docs/" && pathname.endsWith("/")
-    ? pathname.slice(0, -1)
-    : pathname;
-}
-
-function hasPathExtension(pathname: string) {
-  const lastSlash = pathname.lastIndexOf("/");
-  const lastSegment = lastSlash >= 0 ? pathname.slice(lastSlash + 1) : pathname;
-  return lastSegment.includes(".");
-}
-
-function shouldAliasMarkdownDocs(request: Request, pathname: string) {
-  if (
-    pathname !== "/docs" &&
-    pathname !== "/docs/" &&
-    !pathname.startsWith("/docs/")
-  ) {
-    return false;
-  }
-
-  if (/\.(md|mdx|txt)$/.test(pathname)) {
-    return false;
-  }
-
-  const accept = request.headers.get("accept") || "";
-  return accept.includes("text/markdown") || accept.includes("text/plain");
-}
-
-function stripBasePath(pathname: string) {
-  const stripped = pathname.slice(baseURL.length);
-  return stripped === "" ? "/" : stripped;
-}
-
-function isServerFnPath(pathname: string) {
-  return (
-    pathname === "/_serverFn" ||
-    pathname.startsWith("/_serverFn/") ||
-    (baseURL !== "" &&
-      (pathname === `${baseURL}/_serverFn` ||
-        pathname.startsWith(`${baseURL}/_serverFn/`)))
-  );
-}
-
 function augmentReq(request: Request, ctx: RuntimeCloudflareContext) {
   const req = request as AugmentedRequest;
 
@@ -282,27 +278,6 @@ function ensureServerFnHeaders(
   return nextRequest;
 }
 
-function rewriteLocation(location: string, requestURL: URL) {
-  if (!baseURL) {
-    return location;
-  }
-
-  if (!location.startsWith("http")) {
-    return hasBasePath(location) ? stripBasePath(location) : location;
-  }
-
-  const targetURL = new URL(location);
-  if (
-    targetURL.origin !== requestURL.origin ||
-    !hasBasePath(targetURL.pathname)
-  ) {
-    return location;
-  }
-
-  targetURL.pathname = stripBasePath(targetURL.pathname);
-  return `${targetURL.pathname}${targetURL.search}${targetURL.hash}`;
-}
-
 function rewriteAliasedResponse(
   response: Response,
   isAliasedRequest: boolean,
@@ -332,7 +307,28 @@ function rewriteAliasedResponse(
   });
 }
 
-async function fetchPrerenderedIndexAsset(
+function rewriteLocation(location: string, requestURL: URL) {
+  if (!baseURL) {
+    return location;
+  }
+
+  if (!location.startsWith("http")) {
+    return hasBasePath(location) ? stripBasePath(location) : location;
+  }
+
+  const targetURL = new URL(location);
+  if (
+    targetURL.origin !== requestURL.origin ||
+    !hasBasePath(targetURL.pathname)
+  ) {
+    return location;
+  }
+
+  targetURL.pathname = stripBasePath(targetURL.pathname);
+  return `${targetURL.pathname}${targetURL.search}${targetURL.hash}`;
+}
+
+async function tryServeAsset(
   request: Request,
   env: CloudflareEnv,
   context: CloudflareContext,
@@ -342,25 +338,29 @@ async function fetchPrerenderedIndexAsset(
     return;
   }
 
-  if (request.method !== "GET" && request.method !== "HEAD") {
-    return;
-  }
-
-  if (
-    requestURL.pathname.endsWith("/") ||
-    hasPathExtension(requestURL.pathname)
-  ) {
+  const assetPathname = getAssetPathname({
+    baseURL,
+    isKnownAsset: isPublicAssetURL(requestURL.pathname),
+    method: request.method,
+    pathname: requestURL.pathname,
+  });
+  if (!assetPathname) {
     return;
   }
 
   const assetURL = new URL(request.url);
-  assetURL.pathname = `${requestURL.pathname}/`;
+  assetURL.pathname = assetPathname;
 
   const assetRequest = new Request(assetURL, request);
   augmentReq(assetRequest, { context, env });
 
   const assetResponse = await env.ASSETS.fetch(assetRequest);
-  return assetResponse.ok ? assetResponse : undefined;
+  if (
+    assetResponse.ok ||
+    (assetResponse.status >= 300 && assetResponse.status < 400)
+  ) {
+    return assetResponse;
+  }
 }
 
 async function getWebsocketHandler() {
@@ -415,39 +415,18 @@ export default createHandler({
     const requestURL = new URL(request.url);
     const isAliasedRequest = aliasedRequest !== cfRequest;
 
-    if (env.ASSETS && isPublicAssetURL(requestURL.pathname)) {
-      return rewriteAliasedResponse(
-        await env.ASSETS.fetch(request),
-        isAliasedRequest,
-        requestURL,
-      );
-    }
-
-    const prerenderedIndexAsset = await fetchPrerenderedIndexAsset(
+    const assetResponse = await tryServeAsset(
       request,
       env,
       context,
       requestURL,
     );
-    if (prerenderedIndexAsset) {
+    if (assetResponse) {
       return rewriteAliasedResponse(
-        prerenderedIndexAsset,
+        assetResponse,
         isAliasedRequest,
         requestURL,
       );
-    }
-
-    // For aliased requests, try ASSETS as fallback — isPublicAssetURL doesn't
-    // know about files generated by TanStack Start prerender (sitemap.xml, etc.)
-    if (env.ASSETS && isAliasedRequest) {
-      const assetResponse = await env.ASSETS.fetch(request);
-      if (assetResponse.ok) {
-        return rewriteAliasedResponse(
-          assetResponse,
-          isAliasedRequest,
-          requestURL,
-        );
-      }
     }
 
     if (
