@@ -218,6 +218,32 @@ describe("Accept header negotiation", () => {
   });
 });
 
+describe("prerendered HTML routing", () => {
+  test("alias path serves prerendered HTML from assets", async () => {
+    const res = await fetch(`${BASE_URL}/docs/gateway`, {
+      redirect: "manual",
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/html");
+    expect(res.headers.get("cache-control")).toContain("must-revalidate");
+    expect(res.headers.get("etag")).toBeTruthy();
+    expect(res.headers.get("location")).toBeNull();
+  });
+
+  test("base-path route serves prerendered HTML without a slash redirect", async () => {
+    const res = await fetch(`${BASE_URL}/graphql/hive/docs/gateway`, {
+      redirect: "manual",
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/html");
+    expect(res.headers.get("cache-control")).toContain("must-revalidate");
+    expect(res.headers.get("etag")).toBeTruthy();
+    expect(res.headers.get("location")).toBeNull();
+  });
+});
+
 describe("deployment changelog", () => {
   test("renders changelog html with mdx code-block chrome", async () => {
     const res = await fetch(

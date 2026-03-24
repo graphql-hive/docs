@@ -179,6 +179,12 @@ function normalizeDocsPathname(pathname: string) {
     : pathname;
 }
 
+function hasPathExtension(pathname: string) {
+  const lastSlash = pathname.lastIndexOf("/");
+  const lastSegment = lastSlash >= 0 ? pathname.slice(lastSlash + 1) : pathname;
+  return lastSegment.includes(".");
+}
+
 function shouldAliasMarkdownDocs(request: Request, pathname: string) {
   if (
     pathname !== "/docs" &&
@@ -326,6 +332,37 @@ function rewriteAliasedResponse(
   });
 }
 
+async function fetchPrerenderedIndexAsset(
+  request: Request,
+  env: CloudflareEnv,
+  context: CloudflareContext,
+  requestURL: URL,
+) {
+  if (!env.ASSETS) {
+    return;
+  }
+
+  if (request.method !== "GET" && request.method !== "HEAD") {
+    return;
+  }
+
+  if (
+    requestURL.pathname.endsWith("/") ||
+    hasPathExtension(requestURL.pathname)
+  ) {
+    return;
+  }
+
+  const assetURL = new URL(request.url);
+  assetURL.pathname = `${requestURL.pathname}/`;
+
+  const assetRequest = new Request(assetURL, request);
+  augmentReq(assetRequest, { context, env });
+
+  const assetResponse = await env.ASSETS.fetch(assetRequest);
+  return assetResponse.ok ? assetResponse : undefined;
+}
+
 async function getWebsocketHandler() {
   if (!importMeta._websocket) {
     return;
@@ -381,6 +418,20 @@ export default createHandler({
     if (env.ASSETS && isPublicAssetURL(requestURL.pathname)) {
       return rewriteAliasedResponse(
         await env.ASSETS.fetch(request),
+        isAliasedRequest,
+        requestURL,
+      );
+    }
+
+    const prerenderedIndexAsset = await fetchPrerenderedIndexAsset(
+      request,
+      env,
+      context,
+      requestURL,
+    );
+    if (prerenderedIndexAsset) {
+      return rewriteAliasedResponse(
+        prerenderedIndexAsset,
         isAliasedRequest,
         requestURL,
       );
