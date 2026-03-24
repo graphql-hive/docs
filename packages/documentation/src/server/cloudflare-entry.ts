@@ -332,8 +332,10 @@ async function tryServeAsset(
   env: CloudflareEnv,
   context: CloudflareContext,
   requestURL: URL,
+  isAliasedRequest: boolean,
 ): Promise<Response | undefined> {
   if (
+    !isAliasedRequest ||
     !env.ASSETS ||
     !shouldTryAssetRequest({
       baseURL,
@@ -469,6 +471,7 @@ export default createHandler({
       env,
       context,
       requestURL,
+      isAliasedRequest,
     );
     if (assetResponse) {
       return rewriteAliasedResponse(
