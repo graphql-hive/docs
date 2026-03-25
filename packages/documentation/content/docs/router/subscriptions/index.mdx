@@ -154,6 +154,22 @@ Instead of keeping a long-lived connection open to a subgraph, the router regist
   <ArrowIcon />
 </CallToAction>
 
+## Choosing a Transport
+
+| Protocol                                                                   | Connection                                           | Client multiplexing                              | Router multiplexing                  | Firewall/proxy friendly                               |
+| -------------------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------ | ------------------------------------ | ----------------------------------------------------- |
+| [SSE](/docs/router/subscriptions/sse)                                      | Persistent HTTP stream                               | No - one connection per subscription             | No - one connection per subscription | Yes - plain HTTP                                      |
+| [Incremental Delivery](/docs/router/subscriptions/incremental-delivery)    | Persistent HTTP stream                               | No - one connection per subscription             | No - one connection per subscription | Yes - plain HTTP                                      |
+| [Multipart HTTP](/docs/router/subscriptions/multipart-http)                | Persistent HTTP stream                               | No - one connection per subscription             | No - one connection per subscription | Yes - plain HTTP                                      |
+| [WebSockets](/docs/router/subscriptions/websockets)                        | Persistent WebSocket                                 | Yes - one connection carries multiple operations | No - one connection per subscription | Depends on network (WebSocket upgrade may be blocked) |
+| [HTTP Callback](/docs/router/subscriptions/http-callback) ⚠️ subgraph only | Single HTTP request (subgraph posts to callback URL) | N/A                                              | No persistent connections held       | Yes - plain HTTP                                      |
+
+Use SSE, Incremental Delivery, or Multipart HTTP when you want the simplest possible setup - they all work over standard HTTP, require no configuration, and are auto-negotiated by the router. The main difference between them is which client library you're using: Apollo Client works best with Multipart HTTP, urql and Relay work best with Incremental Delivery or SSE, and anything else can use SSE with [graphql-sse](https://the-guild.dev/graphql/sse).
+
+Use WebSockets when you need to multiplex multiple GraphQL operations over a single connection, or when your client environment requires it. There is always [graphql-ws](https://the-guild.dev/graphql/ws) to bridge the gap.
+
+The same protocols apply for router-to-subgraph communication, with one addition: [HTTP Callback](/docs/router/subscriptions/http-callback) is a subgraph-only protocol where the router registers a callback URL with the subgraph and the subgraph pushes events to it as they arrive. Because it avoids holding a persistent connection open per subscription, it is the preferred choice for subscriptions at scale.
+
 ## Protocol Negotiation
 
 HTTP-based subscription protocols (SSE, Incremental Delivery, and Multipart HTTP) are not individually activated or configured. Once subscriptions are enabled, all three are available simultaneously - the router determines which one to use for each request based on the client's `Accept` header:
