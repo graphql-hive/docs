@@ -3,6 +3,15 @@ import type { ModuleNode, Plugin, ViteDevServer } from "vite";
 const CSS_FILE_REGEX =
   /\.(css|less|sass|scss|styl|stylus|pcss|postcss|sss)(?:$|\?)/;
 const CSS_SIDE_EFFECT_FREE_PARAMS = ["url", "inline", "raw", "inline-css"];
+const CSS_ESCAPE_SEQUENCES = {
+  '"': '"',
+  "'": "'",
+  "\\": "\\",
+  "`": "`",
+  n: "\n",
+  r: "\r",
+  t: "\t",
+} as const;
 
 function isCssFile(file: string) {
   return CSS_FILE_REGEX.test(file);
@@ -147,11 +156,15 @@ async function loadCssContent(viteDevServer: ViteDevServer, url: string) {
     return;
   }
 
-  return match[2]
-    .replaceAll(String.raw`\n`, "\n")
-    .replaceAll(String.raw`\t`, "\t")
-    .replaceAll(String.raw`\"`, '"')
-    .replaceAll(String.raw`\\`, "\\");
+  return decodeCssLiteral(match[2]);
+}
+
+export function decodeCssLiteral(rawCssLiteral: string) {
+  return rawCssLiteral.replaceAll(
+    /\\(["'\\nrt`])/g,
+    (_, escapedChar: keyof typeof CSS_ESCAPE_SEQUENCES) =>
+      CSS_ESCAPE_SEQUENCES[escapedChar],
+  );
 }
 
 export function tanstackDevStylesBasePathPlugin(basePath: string): Plugin {
