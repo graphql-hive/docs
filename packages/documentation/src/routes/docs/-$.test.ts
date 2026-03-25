@@ -5,10 +5,12 @@
  */
 import { spawn, type Subprocess } from "bun";
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
+import { stat } from "node:fs/promises";
 import { join } from "node:path";
 
 const TEST_PORT = 14_401;
 const BASE_URL = process.env["TEST_URL"] || `http://localhost:${TEST_PORT}`;
+const BUILD_FRESHNESS_WINDOW_MS = 20 * 60 * 1000;
 const CHANGELOG_CONTENT_TERM =
   process.env["DEPLOYMENT_CHANGELOG_CONTENT_TERM"] ??
   "SUPERTOKENS_ACCESS_TOKEN_KEY";
@@ -30,23 +32,45 @@ async function waitForServer(maxAttempts = 30): Promise<void> {
   throw new Error(`Server not ready after ${maxAttempts}s`);
 }
 
+async function hasFreshBuildArtifacts(cwd: string): Promise<boolean> {
+  const requiredArtifacts = [
+    join(cwd, ".output/server/wrangler.json"),
+    join(cwd, ".output/server/index.mjs"),
+    join(cwd, ".output/public/graphql/hive/index.html"),
+  ];
+
+  let artifactStats: Awaited<ReturnType<typeof stat>>[];
+  try {
+    artifactStats = await Promise.all(
+      requiredArtifacts.map((path) => stat(path)),
+    );
+  } catch {
+    return false;
+  }
+
+  const cutoffTime = Date.now() - BUILD_FRESHNESS_WINDOW_MS;
+  return artifactStats.every((artifact) => artifact.mtimeMs >= cutoffTime);
+}
+
 beforeAll(async () => {
   if (process.env["TEST_URL"]) return; // user-provided server
 
   const cwd = join(import.meta.dir, "../../..");
-  const build = spawn(["bun", "run", "build"], {
-    cwd,
-    env: {
-      ...process.env,
-      NODE_ENV: "production",
-    },
-    stderr: "inherit",
-    stdout: "inherit",
-  });
+  if (!(await hasFreshBuildArtifacts(cwd))) {
+    const build = spawn(["bun", "run", "build"], {
+      cwd,
+      env: {
+        ...process.env,
+        NODE_ENV: "production",
+      },
+      stderr: "inherit",
+      stdout: "inherit",
+    });
 
-  const exitCode = await build.exited;
-  if (exitCode !== 0) {
-    throw new Error(`Build failed with exit code ${exitCode}`);
+    const exitCode = await build.exited;
+    if (exitCode !== 0) {
+      throw new Error(`Build failed with exit code ${exitCode}`);
+    }
   }
 
   devServer = spawn(
@@ -218,6 +242,44 @@ describe("Accept header negotiation", () => {
   });
 });
 
+describe("prerendered HTML routing", () => {
+  test("base-path route serves prerendered HTML without redirect", async () => {
+    const res = await fetch(`${BASE_URL}/graphql/hive/docs/gateway`, {
+      redirect: "manual",
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/html");
+  });
+
+  test("alias route serves prerendered HTML without redirect", async () => {
+    const res = await fetch(`${BASE_URL}/docs/gateway`, {
+      redirect: "manual",
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/html");
+  });
+
+  test("base-path trailing slash redirects to no-slash", async () => {
+    const res = await fetch(`${BASE_URL}/graphql/hive/docs/gateway/`, {
+      redirect: "manual",
+    });
+
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toBe("/graphql/hive/docs/gateway");
+  });
+
+  test("alias trailing slash redirects to no-slash", async () => {
+    const res = await fetch(`${BASE_URL}/docs/gateway/`, {
+      redirect: "manual",
+    });
+
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toBe("/docs/gateway");
+  });
+});
+
 describe("deployment changelog", () => {
   test("renders changelog html with mdx code-block chrome", async () => {
     const res = await fetch(
@@ -238,6 +300,26 @@ describe("deployment changelog", () => {
 
     const text = await res.text();
     expect(text).toContain("/docs/schema-registry/self-hosting/changelog");
+  });
+});
+
+describe("root routing", () => {
+  test("aliased root serves landing page without redirect", async () => {
+    const res = await fetch(`${BASE_URL}/`, {
+      redirect: "manual",
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/html");
+  });
+
+  test("base-path trailing slash redirects to no-slash", async () => {
+    const res = await fetch(`${BASE_URL}/graphql/hive/`, {
+      redirect: "manual",
+    });
+
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toBe("/graphql/hive");
   });
 });
 

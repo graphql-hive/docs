@@ -1,3 +1,5 @@
+import type { LoggingFunction, RollupLog } from "rollup";
+
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -10,6 +12,7 @@ import svgr from "vite-plugin-svgr";
 import tsConfigPaths from "vite-tsconfig-paths";
 
 import { deploymentChangelogPlugin } from "./tools/source-plugins/deployment-changelog-plugin";
+import { tanstackDevStylesBasePathPlugin } from "./tools/source-plugins/tanstack-dev-styles-base-path";
 
 const BASE_PATH = "/graphql/hive";
 
@@ -18,11 +21,11 @@ const CLOUDFLARE_ENTRY = fileURLToPath(
   new URL("src/server/cloudflare-entry.ts", import.meta.url),
 );
 
-export default defineConfig({
+export default defineConfig(async ({ command }) => ({
   base: BASE_PATH,
   build: {
     rollupOptions: {
-      onwarn(warning, defaultHandler) {
+      onwarn(warning: RollupLog, defaultHandler: LoggingFunction) {
         if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
         defaultHandler(warning);
       },
@@ -32,10 +35,21 @@ export default defineConfig({
     BASE_PATH: JSON.stringify(BASE_PATH),
   },
   plugins: [
-    !process.env["CI"] && devtools(),
+    command === "serve" && !process.env["CI"] && devtools(),
+    command === "serve" && tanstackDevStylesBasePathPlugin(BASE_PATH),
     deploymentChangelogPlugin(),
     nitro({
       baseURL: BASE_PATH,
+      cloudflare:
+        NITRO_PRESET === "cloudflare-module"
+          ? {
+              wrangler: {
+                assets: {
+                  html_handling: "drop-trailing-slash",
+                },
+              },
+            }
+          : undefined,
       entry:
         NITRO_PRESET === "cloudflare-module" ? CLOUDFLARE_ENTRY : undefined,
       prerender: {
@@ -108,4 +122,4 @@ export default defineConfig({
   ssr: {
     noExternal: ["@hive/design-system", "tailwind-merge"],
   },
-});
+}));

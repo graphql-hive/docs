@@ -52,7 +52,7 @@ const footerItems = {
   resources: [
     {
       children: "Privacy Policy",
-      href: "https://the-guild.dev/graphql/hive/privacy-policy.html",
+      href: "https://the-guild.dev/graphql/hive/privacy-policy",
       title: "Privacy Policy",
     },
     {
