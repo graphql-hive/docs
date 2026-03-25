@@ -44,7 +44,7 @@ flowchart LR;
 
 Your client executes a subscription operation against Hive Router using any of the supported subscription protocols. The router then independently executes the same subscription against whichever subgraph defines the requested field - in this case, the Reviews subgraph that provides the `reviewAdded` field. The router communicates with subgraphs using whatever subscription protocol the subgraph supports, which does not have to match the protocol used by the client. For example, your client can subscribe using WebSockets while the router subscribes to subgraphs using HTTP callbacks or SSE.
 
-When the Reviews subgraph sends new data, the router receives it and forwards it to the client. If the subscription includes federated entity fields from other subgraphs - like the `author` field that comes from the Users subgraph in this example - the router automatically resolves those fields by querying the corresponding subgraphs over HTTP. This allows you to subscribe to data that spans multiple subgraphs while maintaining a single subscription connection from your client.
+When the Reviews subgraph sends new data, the router receives it and forwards it to the client. If the subscription includes federated entity fields from other subgraphs - like the `author` field that comes from the Users subgraph in this example - the router automatically resolves those fields by querying the corresponding subgraphs over HTTP. This allows you to subscribe to data that spans multiple subgraphs while maintaining a single subscription connection between your Router and the client.
 
 ## Entity Resolution
 
