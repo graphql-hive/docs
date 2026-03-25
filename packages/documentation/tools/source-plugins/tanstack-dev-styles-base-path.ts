@@ -140,14 +140,14 @@ async function loadCssContent(viteDevServer: ViteDevServer, url: string) {
   }
 
   const match = transformResult.code.match(
-    /const\s+__vite__css\s*=\s*["'`]([\s\S]*?)["'`]/,
+    /const\s+__vite__css\s*=\s*(["'`])([\s\S]*?)\1/,
   );
 
-  if (!match?.[1]) {
+  if (!match?.[2]) {
     return;
   }
 
-  return match[1]
+  return match[2]
     .replaceAll(String.raw`\n`, "\n")
     .replaceAll(String.raw`\t`, "\t")
     .replaceAll(String.raw`\"`, '"')
