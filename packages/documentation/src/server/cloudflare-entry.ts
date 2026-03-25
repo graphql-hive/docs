@@ -7,7 +7,10 @@ import { runTask } from "nitro/task";
 
 import { scheduledTasks } from "#nitro/virtual/tasks";
 
-import { shouldTryAssetRequest } from "./cloudflare-routing";
+import {
+  getAliasedAssetRedirectTarget,
+  shouldTryAssetRequest,
+} from "./cloudflare-routing";
 
 type AssetFetcher = {
   fetch(request: Request): Promise<Response>;
@@ -349,7 +352,27 @@ async function tryServeAsset(
   augmentReq(request, { context, env });
 
   const assetResponse = await env.ASSETS.fetch(request);
-  return assetResponse.status === 404 ? undefined : assetResponse;
+  if (assetResponse.status === 404) {
+    return undefined;
+  }
+
+  const redirectTarget =
+    assetResponse.status >= 300 && assetResponse.status < 400
+      ? getAliasedAssetRedirectTarget({
+          location: assetResponse.headers.get(LOCATION_HEADER),
+          requestURL,
+        })
+      : undefined;
+
+  if (!redirectTarget) {
+    return assetResponse;
+  }
+
+  const redirectedRequest = new Request(redirectTarget, request);
+  augmentReq(redirectedRequest, { context, env });
+
+  const redirectedResponse = await env.ASSETS.fetch(redirectedRequest);
+  return redirectedResponse.status === 404 ? undefined : redirectedResponse;
 }
 
 async function getWebsocketHandler() {

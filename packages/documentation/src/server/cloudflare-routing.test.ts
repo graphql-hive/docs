@@ -1,6 +1,9 @@
 import { describe, expect, test } from "bun:test";
 
-import { shouldTryAssetRequest } from "./cloudflare-routing";
+import {
+  getAliasedAssetRedirectTarget,
+  shouldTryAssetRequest,
+} from "./cloudflare-routing";
 
 const baseURL = "/graphql/hive";
 
@@ -71,5 +74,41 @@ describe("shouldTryAssetRequest", () => {
         pathname: "/graphql/hive/docs/gateway",
       }),
     ).toBe(false);
+  });
+});
+
+describe("getAliasedAssetRedirectTarget", () => {
+  test("follows same-path trailing slash redirects", () => {
+    expect(
+      getAliasedAssetRedirectTarget({
+        location: "/graphql/hive/docs/gateway/",
+        requestURL: new URL("https://the-guild.dev/graphql/hive/docs/gateway"),
+      })?.pathname,
+    ).toBe("/graphql/hive/docs/gateway/");
+  });
+
+  test("rejects redirects that change path semantics", () => {
+    expect(
+      getAliasedAssetRedirectTarget({
+        location: "/graphql/hive/docs",
+        requestURL: new URL("https://the-guild.dev/graphql/hive/docs/gateway"),
+      }),
+    ).toBeUndefined();
+
+    expect(
+      getAliasedAssetRedirectTarget({
+        location: "/graphql/hive/docs/gateway/?x=1",
+        requestURL: new URL("https://the-guild.dev/graphql/hive/docs/gateway"),
+      }),
+    ).toBeUndefined();
+  });
+
+  test("rejects redirects for paths that already end with slash", () => {
+    expect(
+      getAliasedAssetRedirectTarget({
+        location: "/graphql/hive/docs/gateway/",
+        requestURL: new URL("https://the-guild.dev/graphql/hive/docs/gateway/"),
+      }),
+    ).toBeUndefined();
   });
 });

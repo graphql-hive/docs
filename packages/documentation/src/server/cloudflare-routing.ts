@@ -21,6 +21,30 @@ function isApiPath(pathname: string, baseURL: string) {
   );
 }
 
+export function getAliasedAssetRedirectTarget({
+  location,
+  requestURL,
+}: {
+  location: string | null;
+  requestURL: URL;
+}) {
+  if (!location || requestURL.pathname.endsWith("/")) {
+    return;
+  }
+
+  const targetURL = new URL(location, requestURL);
+  if (
+    targetURL.origin !== requestURL.origin ||
+    targetURL.pathname !== `${requestURL.pathname}/` ||
+    targetURL.search !== requestURL.search ||
+    targetURL.hash !== requestURL.hash
+  ) {
+    return;
+  }
+
+  return targetURL;
+}
+
 export function shouldTryAssetRequest({
   baseURL,
   method,

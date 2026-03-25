@@ -52,6 +52,29 @@ async function hasFreshBuildArtifacts(cwd: string): Promise<boolean> {
   return artifactStats.every((artifact) => artifact.mtimeMs >= cutoffTime);
 }
 
+async function expectBasePrefixedHtml(
+  pathname: string,
+  expectedCanonicalPath: string,
+) {
+  const res = await fetch(`${BASE_URL}${pathname}`, {
+    redirect: "manual",
+  });
+
+  expect(res.status).toBe(200);
+  expect(res.headers.get("content-type")).toContain("text/html");
+
+  const html = await res.text();
+  expect(html).toContain(`https://the-guild.dev${expectedCanonicalPath}`);
+  expect(html).toContain('rel="canonical"');
+  expect(html).toContain('href="/graphql/hive/assets/');
+  expect(html).toContain('href="/graphql/hive/');
+  expect(html).not.toContain('href="/docs');
+  expect(html).not.toContain('src="/docs');
+  expect(html).not.toContain('href="/assets');
+  expect(html).not.toContain('src="/assets');
+  expect(html).not.toContain("/graphql/hive/graphql/hive");
+}
+
 beforeAll(async () => {
   if (process.env["TEST_URL"]) return; // user-provided server
 
@@ -320,6 +343,16 @@ describe("root routing", () => {
 
     expect(res.status).toBe(307);
     expect(res.headers.get("location")).toBe("/graphql/hive");
+  });
+
+  test("raw upstream root emits base-prefixed HTML", async () => {
+    await expectBasePrefixedHtml("/", "/graphql/hive");
+  });
+});
+
+describe("website-router upstream contract", () => {
+  test("raw upstream docs page emits base-prefixed HTML", async () => {
+    await expectBasePrefixedHtml("/docs/gateway", "/graphql/hive/docs/gateway");
   });
 });
 
