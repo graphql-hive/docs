@@ -7,9 +7,7 @@ import { Image } from "@hive/design-system/image";
 import { Step, Steps } from "fumadocs-ui/components/steps";
 
 import accessTokenConfirmImage from "./access-token-confirm.png";
-import accessTokenCreateButtonImage from "./access-token-create-button.png";
 import accessTokenCreateSuccessImage from "./access-token-create-success.png";
-import accessTokenDeleteActionImage from "./access-token-delete-action.png";
 import accessTokenDeleteConfirmImage from "./access-token-delete-confirm.png";
 import accessTokenEnterGeneralImage from "./access-token-enter-general.png";
 import accessTokenMoreMenuImage from "./access-token-more-menu.png";
@@ -52,7 +50,8 @@ tasks, such as running `hive dev`.
 <Callout type="warning">
   **Important**: Treat access tokens like passwords. Keep them secret and revoke
   them immediately if compromised. Monitor token usage regularly and revoke
-  unused tokens to maintain security.
+  unused tokens to maintain security. And use automatic token expiration to
+  ensure tokens get rotated.
 </Callout>
 
 ## Access Token Type Overview
@@ -115,26 +114,24 @@ deleted) by any user with sufficient permissions.
 <Step>
 ### Navigate to Access Token Settings
 
+Go to the `Settings` tab of your organization and open the `Access Tokens` section.
+
+Click `Create new access token`.
+
 <Image
   alt="Organization Access Tokens Section"
   className="mt-8 rounded-lg drop-shadow-md"
   src={accessTokensTabImage}
 />
 
-Go to the `Settings` tab of your organization and open the `Access Tokens` section.
-
-<Image
-  alt="Create access token button"
-  className="mt-8 rounded-lg drop-shadow-md"
-  src={accessTokenCreateButtonImage}
-/>
-
-Click `Create new access token`.
-
 </Step>
 
 <Step>
 ### Enter General Information
+
+Provide a clear **title** and **description** to help your team understand the token’s purpose. Optionally select an **expiration** time to automatically expire tokens for improved security posture.
+
+Confirm your selection by clicking `Next`.
 
 <Image
   alt="Enter general access token information"
@@ -142,14 +139,14 @@ Click `Create new access token`.
   src={accessTokenEnterGeneralImage}
 />
 
-Provide a clear **title** and **description** to help your team understand the token’s purpose.
-
-Confirm your selection by clicking `Next`.
-
 </Step>
 
 <Step>
 ### Select Permission Scopes
+
+Choose the permissions the token should have.
+
+Confirm your selection by clicking `Next`.
 
 <Image
   alt="Select permission scopes for the access token"
@@ -157,14 +154,10 @@ Confirm your selection by clicking `Next`.
   src={accessTokenPermissionsImage}
 />
 
-Choose the permissions the token should have.
-
 <Callout>
   **Tip**: Follow the principle of least privilege by only selecting the scopes
   necessary for the token's purpose.
 </Callout>
-
-Confirm your selection by clicking `Next`.
 
 </Step>
 
@@ -176,28 +169,28 @@ Decide if the token should have access to:
 - **All resources** in the organization, or
 - Only **specific projects/targets/services/apps**.
 
+Confirm your selection by clicking `Next`.
+
 <Image
   alt="Select resources for the access token"
   className="mt-8 rounded-lg drop-shadow-md"
   src={accessTokenResourcesImage}
 />
 
-Confirm your selection by clicking `Next`.
-
 </Step>
 
 <Step>
 ### Review and Create
 
-Carefully review all the details—title, description, scopes, and resource assignments.
+Carefully review all the details—title, description, expiration, scopes, and resource assignments.
+
+When you're ready, click `Create Access Token`.
 
 <Image
   alt="Confirm permissions and scopes on the access token"
   className="mt-8 rounded-lg drop-shadow-md"
   src={accessTokenConfirmImage}
 />
-
-When you're ready, click `Create Access Token`.
 
 </Step>
 
@@ -221,7 +214,7 @@ After creation, your **access token key** will be displayed once.
 
 ## Deleting Access Tokens
 
-Within the Access Token overview, click the three dots icon for opening the context menu.
+Within the Access Token overview, click the three dots icon for opening the context menu and within that menu, click the `Delete` menu item..
 
 <Image
   alt="Open the actions for the access token by pressing the three dot icon on the end of the row."
@@ -229,15 +222,7 @@ Within the Access Token overview, click the three dots icon for opening the cont
   src={accessTokenMoreMenuImage}
 />
 
-Within that menu, click the `Delete` menu item.
-
-<Image
-  alt="Delete the access token by selection the delete action in the menu."
-  className="mt-8 rounded-lg drop-shadow-md"
-  src={accessTokenDeleteActionImage}
-/>
-
-Confirm the deletion within the dialog.
+Confirm the `Delete Access Token` within the dialog.
 
 <Image
   alt="Confirm the deletion within the dialogue."
