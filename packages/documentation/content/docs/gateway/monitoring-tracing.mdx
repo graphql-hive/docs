@@ -765,6 +765,7 @@ const { TracerProvider } = ddTrace.init({
 
 openTelemetrySetup({
   contextManager: null, // Don't register a context manager, DataDog Agent registers its own.
+  propagators: [], // Disable default propagators; dd-trace already set the global one (DD headers propagate to backends).
   traces: {
     tracerProvider: new TracerProvider(),
   },
