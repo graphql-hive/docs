@@ -1,0 +1,176 @@
+---
+title: "persisted_documents"
+---
+
+The `persisted_documents` configuration controls how Hive Router extracts persisted document IDs and
+resolves them into GraphQL operation text.
+
+This is the same concept some tools call **persisted queries** or **trusted documents**.
+
+For usage patterns and migration guidance, see
+[Persisted Documents guide](/docs/router/security/persisted-documents).
+
+## Options
+
+### `enabled`
+
+Enables persisted document extraction and resolution.
+Type is `boolean` and default is `false`.
+
+### `require_id`
+
+If `true`, requests must contain a resolvable persisted document ID. If extraction returns no ID,
+router returns `PERSISTED_DOCUMENT_ID_REQUIRED`. Type is `boolean` and default is `false`.
+
+### `log_missing_id`
+
+Logs requests that do not provide a resolvable persisted document ID. Type is `boolean` and default
+is `false`.
+
+### `selectors`
+
+Ordered list of selectors. Router applies them top-to-bottom and uses the first successful match.
+Type is `array`. If omitted, router uses built-in defaults.
+
+If omitted, defaults are:
+
+1. `json_path: documentId`
+2. `json_path: extensions.persistedQuery.sha256Hash`
+
+When `enabled: true`, `selectors` cannot be an explicit empty list.
+
+#### `selectors[].type: json_path`
+
+| Field  | Type     | Required | Notes                                                                 |
+| ------ | -------- | -------- | --------------------------------------------------------------------- |
+| `path` | `string` | yes      | Dot-path lookup in GraphQL request payload (for example `doc_id`). |
+
+#### `selectors[].type: url_query_param`
+
+| Field  | Type     | Required | Notes                                  |
+| ------ | -------- | -------- | -------------------------------------- |
+| `name` | `string` | yes      | Query parameter name to read document ID. |
+
+#### `selectors[].type: url_path_param`
+
+| Field      | Type     | Required | Notes                                                          |
+| ---------- | -------- | -------- | -------------------------------------------------------------- |
+| `template` | `string` | yes      | Relative template with exactly one `:id` segment (for example `/docs/:id`). |
+
+Template rules:
+
+- must start with `/`
+- must contain exactly one `:id`
+- supports `*` wildcard segments
+- does not support `**`
+- cannot contain query strings or fragments
+
+## `storage`
+
+Selects where persisted document text is loaded from.
+Type is `object` and it is required when `enabled: true`.
+
+### `storage.type: file`
+
+| Field   | Type      | Default | Required | Notes                            |
+| ------- | --------- | ------- | -------- | -------------------------------- |
+| `path`  | `path`    | -       | yes      | Manifest file path.              |
+| `watch` | `boolean` | `true`  | no       | Reload manifest on file changes. |
+
+### `storage.type: hive`
+
+| Field                  | Type                    | Default | Required | Notes                                                                 |
+| ---------------------- | ----------------------- | ------- | -------- | --------------------------------------------------------------------- |
+| `endpoint`             | `string \| string[]`   | -       | yes      | Hive CDN endpoint(s). Can also use `HIVE_CDN_ENDPOINT`.               |
+| `key`                  | `string`                | -       | yes      | Hive CDN key. Can also use `HIVE_CDN_KEY`.                            |
+| `accept_invalid_certs` | `boolean`               | `false` | no       | Accept invalid TLS certificates.                                      |
+| `connect_timeout`      | `duration`              | `5s`    | no       | Connection timeout for CDN requests.                                 |
+| `request_timeout`      | `duration`              | `15s`   | no       | Full request timeout for CDN requests.                               |
+| `retry_policy`         | `object`                | -       | no       | Retry policy for CDN fetches.                                         |
+| `cache_size`           | `integer`               | `10000` | no       | In-memory persisted document cache size.                              |
+| `circuit_breaker`      | `object`                | -       | no       | Circuit breaker configuration for CDN requests.                       |
+| `negative_cache`       | `false \| true \| object` | `true`  | no       | Cache non-2xx misses to reduce repeated failing lookups.              |
+
+You can also configure Hive CDN connection using `HIVE_CDN_ENDPOINT` and `HIVE_CDN_KEY`
+environment variables.
+
+```bash
+HIVE_CDN_ENDPOINT="https://cdn.graphql-hive.com/..."
+HIVE_CDN_KEY="your-cdn-key"
+```
+
+#### `storage.hive.retry_policy`
+
+| Field         | Type      | Default | Notes                   |
+| ------------- | --------- | ------- | ----------------------- |
+| `max_retries` | `integer` | `3`     | Exponential backoff retries. |
+
+#### `storage.hive.circuit_breaker`
+
+| Field              | Type      | Default | Notes |
+| ------------------ | --------- | ------- | ----- |
+| `error_threshold`  | `number`  | `0.5`   | Error ratio to open breaker. |
+| `volume_threshold` | `integer` | `5`     | Minimum request volume before threshold applies. |
+| `reset_timeout`    | `duration`| `10s`   | Time before half-open probe. |
+
+#### `storage.hive.negative_cache`
+
+Supports three forms:
+
+`false` disables negative cache, `true` enables it with defaults, and object form enables it with
+custom settings.
+
+| Field | Type       | Default | Notes |
+| ----- | ---------- | ------- | ----- |
+| `ttl` | `duration` | `5s`    | Negative cache entry lifetime. |
+
+## Endpoint compatibility note
+
+If any extractor uses `url_path_param`, `http.graphql_endpoint` cannot be `"/"`.
+
+Use a non-root endpoint such as `/graphql`.
+
+## Examples
+
+### File storage with default selectors
+
+```yaml title="router.config.yaml"
+persisted_documents:
+  enabled: true
+  require_id: true
+  storage:
+    type: file
+    path: ./persisted-documents.json
+```
+
+### Custom selectors order
+
+```yaml title="router.config.yaml"
+persisted_documents:
+  enabled: true
+  require_id: true
+  selectors:
+    - type: url_path_param
+      template: /docs/:id
+    - type: url_query_param
+      name: id
+    - type: json_path
+      path: doc_id
+  storage:
+    type: file
+    path: ./persisted-documents.json
+```
+
+### Hive storage with custom negative cache TTL
+
+```yaml title="router.config.yaml"
+persisted_documents:
+  enabled: true
+  require_id: true
+  storage:
+    type: hive
+    endpoint: ${HIVE_CDN_ENDPOINT}
+    key: ${HIVE_CDN_KEY}
+    negative_cache:
+      ttl: 10s
+```
