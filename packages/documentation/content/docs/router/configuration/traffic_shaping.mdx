@@ -2,6 +2,8 @@
 title: "traffic_shaping"
 ---
 
+import { Tabs } from "@hive/design-system/tabs";
+
 The `traffic_shaping` configuration object provides control over how the Hive Router manages
 connections and executes requests to your subgraph services.
 
@@ -18,7 +20,94 @@ Limits the maximum number of concurrent HTTP connections the router will open to
 host. This acts as a safeguard to prevent overwhelming a subgraph with too many simultaneous
 requests.
 
-## Subgraph Specific Options
+## Inbound Options
+
+The following options are set under `traffic_shaping.router` and control behaviour of the router
+itself (i.e. how it handles incoming client requests).
+
+### `router.dedupe`
+
+Configures inbound in-flight request deduplication. When enabled, identical concurrent
+incoming GraphQL `query` requests are coalesced into a single execution, with the result shared
+among all waiting clients. This is distinct from the outbound `dedupe_enabled`, which
+deduplicates the requests the router sends to subgraphs.
+
+For a detailed explanation and tuning guidance see the
+[Request Deduplication section](/docs/router/guides/performance-tuning#request-deduplication) of
+the Performance Tuning guide.
+
+#### `router.dedupe.enabled`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+Enables or disables inbound in-flight request deduplication.
+
+```yaml
+traffic_shaping:
+  router:
+    dedupe:
+      enabled: true
+```
+
+#### `router.dedupe.headers`
+
+- **Type:** `string | object`
+- **Default:** `"all"`
+
+Controls which request headers are factored into the deduplication fingerprint. Header names are
+case-insensitive and validated as standard HTTP header names.
+
+| Value                | Behaviour                                                                       |
+| -------------------- | ------------------------------------------------------------------------------- |
+| `all`                | All headers are included in the fingerprint (default).                          |
+| `none`               | No headers are included — requests from different users may share an execution. |
+| `{ include: [...] }` | Only the listed header names are included.                                      |
+
+<Tabs items={["All (default)", "None", "Include"]}>
+
+<Tabs.Tab>
+
+```yaml
+traffic_shaping:
+  router:
+    dedupe:
+      enabled: true
+      headers: all
+```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+```yaml
+traffic_shaping:
+  router:
+    dedupe:
+      enabled: true
+      headers: none
+```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+```yaml
+traffic_shaping:
+  router:
+    dedupe:
+      enabled: true
+      headers:
+        include:
+          - authorization
+          - cookie
+```
+
+</Tabs.Tab>
+
+</Tabs>
+
+## Outbound Options
 
 The following options (`dedupe_enabled`, `pool_idle_timeout`, and `request_timeout`) can be set
 globally for all subgraphs or overridden on a per-subgraph basis by nesting them under the
