@@ -41,20 +41,20 @@ When `enabled: true`, `selectors` cannot be an explicit empty list.
 
 #### `selectors[].type: json_path`
 
-| Field  | Type     | Required | Notes                                                                 |
-| ------ | -------- | -------- | --------------------------------------------------------------------- |
+| Field  | Type     | Required | Notes                                                              |
+| ------ | -------- | -------- | ------------------------------------------------------------------ |
 | `path` | `string` | yes      | Dot-path lookup in GraphQL request payload (for example `doc_id`). |
 
 #### `selectors[].type: url_query_param`
 
-| Field  | Type     | Required | Notes                                  |
-| ------ | -------- | -------- | -------------------------------------- |
+| Field  | Type     | Required | Notes                                     |
+| ------ | -------- | -------- | ----------------------------------------- |
 | `name` | `string` | yes      | Query parameter name to read document ID. |
 
 #### `selectors[].type: url_path_param`
 
-| Field      | Type     | Required | Notes                                                          |
-| ---------- | -------- | -------- | -------------------------------------------------------------- |
+| Field      | Type     | Required | Notes                                                                       |
+| ---------- | -------- | -------- | --------------------------------------------------------------------------- |
 | `template` | `string` | yes      | Relative template with exactly one `:id` segment (for example `/docs/:id`). |
 
 Template rules:
@@ -79,17 +79,17 @@ Type is `object` and it is required when `enabled: true`.
 
 ### `storage.type: hive`
 
-| Field                  | Type                    | Default | Required | Notes                                                                 |
-| ---------------------- | ----------------------- | ------- | -------- | --------------------------------------------------------------------- |
-| `endpoint`             | `string \| string[]`   | -       | yes      | Hive CDN endpoint(s). Can also use `HIVE_CDN_ENDPOINT`.               |
-| `key`                  | `string`                | -       | yes      | Hive CDN key. Can also use `HIVE_CDN_KEY`.                            |
-| `accept_invalid_certs` | `boolean`               | `false` | no       | Accept invalid TLS certificates.                                      |
-| `connect_timeout`      | `duration`              | `5s`    | no       | Connection timeout for CDN requests.                                 |
-| `request_timeout`      | `duration`              | `15s`   | no       | Full request timeout for CDN requests.                               |
-| `retry_policy`         | `object`                | -       | no       | Retry policy for CDN fetches.                                         |
-| `cache_size`           | `integer`               | `10000` | no       | In-memory persisted document cache size.                              |
-| `circuit_breaker`      | `object`                | -       | no       | Circuit breaker configuration for CDN requests.                       |
-| `negative_cache`       | `false \| true \| object` | `true`  | no       | Cache non-2xx misses to reduce repeated failing lookups.              |
+| Field                  | Type                      | Default | Required | Notes                                                    |
+| ---------------------- | ------------------------- | ------- | -------- | -------------------------------------------------------- |
+| `endpoint`             | `string \| string[]`      | -       | yes      | Hive CDN endpoint(s). Can also use `HIVE_CDN_ENDPOINT`.  |
+| `key`                  | `string`                  | -       | yes      | Hive CDN key. Can also use `HIVE_CDN_KEY`.               |
+| `accept_invalid_certs` | `boolean`                 | `false` | no       | Accept invalid TLS certificates.                         |
+| `connect_timeout`      | `duration`                | `5s`    | no       | Connection timeout for CDN requests.                     |
+| `request_timeout`      | `duration`                | `15s`   | no       | Full request timeout for CDN requests.                   |
+| `retry_policy`         | `object`                  | -       | no       | Retry policy for CDN fetches.                            |
+| `cache_size`           | `integer`                 | `10000` | no       | In-memory persisted document cache size.                 |
+| `circuit_breaker`      | `object`                  | -       | no       | Circuit breaker configuration for CDN requests.          |
+| `negative_cache`       | `false \| true \| object` | `true`  | no       | Cache non-2xx misses to reduce repeated failing lookups. |
 
 You can also configure Hive CDN connection using `HIVE_CDN_ENDPOINT` and `HIVE_CDN_KEY`
 environment variables.
@@ -101,17 +101,17 @@ HIVE_CDN_KEY="your-cdn-key"
 
 #### `storage.hive.retry_policy`
 
-| Field         | Type      | Default | Notes                   |
-| ------------- | --------- | ------- | ----------------------- |
+| Field         | Type      | Default | Notes                        |
+| ------------- | --------- | ------- | ---------------------------- |
 | `max_retries` | `integer` | `3`     | Exponential backoff retries. |
 
 #### `storage.hive.circuit_breaker`
 
-| Field              | Type      | Default | Notes |
-| ------------------ | --------- | ------- | ----- |
-| `error_threshold`  | `number`  | `0.5`   | Error ratio to open breaker. |
-| `volume_threshold` | `integer` | `5`     | Minimum request volume before threshold applies. |
-| `reset_timeout`    | `duration`| `10s`   | Time before half-open probe. |
+| Field              | Type       | Default | Notes                                            |
+| ------------------ | ---------- | ------- | ------------------------------------------------ |
+| `error_threshold`  | `number`   | `0.5`   | Error ratio to open breaker.                     |
+| `volume_threshold` | `integer`  | `5`     | Minimum request volume before threshold applies. |
+| `reset_timeout`    | `duration` | `10s`   | Time before half-open probe.                     |
 
 #### `storage.hive.negative_cache`
 
@@ -120,8 +120,8 @@ Supports three forms:
 `false` disables negative cache, `true` enables it with defaults, and object form enables it with
 custom settings.
 
-| Field | Type       | Default | Notes |
-| ----- | ---------- | ------- | ----- |
+| Field | Type       | Default | Notes                          |
+| ----- | ---------- | ------- | ------------------------------ |
 | `ttl` | `duration` | `5s`    | Negative cache entry lifetime. |
 
 ## Endpoint compatibility note
