@@ -19,9 +19,9 @@ Hive Gateway supports two levels of inflight request deduplication to reduce unn
 
 ## Outbound Request Deduplication
 
-When multiple requests for the same upstream resource are in-flight at the same time, the gateway
-can deduplicate them so only one request is forwarded to the downstream service. The single response
-is then shared among all waiting requests.
+When multiple identical requests to the same downstream subgraph service are inflight at the same
+time, the gateway can deduplicate them so only one request is forwarded to the downstream service.
+The single response is then shared among all waiting requests.
 
 This feature is **enabled by default**. To disable it:
 
@@ -76,6 +76,11 @@ By default, the deduplication key is composed of:
 By default, all request headers are included in the deduplication key. You can restrict which
 headers are considered by providing a `shouldIncludeHeader` function:
 
+> **Warning:** Narrowing the deduplication key means requests that differ only by the excluded
+> headers will be treated as identical. If your responses vary per user, session, or tenant (e.g.
+> based on `Authorization`, cookies, locale, or feature-flag headers), make sure to keep those
+> headers in the key to avoid sharing responses across different users and leaking data.
+
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
@@ -90,6 +95,10 @@ export const gatewayConfig = defineConfig({
 ### Custom Deduplication Keys
 
 For full control over the deduplication key, use `getDeduplicationKeys`:
+
+> **Warning:** When building a custom key, ensure it includes all factors that distinguish
+> user- or session-specific responses (e.g. tenant ID, authorization context). An overly broad
+> key can cause the gateway to share responses across different users, leading to data leakage.
 
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
