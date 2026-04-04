@@ -2,6 +2,8 @@
 title: Deduplicate Inflight Requests
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
+
 Most of the time, your Hive Gateway will receive multiple requests for the same data. This can
 happen when multiple clients request the same data, or when a single client sends multiple requests
 for the same data.
@@ -76,10 +78,12 @@ By default, the deduplication key is composed of:
 By default, all request headers are included in the deduplication key. You can restrict which
 headers are considered by providing a `shouldIncludeHeader` function:
 
-> **Warning:** Narrowing the deduplication key means requests that differ only by the excluded
-> headers will be treated as identical. If your responses vary per user, session, or tenant (e.g.
-> based on `Authorization`, cookies, locale, or feature-flag headers), make sure to keep those
-> headers in the key to avoid sharing responses across different users and leaking data.
+<Callout type="warning">
+  Narrowing the deduplication key means requests that differ only by the excluded headers will be
+  treated as identical. If your responses vary per user, session, or tenant (e.g. based on
+  `Authorization`, cookies, locale, or feature-flag headers), make sure to keep those headers in the
+  key to avoid sharing responses across different users and leaking data.
+</Callout>
 
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
@@ -96,9 +100,11 @@ export const gatewayConfig = defineConfig({
 
 For full control over the deduplication key, use `getDeduplicationKeys`:
 
-> **Warning:** When building a custom key, ensure it includes all factors that distinguish
-> user- or session-specific responses (e.g. tenant ID, authorization context). An overly broad
-> key can cause the gateway to share responses across different users, leading to data leakage.
+<Callout type="warning">
+  When building a custom key, ensure it includes all factors that distinguish user- or
+  session-specific responses (e.g. tenant ID, authorization context). An overly broad key can cause
+  the gateway to share responses across different users, leading to data leakage.
+</Callout>
 
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
