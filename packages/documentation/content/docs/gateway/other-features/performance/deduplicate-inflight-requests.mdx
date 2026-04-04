@@ -79,10 +79,11 @@ By default, all request headers are included in the deduplication key. You can r
 headers are considered by providing a `shouldIncludeHeader` function:
 
 <Callout type="warning">
-  Narrowing the deduplication key means requests that differ only by the excluded headers will be
-  treated as identical. If your responses vary per user, session, or tenant (e.g. based on
-  `Authorization`, cookies, locale, or feature-flag headers), make sure to keep those headers in the
-  key to avoid sharing responses across different users and leaking data.
+  Narrowing the deduplication key means requests that differ only by the
+  excluded headers will be treated as identical. If your responses vary per
+  user, session, or tenant (e.g. based on `Authorization`, cookies, locale, or
+  feature-flag headers), make sure to keep those headers in the key to avoid
+  sharing responses across different users and leaking data.
 </Callout>
 
 ```ts title="gateway.config.ts"
@@ -101,9 +102,10 @@ export const gatewayConfig = defineConfig({
 For full control over the deduplication key, use `getDeduplicationKeys`:
 
 <Callout type="warning">
-  When building a custom key, ensure it includes all factors that distinguish user- or
-  session-specific responses (e.g. tenant ID, authorization context). An overly broad key can cause
-  the gateway to share responses across different users, leading to data leakage.
+  When building a custom key, ensure it includes all factors that distinguish
+  user- or session-specific responses (e.g. tenant ID, authorization context).
+  An overly broad key can cause the gateway to share responses across different
+  users, leading to data leakage.
 </Callout>
 
 ```ts title="gateway.config.ts"
