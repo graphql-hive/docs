@@ -1,0 +1,38 @@
+---
+title: GraphQL Codegen Update, April 2026  - Operations and Client Preset v6
+authors: eddeee888
+tags: [graphql, graphql-codegen, client, operations, code generation]
+date: 2025-04-30
+description: GraphQL Codegen April 2026 update brings fundamental changes to how client types work - less generated code, better type correctness and defaults, fewer dependencies, and simpler setup.
+---
+
+GraphQL Codegen [typescript-operations](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-operations) and [client-preset](https://the-guild.dev/graphql/codegen/plugins/presets/preset-client) v6 was released with a hollistic review of dependencies, config options, and plugin interoperability to improve Developer Experience for our users:
+
+- Less generated code
+- Better type correctness and defaults
+- Fewer dependencies, and simpler setup
+
+## What changed?
+
+Previously, the low-level [typescript plugin](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript) was used to generate all schema types, and the `typescript-operations` plugin referred to the schema types in its Input and Variables types. This approach led to a few problems:
+
+- All schema types were generated, even if unused
+  - Impact: Unncessarily large generated files and extraneous types, which caused confusion to users.
+- Client and server plugins were indirectly tied together
+  - Examples:
+    - `typescript` plugin's default options were created to work for both client and server, but not optimised for either. This meant users must eventually tweaked the default config for their client use case.
+    - Any attempt to reduce the generated schema types most likely touch the `typescript` plugin, which impacted the server plugin [`typescript-resolvers`](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-resolvers), because they both relied on the same generated type.
+  - Impact: Slower feature turnaround, because contributors working on the client use case needed to tip-toe to avoid impacting the server use case.
+- Ways to setup Codegen config were numerous, with some requiring external plugins/presets with fragile integration
+  - Impact: Verbose Codegen config, added dependencies to maintain e.g. [import-types preset](https://the-guild.dev/graphql/codegen/plugins/presets/import-types-preset)
+
+Now, `typescript-operations` and `client-preset` v6 were built with fundamental changes to solve the mentioned problems:
+
+- Generates schema types only when used
+- Fully decoupled from `typescript` and `typescript-resolvers`
+- Built-in support for setups commonly used by the community: one-file, multi-file, near-operation-file setups
+
+## Other changes - TODO
+
+- ESM dependencies
+- `client-preset`'s default hash algorithm is SHA256
