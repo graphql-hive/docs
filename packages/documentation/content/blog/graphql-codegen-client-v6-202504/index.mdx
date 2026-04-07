@@ -6,11 +6,19 @@ date: 2025-04-30
 description: GraphQL Codegen April 2026 update brings fundamental changes to how client types work - less generated code, better type correctness and defaults, fewer dependencies, and simpler setup.
 ---
 
-GraphQL Codegen [typescript-operations](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-operations) and [client-preset](https://the-guild.dev/graphql/codegen/plugins/presets/preset-client) v6 was released with a hollistic review of dependencies, config options, and plugin interoperability to improve Developer Experience for our users:
+GraphQL Codegen [typescript-operations](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-operations) and [client-preset](https://the-guild.dev/graphql/codegen/plugins/presets/preset-client) v6 has been released with a hollistic review of dependencies, config options, and plugin interoperability to improve Developer Experience for our users:
 
 - Less generated code
 - Better type correctness and defaults
 - Fewer dependencies, and simpler setup
+
+<Callout type="info" emoji="🤝">
+This release is the result of the close collaboration between The Guild and [Igor Kusakov](https://www.linkedin.com/in/igor-kusakov-aa19636/) from [Yelp](https://www.yelp.com/), with thoughtful input from the wider GraphQL community.
+
+My DM is always open for ideas and feedback: [X](https://x.com/eddeee888),
+[LinkedIn](https://www.linkedin.com/in/eddeee888/), [GraphQL Discord](https://discord.com/channels/625400653321076807/631489733750423599) 🙂
+
+</Callout>
 
 ## The main change
 
@@ -36,6 +44,7 @@ Now, `typescript-operations` and `client-preset` v6 were built with fundamental 
 
 We also take the opportunity to make various improvements, and fix tricky bugs:
 
+- Make migration path from Apollo Tooling to GraphQL Codegen easier
 - Set better defaults for scalar types
 - Remove rarely used option: `preResolveTypes`
 - Revamp shared options to better match client usage: `avoidOptionals` and `inputMaybeValue`
@@ -46,3 +55,10 @@ We also take the opportunity to make various improvements, and fix tricky bugs:
 - Change `client-preset` default hash algorithm to SHA256
 - Add usage warnings for internal utility types: `Exact` and `Incremental`
 - Update dependencies to latest versions (some are now ESM-only)
+
+## Resources
+
+- v6 Migration Guide: https://the-guild.dev/graphql/codegen/docs/migration/operations-and-client-preset-from-5-0
+- Apollo Tooling to GraphQL Codegen Migration Guide: https://the-guild.dev/graphql/codegen/docs/migration/apollo-tooling
+- Original RFC: https://github.com/dotansimha/graphql-code-generator/issues/10479
+- Feature branch: https://github.com/dotansimha/graphql-code-generator/pull/10496
