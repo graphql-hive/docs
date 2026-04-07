@@ -14,8 +14,8 @@ export function PricingSlider({
   ...rest
 }: {
   className?: string;
-  showEnterpriseHint: boolean;
   onChange: (value: number) => void;
+  showEnterpriseHint: boolean;
 }) {
   const min = 1;
   const max = 1000;
@@ -40,11 +40,11 @@ export function PricingSlider({
     >
       <div
         aria-hidden
-        className="text-green-1000 flex flex-wrap items-center text-2xl font-medium md:h-12 md:w-[calc(100%-260px)]"
+        className="text-green-1000 flex flex-wrap items-center font-medium md:h-12 md:w-[calc(100%-260px)]"
       >
-        <div className="w-full">How many operations per month do you need?</div>
+        <div className="w-full text-2xl">How many operations per month do you need?</div>
       </div>
-      <div className="text-green-1000 flex flex-wrap items-center text-2xl font-medium md:h-12 md:w-[calc(100%-260px)] text-lg">
+      <div className="text-green-1000 flex flex-wrap items-center font-medium md:h-12 md:w-[calc(100%-260px)] text-lg">
         <div>
           <div className="flex w-full whitespace-pre rounded-[40px] bg-blue-300 px-3 py-1 tabular-nums leading-8 duration-[calc(clamp(0,var(--ops)-1,1)*350ms)] before:tracking-[-0.12em] before:content-[''_counter(ops)_'_'] motion-safe:transition-all">
             M
@@ -106,7 +106,7 @@ export function PricingSlider({
 }
 
 function formatMillionsOrBillions(num: number) {
-  if (num % 1000 != 0) {
+  if (num % 1000 !== 0) {
     return `${num}M`;
   }
   return `${num / 1000}B`;

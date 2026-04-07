@@ -1,5 +1,6 @@
 "use client";
 
+import { useDebouncedState } from "@/lib/hooks/use-debounced-state";
 import { CallToAction } from "@hive/design-system/call-to-action";
 import { cn } from "@hive/design-system/cn";
 import { ContactButton, ContactTextLink } from "@hive/design-system/contact-us";
@@ -28,7 +29,6 @@ import {
 } from "./icons";
 import { PlanCard } from "./plan-card";
 import { PricingSlider } from "./pricing-slider";
-import { useDebouncedState } from "@/lib/hooks/use-debounced-state";
 
 interface PlanFeaturesListItemProps extends HTMLAttributes<HTMLLIElement> {
   category: string;
@@ -96,7 +96,6 @@ export function Pricing({ className }: { className?: string }): ReactElement {
 
         <PricingSlider
           className="mt-6 lg:mt-12"
-          showEnterpriseHint={highlightedPlan === "Enterprise"}
           onChange={(value) => {
             setCurrentValue(value);
             const newPlan =
@@ -149,6 +148,7 @@ export function Pricing({ className }: { className?: string }): ReactElement {
               });
             }
           }}
+          showEnterpriseHint={highlightedPlan === "Enterprise"}
         />
 
         <div

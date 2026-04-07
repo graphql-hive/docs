@@ -16,38 +16,37 @@ export type UseDebouncedStateReturnValue<T> = [
   (newValue: SetStateAction<T>) => void,
 ];
 
-export function useDebouncedState<T = any>(
+export function useDebouncedState<T>(
   defaultValue: T,
   wait: number,
-  options: UseDebouncedStateOptions = { leading: false },
+  options?: UseDebouncedStateOptions
 ): UseDebouncedStateReturnValue<T> {
+  const leading = options?.leading ?? false;
   const [value, setValue] = useState(defaultValue);
-  const timeoutRef = useRef<number | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof globalThis.setTimeout>>(null);
   const leadingRef = useRef(true);
 
-  const clearTimeout = () => window.clearTimeout(timeoutRef.current!);
-  useEffect(() => clearTimeout, []);
+  const clearTimeout = useCallback(() => timeoutRef.current && globalThis.clearTimeout(timeoutRef.current), []);
+  useEffect(() => clearTimeout, [clearTimeout]);
 
   const debouncedSetValue = useCallback(
     (newValue: SetStateAction<T>) => {
       clearTimeout();
-      if (leadingRef.current && options.leading) {
+      if (leadingRef.current && leading) {
         setValue(newValue);
       } else {
-        timeoutRef.current = window.setTimeout(() => {
+        timeoutRef.current = globalThis.setTimeout(() => {
           leadingRef.current = true;
           setValue(newValue);
         }, wait);
       }
       leadingRef.current = false;
     },
-    [options.leading],
+    [leading, clearTimeout, wait],
   );
 
   return [value, debouncedSetValue] as const;
 }
 
-export namespace useDebouncedState {
-  export type Options = UseDebouncedStateOptions;
-  export type ReturnValue<T> = UseDebouncedStateReturnValue<T>;
-}
+export type Options = UseDebouncedStateOptions;
+export type ReturnValue<T> = UseDebouncedStateReturnValue<T>;
