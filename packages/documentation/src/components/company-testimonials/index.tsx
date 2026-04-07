@@ -14,9 +14,11 @@ import {
   type LogoProps,
   NacelleLogo,
   ProdigyLogo,
+  TrivagoLogo,
   WealthsimpleLogo,
 } from "../company-logos";
 import hemnetPicture from "./hemnet-picture.webp";
+import trivagoPicture from "./trivago-picture.webp";
 import karrotPicture from "./karrot-picture.webp";
 import nacellePicture from "./nacelle-picture.webp";
 import prodigyPicture from "./prodigy-picture.webp";
@@ -64,6 +66,29 @@ const testimonials: Testimonial[] = [
         with less than 30% resource usage than Apollo Router, and it was holding
         tens of thousands of requests per minute. The resource efficiency
         reflected strong engineering from the Hive team.
+      </>
+    ),
+  },
+  {
+    caseStudyHref: "/case-studies/trivago",
+    company: "trivago",
+    logo: ({ className, ...props }) => (
+      <div
+        className={cn("flex h-8 w-min items-center justify-center", className)}
+      >
+        <TrivagoLogo {...props} className="" height={37} />
+      </div>
+    ),
+    picture: {
+      img: trivagoPicture,
+    },
+    text: (
+      <>
+        Most GraphQL Gateway and general GraphQL discussions focus on
+        customer-facing applications—aggregating microservices behind a single
+        endpoint for web and mobile clients, enabling frontend teams to query
+        exactly the data they need without multiple round trips. Trivagos use
+        case and perspective were different.
       </>
     ),
   },
