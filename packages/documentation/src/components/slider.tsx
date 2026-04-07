@@ -6,7 +6,7 @@ import { InputHTMLAttributes } from "react";
 import svgHref from "./code-icon-white.svg?url";
 
 export interface SliderProps extends InputHTMLAttributes<HTMLInputElement> {
-  counter: string;
+  counter?: string;
   deadZone?: string;
 }
 export function Slider({
@@ -44,7 +44,8 @@ export function Slider({
 
       <div // indicator
         className={cn(
-          "after:text-green-1000 pointer-events-none absolute left-0 top-0 z-20 flex size-10 select-none items-center justify-center rounded-full bg-blue-600 text-center after:pointer-events-auto after:absolute after:top-[calc(-100%+3px)] after:whitespace-nowrap after:rounded-full after:bg-blue-200 after:px-3 after:py-1 after:font-medium",
+          "pointer-events-none absolute left-0 top-0 z-20 flex size-10 select-none items-center justify-center rounded-full bg-blue-600 text-center",
+          counter && 'after:text-green-1000 after:pointer-events-auto after:absolute after:top-[calc(-100%+3px)] after:whitespace-nowrap after:rounded-full after:bg-blue-200 after:px-3 after:py-1 after:font-medium',
           counter,
         )}
         style={{
@@ -54,7 +55,7 @@ export function Slider({
           transform: "translateX(calc(var(--val) * (100cqi - 100%) / 100))",
         }}
       >
-        <svg
+        {counter && <svg
           className="absolute -top-full translate-y-[23px] text-blue-200"
           fill="currentColor"
           height="16"
@@ -63,7 +64,7 @@ export function Slider({
           xmlns="http://www.w3.org/2000/svg"
         >
           <path d="M0 8L6 0L12 8L6 16L0 8Z" />
-        </svg>
+        </svg>}
         <img alt="" height={24} src={svgHref} width={24} />
       </div>
 
