@@ -74,7 +74,7 @@ export function PricingSlider({
         <span className="font-medium">{formatMillionsOrBillions(max)}</span>
       </div>
 
-      {showEnterpriseHint && <div className="mt-3 max-w-[600px]"><div className="font-bold">Consider using our Enterprise plan.</div>For volumes exceeding 300M operations per month, our Enterprise plan offers significantly better value, with mass operation discounts, dedicated support, and custom SLAs tailored to your needs. This also makes scaling beyond 1 billion operations substantially more cost-effective.</div>}
+      {showEnterpriseHint && <div className="mt-3 max-w-[600px]"><div className="font-bold">Consider using our Enterprise plan.</div>For volumes over 300M operations per month, our Enterprise plan is cheaper, with bulk discounts, dedicated support, and custom SLAs. It also makes scaling past 1 billion operations much more cost-effective.</div>}
 
       {/* Native tooltip/popover to replace Radix Tooltip */}
       <div className="relative mt-6 md:absolute md:right-8 md:top-8 md:mt-0">
