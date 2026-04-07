@@ -42,7 +42,9 @@ export function PricingSlider({
         aria-hidden
         className="text-green-1000 flex flex-wrap items-center font-medium md:h-12 md:w-[calc(100%-260px)]"
       >
-        <div className="w-full text-2xl">How many operations per month do you need?</div>
+        <div className="w-full text-2xl">
+          How many operations per month do you need?
+        </div>
       </div>
       <div className="text-green-1000 flex flex-wrap items-center font-medium md:h-12 md:w-[calc(100%-260px)] text-lg">
         <div>

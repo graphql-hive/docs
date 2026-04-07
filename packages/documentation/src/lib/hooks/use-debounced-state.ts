@@ -19,14 +19,17 @@ export type UseDebouncedStateReturnValue<T> = [
 export function useDebouncedState<T>(
   defaultValue: T,
   wait: number,
-  options?: UseDebouncedStateOptions
+  options?: UseDebouncedStateOptions,
 ): UseDebouncedStateReturnValue<T> {
   const leading = options?.leading ?? false;
   const [value, setValue] = useState(defaultValue);
   const timeoutRef = useRef<ReturnType<typeof globalThis.setTimeout>>(null);
   const leadingRef = useRef(true);
 
-  const clearTimeout = useCallback(() => timeoutRef.current && globalThis.clearTimeout(timeoutRef.current), []);
+  const clearTimeout = useCallback(
+    () => timeoutRef.current && globalThis.clearTimeout(timeoutRef.current),
+    [],
+  );
   useEffect(() => clearTimeout, [clearTimeout]);
 
   const debouncedSetValue = useCallback(
