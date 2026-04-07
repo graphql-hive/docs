@@ -3,6 +3,7 @@ import {
   SoundYXZLogo,
   ToastLogo,
   WealthsimpleLogo,
+  TrivagoLogo,
 } from "../company-logos";
 
 /**
@@ -13,6 +14,7 @@ export const companyLogos = {
   "sound-xyz": <SoundYXZLogo height={64} width={193} />,
   toast: <ToastLogo height={64} width={158} />,
   wealthsimple: <WealthsimpleLogo height={64} width={212} />,
+  trivago: <TrivagoLogo height={64} width={212} />,
 };
 
 export function getCompanyLogo(company: string) {
