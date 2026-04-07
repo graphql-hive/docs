@@ -14,8 +14,8 @@ export function PricingSlider({
   showEnterpriseHint = true,
   ...rest
 }: {
-    className?: string;
-    showEnterpriseHint: boolean;
+  className?: string;
+  showEnterpriseHint: boolean;
   onChange: (value: number) => void;
 }) {
   const min = 1;
@@ -43,18 +43,17 @@ export function PricingSlider({
         aria-hidden
         className="text-green-1000 flex flex-wrap items-center text-2xl font-medium md:h-12 md:w-[calc(100%-260px)]"
       >
-        <div className="w-full">
-          How many operations per month do you need?
-        </div>
+        <div className="w-full">How many operations per month do you need?</div>
       </div>
-      <div  className="text-green-1000 flex flex-wrap items-center text-2xl font-medium md:h-12 md:w-[calc(100%-260px)] text-lg">
+      <div className="text-green-1000 flex flex-wrap items-center text-2xl font-medium md:h-12 md:w-[calc(100%-260px)] text-lg">
         <div>
           <div className="flex w-full whitespace-pre rounded-[40px] bg-blue-300 px-3 py-1 tabular-nums leading-8 duration-[calc(clamp(0,var(--ops)-1,1)*350ms)] before:tracking-[-0.12em] before:content-[''_counter(ops)_'_'] motion-safe:transition-all">
             M
           </div>
         </div>
         <div className="whitespace-pre [@media(width<900px)]:hidden">
-          {" "}operations per month{" "}
+          {" "}
+          operations per month{" "}
         </div>
       </div>
       <div className="text-green-1000 flex items-center gap-5 pt-4 text-sm">
@@ -74,7 +73,14 @@ export function PricingSlider({
         <span className="font-medium">{formatMillionsOrBillions(max)}</span>
       </div>
 
-      {showEnterpriseHint && <div className="mt-3 max-w-[600px]"><div className="font-bold">Consider using our Enterprise plan.</div>For volumes over 300M operations per month, our Enterprise plan is cheaper, with bulk discounts, dedicated support, and custom SLAs. It also makes scaling past 1 billion operations much more cost-effective.</div>}
+      {showEnterpriseHint && (
+        <div className="mt-3 max-w-[600px]">
+          <div className="font-bold">Consider using our Enterprise plan.</div>
+          For volumes over 300M operations per month, our Enterprise plan is
+          cheaper, with bulk discounts, dedicated support, and custom SLAs. It
+          also makes scaling past 1 billion operations much more cost-effective.
+        </div>
+      )}
 
       {/* Native tooltip/popover to replace Radix Tooltip */}
       <div className="relative mt-6 md:absolute md:right-8 md:top-8 md:mt-0">
@@ -102,7 +108,7 @@ export function PricingSlider({
 
 function formatMillionsOrBillions(num: number) {
   if (num % 1000 != 0) {
-    return `${num}M`
+    return `${num}M`;
   }
-  return `${num / 1000}B`
+  return `${num / 1000}B`;
 }

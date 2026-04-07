@@ -76,7 +76,7 @@ export function Pricing({ className }: { className?: string }): ReactElement {
   type PlanType = "Enterprise" | "Hobby" | "Pro";
 
   const [highlightedPlan, setHighlightedPlan] = useState<PlanType>("Hobby");
-  const [currentValue, setCurrentValue] = useDebouncedState(1, 2)
+  const [currentValue, setCurrentValue] = useDebouncedState(1, 2);
   const scrollviewRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -96,9 +96,9 @@ export function Pricing({ className }: { className?: string }): ReactElement {
 
         <PricingSlider
           className="mt-6 lg:mt-12"
-          showEnterpriseHint={highlightedPlan === 'Enterprise'}
+          showEnterpriseHint={highlightedPlan === "Enterprise"}
           onChange={(value) => {
-            setCurrentValue(value)
+            setCurrentValue(value);
             const newPlan =
               value === 1 ? "Hobby" : value <= 300 ? "Pro" : "Enterprise";
             if (newPlan !== highlightedPlan) {

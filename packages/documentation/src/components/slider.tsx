@@ -45,7 +45,8 @@ export function Slider({
       <div // indicator
         className={cn(
           "pointer-events-none absolute left-0 top-0 z-20 flex size-10 select-none items-center justify-center rounded-full bg-blue-600 text-center",
-          counter && 'after:text-green-1000 after:pointer-events-auto after:absolute after:top-[calc(-100%+3px)] after:whitespace-nowrap after:rounded-full after:bg-blue-200 after:px-3 after:py-1 after:font-medium',
+          counter &&
+            "after:text-green-1000 after:pointer-events-auto after:absolute after:top-[calc(-100%+3px)] after:whitespace-nowrap after:rounded-full after:bg-blue-200 after:px-3 after:py-1 after:font-medium",
           counter,
         )}
         style={{
@@ -55,16 +56,18 @@ export function Slider({
           transform: "translateX(calc(var(--val) * (100cqi - 100%) / 100))",
         }}
       >
-        {counter && <svg
-          className="absolute -top-full translate-y-[23px] text-blue-200"
-          fill="currentColor"
-          height="16"
-          viewBox="0 0 12 16"
-          width="12"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M0 8L6 0L12 8L6 16L0 8Z" />
-        </svg>}
+        {counter && (
+          <svg
+            className="absolute -top-full translate-y-[23px] text-blue-200"
+            fill="currentColor"
+            height="16"
+            viewBox="0 0 12 16"
+            width="12"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 8L6 0L12 8L6 16L0 8Z" />
+          </svg>
+        )}
         <img alt="" height={24} src={svgHref} width={24} />
       </div>
 

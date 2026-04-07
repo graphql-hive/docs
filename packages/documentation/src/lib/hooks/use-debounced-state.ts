@@ -1,16 +1,25 @@
 /** @source https://github.com/mantinedev/mantine/blob/master/packages/@mantine/hooks/src/use-debounced-state/use-debounced-state.ts#L1 */
-import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 export interface UseDebouncedStateOptions {
   leading?: boolean;
 }
 
-export type UseDebouncedStateReturnValue<T> = [T, (newValue: SetStateAction<T>) => void];
+export type UseDebouncedStateReturnValue<T> = [
+  T,
+  (newValue: SetStateAction<T>) => void,
+];
 
 export function useDebouncedState<T = any>(
   defaultValue: T,
   wait: number,
-  options: UseDebouncedStateOptions = { leading: false }
+  options: UseDebouncedStateOptions = { leading: false },
 ): UseDebouncedStateReturnValue<T> {
   const [value, setValue] = useState(defaultValue);
   const timeoutRef = useRef<number | null>(null);
@@ -32,7 +41,7 @@ export function useDebouncedState<T = any>(
       }
       leadingRef.current = false;
     },
-    [options.leading]
+    [options.leading],
   );
 
   return [value, debouncedSetValue] as const;
