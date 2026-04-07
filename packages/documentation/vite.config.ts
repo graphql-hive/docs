@@ -46,6 +46,7 @@ export default defineConfig(async ({ command }) => ({
               wrangler: {
                 assets: {
                   html_handling: "drop-trailing-slash",
+                  run_worker_first: true,
                 },
               },
             }

@@ -230,7 +230,23 @@ function aliasRequest(
   env: CloudflareEnv,
   context: CloudflareContext,
 ) {
-  if (!baseURL || hasBasePath(url.pathname)) {
+  if (!baseURL) {
+    return request;
+  }
+
+  if (hasBasePath(url.pathname)) {
+    // For base-path requests that prefer markdown, rewrite to the llms.mdx
+    // route so the request doesn't get served as prerendered HTML by nitro.
+    const strippedPathname = stripBasePath(url.pathname);
+    if (shouldAliasMarkdownDocs(request, strippedPathname)) {
+      const nextURL = new URL(request.url);
+      nextURL.pathname = withBasePath(
+        `/llms.mdx${normalizeDocsPathname(strippedPathname)}`,
+      );
+      const aliasedRequest = new Request(nextURL, request);
+      augmentReq(aliasedRequest, { context, env });
+      return aliasedRequest;
+    }
     return request;
   }
 
@@ -332,10 +348,8 @@ async function tryServeAsset(
   env: CloudflareEnv,
   context: CloudflareContext,
   requestURL: URL,
-  isAliasedRequest: boolean,
 ): Promise<Response | undefined> {
   if (
-    !isAliasedRequest ||
     !env.ASSETS ||
     !shouldTryAssetRequest({
       baseURL,
@@ -409,7 +423,6 @@ export default createHandler({
       env,
       context,
       requestURL,
-      isAliasedRequest,
     );
     if (assetResponse) {
       return rewriteAliasedResponse(

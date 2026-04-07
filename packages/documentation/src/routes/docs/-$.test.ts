@@ -240,6 +240,27 @@ describe("Accept header negotiation", () => {
     const text = await res.text();
     expect(text).toContain("<!DOCTYPE html>");
   });
+
+  test("Accept: text/markdown works with base-path prefix", async () => {
+    const res = await fetch(`${BASE_URL}/graphql/hive/docs/gateway`, {
+      headers: { Accept: "text/markdown" },
+      redirect: "follow",
+    });
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toBe("text/markdown");
+    const text = await res.text();
+    expect(text).toContain("---");
+    expect(text).toContain("title:");
+  });
+
+  test("Accept: text/plain works with base-path prefix", async () => {
+    const res = await fetch(`${BASE_URL}/graphql/hive/docs`, {
+      headers: { Accept: "text/plain" },
+      redirect: "follow",
+    });
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toBe("text/markdown");
+  });
 });
 
 describe("prerendered HTML routing", () => {
