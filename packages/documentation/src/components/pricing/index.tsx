@@ -96,6 +96,7 @@ export function Pricing({ className }: { className?: string }): ReactElement {
 
         <PricingSlider
           className="mt-6 lg:mt-12"
+          showEnterpriseHint={highlightedPlan === 'Enterprise'}
           onChange={(value) => {
             setCurrentValue(value)
             const newPlan =
