@@ -2,63 +2,70 @@
 title: GraphQL Codegen Update, April 2026  - Operations and Client Preset v6
 authors: eddeee888
 tags: [graphql, graphql-codegen, client, operations, code generation]
-date: 2025-04-30
+date: 2026-04-30
 description: GraphQL Codegen April 2026 update brings fundamental changes to how client types work - less generated code, better type correctness and defaults, fewer dependencies, and simpler setup.
 ---
 
-GraphQL Codegen [typescript-operations](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-operations) and [client-preset](https://the-guild.dev/graphql/codegen/plugins/presets/preset-client) v6 has been released with a hollistic review of dependencies, config options, and plugin interoperability to improve Developer Experience for our users:
+[typescript-operations](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-operations) and [client-preset](https://the-guild.dev/graphql/codegen/plugins/presets/preset-client) v6 are now available, with a holistic overhaul of dependencies, configuration, and plugin interoperability to improve the developer experience.
 
 - Less generated code
 - Better type correctness and defaults
 - Fewer dependencies, and simpler setup
 
-<Callout type="info" emoji="🤝">
+<Callout type="info">
 This release is the result of the close collaboration between The Guild and [Igor Kusakov](https://www.linkedin.com/in/igor-kusakov-aa19636/) from [Yelp](https://www.yelp.com/), with thoughtful input from the wider GraphQL community.
 
-My DM is always open for ideas and feedback: [X](https://x.com/eddeee888),
-[LinkedIn](https://www.linkedin.com/in/eddeee888/), [GraphQL Discord](https://discord.com/channels/625400653321076807/631489733750423599) 🙂
+Feel free to reach out with ideas or feedback: [X](https://x.com/eddeee888),
+[LinkedIn](https://www.linkedin.com/in/eddeee888/), [GraphQL Discord](https://discord.com/channels/625400653321076807/631489733750423599)
 
 </Callout>
 
 ## The main change
 
-Previously, the low-level [typescript plugin](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript) was used to generate all schema types, and the `typescript-operations` plugin referred to the schema types in its Input and Variables types. This approach led to a few problems:
+Previously, the low-level [typescript plugin](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript) was used to generate all schema types, and the `typescript-operations` plugin referenced those types for input and variables types.
 
-- All schema types were generated, even if unused
-  - Impact: Unncessarily large generated files and extraneous types, which caused confusion to users.
-- Client and server plugins were indirectly tied together
-  - Examples:
-    - `typescript` plugin's default options were created to work for both client and server, but not optimised for either. This meant users must eventually tweaked the default config for their client use case.
-    - Any attempt to reduce the generated schema types most likely touch the `typescript` plugin, which impacted the server plugin [`typescript-resolvers`](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-resolvers), because they both relied on the same generated type.
-  - Impact: Slower feature turnaround, because contributors working on the client use case needed to tip-toe to avoid impacting the server use case.
-- Ways to setup Codegen config were numerous, with some requiring external plugins/presets with fragile integration
-  - Impact: Verbose Codegen config, added dependencies to maintain e.g. [import-types preset](https://the-guild.dev/graphql/codegen/plugins/presets/import-types-preset)
+This caused a few issues:
 
-Now, `typescript-operations` and `client-preset` v6 were built with fundamental changes to solve the mentioned problems:
+- **All schema types were generated, even if unused**
+  - Result: unnecessarily large output and confusing, extraneous types
+- **Client and server plugins were indirectly coupled**
+  - Result: slower iteration, as changes risked breaking other use cases
+- **Configuration options were numerous, yet fragmented**
+  - Result: verbose setups and reliance on additional plugins/presets
 
-- Generate schema types only when used
-- Decouple completely from `typescript` and `typescript-resolvers`
-- Improve Built-in support for setups commonly used by the community: one-file, multi-file, near-operation-file setups
+With v6, `typescript-operations` and `client-preset` are redesigned to address these problems:
 
-## Other changes
+- Generate schema types only when they are actually used
+- Fully decouple from `typescript` and `typescript-resolvers`
+- Provide better built-in support for common setups: one-file, multi-file, and near-operation-file. Read [typescript-operations setups](https://the-guild.dev/graphql/codegen/docs/migration/operations-and-client-preset-from-5-0#typescript-operations)
 
-We also take the opportunity to make various improvements, and fix tricky bugs:
+### Other notable changes
 
-- Make migration path from Apollo Tooling to GraphQL Codegen easier
-- Set better defaults for scalar types
-- Remove rarely used option: `preResolveTypes`
-- Revamp shared options to better match client usage: `avoidOptionals` and `inputMaybeValue`
-- Ensure result fields are never optional, unless deferred or conditional
-- Improve typings for `@skip` / `@include` directives
-- Fix errors silently failing by default
-- Ensure consistent naming convention for `enumValues` imports and references
-- Change `client-preset` default hash algorithm to SHA256
-- Add usage warnings for internal utility types: `Exact` and `Incremental`
-- Update dependencies to latest versions (some are now ESM-only)
+- Default persisted document hash algorithm is now SHA-256
+- Improve type correctness and defaults: scalars, `@skip`/`@include` directives, field nullability
+- Option revamps: `avoidOptionals`, `enumValues`, removed `preResolveTypes`
+- CLI errors no longer fail silently
+- Packages are ESM-first
+
+Read [v6 migration guide](https://the-guild.dev/graphql/codegen/docs/migration/operations-and-client-preset-from-5-0)
+
+## Bonus: support migrating from Apollo Tooling to GraphQL Codegen
+
+GraphQL Codegen now supports migrating from [Apollo Tooling](https://github.com/apollographql/apollo-tooling) (`apollo client:codegen`).
+
+This includes:
+
+- `near-operation-file` preset compatibility
+- Enum type compatibility
+- Matching type naming conventions
+
+Existing Apollo Tooling projects can switch with minimal manual changes.
+
+Read [migration guide from Apollo Tooling to GraphQL Codegen](https://the-guild.dev/graphql/codegen/docs/migration/apollo-tooling)
 
 ## Resources
 
-- v6 Migration Guide: https://the-guild.dev/graphql/codegen/docs/migration/operations-and-client-preset-from-5-0
-- Apollo Tooling to GraphQL Codegen Migration Guide: https://the-guild.dev/graphql/codegen/docs/migration/apollo-tooling
-- Original RFC: https://github.com/dotansimha/graphql-code-generator/issues/10479
-- Feature branch: https://github.com/dotansimha/graphql-code-generator/pull/10496
+- [v6 Migration Guide](https://the-guild.dev/graphql/codegen/docs/migration/operations-and-client-preset-from-5-0)
+- [Apollo Tooling to GraphQL Codegen Migration Guide](https://the-guild.dev/graphql/codegen/docs/migration/apollo-tooling)
+- [Original RFC](https://github.com/dotansimha/graphql-code-generator/issues/10479)
+- [Feature branch](https://github.com/dotansimha/graphql-code-generator/pull/10496)
