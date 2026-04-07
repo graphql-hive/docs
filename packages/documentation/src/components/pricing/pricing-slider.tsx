@@ -10,13 +10,15 @@ import { Slider } from "../slider";
 export function PricingSlider({
   className,
   onChange,
+  showEnterpriseHint = true,
   ...rest
 }: {
   className?: string;
   onChange: (value: number) => void;
+  showEnterpriseHint: boolean;
 }) {
   const min = 1;
-  const max = 300;
+  const max = 1000;
 
   const [popoverOpen, setPopoverOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -32,38 +34,33 @@ export function PricingSlider({
       style={
         {
           "--ops": min,
-          "--price": "calc(10 + var(--ops) * 10)",
         } as React.CSSProperties
       }
       {...rest}
     >
       <div
         aria-hidden
-        className="text-green-1000 flex flex-wrap items-center text-2xl font-medium md:h-12 md:w-[calc(100%-260px)]"
+        className="text-green-1000 flex flex-wrap items-center font-medium md:h-12 md:w-[calc(100%-260px)]"
       >
-        <div className="relative min-w-[clamp(calc(60.95px+14.47px*round(down,log(max(var(--ops),1),10),1)),(2-var(--ops))*111px,111px)] max-w-[clamp(calc(60.95px+14.47px*round(down,log(max(var(--ops),1),10),1)),(2-var(--ops))*111px,111px)] shrink grow motion-safe:transition-all">
-          <div className="flex w-full whitespace-pre rounded-[40px] bg-blue-300 px-3 py-1 tabular-nums leading-8 opacity-[calc(var(--ops)-1)] duration-[calc(clamp(0,var(--ops)-1,1)*350ms)] before:tracking-[-0.12em] before:content-[''_counter(ops)_'_'] motion-safe:transition-all">
+        <div className="w-full text-2xl">
+          How many operations per month do you need?
+        </div>
+      </div>
+      <div className="text-green-1000 flex flex-wrap items-center font-medium md:h-12 md:w-[calc(100%-260px)] text-lg">
+        <div>
+          <div className="flex w-full whitespace-pre rounded-[40px] bg-blue-300 px-3 py-1 tabular-nums leading-8 duration-[calc(clamp(0,var(--ops)-1,1)*350ms)] before:tracking-[-0.12em] before:content-[''_counter(ops)_'_'] motion-safe:transition-all">
             M
           </div>
-          <div className="absolute left-0 top-0 whitespace-pre leading-10 opacity-[calc(2-var(--ops))] duration-[calc(clamp(0,2-var(--ops),1)*350ms)] motion-safe:transition">
-            How many
-          </div>
         </div>
-        <div className="shrink-0 whitespace-pre"> operations </div>
         <div className="whitespace-pre [@media(width<900px)]:hidden">
-          per month{" "}
+          {" "}
+          operations per month{" "}
         </div>
-        <div className="whitespace-pre opacity-[calc(2-var(--ops))] duration-350 motion-safe:transition">
-          do you need?
-        </div>
-        <div className="grow-[1.5] ease-in motion-safe:transition-all" />
       </div>
-      <div className="text-green-1000 flex items-center gap-5 pt-12 text-sm">
+      <div className="text-green-1000 flex items-center gap-5 pt-4 text-sm">
         <span className="font-medium">{min}M</span>
         <Slider
           aria-label="How many operations per month do you need?"
-          counter="after:content-['$'_counter(price)_'_/_month'] after:[counter-set:price_calc(var(--price))]"
-          deadZone="16px"
           defaultValue={min}
           max={max}
           min={min}
@@ -74,8 +71,17 @@ export function PricingSlider({
           }}
           step={1}
         />
-        <span className="font-medium">{max}M</span>
+        <span className="font-medium">{formatMillionsOrBillions(max)}</span>
       </div>
+
+      {showEnterpriseHint && (
+        <div className="mt-3 max-w-[600px]">
+          <div className="font-bold">Consider using our Enterprise plan.</div>
+          For volumes over 300M operations per month, our Enterprise plan is
+          cheaper, with bulk discounts, dedicated support, and custom SLAs. It
+          also makes scaling past 1 billion operations much more cost-effective.
+        </div>
+      )}
 
       {/* Native tooltip/popover to replace Radix Tooltip */}
       <div className="relative mt-6 md:absolute md:right-8 md:top-8 md:mt-0">
@@ -89,7 +95,7 @@ export function PricingSlider({
           <BookIcon /> Learn about operations
         </CallToAction>
         {popoverOpen && (
-          <div className="border-beige-400 bg-beige-100 text-green-1000 absolute bottom-full left-1/2 z-50 mb-2 max-w-[328px] -translate-x-1/2 overflow-visible rounded-2xl border px-4 py-3 shadow-md sm:max-w-[420px]">
+          <div className="border-beige-400 bg-beige-100 text-green-1000 absolute bottom-full left-1/2 z-50 mb-2 md:min-w-[300px] max-w-[328px] -translate-x-1/2 overflow-visible rounded-2xl border px-4 py-3 shadow-md sm:max-w-[420px]">
             Every GraphQL request that is processed by your GraphQL API and
             reported to GraphQL Hive. If your server receives 1M GraphQL
             requests, all of them will be reported to Hive (assuming no
@@ -99,4 +105,11 @@ export function PricingSlider({
       </div>
     </div>
   );
+}
+
+function formatMillionsOrBillions(num: number) {
+  if (num % 1000 !== 0) {
+    return `${num}M`;
+  }
+  return `${num / 1000}B`;
 }

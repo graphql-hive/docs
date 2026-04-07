@@ -1,5 +1,6 @@
 "use client";
 
+import { useDebouncedState } from "@/lib/hooks/use-debounced-state";
 import { CallToAction } from "@hive/design-system/call-to-action";
 import { cn } from "@hive/design-system/cn";
 import { ContactButton, ContactTextLink } from "@hive/design-system/contact-us";
@@ -75,6 +76,7 @@ export function Pricing({ className }: { className?: string }): ReactElement {
   type PlanType = "Enterprise" | "Hobby" | "Pro";
 
   const [highlightedPlan, setHighlightedPlan] = useState<PlanType>("Hobby");
+  const [currentValue, setCurrentValue] = useDebouncedState(1, 2);
   const scrollviewRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -95,8 +97,9 @@ export function Pricing({ className }: { className?: string }): ReactElement {
         <PricingSlider
           className="mt-6 lg:mt-12"
           onChange={(value) => {
+            setCurrentValue(value);
             const newPlan =
-              value === 1 ? "Hobby" : value < 280 ? "Pro" : "Enterprise";
+              value === 1 ? "Hobby" : value <= 300 ? "Pro" : "Enterprise";
             if (newPlan !== highlightedPlan) {
               setHighlightedPlan(newPlan);
               if (!scrollviewRef.current) return;
@@ -145,6 +148,7 @@ export function Pricing({ className }: { className?: string }): ReactElement {
               });
             }
           }}
+          showEnterpriseHint={highlightedPlan === "Enterprise"}
         />
 
         <div
@@ -279,15 +283,14 @@ export function Pricing({ className }: { className?: string }): ReactElement {
             highlighted={highlightedPlan === "Pro"}
             name="Pro"
             price={
-              <Tooltip content="Base price charged monthly">
-                $20
+              <Tooltip content="$20 base price + $10 per million operations">
+                ${20 + (currentValue - 1) * 10}
                 <span className="text-base/normal text-green-800">
                   {" "}
                   / month
                 </span>
               </Tooltip>
             }
-            startingFrom
           />
           <PlanCard
             adjustable
