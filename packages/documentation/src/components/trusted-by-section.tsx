@@ -27,7 +27,12 @@ export function TrustedBySection(props: React.HTMLAttributes<HTMLElement>) {
         >
           <HemnetLogo height={32} title="Hemnet" />
         </Anchor>
-        <SoundYXZLogo height={32} title="SoundXYZ" />
+        <Anchor
+          className="hover:bg-beige-100 dark:bg-neutral-800 px-3 py-2 -my-2 -mx-3 rounded-lg"
+          href="/case-studies/sound-xyz"
+        >
+          <SoundYXZLogo height={32} title="SoundXYZ" />
+        </Anchor>
       </div>
     </div>
   );
