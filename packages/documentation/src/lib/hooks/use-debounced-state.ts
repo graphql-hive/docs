@@ -26,10 +26,11 @@ export function useDebouncedState<T>(
   const timeoutRef = useRef<ReturnType<typeof globalThis.setTimeout>>(null);
   const leadingRef = useRef(true);
 
-  const clearTimeout = useCallback(
-    () => timeoutRef.current && globalThis.clearTimeout(timeoutRef.current),
-    [],
-  );
+  const clearTimeout = useCallback(() => {
+    if (timeoutRef.current) {
+      globalThis.clearTimeout(timeoutRef.current);
+    }
+  }, []);
   useEffect(() => clearTimeout, [clearTimeout]);
 
   const debouncedSetValue = useCallback(
