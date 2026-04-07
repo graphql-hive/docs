@@ -184,6 +184,16 @@ The protocols used between the router and subgraphs are independent from those u
 
 If a client requests a subscription over an unsupported transport, the router returns `406 Not Acceptable`.
 
+## Deduplication
+
+Subscriptions participate in the same inbound deduplication mechanism as queries. When multiple clients subscribe to the same operation with the same deduplication parameters, the router opens exactly one upstream subgraph connection and fans events out to all connected clients via a broadcast channel.
+
+See [Inbound Deduplication](/docs/router/guides/performance-tuning#inbound-deduplication) for how to enable and configure it.
+
+## Schema Reload
+
+When a new supergraph schema is loaded, the router closes all active subscriptions before the schema is swapped in. Each client receives a final error event with the `SUBSCRIPTION_SCHEMA_RELOAD` error code. Clients are expected to handle this code by reconnecting and re-subscribing. After reconnecting, the subscription runs against the new schema.
+
 ## Configuration
 
 Subscriptions are disabled by default. To enable them, set `enabled: true` in the `subscriptions` section of your router configuration:
@@ -198,3 +208,38 @@ You can also enable subscriptions using the `SUBSCRIPTIONS_ENABLED` environment 
 ```bash
 SUBSCRIPTIONS_ENABLED=true
 ```
+
+### Broadcast Capacity
+
+Controls the buffer size of the internal broadcast channel used to fan subscription events out to clients.
+
+When a consumer falls behind and the buffer fills up, it skips missed messages and continues from
+the latest available event. The consumer is not disconnected - there is a trace log when this
+happens. Increase this value if consumers are frequently falling behind on high-throughput
+subscriptions.
+
+```yaml
+subscriptions:
+  enabled: true
+  broadcast_capacity: 64 # defaults to 32
+```
+
+### Long-Lived Client Limit
+
+HTTP streaming responses (SSE, Incremental Delivery, Multipart HTTP) and WebSocket connections are
+long-lived - they hold an open connection for the duration of the subscription. To protect the
+router from resource exhaustion, a global limit caps the number of these connections that can be
+active at the same time. Regular HTTP requests (queries and mutations) are not counted toward this
+limit.
+
+When the limit is reached, new long-lived connection attempts are rejected with
+`503 Service Unavailable` and a `Retry-After: 5` response header. The limit defaults to `128` and
+is configurable via [`traffic_shaping.router.max_long_lived_clients`](/docs/router/configuration/traffic_shaping#routermax_long_lived_clients):
+
+```yaml
+traffic_shaping:
+  router:
+    max_long_lived_clients: 256
+```
+
+Set it to `0` to disable the limit entirely.
