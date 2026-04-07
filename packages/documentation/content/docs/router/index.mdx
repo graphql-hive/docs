@@ -42,9 +42,20 @@ make sure it plays nicely with the rest of the federation ecosystem.
 Check out our compliance testing:
 **[Federation Gateway Audit](https://the-guild.dev/graphql/hive/federation-gateway-audit)**.
 
+## Plugin System
+
+Hive Router supports custom plugins written in Rust, giving you full control over the request
+lifecycle. Plugins can intercept HTTP requests, modify GraphQL operations, hook into the query
+planner, and much more - all with the performance and safety guarantees of Rust.
+
+Learn how to build and integrate your own plugin:
+**[Plugin System](/docs/router/plugin-system)**.
+
 ## Getting Started
 
 - **[Getting Started](/docs/router/getting-started)** - Install and run the router in just a few
   minutes.
 - **[Configuration Reference](/docs/router/configuration)** - Explore all the ways you can customize
   the router for your needs.
+- **[Plugin System](/docs/router/plugin-system)** - Extend the router with custom plugins written in
+  Rust to add new features, modify behavior, or integrate with external services.
