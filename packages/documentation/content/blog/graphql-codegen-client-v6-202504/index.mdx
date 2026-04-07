@@ -12,7 +12,7 @@ GraphQL Codegen [typescript-operations](https://the-guild.dev/graphql/codegen/pl
 - Better type correctness and defaults
 - Fewer dependencies, and simpler setup
 
-## What changed?
+## The main change
 
 Previously, the low-level [typescript plugin](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript) was used to generate all schema types, and the `typescript-operations` plugin referred to the schema types in its Input and Variables types. This approach led to a few problems:
 
@@ -28,11 +28,21 @@ Previously, the low-level [typescript plugin](https://the-guild.dev/graphql/code
 
 Now, `typescript-operations` and `client-preset` v6 were built with fundamental changes to solve the mentioned problems:
 
-- Generates schema types only when used
-- Fully decoupled from `typescript` and `typescript-resolvers`
-- Built-in support for setups commonly used by the community: one-file, multi-file, near-operation-file setups
+- Generate schema types only when used
+- Decouple completely from `typescript` and `typescript-resolvers`
+- Improve Built-in support for setups commonly used by the community: one-file, multi-file, near-operation-file setups
 
-## Other changes - TODO
+## Other changes
 
-- ESM dependencies
-- `client-preset`'s default hash algorithm is SHA256
+We also take the opportunity to make various improvements, and fix tricky bugs:
+
+- Set better defaults for scalar types
+- Remove rarely used option: `preResolveTypes`
+- Revamp shared options to better match client usage: `avoidOptionals` and `inputMaybeValue`
+- Ensure result fields are never optional, unless deferred or conditional
+- Improve typings for `@skip` / `@include` directives
+- Fix errors silently failing by default
+- Ensure consistent naming convention for `enumValues` imports and references
+- Change `client-preset` default hash algorithm to SHA256
+- Add usage warnings for internal utility types: `Exact` and `Incremental`
+- Update dependencies to latest versions (some are now ESM-only)
