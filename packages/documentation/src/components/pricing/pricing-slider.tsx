@@ -6,7 +6,6 @@ import { useRef, useState } from "react";
 
 import { BookIcon } from "../book-icon";
 import { Slider } from "../slider";
-import { Callout } from "fumadocs-ui/components/callout";
 
 export function PricingSlider({
   className,
