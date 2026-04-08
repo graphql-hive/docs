@@ -2,6 +2,7 @@ import {
   HemnetLogo,
   SoundYXZLogo,
   ToastLogo,
+  TrivagoLogo,
   WealthsimpleLogo,
 } from "../company-logos";
 
@@ -12,6 +13,7 @@ export const companyLogos = {
   hemnet: <HemnetLogo height={64} width={212} />,
   "sound-xyz": <SoundYXZLogo height={64} width={193} />,
   toast: <ToastLogo height={64} width={158} />,
+  trivago: <TrivagoLogo height={64} width={212} />,
   wealthsimple: <WealthsimpleLogo height={64} width={212} />,
 };
 
