@@ -203,7 +203,8 @@ threshold, the circuit "opens" and subsequent requests are immediately rejected 
 `SUBGRAPH_CIRCUIT_BREAKER_REJECTED` error — instead of waiting for the subgraph to time out. This
 frees up router resources and gives the subgraph time to recover.
 
-- **Default:** disabled (`null`)
+- **Default:** `circuit_breaker: null` (disabled). Any per-field defaults listed below apply only
+  when a `circuit_breaker` object is provided.
 
 ### How It Works
 
