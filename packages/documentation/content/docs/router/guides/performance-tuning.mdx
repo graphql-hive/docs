@@ -210,10 +210,10 @@ frees up router resources and gives the subgraph time to recover.
 
 The circuit breaker has three states:
 
-| State         | Behaviour                                                                                         |
-| ------------- | ------------------------------------------------------------------------------------------------- |
-| **Closed**    | Normal operation — all requests pass through.                                                     |
-| **Open**      | Requests are immediately rejected. No traffic reaches the subgraph.                               |
+| State         | Behaviour                                                                                            |
+| ------------- | ---------------------------------------------------------------------------------------------------- |
+| **Closed**    | Normal operation — all requests pass through.                                                        |
+| **Open**      | Requests are immediately rejected. No traffic reaches the subgraph.                                  |
 | **Half-open** | After `reset_timeout`, one probe request is allowed. Success closes the circuit; failure reopens it. |
 
 The circuit transitions from **closed → open** once both conditions are met:
@@ -228,17 +228,17 @@ traffic_shaping:
   all:
     circuit_breaker:
       enabled: true
-      error_threshold: 50%    # open when ≥ 50% of requests fail
-      volume_threshold: 5    # evaluate after at least 5 requests
-      reset_timeout: 30s     # retry after 30s
+      error_threshold: 50% # open when ≥ 50% of requests fail
+      volume_threshold: 5 # evaluate after at least 5 requests
+      reset_timeout: 30s # retry after 30s
 ```
 
-| Option             | Type      | Default | Description                                                         |
-| ------------------ | --------- | ------- | ------------------------------------------------------------------- |
-| `enabled`          | `boolean` | `false` | Enable or disable the circuit breaker.                              |
-| `error_threshold`  | `string`  | `50%`   | Error rate percentage that triggers the breaker (e.g. `50%`).       |
-| `volume_threshold` | `integer` | `5`     | Minimum request count before the error rate is evaluated.           |
-| `reset_timeout`    | `string`  | `30s`   | Duration the circuit stays open before allowing a probe request.    |
+| Option             | Type      | Default | Description                                                      |
+| ------------------ | --------- | ------- | ---------------------------------------------------------------- |
+| `enabled`          | `boolean` | `false` | Enable or disable the circuit breaker.                           |
+| `error_threshold`  | `string`  | `50%`   | Error rate percentage that triggers the breaker (e.g. `50%`).    |
+| `volume_threshold` | `integer` | `5`     | Minimum request count before the error rate is evaluated.        |
+| `reset_timeout`    | `string`  | `30s`   | Duration the circuit stays open before allowing a probe request. |
 
 ### Global vs Per-Subgraph Configuration
 
