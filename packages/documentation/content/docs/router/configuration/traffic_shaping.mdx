@@ -109,9 +109,9 @@ traffic_shaping:
 
 ## Outbound Options
 
-The following options (`dedupe_enabled`, `pool_idle_timeout`, and `request_timeout`) can be set
-globally for all subgraphs or overridden on a per-subgraph basis by nesting them under the
-subgraph's name within the `traffic_shaping` map.
+The following options (`circuit_breaker`, `dedupe_enabled`, `pool_idle_timeout`, and
+`request_timeout`) can be set globally for all subgraphs or overridden on a per-subgraph basis by
+nesting them under the subgraph's name within the `traffic_shaping` map.
 
 For example, the following example shows how to set global defaults and override them for a specific
 subgraph named `products`:
@@ -125,6 +125,70 @@ traffic_shaping:
     products:
       dedupe_enabled: false
       pool_idle_timeout: 120s
+```
+
+### `circuit_breaker`
+
+- **Type:** `object | null`
+- **Default:** `null` (disabled)
+
+Enables the circuit breaker pattern for subgraph requests. When the error rate of requests to a
+subgraph exceeds the configured threshold, the circuit breaker opens and subsequent requests are
+immediately rejected with an error — instead of waiting for the subgraph to respond. After the
+`reset_timeout` elapses, the circuit enters a half-open state and allows a probe request through. If
+that request succeeds, the circuit closes again.
+
+For a detailed explanation and tuning guidance see the
+[Circuit Breaker section](/docs/router/guides/performance-tuning#circuit-breaker) of the Performance
+Tuning guide.
+
+#### `circuit_breaker.enabled`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+Enables or disables the circuit breaker for the subgraph(s).
+
+#### `circuit_breaker.error_threshold`
+
+- **Type:** `number`
+- **Default:** `0.5`
+
+The error rate (as a fraction between `0.0` and `1.0`) above which the circuit breaker opens. For
+example, `0.5` means the circuit trips when 50% or more of requests in the evaluation window fail.
+
+#### `circuit_breaker.volume_threshold`
+
+- **Type:** `integer`
+- **Default:** `5`
+
+The minimum number of requests that must be observed before the circuit breaker starts evaluating
+the error rate. This prevents the circuit from tripping due to a small number of failures during
+low-traffic periods.
+
+#### `circuit_breaker.reset_timeout`
+
+- **Type:** `string`
+- **Default:** `30s`
+
+The duration the circuit breaker stays open before transitioning to a half-open state to probe
+whether the subgraph has recovered. Accepts a duration string (e.g. `30s`, `1m`).
+
+**Example — global circuit breaker with a per-subgraph override:**
+
+```yaml title="router.config.yaml"
+traffic_shaping:
+  all:
+    circuit_breaker:
+      enabled: true
+      error_threshold: 0.5
+      volume_threshold: 5
+      reset_timeout: 30s
+  subgraphs:
+    payments:
+      circuit_breaker:
+        enabled: true
+        volume_threshold: 3 # more sensitive for the payments subgraph
 ```
 
 ### `dedupe_enabled`
