@@ -227,7 +227,7 @@ traffic_shaping:
   all:
     circuit_breaker:
       enabled: true
-      error_threshold: 0.5   # open when ≥ 50 % of requests fail
+      error_threshold: 50%    # open when ≥ 50% of requests fail
       volume_threshold: 5    # evaluate after at least 5 requests
       reset_timeout: 30s     # retry after 30 s
 ```
@@ -235,7 +235,7 @@ traffic_shaping:
 | Option             | Type      | Default | Description                                                         |
 | ------------------ | --------- | ------- | ------------------------------------------------------------------- |
 | `enabled`          | `boolean` | `false` | Enable or disable the circuit breaker.                              |
-| `error_threshold`  | `number`  | `0.5`   | Error-rate fraction (0.0–1.0) that triggers the breaker.            |
+| `error_threshold`  | `string`  | `50%`   | Error rate percentage that triggers the breaker (e.g. `50%`).       |
 | `volume_threshold` | `integer` | `5`     | Minimum request count before the error rate is evaluated.           |
 | `reset_timeout`    | `string`  | `30s`   | Duration the circuit stays open before allowing a probe request.    |
 
@@ -255,7 +255,7 @@ traffic_shaping:
   all:
     circuit_breaker:
       enabled: true
-      error_threshold: 0.5
+      error_threshold: 50%
       volume_threshold: 5
       reset_timeout: 30s
 ```
@@ -273,13 +273,13 @@ traffic_shaping:
     accounts:
       circuit_breaker:
         enabled: true
-        error_threshold: 0.6
+        error_threshold: 60%
         volume_threshold: 3
         reset_timeout: 10s
     products:
       circuit_breaker:
         enabled: true
-        error_threshold: 0.7
+        error_threshold: 70%
         volume_threshold: 4
         reset_timeout: 15s
 ```
@@ -293,7 +293,7 @@ traffic_shaping:
   all:
     circuit_breaker:
       enabled: true
-      error_threshold: 0.5
+      error_threshold: 50%
       volume_threshold: 10
       reset_timeout: 30s
   subgraphs:
@@ -316,7 +316,7 @@ label so you can track rejection rates per subgraph in your metrics backend.
 ### Tuning Guidelines
 
 - **`error_threshold`** — Lower values make the breaker more sensitive. Start at the default
-  (`0.5`) and tighten it only if you need to protect fragile subgraphs more aggressively.
+  (`50%`) and tighten it only if you need to protect fragile subgraphs more aggressively.
 - **`volume_threshold`** — Keep this high enough to avoid false positives during low-traffic
   periods. A value of `5`–`10` is reasonable for most deployments.
 - **`reset_timeout`** — Should be long enough to give the subgraph time to recover, but short
