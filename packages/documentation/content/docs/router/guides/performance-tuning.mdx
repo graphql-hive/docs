@@ -310,7 +310,7 @@ traffic_shaping:
 ### Metrics
 
 When the circuit breaker rejects a request, the router increments the
-`hive.router.circuit_breaker.rejected_requests` counter. The counter carries a `subgraph_name`
+`hive.router.circuit_breaker.rejected_requests_total` counter. The counter carries a `subgraph_name`
 label so you can track rejection rates per subgraph in your metrics backend.
 
 ### Tuning Guidelines
