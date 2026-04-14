@@ -65,8 +65,8 @@ authorization checks, the same header propagation rules. No special cases for We
 Because WebSocket connections don't carry HTTP headers beyond the initial upgrade handshake, the
 router needs to know where to read headers from. The `headers.source` option controls this:
 
-- **`connection`** - Headers come from the `connection_init` message payload. Recommended for
-  default for most clients.
+- **`connection`** - Headers come from the `connection_init` message payload. Recommended default
+  for most clients.
 - **`operation`** - Headers come from the `headers` field inside each operation's `extensions`.
   Allows per-operation overrides.
 - **`both`** - Headers accepted from both sources. Operation extensions take precedence.
