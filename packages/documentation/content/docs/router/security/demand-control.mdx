@@ -159,7 +159,7 @@ When `requireOneSlicingArgument: false`, the router uses the highest value among
 ```graphql
 type Query {
   cursor(first: Int!): CursorResult!
-    @listSize(slicingArguments: ["first"], sizedFields: ["edges { node }"])
+    @listSize(slicingArguments: ["first"], sizedFields: ["edges"])
 }
 
 type CursorResult {
@@ -190,7 +190,7 @@ query {
 ```
 
 The `sizedFields` config tells the router which nested paths should use the calculated list size.
-`pageInfo` is not multiplied since it's not in `sizedFields`, but `edges { node }` is multiplied by 10.
+`pageInfo` is not multiplied since it's not in `sizedFields`, but `edges` is multiplied by 10.
 
 ### Complete cost calculation example
 
@@ -447,7 +447,7 @@ type Query {
 # Cursor-based pagination
 type Query {
   productConnection(first: Int!): ProductConnection!
-    @listSize(slicingArguments: ["first"], sizedFields: ["edges { node }"])
+    @listSize(slicingArguments: ["first"], sizedFields: ["edges"])
 }
 
 type ProductConnection {
