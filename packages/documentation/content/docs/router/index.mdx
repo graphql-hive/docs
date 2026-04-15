@@ -51,11 +51,29 @@ planner, and much more - all with the performance and safety guarantees of Rust.
 Learn how to build and integrate your own plugin:
 **[Plugin System](/docs/router/plugin-system)**.
 
+## Subscriptions
+
+Hive Router supports federated GraphQL subscriptions out of the box. Clients can receive real-time
+data over [Server-Sent Events](/docs/router/subscriptions/sse),
+[WebSockets](/docs/router/subscriptions/websockets), or
+[HTTP streaming](/docs/router/subscriptions/multipart-http) - and the router handles protocol
+negotiation automatically based on the client's `Accept` header. The transport used between the
+router and your subgraphs is independent from the one your clients use, so each side can speak a
+different protocol.
+
+Federated entity resolution works the same way it does for queries - when a subscription event
+arrives, the router queries any additional subgraphs needed to resolve entity fields and delivers
+the complete result to the client.
+
+Learn more: **[Subscriptions](/docs/router/subscriptions)**.
+
 ## Getting Started
 
 - **[Getting Started](/docs/router/getting-started)** - Install and run the router in just a few
   minutes.
-- **[Configuration Reference](/docs/router/configuration)** - Explore all the ways you can customize
-  the router for your needs.
 - **[Plugin System](/docs/router/plugin-system)** - Extend the router with custom plugins written in
   Rust to add new features, modify behavior, or integrate with external services.
+- **[Subscriptions](/docs/router/subscriptions)** - Enable real-time data updates
+  with Federated GraphQL subscriptions.
+- **[Configuration Reference](/docs/router/configuration)** - Explore all the ways you can customize
+  the router for your needs.

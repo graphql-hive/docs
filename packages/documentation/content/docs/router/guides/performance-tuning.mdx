@@ -93,10 +93,8 @@ independently: **inbound** and **outbound**.
 
 ### Inbound Deduplication
 
-Inbound deduplication (`traffic_shaping.router.dedupe`) operates at the entry point of the
-router. When multiple clients send identical GraphQL `query` operations simultaneously, the router
-executes the operation only once and shares the result with all waiting clients — subgraphs receive
-just a single request regardless of how many clients are waiting.
+Inbound deduplication (`traffic_shaping.router.dedupe`) operates at the entry point of the router
+and applies to both queries and subscriptions.
 
 - **Default:** `false` (opt-in)
 
@@ -107,7 +105,65 @@ traffic_shaping:
       enabled: true
 ```
 
-**Deduplication key**
+#### Queries
+
+When multiple clients send identical GraphQL `query` operations simultaneously, the router
+executes the operation only once and shares the result with all waiting clients - subgraphs receive
+just a single request regardless of how many clients are waiting.
+
+#### Subscriptions
+
+When multiple clients subscribe to the same operation with the same variables, the router opens
+exactly one upstream subgraph connection. Events from that upstream are broadcast to all connected
+clients via a shared channel.
+
+This is fundamentally different from query deduplication because subscriptions are long-lived
+streams. The upstream connection stays open as long as at least one client is subscribed. When
+the upstream finishes or all clients disconnect, the entry is removed and the next matching client
+starts a fresh upstream.
+
+One consequence: **late joiners do not receive replayed events.** A client that joins an
+already-running subscription receives events from the moment it subscribes onward. Events already
+delivered to earlier clients are not replayed.
+
+##### Transport-agnostic deduplication
+
+The fingerprint space is shared between HTTP and WebSocket transports. A subscription started over
+HTTP and an identical one over WebSocket produce the same fingerprint and can deduplicate against
+each other. The same applies to queries: a query sent over WebSocket deduplicates with the same
+query sent over HTTP.
+
+However, the `Accept` header is part of the fingerprint when `headers` is set to `all` (the
+default). HTTP streaming clients send `Accept: text/event-stream` or `Accept: multipart/mixed`
+while WebSocket clients send no `Accept` header, so they produce different fingerprints by default
+and do not deduplicate against each other.
+
+To achieve cross-transport subscription deduplication - where a WebSocket subscription and an SSE
+subscription for the same operation share one upstream connection - configure `headers: none` or
+use an explicit include list that omits transport-specific headers:
+
+```yaml
+traffic_shaping:
+  router:
+    dedupe:
+      enabled: true
+      headers: none
+```
+
+or with an explicit include list:
+
+```yaml
+traffic_shaping:
+  router:
+    dedupe:
+      enabled: true
+      headers:
+        include:
+          - authorization
+          - x-tenant-id
+```
+
+#### Deduplication key
 
 Two requests are considered identical when the following all match:
 
@@ -118,7 +174,7 @@ Two requests are considered identical when the following all match:
 - Schema checksum (prevents sharing across schema reload transitions)
 - Selected request headers (controlled by the `headers` policy below)
 
-**Header policy**
+#### Header policy
 
 By default all headers are included in the fingerprint, so requests with different `Authorization`
 or `Cookie` headers are **not** deduplicated with each other. You can narrow this down:
@@ -170,11 +226,12 @@ traffic_shaping:
 
 - Many clients frequently issue the same popular queries (dashboards, landing pages, product
   listings)
-- You want to reduce overall query execution pressure on your subgraphs under concurrent load
+- Many clients subscribe to the same data (live scoreboards, shared feeds, broadcast events)
+- You want to reduce overall execution pressure on your subgraphs under concurrent load
 
 **When you might leave it disabled:**
 
-- All queries are highly personalised and rarely identical
+- All operations are highly personalised and rarely identical
 - You're debugging and want every request to execute independently
 
 ### Outbound Deduplication

@@ -29,8 +29,12 @@ itself (i.e. how it handles incoming client requests).
 
 Configures inbound in-flight request deduplication. When enabled, identical concurrent
 incoming GraphQL `query` requests are coalesced into a single execution, with the result shared
-among all waiting clients. This is distinct from the outbound `dedupe_enabled`, which
-deduplicates the requests the router sends to subgraphs.
+among all waiting clients. Subscriptions are also deduplicated: N clients subscribing to the same
+operation with the same variables result in exactly one upstream subgraph connection, with events
+fanned out to all connected clients via a broadcast channel.
+
+This is distinct from the outbound `dedupe_enabled`, which deduplicates the requests the router
+sends to subgraphs.
 
 For a detailed explanation and tuning guidance see the
 [Request Deduplication section](/docs/router/guides/performance-tuning#request-deduplication) of
@@ -106,6 +110,25 @@ traffic_shaping:
 </Tabs.Tab>
 
 </Tabs>
+
+### `router.max_long_lived_clients`
+
+- **Type:** `integer`
+- **Default:** `128`
+
+```yaml
+traffic_shaping:
+  router:
+    max_long_lived_clients: 256
+```
+
+Limits the maximum number of concurrent long-lived client connections: WebSocket connections and
+HTTP streaming responses (SSE, Incremental Delivery, Multipart HTTP). When the limit is reached,
+new long-lived connection attempts are rejected with `503 Service Unavailable` and a
+`Retry-After: 5` response header. Regular HTTP requests (queries and mutations) are not affected.
+
+This limit only activates when at least one of WebSocket or Subscriptions is enabled. Setting it
+to `0` disables the limit entirely.
 
 ## Outbound Options
 
