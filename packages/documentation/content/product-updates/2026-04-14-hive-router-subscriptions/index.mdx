@@ -11,6 +11,15 @@ authors: [enisdenjo]
 data across multiple subgraphs, with automatic entity resolution, full protocol coverage, and zero
 special configuration required on the client side.
 
+This is the most complete GraphQL subscriptions implementation available - covering every major
+protocol, transport, and delivery model in the ecosystem. It was built by Denis, the maintainer of
+[graphql-ws](https://github.com/enisdenjo/graphql-ws), [graphql-sse](https://github.com/enisdenjo/graphql-sse),
+and [graphql-http](https://github.com/graphql/graphql-http) - the libraries that power subscriptions
+across most of the GraphQL ecosystem today.
+
+This also means that the [Rust query planner in Hive Gateway](/product-updates/2025-11-17-hive-gateway-rust-query-planner)
+now supports subscriptions as well.
+
 ## All Protocols, One Router
 
 Hive Router covers the entire subscriptions protocol landscape - both for client-to-router and
@@ -131,6 +140,12 @@ and/or WebSocket support:
 websocket:
   enabled: true
 ```
+
+---
+
+Also worth noting if you haven't seen them yet - the [Hive Router plugin system](/product-updates/2026-03-05-hive-router-plugin-system)
+lets you extend and customize the router with native Rust plugins, and the [new Laboratory](/product-updates/2026-01-28-new-laboratory)
+brings a redesigned, editor-driven GraphQL IDE experience.
 
 ---
 
