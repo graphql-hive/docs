@@ -7,9 +7,24 @@ date: 2026-04-14
 authors: [enisdenjo]
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
+
 [Hive Router](/docs/router) now supports **federated GraphQL subscriptions** out of the box. Real-time
 data across multiple subgraphs, with automatic entity resolution, full protocol coverage, and zero
 special configuration required on the client side.
+
+This is the most complete GraphQL subscriptions implementation available - covering every major
+protocol, transport, and delivery model in the ecosystem. It was built by Denis, the maintainer of
+[graphql-ws](https://github.com/enisdenjo/graphql-ws), [graphql-sse](https://github.com/enisdenjo/graphql-sse),
+and [graphql-http](https://github.com/graphql/graphql-http) - the libraries that power subscriptions
+across most of the GraphQL ecosystem today.
+
+<Callout type="info">
+
+This also means that the [Rust Query Planner in Hive Gateway](/docs/gateway/other-features/rust-query-planner)
+now supports subscriptions as well!
+
+</Callout>
 
 ## All Protocols, One Router
 
@@ -131,6 +146,12 @@ and/or WebSocket support:
 websocket:
   enabled: true
 ```
+
+---
+
+Also worth noting if you haven't seen them yet - the [Hive Router plugin system](/product-updates/2026-03-05-hive-router-plugin-system)
+lets you extend and customize the router with native Rust plugins, and the [new Laboratory](/product-updates/2026-01-28-new-laboratory)
+brings a redesigned, editor-driven GraphQL IDE experience.
 
 ---
 
