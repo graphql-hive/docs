@@ -1,0 +1,181 @@
+---
+title: "demand_control"
+---
+
+The `demand_control` configuration controls operation cost estimation and enforcement in Hive
+Router.
+
+For conceptual guidance and rollout strategy, see
+[Demand Control](/docs/router/security/demand-control).
+
+## Options
+
+### `enabled`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+Enables demand-control cost evaluation.
+
+### `max_cost`
+
+- **Type:** `integer`
+- **Format:** `uint64`
+- **Minimum:** `0`
+- **Default:** unset
+
+Global maximum allowed estimated operation cost.
+
+If `max_cost` is unset, demand control runs in measurement mode and does not reject requests by
+global estimated cost.
+
+### `list_size`
+
+- **Type:** `integer`
+- **Format:** `uint`
+- **Minimum:** `0`
+- **Default:** `0`
+
+Fallback list-size assumption used for list-returning fields that do not define `@listSize`.
+
+### `include_extension_metadata`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+When `true`, response `extensions.cost` includes cost metadata such as estimated cost, result code,
+per-subgraph breakdown, and optional actual-cost fields.
+
+### `actual_cost`
+
+Optional configuration for post-execution actual-cost calculation.
+
+#### `actual_cost.mode`
+
+- **Type:** `string`
+- **Allowed values:** `by_subgraph`, `by_response_shape`
+
+Controls how actual cost is calculated:
+
+- `by_subgraph`: Sums actual costs from subgraph responses.
+- `by_response_shape`: Computes cost from the final response shape.
+
+### `subgraph`
+
+Optional per-subgraph demand-control overrides.
+
+#### `subgraph.all`
+
+Defaults applied to all subgraphs unless overridden in `subgraph.subgraphs`.
+
+##### `subgraph.all.max_cost`
+
+- **Type:** `integer`
+- **Format:** `uint64`
+- **Minimum:** `0`
+
+Maximum allowed estimated cost per subgraph.
+
+##### `subgraph.all.list_size`
+
+- **Type:** `integer`
+- **Format:** `uint`
+- **Minimum:** `0`
+
+Fallback list-size assumption per subgraph.
+
+#### `subgraph.subgraphs`
+
+Map of subgraph names to per-subgraph overrides.
+
+##### `subgraph.subgraphs.<name>.max_cost`
+
+- **Type:** `integer`
+- **Format:** `uint64`
+- **Minimum:** `0`
+
+Maximum allowed estimated cost for the named subgraph.
+
+##### `subgraph.subgraphs.<name>.list_size`
+
+- **Type:** `integer`
+- **Format:** `uint`
+- **Minimum:** `0`
+
+Fallback list-size assumption for the named subgraph.
+
+## Behavior
+
+When demand control is enabled:
+
+- The router estimates operation cost before execution.
+- If global `max_cost` is exceeded, the request is rejected with
+  `COST_ESTIMATED_TOO_EXPENSIVE`.
+- If subgraph-level limits are exceeded, the router skips only over-budget subgraphs and continues
+  the rest of the plan. Skipped subgraphs return
+  `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE`.
+- If `actual_cost` is enabled and actual cost exceeds `max_cost`, the response may include
+  `COST_ACTUAL_TOO_EXPENSIVE`.
+
+## Precedence
+
+1. Field-level directives (`@cost`, `@listSize`) apply first.
+2. For list-size fallback:
+   - `subgraph.subgraphs.<name>.list_size`
+   - then `subgraph.all.list_size`
+   - then global `list_size`
+3. For subgraph max cost:
+   - `subgraph.subgraphs.<name>.max_cost`
+   - then `subgraph.all.max_cost`
+4. Global `max_cost` is evaluated on full-operation estimated cost.
+
+## Examples
+
+### Measurement mode
+
+```yaml title="router.config.yaml"
+demand_control:
+  enabled: true
+  list_size: 10
+  include_extension_metadata: true
+```
+
+### Global enforcement
+
+```yaml title="router.config.yaml"
+demand_control:
+  enabled: true
+  max_cost: 500
+  list_size: 10
+  include_extension_metadata: true
+```
+
+### Subgraph-level enforcement
+
+```yaml title="router.config.yaml"
+demand_control:
+  enabled: true
+  max_cost: 5000
+  list_size: 10
+  subgraph:
+    all:
+      max_cost: 1000
+      list_size: 20
+    subgraphs:
+      reviews:
+        max_cost: 300
+      search:
+        max_cost: 150
+        list_size: 5
+```
+
+### Actual-cost calculation
+
+```yaml title="router.config.yaml"
+demand_control:
+  enabled: true
+  max_cost: 500
+  include_extension_metadata: true
+  actual_cost:
+    mode: by_subgraph
+```

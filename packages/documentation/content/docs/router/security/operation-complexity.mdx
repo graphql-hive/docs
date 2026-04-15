@@ -219,3 +219,26 @@ This operation passes a `max_depth` of 2 but would be rejected by a `max_tokens`
 By implementing both `max_depth` and `max_tokens`, you create a more robust defense against a wider
 range of potential operation abuses, ensuring better performance and reliability for your GraphQL
 API.
+
+## Complementary protection with Demand Control
+
+While operation complexity limits protect against structurally complex operations (deeply nested
+requests or operations with many fields), they don't account for the actual computational cost of
+executing an operation. An operation could pass complexity checks but still be expensive to execute
+due to list magnification or costly field resolution.
+
+[Demand Control](/docs/router/security/demand-control) provides a complementary layer of protection
+by estimating and enforcing limits on the actual cost of executing operations, taking into account:
+
+- Field-level costs configured via the `@cost` directive
+- List complexity via the `@listSize` directive
+- Dynamic costs based on resolver arguments
+- Per-subgraph execution costs
+
+For a comprehensive security posture, use both mechanisms together:
+
+- **Operation Complexity Limits** (`max_depth`, `max_tokens`): Prevent structurally complex operations
+- **Demand Control**: Prevent computationally expensive operations
+
+This layered approach ensures that your GraphQL API is protected against both structural attacks and
+cost-based abuse patterns.
