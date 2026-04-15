@@ -13,10 +13,11 @@ computationally expensive regardless of their shape, such as queries that retrie
 resolve costly datasources multiple times.
 
 <Callout title="Complementary to Operation Complexity" type="info">
-Demand Control complements [Operation Complexity](/docs/router/security/operation-complexity) limits.
-While complexity limits prevent structurally complex queries (deeply nested or with many fields),
-Demand Control prevents computationally expensive operations regardless of their structure.
-Use both together for comprehensive protection.
+  Demand Control complements [Operation
+  Complexity](/docs/router/security/operation-complexity) limits. While
+  complexity limits prevent structurally complex queries (deeply nested or with
+  many fields), Demand Control prevents computationally expensive operations
+  regardless of their structure. Use both together for comprehensive protection.
 </Callout>
 
 ## Use cases
@@ -80,7 +81,7 @@ type Query {
 }
 
 type Author {
-  email: String! @cost(weight: 5)  # Email requires database lookup
+  email: String! @cost(weight: 5) # Email requires database lookup
 }
 ```
 
@@ -124,7 +125,8 @@ input SearchInput {
 }
 
 type Query {
-  search(input: SearchInput!): [Book!]! @listSize(slicingArguments: ["input.pagination.first"])
+  search(input: SearchInput!): [Book!]!
+    @listSize(slicingArguments: ["input.pagination.first"])
 }
 
 query {
@@ -138,11 +140,15 @@ The router resolves nested paths (supporting dot notation) to extract the list s
 
 ```graphql
 type Query {
-  allBooks(first: Int, last: Int): [Book!]! @listSize(slicingArguments: ["first", "last"], requireOneSlicingArgument: false)
+  allBooks(first: Int, last: Int): [Book!]!
+    @listSize(
+      slicingArguments: ["first", "last"]
+      requireOneSlicingArgument: false
+    )
 }
 
 query {
-  allBooks(first: 20, last: 30)  # Router uses max(20, 30) = 30
+  allBooks(first: 20, last: 30) # Router uses max(20, 30) = 30
 }
 ```
 
@@ -152,7 +158,8 @@ When `requireOneSlicingArgument: false`, the router uses the highest value among
 
 ```graphql
 type Query {
-  cursor(first: Int!): CursorResult! @listSize(slicingArguments: ["first"], sizedFields: ["edges { node }"])
+  cursor(first: Int!): CursorResult!
+    @listSize(slicingArguments: ["first"], sizedFields: ["edges { node }"])
 }
 
 type CursorResult {
@@ -167,8 +174,17 @@ type Edge {
 
 query {
   cursor(first: 10) {
-    edges { node { title author { name } } }
-    pageInfo { hasNextPage }
+    edges {
+      node {
+        title
+        author {
+          name
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+    }
   }
 }
 ```
@@ -217,7 +233,7 @@ query GetBooks($limit: Int!) {
 Cost breakdown:
 
 - Query base cost: **0**
-- `books` field (composite): **1**  
+- `books` field (composite): **1**
 - Books list multiplier: **5**
   - Within each book:
     - `title` (leaf): **0**
@@ -263,7 +279,7 @@ Reject operations that exceed configured limits:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  max_cost: 500    # Global limit
+  max_cost: 500 # Global limit
   list_size: 10
   include_extension_metadata: true
 ```
@@ -301,8 +317,14 @@ subgraph using `extend schema @link`, alongside your other Federation directives
 
 ```graphql
 extend schema
-  @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@external", "@requires"])
-  @link(url: "https://specs.apollo.dev/federation/v2.9", import: ["@cost", "@listSize"])
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.0"
+    import: ["@key", "@external", "@requires"]
+  )
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.9"
+    import: ["@cost", "@listSize"]
+  )
 ```
 
 You can have multiple `@link` entries — one for your base Federation directives and a separate one
@@ -312,8 +334,14 @@ for the cost directives introduced in v2.9. Each subgraph independently declares
 
 ```graphql
 extend schema
-  @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@external", "@requires"])
-  @link(url: "https://specs.apollo.dev/federation/v2.9", import: ["@cost", "@listSize"])
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.0"
+    import: ["@key", "@external", "@requires"]
+  )
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.9"
+    import: ["@cost", "@listSize"]
+  )
 
 type Query {
   books(limit: Int!): [Book!]! @listSize(slicingArguments: ["limit"])
@@ -324,7 +352,7 @@ type Query {
 type Book @key(fields: "id") {
   id: ID!
   title: String!
-  author: Author! @cost(weight: 5)  # Requires a separate DB lookup
+  author: Author! @cost(weight: 5) # Requires a separate DB lookup
 }
 
 type Report @cost(weight: 50) {
@@ -342,7 +370,9 @@ supergraph at startup.
 Override default or estimated costs for fields/types:
 
 ```graphql
-directive @cost(weight: Int!) on ARGUMENT_DEFINITION | ENUM | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | OBJECT | SCALAR
+directive @cost(
+  weight: Int!
+) on ARGUMENT_DEFINITION | ENUM | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | OBJECT | SCALAR
 ```
 
 Examples:
@@ -395,13 +425,17 @@ type Query {
 
 # Single pagination argument
 type Query {
-  productsByPage(pageSize: Int!): [Product!]! @listSize(slicingArguments: ["pageSize"])
+  productsByPage(pageSize: Int!): [Product!]!
+    @listSize(slicingArguments: ["pageSize"])
 }
 
 # Multiple pagination (use highest)
 type Query {
   allProducts(first: Int, last: Int): [Product!]!
-    @listSize(slicingArguments: ["first", "last"], requireOneSlicingArgument: false)
+    @listSize(
+      slicingArguments: ["first", "last"]
+      requireOneSlicingArgument: false
+    )
 }
 
 # Nested pagination argument
@@ -436,26 +470,26 @@ backends:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  max_cost: 5000          # Global limit - entire operation
-  list_size: 10           # Default for unlisted fields
-  
+  max_cost: 5000 # Global limit - entire operation
+  list_size: 10 # Default for unlisted fields
+
   subgraph:
     # Apply defaults to all subgraphs
     all:
-      max_cost: 1000      # Any subgraph can use up to 1000 cost
+      max_cost: 1000 # Any subgraph can use up to 1000 cost
       list_size: 20
-    
+
     # Override for specific subgraphs
     subgraphs:
       search_engine:
-        max_cost: 200     # Search is expensive, stricter limit
+        max_cost: 200 # Search is expensive, stricter limit
         list_size: 5
-      
+
       analytics:
-        max_cost: 500     # Analytics can handle more
-        
+        max_cost: 500 # Analytics can handle more
+
       users:
-        list_size: 50     # Users service handles large lists well
+        list_size: 50 # Users service handles large lists well
 ```
 
 **Behavior when subgraph limit is exceeded:**
@@ -612,7 +646,7 @@ demand_control:
   max_cost: 500
   include_extension_metadata: true
   actual_cost:
-    mode: by_subgraph  # or by_response_shape
+    mode: by_subgraph # or by_response_shape
 ```
 
 ### Calculation modes
@@ -671,18 +705,19 @@ Response if actual cost exceeds limit:
 ```
 
 <Callout type="note">
-Delta analysis is valuable: consistently large deltas indicate your `@cost` weight assignments need
-tuning. For example, if actual costs are always 50% higher than estimated, your weights are too low.
+  Delta analysis is valuable: consistently large deltas indicate your `@cost`
+  weight assignments need tuning. For example, if actual costs are always 50%
+  higher than estimated, your weights are too low.
 </Callout>
 
 ## Error codes and result states
 
-| Code | Phase | Meaning | Response |
-| --- | --- | --- | --- |
-| `COST_OK` | Both | Operation within limits | Data returned normally |
-| `COST_ESTIMATED_TOO_EXPENSIVE` | Pre-execution | Estimated cost exceeds `max_cost` | Request rejected, no subgraph calls made |
-| `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` | Pre-execution | Specific subgraph exceeded its budget | That subgraph skipped, others execute, partial response |
-| `COST_ACTUAL_TOO_EXPENSIVE` | Post-execution | Actual cost exceeds limit after execution | Entire response rejected (if enforcing actual cost) |
+| Code                                    | Phase          | Meaning                                   | Response                                                |
+| --------------------------------------- | -------------- | ----------------------------------------- | ------------------------------------------------------- |
+| `COST_OK`                               | Both           | Operation within limits                   | Data returned normally                                  |
+| `COST_ESTIMATED_TOO_EXPENSIVE`          | Pre-execution  | Estimated cost exceeds `max_cost`         | Request rejected, no subgraph calls made                |
+| `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` | Pre-execution  | Specific subgraph exceeded its budget     | That subgraph skipped, others execute, partial response |
+| `COST_ACTUAL_TOO_EXPENSIVE`             | Post-execution | Actual cost exceeds limit after execution | Entire response rejected (if enforcing actual cost)     |
 
 ## Best practices and patterns
 
@@ -712,7 +747,7 @@ demand_control:
 ```yaml
 demand_control:
   enabled: true
-  max_cost: 1000  # 99th percentile from Phase 1
+  max_cost: 1000 # 99th percentile from Phase 1
   list_size: 10
   include_extension_metadata: true
 ```
@@ -749,15 +784,15 @@ demand_control:
 ```graphql
 # Expensive fields based on actual measurements
 type User {
-  email: String! @cost(weight: 10)        # 2ms - slow database lookup
-  purchaseHistory: [Order!]! @cost(weight: 50)  # 10ms - complex aggregation
-  recommendations: [Product!]! @cost(weight: 100)  # 20ms+ - ML inference
+  email: String! @cost(weight: 10) # 2ms - slow database lookup
+  purchaseHistory: [Order!]! @cost(weight: 50) # 10ms - complex aggregation
+  recommendations: [Product!]! @cost(weight: 100) # 20ms+ - ML inference
 }
 
 # Cheap fields
 type Order {
-  id: ID!                                  # No additional cost
-  total: Float!                            # In-memory calculation
+  id: ID! # No additional cost
+  total: Float! # In-memory calculation
 }
 ```
 
@@ -784,7 +819,7 @@ type Order {
 Cost formulas are cached by normalized operation hash. Repeated operations become cheaper to evaluate.
 
 - Monitor `formulaCacheHit` in metrics
-- >90% hit rate is healthy (indicates good query reuse)
+- > 90% hit rate is healthy (indicates good query reuse)
 - Low hit rate suggests clients sending distinct query texts for same logical operations
 
 **Disable @skip/@include calculations if not used:**
@@ -796,7 +831,9 @@ If your schema doesn't use `@skip` or `@include`, the router skips variable-awar
 query GetBook($withAuthor: Boolean!) {
   book(id: 1) {
     title
-    author @include(if: $withAuthor) { name }
+    author @include(if: $withAuthor) {
+      name
+    }
   }
 }
 
