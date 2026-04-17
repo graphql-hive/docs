@@ -10,7 +10,7 @@ without re-running query planning and subgraph execution.
 
 Use it to reduce latency, lower subgraph traffic, and improve stability during traffic spikes.
 
-## Before you start
+## Before You Start
 
 <Callout>
   Configure a cache storage in your gateway config first. See [Cache
@@ -43,14 +43,14 @@ With this setup, repeating the same query can be served directly from cache:
 ```bash
 curl -X POST http://localhost:4000/graphql \
   -H "Content-Type: application/json" \
-  -d '{"query":"{ products { id name price } }"}'
+  -d '{"query":"{ slow }"}'
 ```
 
 ## Choose a caching strategy
 
 The same `@cacheControl` directive can be interpreted differently depending on your setup.
 
-### 1) Cache in Hive Gateway (recommended)
+### Cache in Hive Gateway (recommended)
 
 Use Gateway Response Caching when you want both:
 
@@ -59,7 +59,7 @@ Use Gateway Response Caching when you want both:
 
 This works well when your subgraphs expose `@cacheControl` in the supergraph.
 
-### 2) Cache with HTTP headers (`Cache-Control`/`ETag`)
+### Cache with HTTP headers (`Cache-Control`/`ETag`)
 
 If your subgraphs already expose HTTP cache headers, pair that with Gateway HTTP Caching.
 
@@ -68,7 +68,7 @@ If your subgraphs already expose HTTP cache headers, pair that with Gateway HTTP
 
 See [HTTP Caching](/docs/gateway/other-features/performance/http-caching).
 
-### 3) Cache inside each subgraph
+### Cache inside each subgraph
 
 If caching runs only at subgraph level, subgraphs do less work on repeated requests, but the gateway
 still sends requests to subgraphs for each query.
@@ -207,7 +207,7 @@ export const gatewayConfig = defineConfig({
 });
 ```
 
-## Control which requests participate in caching
+## Request-Level Controls
 
 ### Disable caching globally in development
 
