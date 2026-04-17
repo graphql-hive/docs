@@ -239,8 +239,8 @@ When a mutation returns entities, Hive Gateway invalidates cached query results 
 entities.
 
 ```graphql title="mutation"
-mutation UpdateUserName {
-  updateUser(id: "1", newName: "John") {
+mutation UpdateUser {
+  updateUser(id: "1", name: "John") {
     __typename
     id
     name
