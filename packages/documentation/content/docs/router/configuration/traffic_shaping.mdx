@@ -131,14 +131,6 @@ new long-lived connection attempts are rejected with `503 Service Unavailable` a
 This limit only activates when at least one of WebSocket or Subscriptions is enabled. Setting it
 to `0` disables the limit entirely.
 
-## TLS Options
-
-TLS can be configured in `traffic_shaping` for both inbound and outbound traffic:
-
-- `traffic_shaping.router.tls` secures **client ↔ router** communication.
-- `traffic_shaping.all.tls` and `traffic_shaping.subgraphs.<name>.tls` secure
-  **router ↔ subgraph** communication.
-
 ### `router.tls` (Client ↔ Router)
 
 Use this object to make the router serve HTTPS and optionally require client certificates (mTLS).
@@ -172,51 +164,10 @@ traffic_shaping:
         required: true
 ```
 
-### `all.tls` and `subgraphs.<name>.tls` (Router ↔ Subgraphs)
-
-Use these objects to configure TLS for outbound requests from the router to subgraphs.
-
-- `all.tls`: global default TLS config for all subgraphs.
-- `subgraphs.<name>.tls`: per-subgraph override.
-
-Supported fields:
-
-- `cert_file` (optional): Trusted subgraph CA certificate file path, or a list of certificate file
-  paths.
-- `client_auth.cert_file` + `client_auth.key_file` (optional): Router client certificate and key
-  for mTLS to subgraphs.
-- `insecure_skip_ca_verification` (optional, default `false`): Disables server certificate
-  verification.
-
-When both `all.tls` and `subgraphs.<name>.tls` are set, the subgraph config overrides the matching
-global fields. Fields not set in the subgraph config fall back to `all.tls`.
-
-```yaml title="router.config.yaml"
-traffic_shaping:
-  all:
-    tls:
-      cert_file: /etc/router/tls/subgraph-ca.crt
-  subgraphs:
-    payments:
-      tls:
-        cert_file: /etc/router/tls/payments-ca.crt
-    accounts:
-      tls:
-        cert_file: /etc/router/tls/accounts-ca.crt
-        client_auth:
-          cert_file: /etc/router/tls/router-client.crt
-          key_file: /etc/router/tls/router-client.key
-```
-
-<Callout type="warning">
-  `insecure_skip_ca_verification: true` should only be used for local development or controlled
-  testing. It disables verification of subgraph server certificates.
-</Callout>
-
 ## Outbound Options
 
-The following options (`dedupe_enabled`, `pool_idle_timeout`, and `request_timeout`) can be set
-globally for all subgraphs or overridden on a per-subgraph basis by nesting them under the
+The following options (`dedupe_enabled`, `pool_idle_timeout`, `request_timeout`, and `tls`) can be
+set globally for all subgraphs or overridden on a per-subgraph basis by nesting them under the
 subgraph's name within the `traffic_shaping` map.
 
 For example, the following example shows how to set global defaults and override them for a specific
@@ -321,3 +272,44 @@ traffic_shaping:
 
 This example sets a shorter timeout for high-priority requests based on a custom header, and
 configures the `product` subgraph to have a different timeout for requests originating from Europe.
+
+### `tls` (Router ↔ Subgraphs)
+
+Use these objects to configure TLS for outbound requests from the router to subgraphs.
+
+- `all.tls`: global default TLS config for all subgraphs.
+- `subgraphs.<name>.tls`: per-subgraph override.
+
+Supported fields:
+
+- `cert_file` (optional): Trusted subgraph CA certificate file path, or a list of certificate file
+  paths.
+- `client_auth.cert_file` + `client_auth.key_file` (optional): Router client certificate and key
+  for mTLS to subgraphs.
+- `insecure_skip_ca_verification` (optional, default `false`): Disables server certificate
+  verification.
+
+When both `all.tls` and `subgraphs.<name>.tls` are set, the subgraph config overrides the matching
+global fields. Fields not set in the subgraph config fall back to `all.tls`.
+
+```yaml title="router.config.yaml"
+traffic_shaping:
+  all:
+    tls:
+      cert_file: /etc/router/tls/subgraph-ca.crt
+  subgraphs:
+    payments:
+      tls:
+        cert_file: /etc/router/tls/payments-ca.crt
+    accounts:
+      tls:
+        cert_file: /etc/router/tls/accounts-ca.crt
+        client_auth:
+          cert_file: /etc/router/tls/router-client.crt
+          key_file: /etc/router/tls/router-client.key
+```
+
+<Callout type="warning">
+  `insecure_skip_ca_verification: true` should only be used for local development or controlled
+  testing. It disables verification of subgraph server certificates.
+</Callout>
