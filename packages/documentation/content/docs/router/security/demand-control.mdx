@@ -327,7 +327,7 @@ extend schema
   )
 ```
 
-You can have multiple `@link` entries — one for your base Federation directives and a separate one
+You can have multiple `@link` entries; one for your base Federation directives and a separate one
 for the cost directives introduced in v2.9. Each subgraph independently declares what it imports.
 
 **Full subgraph example:**
@@ -362,7 +362,7 @@ type Report @cost(weight: 50) {
 ```
 
 Directives are preserved through composition into the supergraph. The subgraph SDL is the source of
-truth for all cost weights and list-size annotations — the router reads them from the composed
+truth for all cost weights and list-size annotations, and the router reads them from the composed
 supergraph at startup.
 
 ### @cost directive
