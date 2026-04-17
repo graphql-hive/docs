@@ -67,6 +67,21 @@ the complete result to the client.
 
 Learn more: **[Subscriptions](/docs/router/subscriptions)**.
 
+## Observability
+
+In production, you need to see what happens inside your API. Hive Router has built-in observability
+features to help you find problems and keep your GraphQL API stable.
+
+Hive Router supports tracing and metrics. Tracing helps you follow one request across the router and
+subgraphs, so you can find where a request is slow or fails. Metrics help you monitor traffic, error
+rate, latency, cache behavior, and supergraph reloads over time.
+
+You can send tracing and metrics data to Hive Console, to OTLP-compatible backends, or to Prometheus
+(via a scrape endpoint). This lets you use the monitoring tools your team already has.
+
+Learn more: **[OpenTelemetry Tracing](/docs/router/observability/tracing)** and
+**[OpenTelemetry Metrics](/docs/router/observability/metrics)**.
+
 ## Getting Started
 
 - **[Getting Started](/docs/router/getting-started)** - Install and run the router in just a few
