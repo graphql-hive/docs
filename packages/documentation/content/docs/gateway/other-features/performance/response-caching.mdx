@@ -63,7 +63,7 @@ This works well when your subgraphs expose `@cacheControl` in the supergraph.
 
 If your subgraphs already expose HTTP cache headers, pair that with Gateway HTTP Caching.
 
-- This can reduce payload transfer and computation.
+- This can reduce network payload size and computation.
 - Depending on headers/validation flow, it may still require gateway-to-subgraph HTTP requests.
 
 See [HTTP Caching](/docs/gateway/other-features/performance/http-caching).
@@ -250,10 +250,7 @@ mutation UpdateUser {
 }
 ```
 
-If the result includes `User` with `id: "1"`, cached query responses containing that entity are
-invalidated.
-The gateway uses `__typename` and identity fields (by default `id`) from mutation results to match
-and invalidate related cached query entries.
+If the result includes `User` with `id: "1"`, cached query responses containing that entity are invalidated. The gateway uses `__typename` and identity fields (by default `id`) from mutation results to match and invalidate related cached query entries.
 
 Disable this behavior if needed:
 
