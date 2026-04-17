@@ -2,8 +2,8 @@
 title: "persisted_documents"
 ---
 
-The `persisted_documents` configuration controls how Hive Router extracts persisted document IDs and
-resolves them into GraphQL operation text.
+The `persisted_documents` configuration controls how Hive Router reads persisted document IDs and
+maps them to GraphQL operation text.
 
 This is the same concept some tools call **persisted queries** or **trusted documents**.
 
@@ -19,8 +19,8 @@ Type is `boolean` and default is `false`.
 
 ### `require_id`
 
-If `true`, requests must contain a resolvable persisted document ID. If extraction returns no ID,
-router returns `PERSISTED_DOCUMENT_ID_REQUIRED`. Type is `boolean` and default is `false`.
+If `true`, requests must contain a resolvable persisted document ID. If Router cannot extract an
+ID, it returns `PERSISTED_DOCUMENT_ID_REQUIRED`. Type is `boolean` and default is `false`.
 
 ### `log_missing_id`
 
