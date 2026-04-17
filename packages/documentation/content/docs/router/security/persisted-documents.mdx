@@ -28,8 +28,9 @@ model.
 
 Router applies selectors in order and uses the first matching ID.
 
-By default, if `selectors` is not set, Router checks `documentId` in the request body first (or in the query parameters if it's a GET request) and
-then `extensions.persistedQuery.sha256Hash` (Apollo format). You can customize this order and use
+By default, if `selectors` is not set, Router first checks `documentId` (request body for POST,
+query parameter for GET), then `extensions.persistedQuery.sha256Hash` (Apollo format). You can
+customize this order and use
 `json_path` for custom JSON fields, `url_query_param` for query strings such as `?id=...`, or
 `url_path_param` for URL path segments such as `/graphql/:id`.
 
@@ -39,7 +40,7 @@ persisted_documents:
   require_id: true
   selectors:
     - type: url_path_param
-      template: /:id # relative to the graphql endpoint, so effectivelly /graphql/:id
+      template: /:id # relative to the graphql endpoint, so effectively /graphql/:id
     - type: url_query_param
       name: id
   storage:
@@ -47,7 +48,7 @@ persisted_documents:
     path: ./persisted-documents.json
 ```
 
-## Storrage
+## Storage
 
 Hive Router supports two persisted document storage types.
 
@@ -67,13 +68,13 @@ You can configure Hive credentials in `router.config.yaml` or with the `HIVE_CDN
 
 ```bash
 HIVE_CDN_ENDPOINT="https://cdn.graphql-hive.com/artifacts/v1/<target_id>"
-HIVE_CDN_KEY="<cdn access token>""
+HIVE_CDN_KEY="<cdn access token>"
 ```
 
 Router accepts either full app-qualified IDs (`appName~appVersion~documentId`) or a plain
 `documentId`, in which case app name and version are inferred from [client identification headers](/docs/router/configuration/telemetry#client_identification).
 
-In case you're using Apollo Client and its [`clientAwareness` feature](https://www.apollographql.com/docs/kotlin/advanced/client-awareness), please change the name and version headers to those sent by default by Apollo Client and send only plain document id:
+If you are using Apollo Client and its [`clientAwareness` feature](https://www.apollographql.com/docs/react/api/link/apollo-link-client-awareness#configuring-with-apollo-client) or [Apollo Kotlin](https://www.apollographql.com/docs/kotlin/advanced/client-awareness), configure the name and version headers to match the defaults sent by Apollo clients and send only a plain document ID:
 
 ```yaml title="router.config.yaml"
 # Client identification settings
@@ -83,7 +84,7 @@ telemetry:
     version_header: apollographql-client-version
 ```
 
-ID format is validated before requests are sent to CDN, so malformed IDs fail fast with clear
+ID format is validated before requests are sent to CDN, so malformed IDs fail fast with clear errors.
 
 ## Rejecting requests without document id
 
@@ -107,6 +108,6 @@ CDN-like routes) or `url_query_param` for legacy query-string formats.
 
 ## Troubleshooting
 
-- `PERSISTED_DOCUMENT_ID_REQUIRED` - failed to find a valid ID and `require_id` is enabled
-- `PERSISTED_DOCUMENT_NOT_FOUND` - ID was extracted but no matching document exists in storage
-- Hive client identity errors: plain `documentId` was provided without both client name and version
+- `PERSISTED_DOCUMENT_ID_REQUIRED` - no valid ID was extracted - check selector order and where the request sends the ID
+- `PERSISTED_DOCUMENT_NOT_FOUND` - ID was extracted but no matching document exists in storage; verify the ID exists in the manifest or CDN
+- Hive client identity errors - plain `document ID` was provided without both client name and version - set client identification headers or send an app-qualified ID
