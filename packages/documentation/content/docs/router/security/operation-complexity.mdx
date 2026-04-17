@@ -72,7 +72,12 @@ query {
 
 There are a few ways to mitigate this risk which is covered by this documentation.
 
-{/* TODO: Persisted Operations */}
+Another strong protection is **Persisted Documents** (also known as persisted operations or trusted
+documents). With persisted documents, clients send a document ID instead of arbitrary query text,
+and the router resolves only pre-registered operations.
+
+This reduces parsing work and helps block unknown queries before execution. Learn more in
+[Persisted Documents](/docs/router/security/persisted-documents).
 
 ## Reject operations based on the size / tokens
 
