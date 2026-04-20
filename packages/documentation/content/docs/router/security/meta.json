@@ -6,7 +6,7 @@
     "introspection",
     "jwt-authentication",
     "tls",
-    "operation-complexity"
+    "operation-complexity",
     "persisted-documents"
   ]
 }
