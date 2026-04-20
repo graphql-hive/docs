@@ -133,7 +133,7 @@ to `0` disables the limit entirely.
 
 ### `router.tls` (Client ↔ Router)
 
-Use this object to make the router serve HTTPS and optionally require client certificates (mTLS).
+Use this configuration field to make the router serve HTTPS traffic (TLS) and optionally require client certificates (mTLS).
 For a conceptual overview and step-by-step setup, see [TLS & mTLS](/docs/router/security/tls).
 
 - `cert_file` (**required**): Router server certificate file path, or a list of certificate file
@@ -276,7 +276,7 @@ configures the `product` subgraph to have a different timeout for requests origi
 
 ### `tls` (Router ↔ Subgraphs)
 
-Use these objects to configure TLS for outbound requests from the router to subgraphs. For a
+Use these configuration fields to configure TLS for outbound requests from the router to subgraphs. For a
 conceptual overview and step-by-step setup, see [TLS & mTLS](/docs/router/security/tls).
 
 - `all.tls`: global default TLS config for all subgraphs.
