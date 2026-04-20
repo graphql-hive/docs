@@ -65,6 +65,19 @@ websocket:
     persist: false
 ```
 
+#### TLS and `wss://`
+
+When the router has [inbound TLS enabled](/docs/router/security/tls), WebSocket clients must use `wss://` instead of `ws://`. The router accepts secure WebSocket upgrades on the same port as HTTPS.
+
+```ts
+import { createClient } from "graphql-ws";
+
+const client = createClient({
+  url: "wss://your-router.example.com/ws",
+  // ...
+});
+```
+
 #### `enabled`
 
 Enables or disables WebSocket support for clients. Defaults to `false`. Can also be set via the `WEBSOCKET_ENABLED` environment variable.
