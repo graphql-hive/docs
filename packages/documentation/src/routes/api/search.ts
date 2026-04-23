@@ -50,8 +50,8 @@ async function getChangelogStructuredData(): Promise<StructuredData> {
 
 async function buildIndexes(): Promise<AdvancedIndex[]> {
   const source = await getSource();
-  const { blog, caseStudies, productUpdates } =
-    await import("fumadocs-mdx:collections/server");
+  // const { blog, caseStudies, productUpdates } =
+  //   await import("fumadocs-mdx:collections/server");
 
   const changelogStructuredData = getChangelogStructuredData();
 
@@ -69,58 +69,58 @@ async function buildIndexes(): Promise<AdvancedIndex[]> {
     })),
   );
 
-  const caseStudyIndexes = await Promise.all(
-    caseStudies.map(async (entry) => {
-      const { structuredData } = await entry.load();
-      const slug = pathToSlug(entry.info.path);
-      return {
-        breadcrumbs: ["Case Studies"],
-        description: entry.excerpt,
-        id: `/case-studies/${slug}`,
-        structuredData,
-        title: entry.title,
-        url: `/case-studies/${slug}`,
-      };
-    }),
-  );
+  // const caseStudyIndexes = await Promise.all(
+  //   caseStudies.map(async (entry) => {
+  //     const { structuredData } = await entry.load();
+  //     const slug = pathToSlug(entry.info.path);
+  //     return {
+  //       breadcrumbs: ["Case Studies"],
+  //       description: entry.excerpt,
+  //       id: `/case-studies/${slug}`,
+  //       structuredData,
+  //       title: entry.title,
+  //       url: `/case-studies/${slug}`,
+  //     };
+  //   }),
+  // );
 
-  const productUpdateIndexes = await Promise.all(
-    productUpdates.map(async (entry) => {
-      const { structuredData } = await entry.load();
-      const slug = pathToSlug(entry.info.path);
-      return {
-        breadcrumbs: ["Product Updates"],
-        description: entry.description,
-        id: `/product-updates/${slug}`,
-        structuredData,
-        title: entry.title ?? slug,
-        url: `/product-updates/${slug}`,
-      };
-    }),
-  );
+  // const productUpdateIndexes = await Promise.all(
+  //   productUpdates.map(async (entry) => {
+  //     const { structuredData } = await entry.load();
+  //     const slug = pathToSlug(entry.info.path);
+  //     return {
+  //       breadcrumbs: ["Product Updates"],
+  //       description: entry.description,
+  //       id: `/product-updates/${slug}`,
+  //       structuredData,
+  //       title: entry.title ?? slug,
+  //       url: `/product-updates/${slug}`,
+  //     };
+  //   }),
+  // );
 
-  const blogIndexes = await Promise.all(
-    blog.map(async (entry) => {
-      const { structuredData } = await entry.load();
-      const slug = entry.info.path
-        .replace(/\.mdx?$/, "")
-        .replace(/\/index$/, "");
-      return {
-        breadcrumbs: ["Blog"],
-        description: entry.description,
-        id: `/blog/${slug}`,
-        structuredData,
-        title: entry.title ?? slug,
-        url: `/blog/${slug}`,
-      };
-    }),
-  );
+  // const blogIndexes = await Promise.all(
+  //   blog.map(async (entry) => {
+  //     const { structuredData } = await entry.load();
+  //     const slug = entry.info.path
+  //       .replace(/\.mdx?$/, "")
+  //       .replace(/\/index$/, "");
+  //     return {
+  //       breadcrumbs: ["Blog"],
+  //       description: entry.description,
+  //       id: `/blog/${slug}`,
+  //       structuredData,
+  //       title: entry.title ?? slug,
+  //       url: `/blog/${slug}`,
+  //     };
+  //   }),
+  // );
 
   return [
     ...docsIndexes,
-    ...caseStudyIndexes,
-    ...productUpdateIndexes,
-    ...blogIndexes,
+    // ...caseStudyIndexes,
+    // ...productUpdateIndexes,
+    // ...blogIndexes,
   ];
 }
 
