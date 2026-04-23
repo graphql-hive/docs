@@ -91,6 +91,9 @@ export const routeRules: Record<string, NitroRouteRules> = {
   "/docs/management/external-schema-composition": redirect(
     "/docs/schema-registry/external-schema-composition",
   ),
+  "/docs/schema-registry/management#create-a-new-project": redirect("/docs/schema-registry/management/projects#create-a-new-project"),
+  "/docs/schema-registry/management#conditional-breaking-changes": redirect("/docs/schema-registry/management/targets#conditional-breaking-changes"),
+  
 
   // Get started paths
   "/docs/get-started/**": redirect("/docs/schema-registry/get-started"),
