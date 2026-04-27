@@ -192,7 +192,7 @@ traffic_shaping:
 
 Forces HTTP/2 for requests to subgraphs. When enabled:
 
-- For plain HTTP connections, it will use HTTP/2 cleartext (h2c).
+- For plain HTTP connections, it will use [HTTP/2 cleartext (h2c)](https://datatracker.ietf.org/doc/html/rfc7540).
 - For HTTPS connections, it also requires HTTP/2.
 
 This means subgraph requests will **never** fall back to HTTP/1.1, and the router will fail to
