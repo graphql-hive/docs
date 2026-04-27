@@ -167,9 +167,9 @@ traffic_shaping:
 
 ## Outbound Options
 
-The following options (`dedupe_enabled`, `pool_idle_timeout`, `request_timeout`, and `tls`) can be
-set globally for all subgraphs or overridden on a per-subgraph basis by nesting them under the
-subgraph's name within the `traffic_shaping` map.
+The following options (`allow_only_http2`, `dedupe_enabled`, `pool_idle_timeout`, `request_timeout`,
+and `tls`) can be set globally for all subgraphs or overridden on a per-subgraph basis by nesting
+them under the subgraph's name within the `traffic_shaping` map.
 
 For example, the following example shows how to set global defaults and override them for a specific
 subgraph named `products`:
@@ -183,6 +183,25 @@ traffic_shaping:
     products:
       dedupe_enabled: false
       pool_idle_timeout: 120s
+```
+
+### `allow_only_http2`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+Forces HTTP/2 for requests to subgraphs. When enabled:
+
+- For plain HTTP connections, it will use HTTP/2 cleartext (h2c).
+- For HTTPS connections, it also requires HTTP/2.
+
+This means subgraph requests will **never** fall back to HTTP/1.1, and the router will fail to
+connect if the subgraph does not support HTTP/2.
+
+```yaml
+traffic_shaping:
+  all:
+    allow_only_http2: true
 ```
 
 ### `dedupe_enabled`
