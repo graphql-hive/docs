@@ -54,17 +54,17 @@ function hiveIconsPlugin(): LoaderPlugin {
 }
 
 /**
-  * This plugin allows to change the label of the page visible in the sidebar navigation,
-  * without changing the page title displayed on the tab.
-  *
-  * @example
-  * ```
-  * ---
-  * title: "Title displayed on the page and the tab"
-  * sidebarTitle: "Title displayed in the sidebar navigation"
-  * ---
-  * ```
-**/
+ * This plugin allows to change the label of the page visible in the sidebar navigation,
+ * without changing the page title displayed on the tab.
+ *
+ * @example
+ * ```
+ * ---
+ * title: "Title displayed on the page and the tab"
+ * sidebarTitle: "Title displayed in the sidebar navigation"
+ * ---
+ * ```
+ **/
 function sidebarTitlePlugin(): LoaderPlugin {
   return {
     name: "hive:sidebarTitle",
@@ -74,11 +74,14 @@ function sidebarTitlePlugin(): LoaderPlugin {
         if (!file || file.format !== "page") continue;
 
         const pageData = file.data as PageData & { sidebarTitle?: unknown };
-        if (typeof pageData.sidebarTitle === "string" && pageData.sidebarTitle.length > 0) {
+        if (
+          typeof pageData.sidebarTitle === "string" &&
+          pageData.sidebarTitle.length > 0
+        ) {
           pageData.title = pageData.sidebarTitle;
         }
       }
-    }
+    },
   };
 }
 

@@ -43,7 +43,7 @@ flowchart TB
     G --> H[Client Response]
 
     CP[Coprocessor Service]
-    
+
     C -- HTTP request --> CP
     CP -- HTTP response --> F
 ```
@@ -78,9 +78,9 @@ It also supports different HTTP protocol modes:
 - `h2c` for HTTP/2 without TLS
 
 <Callout type="tip">
-  Prefer Unix Domain Sockets (`unix://`) with `h2c` and run the coprocessor as a sidecar for lowest latency.
+  Prefer Unix Domain Sockets (`unix://`) with `h2c` and run the coprocessor as a
+  sidecar for lowest latency.
 </Callout>
-
 
 ### Continue or Break Processing
 
@@ -97,7 +97,7 @@ without applying any changes to the state, send only `version` and `control` bac
 It's possible to short-circut the request's lifecycle, with an early HTTP response. You simply pass an object with `"break"` property with a status code as its value.
 
 <Callout type="tip">
-    It's highly recommended to include `body` and `headers` in the response.
+  It's highly recommended to include `body` and `headers` in the response.
 </Callout>
 
 ```json title="Early 401 response"
@@ -118,7 +118,9 @@ It's possible to short-circut the request's lifecycle, with an early HTTP respon
 To mute allowed fields like `headers` and `context`, include them in the response.
 
 <Callout type="warning">
-    The `headers` object will override the headers of a request or response (depending on the stage), so we recommend to include the original headers as well.
+  The `headers` object will override the headers of a request or response
+  (depending on the stage), so we recommend to include the original headers as
+  well.
 </Callout>
 
 ```json title="Ovewrite headers and add key-value to context"
@@ -162,7 +164,6 @@ error shaping, and redaction before final HTTP response handling.
 ### `router.response`
 
 Runs at the very end, right before the response is sent to the client.
-
 
 ## Observability
 

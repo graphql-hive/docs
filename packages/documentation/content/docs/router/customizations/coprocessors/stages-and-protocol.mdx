@@ -18,11 +18,10 @@ If you need the YAML option reference, see
 
 Every coprocessor request and response must include a `version` field. The version identifies the protocol contract used by Hive Router.
 
-
 ```json
 {
   "version": 1,
-  "control": "continue",
+  "control": "continue"
   // ...
 }
 ```
@@ -32,7 +31,8 @@ integrations. Future versions may introduce new fields, stricter validation, or 
 rules.
 
 <Callout type="warning">
-    If the version is missing or unsupported, Hive Router treats the response as a coprocessor failure.
+  If the version is missing or unsupported, Hive Router treats the response as a
+  coprocessor failure.
 </Callout>
 
 Hive Router always sends the current version in the request. Your coprocessor should echo the same
@@ -106,7 +106,9 @@ Stage payloads sent by Hive Router to Coprocessors always include these fields:
 Depending on `include` settings, payloads may also contain fields like `headers`, `body`, `context`, `method`, `path`, `status_code`, and `sdl`.
 
 <Callout type="critical">
-    Your coprocessor must return `OK 200` with valid JSON. Invalid JSON, invalid `control` values, unsupported `version`, or forbidden stage mutations are treated as coprocessor failures and **fail the entire client request**.
+  Your coprocessor must return `OK 200` with valid JSON. Invalid JSON, invalid
+  `control` values, unsupported `version`, or forbidden stage mutations are
+  treated as coprocessor failures and **fail the entire client request**.
 </Callout>
 
 ## Stages
@@ -167,66 +169,66 @@ Use this stage for early traffic checks such as auth header checks and fast requ
 
 Available properties in `include`:
 
-| Property              | Mutable | Description                                     |
-| --------------------- |:-------:| ----------------------------------------------- |
-| `headers`             |   ✅    | Headers of the client request                   |
-| `method`              |   ❌     | HTTP method of the client request               |
-| `path`                |   ❌     | HTTP request's path of the client request       |
-| `body`                |   ✅    | I think you know already, HTTP request's body   |
-| `context`             |   ✅    | Serialized request context                      |
+| Property  | Mutable | Description                                   |
+| --------- | :-----: | --------------------------------------------- |
+| `headers` |   ✅    | Headers of the client request                 |
+| `method`  |   ❌    | HTTP method of the client request             |
+| `path`    |   ❌    | HTTP request's path of the client request     |
+| `body`    |   ✅    | I think you know already, HTTP request's body |
+| `context` |   ✅    | Serialized request context                    |
 
 ### `graphql.request`
 
 Runs after the router recognizes GraphQL request data and extracts the GraphQL payload from either body or query params.
 Use this stage for request shaping, variable normalization, and request-level guardrails.
 
-| Property              | Mutable | Description                                                                                |
-| --------------------- |:------:| ------------------------------------------------------------------------------------------- |
-| `headers`             |  ✅    | Headers of the client request                                                               |
-| `method`              |  ❌     | HTTP method of the client request                                                           |
-| `path`                |  ❌     | HTTP request's path of the client request                                                   |
-| `body`                |  ✅    | GraphQL request payload (contains `query`, `operationName`, `variables` and `extensions`)  |
-| `sdl`                 |  ❌     | Text representation (SDL) of the public schema                                              |
-| `context`             |  ✅    | Serialized request context                                                                  |
+| Property  | Mutable | Description                                                                               |
+| --------- | :-----: | ----------------------------------------------------------------------------------------- |
+| `headers` |   ✅    | Headers of the client request                                                             |
+| `method`  |   ❌    | HTTP method of the client request                                                         |
+| `path`    |   ❌    | HTTP request's path of the client request                                                 |
+| `body`    |   ✅    | GraphQL request payload (contains `query`, `operationName`, `variables` and `extensions`) |
+| `sdl`     |   ❌    | Text representation (SDL) of the public schema                                            |
+| `context` |   ✅    | Serialized request context                                                                |
 
 ### `graphql.analysis`
 
 Runs after GraphQL parsing and validation, but right before planning and execution.
 This is the stage is used in the progressive override label-injection example above.
 
-| Property              | Mutable | Description                                                                                |
-| --------------------- |:------:| ------------------------------------------------------------------------------------------- |
-| `headers`             |   ✅   | Headers of the client request                                                               |
-| `method`              |   ❌    | HTTP method of the client request                                                           |
-| `path`                |   ❌    | HTTP request's path of the client request                                                   |
-| `body`                |   ❌    | GraphQL request payload (contains `query`, `operationName`, `variables` and `extensions`)   |
-| `sdl`                 |   ❌    | Text representation (SDL) of the public schema                                              |
-| `context`             |   ✅   | Serialized request context                                                                  |
+| Property  | Mutable | Description                                                                               |
+| --------- | :-----: | ----------------------------------------------------------------------------------------- |
+| `headers` |   ✅    | Headers of the client request                                                             |
+| `method`  |   ❌    | HTTP method of the client request                                                         |
+| `path`    |   ❌    | HTTP request's path of the client request                                                 |
+| `body`    |   ❌    | GraphQL request payload (contains `query`, `operationName`, `variables` and `extensions`) |
+| `sdl`     |   ❌    | Text representation (SDL) of the public schema                                            |
+| `context` |   ✅    | Serialized request context                                                                |
 
 ### `graphql.response`
 
 Runs after GraphQL execution produces a GraphQL response.
 Use this stage for response normalization, error shaping, and redaction before final HTTP response handling.
 
-| Property              | Mutable | Description                                                                                |
-| --------------------- |:------:| ------------------------------------------------------------------------------------------- |
-| `headers`             |   ✅   | Headers of the client response                                                              |
-| `status_code`         |   ❌    | Status code of the client response                                                          |
-| `body`                |   ✅   | GraphQL response                                                                            |
-| `sdl`                 |   ❌    | Text representation (SDL) of the public schema                                              |
-| `context`             |   ✅   | Serialized request context                                                                  |
+| Property      | Mutable | Description                                    |
+| ------------- | :-----: | ---------------------------------------------- |
+| `headers`     |   ✅    | Headers of the client response                 |
+| `status_code` |   ❌    | Status code of the client response             |
+| `body`        |   ✅    | GraphQL response                               |
+| `sdl`         |   ❌    | Text representation (SDL) of the public schema |
+| `context`     |   ✅    | Serialized request context                     |
 
 ### `router.response`
 
 Runs right before the final HTTP response is sent to the client.
 
-| Property              | Mutable | Description                                                                                |
-| --------------------- |:------:| ------------------------------------------------------------------------------------------- |
-| `headers`             |   ✅   | Headers of the client response                                                              |
-| `status_code`         |   ❌    | Status code of the client response                                                          |
-| `body`                |   ✅   | Body of the response                                                                        |
-| `sdl`                 |   ❌    | Text representation (SDL) of the public schema                                              |
-| `context`             |   ✅   | Serialized request context                                                                  |
+| Property      | Mutable | Description                                    |
+| ------------- | :-----: | ---------------------------------------------- |
+| `headers`     |   ✅    | Headers of the client response                 |
+| `status_code` |   ❌    | Status code of the client response             |
+| `body`        |   ✅    | Body of the response                           |
+| `sdl`         |   ❌    | Text representation (SDL) of the public schema |
+| `context`     |   ✅    | Serialized request context                     |
 
 ## Request context
 
@@ -242,9 +244,7 @@ Treat context keys as shared API contracts:
 - use clear namespacing (`hive::` is reserved)
 - keep values small and serializable
 
-<Callout type="tip">
-    Context updates are propagated to later stages.
-</Callout>
+<Callout type="tip">Context updates are propagated to later stages.</Callout>
 
 The `include.context` property supports three forms:
 
@@ -278,9 +278,9 @@ The `include.context` property supports three forms:
 ### Telemetry
 
 | Property                          | Mutable | Description                           |
-| --------------------------------- |:-------:| ------------------------------------- |
-| `hive::telemetry::client_name`    |    ✅   | The name of the client application    |
-| `hive::telemetry::client_version` |    ✅   | The version of the client application |
+| --------------------------------- | :-----: | ------------------------------------- |
+| `hive::telemetry::client_name`    |   ✅    | The name of the client application    |
+| `hive::telemetry::client_version` |   ✅    | The version of the client application |
 
 ## Body
 
@@ -290,10 +290,10 @@ The `include.context` property supports three forms:
 
 For `graphql.request` and `graphql.analysis`, `include.body` supports selective field inclusion:
 
-| Value      | Action                           |
-| ---------- | -------------------------------- |
-| `false`    | Include no body                  |
-| `true`     | Include full body                |
+| Value      | Action                                                                                                           |
+| ---------- | ---------------------------------------------------------------------------------------------------------------- |
+| `false`    | Include no body                                                                                                  |
+| `true`     | Include full body                                                                                                |
 | `[string]` | Include only selected properties<br /> Available properties: `query`, `operationName`, `variables`, `extensions` |
 
 ```yaml title="Selective body include"
@@ -355,11 +355,10 @@ Response.json({
   control: "continue",
   headers: {
     ...headers,
-    "x-something": "true"
-  }
-})
+    "x-something": "true",
+  },
+});
 ```
-
 
 ## Include vs mutation semantics
 
@@ -370,7 +369,6 @@ Examples:
 
 - `include.headers: false` can still return `headers` in response and overwrite headers.
 - `include.context` may omit a key, but response can still patch that context key .
-
 
 ```yaml title="Example: only operation's name is sent to coprocessor"
 stages:

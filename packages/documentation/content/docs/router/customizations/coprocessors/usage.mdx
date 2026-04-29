@@ -47,7 +47,8 @@ request data. Your service should return JSON with at least:
 This tells the router to continue processing.
 
 <Callout type="note" title="Strict contract">
-    Return `OK 200` with valid JSON. Invalid responses are treated as coprocessor failures.
+  Return `OK 200` with valid JSON. Invalid responses are treated as coprocessor
+  failures.
 </Callout>
 
 Let's start by creating a small service in any language. It must expose one HTTP endpoint, for example
@@ -149,7 +150,8 @@ coprocessor:
 This enables one stage (`router.request`) and sends `headers` to your service.
 
 <Callout type="tip">
-    To modify `context`, you don't have to set `context: true` in `include`. The same applies to `headers` or `body`.
+  To modify `context`, you don't have to set `context: true` in `include`. The
+  same applies to `headers` or `body`.
 </Callout>
 
 </Step>
@@ -240,7 +242,6 @@ This stops the pipeline and returns your response to the client immediately.
 
 </Step>
 </Steps>
-
 
 ## Operate it safely in production
 
