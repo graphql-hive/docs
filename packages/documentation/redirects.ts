@@ -145,29 +145,18 @@ export const routeRules: Record<string, NitroRouteRules> = {
     "/docs/gateway/other-features/rust-query-planner",
   ),
 
-  // Router customizations
-  "/docs/router/customization": redirect("/docs/router/customizations"),
-  "/docs/router/customization/**": redirect("/docs/router/customizations"),
+  // Support pages moved after introducing coprocessors
   "/docs/router/plugin-system": redirect(
     "/docs/router/customizations/plugin-system",
   ),
-  "/docs/router/plugin-system/**": redirect(
-    "/docs/router/customizations/plugin-system",
+  "/docs/router/plugin-system/hooks": redirect(
+    "/docs/router/customizations/plugin-system/hooks",
   ),
-  "/docs/router/coprocessors": redirect(
-    "/docs/router/customizations/coprocessors",
+  "/docs/router/plugin-system/execution-and-lifecycle": redirect(
+    "/docs/router/customizations/plugin-system/execution-and-lifecycle",
   ),
-  "/docs/router/coprocessors/**": redirect(
-    "/docs/router/customizations/coprocessors",
-  ),
-  "/docs/router/customizations/coprocessors/configuration": redirect(
-    "/docs/router/configuration/coprocessor",
-  ),
-  "/docs/router/customizations/coprocessors/configuration/**": redirect(
-    "/docs/router/configuration/coprocessor",
-  ),
-  "/docs/router/customizations/coprocessors/request-response-reference": redirect(
-    "/docs/router/customizations/coprocessors/stages-and-protocol",
+  "/docs/router/guides/extending-the-router": redirect(
+    "/docs/router/customizations",
   ),
 
   // Typo in old URL (linked from blog posts)
