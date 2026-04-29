@@ -1,142 +1,92 @@
-import type { StructuredData } from "fumadocs-core/mdx-plugins/remark-structure";
 import type { AdvancedIndex } from "fumadocs-core/search/server";
 
-import { CHANGELOG_PAGE_URL } from "@/lib/deployment-changelog";
-import { pathToSlug } from "@/lib/path-to-slug";
-import { getSource } from "@/lib/source";
 import { createFileRoute } from "@tanstack/react-router";
-import { structure } from "fumadocs-core/mdx-plugins/remark-structure";
-import { findPath } from "fumadocs-core/page-tree";
 import { createSearchAPI } from "fumadocs-core/search/server";
-import { deploymentChangelogSnapshot } from "virtual:deployment-changelog-snapshot";
 
-function getDocsBreadcrumbs(
-  source: Awaited<ReturnType<typeof getSource>>,
-  pageUrl: string,
-): string[] | undefined {
-  const pageTree = source.getPageTree();
-  const path = findPath(
-    pageTree.children,
-    (node) => node.type === "page" && node.url === pageUrl,
-  );
-  if (!path) return undefined;
-  path.pop();
-  const breadcrumbs: string[] = [];
-  if (typeof pageTree.name === "string" && pageTree.name.length > 0) {
-    breadcrumbs.push(pageTree.name);
+type R2BucketLike = {
+  get(key: string): Promise<{ text(): Promise<string> } | null>;
+};
+
+type CloudflareEnvLike = {
+  SEARCH_INDEXES?: R2BucketLike;
+  SEARCH_INDEX_KEY?: string;
+};
+
+type CloudflareRuntimeRequest = Request & {
+  runtime?: {
+    cloudflare?: {
+      env?: CloudflareEnvLike;
+    };
+  };
+};
+
+function getCloudflareEnv(request: Request): CloudflareEnvLike {
+  const runtimeRequest = request as CloudflareRuntimeRequest;
+  const runtimeEnv = runtimeRequest.runtime?.cloudflare?.env;
+  const globalEnv = (globalThis as { __env__?: CloudflareEnvLike }).__env__;
+
+  return runtimeEnv ?? globalEnv ?? {};
+}
+
+async function loadIndexesFromR2(request: Request): Promise<AdvancedIndex[]> {
+  const env = getCloudflareEnv(request);
+  const bucket = env.SEARCH_INDEXES;
+  const indexKey = env.SEARCH_INDEX_KEY;
+
+  if (!bucket) {
+    throw new Error("SEARCH_INDEXES R2 binding is not configured");
   }
-  for (const segment of path) {
-    if (typeof segment.name === "string" && segment.name.length > 0) {
-      breadcrumbs.push(segment.name);
-    }
+
+  if (!indexKey) {
+    throw new Error("SEARCH_INDEX_KEY is not configured");
   }
-  return breadcrumbs;
-}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- mirrors fumadocs' defaultBuildIndex runtime check for sync/async DocCollectionEntry
-async function resolveStructuredData(data: any): Promise<StructuredData> {
-  if ("structuredData" in data) return data.structuredData;
-  if (typeof data.load === "function") {
-    const loaded = await data.load();
-    return loaded.structuredData;
+  const objectKey = `search/${indexKey}.json`;
+
+  const object = await bucket.get(objectKey);
+  if (!object) {
+    throw new Error(`R2 object not found: ${objectKey}`);
   }
-  throw new Error("Cannot resolve structuredData from page");
+
+  const raw = await object.text();
+  const parsed = JSON.parse(raw);
+
+  if (!Array.isArray(parsed)) {
+    throw new Error(`Invalid search index payload in R2 key: ${objectKey}`);
+  }
+
+  return parsed as AdvancedIndex[];
 }
 
-async function getChangelogStructuredData(): Promise<StructuredData> {
-  if (!deploymentChangelogSnapshot) return { contents: [], headings: [] };
-  return structure(deploymentChangelogSnapshot);
+let searchAPIPromise: ReturnType<typeof createSearchAPI> | undefined;
+
+async function getSearchAPI(request: Request) {
+  if (!searchAPIPromise) {
+    searchAPIPromise = createSearchAPI("advanced", {
+      indexes: await loadIndexesFromR2(request),
+      language: "english",
+    });
+  }
+
+  return searchAPIPromise;
 }
-
-async function buildIndexes(): Promise<AdvancedIndex[]> {
-  const source = await getSource();
-  const { blog, caseStudies, productUpdates } =
-    await import("fumadocs-mdx:collections/server");
-
-  const changelogStructuredData = getChangelogStructuredData();
-
-  const docsIndexes = await Promise.all(
-    source.getPages().map(async (page) => ({
-      breadcrumbs: getDocsBreadcrumbs(source, page.url),
-      description: page.data.description,
-      id: page.url,
-      structuredData:
-        page.url === CHANGELOG_PAGE_URL
-          ? await changelogStructuredData
-          : await resolveStructuredData(page.data),
-      title: page.data.title ?? page.url,
-      url: page.url,
-    })),
-  );
-
-  const caseStudyIndexes = await Promise.all(
-    caseStudies.map(async (entry) => {
-      const { structuredData } = await entry.load();
-      const slug = pathToSlug(entry.info.path);
-      return {
-        breadcrumbs: ["Case Studies"],
-        description: entry.excerpt,
-        id: `/case-studies/${slug}`,
-        structuredData,
-        title: entry.title,
-        url: `/case-studies/${slug}`,
-      };
-    }),
-  );
-
-  const productUpdateIndexes = await Promise.all(
-    productUpdates.map(async (entry) => {
-      const { structuredData } = await entry.load();
-      const slug = pathToSlug(entry.info.path);
-      return {
-        breadcrumbs: ["Product Updates"],
-        description: entry.description,
-        id: `/product-updates/${slug}`,
-        structuredData,
-        title: entry.title ?? slug,
-        url: `/product-updates/${slug}`,
-      };
-    }),
-  );
-
-  const blogIndexes = await Promise.all(
-    blog.map(async (entry) => {
-      const { structuredData } = await entry.load();
-      const slug = entry.info.path
-        .replace(/\.mdx?$/, "")
-        .replace(/\/index$/, "");
-      return {
-        breadcrumbs: ["Blog"],
-        description: entry.description,
-        id: `/blog/${slug}`,
-        structuredData,
-        title: entry.title ?? slug,
-        url: `/blog/${slug}`,
-      };
-    }),
-  );
-
-  return [
-    ...docsIndexes,
-    ...caseStudyIndexes,
-    ...productUpdateIndexes,
-    ...blogIndexes,
-  ];
-}
-
-// In prod this is usually paid during build via prerendered `/api/search`.
-// In local dev, the first hit can still be slow because Vite computes it on demand.
-const searchAPIPromise = createSearchAPI("advanced", {
-  indexes: await buildIndexes(),
-  language: "english",
-});
 
 export const Route = createFileRoute("/api/search")({
   server: {
     handlers: {
-      GET: async () => {
-        const server = await searchAPIPromise;
-        return server.staticGET();
+      GET: async ({ request }) => {
+        try {
+          const server = await getSearchAPI(request);
+          return server.GET(request);
+        } catch (error) {
+          return Response.json(
+            {
+              error: "Search index unavailable",
+              message: error instanceof Error ? error.message : "Unknown error",
+            },
+            { status: 503 },
+          );
+        }
       },
     },
   },

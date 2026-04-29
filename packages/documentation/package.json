@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "node --max-old-space-size=8192 ./node_modules/vite/bin/vite.js build",
+    "search:export": "bun --bun ./tools/export-search-indexes.ts ./.output/search/latest.json",
     "check-seo": "bun ./tools/check-seo.ts",
     "start": "bun .output/server/index.mjs",
     "typecheck": "bun --bun fumadocs-mdx && bun --bun tsc --noEmit",

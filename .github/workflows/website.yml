@@ -28,6 +28,19 @@ jobs:
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
 
+      - name: export search indexes
+        run: bun run search:export
+        working-directory: packages/documentation
+
+      # TODO: add R2 lifecycle cleanup/retention for per-commit preview search indexes.
+      - name: upload search indexes to r2
+        run: |
+          bunx wrangler r2 object put hive-platform-docs-search/search/${{ github.sha }}.json --file ./.output/search/latest.json
+        working-directory: packages/documentation
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
       - name: deploy to cloudflare workers
         uses: cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65 # v3.14.1
         id: deploy
@@ -37,7 +50,7 @@ jobs:
           packageManager: bun
           workingDirectory: packages/documentation
           command: |
-            ${{ github.ref == 'refs/heads/main' && 'deploy' || 'versions upload' }}
+            ${{ github.ref == 'refs/heads/main' && format('deploy --var SEARCH_INDEX_KEY:{0}', github.sha) || format('versions upload --var SEARCH_INDEX_KEY:{0}', github.sha) }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: find deployment comment

@@ -87,7 +87,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           search={{
             options: {
               api: withBasePath("/api/search"),
-              type: "static",
+              type: "fetch",
             },
           }}
           theme={
