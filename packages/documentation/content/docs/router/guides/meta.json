@@ -2,7 +2,6 @@
   "pages": [
     "dynamic-subgraph-routing",
     "header-manipulation",
-    "performance-tuning",
-    "extending-the-router"
+    "performance-tuning"
   ]
 }

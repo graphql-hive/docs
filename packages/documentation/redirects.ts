@@ -145,6 +145,31 @@ export const routeRules: Record<string, NitroRouteRules> = {
     "/docs/gateway/other-features/rust-query-planner",
   ),
 
+  // Router customizations
+  "/docs/router/customization": redirect("/docs/router/customizations"),
+  "/docs/router/customization/**": redirect("/docs/router/customizations"),
+  "/docs/router/plugin-system": redirect(
+    "/docs/router/customizations/plugin-system",
+  ),
+  "/docs/router/plugin-system/**": redirect(
+    "/docs/router/customizations/plugin-system",
+  ),
+  "/docs/router/coprocessors": redirect(
+    "/docs/router/customizations/coprocessors",
+  ),
+  "/docs/router/coprocessors/**": redirect(
+    "/docs/router/customizations/coprocessors",
+  ),
+  "/docs/router/customizations/coprocessors/configuration": redirect(
+    "/docs/router/configuration/coprocessor",
+  ),
+  "/docs/router/customizations/coprocessors/configuration/**": redirect(
+    "/docs/router/configuration/coprocessor",
+  ),
+  "/docs/router/customizations/coprocessors/request-response-reference": redirect(
+    "/docs/router/customizations/coprocessors/stages-and-protocol",
+  ),
+
   // Typo in old URL (linked from blog posts)
   "/docs/schema-registry/high-availability-resilence": redirect(
     "/docs/schema-registry/high-availability-resilience",
