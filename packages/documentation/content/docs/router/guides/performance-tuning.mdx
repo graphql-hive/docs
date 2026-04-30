@@ -290,12 +290,13 @@ traffic_shaping:
       reset_timeout: 30s # retry after 30s
 ```
 
-| Option             | Type              | Default | Description                                                                            |
-| ------------------ | ----------------- | ------- | -------------------------------------------------------------------------------------- |
-| `enabled`          | `boolean \| null` | `false` | Enable or disable the circuit breaker. At subgraph level, omit to inherit from global. |
-| `error_threshold`  | `string`          | `50%`   | Error rate percentage that triggers the breaker (e.g. `50%`).                          |
-| `volume_threshold` | `integer \| null` | `5`     | Minimum request count before the error rate is evaluated.                              |
-| `reset_timeout`    | `string`          | `30s`   | Duration the circuit stays open before allowing a probe request.                       |
+| Option               | Type              | Default | Description                                                                            |
+| -------------------- | ----------------- | ------- | -------------------------------------------------------------------------------------- |
+| `enabled`            | `boolean \| null` | `false` | Enable or disable the circuit breaker. At subgraph level, omit to inherit from global. |
+| `error_threshold`    | `string`          | `50%`   | Error rate percentage that triggers the breaker (e.g. `50%`).                          |
+| `volume_threshold`   | `integer \| null` | `5`     | Minimum request count before the error rate is evaluated.                              |
+| `reset_timeout`      | `string`          | `30s`   | Duration the circuit stays open before allowing a probe request.                       |
+| `error_status_codes` | `integer[]`       | `[503]` | HTTP status codes that count as failures (default: only 503).                          |
 
 ### Global vs Per-Subgraph Configuration
 

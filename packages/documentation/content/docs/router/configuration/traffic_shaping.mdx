@@ -256,6 +256,25 @@ The duration the circuit breaker stays open before transitioning to a half-open 
 whether the subgraph has recovered. Accepts a duration string (e.g. `30s`, `1m`). When omitted in
 a per-subgraph override, the value falls back to the global configuration.
 
+#### `circuit_breaker.error_status_codes`
+
+- **Type:** `integer[] | null`
+- **Default:** `[503]`
+
+The list of HTTP status codes returned by the subgraph that should be counted as failures by the
+circuit breaker. Only responses whose status code appears in this list are recorded as failures —
+responses with any other status code (including other 5xx codes) are treated as successes from the
+circuit breaker's perspective. When omitted in a per-subgraph override, the value falls back to the
+global configuration.
+
+```yaml title="router.config.yaml"
+traffic_shaping:
+  all:
+    circuit_breaker:
+      enabled: true
+      error_status_codes: [500, 502, 503, 504]
+```
+
 **Example — global circuit breaker with a per-subgraph override:**
 
 ```yaml title="router.config.yaml"
