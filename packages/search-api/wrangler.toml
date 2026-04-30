@@ -1,0 +1,15 @@
+name = "hive-search-api"
+main = "index.js"
+compatibility_date = "2026-04-30"
+
+[[r2_buckets]]
+binding = "SEARCH_INDEX"
+bucket_name = "hive-docs-search-index"
+
+[[durable_objects.bindings]]
+name = "SEARCH_INDEX_OBJECT"
+class_name = "SearchIndexObject"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["SearchIndexObject"]
