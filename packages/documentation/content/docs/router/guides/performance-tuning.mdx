@@ -290,19 +290,19 @@ traffic_shaping:
       reset_timeout: 30s # retry after 30s
 ```
 
-| Option             | Type      | Default | Description                                                      |
-| ------------------ | --------- | ------- | ---------------------------------------------------------------- |
-| `enabled`          | `boolean` | `false` | Enable or disable the circuit breaker.                           |
-| `error_threshold`  | `string`  | `50%`   | Error rate percentage that triggers the breaker (e.g. `50%`).    |
-| `volume_threshold` | `integer` | `5`     | Minimum request count before the error rate is evaluated.        |
-| `reset_timeout`    | `string`  | `30s`   | Duration the circuit stays open before allowing a probe request. |
+| Option             | Type              | Default | Description                                                                            |
+| ------------------ | ----------------- | ------- | -------------------------------------------------------------------------------------- |
+| `enabled`          | `boolean \| null` | `false` | Enable or disable the circuit breaker. At subgraph level, omit to inherit from global. |
+| `error_threshold`  | `string`          | `50%`   | Error rate percentage that triggers the breaker (e.g. `50%`).                          |
+| `volume_threshold` | `integer \| null` | `5`     | Minimum request count before the error rate is evaluated.                              |
+| `reset_timeout`    | `string`          | `30s`   | Duration the circuit stays open before allowing a probe request.                       |
 
 ### Global vs Per-Subgraph Configuration
 
 Circuit breaker settings can be applied globally to all subgraphs under `traffic_shaping.all`, and
-selectively overridden for individual subgraphs under `traffic_shaping.subgraphs.<name>`. The
-per-subgraph configuration is merged with the global configuration — you only need to specify the
-fields you want to override.
+selectively overridden for individual subgraphs under `traffic_shaping.subgraphs.<name>`. All
+per-subgraph fields are merged with the global configuration — omit any field to inherit the global
+value.
 
 <Tabs items={["Global only", "Per-subgraph only", "Mixed"]}>
 
@@ -357,8 +357,7 @@ traffic_shaping:
   subgraphs:
     accounts:
       circuit_breaker:
-        enabled: true
-        volume_threshold: 3 # override only volume_threshold; other settings inherit from global
+        volume_threshold: 3 # override only volume_threshold; enabled and other settings inherit from global
 ```
 
 </Tabs.Tab>
