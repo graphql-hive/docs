@@ -36,10 +36,6 @@ jobs:
       - name: upload search index to r2
         run: |
           bunx wrangler r2 object put hive-docs-search-index/search/${SEARCH_INDEX_KEY}.json --file ./.output/search/latest.json
-
-          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
-            bunx wrangler r2 object put hive-docs-search-index/search/latest.json --file ./.output/search/latest.json
-          fi
         working-directory: packages/documentation
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

@@ -63,9 +63,10 @@ async function resolveStructuredData(data: unknown): Promise<StructuredData> {
 
 async function getChangelogStructuredData(): Promise<StructuredData> {
   try {
-    const snapshotModule = (await import("virtual:deployment-changelog-snapshot")) as {
-      deploymentChangelogSnapshot?: string;
-    };
+    const snapshotModule =
+      (await import("virtual:deployment-changelog-snapshot")) as {
+        deploymentChangelogSnapshot?: string;
+      };
 
     if (!snapshotModule.deploymentChangelogSnapshot) {
       return { contents: [], headings: [] };

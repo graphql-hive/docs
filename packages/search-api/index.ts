@@ -32,10 +32,10 @@ function withCors(response: Response) {
   });
 }
 
-function getSearchIndexKey(request: Request) {
+function getSearchIndexKey(request: Request): string | null {
   const indexKey = request.headers.get("x-search-index-key");
 
-  return indexKey ? `search/${indexKey}.json` : "search/latest.json";
+  return indexKey ? `search/${indexKey}.json` : null;
 }
 
 export class SearchIndexObject extends DurableObject {
@@ -57,7 +57,9 @@ export class SearchIndexObject extends DurableObject {
     }
 
     if (!this.searchServerPromise) {
-      this.searchServerPromise = (this as any).env.SEARCH_INDEX.get(searchIndexKey)
+      this.searchServerPromise = (this as any).env.SEARCH_INDEX.get(
+        searchIndexKey,
+      )
         .then(async (blob: any) => {
           if (!blob) {
             throw new Error(`${searchIndexKey} not found in R2`);
@@ -92,8 +94,19 @@ export class SearchIndexObject extends DurableObject {
       });
     }
 
+    const searchIndexKey = getSearchIndexKey(request);
+    if (!searchIndexKey) {
+      return json(
+        {
+          ok: false,
+          error: "Missing x-search-index-key header",
+        },
+        { status: 400 },
+      );
+    }
+
     try {
-      const server = await this.getSearchServer(getSearchIndexKey(request));
+      const server = await this.getSearchServer(searchIndexKey);
       if (!server) {
         throw new Error("Search Server not available");
       }
@@ -122,7 +135,18 @@ export default {
       });
     }
 
-    const id = env.SEARCH_INDEX_OBJECT.idFromName(getSearchIndexKey(request));
+    const searchIndexKey = getSearchIndexKey(request);
+    if (!searchIndexKey) {
+      return json(
+        {
+          ok: false,
+          error: "Missing x-search-index-key header",
+        },
+        { status: 400 },
+      );
+    }
+
+    const id = env.SEARCH_INDEX_OBJECT.idFromName(searchIndexKey);
     const stub = env.SEARCH_INDEX_OBJECT.get(id);
 
     return stub.fetch(request);
