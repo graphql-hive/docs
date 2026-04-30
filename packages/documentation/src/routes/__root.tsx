@@ -19,7 +19,7 @@ export const Route = createRootRoute({
     links: [
       {
         as: "fetch",
-        href: withBasePath("/api/search/__warm-search-index"),
+        href: withBasePath("/api/search"),
         rel: "prefetch",
       },
     ],
