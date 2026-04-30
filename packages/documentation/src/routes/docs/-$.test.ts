@@ -295,7 +295,9 @@ describe("deployment changelog", () => {
   });
 
   test("api search indexes the changelog source", async () => {
-    const res = await fetch(`${BASE_URL}/api/search`, { redirect: "follow" });
+    const res = await fetch(`${BASE_URL}/api/search.json`, {
+      redirect: "follow",
+    });
     expect(res.status).toBe(200);
 
     const text = await res.text();

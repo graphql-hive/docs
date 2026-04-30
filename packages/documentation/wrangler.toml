@@ -8,4 +8,8 @@ directory = ".output/public"
 
 [[r2_buckets]]
 binding = "SEARCH_INDEXES"
-bucket_name = "hive-platform-docs-search"
+bucket_name = "hive-docs-search-index"
+
+[[services]]
+binding = "SEARCH_API"
+service = "hive-search-api"

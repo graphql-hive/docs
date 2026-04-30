@@ -15,6 +15,8 @@ type AssetFetcher = {
 
 type CloudflareEnv = Record<string, unknown> & {
   ASSETS?: AssetFetcher;
+  SEARCH_API?: AssetFetcher;
+  SEARCH_INDEX_KEY?: string;
 };
 
 type CloudflareContext = {
@@ -125,6 +127,13 @@ function isServerFnPath(pathname: string) {
     (baseURL !== "" &&
       (pathname === `${baseURL}/_serverFn` ||
         pathname.startsWith(`${baseURL}/_serverFn/`)))
+  );
+}
+
+function isSearchAPIPath(pathname: string) {
+  return (
+    pathname === "/api/search" ||
+    (baseURL !== "" && pathname === `${baseURL}/api/search`)
   );
 }
 
@@ -352,6 +361,34 @@ async function tryServeAsset(
   return assetResponse.status === 404 ? undefined : assetResponse;
 }
 
+function proxySearchAPI(request: Request, env: CloudflareEnv) {
+  if (!env.SEARCH_API || !env.SEARCH_INDEX_KEY) {
+    return;
+  }
+
+  const requestURL = new URL(request.url);
+  const searchURL = new URL("https://search-api.internal/");
+  searchURL.search = requestURL.search;
+
+  const headers = new Headers(request.headers);
+  if (env.SEARCH_INDEX_KEY) {
+    headers.set("x-search-index-key", env.SEARCH_INDEX_KEY);
+  }
+
+  const init: RequestInit & { duplex?: "half" } = {
+    headers,
+    method: request.method,
+    redirect: request.redirect,
+  };
+
+  if (request.method !== "GET" && request.method !== "HEAD") {
+    init.body = request.body;
+    init.duplex = "half";
+  }
+
+  return env.SEARCH_API.fetch(new Request(searchURL, init));
+}
+
 async function getWebsocketHandler() {
   if (!importMeta._websocket) {
     return;
@@ -403,6 +440,13 @@ export default createHandler({
     const request = ensureServerFnHeaders(aliasedRequest, env, context);
     const requestURL = new URL(request.url);
     const isAliasedRequest = aliasedRequest !== cfRequest;
+
+    if (isSearchAPIPath(requestURL.pathname)) {
+      const searchAPIResponse = proxySearchAPI(request, env);
+      if (searchAPIResponse) {
+        return searchAPIResponse;
+      }
+    }
 
     const assetResponse = await tryServeAsset(
       request,

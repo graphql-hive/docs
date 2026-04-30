@@ -32,6 +32,12 @@ function withCors(response: Response) {
   });
 }
 
+function getSearchIndexKey(request: Request) {
+  const indexKey = request.headers.get("x-search-index-key");
+
+  return indexKey ? `search/${indexKey}.json` : "search/latest.json";
+}
+
 export class SearchIndexObject extends DurableObject {
   private searchServer: SearchAPI | null;
   private searchServerPromise: Promise<SearchAPI> | null;
@@ -45,16 +51,16 @@ export class SearchIndexObject extends DurableObject {
     this.loadedAt = null;
   }
 
-  async getSearchServer() {
+  async getSearchServer(searchIndexKey: string) {
     if (this.searchServer) {
       return this.searchServer;
     }
 
     if (!this.searchServerPromise) {
-      this.searchServerPromise = (this as any).env.SEARCH_INDEX.get("search.json")
+      this.searchServerPromise = (this as any).env.SEARCH_INDEX.get(searchIndexKey)
         .then(async (blob: any) => {
           if (!blob) {
-            throw new Error("search.json not found in R2");
+            throw new Error(`${searchIndexKey} not found in R2`);
           }
 
           const indexes = await blob.json();
@@ -87,7 +93,7 @@ export class SearchIndexObject extends DurableObject {
     }
 
     try {
-      const server = await this.getSearchServer();
+      const server = await this.getSearchServer(getSearchIndexKey(request));
       if (!server) {
         throw new Error("Search Server not available");
       }
@@ -116,7 +122,7 @@ export default {
       });
     }
 
-    const id = env.SEARCH_INDEX_OBJECT.idFromName("latest");
+    const id = env.SEARCH_INDEX_OBJECT.idFromName(getSearchIndexKey(request));
     const stub = env.SEARCH_INDEX_OBJECT.get(id);
 
     return stub.fetch(request);

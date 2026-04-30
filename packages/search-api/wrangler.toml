@@ -1,5 +1,5 @@
 name = "hive-search-api"
-main = "index.js"
+main = "index.ts"
 compatibility_date = "2026-04-30"
 
 [[r2_buckets]]

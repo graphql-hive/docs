@@ -86,7 +86,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           components={{ Link: FumadocsLink }}
           search={{
             options: {
-              api: 'https://hive-search-api.theguild.workers.dev',
+              api: withBasePath("/api/search"),
               delayMs: 500,
               type: "fetch",
             },

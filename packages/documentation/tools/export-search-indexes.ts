@@ -1,18 +1,18 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
-import { buildIndexes } from "../src/lib/search-indexes";
+const prerenderedSearchIndexPath =
+  "./.output/public/graphql/hive/api/search.json";
 
 async function main() {
   const outputArg = process.argv[2] || "./.output/search/indexes.json";
   const outputPath = resolve(outputArg);
-  const indexes = await buildIndexes();
 
   await mkdir(dirname(outputPath), { recursive: true });
-  await writeFile(outputPath, JSON.stringify(indexes));
+  await copyFile(resolve(prerenderedSearchIndexPath), outputPath);
 
   process.stdout.write(
-    `Exported ${indexes.length} indexes to ${outputPath}\n`,
+    `Exported search indexes from ${resolve(prerenderedSearchIndexPath)} to ${outputPath}\n`,
   );
 }
 
