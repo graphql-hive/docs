@@ -16,7 +16,6 @@ type SearchApiEnv = {
   };
 };
 
-
 function getCacheKey(request: Request, searchIndexKey: string) {
   const url = new URL(request.url);
 
