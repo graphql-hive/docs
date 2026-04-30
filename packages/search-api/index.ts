@@ -1,5 +1,4 @@
-import { DurableObject } from "cloudflare:workers";
-import { createSearchAPI, SearchAPI } from "fumadocs-core/search/server";
+import { createSearchAPI, type SearchAPI } from "fumadocs-core/search/server";
 
 const CACHE_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
 const CORS_HEADERS = {
@@ -8,10 +7,20 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+const searchServers = new Map<string, Promise<SearchAPI>>();
+const loadedAtByIndex = new Map<string, string>();
+
+type SearchApiEnv = {
+  SEARCH_INDEX: {
+    get(key: string): Promise<{ json(): Promise<unknown> } | null>;
+  };
+};
+
+
 function getCacheKey(request: Request, searchIndexKey: string) {
   const url = new URL(request.url);
 
-  url.pathname = `/__search-cache/v1/${searchIndexKey}${url.pathname}`;
+  url.pathname = `/__search-cache/v3/${searchIndexKey}${url.pathname}`;
   url.search = new URLSearchParams(url.searchParams).toString();
 
   return new Request(url.toString(), {
@@ -29,19 +38,6 @@ function cacheableResponse(response: Response) {
     "Cache-Control",
     `public, max-age=${CACHE_TTL_SECONDS}, s-maxage=${CACHE_TTL_SECONDS}, immutable`,
   );
-
-  headers.set("X-Search-Cache", "MISS");
-
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers,
-  });
-}
-
-function markCacheHit(response: Response) {
-  const headers = new Headers(response.headers);
-  headers.set("X-Search-Cache", "HIT");
 
   return new Response(response.body, {
     status: response.status,
@@ -81,96 +77,39 @@ function getSearchIndexKey(request: Request): string | null {
   return indexKey ? `search/${indexKey}.json` : null;
 }
 
-export class SearchIndexObject extends DurableObject {
-  private searchServer: SearchAPI | null;
-  private searchServerPromise: Promise<SearchAPI> | null;
-  private loadedAt: string | null;
+async function getSearchServer(env: SearchApiEnv, searchIndexKey: string) {
+  let searchServerPromise = searchServers.get(searchIndexKey);
 
-  constructor(ctx: any, env: any) {
-    super(ctx, env);
+  if (!searchServerPromise) {
+    searchServerPromise = env.SEARCH_INDEX.get(searchIndexKey)
+      .then(async (blob) => {
+        if (!blob) {
+          throw new Error(`${searchIndexKey} not found in R2`);
+        }
 
-    this.searchServer = null;
-    this.searchServerPromise = null;
-    this.loadedAt = null;
-  }
-
-  async getSearchServer(searchIndexKey: string) {
-    if (this.searchServer) {
-      return this.searchServer;
-    }
-
-    if (!this.searchServerPromise) {
-      this.searchServerPromise = (this as any).env.SEARCH_INDEX.get(
-        searchIndexKey,
-      )
-        .then(async (blob: any) => {
-          if (!blob) {
-            throw new Error(`${searchIndexKey} not found in R2`);
-          }
-
-          const indexes = await blob.json();
-
-          const server = createSearchAPI("advanced", {
-            indexes,
-            language: "english",
-          });
-
-          this.searchServer = server;
-          this.loadedAt = new Date().toISOString();
-
-          return server;
-        })
-        .catch((error: any) => {
-          this.searchServerPromise = null;
-          throw error;
+        const indexes = await blob.json();
+        const server = createSearchAPI("advanced", {
+          indexes,
+          language: "english",
         });
-    }
 
-    return this.searchServerPromise;
-  }
+        loadedAtByIndex.set(searchIndexKey, new Date().toISOString());
 
-  async fetch(request: Request) {
-    if (request.method === "OPTIONS") {
-      return new Response(null, {
-        status: 204,
-        headers: CORS_HEADERS,
+        return server;
+      })
+      .catch((error) => {
+        searchServers.delete(searchIndexKey);
+        loadedAtByIndex.delete(searchIndexKey);
+        throw error;
       });
-    }
-
-    const searchIndexKey = getSearchIndexKey(request);
-    if (!searchIndexKey) {
-      return json(
-        {
-          ok: false,
-          error: "Missing x-search-index-key header",
-        },
-        { status: 400 },
-      );
-    }
-
-    try {
-      const server = await this.getSearchServer(searchIndexKey);
-      if (!server) {
-        throw new Error("Search Server not available");
-      }
-      const response = await server.GET(request);
-
-      return withCors(response);
-    } catch (error) {
-      return json(
-        {
-          ok: false,
-          error: error instanceof Error ? error.message : String(error),
-          loadedAt: this.loadedAt,
-        },
-        { status: 500 },
-      );
-    }
+    searchServers.set(searchIndexKey, searchServerPromise);
   }
+
+  return searchServerPromise;
 }
 
 export default {
-  async fetch(request: Request, env: any, ctx: any) {
+  async fetch(request: Request, env: SearchApiEnv, ctx: any) {
     if (request.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
@@ -190,7 +129,7 @@ export default {
     }
 
     const requestURL = new URL(request.url);
-    let hasQuery = requestURL.searchParams.has('query');
+    const hasQuery = requestURL.searchParams.has("query");
 
     const cache = caches.default;
     const cacheKey = getCacheKey(request, searchIndexKey);
@@ -198,25 +137,34 @@ export default {
     if (hasQuery) {
       const cached = await cache.match(cacheKey);
       if (cached) {
-        return markCacheHit(cached);
+        return cached;
       }
     }
 
-    const id = env.SEARCH_INDEX_OBJECT.idFromName(searchIndexKey);
-    const stub = env.SEARCH_INDEX_OBJECT.get(id);
+    try {
+      const server = await getSearchServer(env, searchIndexKey);
+      const response = withCors(await server.GET(request));
 
-    const response = await stub.fetch(request);
+      if (!hasQuery) {
+        return response;
+      }
 
-    if (!hasQuery) {
-      return response;
+      const responseToReturn = cacheableResponse(response);
+
+      if (responseToReturn.ok) {
+        ctx.waitUntil(cache.put(cacheKey, responseToReturn.clone()));
+      }
+
+      return responseToReturn;
+    } catch (error) {
+      return json(
+        {
+          ok: false,
+          error: error instanceof Error ? error.message : String(error),
+          loadedAt: loadedAtByIndex.get(searchIndexKey) ?? null,
+        },
+        { status: 500 },
+      );
     }
-
-    const responseToReturn = cacheableResponse(response);
-
-    if (responseToReturn.ok) {
-      ctx.waitUntil(cache.put(cacheKey, responseToReturn.clone()));
-    }
-
-    return responseToReturn;
   },
 };

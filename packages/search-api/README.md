@@ -2,7 +2,7 @@
 
 Cloudflare Worker that serves the Fumadocs/orama-based search endpoint for the documentation site.
 
-The Worker does not generate search indexes on its own, it reads a build-specific search index from R2 and caches the Search Server API in a Durable Object.
+The Worker does not generate search indexes on its own, it reads a build-specific search index from R2 and caches the Search Server API in Worker isolate memory.
 
 ## Request Flow
 
@@ -11,7 +11,7 @@ The Worker does not generate search indexes on its own, it reads a build-specifi
 3. The docs Worker intercepts that path and proxies it to this Worker through the Cloudflare service binding `SEARCH_API`.
 4. The docs Worker forwards `SEARCH_INDEX_KEY` as the `x-search-index-key` request header.
 5. This Worker maps that header to the R2 object key `search/<sha>.json`.
-6. A Durable Object named by that same R2 key loads the index and serves search responses.
+6. The Worker loads that R2 object and caches the Search Server API in Worker isolate memory.
 
 ## Search Index Generation
 
@@ -73,19 +73,21 @@ search/<github-sha>.json
 
 from the `SEARCH_INDEX` R2 binding.
 
-## Durable Object Caching
+## Worker Isolate Caching
 
-The Worker routes each request to a Durable Object selected by the immutable R2 key:
+The Worker caches each loaded Search Server API in module-level isolate memory, selected by the immutable R2 key:
 
 ```ts
-env.SEARCH_INDEX_OBJECT.idFromName("search/<sha>.json");
+searchServers.get("search/<sha>.json");
 ```
 
-Each Durable Object instance caches its `SearchAPI` instance in memory after loading the R2 object once.
+Each Worker isolate caches its `SearchAPI` instance after loading the R2 object once. This cache is opportunistic: Cloudflare may evict Worker isolates, and different isolates or regions may load the same index independently.
 
-Do not use mutable keys such as `latest.json` for requests. Durable Objects cache by object name, so reusing a mutable key could keep serving an old in-memory index after R2 has been overwritten.
+Do not use mutable keys such as `latest.json` for requests. Worker isolates cache by object name, so reusing a mutable key could keep serving an old in-memory index after R2 has been overwritten.
 
 For that reason, `x-search-index-key` is required. Requests without it return `400`.
+
+Query responses are also cached through Cloudflare's Cache API using a synthetic key that includes the immutable R2 object key. Public responses use `Cache-Control: private, no-cache` so browsers and shared caches do not keep stale results across deployments for the unversioned `/api/search?query=...` URL.
 
 ## Production Deployment
 
@@ -107,7 +109,7 @@ They reuse the shared `hive-search-api` Worker and isolate search data through `
 docs preview build --> upload search/<preview-sha>.json --> docs worker version upload with SEARCH_INDEX_KEY=<preview-sha>
 ```
 
-The shared Search API Worker loads a separate Durable Object per preview SHA, so preview indexes do not share cached search state with production or other previews.
+The shared Search API Worker loads a separate in-memory Search Server API per preview SHA, so preview indexes do not share cached search state with production or other previews.
 
 ## Configuration
 
