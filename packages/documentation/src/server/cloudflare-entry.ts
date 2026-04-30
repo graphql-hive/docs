@@ -161,6 +161,17 @@ function isHTMLDocumentRequest(request: Request, pathname: string) {
   return (request.headers.get("accept") || "").includes("text/html");
 }
 
+function markSearchWarmTriggered(response: Response) {
+  const headers = new Headers(response.headers);
+  headers.set("X-Search-Warm-Triggered", "1");
+
+  return new Response(response.body, {
+    headers,
+    status: response.status,
+    statusText: response.statusText,
+  });
+}
+
 function createHandler(hooks: HandlerHooks) {
   return {
     email(message: unknown, env: CloudflareEnv, context: CloudflareContext) {
@@ -490,7 +501,9 @@ export default createHandler({
       }
     }
 
-    if (isHTMLDocumentRequest(request, requestURL.pathname)) {
+    const shouldWarmSearch = isHTMLDocumentRequest(request, requestURL.pathname);
+
+    if (shouldWarmSearch) {
       const searchWarmResponse = warmSearchIndex(env);
       if (searchWarmResponse) {
         context.waitUntil(
@@ -509,11 +522,13 @@ export default createHandler({
       isAliasedRequest,
     );
     if (assetResponse) {
-      return rewriteAliasedResponse(
+      const response = rewriteAliasedResponse(
         assetResponse,
         isAliasedRequest,
         requestURL,
       );
+
+      return shouldWarmSearch ? markSearchWarmTriggered(response) : response;
     }
 
     if (
@@ -526,10 +541,12 @@ export default createHandler({
       }
     }
 
-    return rewriteAliasedResponse(
+    const response = rewriteAliasedResponse(
       await nitroApp.fetch(request),
       isAliasedRequest,
       requestURL,
     );
+
+    return shouldWarmSearch ? markSearchWarmTriggered(response) : response;
   },
 });
