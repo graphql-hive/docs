@@ -16,6 +16,13 @@ export const Route = createRootRoute({
   component: RootComponent,
   errorComponent: RootErrorComponent,
   head: seo({
+    links: [
+      {
+        as: "fetch",
+        href: withBasePath("/api/search/__warm-search-index"),
+        rel: "prefetch",
+      },
+    ],
     meta: [
       {
         // eslint-disable-next-line unicorn/text-encoding-identifier-case

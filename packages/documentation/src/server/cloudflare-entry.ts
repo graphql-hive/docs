@@ -131,10 +131,21 @@ function isServerFnPath(pathname: string) {
 }
 
 function isSearchAPIPath(pathname: string) {
-  return (
-    pathname.startsWith("/api/search") ||
-    (baseURL !== "" && pathname.startsWith(`${baseURL}/api/search`))
-  );
+  const searchPathname = getSearchPathname(pathname);
+
+  return searchPathname === "/api/search" || searchPathname.startsWith("/api/search/");
+}
+
+function getSearchPathname(pathname: string) {
+  return baseURL !== "" && pathname.startsWith(`${baseURL}/api/search`)
+    ? pathname.slice(baseURL.length)
+    : pathname;
+}
+
+function getSearchAPIPathname(pathname: string) {
+  const searchPathname = getSearchPathname(pathname);
+
+  return searchPathname.slice("/api/search".length) || "/";
 }
 
 function createHandler(hooks: HandlerHooks) {
@@ -367,7 +378,10 @@ function proxySearchAPI(request: Request, env: CloudflareEnv) {
   }
 
   const requestURL = new URL(request.url);
-  const searchURL = new URL("https://search-api.internal/");
+  const searchURL = new URL(
+    getSearchAPIPathname(requestURL.pathname),
+    "https://search-api.internal",
+  );
   searchURL.search = requestURL.search;
 
   const headers = new Headers(request.headers);
