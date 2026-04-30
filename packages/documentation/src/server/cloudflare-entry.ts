@@ -132,8 +132,8 @@ function isServerFnPath(pathname: string) {
 
 function isSearchAPIPath(pathname: string) {
   return (
-    pathname === "/api/search" ||
-    (baseURL !== "" && pathname === `${baseURL}/api/search`)
+    pathname.startsWith("/api/search") ||
+    (baseURL !== "" && pathname.startsWith(`${baseURL}/api/search`))
   );
 }
 
