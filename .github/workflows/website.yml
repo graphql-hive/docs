@@ -35,7 +35,7 @@ jobs:
       # TODO: add R2 lifecycle cleanup/retention for per-commit preview search indexes.
       - name: upload search index to r2
         run: |
-          bunx wrangler r2 object put hive-docs-search-index/search/${SEARCH_INDEX_KEY}.json --file ./.output/search/latest.json
+          bunx wrangler r2 object put hive-docs-search-index/search/${SEARCH_INDEX_KEY}.json --remote --file ./.output/search/latest.json
         working-directory: packages/documentation
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
