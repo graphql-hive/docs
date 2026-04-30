@@ -6,10 +6,6 @@ main = ".output/server/index.mjs"
 [assets]
 directory = ".output/public"
 
-[[r2_buckets]]
-binding = "SEARCH_INDEXES"
-bucket_name = "hive-docs-search-index"
-
 [[services]]
 binding = "SEARCH_API"
 service = "hive-search-api"
