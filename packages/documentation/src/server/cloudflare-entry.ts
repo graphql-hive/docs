@@ -361,7 +361,7 @@ async function tryServeAsset(
   return assetResponse.status === 404 ? undefined : assetResponse;
 }
 
-function proxySearchAPI(request: Request, env: CloudflareEnv) {
+async function proxySearchAPI(request: Request, env: CloudflareEnv) {
   if (!env.SEARCH_API || !env.SEARCH_INDEX_KEY) {
     return;
   }
@@ -370,7 +370,7 @@ function proxySearchAPI(request: Request, env: CloudflareEnv) {
   const searchURL = new URL("https://search-api.internal/");
   searchURL.search = requestURL.search;
 
-  const headers = new Headers(request.headers);
+  let headers = new Headers(request.headers);
   if (env.SEARCH_INDEX_KEY) {
     headers.set("x-search-index-key", env.SEARCH_INDEX_KEY);
   }
@@ -386,7 +386,18 @@ function proxySearchAPI(request: Request, env: CloudflareEnv) {
     init.duplex = "half";
   }
 
-  return env.SEARCH_API.fetch(new Request(searchURL, init));
+  let res = await env.SEARCH_API.fetch(new Request(searchURL, init));
+
+  // Se "Cache-Control: private, no-cache"
+
+  headers = new Headers(res.headers);
+  headers.set("Cache-Control", "private, no-cache");
+
+  return new Response(res.body, {
+    status: res.status,
+    statusText: res.statusText,
+    headers,
+  });
 }
 
 async function getWebsocketHandler() {
