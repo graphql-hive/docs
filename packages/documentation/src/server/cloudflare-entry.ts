@@ -63,7 +63,6 @@ const LOCATION_HEADER = "location";
 const SERVER_FN_ACCEPT =
   "application/x-tss-framed, application/x-ndjson, application/json";
 const SERVER_FN_HEADER = "x-tsr-serverfn";
-const SEARCH_WARM_PATH = "/__warm-search-index";
 const nitroApp = useNitroApp();
 const nitroHooks = useNitroHooks();
 const importMeta = import.meta as ImportMeta & {
@@ -132,44 +131,10 @@ function isServerFnPath(pathname: string) {
 }
 
 function isSearchAPIPath(pathname: string) {
-  const searchPathname = getSearchPathname(pathname);
-
-  return searchPathname === "/api/search" || searchPathname.startsWith("/api/search/");
-}
-
-function getSearchPathname(pathname: string) {
-  return baseURL !== "" && pathname.startsWith(`${baseURL}/api/search`)
-    ? pathname.slice(baseURL.length)
-    : pathname;
-}
-
-function getSearchAPIPathname(pathname: string) {
-  const searchPathname = getSearchPathname(pathname);
-
-  return searchPathname.slice("/api/search".length) || "/";
-}
-
-function isHTMLDocumentRequest(request: Request, pathname: string) {
-  if (request.method !== "GET") {
-    return false;
-  }
-
-  if (isSearchAPIPath(pathname) || isServerFnPath(pathname)) {
-    return false;
-  }
-
-  return (request.headers.get("accept") || "").includes("text/html");
-}
-
-function markSearchWarmTriggered(response: Response) {
-  const headers = new Headers(response.headers);
-  headers.set("X-Search-Warm-Triggered", "1");
-
-  return new Response(response.body, {
-    headers,
-    status: response.status,
-    statusText: response.statusText,
-  });
+  return (
+    pathname === "/api/search" ||
+    (baseURL !== "" && pathname === `${baseURL}/api/search`)
+  );
 }
 
 function createHandler(hooks: HandlerHooks) {
@@ -402,10 +367,7 @@ function proxySearchAPI(request: Request, env: CloudflareEnv) {
   }
 
   const requestURL = new URL(request.url);
-  const searchURL = new URL(
-    getSearchAPIPathname(requestURL.pathname),
-    "https://search-api.internal",
-  );
+  const searchURL = new URL("https://search-api.internal/");
   searchURL.search = requestURL.search;
 
   const headers = new Headers(request.headers);
@@ -425,21 +387,6 @@ function proxySearchAPI(request: Request, env: CloudflareEnv) {
   }
 
   return env.SEARCH_API.fetch(new Request(searchURL, init));
-}
-
-function warmSearchIndex(env: CloudflareEnv) {
-  if (!env.SEARCH_API || !env.SEARCH_INDEX_KEY) {
-    return;
-  }
-
-  return env.SEARCH_API.fetch(
-    new Request(new URL(SEARCH_WARM_PATH, "https://search-api.internal"), {
-      headers: {
-        "x-search-index-key": env.SEARCH_INDEX_KEY,
-      },
-      method: "GET",
-    }),
-  );
 }
 
 async function getWebsocketHandler() {
@@ -501,19 +448,6 @@ export default createHandler({
       }
     }
 
-    const shouldWarmSearch = isHTMLDocumentRequest(request, requestURL.pathname);
-
-    if (shouldWarmSearch) {
-      const searchWarmResponse = warmSearchIndex(env);
-      if (searchWarmResponse) {
-        context.waitUntil(
-          searchWarmResponse.catch(() => {
-            // Non-critical warmup.
-          }),
-        );
-      }
-    }
-
     const assetResponse = await tryServeAsset(
       request,
       env,
@@ -522,13 +456,11 @@ export default createHandler({
       isAliasedRequest,
     );
     if (assetResponse) {
-      const response = rewriteAliasedResponse(
+      return rewriteAliasedResponse(
         assetResponse,
         isAliasedRequest,
         requestURL,
       );
-
-      return shouldWarmSearch ? markSearchWarmTriggered(response) : response;
     }
 
     if (
@@ -541,12 +473,10 @@ export default createHandler({
       }
     }
 
-    const response = rewriteAliasedResponse(
+    return rewriteAliasedResponse(
       await nitroApp.fetch(request),
       isAliasedRequest,
       requestURL,
     );
-
-    return shouldWarmSearch ? markSearchWarmTriggered(response) : response;
   },
 });
