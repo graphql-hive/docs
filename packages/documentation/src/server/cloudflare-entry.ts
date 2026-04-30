@@ -63,6 +63,7 @@ const LOCATION_HEADER = "location";
 const SERVER_FN_ACCEPT =
   "application/x-tss-framed, application/x-ndjson, application/json";
 const SERVER_FN_HEADER = "x-tsr-serverfn";
+const SEARCH_WARM_PATH = "/__warm-search-index";
 const nitroApp = useNitroApp();
 const nitroHooks = useNitroHooks();
 const importMeta = import.meta as ImportMeta & {
@@ -146,6 +147,18 @@ function getSearchAPIPathname(pathname: string) {
   const searchPathname = getSearchPathname(pathname);
 
   return searchPathname.slice("/api/search".length) || "/";
+}
+
+function isHTMLDocumentRequest(request: Request, pathname: string) {
+  if (request.method !== "GET") {
+    return false;
+  }
+
+  if (isSearchAPIPath(pathname) || isServerFnPath(pathname)) {
+    return false;
+  }
+
+  return (request.headers.get("accept") || "").includes("text/html");
 }
 
 function createHandler(hooks: HandlerHooks) {
@@ -403,6 +416,21 @@ function proxySearchAPI(request: Request, env: CloudflareEnv) {
   return env.SEARCH_API.fetch(new Request(searchURL, init));
 }
 
+function warmSearchIndex(env: CloudflareEnv) {
+  if (!env.SEARCH_API || !env.SEARCH_INDEX_KEY) {
+    return;
+  }
+
+  return env.SEARCH_API.fetch(
+    new Request(new URL(SEARCH_WARM_PATH, "https://search-api.internal"), {
+      headers: {
+        "x-search-index-key": env.SEARCH_INDEX_KEY,
+      },
+      method: "GET",
+    }),
+  );
+}
+
 async function getWebsocketHandler() {
   if (!importMeta._websocket) {
     return;
@@ -459,6 +487,17 @@ export default createHandler({
       const searchAPIResponse = proxySearchAPI(request, env);
       if (searchAPIResponse) {
         return searchAPIResponse;
+      }
+    }
+
+    if (isHTMLDocumentRequest(request, requestURL.pathname)) {
+      const searchWarmResponse = warmSearchIndex(env);
+      if (searchWarmResponse) {
+        context.waitUntil(
+          searchWarmResponse.catch(() => {
+            // Non-critical warmup.
+          }),
+        );
       }
     }
 
