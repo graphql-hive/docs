@@ -11,7 +11,7 @@ const CORS_HEADERS = {
 function getCacheKey(request: Request, searchIndexKey: string) {
   const url = new URL(request.url);
 
-  url.pathname = `/__search-cache/${searchIndexKey}${url.pathname}`;
+  url.pathname = `/__search-cache/v1/${searchIndexKey}${url.pathname}`;
   url.search = new URLSearchParams(url.searchParams).toString();
 
   return new Request(url.toString(), {
@@ -189,18 +189,28 @@ export default {
       );
     }
 
+    const requestURL = new URL(request.url);
+    let hasQuery = requestURL.searchParams.has('query');
+
     const cache = caches.default;
     const cacheKey = getCacheKey(request, searchIndexKey);
 
-    const cached = await cache.match(cacheKey);
-    if (cached) {
-      return markCacheHit(cached);
+    if (hasQuery) {
+      const cached = await cache.match(cacheKey);
+      if (cached) {
+        return markCacheHit(cached);
+      }
     }
 
     const id = env.SEARCH_INDEX_OBJECT.idFromName(searchIndexKey);
     const stub = env.SEARCH_INDEX_OBJECT.get(id);
 
     const response = await stub.fetch(request);
+
+    if (!hasQuery) {
+      return response;
+    }
+
     const responseToReturn = cacheableResponse(response);
 
     if (responseToReturn.ok) {
