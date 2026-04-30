@@ -1,17 +1,60 @@
 import { DurableObject } from "cloudflare:workers";
 import { createSearchAPI, SearchAPI } from "fumadocs-core/search/server";
 
-const corsHeaders = {
+const CACHE_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
+const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+function getCacheKey(request: Request, searchIndexKey: string) {
+  const url = new URL(request.url);
+
+  url.pathname = `/__search-cache/${searchIndexKey}${url.pathname}`;
+  url.search = new URLSearchParams(url.searchParams).toString();
+
+  return new Request(url.toString(), {
+    method: request.method,
+    headers: {
+      accept: request.headers.get("accept") ?? "",
+    },
+  });
+}
+
+function cacheableResponse(response: Response) {
+  const headers = new Headers(response.headers);
+
+  headers.set(
+    "Cache-Control",
+    `public, max-age=${CACHE_TTL_SECONDS}, s-maxage=${CACHE_TTL_SECONDS}, immutable`,
+  );
+
+  headers.set("X-Search-Cache", "MISS");
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
+function markCacheHit(response: Response) {
+  const headers = new Headers(response.headers);
+  headers.set("X-Search-Cache", "HIT");
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 function json(data: any, init: ResponseInit = {}) {
   return Response.json(data, {
     ...init,
     headers: {
-      ...corsHeaders,
+      ...CORS_HEADERS,
       "Content-Type": "application/json",
       ...(init.headers ?? {}),
     },
@@ -21,7 +64,7 @@ function json(data: any, init: ResponseInit = {}) {
 function withCors(response: Response) {
   const headers = new Headers(response.headers);
 
-  for (const [key, value] of Object.entries(corsHeaders)) {
+  for (const [key, value] of Object.entries(CORS_HEADERS)) {
     headers.set(key, value);
   }
 
@@ -90,7 +133,7 @@ export class SearchIndexObject extends DurableObject {
     if (request.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
-        headers: corsHeaders,
+        headers: CORS_HEADERS,
       });
     }
 
@@ -127,11 +170,11 @@ export class SearchIndexObject extends DurableObject {
 }
 
 export default {
-  async fetch(request: Request, env: any) {
+  async fetch(request: Request, env: any, ctx: any) {
     if (request.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
-        headers: corsHeaders,
+        headers: CORS_HEADERS,
       });
     }
 
@@ -146,9 +189,24 @@ export default {
       );
     }
 
+    const cache = caches.default;
+    const cacheKey = getCacheKey(request, searchIndexKey);
+
+    const cached = await cache.match(cacheKey);
+    if (cached) {
+      return markCacheHit(cached);
+    }
+
     const id = env.SEARCH_INDEX_OBJECT.idFromName(searchIndexKey);
     const stub = env.SEARCH_INDEX_OBJECT.get(id);
 
-    return stub.fetch(request);
+    const response = await stub.fetch(request);
+    const responseToReturn = cacheableResponse(response);
+
+    if (responseToReturn.ok) {
+      ctx.waitUntil(cache.put(cacheKey, responseToReturn.clone()));
+    }
+
+    return responseToReturn;
   },
 };
