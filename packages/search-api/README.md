@@ -22,7 +22,7 @@ During docs build, TanStack Start prerenders the static route configured in `pac
 ```ts
 tanstackStart({
   pages: [{ path: "/api/search.json" }],
-})
+});
 ```
 
 That produces:
@@ -78,7 +78,7 @@ from the `SEARCH_INDEX` R2 binding.
 The Worker routes each request to a Durable Object selected by the immutable R2 key:
 
 ```ts
-env.SEARCH_INDEX_OBJECT.idFromName("search/<sha>.json")
+env.SEARCH_INDEX_OBJECT.idFromName("search/<sha>.json");
 ```
 
 Each Durable Object instance caches its `SearchAPI` instance in memory after loading the R2 object once.
