@@ -5,6 +5,8 @@
     "csrf",
     "introspection",
     "jwt-authentication",
-    "operation-complexity"
+    "tls",
+    "operation-complexity",
+    "persisted-documents"
   ]
 }

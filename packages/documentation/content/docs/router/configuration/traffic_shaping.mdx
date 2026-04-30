@@ -2,6 +2,7 @@
 title: "traffic_shaping"
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
 import { Tabs } from "@hive/design-system/tabs";
 
 The `traffic_shaping` configuration object provides control over how the Hive Router manages
@@ -29,8 +30,12 @@ itself (i.e. how it handles incoming client requests).
 
 Configures inbound in-flight request deduplication. When enabled, identical concurrent
 incoming GraphQL `query` requests are coalesced into a single execution, with the result shared
-among all waiting clients. This is distinct from the outbound `dedupe_enabled`, which
-deduplicates the requests the router sends to subgraphs.
+among all waiting clients. Subscriptions are also deduplicated: N clients subscribing to the same
+operation with the same variables result in exactly one upstream subgraph connection, with events
+fanned out to all connected clients via a broadcast channel.
+
+This is distinct from the outbound `dedupe_enabled`, which deduplicates the requests the router
+sends to subgraphs.
 
 For a detailed explanation and tuning guidance see the
 [Request Deduplication section](/docs/router/guides/performance-tuning#request-deduplication) of
@@ -107,11 +112,64 @@ traffic_shaping:
 
 </Tabs>
 
+### `router.max_long_lived_clients`
+
+- **Type:** `integer`
+- **Default:** `128`
+
+```yaml
+traffic_shaping:
+  router:
+    max_long_lived_clients: 256
+```
+
+Limits the maximum number of concurrent long-lived client connections: WebSocket connections and
+HTTP streaming responses (SSE, Incremental Delivery, Multipart HTTP). When the limit is reached,
+new long-lived connection attempts are rejected with `503 Service Unavailable` and a
+`Retry-After: 5` response header. Regular HTTP requests (queries and mutations) are not affected.
+
+This limit only activates when at least one of WebSocket or Subscriptions is enabled. Setting it
+to `0` disables the limit entirely.
+
+### `router.tls` (Client ↔ Router)
+
+Use this configuration field to make the router serve HTTPS traffic (TLS) and optionally require client certificates (mTLS).
+For a conceptual overview and step-by-step setup, see [TLS & mTLS](/docs/router/security/tls).
+
+- `cert_file` (**required**): Router server certificate file path, or a list of certificate file
+  paths.
+- `key_file` (**required**): Router server private key file path.
+- `client_auth.cert_file` (optional): Trusted client CA certificate file path, or a list of
+  certificate file paths.
+- `client_auth.required` (optional, default `true`): Whether client certificates are required when
+  `client_auth` is set.
+
+```yaml title="router.config.yaml"
+traffic_shaping:
+  router:
+    tls:
+      cert_file: /etc/router/tls/server.crt
+      key_file: /etc/router/tls/server.key
+```
+
+```yaml title="router.config.yaml"
+traffic_shaping:
+  router:
+    tls:
+      cert_file:
+        - /etc/router/tls/server.crt
+        - /etc/router/tls/intermediate.crt
+      key_file: /etc/router/tls/server.key
+      client_auth:
+        cert_file: /etc/router/tls/client-ca.crt
+        required: true
+```
+
 ## Outbound Options
 
-The following options (`circuit_breaker`, `dedupe_enabled`, `pool_idle_timeout`, and
-`request_timeout`) can be set globally for all subgraphs or overridden on a per-subgraph basis by
-nesting them under the subgraph's name within the `traffic_shaping` map.
+The following options (`allow_only_http2`, `circuit_breaker`, `dedupe_enabled`, `pool_idle_timeout`,
+`request_timeout`, and `tls`) can be set globally for all subgraphs or overridden on a per-subgraph
+basis by nesting them under the subgraph's name within the `traffic_shaping` map.
 
 For example, the following example shows how to set global defaults and override them for a specific
 subgraph named `products`:
@@ -125,6 +183,25 @@ traffic_shaping:
     products:
       dedupe_enabled: false
       pool_idle_timeout: 120s
+```
+
+### `allow_only_http2`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+Forces HTTP/2 for requests to subgraphs. When enabled:
+
+- For plain HTTP connections, it will use [HTTP/2 cleartext (h2c)](https://datatracker.ietf.org/doc/html/rfc7540).
+- For HTTPS connections, it also requires HTTP/2.
+
+This means subgraph requests will **never** fall back to HTTP/1.1, and the router will fail to
+connect if the subgraph does not support HTTP/2.
+
+```yaml
+traffic_shaping:
+  all:
+    allow_only_http2: true
 ```
 
 ### `circuit_breaker`
@@ -279,3 +356,46 @@ traffic_shaping:
 
 This example sets a shorter timeout for high-priority requests based on a custom header, and
 configures the `product` subgraph to have a different timeout for requests originating from Europe.
+
+### `tls` (Router ↔ Subgraphs)
+
+Use these configuration fields to configure TLS for outbound requests from the router to subgraphs. For a
+conceptual overview and step-by-step setup, see [TLS & mTLS](/docs/router/security/tls).
+
+- `all.tls`: global default TLS config for all subgraphs.
+- `subgraphs.<name>.tls`: per-subgraph override.
+
+Supported fields:
+
+- `cert_file` (optional): Trusted subgraph CA certificate file path, or a list of certificate file
+  paths.
+- `client_auth.cert_file` + `client_auth.key_file` (optional): Router client certificate and key
+  for mTLS to subgraphs.
+- `insecure_skip_ca_verification` (optional, default `false`): Disables server certificate
+  verification.
+
+When both `all.tls` and `subgraphs.<name>.tls` are set, the subgraph config overrides the matching
+global fields. Fields not set in the subgraph config fall back to `all.tls`.
+
+```yaml title="router.config.yaml"
+traffic_shaping:
+  all:
+    tls:
+      cert_file: /etc/router/tls/subgraph-ca.crt
+  subgraphs:
+    payments:
+      tls:
+        cert_file: /etc/router/tls/payments-ca.crt
+    accounts:
+      tls:
+        cert_file: /etc/router/tls/accounts-ca.crt
+        client_auth:
+          cert_file: /etc/router/tls/router-client.crt
+          key_file: /etc/router/tls/router-client.key
+```
+
+<Callout type="warning">
+  `insecure_skip_ca_verification: true` should only be used for local
+  development or controlled testing. It disables verification of subgraph server
+  certificates.
+</Callout>

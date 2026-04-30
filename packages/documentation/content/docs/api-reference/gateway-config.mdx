@@ -99,6 +99,22 @@ export default {
 };
 ```
 
+### `additionalTypeDefs`
+
+Additional GraphQL type definitions to extend the supergraph schema.
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  additionalTypeDefs: /* GraphQL */ `
+    extend type Query {
+      hello: String
+    }
+  `,
+});
+```
+
 ### `additionalResolvers`
 
 You can provide additional resolvers to the supergraph. This can be useful if you want to add a
@@ -115,6 +131,13 @@ export const gatewayConfig = defineConfig({
   },
 });
 ```
+
+### `progressiveOverride`
+
+Enable progressive override for labels. Allows routing requests to different subgraph variants
+based on request context.
+
+[See dedicated Progressive Override page for more information.](/docs/gateway/other-features/progressive-override)
 
 ### `transports` (Advanced usage only)
 
@@ -139,6 +162,221 @@ And see the implementation of the default `transport` loading logic
 [here](https://github.com/ardatan/graphql-mesh/blob/master/packages/fusion/runtime/src/utils.ts#L32).
 
 You can replace this logic by providing your own `transports`.
+
+## Built-in Plugins
+
+### `jwt`
+
+Configure JWT authentication.
+
+[See dedicated Authorization and Authentication page for more information](/docs/gateway/authorization-authentication)
+
+### `genericAuth`
+
+Generic authentication and authorization configuration.
+
+[See dedicated Authorization and Authentication page for more information](/docs/gateway/authorization-authentication)
+
+### `prometheus`
+
+Configure Prometheus metrics.
+
+[See dedicated Monitoring and Tracing page for more information](/docs/gateway/monitoring-tracing)
+
+### `rateLimiting`
+
+Configure rate limiting.
+
+[See dedicated Rate Limiting page for more information](/docs/gateway/other-features/security/rate-limiting)
+
+### `awsSigv4`
+
+Enable and configure AWS Signature Version 4 signing for upstream requests.
+
+[See dedicated AWS SigV4 page for more information](/docs/gateway/other-features/security/aws-sigv4)
+
+### `jit`
+
+Enable Just-In-Time compilation of GraphQL documents for improved execution performance.
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  jit: true,
+});
+```
+
+### `maxTokens`
+
+Limit the number of tokens in a GraphQL document. Passing `true` enables the feature with a default
+limit of `1000` tokens.
+
+[See dedicated Max Tokens page for more information](/docs/gateway/other-features/security/max-tokens)
+
+### `maxDepth`
+
+Limit the depth of a GraphQL document. Passing `true` enables the feature with a default limit of
+`6` levels.
+
+[See dedicated Max Depth page for more information](/docs/gateway/other-features/security/max-depth)
+
+### `blockFieldSuggestions`
+
+Prevent returning field suggestions, which would leak schema information to unauthorized actors.
+
+[See dedicated Block Field Suggestions page for more information](/docs/gateway/other-features/security/block-field-suggestions)
+
+### `responseCaching`
+
+Enable response caching.
+
+[See dedicated Response Caching page for more information](/docs/gateway/other-features/performance/response-caching)
+
+### `contentEncoding`
+
+Enable compression and decompression of HTTP requests and responses.
+
+[See dedicated Compression page for more information](/docs/gateway/other-features/performance/compression)
+
+### `deferStream`
+
+Enable `@defer` and `@stream` support.
+
+[See dedicated Defer and Stream page for more information](/docs/gateway/defer-stream)
+
+### `multipart`
+
+Enable GraphQL Multipart Request support for file uploads.
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  multipart: true,
+});
+```
+
+### `executionCancellation`
+
+Enable execution cancellation to abort processing when the client disconnects.
+
+[See dedicated Execution Cancellation page for more information](/docs/gateway/other-features/performance/execution-cancellation)
+
+### `upstreamCancellation`
+
+Enable upstream cancellation to abort upstream requests when the client disconnects.
+
+[See dedicated Upstream Cancellation page for more information](/docs/gateway/other-features/performance/upstream-cancellation)
+
+### `disableIntrospection`
+
+Disable GraphQL introspection.
+
+[See dedicated Disable Introspection page for more information](/docs/gateway/other-features/security/disable-introspection)
+
+### `csrfPrevention`
+
+Enable CSRF prevention.
+
+[See dedicated CSRF Prevention page for more information](/docs/gateway/other-features/security/csrf-prevention)
+
+### `customAgent`
+
+Provide a custom HTTP(S) agent to manipulate upstream HTTP(S) requests.
+
+[See dedicated HTTPS page for more information](/docs/gateway/other-features/security/https)
+
+### `hmacSignature`
+
+Enable HMAC signature handling for upstream requests.
+
+[See dedicated HMAC Signature page for more information](/docs/gateway/other-features/security/hmac-signature)
+
+### `webhooks`
+
+Enable WebHooks handling.
+
+[See dedicated Subscriptions page for more information](/docs/gateway/subscriptions)
+
+### `propagateHeaders`
+
+Configure header propagation from incoming requests to upstream services.
+
+[See dedicated Header Propagation page for more information](/docs/gateway/other-features/header-propagation)
+
+### `upstreamTimeout`
+
+Configure timeout for upstream requests.
+
+[See dedicated Upstream Reliability page for more information](/docs/gateway/other-features/upstream-reliability)
+
+### `upstreamRetry`
+
+Configure retry behavior for upstream requests.
+
+[See dedicated Upstream Reliability page for more information](/docs/gateway/other-features/upstream-reliability)
+
+### `requestId`
+
+Configure request ID generation and propagation. Enabled by default.
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  requestId: true, // or false to disable, or an options object
+});
+```
+
+### `demandControl`
+
+Configure demand control to protect against expensive queries.
+
+[See dedicated Demand Control page for more information](/docs/gateway/other-features/security/demand-control)
+
+### `subgraphErrors`
+
+Configure how subgraph errors are handled and exposed.
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  subgraphErrors: false, // disable subgraph error handling
+});
+```
+
+### `cookies`
+
+Enable cookie processing. When enabled, the `request` object in the GraphQL context will have a
+`cookieStore` property. Required for plugins such as JWT authentication with cookies.
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  cookies: true,
+});
+```
+
+### `inboundInflightRequestDeduplication`
+
+Enable deduplication of identical in-flight requests to reduce load on the gateway and subgraphs.
+
+[See dedicated Deduplicate In-flight Requests page for more information](/docs/gateway/other-features/performance/deduplicate-inflight-requests)
+
+### `reporting`
+
+Configure usage reporting to Hive Registry or Apollo GraphOS.
+
+[See dedicated Usage Reporting page for more information](/docs/gateway/usage-reporting)
+
+### `persistedDocuments`
+
+Configure persisted documents.
+
+[See dedicated Persisted Documents page for more information](/docs/gateway/persisted-documents)
 
 ## `transportEntries`
 
@@ -378,6 +616,43 @@ export const gatewayConfig = defineConfig({
 
 ## Configure Server
 
+### `fork`
+
+Number of worker processes to spawn. Useful for utilizing multiple CPU cores.
+
+[See dedicated Concurrency and Scaling page for more information](/docs/gateway/concurrency-and-scaling)
+
+### `requestTimeout`
+
+Request timeout in milliseconds (Node) or seconds (Bun). Set to `0` to disable.
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  // Node:
+  requestTimeout: 30_000, // 30 seconds
+
+  // Bun uses seconds instead of milliseconds:
+  requestTimeout: 30, // 30 seconds
+});
+```
+
+### `keepAliveTimeout`
+
+Number of milliseconds to wait before timing out a connection due to inactivity in Node's HTTP
+server.
+
+To configure Bun, please consider using the [`requestTimeout` option](#requesttimeout), as Bun uses a single timeout for both request and keep-alive timeouts.
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  keepAliveTimeout: 5_000, // 5 seconds
+});
+```
+
 ### `sslCredentials` for HTTPS
 
 This is the option to provide SSL Credentials for HTTPS Server. If this is provided, Hive Gateway
@@ -521,6 +796,13 @@ export const gatewayConfig = defineConfig({
 [Learn more about available GraphiQL Options from the dedicated GraphQL Yoga page](https://the-guild.dev/graphql/yoga-server/docs/features/graphiql)
 
 `TODO: Move those into a dedicated GraphiQL page under Features`
+
+### `renderGraphiQL`
+
+Accepts a factory function that returns GraphiQL HTML, replacing the built-in GraphiQL. Can be used
+to provide an offline GraphiQL.
+
+[Learn more](https://the-guild.dev/graphql/yoga-server/docs/features/graphiql#offline-usage)
 
 ### `landingPage`
 

@@ -29,7 +29,7 @@ override_subgraph_urls:
   subgraph_name:
     url:
       expression: |
-        if .router.headers."x-use-special-instance" == "true" {
+        if .request.headers."x-use-special-instance" == "true" {
           "https://special-instance.com/graphql"
         } else {
           .default  # Always provide a fallback

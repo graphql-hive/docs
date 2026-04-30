@@ -19,6 +19,8 @@ configurations that can be set in the router's configuration file (`router.confi
 | `HIVE_CDN_ENDPOINT`      | `string` (full url to Hive CDN supergraph artifact)  | [`supergraph[hive].endpoint`](./supergraph#endpoint)           |
 | `HIVE_CDN_KEY`           | `string` (Hive CDN key)                              | [`supergraph[hive].key`](./supergraph#key)                     |
 | `HIVE_CDN_POLL_INTERVAL` | `string` (human-readable, for example: `10s`)        | [`supergraph[hive].poll_interval`](./supergraph#poll_interval) |
+| `SUBSCRIPTIONS_ENABLED`  | `true` / `false`                                     | [`subscriptions.enabled`](../subscriptions#configuration)      |
+| `WEBSOCKET_ENABLED`      | `true` / `false`                                     | [`websocket.enabled`](../subscriptions/websockets#enabled)     |
 
 > In cases where a configuration file (`router.config.yaml`) is used with environment variables at
 > the same time, environment variables will only override the specific configuration values.
