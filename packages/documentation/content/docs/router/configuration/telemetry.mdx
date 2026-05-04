@@ -9,10 +9,10 @@ tracing and metrics behavior in Hive Router.
 
 Configure how Hive Router identifies calling clients for usage reporting and tracing.
 
-| Field            | Type                     | Notes                                                                                                        |
-| ---------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `name_header`    | `string`                 | HTTP header used to read client name for usage reporting. Default: `graphql-client-name`.                   |
-| `version_header` | `string`                 | HTTP header used to read client version for usage reporting. Default: `graphql-client-version`.             |
+| Field            | Type                       | Notes                                                                                                      |
+| ---------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `name_header`    | `string`                   | HTTP header used to read client name for usage reporting. Default: `graphql-client-name`.                  |
+| `version_header` | `string`                   | HTTP header used to read client version for usage reporting. Default: `graphql-client-version`.            |
 | `ip_header`      | `string \| object \| null` | Optional header-based client IP resolution used for tracing. Default: `null`, which means use socket peer. |
 
 ```yaml title="router.config.yaml"
@@ -81,8 +81,8 @@ Hive Router can parse common forwarding header formats, including:
 </details>
 
 <Callout type="warning">
-  Forwarding headers such as `x-forwarded-for` can be spoofed by clients. Only trust them when the
-  incoming socket peer is a trusted proxy you control.
+  Forwarding headers such as `x-forwarded-for` can be spoofed by clients. Only
+  trust them when the incoming socket peer is a trusted proxy you control.
 </Callout>
 
 ## resource
