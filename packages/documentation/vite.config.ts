@@ -86,7 +86,7 @@ export default defineConfig(async ({ command }) => ({
       projects: ["./tsconfig.json"],
     }),
     tanstackStart({
-      pages: [{ path: "/api/search" }],
+      pages: [{ path: "/api/search.json" }],
       prerender: {
         crawlLinks: true,
         enabled: true,

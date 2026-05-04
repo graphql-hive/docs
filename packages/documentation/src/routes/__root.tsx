@@ -16,6 +16,12 @@ export const Route = createRootRoute({
   component: RootComponent,
   errorComponent: RootErrorComponent,
   head: seo({
+    links: [
+      {
+        href: withBasePath("/api/search"),
+        rel: "prefetch",
+      },
+    ],
     meta: [
       {
         // eslint-disable-next-line unicorn/text-encoding-identifier-case
@@ -87,7 +93,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           search={{
             options: {
               api: withBasePath("/api/search"),
-              type: "static",
+              delayMs: 500,
+              type: "fetch",
             },
           }}
           theme={

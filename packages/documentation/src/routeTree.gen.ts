@@ -14,6 +14,7 @@ import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
 import { Route as FeedDotxmlRouteImport } from './routes/feed[.]xml'
 import { Route as LandingRouteImport } from './routes/_landing'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
+import { Route as ApiSearchDotjsonRouteImport } from './routes/api/search[.]json'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
 import { Route as LandingLightOnlyRouteImport } from './routes/_landing/_light-only'
 import { Route as LandingProductUpdatesIndexRouteImport } from './routes/_landing/product-updates/index'
@@ -55,6 +56,11 @@ const LandingRoute = LandingRouteImport.update({
 const DocsSplatRoute = DocsSplatRouteImport.update({
   id: '/docs/$',
   path: '/docs/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSearchDotjsonRoute = ApiSearchDotjsonRouteImport.update({
+  id: '/api/search.json',
+  path: '/api/search.json',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSearchRoute = ApiSearchRouteImport.update({
@@ -158,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/api/search': typeof ApiSearchRoute
+  '/api/search.json': typeof ApiSearchDotjsonRoute
   '/docs/$': typeof DocsSplatRoute
   '/ecosystem': typeof LandingLightOnlyEcosystemRoute
   '/gateway': typeof LandingLightOnlyGatewayRoute
@@ -181,6 +188,7 @@ export interface FileRoutesByTo {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/api/search': typeof ApiSearchRoute
+  '/api/search.json': typeof ApiSearchDotjsonRoute
   '/docs/$': typeof DocsSplatRoute
   '/ecosystem': typeof LandingLightOnlyEcosystemRoute
   '/gateway': typeof LandingLightOnlyGatewayRoute
@@ -207,6 +215,7 @@ export interface FileRoutesById {
   '/llms.txt': typeof LlmsDottxtRoute
   '/_landing/_light-only': typeof LandingLightOnlyRouteWithChildren
   '/api/search': typeof ApiSearchRoute
+  '/api/search.json': typeof ApiSearchDotjsonRoute
   '/docs/$': typeof DocsSplatRoute
   '/_landing/_light-only/ecosystem': typeof LandingLightOnlyEcosystemRoute
   '/_landing/_light-only/gateway': typeof LandingLightOnlyGatewayRoute
@@ -232,6 +241,7 @@ export interface FileRouteTypes {
     | '/llms-full.txt'
     | '/llms.txt'
     | '/api/search'
+    | '/api/search.json'
     | '/docs/$'
     | '/ecosystem'
     | '/gateway'
@@ -255,6 +265,7 @@ export interface FileRouteTypes {
     | '/llms-full.txt'
     | '/llms.txt'
     | '/api/search'
+    | '/api/search.json'
     | '/docs/$'
     | '/ecosystem'
     | '/gateway'
@@ -280,6 +291,7 @@ export interface FileRouteTypes {
     | '/llms.txt'
     | '/_landing/_light-only'
     | '/api/search'
+    | '/api/search.json'
     | '/docs/$'
     | '/_landing/_light-only/ecosystem'
     | '/_landing/_light-only/gateway'
@@ -305,6 +317,7 @@ export interface RootRouteChildren {
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   ApiSearchRoute: typeof ApiSearchRoute
+  ApiSearchDotjsonRoute: typeof ApiSearchDotjsonRoute
   DocsSplatRoute: typeof DocsSplatRoute
   LlmsDotmdxDocsSplatRoute: typeof LlmsDotmdxDocsSplatRoute
 }
@@ -344,6 +357,13 @@ declare module '@tanstack/react-router' {
       path: '/docs/$'
       fullPath: '/docs/$'
       preLoaderRoute: typeof DocsSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/search.json': {
+      id: '/api/search.json'
+      path: '/api/search.json'
+      fullPath: '/api/search.json'
+      preLoaderRoute: typeof ApiSearchDotjsonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/search': {
@@ -531,6 +551,7 @@ const rootRouteChildren: RootRouteChildren = {
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   ApiSearchRoute: ApiSearchRoute,
+  ApiSearchDotjsonRoute: ApiSearchDotjsonRoute,
   DocsSplatRoute: DocsSplatRoute,
   LlmsDotmdxDocsSplatRoute: LlmsDotmdxDocsSplatRoute,
 }
