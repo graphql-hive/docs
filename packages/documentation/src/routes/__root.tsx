@@ -16,6 +16,12 @@ export const Route = createRootRoute({
   component: RootComponent,
   errorComponent: RootErrorComponent,
   head: seo({
+    links: [
+      {
+        href: withBasePath("/api/search"),
+        rel: "prefetch",
+      }
+    ],
     meta: [
       {
         // eslint-disable-next-line unicorn/text-encoding-identifier-case
