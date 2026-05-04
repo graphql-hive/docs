@@ -50,8 +50,6 @@ jobs:
 
   website:
     uses: ./.github/workflows/website.yml
-    needs:
-      - search-api
     with:
       environment: production
     secrets: inherit
