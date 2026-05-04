@@ -20,7 +20,7 @@ export const Route = createRootRoute({
       {
         href: withBasePath("/api/search"),
         rel: "prefetch",
-      }
+      },
     ],
     meta: [
       {
