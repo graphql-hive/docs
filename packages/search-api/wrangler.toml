@@ -5,7 +5,3 @@ compatibility_date = "2026-04-30"
 [[r2_buckets]]
 binding = "SEARCH_INDEX"
 bucket_name = "hive-docs-search-index"
-
-[[migrations]]
-tag = "remove-search-index-object"
-deleted_classes = ["SearchIndexObject"]
