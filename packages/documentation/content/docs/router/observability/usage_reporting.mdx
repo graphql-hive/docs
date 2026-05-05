@@ -42,8 +42,8 @@ client in Hive Console, set up client identification in `router.config.yaml`.
 ```yaml title="router.config.yaml"
 telemetry:
   client_identification:
-    name_header: "graphql-client-name" # default value
-    version_header: "graphql-client-version" # default value
+    name_header: "x-graphql-client-name" # default value
+    version_header: "x-graphql-client-version" # default value
 ```
 
 ## Excluding Operations
