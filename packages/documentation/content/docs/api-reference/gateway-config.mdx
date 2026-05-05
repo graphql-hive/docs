@@ -624,17 +624,27 @@ Number of worker processes to spawn. Useful for utilizing multiple CPU cores.
 
 ### `requestTimeout`
 
-Request timeout in milliseconds (Node) or seconds (Bun). Set to `0` to disable.
+Sets the maximum time in milliseconds allowed to receive the entire request from the client (headers + body). Once the body is fully received, this timer is cancelled and the handler can run indefinitely. Set to `0` to disable.
+
+For a hard end-to-end deadline, use [`requestDeadline`](#requestdeadline) instead.
 
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
-  // Node:
   requestTimeout: 30_000, // 30 seconds
+});
+```
 
-  // Bun uses seconds instead of milliseconds:
-  requestTimeout: 30, // 30 seconds
+### `requestDeadline`
+
+Sets a hard end-to-end time limit in milliseconds for the entire request lifecycle, from connection to response completion. Unlike [`requestTimeout`](#requesttimeout), this timer is not cancelled when the request body is received - it runs until the response is finished. When the deadline is exceeded, the server responds with a 503 and closes the connection.
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  requestDeadline: 30_000, // 30 seconds
 });
 ```
 
