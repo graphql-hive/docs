@@ -640,6 +640,14 @@ export const gatewayConfig = defineConfig({
 
 Sets a hard end-to-end time limit in milliseconds for the entire request lifecycle, from connection to response completion. Unlike [`requestTimeout`](#requesttimeout), this timer is not cancelled when the request body is received - it runs until the response is finished. When the deadline is exceeded, the server responds with a 503 and closes the connection.
 
+<Callout type="warning">
+
+In Bun, streamed responses (e.g. defer/stream) are not covered by this
+deadline. The timer only applies until the Response object is created; once
+streaming begins, the body can continue past the deadline.
+
+</Callout>
+
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
 
