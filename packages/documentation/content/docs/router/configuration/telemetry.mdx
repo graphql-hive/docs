@@ -7,19 +7,83 @@ tracing and metrics behavior in Hive Router.
 
 ## client_identification
 
-Configure how Hive Router identifies calling clients in telemetry, based on request headers.
+Configure how Hive Router identifies calling clients for usage reporting and tracing.
 
-| Field            | Type     | Notes                                                        |
-| ---------------- | -------- | ------------------------------------------------------------ |
-| `name_header`    | `string` | HTTP header used to read client name for usage reporting.    |
-| `version_header` | `string` | HTTP header used to read client version for usage reporting. |
+| Field            | Type                       | Notes                                                                                                      |
+| ---------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `name_header`    | `string`                   | HTTP header used to read client name for usage reporting. Default: `graphql-client-name`.                  |
+| `version_header` | `string`                   | HTTP header used to read client version for usage reporting. Default: `graphql-client-version`.            |
+| `ip_header`      | `string \| object \| null` | Optional header-based client IP resolution used for tracing. Default: `null`, which means use socket peer. |
 
 ```yaml title="router.config.yaml"
 telemetry:
   client_identification:
     name_header: graphql-client-name # default
     version_header: graphql-client-version # default
+    ip_header: null # default
 ```
+
+### `ip_header`
+
+By default, Hive Router uses the address of the incoming socket connection as the client address.
+
+If your router runs behind proxies or load balancers, you can tell it to resolve the client IP from
+an HTTP header instead. This affects the `http.server` tracing span attributes such as
+`client.address` and `client.port`.
+
+#### Use the left-most value from a header
+
+```yaml title="router.config.yaml"
+telemetry:
+  client_identification:
+    ip_header: x-forwarded-for
+```
+
+In this scenario, Hive Router reads the configured header and records the left-most valid IP address as
+`client.address`. If the header value includes a port, it also records `client.port`.
+
+This works well when your networking layer already sanitizes forwarding headers before requests
+reach the router.
+
+#### Trust forwarding headers only from trusted proxies
+
+```yaml title="router.config.yaml"
+telemetry:
+  client_identification:
+    ip_header:
+      name: x-forwarded-for
+      trusted_proxies:
+        - 10.0.0.0/8
+        - 192.168.0.0/16
+        - 127.0.0.1
+```
+
+Use this option when the router sits behind one or more trusted proxies.
+
+Hive Router first checks whether the socket peer address belongs to `trusted_proxies`. If the peer is not trusted, the router ignores the header and falls back to the socket peer.
+
+If the peer is trusted, the router scans the configured header from right to left, skips trusted proxy addresses, and records the first non-trusted IP as `client.address`.
+
+If all values in the header are trusted, the router uses the left-most value. If no valid client IP can be resolved, the router falls back to the socket peer address.
+
+Each `trusted_proxies` entry can be either a single IP address or a CIDR range.
+
+<details>
+  <summary>Supported header value formats</summary>
+
+Hive Router can parse common forwarding header formats, including:
+
+- `x-forwarded-for: 198.51.100.7, 10.0.0.2`
+- `x-forwarded-for: 198.51.100.7:4444, 10.0.0.2`
+- `forwarded: for=198.51.100.7;proto=https`
+- `forwarded: for="[2001:db8::1]:8080";proto=https`
+
+</details>
+
+<Callout type="warning">
+  Forwarding headers such as `x-forwarded-for` can be spoofed by clients. Only
+  trust them when the incoming socket peer is a trusted proxy you control.
+</Callout>
 
 ## resource
 
