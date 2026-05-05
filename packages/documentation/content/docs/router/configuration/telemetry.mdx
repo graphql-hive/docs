@@ -61,25 +61,44 @@ Allows you to control how the Hive Router does
 > For additional information about the usage reporting process in Hive Router, see the
 > [Usage Reporting page](/docs/router/observability/usage_reporting).
 
-| Field                  | Type       | Default                              | Notes                                                         |
-| ---------------------- | ---------- | ------------------------------------ | ------------------------------------------------------------- |
-| `enabled`              | `boolean`  | `false`                              | Explicitly enable or disable usage reporting.                 |
-| `endpoint`             | `string`   | `https://app.graphql-hive.com/usage` | Override for self-hosted Hive.                                |
-| `sample_rate`          | `string`   | `100%`                               | Percentage between `0%` and `100%`.                           |
-| `exclude`              | `string[]` | `[]`                                 | Operation names to ignore (for example `IntrospectionQuery`). |
-| `buffer_size`          | `integer`  | `1000`                               | Buffer size before flush.                                     |
-| `accept_invalid_certs` | `boolean`  | `false`                              | Accept invalid SSL certificates for usage reporting.          |
-| `connect_timeout`      | `string`   | `5s`                                 | Timeout for connect phase only.                               |
-| `request_timeout`      | `string`   | `15s`                                | Timeout for the full request.                                 |
-| `flush_interval`       | `string`   | `5s`                                 | Buffer flush interval.                                        |
+| Field                  | Type                        | Default                              | Notes                                                                                                    |
+| ---------------------- | --------------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| `enabled`              | `boolean`                   | `false`                              | Explicitly enable or disable usage reporting.                                                            |
+| `endpoint`             | `string`                    | `https://app.graphql-hive.com/usage` | Override for self-hosted Hive.                                                                           |
+| `sample_rate`          | `string`                    | `100%`                               | Percentage between `0%` and `100%`.                                                                      |
+| `exclude`              | `string[] \| ExcludeObject` | -                                    | Operations to exclude. Accepts a list of operation names or a VRL expression object. See details below. |
+| `buffer_size`          | `integer`                   | `1000`                               | Buffer size before flush.                                                                                |
+| `accept_invalid_certs` | `boolean`                   | `false`                              | Accept invalid SSL certificates for usage reporting.                                                     |
+| `connect_timeout`      | `string`                    | `5s`                                 | Timeout for connect phase only.                                                                          |
+| `request_timeout`      | `string`                    | `15s`                                | Timeout for the full request.                                                                            |
+| `flush_interval`       | `string`                    | `5s`                                 | Buffer flush interval.                                                                                   |
+
+The `exclude` field accepts two formats:
+
+**Legacy format** — a list of operation names to skip:
 
 ```yaml title="router.config.yaml"
 telemetry:
   hive:
     usage_reporting:
       enabled: true
-      exclude: ["IntrospectionQuery"]
+      exclude:
+        - IntrospectionQuery
+        - HealthCheck
 ```
+
+**Dynamic expression format** — a [VRL expression](/docs/router/configuration/expressions) that has access to the full request context. Return `true` to exclude the operation or `false` to include it:
+
+```yaml title="router.config.yaml"
+telemetry:
+  hive:
+    usage_reporting:
+      enabled: true
+      exclude:
+        expression: '.request.operation.name == "IntrospectionQuery"'
+```
+
+Expressions can use any fields available under `.request` (see [Expressions](/docs/router/configuration/expressions#request) for the full list of variables).
 
 </details>
 </div>

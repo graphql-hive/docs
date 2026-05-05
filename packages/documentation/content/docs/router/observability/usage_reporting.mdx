@@ -46,6 +46,61 @@ telemetry:
     version_header: "graphql-client-version" # default value
 ```
 
+## Excluding Operations
+
+You can prevent specific operations from being reported to Hive Console using the `exclude` option.
+It supports two formats that can be used interchangeably.
+
+### List of operation names (legacy)
+
+Pass an array of operation names to skip those operations:
+
+```yaml title="router.config.yaml"
+telemetry:
+  hive:
+    usage_reporting:
+      enabled: true
+      exclude:
+        - IntrospectionQuery
+        - HealthCheck
+```
+
+### Dynamic VRL expression
+
+For more fine-grained control, use a [VRL expression](/docs/router/configuration/expressions) that
+evaluates at runtime. Return `true` to exclude the operation or `false` to include it. The
+expression has full access to the request context (`.request`, `.request.headers`,
+`.request.operation.name`, `.request.operation.type`, etc.).
+
+```yaml title="router.config.yaml"
+telemetry:
+  hive:
+    usage_reporting:
+      enabled: true
+      exclude:
+        expression: '.request.operation.name == "IntrospectionQuery"'
+```
+
+Multi-condition example:
+
+```yaml title="router.config.yaml"
+telemetry:
+  hive:
+    usage_reporting:
+      enabled: true
+      exclude:
+        expression: |
+          if (.request.operation.name == "IntrospectionQuery" ||
+              .request.operation.name == "HealthCheck") {
+            true
+          } else {
+            false
+          }
+```
+
+See [Expressions](/docs/router/configuration/expressions) for the full list of available variables
+and functions.
+
 ## Configuration reference
 
 See the [telemetry configuration reference](/docs/router/configuration/telemetry#hive) for all
