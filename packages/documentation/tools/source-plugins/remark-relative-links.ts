@@ -7,7 +7,7 @@ import { dirname, relative, resolve } from "node:path";
  * Relative links like `[text](../foo)` or `[text](../foo.mdx)` are not
  * transformed by Fumadocs and break TanStack Start prerender.
  * This plugin resolves them against the filesystem and rewrites to
- * absolute URL paths like `/docs/router/plugin-system`.
+ * absolute URL paths like `/docs/router/customizations/plugin-system`.
  */
 export function remarkRelativeLinks() {
   return remarkRelativeLinkTransform;
