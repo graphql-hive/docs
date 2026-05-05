@@ -132,7 +132,7 @@ interactive GraphQL playground.
 ### Create a custom plugin
 
 Now you can create a custom plugin by implementing the
-[`RouterPlugin` trait](/docs/router/plugin-system#trait-routerplugin).
+[`RouterPlugin` trait](/docs/router/customizations/plugin-system#trait-routerplugin).
 
 Then, create a `src/plugin.rs` file with the following template:
 
@@ -173,7 +173,7 @@ impl RouterPlugin for MyPlugin {
 }
 ```
 
-The plugin above uses the [Plugin System Hooks API](/docs/router/plugin-system/hooks) and hooks into
+The plugin above uses the [Plugin System Hooks API](/docs/router/customizations/plugin-system/hooks) and hooks into
 the `on_graphql_params` phase to print the received GraphQL operation to the log.
 
 <Callout title="Looking for a complete plugin template?" type="note">
@@ -333,6 +333,6 @@ docker run \
 The following links and examples can help you implement custom plugins and extend the Router in
 different ways.
 
-- [Plugin System documentation and API Reference](/docs/router/plugin-system)
+- [Plugin System documentation and API Reference](/docs/router/customizations/plugin-system)
 - [Example plugins](https://github.com/graphql-hive/router/tree/main/plugin_examples)
 - [Plugin template](https://github.com/graphql-hive/router/blob/main/plugin_examples/plugin_template/src/plugin.rs)
