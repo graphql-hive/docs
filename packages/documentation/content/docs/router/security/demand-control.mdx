@@ -41,8 +41,8 @@ operation structure, not variable values). During request processing:
 1. **Estimation phase**: Cost formula is evaluated using request variables to estimate total cost
    before sending requests to subgraphs.
 2. **Limit checking**: If estimated cost exceeds configured limits (`strategy.static_estimated.max`
-  globally or subgraph-specific `max`), the router can reject the operation or skip over-budget
-  subgraphs while continuing others.
+   globally or subgraph-specific `max`), the router can reject the operation or skip over-budget
+   subgraphs while continuing others.
 3. **Optional actual cost calculation**: After execution, the router optionally calculates actual
    cost from subgraph responses to compare against estimates.
 
@@ -510,14 +510,14 @@ demand_control:
 
 **Example response when search subgraph is over-budget:**
 
-```json
+```jsonc
 {
   "data": {
     "user": {
       "id": "123",
       "name": "Alice",
-      "search": null  # Search subgraph skipped
-    }
+      "search": null, // Search subgraph skipped
+    },
   },
   "errors": [
     {
@@ -526,9 +526,9 @@ demand_control:
         "code": "SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE",
         "subgraphName": "search_engine",
         "cost": 250,
-        "maxCost": 200
-      }
-    }
+        "maxCost": 200,
+      },
+    },
   ],
   // If `include_extension_metadata` is enabled, you can also see the cost breakdown in extensions
   "extensions": {
@@ -536,12 +536,12 @@ demand_control:
       "estimated": 1500,
       "bySubgraph": {
         "users": 150,
-        "search_engine": 250,  # Over limit
-        "products": 300
+        "search_engine": 250, // Over limit
+        "products": 300,
       },
-      "blockedSubgraphs": ["search_engine"]
-    }
-  }
+      "blockedSubgraphs": ["search_engine"],
+    },
+  },
 }
 ```
 
@@ -696,21 +696,21 @@ demand_control:
 
 Response if actual cost exceeds limit:
 
-```json
+```jsonc
 {
   "data": {
     "me": {
-      "id": "123"
-    }
+      "id": "123",
+    },
   },
   "errors": [
     {
       "message": "Operation actual cost 527 exceeds configured max cost 500",
       "extensions": {
         "code": "COST_ACTUAL_TOO_EXPENSIVE",
-        "maxCost": 500
-      }
-    }
+        "maxCost": 500,
+      },
+    },
   ],
   // If `include_extension_metadata` is enabled
   "extensions": {
@@ -719,9 +719,9 @@ Response if actual cost exceeds limit:
       "actual": 527,
       "delta": 47,
       "result": "COST_ACTUAL_TOO_EXPENSIVE",
-      "maxCost": 500
-    }
-  }
+      "maxCost": 500,
+    },
+  },
 }
 ```
 
@@ -733,12 +733,12 @@ Response if actual cost exceeds limit:
 
 ## Error codes and result states
 
-| Code                                    | Phase          | Meaning                                   | Response                                                |
-| --------------------------------------- | -------------- | ----------------------------------------- | ------------------------------------------------------- |
-| `COST_OK`                               | Both           | Operation within limits                   | Data returned normally                                  |
-| `COST_ESTIMATED_TOO_EXPENSIVE`          | Pre-execution  | Estimated cost exceeds global `max`       | Request rejected, no subgraph calls made                |
-| `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` | Pre-execution  | Specific subgraph exceeded its budget     | That subgraph skipped, others execute, partial response |
-| `COST_ACTUAL_TOO_EXPENSIVE`             | Post-execution | Actual cost exceeds global `max`          | Data is returned with an additional GraphQL error       |
+| Code                                    | Phase          | Meaning                               | Response                                                |
+| --------------------------------------- | -------------- | ------------------------------------- | ------------------------------------------------------- |
+| `COST_OK`                               | Both           | Operation within limits               | Data returned normally                                  |
+| `COST_ESTIMATED_TOO_EXPENSIVE`          | Pre-execution  | Estimated cost exceeds global `max`   | Request rejected, no subgraph calls made                |
+| `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` | Pre-execution  | Specific subgraph exceeded its budget | That subgraph skipped, others execute, partial response |
+| `COST_ACTUAL_TOO_EXPENSIVE`             | Post-execution | Actual cost exceeds global `max`      | Data is returned with an additional GraphQL error       |
 
 ## Best practices and patterns
 
