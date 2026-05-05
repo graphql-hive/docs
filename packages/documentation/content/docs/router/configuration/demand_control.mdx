@@ -2,8 +2,8 @@
 title: "demand_control"
 ---
 
-The `demand_control` configuration controls operation cost estimation and enforcement in Hive
-Router.
+The `demand_control` configuration controls operation cost estimation, enforcement, and metadata
+emission in Hive Router.
 
 For conceptual guidance and rollout strategy, see
 [Demand Control](/docs/router/security/demand-control).
@@ -17,26 +17,16 @@ For conceptual guidance and rollout strategy, see
 
 Enables demand-control cost evaluation.
 
-### `max_cost`
+### `mode`
 
-- **Type:** `integer`
-- **Format:** `uint64`
-- **Minimum:** `0`
-- **Default:** unset
+- **Type:** `string`
+- **Allowed values:** `enforce`, `measure`
+- **Required:** yes
 
-Global maximum allowed estimated operation cost.
+Controls how limits are applied:
 
-If `max_cost` is unset, demand control runs in measurement mode and does not reject requests by
-global estimated cost.
-
-### `list_size`
-
-- **Type:** `integer`
-- **Format:** `uint`
-- **Minimum:** `0`
-- **Default:** `0`
-
-Fallback list-size assumption used for list-returning fields that do not define `@listSize`.
+- `enforce`: apply configured limits and reject/skip over-budget operations or subgraphs.
+- `measure`: never reject requests; still compute costs, emit metrics, and set result codes.
 
 ### `include_extension_metadata`
 
@@ -44,31 +34,57 @@ Fallback list-size assumption used for list-returning fields that do not define 
 - **Default:** `false`
 
 When `true`, response `extensions.cost` includes cost metadata such as estimated cost, result code,
-per-subgraph breakdown, and optional actual-cost fields.
+per-subgraph breakdown, formula-cache information, and actual-cost fields.
 
-### `actual_cost`
+### `strategy`
 
-Optional configuration for post-execution actual-cost calculation.
+Demand control currently supports one strategy variant: `static_estimated`.
 
-#### `actual_cost.mode`
+#### `strategy.static_estimated.max`
+
+- **Type:** `integer`
+- **Format:** `uint64`
+- **Minimum:** `0`
+- **Required:** yes
+
+Supergraph-wide maximum allowed cost.
+
+In `mode: enforce`:
+
+- If estimated cost exceeds `max`, request is rejected with `COST_ESTIMATED_TOO_EXPENSIVE`.
+- If actual cost exceeds `max`, response includes `COST_ACTUAL_TOO_EXPENSIVE`.
+
+In `mode: measure`, limits are not enforced but result codes still reflect over-limit evaluations.
+
+#### `strategy.static_estimated.list_size`
+
+- **Type:** `integer`
+- **Format:** `uint`
+- **Minimum:** `0`
+- **Default:** unset
+
+Fallback list-size assumption used for list-returning fields that do not define `@listSize`.
+
+#### `strategy.static_estimated.actual_cost_mode`
 
 - **Type:** `string`
 - **Allowed values:** `by_subgraph`, `by_response_shape`
+- **Default:** `by_subgraph`
 
 Controls how actual cost is calculated:
 
 - `by_subgraph`: Sums actual costs from subgraph responses.
 - `by_response_shape`: Computes cost from the final response shape.
 
-### `subgraph`
+#### `strategy.static_estimated.subgraph`
 
 Optional per-subgraph demand-control overrides.
 
-#### `subgraph.all`
+##### `strategy.static_estimated.subgraph.all`
 
 Defaults applied to all subgraphs unless overridden in `subgraph.subgraphs`.
 
-##### `subgraph.all.max_cost`
+###### `strategy.static_estimated.subgraph.all.max`
 
 - **Type:** `integer`
 - **Format:** `uint64`
@@ -76,7 +92,7 @@ Defaults applied to all subgraphs unless overridden in `subgraph.subgraphs`.
 
 Maximum allowed estimated cost per subgraph.
 
-##### `subgraph.all.list_size`
+###### `strategy.static_estimated.subgraph.all.list_size`
 
 - **Type:** `integer`
 - **Format:** `uint`
@@ -84,11 +100,11 @@ Maximum allowed estimated cost per subgraph.
 
 Fallback list-size assumption per subgraph.
 
-#### `subgraph.subgraphs`
+##### `strategy.static_estimated.subgraph.subgraphs`
 
 Map of subgraph names to per-subgraph overrides.
 
-##### `subgraph.subgraphs.<name>.max_cost`
+###### `strategy.static_estimated.subgraph.subgraphs.<name>.max`
 
 - **Type:** `integer`
 - **Format:** `uint64`
@@ -96,7 +112,7 @@ Map of subgraph names to per-subgraph overrides.
 
 Maximum allowed estimated cost for the named subgraph.
 
-##### `subgraph.subgraphs.<name>.list_size`
+###### `strategy.static_estimated.subgraph.subgraphs.<name>.list_size`
 
 - **Type:** `integer`
 - **Format:** `uint`
@@ -109,25 +125,25 @@ Fallback list-size assumption for the named subgraph.
 When demand control is enabled:
 
 - The router estimates operation cost before execution.
-- If global `max_cost` is exceeded, the request is rejected with
+- If global `strategy.static_estimated.max` is exceeded in `mode: enforce`, the request is rejected with
   `COST_ESTIMATED_TOO_EXPENSIVE`.
-- If subgraph-level limits are exceeded, the router skips only over-budget subgraphs and continues
+- If subgraph-level limits are exceeded in `mode: enforce`, the router skips only over-budget subgraphs and continues
   the rest of the plan. Skipped subgraphs return
   `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE`.
-- If `actual_cost` is enabled and actual cost exceeds `max_cost`, the response may include
+- If actual cost exceeds `strategy.static_estimated.max`, response may include
   `COST_ACTUAL_TOO_EXPENSIVE`.
 
 ## Precedence
 
 1. Field-level directives (`@cost`, `@listSize`) apply first.
 2. For list-size fallback:
-   - `subgraph.subgraphs.<name>.list_size`
-   - then `subgraph.all.list_size`
-   - then global `list_size`
+   - `strategy.static_estimated.subgraph.subgraphs.<name>.list_size`
+   - then `strategy.static_estimated.subgraph.all.list_size`
+   - then global `strategy.static_estimated.list_size`
 3. For subgraph max cost:
-   - `subgraph.subgraphs.<name>.max_cost`
-   - then `subgraph.all.max_cost`
-4. Global `max_cost` is evaluated on full-operation estimated cost.
+   - `strategy.static_estimated.subgraph.subgraphs.<name>.max`
+   - then `strategy.static_estimated.subgraph.all.max`
+4. Global `strategy.static_estimated.max` is evaluated on full-operation estimated cost.
 
 ## Examples
 
@@ -136,7 +152,11 @@ When demand control is enabled:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  list_size: 10
+  mode: measure
+  strategy:
+    static_estimated:
+      max: 1000
+      list_size: 10
   include_extension_metadata: true
 ```
 
@@ -145,8 +165,11 @@ demand_control:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  max_cost: 500
-  list_size: 10
+  mode: enforce
+  strategy:
+    static_estimated:
+      max: 500
+      list_size: 10
   include_extension_metadata: true
 ```
 
@@ -155,18 +178,21 @@ demand_control:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  max_cost: 5000
-  list_size: 10
-  subgraph:
-    all:
-      max_cost: 1000
-      list_size: 20
-    subgraphs:
-      reviews:
-        max_cost: 300
-      search:
-        max_cost: 150
-        list_size: 5
+  mode: enforce
+  strategy:
+    static_estimated:
+      max: 5000
+      list_size: 10
+      subgraph:
+        all:
+          max: 1000
+          list_size: 20
+        subgraphs:
+          reviews:
+            max: 300
+          search:
+            max: 150
+            list_size: 5
 ```
 
 ### Actual-cost calculation
@@ -174,8 +200,10 @@ demand_control:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  max_cost: 500
+  mode: enforce
+  strategy:
+    static_estimated:
+      max: 500
+      actual_cost_mode: by_subgraph
   include_extension_metadata: true
-  actual_cost:
-    mode: by_subgraph
 ```

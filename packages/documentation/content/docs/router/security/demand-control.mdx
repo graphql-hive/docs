@@ -40,8 +40,9 @@ operation structure, not variable values). During request processing:
 
 1. **Estimation phase**: Cost formula is evaluated using request variables to estimate total cost
    before sending requests to subgraphs.
-2. **Limit checking**: If estimated cost exceeds `max_cost` (global or per-subgraph), the router can
-   either reject the operation or skip over-budget subgraphs while continuing others.
+2. **Limit checking**: If estimated cost exceeds configured limits (`strategy.static_estimated.max`
+  globally or subgraph-specific `max`), the router can reject the operation or skip over-budget
+  subgraphs while continuing others.
 3. **Optional actual cost calculation**: After execution, the router optionally calculates actual
    cost from subgraph responses to compare against estimates.
 
@@ -259,8 +260,11 @@ Collect cost metrics without rejecting operations:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  # No max_cost configured = measurement mode
-  list_size: 10
+  mode: measure
+  strategy:
+    static_estimated:
+      max: 1000
+      list_size: 10
   include_extension_metadata: true
 ```
 
@@ -279,18 +283,21 @@ Reject operations that exceed configured limits:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  max_cost: 500 # Global limit
-  list_size: 10
+  mode: enforce
+  strategy:
+    static_estimated:
+      max: 500 # Global limit
+      list_size: 10
   include_extension_metadata: true
 ```
 
-Operations exceeding `max_cost` respond with:
+Operations exceeding `strategy.static_estimated.max` respond with:
 
 ```json
 {
   "errors": [
     {
-      "message": "Operation cost (estimated: 650) exceeds max_cost (500)",
+      "message": "Operation estimated cost 650 exceeds configured max cost 500",
       "extensions": {
         "code": "COST_ESTIMATED_TOO_EXPENSIVE"
       }
@@ -470,26 +477,28 @@ backends:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  max_cost: 5000 # Global limit - entire operation
-  list_size: 10 # Default for unlisted fields
+  mode: enforce
+  strategy:
+    static_estimated:
+      max: 5000 # Global limit - entire operation
+      list_size: 10 # Default for unlisted fields
+      subgraph:
+        # Apply defaults to all subgraphs
+        all:
+          max: 1000 # Any subgraph can use up to 1000 cost
+          list_size: 20
 
-  subgraph:
-    # Apply defaults to all subgraphs
-    all:
-      max_cost: 1000 # Any subgraph can use up to 1000 cost
-      list_size: 20
+        # Override for specific subgraphs
+        subgraphs:
+          search_engine:
+            max: 200 # Search is expensive, stricter limit
+            list_size: 5
 
-    # Override for specific subgraphs
-    subgraphs:
-      search_engine:
-        max_cost: 200 # Search is expensive, stricter limit
-        list_size: 5
+          analytics:
+            max: 500 # Analytics can handle more
 
-      analytics:
-        max_cost: 500 # Analytics can handle more
-
-      users:
-        list_size: 50 # Users service handles large lists well
+          users:
+            list_size: 50 # Users service handles large lists well
 ```
 
 **Behavior when subgraph limit is exceeded:**
@@ -545,10 +554,12 @@ Enable cost metadata in responses for monitoring and debugging:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  max_cost: 500
+  mode: enforce
+  strategy:
+    static_estimated:
+      max: 500
+      actual_cost_mode: by_subgraph
   include_extension_metadata: true
-  actual_cost:
-    mode: by_subgraph
 ```
 
 The `extensions.cost` field will include:
@@ -579,7 +590,7 @@ The `extensions.cost` field will include:
 **Fields:**
 
 - `estimated`: Pre-execution cost estimate
-- `actual`: Post-execution cost (when actual_cost mode enabled)
+- `actual`: Post-execution cost (using `actual_cost_mode`)
 - `delta`: Difference between actual and estimated (useful for tuning estimates)
 - `result`: Status code (`COST_OK`, `COST_ESTIMATED_TOO_EXPENSIVE`, `COST_ACTUAL_TOO_EXPENSIVE`)
 - `formulaCacheHit`: Whether the cost formula was reused from cache
@@ -643,10 +654,12 @@ useful for:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  max_cost: 500
+  mode: enforce
+  strategy:
+    static_estimated:
+      max: 500
+      actual_cost_mode: by_subgraph # or by_response_shape
   include_extension_metadata: true
-  actual_cost:
-    mode: by_subgraph # or by_response_shape
 ```
 
 ### Calculation modes
@@ -668,26 +681,34 @@ Calculates cost only from fields present in final response:
 
 ### Post-execution enforcement
 
-Reject operations that exceeded `max_cost` during actual execution:
+When running in `mode: enforce`, operations that exceed `strategy.static_estimated.max` during
+actual execution append an error to the response:
 
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  max_cost: 500
-  actual_cost:
-    mode: by_subgraph
+  mode: enforce
+  strategy:
+    static_estimated:
+      max: 500
+      actual_cost_mode: by_subgraph
 ```
 
 Response if actual cost exceeds limit:
 
 ```json
 {
-  "data": null,
+  "data": {
+    "me": {
+      "id": "123"
+    }
+  },
   "errors": [
     {
-      "message": "Operation actual cost (527) exceeds max_cost (500)",
+      "message": "Operation actual cost 527 exceeds configured max cost 500",
       "extensions": {
-        "code": "COST_ACTUAL_TOO_EXPENSIVE"
+        "code": "COST_ACTUAL_TOO_EXPENSIVE",
+        "maxCost": 500
       }
     }
   ],
@@ -715,9 +736,9 @@ Response if actual cost exceeds limit:
 | Code                                    | Phase          | Meaning                                   | Response                                                |
 | --------------------------------------- | -------------- | ----------------------------------------- | ------------------------------------------------------- |
 | `COST_OK`                               | Both           | Operation within limits                   | Data returned normally                                  |
-| `COST_ESTIMATED_TOO_EXPENSIVE`          | Pre-execution  | Estimated cost exceeds `max_cost`         | Request rejected, no subgraph calls made                |
+| `COST_ESTIMATED_TOO_EXPENSIVE`          | Pre-execution  | Estimated cost exceeds global `max`       | Request rejected, no subgraph calls made                |
 | `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` | Pre-execution  | Specific subgraph exceeded its budget     | That subgraph skipped, others execute, partial response |
-| `COST_ACTUAL_TOO_EXPENSIVE`             | Post-execution | Actual cost exceeds limit after execution | Entire response rejected (if enforcing actual cost)     |
+| `COST_ACTUAL_TOO_EXPENSIVE`             | Post-execution | Actual cost exceeds global `max`          | Data is returned with an additional GraphQL error       |
 
 ## Best practices and patterns
 
@@ -725,7 +746,7 @@ Response if actual cost exceeds limit:
 
 **Phase 1: Measurement**
 
-- Enable Demand Control without `max_cost`
+- Enable Demand Control in `mode: measure`
 - Set `include_extension_metadata: true`
 - Collect cost metrics on all production traffic
 - Use telemetry to build histograms of operation costs
@@ -733,29 +754,35 @@ Response if actual cost exceeds limit:
 ```yaml
 demand_control:
   enabled: true
-  list_size: 10
+  mode: measure
+  strategy:
+    static_estimated:
+      max: 1000
+      list_size: 10
   include_extension_metadata: true
-  # No max_cost - measurement only
 ```
 
 **Phase 2: Baseline setting**
 
 - Analyze metrics to understand cost distribution
-- Set `max_cost` to 99th percentile of observed costs
+- Set `strategy.static_estimated.max` to the 99th percentile of observed costs
 - This allows all current traffic through while catching obvious abuse
 
 ```yaml
 demand_control:
   enabled: true
-  max_cost: 1000 # 99th percentile from Phase 1
-  list_size: 10
+  mode: enforce
+  strategy:
+    static_estimated:
+      max: 1000 # 99th percentile from Phase 1
+      list_size: 10
   include_extension_metadata: true
 ```
 
 **Phase 3: Gradual tightening (ongoing)**
 
 - Monitor rejection rate (target: less than 0.1%)
-- Gradually lower `max_cost` as developers optimize queries
+- Gradually lower `strategy.static_estimated.max` as developers optimize queries
 - Enforce subgraph-level limits for expensive services
 
 **Phase 4: Enforcement with telemetry (production)**
