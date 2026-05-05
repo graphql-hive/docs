@@ -36,7 +36,7 @@ test.describe("Relative link resolution", () => {
     }
 
     const link = page.getByRole("link", {
-      name: "custom plugins written in Rust",
+      name: "Introduction to Plugins",
     });
     await expect(link).toBeVisible();
     await expect(link).toHaveAttribute(
@@ -55,9 +55,7 @@ test.describe("Relative link resolution", () => {
       test.skip(true, "Page not available (needs build)");
     }
 
-    await page
-      .getByRole("link", { name: "custom plugins written in Rust" })
-      .click();
+    await page.getByRole("link", { name: "Introduction to Plugins" }).click();
     await expect(page).toHaveURL(
       appPathPattern("/docs/router/customizations/plugin-system"),
     );
