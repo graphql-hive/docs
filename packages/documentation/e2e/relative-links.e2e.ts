@@ -6,7 +6,9 @@ test.describe("Relative link resolution", () => {
     page,
   }) => {
     const response = await page.goto(
-      appPath("/docs/router/customizations/plugin-system/execution-and-lifecycle"),
+      appPath(
+        "/docs/router/customizations/plugin-system/execution-and-lifecycle",
+      ),
       { waitUntil: "networkidle" },
     );
     if (!response?.ok()) {
@@ -26,12 +28,9 @@ test.describe("Relative link resolution", () => {
   test("relative .mdx link resolves to absolute /docs/ URL", async ({
     page,
   }) => {
-    const response = await page.goto(
-      appPath("/docs/router/customizations"),
-      {
-        waitUntil: "networkidle",
-      },
-    );
+    const response = await page.goto(appPath("/docs/router/customizations"), {
+      waitUntil: "networkidle",
+    });
     if (!response?.ok()) {
       test.skip(true, "Page not available (needs build)");
     }
@@ -49,12 +48,9 @@ test.describe("Relative link resolution", () => {
   test("clicking resolved relative link navigates successfully", async ({
     page,
   }) => {
-    const response = await page.goto(
-      appPath("/docs/router/customizations"),
-      {
-        waitUntil: "networkidle",
-      },
-    );
+    const response = await page.goto(appPath("/docs/router/customizations"), {
+      waitUntil: "networkidle",
+    });
     if (!response?.ok()) {
       test.skip(true, "Page not available (needs build)");
     }
@@ -62,7 +58,9 @@ test.describe("Relative link resolution", () => {
     await page
       .getByRole("link", { name: "custom plugins written in Rust" })
       .click();
-    await expect(page).toHaveURL(appPathPattern("/docs/router/customizations/plugin-system"));
+    await expect(page).toHaveURL(
+      appPathPattern("/docs/router/customizations/plugin-system"),
+    );
     await expect(
       page.getByRole("heading", { level: 1, name: "Plugin System" }),
     ).toBeVisible({ timeout: 10_000 });
