@@ -85,10 +85,7 @@ telemetry:
 
 **Exclude traffic from a specific client identified via a request header:**
 
-Hive Router reads the client name from the `graphql-client-name` header by default (configurable via
-[`client_identification`](/docs/router/configuration/telemetry#client_identification)). You can use
-that same header to skip reporting for internal tooling, health-check clients, or any other client
-you don't want tracked:
+You can check any request header — for example, a custom `x-graphql-client-name` header sent by your clients:
 
 ```yaml title="router.config.yaml"
 telemetry:
@@ -96,7 +93,7 @@ telemetry:
     usage_reporting:
       enabled: true
       exclude:
-        expression: '.request.headers."graphql-client-name" == "my-internal-tool"'
+        expression: '.request.headers."x-graphql-client-name" == "my-internal-tool"'
 ```
 
 **Combine multiple conditions:**
@@ -110,7 +107,7 @@ telemetry:
         expression: |
           .request.operation.name == "IntrospectionQuery" ||
           .request.operation.name == "HealthCheck" ||
-          .request.headers."graphql-client-name" == "my-internal-tool"
+          .request.headers."x-graphql-client-name" == "my-internal-tool"
 ```
 
 See [Expressions](/docs/router/configuration/expressions) for the full list of available variables
