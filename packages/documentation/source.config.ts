@@ -1,5 +1,6 @@
 import { type } from "arktype";
 import { rehypeCodeDefaultOptions } from "fumadocs-core/mdx-plugins";
+import { pageSchema } from "fumadocs-core/source/schema";
 import {
   defineCollections,
   defineConfig,
@@ -8,6 +9,7 @@ import {
 import lastModified from "fumadocs-mdx/plugins/last-modified";
 import { transformerTwoslash } from "fumadocs-twoslash";
 import rehypeMermaid, { type RehypeMermaidOptions } from "rehype-mermaid";
+import { z } from "zod";
 
 import { DOCS_CODE_LANGS, DOCS_CODE_THEMES } from "./src/lib/docs-code-config";
 import { autoImage, remarkAutoImage } from "./tools/source-plugins/auto-image";
@@ -17,6 +19,9 @@ export const docs = defineDocs({
   dir: "content/docs",
   docs: {
     async: true,
+    schema: pageSchema.extend({
+      sidebarTitle: z.string().optional(),
+    }),
     postprocess: {
       includeProcessedMarkdown: true,
     },
@@ -30,7 +35,7 @@ const author = type("string | object").pipe((v) =>
 
 /** YAML parses unquoted `date: 2025-01-27` as a Date object. Accept both. */
 const dateString = type("string | Date").pipe((v) =>
-  typeof v === "string" ? v : v.toISOString().split("T")[0]!,
+  typeof v === "string" ? v : (v.toISOString().split("T")[0] ?? ""),
 );
 
 export const caseStudies = defineCollections({

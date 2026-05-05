@@ -18,7 +18,7 @@ parts of the service.
 
 This page documents the API, hooks, and different implementation options that are available for
 plugin developers. If you are looking for a guide on how to write, test and distribute a custom
-plugin, please refer to [Extending the Router guide](/docs/router/guides/extending-the-router).
+plugin, please refer to [Extending the Router guide](/docs/router/customizations).
 
 ## `hive-router` Crate
 
@@ -72,7 +72,7 @@ The `RouterPlugin` trait accepts a generic type parameter for plugin configurati
 The configuration type must implement `DeserializeOwned + Sync`, as the Router is responsible for
 loading and deserializing the configuration from the Router config file.
 
-The [`on_plugin_init`](/docs/router/plugin-system/hooks#on_plugin_init) hook provides access to the
+The [`on_plugin_init`](/docs/router/customizations/plugin-system/hooks#on_plugin_init) hook provides access to the
 plugin's configuration.
 
 ```rust
@@ -132,7 +132,7 @@ As a plugin developer, you can hook into the router execution flow in the follow
 - Supergraph reload notification
 
 Refer to the
-[Plugin System Hooks page for the complete API and usage examples of each hook](/docs/router/plugin-system/hooks)
+[Plugin System Hooks page for the complete API and usage examples of each hook](/docs/router/customizations/plugin-system/hooks)
 
 ### Shared State
 
@@ -269,6 +269,6 @@ async fn main() -> Result<(), RouterInitError> {
 
 ## Further Reading
 
-- [Getting Started Guide](/docs/router/guides/extending-the-router)
-- [Plugin Hooks](/docs/router/plugin-system/hooks)
-- [Plugin Execution and Lifecycle](/docs/router/plugin-system/execution-and-lifecycle)
+- [Getting Started Guide](/docs/router/customizations)
+- [Plugin Hooks](/docs/router/customizations/plugin-system/hooks)
+- [Plugin Execution and Lifecycle](/docs/router/customizations/plugin-system/execution-and-lifecycle)
