@@ -72,6 +72,8 @@ evaluates at runtime. Return `true` to exclude the operation or `false` to inclu
 expression has full access to the request context (`.request`, `.request.headers`,
 `.request.operation.name`, `.request.operation.type`, etc.).
 
+**Exclude by operation name:**
+
 ```yaml title="router.config.yaml"
 telemetry:
   hive:
@@ -81,7 +83,23 @@ telemetry:
         expression: '.request.operation.name == "IntrospectionQuery"'
 ```
 
-Multi-condition example:
+**Exclude traffic from a specific client identified via a request header:**
+
+Hive Router reads the client name from the `graphql-client-name` header by default (configurable via
+[`client_identification`](/docs/router/configuration/telemetry#client_identification)). You can use
+that same header to skip reporting for internal tooling, health-check clients, or any other client
+you don't want tracked:
+
+```yaml title="router.config.yaml"
+telemetry:
+  hive:
+    usage_reporting:
+      enabled: true
+      exclude:
+        expression: '.request.headers."graphql-client-name" == "my-internal-tool"'
+```
+
+**Combine multiple conditions:**
 
 ```yaml title="router.config.yaml"
 telemetry:
@@ -90,12 +108,9 @@ telemetry:
       enabled: true
       exclude:
         expression: |
-          if (.request.operation.name == "IntrospectionQuery" ||
-              .request.operation.name == "HealthCheck") {
-            true
-          } else {
-            false
-          }
+          .request.operation.name == "IntrospectionQuery" ||
+          .request.operation.name == "HealthCheck" ||
+          .request.headers."graphql-client-name" == "my-internal-tool"
 ```
 
 See [Expressions](/docs/router/configuration/expressions) for the full list of available variables
