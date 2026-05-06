@@ -102,12 +102,12 @@ export const gatewayConfig = defineConfig({
 
 ### Configuration Options
 
-| Option | Type | Description |
-| --- | --- | --- |
-| `type` | `string` | The GraphQL type that contains the field to rate-limit (e.g. `"Query"`, `"Mutation"`). |
-| `field` | `string` | The field name on the given type to rate-limit. |
-| `max` | `number` | Maximum number of requests allowed within the `ttl` window. |
-| `ttl` | `number` | Duration of the time window in **milliseconds** (e.g. `60000` for 1 minute). |
+| Option       | Type     | Description                                                                                                     |
+| ------------ | -------- | --------------------------------------------------------------------------------------------------------------- |
+| `type`       | `string` | The GraphQL type that contains the field to rate-limit (e.g. `"Query"`, `"Mutation"`).                          |
+| `field`      | `string` | The field name on the given type to rate-limit.                                                                 |
+| `max`        | `number` | Maximum number of requests allowed within the `ttl` window.                                                     |
+| `ttl`        | `number` | Duration of the time window in **milliseconds** (e.g. `60000` for 1 minute).                                    |
 | `identifier` | `string` | Template string for identifying the caller. Use `{context.*}` to access request context values such as headers. |
 
 ## Rate Limiting through `@rateLimit` Directive
@@ -162,13 +162,16 @@ type Query {
   getItems: [Item]
     @rateLimit(window: "1s", max: 5, message: "You are doing that too often.")
 
-  searchProducts(query: String!): [Product]
-    @rateLimit(window: "1m", max: 30)
+  searchProducts(query: String!): [Product] @rateLimit(window: "1m", max: 30)
 }
 
 type Mutation {
   createOrder(input: OrderInput!): Order
-    @rateLimit(window: "1m", max: 5, message: "Too many orders, please slow down.")
+    @rateLimit(
+      window: "1m"
+      max: 5
+      message: "Too many orders, please slow down."
+    )
 }
 ```
 
@@ -198,13 +201,13 @@ type Mutation {
 
 ### Directive Field Reference
 
-| Option | Type | Description |
-| --- | --- | --- |
-| `window` | `string` | Time interval for the rate limit window. Accepts human-readable durations such as `"1s"`, `"30s"`, `"1m"`, `"1h"`. |
-| `max` | `number` | Maximum number of calls to the field allowed within the `window`. |
-| `identityArgs` | `[string]` | Field argument names used to distinguish callers. For example, `["id"]` rate-limits each unique value of the `id` argument separately. Supports nested paths via dot notation (e.g. `"input.userId"`). |
-| `message` | `string` | Custom error message returned when the rate limit is exceeded. |
-| `arrayLengthField` | `string` | Name of an array argument whose length is counted as the number of calls (useful for bulk operations). |
+| Option             | Type       | Description                                                                                                                                                                                            |
+| ------------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `window`           | `string`   | Time interval for the rate limit window. Accepts human-readable durations such as `"1s"`, `"30s"`, `"1m"`, `"1h"`.                                                                                     |
+| `max`              | `number`   | Maximum number of calls to the field allowed within the `window`.                                                                                                                                      |
+| `identityArgs`     | `[string]` | Field argument names used to distinguish callers. For example, `["id"]` rate-limits each unique value of the `id` argument separately. Supports nested paths via dot notation (e.g. `"input.userId"`). |
+| `message`          | `string`   | Custom error message returned when the rate limit is exceeded.                                                                                                                                         |
+| `arrayLengthField` | `string`   | Name of an array argument whose length is counted as the number of calls (useful for bulk operations).                                                                                                 |
 
 ## Distributed Rate Limiting with Redis
 
@@ -236,6 +239,6 @@ export const gatewayConfig = defineConfig({
 
 <Callout>
   The Redis cache option currently only works in Node.js environments. See the
-  [Performance & Caching](/docs/gateway/other-features/performance) page for
-  all available cache backends and configuration options.
+  [Performance & Caching](/docs/gateway/other-features/performance) page for all
+  available cache backends and configuration options.
 </Callout>
