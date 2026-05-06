@@ -16,6 +16,7 @@
     "[App Deployments (Persisted Documents)](/docs/schema-registry/app-deployments)",
     "external-schema-composition",
     "[High-Availability and Resilience](/docs/schema-registry/high-availability-resilience)",
-    "self-hosting"
+    "self-hosting",
+    "contributing"
   ]
 }
