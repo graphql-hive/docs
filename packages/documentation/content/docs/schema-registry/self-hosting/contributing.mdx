@@ -136,6 +136,60 @@ Key expectations include:
 
 > Changes that negatively impact reliability or resilience will not be accepted.
 
+### Documentation
+
+If new functionality is added we highly recommend to also create a corresponding pull request within our documentation repository [`graphql-hive/docs`](https://github.com/graphql-hive/docs).
+
+This includes both:
+- Hive Console end-user facing changes
+- Hive Console end-user facing changes
+
+If new service configuration options were introduced via environment variables, these should be documented within the services `README.md` files.
+
+### Versioning
+
+We use [`changesets`](https://github.com/changesets/changesets) for semantic versioning of Hive Console and Hive Console SDKs.
+
+If you are adding functionality or provide a fix for a bug, please create a changeset using the `pnpm changeset` command for the affected services.
+
+```
+➜  graphql-hive ✗ pnpm changeset
+🦋  Which packages would you like to include?
+◯ unchanged packages
+  ◯ hive
+  ◯ @graphql-hive/apollo
+  ◯ @graphql-hive/cli
+  ◯ @graphql-hive/core
+  ◯ @graphql-hive/envelop
+  ◯ @graphql-hive/external-composition
+  ◯ @graphql-hive/laboratory
+  ◯ @graphql-hive/render-laboratory
+  ◯ @graphql-hive/yoga
+```
+
+For all changes that affect Hive Console services, select `hive` as the changed package. We version all Hive Console services together instead of individually.
+
+For all changes that affect specific SDKs, select the corresponding packages.
+
+Select **major** for changes that introduce breaking changes, some examples include:
+- Self-hosters need to manually perform a database migration
+- Self-hosters need to provide new environment variables
+- Functionality was removed
+
+
+Select **minor** for changes that introduce new functionality in a backwards-compatible way, some examples include:
+- Improve the search experience
+- Improve database query performance
+- Improve the user-facing UI
+- New option environment variables for services
+
+Select **patch** for all changes that fix bugs or other minor inconveniences:
+- Fix a typo
+- Fix a color UI issues
+- etc.
+
+A good changeset describes the change from a user-facing perspective. E.g. for the self-hoster it is useful to know what changed, not what exact source code file was altered. A changeset should answer what was changed and why it was changed and if appliable, include an example on how to use the new functionality or instructions for handling disrupting changes (major versions).
+
 ## Getting Started
 
 If you're unsure where to begin:
