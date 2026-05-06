@@ -24,12 +24,14 @@ The following contributions are appreciated and can be submitted directly via pu
 ### Larger Changes
 
 The following types of contributions **must be discussed before implementation**:
+
 - New features
 - Changes to core functionality
 - Architectural changes
 - Anything that may impact existing users or APIs
 
 The Process:
+
 - Open an issue or discussion (and look for existing issues)
 - Describe the proposal, including:
   - Problem statement
@@ -76,6 +78,7 @@ Refer to our [testing document](https://github.com/graphql-hive/console/blob/mai
 ### AI-Generated Contributions
 
 We recognize the use of AI tools, but we enforce strict quality standards:
+
 - Low-effort AI-generated pull requests will be rejected
 - AI-assisted code must be:
   - Reviewed
@@ -108,6 +111,7 @@ We recognize the use of AI tools, but we enforce strict quality standards:
 Changes to existing database models must be **backwards-compatible**.
 
 When modifying schemas or data structures:
+
 - Existing data must continue to work without manual intervention
 - Missing or newly introduced fields must:
   - Provide safe default values, or
@@ -128,6 +132,7 @@ If your contribution affects components on the **critical path** (e.g. the custo
 - Design changes must follow [our high-availability and resilience principles](https://the-guild.dev/graphql/hive/docs/schema-registry/high-availability-resilience)
 
 Key expectations include:
+
 - No single points of failure
 - Graceful degradation under partial outages
 - Safe retry and timeout handling
@@ -141,6 +146,7 @@ Key expectations include:
 If new functionality is added we highly recommend to also create a corresponding pull request within our documentation repository [`graphql-hive/docs`](https://github.com/graphql-hive/docs).
 
 This includes both:
+
 - Hive Console end-user facing changes
 - Hive Console end-user facing changes
 
@@ -172,18 +178,20 @@ For all changes that affect Hive Console services, select `hive` as the changed 
 For all changes that affect specific SDKs, select the corresponding packages.
 
 Select **major** for changes that introduce breaking changes, some examples include:
+
 - Self-hosters need to manually perform a database migration
 - Self-hosters need to provide new environment variables
 - Functionality was removed
 
-
 Select **minor** for changes that introduce new functionality in a backwards-compatible way, some examples include:
+
 - Improve the search experience
 - Improve database query performance
 - Improve the user-facing UI
 - New option environment variables for services
 
 Select **patch** for all changes that fix bugs or other minor inconveniences:
+
 - Fix a typo
 - Fix a color UI issues
 - etc.
@@ -193,12 +201,13 @@ A good changeset describes the change from a user-facing perspective. E.g. for t
 ## Getting Started
 
 If you're unsure where to begin:
+
 - Look for issues labeled [good first](https://github.com/graphql-hive/console/issues?q=state%3Aopen%20label%3A%22good%20first%20issue%22) issue or [help wanted](https://github.com/graphql-hive/console/issues?q=state%3Aopen%20label%3A%22help%20wanted%22)
 - Ask questions in discussions
 - Start with small improvements to get familiar with the codebase
 
 For setting up Hive Console locally please refer to our [development guide](https://github.com/graphql-hive/console/blob/main/docs/DEVELOPMENT.md).
 
-___
+---
 
 We appreciate your time and effort in contributing to Hive Console! 🚀
