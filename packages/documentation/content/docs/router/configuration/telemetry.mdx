@@ -162,7 +162,7 @@ telemetry:
         expression: '.request.operation.name == "IntrospectionQuery"'
 ```
 
-You can also exclude based on request headers — for example, checking a custom `x-graphql-client-name` header:
+You can also exclude based on request headers — for example, checking a custom `graphql-client-name` header:
 
 ```yaml title="router.config.yaml"
 telemetry:
@@ -170,7 +170,7 @@ telemetry:
     usage_reporting:
       enabled: true
       exclude:
-        expression: '.request.headers."x-graphql-client-name" == "my-internal-tool"'
+        expression: '.request.headers."graphql-client-name" == "my-internal-tool"'
 ```
 
 Expressions can use any fields available under `.request` (see [Expressions](/docs/router/configuration/expressions#request) for the full list of variables). For more examples, see [Excluding Operations](/docs/router/observability/usage_reporting#excluding-operations).
