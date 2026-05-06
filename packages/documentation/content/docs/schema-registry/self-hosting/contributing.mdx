@@ -1,0 +1,150 @@
+---
+title: Contributing to Hive Console
+---
+
+Hive Console is a fully open-source project, and we welcome contributions from the community.
+To ensure long-term maintainability and alignment with our goals, all contributions should follow the guidelines outlined below.
+
+These rules help us maintain quality, avoid duplicated effort, and keep the project moving in a coherent direction.
+
+## Scope of Changes
+
+### Small Changes
+
+The following contributions are appreciated and can be submitted directly via pull request:
+
+- Typo fixes
+- Bug fixes
+- Documentation improvements
+- Small quality-of-life enhancements
+- Minor refactoring that does not change behavior
+
+> These should be focused, minimal, and clearly described.
+
+### Larger Changes
+
+The following types of contributions **must be discussed before implementation**:
+- New features
+- Changes to core functionality
+- Architectural changes
+- Anything that may impact existing users or APIs
+
+The Process:
+- Open an issue or discussion (and look for existing issues)
+- Describe the proposal, including:
+  - Problem statement
+  - Proposed solution
+  - Alternatives considered
+  - Expected impact
+- Please wait for feedback and alignment before starting implementation
+
+> Pull requests submitted without prior discussion for large changes may be rejected.
+
+## Testing Requirements
+
+We expect all contributions to include appropriate test coverage.
+
+Refer to our [testing document](https://github.com/graphql-hive/console/blob/main/docs/TESTING.md?plain=1) for running both unit and integration tests locally.
+
+### Hive Console Platform
+
+- Must include integration and/or end-to-end tests
+
+### Hive Console SDKs
+
+- Must include unit tests
+- Integration tests are strongly recommended where applicable
+
+> Contributions without sufficient testing will not be merged or rejected.
+
+## Pull Request Standards
+
+### Quality Expectations
+
+- Code should follow existing project conventions
+- Keep pull requests focused and minimal in scope
+- Avoid unrelated changes in a single PR
+- Ensure all tests pass before submission
+- The code was previously self-reviewed
+  - does not contain any todos
+  - use a spell checker to find typos
+  - run prettier, eslint and other tooling and no pending issues on CI (tests should be passing)
+  - contains comments where reading the code is not straight-forward
+
+> Think about the reviewer, what information does he need in order to efficiently judge the functionality and implementation? Help him to avoid having to spend his time trying to understand what is going on here.
+
+### AI-Generated Contributions
+
+We recognize the use of AI tools, but we enforce strict quality standards:
+- Low-effort AI-generated pull requests will be rejected
+- AI-assisted code must be:
+  - Reviewed
+  - Understood
+  - Tested by the contributor
+
+### Pull Request Descriptions
+
+- Pull request descriptions **must be written by a human**
+- Clearly explain:
+  - What was changed
+  - Why it was changed
+  - Any relevant context or trade-offs (include links to prior issues or discussions)
+- For UI changes
+  - A short overview, either images or better a short video describing these changes
+- Include testing details
+  - instructions for reviewers to setup a scenario for testing the change (so they do not have to figure it themselves or needs to wait for you to be available; e.g. if a complex flow/setup is required)
+
+> PRs with auto-generated or vague descriptions may be rejected.
+
+### General Principles
+
+- Prioritize clarity over cleverness
+- Prefer small, incremental improvements
+- Align with the project’s long-term goals and roadmap
+- When in doubt, ask before building
+
+### Data & Reliability Requirements
+
+Changes to existing database models must be **backwards-compatible**.
+
+When modifying schemas or data structures:
+- Existing data must continue to work without manual intervention
+- Missing or newly introduced fields must:
+  - Provide safe default values, or
+  - Be handled gracefully in application logic
+- Avoid introducing runtime exceptions due to:
+  - Missing fields
+  - Schema mismatches
+  - Partial migrations
+- If a migration is required:
+  - Ensure it is safe to run incrementally
+  - Consider rollout and rollback scenarios
+  - Document any assumptions clearly in the PR
+
+### High Availability & Critical Path Changes
+
+If your contribution affects components on the **critical path** (e.g. the customer gateway instance or similar), it must comply with our high-availability standards.
+
+- Design changes must follow [our high-availability and resilience principles](https://the-guild.dev/graphql/hive/docs/schema-registry/high-availability-resilience)
+
+Key expectations include:
+- No single points of failure
+- Graceful degradation under partial outages
+- Safe retry and timeout handling
+- Performance considerations under load
+- Performance considerations at scale
+
+> Changes that negatively impact reliability or resilience will not be accepted.
+
+## Getting Started
+
+If you're unsure where to begin:
+- Look for issues labeled good first issue or help wanted
+- Ask questions in discussions
+- Start with small improvements to get familiar with the codebase
+
+For setting up Hive Console locally please refer to our [development guide](https://github.com/graphql-hive/console/blob/main/docs/DEVELOPMENT.md).
+
+___
+
+We appreciate your time and effort in contributing to Hive Console! 🚀
