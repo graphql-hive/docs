@@ -42,8 +42,8 @@ client in Hive Console, set up client identification in `router.config.yaml`.
 ```yaml title="router.config.yaml"
 telemetry:
   client_identification:
-    name_header: "x-graphql-client-name" # default value
-    version_header: "x-graphql-client-version" # default value
+    name_header: "graphql-client-name" # default value
+    version_header: "graphql-client-version" # default value
 ```
 
 ## Excluding Operations
@@ -85,7 +85,7 @@ telemetry:
 
 **Exclude traffic from a specific client identified via a request header:**
 
-You can check any request header — for example, a custom `x-graphql-client-name` header sent by your clients:
+You can check any request header — for example, a custom `graphql-client-name` header sent by your clients:
 
 ```yaml title="router.config.yaml"
 telemetry:
@@ -93,7 +93,7 @@ telemetry:
     usage_reporting:
       enabled: true
       exclude:
-        expression: '.request.headers."x-graphql-client-name" == "my-internal-tool"'
+        expression: '.request.headers."graphql-client-name" == "my-internal-tool"'
 ```
 
 **Combine multiple conditions:**
@@ -107,7 +107,7 @@ telemetry:
         expression: |
           .request.operation.name == "IntrospectionQuery" ||
           .request.operation.name == "HealthCheck" ||
-          .request.headers."x-graphql-client-name" == "my-internal-tool"
+          .request.headers."graphql-client-name" == "my-internal-tool"
 ```
 
 See [Expressions](/docs/router/configuration/expressions) for the full list of available variables
