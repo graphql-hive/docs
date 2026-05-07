@@ -579,6 +579,19 @@ export const gatewayConfig = defineConfig({
 Whether to use the GET HTTP method for queries when querying the original schema. In that case, the
 query will be sent as a query string parameter named `query`.
 
+#### `useGETForHashedQueries`
+
+Whether to use the GET HTTP method for hashed Automatic Persisted Query (APQ) requests sent to
+subgraphs. When enabled, the initial hash-only probe is sent as a GET request, while full-query
+fallbacks and mutations continue to use POST. Requires `apq: true` to be set in the transport
+options.
+
+#### `useContentTypeForGETRequests`
+
+Whether to set `content-type: application/json` on GET requests when one isn't already provided.
+This can be useful for compatibility with upstream servers that require a `content-type` header on
+preflighted GET requests.
+
 #### `method`
 
 The HTTP method to use when querying the original schema. Default is `POST`.
