@@ -182,7 +182,7 @@ export const gatewayConfig = defineConfig({
 
 By default, APQ probes to subgraphs are sent via POST. You can opt in to sending the initial
 hash-only probe as a GET request using `useGETForHashedQueries`. Full-query fallbacks (when the
-subgraph does not recognise the hash) and mutations always continue to use POST.
+subgraph does not recognize the hash) and mutations always continue to use POST.
 
 ```ts title="APQ with GET for hashed queries"
 import { defineConfig } from "@graphql-hive/gateway";

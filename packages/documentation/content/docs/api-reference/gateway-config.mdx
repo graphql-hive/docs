@@ -474,6 +474,24 @@ export const gatewayConfig = defineConfig({
 An additional option object specific to the transport kind. You can find the accepted option here in
 the specific documentation of each transport.
 
+#### `options.apq`
+
+Enable Automatic Persisted Queries (APQ) for the subgraph transport. When enabled, the gateway
+sends hash-only probes to the subgraph first and falls back to sending the full query if the
+subgraph does not recognize the hash yet.
+
+#### `options.useGETForHashedQueries`
+
+Whether to use the GET HTTP method for hashed APQ probe requests. When enabled, the initial
+hash-only probe is sent as a GET request, while full-query fallbacks and mutations continue to use
+POST. Requires `options.apq: true`.
+
+#### `options.useContentTypeForGETRequests`
+
+Whether to set `content-type: application/json` on GET requests when one isn't already provided.
+This can be useful for compatibility with upstream servers that require a `content-type` header on
+GET requests.
+
 ### `options.subscriptions`
 
 A special case of the `option` fields is `subscriptions`. It allows to override the transport
@@ -578,19 +596,6 @@ export const gatewayConfig = defineConfig({
 
 Whether to use the GET HTTP method for queries when querying the original schema. In that case, the
 query will be sent as a query string parameter named `query`.
-
-#### `useGETForHashedQueries`
-
-Whether to use the GET HTTP method for hashed Automatic Persisted Query (APQ) requests sent to
-subgraphs. When enabled, the initial hash-only probe is sent as a GET request, while full-query
-fallbacks and mutations continue to use POST. Requires `apq: true` to be set in the transport
-options.
-
-#### `useContentTypeForGETRequests`
-
-Whether to set `content-type: application/json` on GET requests when one isn't already provided.
-This can be useful for compatibility with upstream servers that require a `content-type` header on
-GET requests.
 
 #### `method`
 
