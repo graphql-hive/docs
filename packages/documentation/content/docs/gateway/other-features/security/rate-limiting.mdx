@@ -67,7 +67,7 @@ export const gatewayConfig = defineConfig({
       field: "createComment",
       max: 5,
       ttl: 60000, // 60 seconds
-      identifier: "{context.request.headers.x-forwarded-for}",
+      identifier: "{context.headers.x-forwarded-for}",
     },
   ],
 });
