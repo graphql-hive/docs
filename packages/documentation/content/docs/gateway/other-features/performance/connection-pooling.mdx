@@ -1,0 +1,84 @@
+---
+title: Connection Pooling
+
+searchable: false
+---
+
+import { Callout } from "@hive/design-system/hive-components/callout";
+
+By default, Node.js creates a new TCP connection for every outgoing HTTP request, or reuses
+connections from an unbounded pool. Under high load this can exhaust file descriptors or overwhelm
+upstream subgraphs with too many simultaneous connections.
+
+Providing a custom `http.Agent` (or `https.Agent`) lets you cap the number of concurrent
+connections per origin (`maxSockets`), tune keep-alive behaviour, and share a single agent across
+all upstream requests — giving you explicit control over how Hive Gateway interacts with your
+subgraphs at the network level.
+
+<Callout>This is only available in Node.js environments.</Callout>
+
+## Limiting Concurrent Connections
+
+Use `maxSockets` to set the maximum number of concurrent TCP connections Hive Gateway will open to
+each upstream origin. Requests that exceed this limit are queued internally and sent as connections
+become available, which protects downstream services from being flooded during traffic spikes.
+
+```ts title="gateway.config.ts"
+import { defineConfig } from '@graphql-hive/gateway';
+import http from 'http';
+
+const defaultAgent = new http.Agent({
+  maxSockets: 10, // max concurrent connections per origin
+});
+
+export const gatewayConfig = defineConfig({
+  customAgent: () => defaultAgent,
+});
+```
+
+## Using HTTPS
+
+For subgraphs served over HTTPS, use `https.Agent` instead:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from '@graphql-hive/gateway';
+import https from 'https';
+
+const defaultAgent = new https.Agent({
+  maxSockets: 10,
+  keepAlive: true,
+});
+
+export const gatewayConfig = defineConfig({
+  customAgent: () => defaultAgent,
+});
+```
+
+## Per-Origin Agents
+
+The `customAgent` callback receives the target `url`, so you can apply different settings to
+different upstream origins:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from '@graphql-hive/gateway';
+import http from 'http';
+import https from 'https';
+
+const highThroughputAgent = new https.Agent({ maxSockets: 50 });
+const lowThroughputAgent = new https.Agent({ maxSockets: 5 });
+
+export const gatewayConfig = defineConfig({
+  customAgent: ({ url }) => {
+    if (url.startsWith('https://critical-subgraph.internal')) {
+      return highThroughputAgent;
+    }
+    return lowThroughputAgent;
+  },
+});
+```
+
+<Callout>
+  For custom HTTPS agents that also handle self-signed certificates or mutual
+  TLS, see the [Secure HTTP Connection
+  (HTTPS)](/docs/gateway/other-features/security/https) page.
+</Callout>

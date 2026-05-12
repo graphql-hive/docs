@@ -3,6 +3,7 @@
     "index",
     "automatic-persisted-queries",
     "compression",
+    "connection-pooling",
     "deduplicate-inflight-requests",
     "execution-cancellation",
     "http-caching",
