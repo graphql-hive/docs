@@ -13,7 +13,7 @@ aspect of the connection pool — capping concurrency, reusing keep-alive connec
 idle socket lifetime, and more — giving you explicit control over how Hive Gateway interacts with
 your subgraphs at the network level.
 
-<Callout>This is only available in Node.js environments.</Callout>
+Hive Gateway passes the agent to the underlying `fetch` call, so it works in both Node.js and Bun.
 
 ## Limiting Concurrent Connections
 
@@ -85,6 +85,13 @@ export const gatewayConfig = defineConfig({
   customAgent: () => agent,
 });
 ```
+
+<Callout>
+  This is a low-level socket-inactivity timeout. Hive Gateway also provides higher-level timeout
+  options (e.g. `upstreamTimeout`) — see the
+  [Upstream Reliability](/docs/gateway/other-features/upstream-reliability) page and the
+  [Config Reference](/docs/api-reference/gateway-config) for the full list.
+</Callout>
 
 ## Request Scheduling
 
