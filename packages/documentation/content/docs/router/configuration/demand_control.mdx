@@ -33,8 +33,10 @@ Controls how limits are applied:
 - **Type:** `boolean`
 - **Default:** `false`
 
-When `true`, response `extensions.cost` includes cost metadata such as estimated cost, result code,
-per-subgraph breakdown, formula-cache information, and actual-cost fields.
+When `true`, response `extensions.cost` includes cost metadata such as `estimated`, `result`,
+`estimatedCostBySubgraph`, `resultBySubgraph`, `formulaCacheHit`,
+`estimatedFormulaBySubgraph`, `maxCost`, `actual`, `delta`, and (in `by_subgraph` mode)
+`actualCostBySubgraph`.
 
 ### `strategy`
 
@@ -71,7 +73,7 @@ Fallback list-size assumption used for list-returning fields that do not define 
 - **Allowed values:** `by_subgraph`, `by_response_shape`
 - **Default:** `by_subgraph`
 
-Controls how actual cost is calculated:
+Actual cost is always computed after execution. This option controls how it is calculated:
 
 - `by_subgraph`: Sums actual costs from subgraph responses.
 - `by_response_shape`: Computes cost from the final response shape.
@@ -130,8 +132,10 @@ When demand control is enabled:
 - If subgraph-level limits are exceeded in `mode: enforce`, the router skips only over-budget subgraphs and continues
   the rest of the plan. Skipped subgraphs return
   `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE`.
-- If actual cost exceeds `strategy.static_estimated.max`, response may include
-  `COST_ACTUAL_TOO_EXPENSIVE`.
+- If actual cost exceeds `strategy.static_estimated.max` in `mode: enforce`, response includes
+  `COST_ACTUAL_TOO_EXPENSIVE` (with `data` still returned).
+- In `mode: measure`, the request is not rejected, but result/telemetry still reflect the over-limit
+  state.
 
 ## Precedence
 

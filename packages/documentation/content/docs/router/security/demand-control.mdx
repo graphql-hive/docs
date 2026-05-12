@@ -43,8 +43,8 @@ operation structure, not variable values). During request processing:
 2. **Limit checking**: If estimated cost exceeds configured limits (`strategy.static_estimated.max`
    globally or subgraph-specific `max`), the router can reject the operation or skip over-budget
    subgraphs while continuing others.
-3. **Optional actual cost calculation**: After execution, the router optionally calculates actual
-   cost from subgraph responses to compare against estimates.
+3. **Actual cost calculation**: After execution, the router always calculates actual cost and
+   compares it with estimated cost. `actual_cost_mode` only controls the calculation method.
 
 ## Cost model and calculation
 
@@ -534,12 +534,16 @@ demand_control:
   "extensions": {
     "cost": {
       "estimated": 1500,
-      "bySubgraph": {
+      "estimatedCostBySubgraph": {
         "users": 150,
         "search_engine": 250, // Over limit
         "products": 300,
       },
-      "blockedSubgraphs": ["search_engine"],
+      "resultBySubgraph": {
+        "users": "COST_OK",
+        "search_engine": "SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE",
+        "products": "COST_OK",
+      },
     },
   },
 }
@@ -572,13 +576,20 @@ The `extensions.cost` field will include:
       "result": "COST_OK",
       "maxCost": 500,
       "formulaCacheHit": true,
-      "bySubgraph": {
+      "estimatedCostBySubgraph": {
         "products": 100,
         "reviews": 50
       },
+      "resultBySubgraph": {
+        "products": "COST_OK",
+        "reviews": "COST_OK"
+      },
+      "estimatedFormulaBySubgraph": {
+        "products": "(1 + ($limit * (1 + 1)))"
+      },
       "actual": 145,
       "delta": -5,
-      "actualBySubgraph": {
+      "actualCostBySubgraph": {
         "products": 98,
         "reviews": 47
       }
@@ -590,12 +601,14 @@ The `extensions.cost` field will include:
 **Fields:**
 
 - `estimated`: Pre-execution cost estimate
-- `actual`: Post-execution cost (using `actual_cost_mode`)
+- `actual`: Post-execution cost (always computed; method controlled by `actual_cost_mode`)
 - `delta`: Difference between actual and estimated (useful for tuning estimates)
 - `result`: Status code (`COST_OK`, `COST_ESTIMATED_TOO_EXPENSIVE`, `COST_ACTUAL_TOO_EXPENSIVE`)
 - `formulaCacheHit`: Whether the cost formula was reused from cache
-- `bySubgraph`/`actualBySubgraph`: Per-subgraph cost breakdown
-- `blockedSubgraphs`: Subgraphs that were skipped due to limits
+- `estimatedCostBySubgraph`/`actualCostBySubgraph`: Per-subgraph cost breakdown
+- `resultBySubgraph`: Per-subgraph result codes (for example `COST_OK` or
+  `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE`)
+- `estimatedFormulaBySubgraph`: Diagnostic per-subgraph cost formulas used during estimation
 
 ### Telemetry and metrics
 
@@ -610,7 +623,8 @@ The `extensions.cost` field will include:
 
 **Metric labels/attributes:**
 
-- `cost.result` (`COST_OK`, `COST_ESTIMATED_TOO_EXPENSIVE`, `COST_ACTUAL_TOO_EXPENSIVE`)
+- `cost.result` (`COST_OK`, `COST_ESTIMATED_TOO_EXPENSIVE`, `COST_ACTUAL_TOO_EXPENSIVE`,
+  `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE`)
 - `graphql.operation.name` (when available)
 - `result` for formula-cache metrics (`hit` / `miss`)
 
@@ -622,21 +636,7 @@ The `extensions.cost` field will include:
 - `cost.result`
 - `cost.formula_cache_hit`
 
-**Dedicated demand-control span:**
-
-The router emits an internal `graphql.demand_control` span including:
-
-- `cache.hit`
-- `graphql.operation.name`
-- `graphql.operation.type`
-- `graphql.document.hash`
-- `cost.estimated`
-- `cost.result`
-- `cost.blocked_subgraph_count`
-- `cost.formula_compile_ms`
-- `cost.formula_eval_ms`
-
-Use these built-in metrics and spans to create dashboards/alerts in your existing telemetry stack
+Use these built-in metrics and span attributes to create dashboards/alerts in your existing telemetry stack
 (OTLP/Prometheus/etc.).
 
 ## Actual cost calculation
