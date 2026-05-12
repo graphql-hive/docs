@@ -110,6 +110,38 @@ cors:
       methods: ["GET", "OPTIONS"] # Read-only access
 ```
 
+## Controlling Preflight Response Headers
+
+The `headers` configuration block does not affect CORS preflight (`OPTIONS`) responses — those are
+returned early by the CORS layer before any header-injection middleware runs. Use
+`preflight_response_headers` to attach arbitrary headers (e.g. `Cache-Control`, `Server-Timing`,
+custom `X-*` headers) to those responses.
+
+```yaml title="router.config.yaml"
+cors:
+  enabled: true
+  allow_any_origin: true
+  max_age: 86400
+  preflight_response_headers:
+    Cache-Control: "public, max-age=86400"
+```
+
+You can also set per-policy preflight headers that are merged on top of the global map:
+
+```yaml title="router.config.yaml"
+cors:
+  enabled: true
+  max_age: 3600
+  preflight_response_headers:
+    Cache-Control: "public, max-age=3600" # global default
+  policies:
+    - origins:
+        - https://my-app.com
+      preflight_response_headers:
+        Cache-Control: "private, max-age=300" # overrides global for this origin
+        X-Custom-Header: "my-value"
+```
+
 ## Common Issues and Solutions
 
 CORS is a common source of headaches. Here's a quick guide to troubleshooting the most frequent

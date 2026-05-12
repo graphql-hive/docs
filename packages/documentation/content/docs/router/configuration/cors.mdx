@@ -54,6 +54,28 @@ security reasons.
 How long (in seconds) browsers can cache preflight request results. Longer values mean fewer
 preflight requests but less flexibility to change CORS settings.
 
+### `preflight_response_headers`
+
+- **Type:** `object` (map of header name → header value)
+
+Additional headers to attach to CORS preflight (OPTIONS) responses. This is useful because the
+`headers` configuration block does not affect preflight responses — they are returned early by the
+CORS layer before any header-injection middleware runs. Use this option to set headers like
+`Cache-Control` or `Server-Timing` on `OPTIONS` responses.
+
+Per-policy `preflight_response_headers` entries are merged on top of the global map, so a policy
+can override or extend the global defaults.
+
+```yaml title="router.config.yaml"
+cors:
+  enabled: true
+  allow_any_origin: true
+  max_age: 86400
+  preflight_response_headers:
+    Cache-Control: "public, max-age=86400"
+    X-Custom-Header: "my-value"
+```
+
 ### `methods`
 
 - **Type:** `string[]`
@@ -76,6 +98,8 @@ Each policy can have:
 - `match_origin`: `string[]` - Regex patterns to match against origin URLs.
 - Any of the options above (like `allow_credentials`, `methods`) to override global defaults for
   this specific origin.
+- `preflight_response_headers`: `object` - Additional headers to attach to preflight responses for
+  this origin. These are merged on top of the global `preflight_response_headers` map.
 
 ## Example
 
