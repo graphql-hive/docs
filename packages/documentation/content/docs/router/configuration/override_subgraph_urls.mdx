@@ -42,8 +42,7 @@ own entry under `subgraphs`.
 
 Within the `expression`, you have access to:
 
-- `.request`: The incoming HTTP request object (headers, query parameters, parsed operation, and
-  `url_matches`).
+- `.request`: The incoming HTTP request object (headers, parsed operation, and `url_matches`).
 - `.default`: The original subgraph URL from the supergraph schema.
 - `.subgraph.name`: The name of the subgraph currently being resolved.
 
@@ -62,12 +61,12 @@ If `http.graphql_endpoint` uses path parameters, they are available under `.requ
 
 ```yaml
 http:
-  graphql_endpoint: /{tenant}/graphql
+  graphql_endpoint: /graphql/{wildcard}
 override_subgraph_urls:
   all:
     expression: |
-      tenant = string!(.request.url_matches.tenant)
-      replace(string!(.default), "/api/", "/api/" + tenant + "/")
+      segment = string!(.request.url_matches.wildcard)
+      replace(string!(.default), "/api/", "/api/" + segment + "/")
 ```
 
 ### `subgraphs.<name>.url`
@@ -100,8 +99,7 @@ decisions.
 
 Within the `expression`, you have access to:
 
-- `.request`: The incoming HTTP request object (headers, query parameters, parsed operation, and
-  `url_matches`).
+- `.request`: The incoming HTTP request object (headers, parsed operation, and `url_matches`).
 - `.default`: The original subgraph URL from the supergraph schema.
 - `.subgraph.name`: The name of the subgraph currently being resolved.
 

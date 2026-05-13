@@ -61,7 +61,7 @@ Represents the incoming HTTP request. It exposes nested fields such as:
 - `.request.url.port` - the request port (e.g. `443`).
 - `.request.url.path` - the request path (e.g. `/graphql`).
 - `.request.url_matches` - path parameters captured from `http.graphql_endpoint` patterns (for
-  example, with `/{tenant}/graphql`, `.request.url_matches.tenant` contains the matched value).
+  example, with `/graphql/{wildcard}`, `.request.url_matches.wildcard` contains the matched value).
 - `.request.operation.name` - the name of the GraphQL operation being executed, if provided.
 - `.request.operation.type` - the type of GraphQL operation being executed (e.g. `"query"`,
   `"mutation"`, or `"subscription"`).
