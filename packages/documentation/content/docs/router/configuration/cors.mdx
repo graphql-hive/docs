@@ -54,6 +54,15 @@ security reasons.
 How long (in seconds) browsers can cache preflight request results. Longer values mean fewer
 preflight requests but less flexibility to change CORS settings.
 
+### `preflight_response_headers`
+
+- **Type:** `Record<string, string>`
+
+Additional headers to include in CORS preflight (`OPTIONS`) responses.
+
+This is useful for headers such as `Cache-Control`, `Server-Timing`, or custom `X-*` headers when
+you want to control preflight response behavior.
+
 ### `methods`
 
 - **Type:** `string[]`
@@ -85,6 +94,8 @@ cors:
   allow_credentials: false # Default for all origins
   methods: ["GET", "POST", "OPTIONS"]
   allow_headers: ["Content-Type", "Authorization"]
+  preflight_response_headers:
+    Cache-Control: "public, max-age=86400"
   policies:
     # Production website
     - origins:
@@ -100,6 +111,12 @@ cors:
         - "^https://.*\\.partner\\.com$"
       allow_credentials: true
       allow_headers: ["Content-Type", "Authorization", "X-Custom-Header"]
+
+    # Dedicated preflight response headers for a specific origin
+    - origins:
+        - https://cdn.my-app.com
+      preflight_response_headers:
+        Cache-Control: "public, max-age=3600"
 ```
 
 ## Common Patterns
