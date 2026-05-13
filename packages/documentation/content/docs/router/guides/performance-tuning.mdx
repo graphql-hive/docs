@@ -268,10 +268,10 @@ frees up router resources, fails fast for clients, and gives the subgraph time t
 
 The circuit breaker has three states:
 
-| State         | Behaviour                                                                                                                                                                                                          |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Closed**    | Normal operation. All requests pass through and the breaker tracks their outcome in a rolling sample of the last `volume_threshold` calls.                                                                         |
-| **Open**      | Every request is rejected immediately with `SUBGRAPH_CIRCUIT_BREAKER_REJECTED`. No traffic reaches the subgraph.                                                                                                   |
+| State         | Behaviour                                                                                                                                                                                                      |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Closed**    | Normal operation. All requests pass through and the breaker tracks their outcome in a rolling sample of the last `volume_threshold` calls.                                                                     |
+| **Open**      | Every request is rejected immediately with `SUBGRAPH_CIRCUIT_BREAKER_REJECTED`. No traffic reaches the subgraph.                                                                                               |
 | **Half-open** | After `reset_timeout`, probe requests are allowed through and recorded in a rolling sample of the last `half_open_attempts` outcomes. Once that sample is full, the breaker re-closes or re-opens (see below). |
 
 ```mermaid
@@ -375,14 +375,14 @@ traffic_shaping:
       reset_timeout: 30s # retry after 30s
 ```
 
-| Option                | Type                    | Default                | Description                                                                                                                                          |
-| --------------------- | ----------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `enabled`             | `boolean`               | `false`                | Enable or disable the circuit breaker. At subgraph level, omit to inherit from global.                                                               |
-| `error_threshold`     | `string`                | `50%`                  | Error rate percentage that triggers the breaker (e.g. `50%`).                                                                                        |
-| `volume_threshold`    | `integer`               | `5`                    | Size of the rolling sample of recent calls used to decide whether the circuit should open while closed. At least `volume_threshold + 1` calls must be observed before the breaker can trip. |
-| `reset_timeout`       | `string`                | `30s`                  | Duration the circuit stays open before transitioning to half-open and allowing probe calls through.                                                  |
-| `half_open_attempts`  | `integer`               | `10`                   | Size of the rolling sample of probe calls used to decide whether the circuit should re-close from half-open. At least `half_open_attempts + 1` probes must be observed before the breaker can transition. |
-| `error_status_codes`  | `(integer \| string)[]` | `[500, 502, 503, 504]` | HTTP status codes (or wildcards) that count as failures.                                                                                             |
+| Option               | Type                    | Default                | Description                                                                                                                                                                                               |
+| -------------------- | ----------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `enabled`            | `boolean`               | `false`                | Enable or disable the circuit breaker. At subgraph level, omit to inherit from global.                                                                                                                    |
+| `error_threshold`    | `string`                | `50%`                  | Error rate percentage that triggers the breaker (e.g. `50%`).                                                                                                                                             |
+| `volume_threshold`   | `integer`               | `5`                    | Size of the rolling sample of recent calls used to decide whether the circuit should open while closed. At least `volume_threshold + 1` calls must be observed before the breaker can trip.               |
+| `reset_timeout`      | `string`                | `30s`                  | Duration the circuit stays open before transitioning to half-open and allowing probe calls through.                                                                                                       |
+| `half_open_attempts` | `integer`               | `10`                   | Size of the rolling sample of probe calls used to decide whether the circuit should re-close from half-open. At least `half_open_attempts + 1` probes must be observed before the breaker can transition. |
+| `error_status_codes` | `(integer \| string)[]` | `[500, 502, 503, 504]` | HTTP status codes (or wildcards) that count as failures.                                                                                                                                                  |
 
 ### Customizing failure status codes
 
@@ -401,11 +401,12 @@ traffic_shaping:
 ```
 
 <Callout type="info">
-  When you provide `error_status_codes` in a per-subgraph override, the override **fully replaces**
-  the global list. Entries from `traffic_shaping.all.circuit_breaker.error_status_codes` are not
-  merged in. All other fields (`enabled`, `error_threshold`, `volume_threshold`, `reset_timeout`,
-  `half_open_attempts`) are merged field-by-field, so you can omit them in a per-subgraph override
-  to inherit the global value.
+  When you provide `error_status_codes` in a per-subgraph override, the override
+  **fully replaces** the global list. Entries from
+  `traffic_shaping.all.circuit_breaker.error_status_codes` are not merged in.
+  All other fields (`enabled`, `error_threshold`, `volume_threshold`,
+  `reset_timeout`, `half_open_attempts`) are merged field-by-field, so you can
+  omit them in a per-subgraph override to inherit the global value.
 </Callout>
 
 ### Global vs Per-Subgraph Configuration
@@ -488,21 +489,21 @@ the full timeout cost on every call.
 The circuit breaker exposes the following OpenTelemetry instruments. All of them carry a
 `subgraph.name` attribute so you can group / filter per subgraph in your metrics backend.
 
-| Metric                                                  | Type    | Description                                                                                                  |
-| ------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
-| `hive.router.circuit_breaker.short_circuits_total`      | counter | Number of requests rejected by the breaker without reaching the subgraph (i.e. while the circuit was open).  |
-| `hive.router.circuit_breaker.failures_total`            | counter | Number of subgraph responses or transport errors that the breaker counted as a failure.                      |
-| `hive.router.circuit_breaker.state`                     | gauge   | Current breaker state per subgraph: `0` = closed (or half-open), `1` = open. See note below.                 |
-| `hive.router.circuit_breaker.state_transitions_total`   | counter | Number of state transitions, with `circuit_breaker.from_state` and `circuit_breaker.to_state` attributes.    |
+| Metric                                                | Type    | Description                                                                                                 |
+| ----------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------- |
+| `hive.router.circuit_breaker.short_circuits_total`    | counter | Number of requests rejected by the breaker without reaching the subgraph (i.e. while the circuit was open). |
+| `hive.router.circuit_breaker.failures_total`          | counter | Number of subgraph responses or transport errors that the breaker counted as a failure.                     |
+| `hive.router.circuit_breaker.state`                   | gauge   | Current breaker state per subgraph: `0` = closed (or half-open), `1` = open. See note below.                |
+| `hive.router.circuit_breaker.state_transitions_total` | counter | Number of state transitions, with `circuit_breaker.from_state` and `circuit_breaker.to_state` attributes.   |
 
 The transition counter exposes two extra attributes, `circuit_breaker.from_state` and
 `circuit_breaker.to_state`, both with values `"closed"` or `"open"`. For example, the metric
 fires with `from_state="closed"`, `to_state="open"` the moment a circuit trips.
 
 <Callout type="info">
-  The `hive.router.circuit_breaker.state` gauge collapses both the **closed** and **half-open**
-  internal states into the same reported value (`0`). A reading of `1` therefore unambiguously
-  means the breaker is rejecting traffic.
+  The `hive.router.circuit_breaker.state` gauge collapses both the **closed**
+  and **half-open** internal states into the same reported value (`0`). A
+  reading of `1` therefore unambiguously means the breaker is rejecting traffic.
 </Callout>
 
 ### Tracing & error reporting

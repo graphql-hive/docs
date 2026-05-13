@@ -306,11 +306,12 @@ traffic_shaping:
 ```
 
 <Callout type="info">
-  When a subgraph response matches one of the configured `error_status_codes`, the original
-  response from the subgraph (status, body, and headers) is still surfaced to the client. The
-  breaker counts it as a failure for trip-evaluation purposes only, it does not alter the
-  response. This preserves the pre-existing behavior of the router for subgraphs that legitimately
-  return error status codes.
+  When a subgraph response matches one of the configured `error_status_codes`,
+  the original response from the subgraph (status, body, and headers) is still
+  surfaced to the client. The breaker counts it as a failure for trip-evaluation
+  purposes only, it does not alter the response. This preserves the pre-existing
+  behavior of the router for subgraphs that legitimately return error status
+  codes.
 </Callout>
 
 **Example: global circuit breaker with a per-subgraph override**
