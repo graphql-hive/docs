@@ -21,19 +21,21 @@ For each request, the router evaluates your expression and routes to the URL it 
 
 - `.request` - The incoming HTTP request (headers, method, etc.)
 - `.default` - The default URL from your supergraph schema
+- `.subgraph.name` - The current subgraph name
 
 Simple example configuration that routes based on a runtime condition:
 
 ```yaml title="router.config.yaml"
 override_subgraph_urls:
-  subgraph_name:
-    url:
-      expression: |
-        if .request.headers."x-use-special-instance" == "true" {
-          "https://special-instance.com/graphql"
-        } else {
-          .default  # Always provide a fallback
-        }
+  subgraphs:
+    subgraph_name:
+      url:
+        expression: |
+          if .request.headers."x-use-special-instance" == "true" {
+            "https://special-instance.com/graphql"
+          } else {
+            .default  # Always provide a fallback
+          }
 ```
 
 ## Examples
@@ -53,14 +55,15 @@ to all users.
 
 ```yaml title="router.config.yaml"
 override_subgraph_urls:
-  products:
-    url:
-      expression: |
-        if .request.headers."x-deploy-track" == "canary" {
-          "https://products-canary.example.com/graphql"
-        } else {
-          .default
-        }
+  subgraphs:
+    products:
+      url:
+        expression: |
+          if .request.headers."x-deploy-track" == "canary" {
+            "https://products-canary.example.com/graphql"
+          } else {
+            .default
+          }
 ```
 
 With this configuration, your QA team or CI/CD pipeline can test the new deployment in production by
@@ -73,15 +76,16 @@ users.
 
 ```yaml title="router.config.yaml"
 override_subgraph_urls:
-  products:
-    url:
-      expression: |
-        # Route 10% of traffic to canary
-        if random_int(1, 100) <= 10 {
-          "https://products-canary.example.com/graphql"
-        } else {
-          .default
-        }
+  subgraphs:
+    products:
+      url:
+        expression: |
+          # Route 10% of traffic to canary
+          if random_int(1, 100) <= 10 {
+            "https://products-canary.example.com/graphql"
+          } else {
+            .default
+          }
 ```
 
 </Tabs.Tab>
@@ -95,19 +99,20 @@ regions. Routing users to the instance closest to them can significantly reduce 
 
 ```yaml title="router.config.yaml"
 override_subgraph_urls:
-  reviews:
-    url:
-      expression: |
-        region = .request.headers."x-user-region" || "unknown"
+  subgraphs:
+    reviews:
+      url:
+        expression: |
+          region = .request.headers."x-user-region" || "unknown"
 
-        if region == "us-east" {
-          "https://reviews-us-east.example.com/graphql"
-        } else if region == "eu-west" {
-          "https://reviews-eu-west.example.com/graphql"
-        } else if region == "asia-pacific" {
-          "https://reviews-ap.example.com/graphql"
-        } else {
-          # Default to primary region
-          .default
-        }
+          if region == "us-east" {
+            "https://reviews-us-east.example.com/graphql"
+          } else if region == "eu-west" {
+            "https://reviews-eu-west.example.com/graphql"
+          } else if region == "asia-pacific" {
+            "https://reviews-ap.example.com/graphql"
+          } else {
+            # Default to primary region
+            .default
+          }
 ```

@@ -2,32 +2,75 @@
 title: "override_subgraph_urls"
 ---
 
-The `override_subgraph_urls` configuration allows you to dynamically change the URL for a subgraph
-at runtime, based on the properties of an incoming request.
+The `override_subgraph_urls` configuration allows you to dynamically change subgraph URLs at runtime
+based on the incoming request.
 
 This is the primary mechanism for implementing advanced routing patterns. For detailed guides and
 use cases, see the [Dynamic Subgraph Routing](/docs/router/guides/dynamic-subgraph-routing) guide.
 
 ## Configuration Structure
 
-The `override_subgraph_urls` key is a top-level object in your `router.config.yaml`. The keys within
-this object are the names of the subgraphs you wish to override, as they appear in your supergraph
-schema.
+The `override_subgraph_urls` key is a top-level object in your `router.config.yaml`.
+It supports two override scopes:
 
-For each subgraph, you must specify a `url` property.
+- `subgraphs`: Per-subgraph URL overrides keyed by subgraph name.
+- `all`: A single override expression applied to all subgraphs that do not have a dedicated
+  override under `subgraphs`.
+
+Per-subgraph overrides always take precedence over `all`.
 
 ```yaml
 override_subgraph_urls:
-  # The name of the subgraph to override
-  products:
-    url: # ... url definition
-  reviews:
-    url: # ... url definition
+  all:
+    expression: # ... global expression
+  subgraphs:
+    products:
+      url: # ... url definition
+    reviews:
+      url: # ... url definition
 ```
 
 ## Options
 
-### `url`
+### `all`
+
+- **Type:** `object`
+- **Required:** No
+
+`all.expression` lets you define one routing expression that applies to every subgraph without its
+own entry under `subgraphs`.
+
+Within the `expression`, you have access to:
+
+- `.request`: The incoming HTTP request object (headers, query parameters, parsed operation, and
+  `url_matches`).
+- `.default`: The original subgraph URL from the supergraph schema.
+- `.subgraph.name`: The name of the subgraph currently being resolved.
+
+```yaml
+override_subgraph_urls:
+  all:
+    expression: |
+      if .subgraph.name == "products" && .request.headers."x-region" == "us-east" {
+        "https://products-us-east.example.com/graphql"
+      } else {
+        .default
+      }
+```
+
+If `http.graphql_endpoint` uses path parameters, they are available under `.request.url_matches`:
+
+```yaml
+http:
+  graphql_endpoint: /{tenant}/graphql
+override_subgraph_urls:
+  all:
+    expression: |
+      tenant = string!(.request.url_matches.tenant)
+      replace(string!(.default), "/api/", "/api/" + tenant + "/")
+```
+
+### `subgraphs.<name>.url`
 
 - **Type:** `string` or `object`
 - **Required:** Yes
@@ -42,8 +85,9 @@ is useful for permanently redirecting a subgraph without recomposing your superg
 
 ```yaml
 override_subgraph_urls:
-  products:
-    url: "https://products.staging.svc.cluster.local/"
+  subgraphs:
+    products:
+      url: "https://products.staging.svc.cluster.local/"
 ```
 
 #### Dynamic URL with `expression`
@@ -54,20 +98,22 @@ decisions.
 
 - `expression`: **(string, required)** An [expression](./expressions) that computes the new URL.
 
-Within the `expression`, you have access to two key variables:
+Within the `expression`, you have access to:
 
-- `.request`: The incoming HTTP request object, including its headers.
-- `.default`: The original subgraph URL from the supergraph schema, which should be used as a
-  fallback.
+- `.request`: The incoming HTTP request object (headers, query parameters, parsed operation, and
+  `url_matches`).
+- `.default`: The original subgraph URL from the supergraph schema.
+- `.subgraph.name`: The name of the subgraph currently being resolved.
 
 ```yaml
 override_subgraph_urls:
-  reviews:
-    url:
-      expression: |
-        if .request.headers."x-region" == "eu" {
-          "https://reviews.eu.api/graphql"
-        } else {
-          .default
-        }
+  subgraphs:
+    reviews:
+      url:
+        expression: |
+          if .request.headers."x-region" == "eu" {
+            "https://reviews.eu.api/graphql"
+          } else {
+            .default
+          }
 ```

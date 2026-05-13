@@ -60,6 +60,8 @@ Represents the incoming HTTP request. It exposes nested fields such as:
 - `.request.url.host` - the request host (e.g. `api.example.com`).
 - `.request.url.port` - the request port (e.g. `443`).
 - `.request.url.path` - the request path (e.g. `/graphql`).
+- `.request.url_matches` - path parameters captured from `http.graphql_endpoint` patterns (for
+  example, with `/{tenant}/graphql`, `.request.url_matches.tenant` contains the matched value).
 - `.request.operation.name` - the name of the GraphQL operation being executed, if provided.
 - `.request.operation.type` - the type of GraphQL operation being executed (e.g. `"query"`,
   `"mutation"`, or `"subscription"`).
@@ -79,8 +81,9 @@ not yet exist.
 
 ### `.subgraph`
 
-Available in both **request** and **response** header rules. It provides metadata about the subgraph
-handling the current request, including:
+Available in [dynamic routing expressions](./override_subgraph_urls), **request** header rules, and
+**response** header rules. It provides metadata about the subgraph handling the current request,
+including:
 
 - `.subgraph.name` - the name of the subgraph as defined in your supergraph schema.
 
