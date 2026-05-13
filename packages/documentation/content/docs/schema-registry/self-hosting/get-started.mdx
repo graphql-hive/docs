@@ -263,6 +263,19 @@ Visit `http://localhost:8080` in your browser and start using Hive Console! The 
 endpoint is bound to `http://localhost:8081`. The GraphQL API is bound to `http://localhost:8082`.
 The artifacts bucket is bound to `http://localhost:8083`.
 
+### Optional listen address override
+
+If you need to change which interface Hive services bind to, set `SERVER_HOST` (default `::`) and,
+if needed, `SERVER_HOST_IPV6_ONLY=1` to disable IPv4 fallback for the IPv6 wildcard host.
+
+For the bundled `docker-compose.community.yml`, keep `SERVER_HOST` as `::` or `0.0.0.0`.
+Loopback values such as `127.0.0.1`, `::1`, or `localhost` can make published ports and
+service-to-service communication unreachable. `SERVER_HOST_IPV6_ONLY=1` cannot be combined with an
+IPv4 literal host such as `0.0.0.0`.
+
+See the [Fastify listen reference](https://fastify.dev/docs/latest/Reference/Server/#listentextresolver)
+for full host resolution details.
+
 Firstly, you can head to `http://localhost:8080` in your browser and start using Hive Console!
 You'll need to Sign Up for an account by inputting your email and password. And once you do you'll
 see your personal organization that has been automatically created for you by default.

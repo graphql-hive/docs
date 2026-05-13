@@ -49,7 +49,15 @@ lifecycle. Plugins can intercept HTTP requests, modify GraphQL operations, hook 
 planner, and much more - all with the performance and safety guarantees of Rust.
 
 Learn how to build and integrate your own plugin:
-**[Plugin System](/docs/router/plugin-system)**.
+**[Plugin System](/docs/router/customizations/plugin-system)**.
+
+## Coprocessors
+
+Hive Router also supports coprocessors, an external service interface for request-time
+customization. Coprocessors are language-agnostic and can inspect, mutate, or short-circuit
+requests at defined stages of the router lifecycle.
+
+Learn more: **[Coprocessors](/docs/router/customizations/coprocessors)**.
 
 ## Subscriptions
 
@@ -86,7 +94,7 @@ Learn more: **[OpenTelemetry Tracing](/docs/router/observability/tracing)** and
 
 - **[Getting Started](/docs/router/getting-started)** - Install and run the router in just a few
   minutes.
-- **[Plugin System](/docs/router/plugin-system)** - Extend the router with custom plugins written in
+- **[Plugin System](/docs/router/customizations/plugin-system)** - Extend the router with custom plugins written in
   Rust to add new features, modify behavior, or integrate with external services.
 - **[Subscriptions](/docs/router/subscriptions)** - Enable real-time data updates
   with Federated GraphQL subscriptions.

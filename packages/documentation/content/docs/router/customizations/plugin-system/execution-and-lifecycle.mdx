@@ -1,5 +1,6 @@
 ---
 title: "Plugin Execution and Lifecycle"
+sidebarTitle: "Execution and Lifecycle"
 ---
 
 ## Control Flow
@@ -124,7 +125,7 @@ As a plugin developer, you don't need to deal with threads or async runtimes - y
 Router core runtime to register and manage the lifecycle of your background tasks.
 
 Background tasks can be registered during the
-[`on_plugin_init` hook](/docs/router/plugin-system/hooks#on_plugin_init). Here is a simple example
+[`on_plugin_init` hook](/docs/router/customizations/plugin-system/hooks#on_plugin_init). Here is a simple example
 of a background task that runs periodically:
 
 ```rust
@@ -201,7 +202,7 @@ fn on_http_request<'req>(
 
 ### OpenTelemetry Traces
 
-Hive Router [supports OpenTelemetry at its core](../observability/tracing), and uses the
+Hive Router [supports OpenTelemetry at its core](../../observability/tracing), and uses the
 [`tracing` crate](https://docs.rs/tracing/latest/tracing/) for collecting, processing, and exporting
 OpenTelemetry trace information.
 

@@ -656,6 +656,68 @@ HTTP client metrics capture outbound requests the router makes to subgraphs.
   ]}
 />
 
+### Coprocessor
+
+Coprocessor metrics capture outbound calls that Hive Router makes to your coprocessor service.
+
+These metrics are stage-aware and help you understand where time is spent and where failures happen
+in the coprocessor lifecycle.
+
+<MetricsSection
+  labels={[
+    {
+      meaning: "Coprocessor lifecycle stage",
+      name: "coprocessor.stage",
+      typicalValues: [
+        "router.request",
+        "graphql.request",
+        "graphql.analysis",
+        "graphql.response",
+        "router.response",
+      ],
+    },
+  ]}
+  metrics={[
+    {
+      description: "Total number of coprocessor requests.",
+      labels: ["coprocessor.stage"],
+      name: "hive.router.coprocessor.requests_total",
+      type: "Counter",
+      unit: "{request}",
+    },
+    {
+      description: "Duration of coprocessor requests.",
+      labels: ["coprocessor.stage"],
+      name: "hive.router.coprocessor.duration",
+      type: "Histogram",
+      unit: "Seconds",
+    },
+    {
+      description: "Total number of coprocessor errors.",
+      labels: ["coprocessor.stage"],
+      name: "hive.router.coprocessor.errors_total",
+      type: "Counter",
+      unit: "{error}",
+    },
+  ]}
+/>
+
+Hive Router uses an HTTP/UDS client for coprocessor calls. Because of that, coprocessor traffic is
+also visible through standard HTTP client metrics, including status codes and payload sizes.
+
+In practice, monitor these together with coprocessor metrics:
+
+- `http.client.request.duration`
+- `http.client.request.body.size`
+- `http.client.response.body.size`
+- `http.client.active_requests`
+
+Use labels like `http.response.status_code`, `server.address`, and `error.type` to understand
+transport-level behavior (for example non-2xx responses, network failures, or slow endpoints).
+
+For Unix domain sockets, you still get the same HTTP-level observability view on request/response
+behavior, even though transport is local socket-based.
+
 ### Cache
 
 Cache metrics track lookup behavior and cache size across router caches used during request

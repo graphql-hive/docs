@@ -5,3 +5,7 @@ main = ".output/server/index.mjs"
 
 [assets]
 directory = ".output/public"
+
+[[services]]
+binding = "SEARCH_API"
+service = "hive-search-api"

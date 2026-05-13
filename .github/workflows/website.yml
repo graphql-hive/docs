@@ -28,6 +28,24 @@ jobs:
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
 
+      - name: export search indexes
+        run: bun run search:export
+        working-directory: packages/documentation
+
+      # TODO: add R2 lifecycle cleanup/retention for per-commit preview search indexes.
+      - name: upload search index to r2
+        working-directory: packages/documentation
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SEARCH_INDEX_KEY: ${{ github.sha }}
+        run: |
+          aws s3 cp ./.output/search/latest.json \
+            "s3://hive-docs-search-index/search/${SEARCH_INDEX_KEY}.json" \
+            --endpoint-url "https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com"
+
       - name: deploy to cloudflare workers
         uses: cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65 # v3.14.1
         id: deploy
@@ -37,7 +55,7 @@ jobs:
           packageManager: bun
           workingDirectory: packages/documentation
           command: |
-            ${{ github.ref == 'refs/heads/main' && 'deploy' || 'versions upload' }}
+            ${{ github.ref == 'refs/heads/main' && format('deploy --var SEARCH_INDEX_KEY:{0}', github.sha) || format('versions upload --var SEARCH_INDEX_KEY:{0}', github.sha) }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: find deployment comment

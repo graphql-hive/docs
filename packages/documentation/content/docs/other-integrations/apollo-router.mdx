@@ -310,6 +310,10 @@ plugins:
     #  A list of operations (by name) to be ignored by Hive.
     # exclude: ["IntrospectionQuery", "MeQuery"],
     #
+    #  Or use a dynamic expression to exclude requests based on runtime context.
+    # exclude:
+    #   expression: '.request.operation.name == "IntrospectionQuery"'
+    #
     #  Uses graphql-client-name by default
     # client_name_header: "x-client-name",
     #  Uses graphql-client-version by default
@@ -331,6 +335,19 @@ plugins:
     #  Default: 5
     # flush_interval: 5
 ```
+
+The `exclude` option supports both the legacy array format and the dynamic `expression` object
+format. For example, you can skip internal traffic based on a request header:
+
+```yaml title="router.yaml"
+plugins:
+  hive.usage:
+    exclude:
+      expression: '.request.headers."graphql-client-name" == "my-internal-tool"'
+```
+
+For more details about the Hive Router expression syntax and available request fields used by this
+configuration, see [Expressions](/docs/router/configuration/expressions).
 
 ## Persisted Documents (App Deployments)
 

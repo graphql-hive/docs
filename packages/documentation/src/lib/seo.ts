@@ -10,6 +10,7 @@ type MetaTag = {
 };
 
 type LinkTag = {
+  as?: string;
   href: string;
   rel: string;
 };

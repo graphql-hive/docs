@@ -50,7 +50,7 @@ Client WebSocket support is configured at the root level under `websocket` - it 
 
 ### Synthetic HTTP Requests
 
-Each WebSocket connection from a client is long-lived and can carry multiple GraphQL operations. For every operation sent over the connection - including single-shot operations like queries and mutations - the router creates a **synthetic HTTP request**. This means every operation goes through the full [plugin system](/docs/router/plugin-system) exactly as if it were a regular HTTP request. Authorization, header manipulation, rate limiting, and all other plugins apply uniformly regardless of whether the client connected over HTTP or WebSocket.
+Each WebSocket connection from a client is long-lived and can carry multiple GraphQL operations. For every operation sent over the connection - including single-shot operations like queries and mutations - the router creates a **synthetic HTTP request**. This means every operation goes through the full [plugin system](/docs/router/customizations/plugin-system) exactly as if it were a regular HTTP request. Authorization, header manipulation, rate limiting, and all other plugins apply uniformly regardless of whether the client connected over HTTP or WebSocket.
 
 Because operations are processed as synthetic HTTP requests, they share the same fingerprint space as regular HTTP requests. A query sent over WebSocket can deduplicate with the same query sent over HTTP, and a WebSocket subscription can deduplicate with the same subscription started over SSE (when the `Accept` header is excluded from the fingerprint). See [Inbound Deduplication](/docs/router/guides/performance-tuning#inbound-deduplication) for details.
 

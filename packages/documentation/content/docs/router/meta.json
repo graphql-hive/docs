@@ -8,10 +8,10 @@
     "getting-started",
     "configuration",
     "guides",
+    "customizations",
     "observability",
     "security",
     "supergraph",
-    "subscriptions",
-    "plugin-system"
+    "subscriptions"
   ]
 }

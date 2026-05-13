@@ -1,15 +1,40 @@
 ---
 title: Rate Limiting
 
+description:
+  Learn how to protect your Hive Gateway from abuse by configuring field-level rate limiting, using
+  either programmatic configuration or the @rateLimit directive in your subgraph schema.
 searchable: false
 ---
 
-Rate limiting is a technique for reducing server load by limiting the number of requests that can be
-made to a subgraph.
+import { Callout } from "@hive/design-system/hive-components/callout";
 
-You can use rate limiting feature in order to limit the rate of calling queries and mutations.
+Rate limiting is a common API security practice that protects your gateway and upstream subgraphs
+from being overwhelmed by too many requests. Because GraphQL is highly flexible (clients choose
+exactly which fields to query), rate limiting needs to be applied at the **field level** rather than
+just on HTTP endpoints.
+
+Hive Gateway supports two complementary approaches:
+
+1. **Programmatic configuration**: define rate limits directly in `gateway.config.ts`.
+2. **`@rateLimit` directive**: annotate fields in your subgraph schemas.
+
+<Callout>
+  By default, rate limiting state is kept **in-memory** and is local to each
+  gateway instance. For deployments with multiple gateway instances, configure a
+  shared [Redis cache](#distributed-rate-limiting-with-redis) so limits are
+  enforced consistently across all instances.
+</Callout>
 
 ## Programmatic Configuration
+
+Use `rateLimiting` with an array of rules to configure per-field limits directly in
+`gateway.config.ts`. Each rule targets a specific GraphQL type and field, and lets you customize
+the time window, request limit, and how callers are identified.
+
+### Limit by Authorization Token
+
+A common pattern is to rate-limit each unique user identified by their authorization token:
 
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
@@ -18,17 +43,80 @@ export const gatewayConfig = defineConfig({
   rateLimiting: [
     {
       type: "Query",
-      field: "foo",
-      max: 5, // requests limit for a time period
-      ttl: 5000, // time period
-      // You can use any value from the context
+      field: "searchProducts",
+      max: 10, // allow at most 10 calls…
+      ttl: 60000, // …per 60 seconds (in milliseconds)
+      identifier: "{context.headers.authorization}", // per unique token
+    },
+  ],
+});
+```
+
+### Limit by IP Address
+
+If your gateway does not have an authenticated user, you can use the request IP address as the
+identifier:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  rateLimiting: [
+    {
+      type: "Mutation",
+      field: "createComment",
+      max: 5,
+      ttl: 60000, // 60 seconds
+      identifier: "{context.headers.x-forwarded-for}",
+    },
+  ],
+});
+```
+
+### Multiple Rules
+
+You can define rate limits for multiple fields at once:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  rateLimiting: [
+    {
+      type: "Query",
+      field: "searchProducts",
+      max: 10,
+      ttl: 60000,
+      identifier: "{context.headers.authorization}",
+    },
+    {
+      type: "Mutation",
+      field: "createOrder",
+      max: 3,
+      ttl: 60000,
       identifier: "{context.headers.authorization}",
     },
   ],
 });
 ```
 
-## Rate Limiting through `@rateLimit` directive
+### Configuration Options
+
+| Option       | Type     | Description                                                                                                     |
+| ------------ | -------- | --------------------------------------------------------------------------------------------------------------- |
+| `type`       | `string` | The GraphQL type that contains the field to rate-limit (e.g. `"Query"`, `"Mutation"`).                          |
+| `field`      | `string` | The field name on the given type to rate-limit.                                                                 |
+| `max`        | `number` | Maximum number of requests allowed within the `ttl` window.                                                     |
+| `ttl`        | `number` | Duration of the time window in **milliseconds** (e.g. `60000` for 1 minute).                                    |
+| `identifier` | `string` | Template string for identifying the caller. Use `{context.*}` to access request context values such as headers. |
+
+## Rate Limiting through `@rateLimit` Directive
+
+When using Federation, you can annotate fields directly in your subgraph schemas with the
+`@rateLimit` directive. This keeps rate-limit intent close to the schema definition and requires
+minimal gateway configuration.
+
+### Step 1: Enable directive-based rate limiting in the gateway
 
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
@@ -38,14 +126,12 @@ export const gatewayConfig = defineConfig({
 });
 ```
 
-This approach follows the pattern of
-[`graphql-rate-limit`](https://github.com/teamplanes/graphql-rate-limit/blob/master/README.md#field-config).
+### Step 2: Add the directive definition to your subgraph
 
-To set rate limit hints in your subgraph schema, the `@rateLimit` directive definition should be
-included in the subgraph schema:
+Include the `@rateLimit` directive definition and import it via Federation's `@composeDirective` so
+the gateway picks it up:
 
-```graphql
-# Import the directive for Federation
+```graphql title="subgraph.graphql"
 extend schema
   @link(url: "https://specs.apollo.dev/link/v1.0")
   @link(
@@ -67,30 +153,92 @@ directive @rateLimit(
 ) on FIELD_DEFINITION
 ```
 
-Then in the subgraph schema, you can use the `@rateLimit` directive to set rate limit hints on
-fields:
+### Step 3: Annotate fields
 
-```graphql
+Apply the `@rateLimit` directive to any field you want to protect:
+
+```graphql title="subgraph.graphql"
 type Query {
   getItems: [Item]
     @rateLimit(window: "1s", max: 5, message: "You are doing that too often.")
+
+  searchProducts(query: String!): [Product] @rateLimit(window: "1m", max: 30)
+}
+
+type Mutation {
+  createOrder(input: OrderInput!): Order
+    @rateLimit(
+      window: "1m"
+      max: 5
+      message: "Too many orders, please slow down."
+    )
 }
 ```
 
-## Field Configuration
+### Limit per Argument (e.g. per ID)
 
-- `window`: Specify a time interval window that the max number of requests can access the field. We
-  use Zeit's ms to parse the window arg, docs here.
+Use `identityArgs` to rate-limit access per field argument, for example, limiting how often each
+unique product ID can be fetched:
 
-- `max`: Define the max number of calls to the given field per window.
+```graphql title="subgraph.graphql"
+type Query {
+  getProduct(id: ID!): Product
+    @rateLimit(window: "1m", max: 10, identityArgs: ["id"])
+}
+```
 
-- `identityArgs`: If you wanted to limit the requests to a field per id, per user, use identityArgs
-  to define how the request should be identified. For example you'd provide just ["id"] if you
-  wanted to rate limit the access to a field by id. We use Lodash's get to access nested identity
-  args, docs here.
+### Limit by Array Length
 
-- `message`: A custom message per field. Note you can also use formatError to customise the default
-  error message if you don't want to define a single message per rate limited field.
+For mutations or queries that accept arrays, you can count each element in the array as a separate
+call toward the limit using `arrayLengthField`:
 
-- `arrayLengthField`: Limit calls to the field, using the length of the array as the number of calls
-  to the field.
+```graphql title="subgraph.graphql"
+type Mutation {
+  bulkCreateItems(items: [ItemInput!]!): [Item]
+    @rateLimit(window: "1m", max: 100, arrayLengthField: "items")
+}
+```
+
+### Directive Field Reference
+
+| Option             | Type       | Description                                                                                                                                                                                            |
+| ------------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `window`           | `string`   | Time interval for the rate limit window. Accepts human-readable durations such as `"1s"`, `"30s"`, `"1m"`, `"1h"`.                                                                                     |
+| `max`              | `number`   | Maximum number of calls to the field allowed within the `window`.                                                                                                                                      |
+| `identityArgs`     | `[string]` | Field argument names used to distinguish callers. For example, `["id"]` rate-limits each unique value of the `id` argument separately. Supports nested paths via dot notation (e.g. `"input.userId"`). |
+| `message`          | `string`   | Custom error message returned when the rate limit is exceeded.                                                                                                                                         |
+| `arrayLengthField` | `string`   | Name of an array argument whose length is counted as the number of calls (useful for bulk operations).                                                                                                 |
+
+## Distributed Rate Limiting with Redis
+
+By default, rate limit counters are stored in memory on each gateway instance. In a multi-instance
+deployment this means every instance has its own independent counter, so the effective rate limit is
+multiplied by the number of instances.
+
+To enforce rate limits consistently across all gateway instances, configure a shared Redis cache:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  cache: {
+    type: "redis",
+    url: "redis://localhost:6379",
+  },
+  rateLimiting: [
+    {
+      type: "Query",
+      field: "searchProducts",
+      max: 10,
+      ttl: 60000,
+      identifier: "{context.headers.authorization}",
+    },
+  ],
+});
+```
+
+<Callout>
+  The Redis cache option currently only works in Node.js environments. See the
+  [Performance & Caching](/docs/gateway/other-features/performance) page for all
+  available cache backends and configuration options.
+</Callout>
