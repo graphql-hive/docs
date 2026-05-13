@@ -110,6 +110,27 @@ cors:
       methods: ["GET", "OPTIONS"] # Read-only access
 ```
 
+## Customize Preflight (`OPTIONS`) Responses
+
+If you need to control headers returned in preflight responses, use
+`preflight_response_headers`.
+
+This is useful when you want browser/CDN caching hints (for example, `Cache-Control`) or
+additional metadata headers on `OPTIONS` responses.
+
+```yaml title="router.config.yaml"
+cors:
+  enabled: true
+  preflight_response_headers:
+    Cache-Control: "public, max-age=86400"
+
+  policies:
+    - origins:
+        - https://cdn.my-app.com
+      preflight_response_headers:
+        Cache-Control: "public, max-age=3600"
+```
+
 ## Common Issues and Solutions
 
 CORS is a common source of headaches. Here's a quick guide to troubleshooting the most frequent
