@@ -211,9 +211,10 @@ traffic_shaping:
 
 Enables the circuit breaker pattern for subgraph requests. When the error rate of requests to a
 subgraph exceeds the configured threshold, the circuit breaker opens and subsequent requests are
-immediately rejected with an error — instead of waiting for the subgraph to respond. After the
-`reset_timeout` elapses, the circuit enters a half-open state and allows a probe request through. If
-that request succeeds, the circuit closes again.
+immediately rejected with a `SUBGRAPH_CIRCUIT_BREAKER_REJECTED` error, instead of waiting for the
+subgraph to respond. After the `reset_timeout` elapses, the circuit enters a half-open state and
+lets the next request probe the subgraph. If the probe succeeds, the circuit closes again;
+otherwise, it returns to the open state.
 
 For a detailed explanation and tuning guidance see the
 [Circuit Breaker section](/docs/router/guides/performance-tuning#circuit-breaker) of the Performance
@@ -221,7 +222,7 @@ Tuning guide.
 
 #### `circuit_breaker.enabled`
 
-- **Type:** `boolean | null`
+- **Type:** `boolean`
 - **Default:** `false`
 
 Enables or disables the circuit breaker for the subgraph(s). When omitted in a per-subgraph
@@ -239,43 +240,80 @@ a per-subgraph override, the value falls back to the global configuration.
 
 #### `circuit_breaker.volume_threshold`
 
-- **Type:** `integer | null`
+- **Type:** `integer`
 - **Default:** `5`
 
-The minimum number of requests that must be observed before the circuit breaker starts evaluating
-the error rate. This prevents the circuit from tripping due to a small number of failures during
-low-traffic periods. When omitted in a per-subgraph override, the value falls back to the global
-configuration.
+Size of the rolling window the breaker uses to track call outcomes. The first `volume_threshold`
+calls fill the window; from then on, every subsequent call triggers an error-rate check over the
+most recent `volume_threshold` outcomes. This prevents the circuit from tripping due to a handful
+of failures during low-traffic periods. When omitted in a per-subgraph override, the value falls
+back to the global configuration.
 
 #### `circuit_breaker.reset_timeout`
 
 - **Type:** `string`
 - **Default:** `30s`
 
-The duration the circuit breaker stays open before transitioning to a half-open state to probe
-whether the subgraph has recovered. Accepts a duration string (e.g. `30s`, `1m`). When omitted in
-a per-subgraph override, the value falls back to the global configuration.
+The duration the circuit breaker stays open before transitioning to a half-open state and allowing
+probe calls through to test whether the subgraph has recovered. Accepts a duration string (e.g.
+`30s`, `1m`). When omitted in a per-subgraph override, the value falls back to the global
+configuration.
+
+#### `circuit_breaker.half_open_attempts`
+
+- **Type:** `integer`
+- **Default:** `10`
+
+Size of the rolling sample of probe requests collected while the breaker is in the half-open state
+after `reset_timeout` has elapsed. The breaker fills this sample first; the next probe after the
+sample is full is the one whose result is evaluated against `error_threshold` to decide whether
+to transition back to **closed** (resuming normal traffic) or back to **open** (waiting for
+another `reset_timeout` window). In practice the breaker needs at least `half_open_attempts + 1`
+probe calls before it can transition out of half-open.
+
+Lower values make recovery faster but more aggressive; higher values gather more samples before
+re-closing the circuit. When omitted in a per-subgraph override, the value falls back to the
+global configuration.
 
 #### `circuit_breaker.error_status_codes`
 
-- **Type:** `integer[] | null`
-- **Default:** `[503]`
+- **Type:** `(integer | string)[]`
+- **Default:** `[500, 502, 503, 504]`
 
 The list of HTTP status codes returned by the subgraph that should be counted as failures by the
-circuit breaker. Only responses whose status code appears in this list are recorded as failures —
-responses with any other status code (including other 5xx codes) are treated as successes from the
-circuit breaker's perspective. When omitted in a per-subgraph override, the value falls back to the
-global configuration.
+circuit breaker. Only responses whose status code matches an entry in this list are recorded as
+failures. Responses with any other status code (including other 4xx/5xx codes) are treated as
+successes from the circuit breaker's perspective. When omitted in a per-subgraph override, the
+value falls back to the global configuration.
+
+Each entry may be either:
+
+- **An exact HTTP status code**, given as an integer or its string form: `500`, `503`, `"503"`.
+- **A wildcard pattern**, given as a string. Two pattern forms are accepted (case-insensitive):
+  - `"5xx"` (or any `[1-5]xx`) matches every status in the corresponding 100-code range. For
+    example, `"5xx"` matches `500`–`599`.
+  - `"50x"` (or any `[1-5][0-9]x`) matches every status in the corresponding 10-code range. For
+    example, `"50x"` matches `500`–`509`, `"52x"` matches `520`–`529`.
+
+Exact codes and wildcards can be mixed freely in the same list:
 
 ```yaml title="router.config.yaml"
 traffic_shaping:
   all:
     circuit_breaker:
       enabled: true
-      error_status_codes: [500, 502, 503, 504]
+      error_status_codes: [501, "5xx", "52x"]
 ```
 
-**Example — global circuit breaker with a per-subgraph override:**
+<Callout type="info">
+  When a subgraph response matches one of the configured `error_status_codes`, the original
+  response from the subgraph (status, body, and headers) is still surfaced to the client. The
+  breaker counts it as a failure for trip-evaluation purposes only, it does not alter the
+  response. This preserves the pre-existing behavior of the router for subgraphs that legitimately
+  return error status codes.
+</Callout>
+
+**Example: global circuit breaker with a per-subgraph override**
 
 ```yaml title="router.config.yaml"
 traffic_shaping:
