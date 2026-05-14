@@ -430,6 +430,13 @@ button,
   display: unset !important;
 }
 
+/* State diagrams can be clipped in prerendered SVGs when text metrics differ by environment. */
+.statediagram,
+.statediagram foreignObject,
+.statediagram .edgeLabel {
+  overflow: visible !important;
+}
+
 .dark
   :is(
     .flowchart,

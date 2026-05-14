@@ -128,7 +128,8 @@ function mermaidConfig(): [typeof rehypeMermaid, RehypeMermaidOptions] {
           defaultRenderer: "elk",
           padding: 6,
         },
-        fontFamily: "var(--font-sans)",
+        // Keep Mermaid text metrics stable across CI and local rendering.
+        fontFamily: "Arial, Helvetica, sans-serif",
         look: "classic",
         theme: "neutral",
         themeCSS: `
