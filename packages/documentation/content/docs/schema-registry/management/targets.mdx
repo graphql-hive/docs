@@ -105,6 +105,7 @@ target's Settings "Breaking Changes" tab. Enabling this will cause dangerous cha
 publish.
 
 The full list of dangerous changes includes:
+
 - **INPUT_FIELD_DEFAULT_VALUE_CHANGED**
 - **INPUT_FIELD_ADDED**, if added to an existing type, and the added input field is nullable and has a default. If the field is required and no default is set, then this is breaking.
 - **OBJECT_TYPE_INTERFACE_ADDED**, if added to an existing type
@@ -112,8 +113,8 @@ The full list of dangerous changes includes:
 - **FIELD_ARGUMENT_ADDED**, if added to an existing type. This can also be a breaking change if the argument required, and a default value is not set.
 - **FIELD_ARGUMENT_DEFAULT_CHANGED**
 - **ENUM_VALUE_ADDED**, if added to an existing type
-- **DIRECTIVE_USAGE_&lt;TYPE&gt;_ADDED**, if added to an existing type and is not a built-in directive (`@deprecated` or `@oneOf`).
-- **DIRECTIVE_USAGE_&lt;TYPE&gt;_REMOVED**, if not a built-in directive (`@deprecated` or `@oneOf`).
+- **DIRECTIVE_USAGE\_&lt;TYPE&gt;\_ADDED**, if added to an existing type and is not a built-in directive (`@deprecated` or `@oneOf`).
+- **DIRECTIVE_USAGE\_&lt;TYPE&gt;\_REMOVED**, if not a built-in directive (`@deprecated` or `@oneOf`).
 - **DIRECTIVE_ARGUMENT_DEFAULT_VALUE_CHANGED**
 - **DIRECTIVE_REPEATABLE_REMOVED**
 
