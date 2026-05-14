@@ -14,31 +14,29 @@ The `override_subgraph_urls` key is a top-level object in your `router.config.ya
 It supports two override scopes:
 
 - `subgraphs`: Per-subgraph URL overrides keyed by subgraph name.
-- `all`: A single override expression applied to all subgraphs that do not have a dedicated
-  override under `subgraphs`.
+- `all`: A single override (static URL or expression) applied to all subgraphs that do not have a
+  dedicated override under `subgraphs`.
 
 Per-subgraph overrides always take precedence over `all`.
 
 ```yaml
 override_subgraph_urls:
-  all:
-    expression: # ... global expression
+  all: # ... global static URL or expression
   subgraphs:
-    products:
-      url: # ... url definition
+    products: # ... static URL
     reviews:
-      url: # ... url definition
+      expression: # ... expression
 ```
 
 ## Options
 
 ### `all`
 
-- **Type:** `object`
+- **Type:** `string` or `object`
 - **Required:** No
 
-`all.expression` lets you define one routing expression that applies to every subgraph without its
-own entry under `subgraphs`.
+`all` lets you define a global override for every subgraph without its own entry under `subgraphs`.
+It can be a static URL string or an object with an `expression`.
 
 Within the `expression`, you have access to:
 
@@ -61,21 +59,21 @@ If `http.graphql_endpoint` uses path parameters, they are available under `.requ
 
 ```yaml
 http:
-  graphql_endpoint: /graphql/{wildcard}
+  graphql_endpoint: /{tenant}/graphql
 override_subgraph_urls:
   all:
     expression: |
-      segment = string!(.request.url_matches.wildcard)
-      replace(string!(.default), "/api/", "/api/" + segment + "/")
+      tenant = string!(.request.url_matches.tenant)
+      replace(string!(.default), "/api/", "/api/" + tenant + "/")
 ```
 
-### `subgraphs.<name>.url`
+### `subgraphs.<name>`
 
 - **Type:** `string` or `object`
 - **Required:** Yes
 
-The `url` property defines the new URL for the subgraph. It can be provided in two forms: a static
-string or an object for dynamic evaluation.
+Each `subgraphs.<name>` entry defines the new URL for that subgraph. It can be provided in two
+forms: a static string or an object for dynamic evaluation.
 
 #### Static URL
 
@@ -85,8 +83,7 @@ is useful for permanently redirecting a subgraph without recomposing your superg
 ```yaml
 override_subgraph_urls:
   subgraphs:
-    products:
-      url: "https://products.staging.svc.cluster.local/"
+    products: "https://products.staging.svc.cluster.local/"
 ```
 
 #### Dynamic URL with `expression`
@@ -107,11 +104,10 @@ Within the `expression`, you have access to:
 override_subgraph_urls:
   subgraphs:
     reviews:
-      url:
-        expression: |
-          if .request.headers."x-region" == "eu" {
-            "https://reviews.eu.api/graphql"
-          } else {
-            .default
-          }
+      expression: |
+        if .request.headers."x-region" == "eu" {
+          "https://reviews.eu.api/graphql"
+        } else {
+          .default
+        }
 ```
