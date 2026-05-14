@@ -261,8 +261,9 @@ threshold, the circuit "opens" and subsequent requests are immediately rejected 
 `SUBGRAPH_CIRCUIT_BREAKER_REJECTED` error, instead of waiting for the subgraph to time out. This
 frees up router resources, fails fast for clients, and gives the subgraph time to recover.
 
-- **Default:** `circuit_breaker: null` (disabled). Any per-field defaults listed below apply only
-  when a `circuit_breaker` object is provided.
+- **Default:** disabled. The circuit breaker only becomes active when a `circuit_breaker` block is
+  configured with `enabled: true`. Once that block is present, any omitted fields use the defaults
+  listed below.
 
 ### How It Works
 
@@ -276,11 +277,15 @@ The circuit breaker has three states:
 
 ```mermaid
 stateDiagram-v2
-  [*] --> Closed
-  Closed --> Open: rolling error rate over the last<br/>volume_threshold calls ≥ error_threshold
-  Open --> HalfOpen: reset_timeout elapsed
-  HalfOpen --> Closed: probe error rate over the last<br/>half_open_attempts probes < error_threshold
-  HalfOpen --> Open: probe error rate over the last<br/>half_open_attempts probes ≥ error_threshold
+  state "Closed" as closed
+  state "Open" as open
+  state "Half-open" as halfOpen
+
+  [*] --> closed
+  closed --> open: rolling error rate over the last<br/>volume_threshold calls<br/>≥ error_threshold
+  open --> halfOpen: reset_timeout elapsed
+  halfOpen --> closed: probe error rate over the last<br/>half_open_attempts probes<br/>< error_threshold
+  halfOpen --> open: probe error rate over the last<br/>half_open_attempts probes<br/>≥ error_threshold
 ```
 
 #### State transition logic

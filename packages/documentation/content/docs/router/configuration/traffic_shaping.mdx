@@ -209,12 +209,13 @@ traffic_shaping:
 - **Type:** `object | null`
 - **Default:** `null` (disabled)
 
-Enables the circuit breaker pattern for subgraph requests. When the error rate of requests to a
-subgraph exceeds the configured threshold, the circuit breaker opens and subsequent requests are
-immediately rejected with a `SUBGRAPH_CIRCUIT_BREAKER_REJECTED` error, instead of waiting for the
-subgraph to respond. After the `reset_timeout` elapses, the circuit enters a half-open state and
-lets the next request probe the subgraph. If the probe succeeds, the circuit closes again;
-otherwise, it returns to the open state.
+The circuit breaker is disabled unless a `circuit_breaker` block is configured with
+`enabled: true`. When active, it monitors subgraph request failures and opens once the configured
+threshold is exceeded. While open, requests are immediately rejected with a
+`SUBGRAPH_CIRCUIT_BREAKER_REJECTED` error instead of waiting for the subgraph. After
+`reset_timeout` elapses, the circuit enters a half-open state and allows probe requests through. If
+those probes stay below the configured error threshold, the circuit closes again; otherwise, it
+returns to the open state.
 
 For a detailed explanation and tuning guidance see the
 [Circuit Breaker section](/docs/router/guides/performance-tuning#circuit-breaker) of the Performance
