@@ -37,3 +37,6 @@ npm-debug.log*
 packages/documentation/tmp/
 test-results/
 debug-storybook.log
+
+.wrangler
+build_output.log

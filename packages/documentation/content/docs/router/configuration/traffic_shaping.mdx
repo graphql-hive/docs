@@ -167,9 +167,9 @@ traffic_shaping:
 
 ## Outbound Options
 
-The following options (`allow_only_http2`, `dedupe_enabled`, `pool_idle_timeout`, `request_timeout`,
-and `tls`) can be set globally for all subgraphs or overridden on a per-subgraph basis by nesting
-them under the subgraph's name within the `traffic_shaping` map.
+The following options (`allow_only_http2`, `circuit_breaker`, `dedupe_enabled`, `pool_idle_timeout`,
+`request_timeout`, and `tls`) can be set globally for all subgraphs or overridden on a per-subgraph
+basis by nesting them under the subgraph's name within the `traffic_shaping` map.
 
 For example, the following example shows how to set global defaults and override them for a specific
 subgraph named `products`:
@@ -202,6 +202,133 @@ connect if the subgraph does not support HTTP/2.
 traffic_shaping:
   all:
     allow_only_http2: true
+```
+
+### `circuit_breaker`
+
+- **Type:** `object | null`
+- **Default:** `null` (disabled)
+
+The circuit breaker is disabled unless a `circuit_breaker` block is configured with
+`enabled: true`. When active, it monitors subgraph request failures and opens once the configured
+threshold is exceeded. While open, requests are immediately rejected with a
+`SUBGRAPH_CIRCUIT_BREAKER_REJECTED` error instead of waiting for the subgraph. After
+`reset_timeout` elapses, the circuit enters a half-open state and allows probe requests through. If
+those probes stay below the configured error threshold, the circuit closes again; otherwise, it
+returns to the open state.
+
+For a detailed explanation and tuning guidance see the
+[Circuit Breaker section](/docs/router/guides/performance-tuning#circuit-breaker) of the Performance
+Tuning guide.
+
+#### `circuit_breaker.enabled`
+
+- **Type:** `boolean`
+- **Default:** `false`
+
+Enables or disables the circuit breaker for the subgraph(s). When omitted in a per-subgraph
+`circuit_breaker` block, the value inherits from the global `traffic_shaping.all.circuit_breaker`
+configuration.
+
+#### `circuit_breaker.error_threshold`
+
+- **Type:** `string`
+- **Default:** `50%`
+
+The error rate (as a percentage string) above which the circuit breaker opens. For example, `50%`
+means the circuit trips when 50% or more of requests in the evaluation window fail. When omitted in
+a per-subgraph override, the value falls back to the global configuration.
+
+#### `circuit_breaker.volume_threshold`
+
+- **Type:** `integer`
+- **Default:** `5`
+
+Size of the rolling window the breaker uses to track call outcomes. The first `volume_threshold`
+calls fill the window; from then on, every subsequent call triggers an error-rate check over the
+most recent `volume_threshold` outcomes. This prevents the circuit from tripping due to a handful
+of failures during low-traffic periods. When omitted in a per-subgraph override, the value falls
+back to the global configuration.
+
+#### `circuit_breaker.reset_timeout`
+
+- **Type:** `string`
+- **Default:** `30s`
+
+The duration the circuit breaker stays open before transitioning to a half-open state and allowing
+probe calls through to test whether the subgraph has recovered. Accepts a duration string (e.g.
+`30s`, `1m`). When omitted in a per-subgraph override, the value falls back to the global
+configuration.
+
+#### `circuit_breaker.half_open_attempts`
+
+- **Type:** `integer`
+- **Default:** `10`
+
+Size of the rolling sample of probe requests collected while the breaker is in the half-open state
+after `reset_timeout` has elapsed. The breaker fills this sample first; the next probe after the
+sample is full is the one whose result is evaluated against `error_threshold` to decide whether
+to transition back to **closed** (resuming normal traffic) or back to **open** (waiting for
+another `reset_timeout` window). In practice the breaker needs at least `half_open_attempts + 1`
+probe calls before it can transition out of half-open.
+
+Lower values make recovery faster but more aggressive; higher values gather more samples before
+re-closing the circuit. When omitted in a per-subgraph override, the value falls back to the
+global configuration.
+
+#### `circuit_breaker.error_status_codes`
+
+- **Type:** `(integer | string)[]`
+- **Default:** `[500, 502, 503, 504]`
+
+The list of HTTP status codes returned by the subgraph that should be counted as failures by the
+circuit breaker. Only responses whose status code matches an entry in this list are recorded as
+failures. Responses with any other status code (including other 4xx/5xx codes) are treated as
+successes from the circuit breaker's perspective. When omitted in a per-subgraph override, the
+value falls back to the global configuration.
+
+Each entry may be either:
+
+- **An exact HTTP status code**, given as an integer or its string form: `500`, `503`, `"503"`.
+- **A wildcard pattern**, given as a string. Two pattern forms are accepted (case-insensitive):
+  - `"5xx"` (or any `[1-5]xx`) matches every status in the corresponding 100-code range. For
+    example, `"5xx"` matches `500`–`599`.
+  - `"50x"` (or any `[1-5][0-9]x`) matches every status in the corresponding 10-code range. For
+    example, `"50x"` matches `500`–`509`, `"52x"` matches `520`–`529`.
+
+Exact codes and wildcards can be mixed freely in the same list:
+
+```yaml title="router.config.yaml"
+traffic_shaping:
+  all:
+    circuit_breaker:
+      enabled: true
+      error_status_codes: [501, "5xx", "52x"]
+```
+
+<Callout type="info">
+  When a subgraph response matches one of the configured `error_status_codes`,
+  the original response from the subgraph (status, body, and headers) is still
+  surfaced to the client. The breaker counts it as a failure for trip-evaluation
+  purposes only, it does not alter the response. This preserves the pre-existing
+  behavior of the router for subgraphs that legitimately return error status
+  codes.
+</Callout>
+
+**Example: global circuit breaker with a per-subgraph override**
+
+```yaml title="router.config.yaml"
+traffic_shaping:
+  all:
+    circuit_breaker:
+      enabled: true
+      error_threshold: 50%
+      volume_threshold: 5
+      reset_timeout: 30s
+  subgraphs:
+    payments:
+      circuit_breaker:
+        volume_threshold: 3 # more sensitive for the payments subgraph; other settings inherit from global
 ```
 
 ### `dedupe_enabled`
