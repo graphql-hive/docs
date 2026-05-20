@@ -153,39 +153,6 @@ credentials:
 You only need to set `credentials.type: instance_metadata` explicitly when overriding one of these
 fields. Omitting `credentials` entirely already uses IMDSv2 with defaults.
 
-### Encryption
-
-The `encryption` block applies [server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html)
-to writes. It has no effect on the read paths Hive Router uses today, but is accepted for forward
-compatibility.
-
-#### `encryption.type: sse_kms`
-
-[SSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html) — AWS
-Key Management Service.
-
-| Field        | Type                     | Required | Notes                                                                      |
-| ------------ | ------------------------ | -------- | -------------------------------------------------------------------------- |
-| `kms_key_id` | `string` \| `expression` | yes      | ARN or ID of the KMS key. Falls back to the bucket's default key if unset. |
-
-#### `encryption.type: dsse_kms`
-
-[DSSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingDSSEncryption.html) — two
-independent layers of KMS encryption.
-
-| Field        | Type                     | Required | Notes                     |
-| ------------ | ------------------------ | -------- | ------------------------- |
-| `kms_key_id` | `string` \| `expression` | yes      | ARN or ID of the KMS key. |
-
-#### `encryption.type: sse_c`
-
-[SSE-C](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerSideEncryptionCustomerKeys.html)
-— customer-provided key, sent with every request and never stored by AWS.
-
-| Field                 | Type                     | Required | Notes                                                                    |
-| --------------------- | ------------------------ | -------- | ------------------------------------------------------------------------ |
-| `customer_key_base64` | `string` \| `expression` | yes      | Base64-encoded 256-bit AES key. Generate with `openssl rand -base64 32`. |
-
 ### Behavior flags
 
 | Field              | Type      | Default | Notes                                                                                                                                                                                                                 |

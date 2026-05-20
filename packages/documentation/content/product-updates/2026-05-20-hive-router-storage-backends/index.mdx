@@ -7,8 +7,6 @@ date: 2026-05-20
 authors: [dotan]
 ---
 
-import { Callout } from "@hive/design-system/hive-components/callout";
-
 [Hive Router](/docs/router) now supports loading its core artifacts - the **supergraph schema** and
 the **persisted documents manifest** - directly from object storage. Define a backend once under the
 new top-level [`storages`](/docs/router/configuration/storages) section, then reference it from any
@@ -66,13 +64,13 @@ crate, so any service that speaks the S3 API works out of the box:
 Static keys are supported, but the recommended setup uses the credential provider that matches your
 runtime - no long-lived secrets in config:
 
-| `credentials.type`  | When to use                                                                  |
-| ------------------- | ---------------------------------------------------------------------------- |
-| `static`            | Long-lived IAM user keys or temporary session credentials.                   |
-| `web_identity`      | IAM Roles for Service Accounts (IRSA) on EKS, or any OIDC token exchange.    |
-| `ecs_task`          | ECS task IAM roles via the container credentials endpoint.                   |
-| `eks_pod_identity`  | EKS Pod Identity - the newer alternative to IRSA.                            |
-| `instance_metadata` | Explicit IMDSv2 configuration for EC2 (also the default when omitted).       |
+| `credentials.type`  | When to use                                                               |
+| ------------------- | ------------------------------------------------------------------------- |
+| `static`            | Long-lived IAM user keys or temporary session credentials.                |
+| `web_identity`      | IAM Roles for Service Accounts (IRSA) on EKS, or any OIDC token exchange. |
+| `ecs_task`          | ECS task IAM roles via the container credentials endpoint.                |
+| `eks_pod_identity`  | EKS Pod Identity - the newer alternative to IRSA.                         |
+| `instance_metadata` | Explicit IMDSv2 configuration for EC2 (also the default when omitted).    |
 
 Omit `credentials` entirely on EC2 and the router uses IMDSv2 with the attached instance role.
 
