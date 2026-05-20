@@ -91,10 +91,17 @@ supergraph:
 > Hive Router will use the file-system's metadata (modified-at attribute) to detect changes and
 > reload the supergraph.
 
-### From storage
+### From object storage
 
-You can also load the supergraph from a named storage backend configured under top-level
-[`storages`](./configuration/storages), using `source: storage`.
+You can load the supergraph from a named [storage backend](./configuration/storages) such as
+Amazon S3 or any S3-compatible service (Cloudflare R2, MinIO, LocalStack, DigitalOcean Spaces,
+Backblaze B2, Tigris, etc.).
+
+This is a good fit when your CI pipeline publishes the supergraph artifact to object storage and you
+want the router to pick up new versions without redeploying.
+
+Declare the backend once under top-level `storages`, then point `supergraph.source: storage` at the
+object you want to load:
 
 ```yaml title="router.config.yaml"
 storages:
@@ -110,14 +117,16 @@ supergraph:
   poll_interval: 30s
 ```
 
-- `storage_id` must reference an existing entry in `storages`
-- `location` points to the supergraph object key in that storage
-- `poll_interval` is optional; when omitted, router loads once at startup
+- `storage_id` references an entry in `storages`. Startup fails if the ID is not declared.
+- `location` is the object key (path within the bucket).
+- `poll_interval` is optional — when omitted, the router loads the supergraph once at startup.
 
-If `storage_id` does not exist in `storages`, startup fails fast.
+When polling is enabled, the router uses conditional `If-None-Match` requests against the object's
+`ETag` and only reloads when storage reports the content has changed.
 
-When polling is enabled, router checks for updates and reloads only when content changed (using
-storage change detection such as ETag/Not Modified behavior where available).
+> For provider-specific configuration (AWS S3 with IRSA, Cloudflare R2, MinIO, LocalStack), and for
+> loading bucket names/credentials from environment variables via expressions, see the
+> [`storages` reference](./configuration/storages).
 
 ## Reloading the Supergraph
 
