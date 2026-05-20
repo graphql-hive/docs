@@ -203,3 +203,56 @@ supergraph:
   path: ./supergraph.graphql
   poll_interval: 10s
 ```
+
+## Storage
+
+Load the schema from a named storage backend configured in top-level
+[`storages`](/docs/router/configuration/storages).
+
+### `source`
+
+- **Type:** `string`
+- **Value:** `"storage"`
+
+### `storage_id`
+
+- **Type:** `string`
+- **Required:** Yes
+
+ID of a storage defined under `storages`.
+
+If the referenced storage ID does not exist, router startup fails.
+
+### `location`
+
+- **Type:** `string` or `{ expression: string }`
+- **Required:** Yes
+
+Object key/path of the supergraph file in the configured storage backend.
+
+You can provide either a static value or an [expression](/docs/router/configuration/expressions).
+
+### `poll_interval`
+
+- **Type:** `string`
+- **Required:** No
+- **Default:** disabled
+
+A human-readable interval for polling storage for updates.
+
+When polling is enabled, router only reloads when storage reports a change (for example using
+ETag / not-modified behavior where available).
+
+```yaml title="router.config.yaml"
+storages:
+  artifacts:
+    type: s3
+    bucket: my-router-artifacts
+    region: eu-west-1
+
+supergraph:
+  source: storage
+  storage_id: artifacts
+  location: supergraph/current.graphql
+  poll_interval: 30s
+```

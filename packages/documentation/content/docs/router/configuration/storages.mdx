@@ -1,0 +1,102 @@
+---
+title: "storages"
+---
+
+The top-level `storages` section defines reusable named storage backends.
+
+Other router features can reference these IDs (for example `supergraph.source: storage` and
+`persisted_documents.storage.type: storage`), so you can configure one backend once and reuse it.
+
+## Shape
+
+`storages` is a map where each key is your storage ID:
+
+```yaml title="router.config.yaml"
+storages:
+  artifacts:
+    type: s3
+    bucket: my-router-artifacts
+    region: eu-west-1
+```
+
+## `type: s3`
+
+The first supported storage backend is S3, including S3-compatible object storage providers.
+
+### Bucket, region, endpoint
+
+- `bucket` (required): bucket name to read from
+- `region` (optional): AWS region (or provider-specific region value)
+- `endpoint` (optional): custom S3 API endpoint for S3-compatible services
+
+### Virtual hosted style and HTTP
+
+- `virtual_hosted_style` (optional, default `false`): use `<bucket>.<host>` style requests
+- `allow_http` (optional, default `false`): allow plain HTTP endpoints (local/dev only)
+
+### Credentials modes
+
+Configure `credentials.type` as one of:
+
+- `static`
+- `web_identity`
+- `ecs_task`
+- `eks_pod_identity`
+- `instance_metadata`
+
+If omitted, router falls back to instance metadata behavior.
+
+### Encryption modes
+
+Configure `encryption.type` as one of:
+
+- `sse_kms`
+- `dsse_kms`
+- `sse_c`
+
+### Behavior flags
+
+S3 storage also supports behavior flags such as:
+
+- `skip_signature`
+- `request_payer`
+- `disable_tagging`
+- `unsigned_payload`
+- `s3_express`
+
+### Expressions support
+
+Some S3 fields support value-or-expression semantics, so you can provide either direct values or
+expression objects for dynamic resolution.
+
+## Examples
+
+### AWS S3
+
+```yaml title="router.config.yaml"
+storages:
+  artifacts:
+    type: s3
+    bucket: my-router-artifacts
+    region: eu-west-1
+    credentials:
+      type: web_identity
+      token_file: /var/run/secrets/eks.amazonaws.com/serviceaccount/token
+      role_arn: arn:aws:iam::123456789012:role/router-artifacts-reader
+```
+
+### S3-compatible (MinIO / LocalStack style)
+
+```yaml title="router.config.yaml"
+storages:
+  local-artifacts:
+    type: s3
+    bucket: router-artifacts
+    region: us-east-1
+    endpoint: http://localhost:4566
+    allow_http: true
+    credentials:
+      type: static
+      access_key_id: test
+      secret_access_key: test
+```

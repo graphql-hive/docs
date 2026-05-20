@@ -124,6 +124,21 @@ custom settings.
 | ----- | ---------- | ------- | ------------------------------ |
 | `ttl` | `duration` | `5s`    | Negative cache entry lifetime. |
 
+### `storage.type: storage`
+
+| Field           | Type       | Default  | Required | Notes                                                     |
+| --------------- | ---------- | -------- | -------- | --------------------------------------------------------- |
+| `storage_id`    | `string`   | -        | yes      | ID of a storage configured in top-level `storages`.       |
+| `location`      | `string`   | -        | yes      | Object key/path of the persisted documents manifest.      |
+| `poll_interval` | `duration` | disabled | no       | Poll storage for updated manifest content.                |
+
+Storage-based manifests use the same parsing behavior and manifest formats as file-based manifests.
+
+If `storage_id` does not reference an existing entry in `storages`, router startup fails.
+
+When `poll_interval` is set, reloads use storage change detection (for example ETag/not-modified
+behavior where available) to avoid unnecessary manifest reloads.
+
 ## Endpoint compatibility note
 
 If any extractor uses `url_path_param`, `http.graphql_endpoint` cannot be `"/"`.
@@ -173,4 +188,23 @@ persisted_documents:
     key: ${HIVE_CDN_KEY}
     negative_cache:
       ttl: 10s
+```
+
+### Storage-backed manifest (S3 / S3-compatible)
+
+```yaml title="router.config.yaml"
+storages:
+  artifacts:
+    type: s3
+    bucket: my-router-artifacts
+    region: eu-west-1
+
+persisted_documents:
+  enabled: true
+  require_id: true
+  storage:
+    type: storage
+    storage_id: artifacts
+    location: persisted/manifest.json
+    poll_interval: 30s
 ```
