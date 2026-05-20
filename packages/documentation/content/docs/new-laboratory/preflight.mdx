@@ -2,6 +2,7 @@
 title: Preflight Scripts
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
 import { Image } from "@hive/design-system/image";
 
 import preflightImage from "./preflight.png";
@@ -208,6 +209,23 @@ When you run an operation with preflight enabled:
 
 If the preflight script fails (throws an error), the operation will not execute and you'll see an
 error in the response.
+
+### Preflight and schema introspection
+
+Preflight is not limited to operation execution. The Laboratory also runs your preflight script
+**before schema introspection** when **Include active operation headers** is enabled in
+[Introspection settings](./schema-support#introspection-headers). Static introspection headers alone
+do not trigger preflight—they use environment variable substitution directly.
+
+<Callout type="tip">
+  **Tip:** If introspection fails with auth errors but operations work, enable
+  **Include active operation headers** so preflight runs before the schema is
+  fetched, using the same headers as your active operation tab.
+</Callout>
+
+With active operation headers enabled, introspection can trigger preflight often (including schema
+polling). Consider using [Environment Variables](./environment-variables) for tokens and secrets
+instead of `lab.prompt()` to avoid repeated popups—or keep prompts if that fits your workflow.
 
 ## Error Handling
 
