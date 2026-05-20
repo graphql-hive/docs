@@ -2,6 +2,8 @@
 title: Schema Support
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
+
 The Laboratory provides comprehensive schema support through automatic introspection and a visual
 Builder that helps you explore and build GraphQL operations.
 
@@ -43,6 +45,94 @@ If your schema changes, you can refresh it:
 1. Open the Command Palette (`⌘J`)
 2. Select "Refetch schema"
 3. Or use the refresh button in the Builder panel
+
+## Introspection Headers
+
+Some GraphQL APIs require authentication or custom headers for schema introspection, not only for
+operations. Configure this in **Settings** (gear icon in the left sidebar, or **Introspection
+settings** in the Builder panel) under the **Introspection** section.
+
+Introspection requests use headers from two sources, which you can combine:
+
+1. **Static headers** — JSON configured in the **Headers** editor under Introspection settings
+2. **Active operation headers** — Optional headers from the currently active operation tab
+
+### No headers
+
+To introspect without extra headers:
+
+1. Set **Headers** to an empty object: `{}`
+2. Turn off **Include active operation headers**
+
+The Laboratory sends the introspection query with no custom HTTP headers (aside from defaults such as
+`Content-Type`).
+
+### Static headers from settings
+
+Use the **Headers** editor to define headers sent with every introspection request. Headers are JSON,
+same format as operation headers:
+
+```json
+{
+  "Authorization": "Bearer your-token-here",
+  "X-API-Key": "your-api-key"
+}
+```
+
+#### Environment variable substitution
+
+Static introspection headers support the same `{{variableName}}` template syntax as operation
+headers. Values are resolved from [Environment Variables](./environment-variables) before the
+introspection request is sent. The preflight script does **not** run for static headers alone.
+
+```json
+{
+  "Authorization": "Bearer {{AUTH_TOKEN}}",
+  "X-API-Key": "{{API_KEY}}"
+}
+```
+
+### Active operation headers
+
+Enable **Include active operation headers** to merge headers from the **active operation tab** into
+the introspection request. This is useful when the same auth headers you use for queries should
+apply to schema discovery.
+
+- Static introspection headers are applied first
+- Active operation headers are merged on top (same header name in the operation tab overrides the
+  static value)
+- Your [Preflight script](./preflight) runs before introspection (same as before running an
+  operation), so tokens and headers set in preflight apply to the schema fetch
+
+<Callout type="tip">
+  **Tip:** Preflight runs before introspection only when **Include active
+  operation headers** is enabled, not for static introspection headers alone.
+  Use active operation headers when auth depends on your preflight script (for
+  example, refreshing a token before the schema is fetched).
+</Callout>
+
+When preflight runs for introspection (and on schema polling), the same script executes repeatedly.
+If your script uses `lab.prompt()`, you may see many popup dialogs. A friendly approach is to store
+values in [Environment Variables](./environment-variables) and read them with `lab.environment.get()`
+instead—though prompts are still fine if you prefer them.
+
+Example workflow:
+
+1. Add `Authorization` (and any other required headers) on your operation’s **Headers** tab
+2. Enable **Include active operation headers** in Introspection settings
+3. Switch the active operation tab to control which headers are used for introspection
+
+You can use static settings headers alone, active operation headers alone (with an empty `{}` in
+**Headers**), or both together.
+
+### Other introspection options
+
+The Introspection settings section also includes:
+
+- **Method** — `GET` or `POST` for the introspection HTTP request (default: `POST`)
+- **Schema description** — Include field descriptions in the introspection result when supported
+
+Fetch and subscription behavior are configured in separate sections of the same Settings panel.
 
 ## The Builder
 
@@ -162,8 +252,12 @@ If your schema doesn't load:
 
 1. **Check endpoint** - Verify the endpoint URL is correct
 2. **Check CORS** - Ensure your server allows introspection requests
-3. **Check authentication** - Some endpoints require authentication for introspection
+3. **Check authentication** - Some endpoints require authentication for introspection. Configure
+   [introspection headers](#introspection-headers) (static settings, active operation headers, or
+   both) and ensure environment variables resolve if you use `{{...}}` in static headers
 4. **Check network** - Verify you can reach the endpoint
+5. **Check preflight** - If you use **Include active operation headers**, confirm your preflight
+   script runs without errors before the schema fetch
 
 ### Schema Out of Date
 
