@@ -19,12 +19,12 @@ export const docs = defineDocs({
   dir: "content/docs",
   docs: {
     async: true,
-    schema: pageSchema.extend({
-      sidebarTitle: z.string().optional(),
-    }),
     postprocess: {
       includeProcessedMarkdown: true,
     },
+    schema: pageSchema.extend({
+      sidebarTitle: z.string().optional(),
+    }),
   },
 });
 

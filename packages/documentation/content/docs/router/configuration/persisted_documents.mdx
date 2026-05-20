@@ -130,10 +130,10 @@ Loads the persisted documents manifest from a named backend declared in the top-
 [`storages`](./storages) section (Amazon S3, Cloudflare R2, MinIO, LocalStack, or any other
 S3-compatible service).
 
-| Field           | Type       | Default  | Required | Notes                                                                                                              |
-| --------------- | ---------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
-| `storage_id`    | `string`   | -        | yes      | ID of a backend declared under top-level [`storages`](./storages). Startup fails if the ID is not declared.        |
-| `location`      | `string`   | -        | yes      | Object key (path within the bucket) of the manifest file.                                                          |
+| Field           | Type       | Default  | Required | Notes                                                                                                                     |
+| --------------- | ---------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `storage_id`    | `string`   | -        | yes      | ID of a backend declared under top-level [`storages`](./storages). Startup fails if the ID is not declared.               |
+| `location`      | `string`   | -        | yes      | Object key (path within the bucket) of the manifest file.                                                                 |
 | `poll_interval` | `duration` | disabled | no       | [Human-readable](https://docs.rs/humantime/latest/humantime/) interval for polling the manifest for updates (e.g. `30s`). |
 
 Storage-loaded manifests use the **same JSON format and parser** as file-based manifests — the only

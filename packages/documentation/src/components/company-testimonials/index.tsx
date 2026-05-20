@@ -18,10 +18,10 @@ import {
   WealthsimpleLogo,
 } from "../company-logos";
 import hemnetPicture from "./hemnet-picture.webp";
-import trivagoPicture from "./trivago-picture.webp";
 import karrotPicture from "./karrot-picture.webp";
 import nacellePicture from "./nacelle-picture.webp";
 import prodigyPicture from "./prodigy-picture.webp";
+import trivagoPicture from "./trivago-picture.webp";
 import wealthsimplePicture from "./wealthsimple-picture.webp";
 
 // Type for static image imports (Vite/webpack)
