@@ -55,6 +55,9 @@ export const routeRules: Record<string, NitroRouteRules> = {
   "/docs/features/sso-oidc-provider": redirect(
     "/docs/schema-registry/management/sso-oidc-provider",
   ),
+  "/docs/management/sso-oidc-provider": redirect(
+    "docs/schema-registry/management/sso-oidc-provider"
+  ),
   "/docs/features/tokens": redirect(
     "/docs/schema-registry/management/targets#manage-tokens",
   ),
