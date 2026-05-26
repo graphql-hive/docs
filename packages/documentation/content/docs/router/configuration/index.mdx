@@ -22,7 +22,10 @@ that explains how to use that feature.
 - [`override_subgraph_urls`](./override_subgraph_urls): Route requests to different
   subgraph URLs dynamically.
 - [`persisted_documents`](./persisted_documents): Extract and resolve persisted
-  document IDs from file or Hive storage.
+  document IDs from file, Hive Console, or a named object storage backend.
+- [`storages`](./storages): Define reusable object storage backends (Amazon S3
+  and S3-compatible services such as Cloudflare R2, MinIO, LocalStack) that
+  other features (supergraph, persisted documents) can load artifacts from.
 - [`override_labels`](./override_labels): Dynamically activate or deactivate
   progressive override labels.
 - [`query_planner`](./query_planner): Add safety limits and debugging for query

@@ -203,3 +203,69 @@ supergraph:
   path: ./supergraph.graphql
   poll_interval: 10s
 ```
+
+## Storage
+
+Load the supergraph schema from a named [storage backend](/docs/router/configuration/storages) such
+as Amazon S3 or any S3-compatible service (Cloudflare R2, MinIO, LocalStack, etc.).
+
+This is useful when you publish supergraphs as artifacts in object storage from your CI pipeline and
+want the router to pick up new versions without redeploying.
+
+```yaml title="router.config.yaml"
+storages:
+  artifacts:
+    type: s3
+    bucket: my-router-artifacts
+    region: eu-west-1
+
+supergraph:
+  source: storage
+  storage_id: artifacts
+  location: supergraph/current.graphql
+  poll_interval: 30s
+```
+
+### `source`
+
+- **Type:** `string`
+- **Value:** `"storage"`
+
+### `storage_id`
+
+- **Type:** `string`
+- **Required:** Yes
+
+ID of a backend declared under the top-level
+[`storages`](/docs/router/configuration/storages) map. If the ID does not exist in `storages`, the
+router fails to start.
+
+### `location`
+
+- **Type:** `string` or `{ expression: string }`
+- **Required:** Yes
+
+Object key (path within the bucket) of the supergraph file.
+
+Both static strings and [expressions](/docs/router/configuration/expressions) are accepted, so the
+location can be loaded from an environment variable or computed dynamically at startup:
+
+```yaml title="router.config.yaml"
+supergraph:
+  source: storage
+  storage_id: artifacts
+  location:
+    expression: env("SUPERGRAPH_OBJECT_KEY", "supergraph/current.graphql")
+```
+
+### `poll_interval`
+
+- **Type:** `string`
+- **Required:** No
+- **Default:** disabled (one-shot load at startup)
+
+[Human-readable](https://docs.rs/humantime/latest/humantime/) interval for polling the storage
+backend for updates (e.g. `30s`, `5m`).
+
+When polling is enabled, the router uses conditional requests (HTTP `If-None-Match` against the
+object's `ETag`) and only re-parses the supergraph when storage reports the content has changed.

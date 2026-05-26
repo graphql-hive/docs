@@ -91,6 +91,43 @@ supergraph:
 > Hive Router will use the file-system's metadata (modified-at attribute) to detect changes and
 > reload the supergraph.
 
+### From object storage
+
+You can load the supergraph from a named [storage backend](./configuration/storages) such as
+Amazon S3 or any S3-compatible service (Cloudflare R2, MinIO, LocalStack, DigitalOcean Spaces,
+Backblaze B2, Tigris, etc.).
+
+This is a good fit when your CI pipeline publishes the supergraph artifact to object storage and you
+want the router to pick up new versions without redeploying.
+
+Declare the backend once under top-level `storages`, then point `supergraph.source: storage` at the
+object you want to load:
+
+```yaml title="router.config.yaml"
+storages:
+  artifacts:
+    type: s3
+    bucket: my-router-artifacts
+    region: eu-west-1
+
+supergraph:
+  source: storage
+  storage_id: artifacts
+  location: supergraph/current.graphql
+  poll_interval: 30s
+```
+
+- `storage_id` references an entry in `storages`. Startup fails if the ID is not declared.
+- `location` is the object key (path within the bucket).
+- `poll_interval` is optional — when omitted, the router loads the supergraph once at startup.
+
+When polling is enabled, the router uses conditional `If-None-Match` requests against the object's
+`ETag` and only reloads when storage reports the content has changed.
+
+> For provider-specific configuration (AWS S3 with IRSA, Cloudflare R2, MinIO, LocalStack), and for
+> loading bucket names/credentials from environment variables via expressions, see the
+> [`storages` reference](./configuration/storages).
+
 ## Reloading the Supergraph
 
 The reload process of the Supergraph needs to be aligned with other on-going processes running in

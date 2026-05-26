@@ -386,7 +386,7 @@ async function proxySearchAPI(request: Request, env: CloudflareEnv) {
     init.duplex = "half";
   }
 
-  let res = await env.SEARCH_API.fetch(new Request(searchURL, init));
+  const res = await env.SEARCH_API.fetch(new Request(searchURL, init));
 
   // Se "Cache-Control: private, no-cache"
 
@@ -394,9 +394,9 @@ async function proxySearchAPI(request: Request, env: CloudflareEnv) {
   headers.set("Cache-Control", "private, no-cache");
 
   return new Response(res.body, {
+    headers,
     status: res.status,
     statusText: res.statusText,
-    headers,
   });
 }
 
