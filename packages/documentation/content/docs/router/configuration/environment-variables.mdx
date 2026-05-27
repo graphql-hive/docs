@@ -22,6 +22,7 @@ configurations that can be set in the router's configuration file (`router.confi
 | `HIVE_CDN_POLL_INTERVAL` | `string` (human-readable, for example: `10s`)        | [`supergraph[hive].poll_interval`](./supergraph#poll_interval) |
 | `SUBSCRIPTIONS_ENABLED`  | `true` / `false`                                     | [`subscriptions.enabled`](../subscriptions#configuration)      |
 | `WEBSOCKET_ENABLED`      | `true` / `false`                                     | [`websocket.enabled`](../subscriptions/websockets#enabled)     |
+| `TELEMETRY_TRACING_SAMPLING_RATE` | `number` (between `0.0` and `1.0`) | [`telemetry.tracing.collect.sampling`](./telemetry#tracing) |
 
 > In cases where a configuration file (`router.config.yaml`) is used with environment variables at
 > the same time, environment variables will only override the specific configuration values.
