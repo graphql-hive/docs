@@ -55,14 +55,14 @@ export const routeRules: Record<string, NitroRouteRules> = {
   "/docs/features/sso-oidc-provider": redirect(
     "/docs/schema-registry/management/sso-oidc-provider",
   ),
-  "/docs/management/sso-oidc-provider": redirect(
-    "docs/schema-registry/management/sso-oidc-provider"
-  ),
   "/docs/features/tokens": redirect(
     "/docs/schema-registry/management/targets#manage-tokens",
   ),
   "/docs/features/usage-reporting": redirect(
     "/docs/schema-registry/usage-reporting",
+  ),
+  "/docs/management/sso-oidc-provider": redirect(
+    "/docs/schema-registry/management/sso-oidc-provider"
   ),
 
   // Spec paths
@@ -149,17 +149,17 @@ export const routeRules: Record<string, NitroRouteRules> = {
   ),
 
   // Support pages moved after introducing coprocessors
+  "/docs/router/guides/extending-the-router": redirect(
+    "/docs/router/customizations",
+  ),
   "/docs/router/plugin-system": redirect(
     "/docs/router/customizations/plugin-system",
-  ),
-  "/docs/router/plugin-system/hooks": redirect(
-    "/docs/router/customizations/plugin-system/hooks",
   ),
   "/docs/router/plugin-system/execution-and-lifecycle": redirect(
     "/docs/router/customizations/plugin-system/execution-and-lifecycle",
   ),
-  "/docs/router/guides/extending-the-router": redirect(
-    "/docs/router/customizations",
+  "/docs/router/plugin-system/hooks": redirect(
+    "/docs/router/customizations/plugin-system/hooks",
   ),
 
   // Typo in old URL (linked from blog posts)
