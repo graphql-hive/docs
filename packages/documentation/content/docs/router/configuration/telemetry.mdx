@@ -225,14 +225,14 @@ Top-level OpenTelemetry tracing configuration.
 
 `collect` - Collection and sampling limits for spans.
 
-| Field                      | Type      | Default | Notes                                        |
-| -------------------------- | --------- | ------- | -------------------------------------------- |
-| `max_events_per_span`      | `integer` | `128`   | Maximum events to record per span.           |
-| `max_attributes_per_span`  | `integer` | `128`   | Maximum attributes to record per span.       |
-| `max_attributes_per_event` | `integer` | `16`    | Maximum attributes to record per span event. |
-| `max_attributes_per_link`  | `integer` | `32`    | Maximum attributes to record per span link.  |
-| `sampling`                 | `number`  | `1.0`   | Sampling ratio between `0.0` and `1.0`.      |
-| `parent_based_sampler`     | `boolean` | `false` | Inherit sampling decisions from parent span. |
+| Field                      | Type      | Default | Notes                                                                                                                   |
+| -------------------------- | --------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `max_events_per_span`      | `integer` | `128`   | Maximum events to record per span.                                                                                      |
+| `max_attributes_per_span`  | `integer` | `128`   | Maximum attributes to record per span.                                                                                  |
+| `max_attributes_per_event` | `integer` | `16`    | Maximum attributes to record per span event.                                                                            |
+| `max_attributes_per_link`  | `integer` | `32`    | Maximum attributes to record per span link.                                                                             |
+| `sampling`                 | `number`  | `1.0`   | Sampling ratio between `0.0` and `1.0`. Can also be set via the `TELEMETRY_TRACING_SAMPLING_RATE` environment variable. |
+| `parent_based_sampler`     | `boolean` | `false` | Inherit sampling decisions from parent span.                                                                            |
 
 `propagation` - Incoming and outgoing trace context propagation formats.
 
