@@ -62,7 +62,7 @@ export const routeRules: Record<string, NitroRouteRules> = {
     "/docs/schema-registry/usage-reporting",
   ),
   "/docs/management/sso-oidc-provider": redirect(
-    "/docs/schema-registry/management/sso-oidc-provider"
+    "/docs/schema-registry/management/sso-oidc-provider",
   ),
 
   // Spec paths
