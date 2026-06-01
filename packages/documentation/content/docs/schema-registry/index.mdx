@@ -193,6 +193,38 @@ For additional reading:
 - [Checking a schema using Hive CLI](/docs/api-reference/cli#check-a-schema)
 - [`schema:check` API Reference](https://github.com/graphql-hive/console/tree/main/packages/libraries/cli#hive-schemacheck-file)
 
+### Promote and Rollback Schema Versions
+
+Hive Console supports promoting existing schema versions between targets and rolling back to previously published versions without republishing subgraphs.
+
+Promotions allow teams to safely move a composed supergraph through environments such as staging and production while preserving the exact schema composition.
+
+To promote the latest schema version from one target to another:
+
+```bash
+hive schema:promote \
+  --from the-guild/hive/staging \
+  --to the-guild/hive/production
+```
+
+Hive Console creates a new schema version in the destination target using the composed supergraph from the source target and updates the CDN state automatically.
+
+The same command can also be used to roll back a target to a previously published schema version:
+
+```bash
+hive schema:promote \
+  --version 9e93a510-6ae7-4361-92d2-bd2370c3b8a8 \
+  --to the-guild/hive/production
+```
+
+This is useful for quickly recovering from problematic deployments without removing or republishing subgraphs.
+
+When viewing promoted or rolled-back schema versions in Hive Console, detailed subgraph-level changelogs help identify which subgraphs changed between versions.
+
+For additional reading:
+
+- [`schema:promote` API Reference](https://github.com/graphql-hive/console/tree/main/packages/libraries/cli#hive-schemapromote-file)
+
 ### Approve breaking schema changes
 
 Sometimes, you want to allow a breaking change to be published to the registry. This can be done by
