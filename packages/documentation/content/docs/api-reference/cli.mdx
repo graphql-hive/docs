@@ -294,6 +294,37 @@ hive schema:publish \
 - [Fetching Hive Metadata from the CDN](/docs/schema-registry/high-availability-cdn)
 - [Using the @meta Link Specification](/docs/api-reference/link-specifications#meta)
 
+### Promote a Schema
+
+You can use the CLI to promote an existing schema version between targets or roll back a target to a previously published schema version.
+
+#### Targets
+
+Promote the latest schema version from one target to another:
+
+```bash
+hive schema:promote \
+  --registry.accessToken "<YOUR_ACCESS_TOKEN>" \
+  --from "<YOUR_ORGANIZATION>/<YOUR_PROJECT>/staging" \
+  --to "<YOUR_ORGANIZATION>/<YOUR_PROJECT>/production"
+```
+
+Hive Console creates a new schema version in the destination target using the exact same composed supergraph from the source target and updates the CDN state automatically.
+
+#### Specifc Schema Version
+
+Roll back a target to a previously published schema version:
+
+```bash
+hive schema:promote \
+  --registry.accessToken "<YOUR_ACCESS_TOKEN>" \
+  --version "<SCHEMA_VERSION_ID>" \
+  --to "<YOUR_ORGANIZATION>/<YOUR_PROJECT>/<YOUR_TARGET>"
+```
+
+This creates a new schema version from the specified historical version and updates the target CDN state accordingly.
+The schema version ID can be obtained from the Hive Console schema history view.
+
 ### Check a Schema
 
 <Callout emoji="🔑" type="info">
