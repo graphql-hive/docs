@@ -30,10 +30,10 @@ network call, no timeout wait, no extra pressure on the upstream.
 The breaker is a classic three-state machine, evaluated per subgraph on **count-based rolling
 samples** rather than time windows:
 
-| State         | Behaviour                                                                                                                                                                                          |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Closed**    | Normal operation. Outcomes are recorded in a rolling sample of the last `volume_threshold` calls.                                                                                                  |
-| **Open**      | Every request is rejected immediately with `SUBGRAPH_CIRCUIT_BREAKER_REJECTED`. No traffic reaches the subgraph.                                                                                   |
+| State         | Behaviour                                                                                                                                                                                                                         |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Closed**    | Normal operation. Outcomes are recorded in a rolling sample of the last `volume_threshold` calls.                                                                                                                                 |
+| **Open**      | Every request is rejected immediately with `SUBGRAPH_CIRCUIT_BREAKER_REJECTED`. No traffic reaches the subgraph.                                                                                                                  |
 | **Half-open** | After `reset_timeout`, probe requests are allowed through and recorded in a rolling sample of the last `half_open_attempts` outcomes. Once that sample is full, the next probe decides whether the breaker re-closes or re-opens. |
 
 ```mermaid
@@ -106,12 +106,12 @@ When the breaker is open, new subscription attempts are short-circuited with
 The breaker is observable end-to-end via OpenTelemetry. Every metric and span carries a
 `subgraph.name` attribute so you can group and filter per subgraph in your metrics backend.
 
-| Metric                                                | Type    | Description                                                              |
-| ----------------------------------------------------- | ------- | ------------------------------------------------------------------------ |
-| `hive.router.circuit_breaker.short_circuits_total`    | counter | Requests rejected by the breaker without reaching the subgraph.          |
-| `hive.router.circuit_breaker.failures_total`          | counter | Subgraph responses or transport errors counted as a failure.             |
-| `hive.router.circuit_breaker.state`                   | gauge   | Current state per subgraph: `0` = closed/half-open, `1` = open.          |
-| `hive.router.circuit_breaker.state_transitions_total` | counter | State transitions, with `circuit_breaker.from_state` and `circuit_breaker.to_state` attributes.          |
+| Metric                                                | Type    | Description                                                                                     |
+| ----------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------- |
+| `hive.router.circuit_breaker.short_circuits_total`    | counter | Requests rejected by the breaker without reaching the subgraph.                                 |
+| `hive.router.circuit_breaker.failures_total`          | counter | Subgraph responses or transport errors counted as a failure.                                    |
+| `hive.router.circuit_breaker.state`                   | gauge   | Current state per subgraph: `0` = closed/half-open, `1` = open.                                 |
+| `hive.router.circuit_breaker.state_transitions_total` | counter | State transitions, with `circuit_breaker.from_state` and `circuit_breaker.to_state` attributes. |
 
 On the corresponding `graphql.subgraph.operation` span, rejected calls record
 `hive.graphql.error.count`, `hive.graphql.error.codes` containing
@@ -120,8 +120,8 @@ show up as proper errors in your tracing UI instead of looking superficially "ok
 
 <Callout type="info">
   The circuit breaker is **disabled by default**. It only becomes active once a
-  `circuit_breaker` block is configured with `enabled: true`. Once that block
-  is present, any omitted fields use the documented defaults.
+  `circuit_breaker` block is configured with `enabled: true`. Once that block is
+  present, any omitted fields use the documented defaults.
 </Callout>
 
 ---
