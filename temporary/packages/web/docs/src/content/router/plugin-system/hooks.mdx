@@ -812,11 +812,15 @@ You can use this hook to implement custom error handling logic, such as masking 
 details, adding additional information to the error response, or transforming the error into a
 different format.
 
+Like other request-scoped hooks (`on_http_request`, `on_execute`, etc.), the payload exposes both
+`context` and `request_context`, so you can accumulate per-request state across errors and read it
+back from later hooks.
+
 ```rust
-    fn on_graphql_error(
-        &self,
-        payload: OnGraphQLErrorHookPayload
-    ) -> OnGraphQLErrorHookResult;
+fn on_graphql_error<'req>(
+    &'req self,
+    payload: OnGraphQLErrorHookPayload<'req>,
+) -> OnGraphQLErrorHookResult<'req>
 ```
 
 #### Usage Examples
@@ -827,7 +831,10 @@ Intercept errors before they reach the client and record them for analytics, ale
 logging.
 
 ```rust
-fn on_graphql_error(&self, mut payload: OnGraphQLErrorHookPayload) -> OnGraphQLErrorHookResult {
+fn on_graphql_error<'req>(
+    &'req self,
+    mut payload: OnGraphQLErrorHookPayload<'req>,
+) -> OnGraphQLErrorHookResult<'req> {
     payload.collected_errors.push(payload.error.message.clone());
 
     payload.proceed()
@@ -840,7 +847,10 @@ Sanitize error output by replacing the message and clearing fields like `path` b
 sent to the client.
 
 ```rust
-fn on_graphql_error(&self, mut payload: OnGraphQLErrorHookPayload) -> OnGraphQLErrorHookResult {
+fn on_graphql_error<'req>(
+    &'req self,
+    mut payload: OnGraphQLErrorHookPayload<'req>,
+) -> OnGraphQLErrorHookResult<'req> {
     payload.error.message = "An internal error occurred".to_string();
     payload.error.path = None;
 
@@ -854,7 +864,10 @@ Map known error codes to different codes or HTTP status codes based on plugin co
 for normalizing errors from subgraphs.
 
 ```rust
-fn on_graphql_error(&self, mut payload: OnGraphQLErrorHookPayload) -> OnGraphQLErrorHookResult {
+fn on_graphql_error<'req>(
+    &'req self,
+    mut payload: OnGraphQLErrorHookPayload<'req>,
+) -> OnGraphQLErrorHookResult<'req> {
     if let Some(code) = &payload.error.extensions.code {
         if let Some(mapping) = self.config.get(code) {
             if let Some(new_code) = &mapping.code {
@@ -867,6 +880,31 @@ fn on_graphql_error(&self, mut payload: OnGraphQLErrorHookPayload) -> OnGraphQLE
             }
         }
     }
+    payload.proceed()
+}
+```
+
+**Accumulate per-request state in context**
+
+Use `payload.context` to track state across every error emitted during a single request, then read
+it back from a later hook (e.g., `on_http_request`'s `on_end`) to surface it on the HTTP response.
+For example, to add a header that reports how many errors were mapped.
+
+```rust
+struct MappedErrorsCtx {
+    count: usize,
+}
+
+fn on_graphql_error<'req>(
+    &'req self,
+    mut payload: OnGraphQLErrorHookPayload<'req>,
+) -> OnGraphQLErrorHookResult<'req> {
+    if let Some(mut ctx) = payload.context.get_mut::<MappedErrorsCtx>() {
+        ctx.count += 1;
+    } else {
+        payload.context.insert(MappedErrorsCtx { count: 1 });
+    }
+
     payload.proceed()
 }
 ```
