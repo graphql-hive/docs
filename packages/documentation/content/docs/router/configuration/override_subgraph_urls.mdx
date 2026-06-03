@@ -21,11 +21,14 @@ Per-subgraph overrides always take precedence over `all`.
 
 ```yaml
 override_subgraph_urls:
-  all: # ... global static URL or expression
+  all: 
+    url: # ... global static URL or expression
   subgraphs:
-    products: # ... static URL
+    products:
+      url: # ... static URL
     reviews:
-      expression: # ... expression
+      url:
+        expression: # ... expression
 ```
 
 ## Options
@@ -47,12 +50,13 @@ Within the `expression`, you have access to:
 ```yaml
 override_subgraph_urls:
   all:
-    expression: |
-      if .subgraph.name == "products" && .request.headers."x-region" == "us-east" {
-        "https://products-us-east.example.com/graphql"
-      } else {
-        .default
-      }
+    url:
+      expression: |
+        if .subgraph.name == "products" && .request.headers."x-region" == "us-east" {
+          "https://products-us-east.example.com/graphql"
+        } else {
+          .default
+        }
 ```
 
 If `http.graphql_endpoint` uses path parameters, they are available under `.request.path_params`:
@@ -62,9 +66,10 @@ http:
   graphql_endpoint: /{tenant}/graphql
 override_subgraph_urls:
   all:
-    expression: |
-      tenant = string!(.request.path_params.tenant)
-      replace(string!(.default), "/api/", "/api/" + tenant + "/")
+    url:
+      expression: |
+        tenant = string!(.request.path_params.tenant)
+        replace(string!(.default), "/api/", "/api/" + tenant + "/")
 ```
 
 ### `subgraphs.<name>`
@@ -83,7 +88,8 @@ is useful for permanently redirecting a subgraph without recomposing your superg
 ```yaml
 override_subgraph_urls:
   subgraphs:
-    products: "https://products.staging.svc.cluster.local/"
+    products: 
+      url: "https://products.staging.svc.cluster.local/"
 ```
 
 #### Dynamic URL with `expression`
@@ -104,10 +110,11 @@ Within the `expression`, you have access to:
 override_subgraph_urls:
   subgraphs:
     reviews:
-      expression: |
-        if .request.headers."x-region" == "eu" {
-          "https://reviews.eu.api/graphql"
-        } else {
-          .default
-        }
+      url:
+        expression: |
+          if .request.headers."x-region" == "eu" {
+            "https://reviews.eu.api/graphql"
+          } else {
+            .default
+          }
 ```

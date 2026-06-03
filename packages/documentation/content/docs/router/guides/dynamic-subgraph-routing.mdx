@@ -29,12 +29,13 @@ Simple example configuration that routes based on a runtime condition:
 override_subgraph_urls:
   subgraphs:
     subgraph_name:
-      expression: |
-        if .request.headers."x-use-special-instance" == "true" {
-          "https://special-instance.com/graphql"
-        } else {
-          .default  # Always provide a fallback
-        }
+      url:
+        expression: |
+          if .request.headers."x-use-special-instance" == "true" {
+            "https://special-instance.com/graphql"
+          } else {
+            .default  # Always provide a fallback
+          }
 ```
 
 ## Examples
@@ -56,12 +57,13 @@ to all users.
 override_subgraph_urls:
   subgraphs:
     products:
-      expression: |
-        if .request.headers."x-deploy-track" == "canary" {
-          "https://products-canary.example.com/graphql"
-        } else {
-          .default
-        }
+      url:
+        expression: |
+          if .request.headers."x-deploy-track" == "canary" {
+            "https://products-canary.example.com/graphql"
+          } else {
+            .default
+          }
 ```
 
 With this configuration, your QA team or CI/CD pipeline can test the new deployment in production by
@@ -76,13 +78,14 @@ users.
 override_subgraph_urls:
   subgraphs:
     products:
-      expression: |
-        # Route 10% of traffic to canary
-        if random_int(1, 100) <= 10 {
-          "https://products-canary.example.com/graphql"
-        } else {
-          .default
-        }
+      url:
+        expression: |
+          # Route 10% of traffic to canary
+          if random_int(1, 100) <= 10 {
+            "https://products-canary.example.com/graphql"
+          } else {
+            .default
+          }
 ```
 
 </Tabs.Tab>
@@ -98,17 +101,18 @@ regions. Routing users to the instance closest to them can significantly reduce 
 override_subgraph_urls:
   subgraphs:
     reviews:
-      expression: |
-        region = .request.headers."x-user-region" || "unknown"
-
-        if region == "us-east" {
-          "https://reviews-us-east.example.com/graphql"
-        } else if region == "eu-west" {
-          "https://reviews-eu-west.example.com/graphql"
-        } else if region == "asia-pacific" {
-          "https://reviews-ap.example.com/graphql"
-        } else {
-          # Default to primary region
-          .default
-        }
+      url:
+        expression: |
+          region = .request.headers."x-user-region" || "unknown"
+  
+          if region == "us-east" {
+            "https://reviews-us-east.example.com/graphql"
+          } else if region == "eu-west" {
+            "https://reviews-eu-west.example.com/graphql"
+          } else if region == "asia-pacific" {
+            "https://reviews-ap.example.com/graphql"
+          } else {
+            # Default to primary region
+            .default
+          }
 ```
