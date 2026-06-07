@@ -265,7 +265,6 @@ demand_control:
     static_estimated:
       max: 1000
       list_size: 10
-  include_extension_metadata: true
 ```
 
 Use this during initial rollout to:
@@ -274,7 +273,8 @@ Use this during initial rollout to:
 - Identify expensive operations without impact
 - Set baselines before enforcement
 
-Response extensions will include cost data even without limits set.
+Costs are recorded in metrics regardless of `max`, and can be inspected per response via
+[`expose_headers`](#exposing-cost-to-clients).
 
 ### Enforce mode (protection)
 
@@ -288,10 +288,10 @@ demand_control:
     static_estimated:
       max: 500 # Global limit
       list_size: 10
-  include_extension_metadata: true
 ```
 
-Operations exceeding `strategy.static_estimated.max` respond with:
+Operations exceeding `strategy.static_estimated.max` are rejected before any subgraph is contacted,
+with the cost numbers carried in the error's `extensions`:
 
 ```json
 {
@@ -299,17 +299,14 @@ Operations exceeding `strategy.static_estimated.max` respond with:
     {
       "message": "Operation estimated cost 650 exceeds configured max cost 500",
       "extensions": {
-        "code": "COST_ESTIMATED_TOO_EXPENSIVE"
+        "code": "COST_ESTIMATED_TOO_EXPENSIVE",
+        "cost": {
+          "estimated": 650,
+          "max": 500
+        }
       }
     }
-  ],
-  "extensions": {
-    "cost": {
-      "estimated": 650,
-      "result": "COST_ESTIMATED_TOO_EXPENSIVE",
-      "maxCost": 500
-    }
-  }
+  ]
 }
 ```
 
@@ -521,112 +518,74 @@ demand_control:
   },
   "errors": [
     {
-      "message": "Subgraph 'search_engine' cost exceeded",
+      "message": "Skipped subgraph execution because the estimated cost (250) exceeds the maximum allowed cost (200).",
       "extensions": {
         "code": "SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE",
-        "subgraphName": "search_engine",
-        "cost": 250,
-        "maxCost": 200,
+        "serviceName": "search_engine",
+        "cost": {
+          "estimated": 250,
+          "max": 200,
+        },
       },
     },
   ],
-  // If `include_extension_metadata` is enabled, you can also see the cost breakdown in extensions
-  "extensions": {
-    "cost": {
-      "estimated": 1500,
-      "estimatedCostBySubgraph": {
-        "users": 150,
-        "search_engine": 250, // Over limit
-        "products": 300,
-      },
-      "resultBySubgraph": {
-        "users": "COST_OK",
-        "search_engine": "SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE",
-        "products": "COST_OK",
-      },
-    },
-  },
 }
 ```
 
 ## Monitoring and observability
 
-### Response extensions
+### Exposing cost to clients
 
-Enable cost metadata in responses for monitoring and debugging:
+The router can return the cost of an operation to the client as HTTP response headers. This is
+opt-in and off by default. Cost is **not** added to the GraphQL `extensions` of successful
+responses (only rejection errors carry cost, in their `extensions` — see
+[Error codes](#error-codes-and-result-states)).
+
+Each header is enabled independently, with either the default name (`true`) or a custom name:
 
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
   mode: enforce
+  expose_headers:
+    estimated: true # X-Cost-Estimated
+    actual: true # X-Cost-Actual
+    max: true # X-Cost-Max
   strategy:
     static_estimated:
       max: 500
-      actual_cost_mode: by_subgraph
-  include_extension_metadata: true
 ```
 
-The `extensions.cost` field will include:
+A response then carries, for example:
 
-```json
-{
-  "extensions": {
-    "cost": {
-      "estimated": 150,
-      "result": "COST_OK",
-      "maxCost": 500,
-      "formulaCacheHit": true,
-      "estimatedCostBySubgraph": {
-        "products": 100,
-        "reviews": 50
-      },
-      "resultBySubgraph": {
-        "products": "COST_OK",
-        "reviews": "COST_OK"
-      },
-      "estimatedFormulaBySubgraph": {
-        "products": "(1 + ($limit * (1 + 1)))"
-      },
-      "actual": 145,
-      "delta": -5,
-      "actualCostBySubgraph": {
-        "products": 98,
-        "reviews": 47
-      }
-    }
-  }
-}
+```http
+X-Cost-Estimated: 150
+X-Cost-Actual: 145
+X-Cost-Max: 500
 ```
 
-**Fields:**
-
-- `estimated`: Pre-execution cost estimate
-- `actual`: Post-execution cost (always computed; method controlled by `actual_cost_mode`)
-- `delta`: Difference between actual and estimated (useful for tuning estimates)
-- `result`: Status code (`COST_OK`, `COST_ESTIMATED_TOO_EXPENSIVE`, `COST_ACTUAL_TOO_EXPENSIVE`)
-- `formulaCacheHit`: Whether the cost formula was reused from cache
-- `estimatedCostBySubgraph`/`actualCostBySubgraph`: Per-subgraph cost breakdown
-- `resultBySubgraph`: Per-subgraph result codes (for example `COST_OK` or
-  `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE`)
-- `estimatedFormulaBySubgraph`: Diagnostic per-subgraph cost formulas used during estimation
+- `X-Cost-Estimated`: pre-execution cost estimate (what enforcement uses).
+- `X-Cost-Actual`: post-execution cost (observability only; the calculation method follows
+  `actual_cost_mode`).
+- `X-Cost-Max`: the configured supergraph `max`.
 
 ### Telemetry and metrics
 
-**Metrics emitted by the router:**
+**Metrics emitted by the router** — three histograms, one per operation, using the `{cost}` unit
+and cost-shaped bucket boundaries (a count, not a duration or byte size):
 
-- `cost.estimated` (histogram)
-- `cost.actual` (histogram)
-- `cost.delta` (histogram)
-- `hive.router.demand_control.formula_cache.requests_total` (counter)
-- `hive.router.demand_control.formula_cache.duration` (histogram)
-- `hive.router.demand_control.formula_cache.size` (observable gauge)
+- `cost.estimated` — the pre-execution estimate.
+- `cost.actual` — the post-execution cost.
+- `cost.delta` — `actual - estimated`. This can be negative, so it is a float histogram. A
+  persistently large delta is the signal to tune your `@cost` weights and `@listSize` assumptions.
 
 **Metric labels/attributes:**
 
 - `cost.result` (`COST_OK`, `COST_ESTIMATED_TOO_EXPENSIVE`, `COST_ACTUAL_TOO_EXPENSIVE`,
-  `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE`)
-- `graphql.operation.name` (when available)
-- `result` for formula-cache metrics (`hit` / `miss`)
+  `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE`). Note `COST_ACTUAL_TOO_EXPENSIVE` is a result label
+  only — actual cost is never enforced, so it never appears as a client-facing error.
+- `graphql.operation.name` (when available). This is the highest-cardinality dimension; it can be
+  dropped via `telemetry.metrics.instrumentation.instruments` when cardinality is a concern.
 
 **Span attributes on `graphql.operation`:**
 
@@ -634,96 +593,40 @@ The `extensions.cost` field will include:
 - `cost.actual`
 - `cost.delta`
 - `cost.result`
-- `cost.formula_cache_hit`
 
 Use these built-in metrics and span attributes to create dashboards/alerts in your existing telemetry stack
 (OTLP/Prometheus/etc.).
 
 ## Actual cost calculation
 
-Beyond preliminary estimation, the router can calculate **actual cost** after execution. This is
-useful for:
+Beyond pre-execution estimation, the router always calculates the **actual cost** after execution,
+from the real data that came back (real list sizes). Actual cost is **observability only** — it is
+recorded in metrics and can be exposed via `expose_headers`, but it is **never enforced**: an
+operation is never rejected after it has run (you can't un-execute a request). This is useful for:
 
-- Validating estimate accuracy (calculating delta)
-- Charging clients based on actual resource usage
-- Post-execution enforcement (reject expensive operations after they run)
-- Tuning cost model via delta analysis
-
-### Configuration
-
-```yaml title="router.config.yaml"
-demand_control:
-  enabled: true
-  mode: enforce
-  strategy:
-    static_estimated:
-      max: 500
-      actual_cost_mode: by_subgraph # or by_response_shape
-  include_extension_metadata: true
-```
+- Validating estimate accuracy (the delta, `actual - estimated`)
+- Tuning the cost model — `@cost` weights and `@listSize` assumptions — via delta analysis
+- Cost tracking and chargeback based on real resource usage
 
 ### Calculation modes
 
-**`by_subgraph`**
+`actual_cost_mode` only controls how the actual cost is computed; the cost is always calculated
+either way.
+
+**`by_subgraph`** (default)
 
 Sums the cost of each subgraph response independently:
 
 - Reflects total work done across the federation
-- Accounts for intermediate fetches and entity lookups not in final response
+- Accounts for intermediate fetches and entity lookups not in the final response
 - Recommended for cost allocation and chargebacks
 
 **`by_response_shape`**
 
-Calculates cost only from fields present in final response:
+Calculates cost only from fields present in the final merged response:
 
 - Ignores intermediate work (federation boundaries, lookups)
 - Lighter computation
-
-### Post-execution enforcement
-
-When running in `mode: enforce`, operations that exceed `strategy.static_estimated.max` during
-actual execution append an error to the response:
-
-```yaml title="router.config.yaml"
-demand_control:
-  enabled: true
-  mode: enforce
-  strategy:
-    static_estimated:
-      max: 500
-      actual_cost_mode: by_subgraph
-```
-
-Response if actual cost exceeds limit:
-
-```jsonc
-{
-  "data": {
-    "me": {
-      "id": "123",
-    },
-  },
-  "errors": [
-    {
-      "message": "Operation actual cost 527 exceeds configured max cost 500",
-      "extensions": {
-        "code": "COST_ACTUAL_TOO_EXPENSIVE",
-        "maxCost": 500,
-      },
-    },
-  ],
-  // If `include_extension_metadata` is enabled
-  "extensions": {
-    "cost": {
-      "estimated": 480,
-      "actual": 527,
-      "delta": 47,
-      "result": "COST_ACTUAL_TOO_EXPENSIVE",
-      "maxCost": 500,
-    },
-  },
-}
-```
 
 <Callout type="note">
   Delta analysis is valuable: consistently large deltas indicate your `@cost`
@@ -733,12 +636,21 @@ Response if actual cost exceeds limit:
 
 ## Error codes and result states
 
-| Code                                    | Phase          | Meaning                               | Response                                                |
-| --------------------------------------- | -------------- | ------------------------------------- | ------------------------------------------------------- |
-| `COST_OK`                               | Both           | Operation within limits               | Data returned normally                                  |
-| `COST_ESTIMATED_TOO_EXPENSIVE`          | Pre-execution  | Estimated cost exceeds global `max`   | Request rejected, no subgraph calls made                |
-| `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` | Pre-execution  | Specific subgraph exceeded its budget | That subgraph skipped, others execute, partial response |
-| `COST_ACTUAL_TOO_EXPENSIVE`             | Post-execution | Actual cost exceeds global `max`      | Data is returned with an additional GraphQL error       |
+When Demand Control rejects an operation, it returns a structured GraphQL error with a stable
+`code` in its `extensions`, alongside the relevant cost numbers (`estimated` and `max`) so a client
+can correlate the rejection with the configured limit. The HTTP status follows the request's
+content negotiation, like other GraphQL-level errors.
+
+| Code                                    | Phase         | Meaning                                                              | Response                                                |
+| --------------------------------------- | ------------- | -------------------------------------------------------------------- | ------------------------------------------------------- |
+| `COST_ESTIMATED_TOO_EXPENSIVE`          | Pre-execution | Estimated cost exceeds the global `max`                              | Request rejected, no subgraph calls made                |
+| `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` | Pre-execution | A specific subgraph exceeded its budget                              | That subgraph skipped, others execute, partial response |
+| `COST_INVALID_SLICING_ARGUMENTS`        | Pre-execution | A `@listSize` field requires exactly one slicing argument; got 0 / 2+ | Request rejected                                        |
+
+`COST_OK` and `COST_ACTUAL_TOO_EXPENSIVE` are **result codes** used in telemetry (the `cost.result`
+label), not client-facing errors. Actual cost is never enforced, so `COST_ACTUAL_TOO_EXPENSIVE`
+never appears in a response — it only flags, in your metrics, operations whose actual cost exceeded
+`max`.
 
 ## Best practices and patterns
 
@@ -747,7 +659,7 @@ Response if actual cost exceeds limit:
 **Phase 1: Measurement**
 
 - Enable Demand Control in `mode: measure`
-- Set `include_extension_metadata: true`
+- Optionally enable `expose_headers` to inspect per-response costs while validating
 - Collect cost metrics on all production traffic
 - Use telemetry to build histograms of operation costs
 
@@ -755,11 +667,13 @@ Response if actual cost exceeds limit:
 demand_control:
   enabled: true
   mode: measure
+  expose_headers:
+    estimated: true
+    actual: true
   strategy:
     static_estimated:
       max: 1000
       list_size: 10
-  include_extension_metadata: true
 ```
 
 **Phase 2: Baseline setting**
@@ -776,7 +690,6 @@ demand_control:
     static_estimated:
       max: 1000 # 99th percentile from Phase 1
       list_size: 10
-  include_extension_metadata: true
 ```
 
 **Phase 3: Gradual tightening (ongoing)**
@@ -838,31 +751,3 @@ type Order {
 - Risk: attacker might exceed actual limit with large list requests
 
 **Monitor:** Track delta per operation type to identify systemic estimation errors.
-
-### 4. Caching and performance optimization
-
-**Formula caching:**
-
-Cost formulas are cached by normalized operation hash. Repeated operations become cheaper to evaluate.
-
-- Monitor `formulaCacheHit` in metrics
-- > 90% hit rate is healthy (indicates good query reuse)
-- Low hit rate suggests clients sending distinct query texts for same logical operations
-
-**Disable @skip/@include calculations if not used:**
-
-If your schema doesn't use `@skip` or `@include`, the router skips variable-aware cost branches:
-
-```graphql
-# If your query uses conditionals:
-query GetBook($withAuthor: Boolean!) {
-  book(id: 1) {
-    title
-    author @include(if: $withAuthor) {
-      name
-    }
-  }
-}
-
-# Router accounts for variable value affecting cost
-```

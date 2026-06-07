@@ -2,8 +2,8 @@
 title: "demand_control"
 ---
 
-The `demand_control` configuration controls operation cost estimation, enforcement, and metadata
-emission in Hive Router.
+The `demand_control` configuration controls operation cost estimation, enforcement, and
+observability in Hive Router.
 
 For conceptual guidance and rollout strategy, see
 [Demand Control](/docs/router/security/demand-control).
@@ -28,15 +28,44 @@ Controls how limits are applied:
 - `enforce`: apply configured limits and reject/skip over-budget operations or subgraphs.
 - `measure`: never reject requests; still compute costs, emit metrics, and set result codes.
 
-### `include_extension_metadata`
+### `expose_headers`
 
-- **Type:** `boolean`
-- **Default:** `false`
+- **Type:** `object`
+- **Default:** all headers disabled
 
-When `true`, response `extensions.cost` includes cost metadata such as `estimated`, `result`,
-`estimatedCostBySubgraph`, `resultBySubgraph`, `formulaCacheHit`,
-`estimatedFormulaBySubgraph`, `maxCost`, `actual`, `delta`, and (in `by_subgraph` mode)
-`actualCostBySubgraph`.
+Opt-in. Exposes the cost of an operation back to the client as HTTP response headers. Off by
+default — cost is **not** added to the GraphQL `extensions` of successful responses.
+
+Each header can be enabled independently by setting it to:
+
+- `true` — enable, using the default header name.
+- a string — enable, using a custom header name.
+- `false` (or omitted) — disabled.
+
+#### `expose_headers.estimated`
+
+The pre-execution **estimated** cost. Default header name: `X-Cost-Estimated`.
+
+#### `expose_headers.actual`
+
+The post-execution **actual** cost. Default header name: `X-Cost-Actual`.
+
+#### `expose_headers.max`
+
+The configured supergraph `max` limit. Default header name: `X-Cost-Max`.
+
+```yaml title="router.config.yaml"
+demand_control:
+  enabled: true
+  mode: enforce
+  expose_headers:
+    estimated: true # X-Cost-Estimated
+    actual: true # X-Cost-Actual
+    max: X-My-Cost-Limit # custom header name
+  strategy:
+    static_estimated:
+      max: 500
+```
 
 ### `strategy`
 
@@ -51,10 +80,11 @@ Demand control currently supports one strategy variant: `static_estimated`.
 
 Supergraph-wide maximum allowed cost.
 
-In `mode: enforce`:
+In `mode: enforce`, if the **estimated** cost exceeds `max`, the request is rejected before any
+subgraph is contacted with `COST_ESTIMATED_TOO_EXPENSIVE`.
 
-- If estimated cost exceeds `max`, request is rejected with `COST_ESTIMATED_TOO_EXPENSIVE`.
-- If actual cost exceeds `max`, response includes `COST_ACTUAL_TOO_EXPENSIVE`.
+Actual (post-execution) cost is **never** enforced against `max` — exceeding the budget after
+execution is recorded in metrics but never turned into an error (you can't un-execute a request).
 
 In `mode: measure`, limits are not enforced but result codes still reflect over-limit evaluations.
 
@@ -73,10 +103,13 @@ Fallback list-size assumption used for list-returning fields that do not define 
 - **Allowed values:** `by_subgraph`, `by_response_shape`
 - **Default:** `by_subgraph`
 
-Actual cost is always computed after execution. This option controls how it is calculated:
+Actual cost is always computed after execution (for observability only — it is never enforced).
+This option controls how it is calculated:
 
-- `by_subgraph`: Sums actual costs from subgraph responses.
-- `by_response_shape`: Computes cost from the final response shape.
+- `by_subgraph`: Sums actual costs from each subgraph response. Accounts for intermediate fetches
+  and entity lookups that never appear in the final response. Recommended.
+- `by_response_shape`: Computes cost only from the fields present in the final merged response.
+  Ignores intermediate federation work; lighter to compute.
 
 #### `strategy.static_estimated.subgraph`
 
@@ -128,14 +161,16 @@ When demand control is enabled:
 
 - The router estimates operation cost before execution.
 - If global `strategy.static_estimated.max` is exceeded in `mode: enforce`, the request is rejected with
-  `COST_ESTIMATED_TOO_EXPENSIVE`.
+  `COST_ESTIMATED_TOO_EXPENSIVE`, before any subgraph is contacted.
 - If subgraph-level limits are exceeded in `mode: enforce`, the router skips only over-budget subgraphs and continues
   the rest of the plan. Skipped subgraphs return
-  `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE`.
-- If actual cost exceeds `strategy.static_estimated.max` in `mode: enforce`, response includes
-  `COST_ACTUAL_TOO_EXPENSIVE` (with `data` still returned).
-- In `mode: measure`, the request is not rejected, but result/telemetry still reflect the over-limit
-  state.
+  `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE`, producing a partial response.
+- If an operation uses a `@listSize` field that requires exactly one slicing argument but provides
+  zero or several, the request is rejected with `COST_INVALID_SLICING_ARGUMENTS`.
+- Actual cost is computed after execution for observability (metrics and `expose_headers`) but is
+  **never** enforced.
+- In `mode: measure`, the request is not rejected, but result codes and telemetry still reflect the
+  over-limit state.
 
 ## Precedence
 
@@ -157,11 +192,13 @@ When demand control is enabled:
 demand_control:
   enabled: true
   mode: measure
+  expose_headers:
+    estimated: true
+    actual: true
   strategy:
     static_estimated:
       max: 1000
       list_size: 10
-  include_extension_metadata: true
 ```
 
 ### Global enforcement
@@ -174,7 +211,6 @@ demand_control:
     static_estimated:
       max: 500
       list_size: 10
-  include_extension_metadata: true
 ```
 
 ### Subgraph-level enforcement
@@ -199,15 +235,16 @@ demand_control:
             list_size: 5
 ```
 
-### Actual-cost calculation
+### Actual-cost observability
 
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
   mode: enforce
+  expose_headers:
+    actual: true
   strategy:
     static_estimated:
       max: 500
       actual_cost_mode: by_subgraph
-  include_extension_metadata: true
 ```
