@@ -21,9 +21,10 @@ measure) operations that exceed a configured budget. It implements the
 
 <Callout type="info">
   Demand Control complements [Operation
-  Complexity](/docs/router/security/operation-complexity) limits. Complexity limits stop
-  structurally complex queries (deep nesting, many fields); Demand Control stops computationally
-  expensive ones — such as a query that requests a massive list — regardless of their shape.
+  Complexity](/docs/router/security/operation-complexity) limits. Complexity
+  limits stop structurally complex queries (deep nesting, many fields); Demand
+  Control stops computationally expensive ones — such as a query that requests a
+  massive list — regardless of their shape.
 </Callout>
 
 ## Estimate Cost Before Execution
@@ -95,7 +96,7 @@ demand_control:
 ```
 
 Actual cost is computed after execution for observability only — it is never enforced, so a request
-is never rejected after it has run. The gap between estimated and actual cost (the *delta*) is the
+is never rejected after it has run. The gap between estimated and actual cost (the _delta_) is the
 signal you use to tune your `@cost` weights and `@listSize` assumptions.
 
 ---

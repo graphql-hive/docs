@@ -641,10 +641,10 @@ When Demand Control rejects an operation, it returns a structured GraphQL error 
 can correlate the rejection with the configured limit. The HTTP status follows the request's
 content negotiation, like other GraphQL-level errors.
 
-| Code                                    | Phase         | Meaning                                                              | Response                                                |
-| --------------------------------------- | ------------- | -------------------------------------------------------------------- | ------------------------------------------------------- |
-| `COST_ESTIMATED_TOO_EXPENSIVE`          | Pre-execution | Estimated cost exceeds the global `max`                              | Request rejected, no subgraph calls made                |
-| `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` | Pre-execution | A specific subgraph exceeded its budget                              | That subgraph skipped, others execute, partial response |
+| Code                                    | Phase         | Meaning                                                               | Response                                                |
+| --------------------------------------- | ------------- | --------------------------------------------------------------------- | ------------------------------------------------------- |
+| `COST_ESTIMATED_TOO_EXPENSIVE`          | Pre-execution | Estimated cost exceeds the global `max`                               | Request rejected, no subgraph calls made                |
+| `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` | Pre-execution | A specific subgraph exceeded its budget                               | That subgraph skipped, others execute, partial response |
 | `COST_INVALID_SLICING_ARGUMENTS`        | Pre-execution | A `@listSize` field requires exactly one slicing argument; got 0 / 2+ | Request rejected                                        |
 
 `COST_OK` and `COST_ACTUAL_TOO_EXPENSIVE` are **result codes** used in telemetry (the `cost.result`
