@@ -14,9 +14,13 @@ For detailed explanations of the threat and implementation strategies, see the
 ### `enabled`
 
 - **Type:** `boolean`
-- **Default:** `false`
+- **Default:** `true`
 
-Enables or disables the CSRF prevention middleware. It is strongly recommended to set this to `true`
+Enables or disables the CSRF prevention middleware.
+
+CSRF prevention is disabled by default because the `csrf` block is absent from the configuration.
+However, the field-level default of `enabled` is `true`, so as soon as you add a `csrf:` block it is
+enabled unless you explicitly set `enabled: false`. It is strongly recommended to keep this enabled
 in production environments.
 
 ### `required_headers`
