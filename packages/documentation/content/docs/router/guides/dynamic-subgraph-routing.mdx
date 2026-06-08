@@ -20,19 +20,39 @@ For each request, the router evaluates your expression and routes to the URL it 
 **What you have access to:**
 
 - `.request` - The incoming HTTP request (headers, method, etc.)
+- `.request.path_params` - Path parameters captured by the configured `http.graphql_endpoint`
+  pattern (e.g. `tenant` from `graphql_endpoint: /{tenant}/graphql`)
 - `.default` - The default URL from your supergraph schema
+- `.subgraph.name` - The name of the subgraph the URL is being resolved for
 
-Simple example configuration that routes based on a runtime condition:
+Per-subgraph overrides live under `subgraphs`, keyed by subgraph name. Simple example configuration
+that routes based on a runtime condition:
 
 ```yaml title="router.config.yaml"
 override_subgraph_urls:
-  subgraph_name:
+  subgraphs:
+    subgraph_name:
+      url:
+        expression: |
+          if .request.headers."x-use-special-instance" == "true" {
+            "https://special-instance.com/graphql"
+          } else {
+            .default  # Always provide a fallback
+          }
+```
+
+You can also define a single `all` override that applies to every subgraph without its own entry,
+which is handy when the routing logic is shared across subgraphs:
+
+```yaml title="router.config.yaml"
+override_subgraph_urls:
+  all:
     url:
       expression: |
-        if .request.headers."x-use-special-instance" == "true" {
-          "https://special-instance.com/graphql"
+        if .subgraph.name == "reviews" {
+          "https://reviews.example.com/graphql"
         } else {
-          .default  # Always provide a fallback
+          .default
         }
 ```
 
@@ -53,14 +73,15 @@ to all users.
 
 ```yaml title="router.config.yaml"
 override_subgraph_urls:
-  products:
-    url:
-      expression: |
-        if .request.headers."x-deploy-track" == "canary" {
-          "https://products-canary.example.com/graphql"
-        } else {
-          .default
-        }
+  subgraphs:
+    products:
+      url:
+        expression: |
+          if .request.headers."x-deploy-track" == "canary" {
+            "https://products-canary.example.com/graphql"
+          } else {
+            .default
+          }
 ```
 
 With this configuration, your QA team or CI/CD pipeline can test the new deployment in production by
@@ -73,15 +94,16 @@ users.
 
 ```yaml title="router.config.yaml"
 override_subgraph_urls:
-  products:
-    url:
-      expression: |
-        # Route 10% of traffic to canary
-        if random_int(1, 100) <= 10 {
-          "https://products-canary.example.com/graphql"
-        } else {
-          .default
-        }
+  subgraphs:
+    products:
+      url:
+        expression: |
+          # Route 10% of traffic to canary
+          if random_int(1, 100) <= 10 {
+            "https://products-canary.example.com/graphql"
+          } else {
+            .default
+          }
 ```
 
 </Tabs.Tab>
@@ -95,19 +117,41 @@ regions. Routing users to the instance closest to them can significantly reduce 
 
 ```yaml title="router.config.yaml"
 override_subgraph_urls:
-  reviews:
+  subgraphs:
+    reviews:
+      url:
+        expression: |
+          region = .request.headers."x-user-region" || "unknown"
+
+          if region == "us-east" {
+            "https://reviews-us-east.example.com/graphql"
+          } else if region == "eu-west" {
+            "https://reviews-eu-west.example.com/graphql"
+          } else if region == "asia-pacific" {
+            "https://reviews-ap.example.com/graphql"
+          } else {
+            # Default to primary region
+            .default
+          }
+```
+
+### Multi-Tenant Routing with Path Parameters
+
+If your GraphQL endpoint embeds a tenant (or other) identifier in its path, you can capture it with
+[`http.graphql_endpoint`](/docs/router/configuration/http#graphql_endpoint) and read it from
+`.request.path_params`. Combined with an `all` override, this routes every subgraph based on the
+matched segment:
+
+```yaml title="router.config.yaml"
+http:
+  graphql_endpoint: /{tenant}/graphql
+
+override_subgraph_urls:
+  all:
     url:
       expression: |
-        region = .request.headers."x-user-region" || "unknown"
-
-        if region == "us-east" {
-          "https://reviews-us-east.example.com/graphql"
-        } else if region == "eu-west" {
-          "https://reviews-eu-west.example.com/graphql"
-        } else if region == "asia-pacific" {
-          "https://reviews-ap.example.com/graphql"
-        } else {
-          # Default to primary region
-          .default
-        }
+        tenant = string!(.request.path_params.tenant)
+        replace(string!(.default), "/api/", "/api/" + tenant + "/")
 ```
+
+A request to `/acme/graphql` resolves `tenant` to `"acme"` before the expression runs.

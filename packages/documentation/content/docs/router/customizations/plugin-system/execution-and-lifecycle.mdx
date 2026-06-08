@@ -65,6 +65,23 @@ return payload.end_with_graphql_error(
 );
 ```
 
+- `end_with_graphql_errors(errors: Vec<GraphQLError>, status: StatusCode)` - Like
+  `end_with_graphql_error`, but terminates the request with multiple GraphQL errors in a single
+  response. Since a GraphQL response can carry an `errors` array, this lets a plugin report several
+  violations at once instead of dropping all but the first.
+
+```rust
+let errors = vec![
+    GraphQLError::from_message_and_code("Anonymous operations are not allowed", "ANONYMOUS_OPERATION"),
+    GraphQLError::from_message_and_code("Operation name is required", "MISSING_OPERATION_NAME"),
+];
+// Here we short-circuit the request processing and return all errors together
+return payload.end_with_graphql_errors(
+    errors,
+    StatusCode::BAD_REQUEST,
+);
+```
+
 ### Overriding Default Behavior
 
 Rather than short-circuiting the entire request and returning an early response, you may want to

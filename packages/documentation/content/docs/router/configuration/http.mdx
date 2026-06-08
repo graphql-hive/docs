@@ -53,6 +53,12 @@ API.
 You may also use `/graphql/{wildcard}` if you wish to capture nested paths within the same request,
 or `/graphql/{tail}*` to capture any remaining path segments.
 
+Any named path parameters captured by the pattern (for example, `tenant` in
+`graphql_endpoint: /{tenant}/graphql`) are exposed to [expressions](./expressions) as
+`.request.path_params`, and to plugins through `RouterHttpRequest.match_info`. See
+[Dynamic Subgraph Routing](/docs/router/guides/dynamic-subgraph-routing#multi-tenant-routing-with-path-parameters)
+for an example.
+
 ## Example
 
 This example configures the router to listen only on the localhost interface on port `8080`, use `4`
