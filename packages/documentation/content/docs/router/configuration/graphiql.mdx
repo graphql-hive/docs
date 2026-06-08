@@ -2,7 +2,8 @@
 title: "graphiql"
 ---
 
-The `graphiql` configuration object allows you to control the GraphiQL interface.
+The `laboratory` configuration object allows you to control the Hive Laboratory interface (the
+in-browser GraphQL IDE served by the router).
 
 ## Options
 
@@ -10,6 +11,11 @@ The `graphiql` configuration object allows you to control the GraphiQL interface
 
 - **Type:** `boolean`
 - **Default:** `true`
-- **Environment Variable:** `GRAPHIQL_ENABLED`
+- **Environment Variable:** `LABORATORY_ENABLED`
 
-The `enabled` property controls whether the GraphiQL interface is enabled or disabled.
+The `enabled` property controls whether the Hive Laboratory interface is enabled or disabled.
+
+```yaml title="router.config.yaml"
+laboratory:
+  enabled: true
+```

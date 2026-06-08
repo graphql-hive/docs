@@ -21,16 +21,15 @@ depth.
 
 The maximum allowed depth for incoming GraphQL operations.
 
-#### `disable_introspection`
+#### `ignore_introspection`
 
 - **Type:** `boolean`
-- **Default:** `false`
+- **Default:** `true`
 
-When set to `true`, introspection queries will not be exempt from the depth limit. This means that
-introspection queries will also be subject to the maximum depth restriction. This is usually set to
-`true` when you want to fully enforce depth limits, including for introspection queries. But be
-aware that this may break tools that rely on introspection, because they often generate deep queries
-to explore the schema.
+When set to `true` (the default), introspection queries are exempt from the depth limit. Set this to
+`false` if you want to fully enforce depth limits, including for introspection queries. But be aware
+that this may break tools that rely on introspection, because they often generate deep queries to
+explore the schema.
 
 #### `flatten_fragments`
 

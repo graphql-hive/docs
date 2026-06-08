@@ -32,10 +32,10 @@ introspection: true
 
 When an `object` is provided, it must contain a VRL `expression` that evaluates to a boolean (`true`
 or `false`). The expression is evaluated for each request, allowing for request-time decisions on
-whether to disable introspection.
+whether introspection should be allowed.
 
 - `expression`: **(string, required)** A VRL expression that computes whether introspection should
-  be disabled for the request.
+  be allowed for the request. If it evaluates to `true`, introspection queries are allowed.
 
 Within the `expression`, you have access to the following context:
 
@@ -46,8 +46,8 @@ introspection:
   expression: '.request.headers."x-enable-introspection" == "true"'
 ```
 
-This configuration will disable introspection for all requests that do not include the header
-`x-enable-introspection` set to `true`.
+This configuration will allow introspection only for requests that include the header
+`x-enable-introspection` set to `true`, and disable it for all other requests.
 
 Or you can dynamically change it using an environment variable:
 
