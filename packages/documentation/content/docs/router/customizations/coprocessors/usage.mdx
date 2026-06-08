@@ -208,7 +208,7 @@ func handleCoprocessor(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Received coprocessor stage: %s", payload.Stage)
 
-	// Short-circuit with 403 Unauthorized when "Authorization" header is not set. 	// [!code ++]
+	// Short-circuit with 401 Unauthorized when "Authorization" header is not set. 	// [!code ++]
 	if payload.Headers["authorization"] == "" { 																		// [!code ++]
 		writeJSON(w, CoprocessorResponse{ 																						// [!code ++]
 			Version: 1, 																																// [!code ++]
