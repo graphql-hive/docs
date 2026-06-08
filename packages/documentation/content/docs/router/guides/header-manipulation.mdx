@@ -64,7 +64,7 @@ headers:
       # Add request timestamp
       - insert:
           name: X-Request-Time
-          value: ".timestamp"
+          expression: ".timestamp"
 ```
 
 ## Removing Sensitive Headers

@@ -60,6 +60,10 @@ Represents the incoming HTTP request. It exposes nested fields such as:
 - `.request.url.host` - the request host (e.g. `api.example.com`).
 - `.request.url.port` - the request port (e.g. `443`).
 - `.request.url.path` - the request path (e.g. `/graphql`).
+- `.request.path_params` - a map of path parameters captured by the configured
+  [`http.graphql_endpoint`](./http#graphql_endpoint) pattern. For example, with
+  `graphql_endpoint: /{tenant}/graphql`, a request to `/acme/graphql` exposes
+  `.request.path_params.tenant` as `"acme"`.
 - `.request.operation.name` - the name of the GraphQL operation being executed, if provided.
 - `.request.operation.type` - the type of GraphQL operation being executed (e.g. `"query"`,
   `"mutation"`, or `"subscription"`).
@@ -89,14 +93,6 @@ handling the current request, including:
 While not a full object, the special variable `.timestamp` yields the current UNIX timestamp. The
 header manipulation guide demonstrates using `.timestamp` to add a `X‑Request‑Time` header. This is
 useful for debugging and tracing requests.
-
-### `.default`
-
-This variable is only available in [dynamic routing expressions](./override_subgraph_urls). It holds
-the default URL for the current subgraph, as declared in your supergraph schema. Because the
-expression must return a URL, you should always provide a fallback using `.default` so that requests
-are routed somewhere when no condition matches. The configuration reference emphasises this by
-showing a pattern where the expression returns `.default` in the `else` branch.
 
 ### `.default`
 

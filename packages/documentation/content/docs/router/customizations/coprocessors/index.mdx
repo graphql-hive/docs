@@ -51,7 +51,7 @@ flowchart TB
 For each enabled stage, Hive Router sends a JSON payload and waits for a response.
 
 The example above focuses on `graphql.analysis`. After parsing and validation, Hive Router sends an
-HTTP call to your coprocessor service. The coprocessor can return [context](/docs/router/customizations/coprocessors/stage-and-protocol#request-context) updates used to inject
+HTTP call to your coprocessor service. The coprocessor can return [context](/docs/router/customizations/coprocessors/stages-and-protocol#request-context) updates used to inject
 active labels for [Progressive Override](/docs/router/configuration/override_labels) before GraphQL execution starts.
 
 Your response decides if the router should continue and plan the query, or stop and return early.
@@ -94,7 +94,7 @@ without applying any changes to the state, send only `version` and `control` bac
 }
 ```
 
-It's possible to short-circut the request's lifecycle, with an early HTTP response. You simply pass an object with `"break"` property with a status code as its value.
+It's possible to short-circuit the request's lifecycle, with an early HTTP response. You simply pass an object with `"break"` property with a status code as its value.
 
 <Callout type="tip">
   It's highly recommended to include `body` and `headers` in the response.
@@ -115,7 +115,7 @@ It's possible to short-circut the request's lifecycle, with an early HTTP respon
 
 ### Apply Changes
 
-To mute allowed fields like `headers` and `context`, include them in the response.
+To mutate allowed fields like `headers` and `context`, include them in the response.
 
 <Callout type="warning">
   The `headers` object will override the headers of a request or response
@@ -123,7 +123,7 @@ To mute allowed fields like `headers` and `context`, include them in the respons
   well.
 </Callout>
 
-```json title="Ovewrite headers and add key-value to context"
+```json title="Overwrite headers and add key-value to context"
 {
   "version": 1,
   "control": "continue",
@@ -154,7 +154,7 @@ normalization, and request-level guardrails.
 ### `graphql.analysis`
 
 Runs after GraphQL parsing and validation, but before query planning and execution.
-This is the stage is used in the progressive override label-injection example above.
+This is the stage used in the progressive override label-injection example above.
 
 ### `graphql.response`
 

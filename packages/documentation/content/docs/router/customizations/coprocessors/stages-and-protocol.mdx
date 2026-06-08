@@ -6,7 +6,7 @@ import { Callout } from "@hive/design-system/hive-components/callout";
 
 This page describes how Hive Router and a coprocessor service communicate.
 
-Each configured stage is translates to a request-response exchange. Hive Router sends a JSON payload,
+Each configured stage translates to a request-response exchange. Hive Router sends a JSON payload,
 your service returns a JSON decision, and the router applies that decision before continuing.
 
 Understanding this contract is key to building reliable and predictable coprocessors.
@@ -75,7 +75,7 @@ However, if you want to modify the state to pass data to the next stages, adjust
 }
 ```
 
-In the example above, the `"custom.key": "value"` will be inserted to the context and available for the next stages and plugin hooks. The headers will be dropped and replaced with only `"x-custom-header": "value` going forward. Every next step or a plugin hook, will receive new headers, that applies to header propagation feature as well.
+In the example above, the `"custom.key": "value"` will be inserted to the context and available for the next stages and plugin hooks. The headers will be dropped and replaced with only `"x-custom-header": "value"` going forward. Every next step or a plugin hook, will receive new headers, that applies to header propagation feature as well.
 
 ### Break (short-circuit)
 
@@ -194,7 +194,7 @@ Use this stage for request shaping, variable normalization, and request-level gu
 ### `graphql.analysis`
 
 Runs after GraphQL parsing and validation, but right before planning and execution.
-This is the stage is used in the progressive override label-injection example above.
+This is the stage used in the progressive override label-injection example.
 
 | Property  | Mutable | Description                                                                               |
 | --------- | :-----: | ----------------------------------------------------------------------------------------- |
@@ -222,13 +222,12 @@ Use this stage for response normalization, error shaping, and redaction before f
 
 Runs right before the final HTTP response is sent to the client.
 
-| Property      | Mutable | Description                                    |
-| ------------- | :-----: | ---------------------------------------------- |
-| `headers`     |   ✅    | Headers of the client response                 |
-| `status_code` |   ❌    | Status code of the client response             |
-| `body`        |   ✅    | Body of the response                           |
-| `sdl`         |   ❌    | Text representation (SDL) of the public schema |
-| `context`     |   ✅    | Serialized request context                     |
+| Property      | Mutable | Description                        |
+| ------------- | :-----: | ---------------------------------- |
+| `headers`     |   ✅    | Headers of the client response     |
+| `status_code` |   ❌    | Status code of the client response |
+| `body`        |   ✅    | Body of the response               |
+| `context`     |   ✅    | Serialized request context         |
 
 ## Request context
 
@@ -263,10 +262,10 @@ The `include.context` property supports three forms:
 
 ### Authentication
 
-| Property                           | Description                                                                      |
-| ---------------------------------- | -------------------------------------------------------------------------------- |
-| `hive::authentication::jwt_scopes` | Scopes extracted from the current authenticated user's JWT.                      |
-| `hive::authentication::jwt_status` | Authentication status. If `true`, the request has been verified asauthenticated. |
+| Property                           | Description                                                                       |
+| ---------------------------------- | --------------------------------------------------------------------------------- |
+| `hive::authentication::jwt_scopes` | Scopes extracted from the current authenticated user's JWT.                       |
+| `hive::authentication::jwt_status` | Authentication status. If `true`, the request has been verified as authenticated. |
 
 ### Progressive Override
 

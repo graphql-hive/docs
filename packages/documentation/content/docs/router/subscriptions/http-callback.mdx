@@ -43,7 +43,7 @@ The URL path the router listens on for incoming callback messages. Defaults to `
 
 #### `subgraphs`
 
-The list of subgraph names (as defined in your supergraph schema) that use the HTTP Callback protocol. Subgraphs not listed here fall back to the default protocol negotiation (multipart, then SSE), or WebSockets if `websocket` is configured, when subscriptions are enabled.
+The list of subgraph names (as defined in your supergraph schema) that use the HTTP Callback protocol. Subgraphs not listed here fall back to the default protocol negotiation (multipart, then SSE), or WebSockets if `subscriptions.websocket` is configured, when subscriptions are enabled.
 
 #### `heartbeat_interval`
 

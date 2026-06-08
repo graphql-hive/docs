@@ -152,6 +152,9 @@ export const routeRules: Record<string, NitroRouteRules> = {
   "/docs/router/guides/extending-the-router": redirect(
     "/docs/router/customizations",
   ),
+  "/docs/router/configuration/graphiql": redirect(
+    "/docs/router/configuration/laboratory",
+  ),
   "/docs/router/plugin-system": redirect(
     "/docs/router/customizations/plugin-system",
   ),
