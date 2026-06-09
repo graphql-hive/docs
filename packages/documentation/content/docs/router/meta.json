@@ -6,6 +6,7 @@
   "pages": [
     "index",
     "getting-started",
+    "compatibility",
     "configuration",
     "guides",
     "customizations",
