@@ -45,7 +45,7 @@ execution is recorded in metrics but never turned into an error (you can't un-ex
 - `enforce`: reject the operation when the estimated cost exceeds `max`.
 - `measure`: never reject; still compute cost, emit metrics, and set result codes.
 
-### `expose_headers`
+#### `operation_cost.expose_headers`
 
 - **Type:** `object`
 - **Default:** all headers disabled
@@ -59,17 +59,14 @@ Each header can be enabled independently by setting it to:
 - a string — enable, using a custom header name.
 - `false` (or omitted) — disabled.
 
-#### `expose_headers.estimated`
+The sub-fields are:
 
-The pre-execution **estimated** cost. Default header name: `X-Cost-Estimated`.
-
-#### `expose_headers.actual`
-
-The post-execution **actual** cost. Default header name: `X-Cost-Actual`.
-
-#### `expose_headers.max`
-
-The configured supergraph `max` limit. Default header name: `X-Cost-Max`.
+- `operation_cost.expose_headers.estimated` — the pre-execution **estimated** cost. Default header
+  name: `X-Cost-Estimated`.
+- `operation_cost.expose_headers.actual` — the post-execution **actual** cost. Default header name:
+  `X-Cost-Actual`.
+- `operation_cost.expose_headers.max` — the configured supergraph `max` limit. Default header name:
+  `X-Cost-Max`.
 
 ```yaml title="router.config.yaml"
 demand_control:
@@ -77,12 +74,12 @@ demand_control:
   operation_cost:
     max: 500
     mode: enforce
+    expose_headers:
+      estimated: true # X-Cost-Estimated
+      actual: true # X-Cost-Actual
+      max: X-My-Cost-Limit # custom header name
   subgraphs_budget:
     mode: enforce
-  expose_headers:
-    estimated: true # X-Cost-Estimated
-    actual: true # X-Cost-Actual
-    max: X-My-Cost-Limit # custom header name
 ```
 
 ### `subgraphs_budget`
@@ -193,13 +190,13 @@ demand_control:
   operation_cost:
     max: 1000
     mode: measure
+    expose_headers:
+      estimated: true
+      actual: true
   subgraphs_budget:
     mode: measure
   default_list_size:
     all: 10
-  expose_headers:
-    estimated: true
-    actual: true
 ```
 
 ### Global enforcement
@@ -257,9 +254,9 @@ demand_control:
   operation_cost:
     max: 500
     mode: enforce
+    expose_headers:
+      actual: true
   subgraphs_budget:
     mode: enforce
   actual_cost_mode: by_subgraph
-  expose_headers:
-    actual: true
 ```

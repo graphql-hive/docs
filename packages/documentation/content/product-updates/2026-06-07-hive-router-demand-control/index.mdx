@@ -3,7 +3,7 @@ title: Demand Control in Hive Router
 description:
   Hive Router now protects your federated graph from expensive operations with cost-based demand
   control, enforcing per-operation and per-subgraph budgets before execution.
-date: 2026-06-07
+date: 2026-06-15
 authors: [dotan]
 ---
 
@@ -89,11 +89,11 @@ demand_control:
   operation_cost:
     max: 1000
     mode: measure
+    expose_headers:
+      estimated: true # X-Cost-Estimated
+      actual: true # X-Cost-Actual
   subgraphs_budget:
     mode: measure
-  expose_headers:
-    estimated: true # X-Cost-Estimated
-    actual: true # X-Cost-Actual
 ```
 
 Actual cost is computed after execution for observability only — it is never enforced, so a request

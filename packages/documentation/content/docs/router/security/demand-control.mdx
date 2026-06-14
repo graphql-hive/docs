@@ -548,12 +548,12 @@ demand_control:
   operation_cost:
     max: 500
     mode: enforce
+    expose_headers:
+      estimated: true # X-Cost-Estimated
+      actual: true # X-Cost-Actual
+      max: true # X-Cost-Max
   subgraphs_budget:
     mode: enforce
-  expose_headers:
-    estimated: true # X-Cost-Estimated
-    actual: true # X-Cost-Actual
-    max: true # X-Cost-Max
 ```
 
 A response then carries, for example:
@@ -669,13 +669,13 @@ demand_control:
   operation_cost:
     max: 1000
     mode: measure
+    expose_headers:
+      estimated: true
+      actual: true
   subgraphs_budget:
     mode: measure
   default_list_size:
     all: 10
-  expose_headers:
-    estimated: true
-    actual: true
 ```
 
 **Phase 2: Baseline setting**
