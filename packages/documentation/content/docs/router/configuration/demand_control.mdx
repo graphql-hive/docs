@@ -17,16 +17,33 @@ For conceptual guidance and rollout strategy, see
 
 Enables demand-control cost evaluation.
 
-### `mode`
+### `operation_cost`
+
+- **Type:** `object`
+- **Required:** yes
+
+The supergraph-wide (whole-operation) cost limit and its enforcement mode.
+
+#### `operation_cost.max`
+
+- **Type:** `integer` (`uint64`)
+- **Required:** yes
+
+Supergraph-wide maximum allowed cost. In `operation_cost.mode: enforce`, if the **estimated** cost
+of an operation exceeds `max`, the request is rejected before any subgraph is contacted with
+`COST_ESTIMATED_TOO_EXPENSIVE`.
+
+Actual (post-execution) cost is **never** enforced against `max` — exceeding the budget after
+execution is recorded in metrics but never turned into an error (you can't un-execute a request).
+
+#### `operation_cost.mode`
 
 - **Type:** `string`
 - **Allowed values:** `enforce`, `measure`
 - **Required:** yes
 
-Controls how limits are applied:
-
-- `enforce`: apply configured limits and reject/skip over-budget operations or subgraphs.
-- `measure`: never reject requests; still compute costs, emit metrics, and set result codes.
+- `enforce`: reject the operation when the estimated cost exceeds `max`.
+- `measure`: never reject; still compute cost, emit metrics, and set result codes.
 
 ### `expose_headers`
 
@@ -57,47 +74,72 @@ The configured supergraph `max` limit. Default header name: `X-Cost-Max`.
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: enforce
+  operation_cost:
+    max: 500
+    mode: enforce
+  subgraphs_budget:
+    mode: enforce
   expose_headers:
     estimated: true # X-Cost-Estimated
     actual: true # X-Cost-Actual
     max: X-My-Cost-Limit # custom header name
-  strategy:
-    static_estimated:
-      max: 500
 ```
 
-### `strategy`
+### `subgraphs_budget`
 
-Demand control currently supports one strategy variant: `static_estimated`.
-
-#### `strategy.static_estimated.max`
-
-- **Type:** `integer`
-- **Format:** `uint64`
-- **Minimum:** `0`
+- **Type:** `object`
 - **Required:** yes
 
-Supergraph-wide maximum allowed cost.
+Per-subgraph cost budgets, evaluated against each subgraph's share of the estimated cost. When a
+subgraph exceeds its budget in `enforce` mode, only that subgraph's fetch is skipped (composed as
+`null`) and a `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` error is added — the rest of the operation
+still runs, producing a partial response.
 
-In `mode: enforce`, if the **estimated** cost exceeds `max`, the request is rejected before any
-subgraph is contacted with `COST_ESTIMATED_TOO_EXPENSIVE`.
+#### `subgraphs_budget.mode`
 
-Actual (post-execution) cost is **never** enforced against `max` — exceeding the budget after
-execution is recorded in metrics but never turned into an error (you can't un-execute a request).
+- **Type:** `string`
+- **Allowed values:** `enforce`, `measure`
+- **Required:** yes
 
-In `mode: measure`, limits are not enforced but result codes still reflect over-limit evaluations.
+Independent of `operation_cost.mode`. `enforce` skips over-budget subgraph fetches; `measure` only
+records the over-budget result without skipping.
 
-#### `strategy.static_estimated.list_size`
+#### `subgraphs_budget.all`
 
-- **Type:** `integer`
-- **Format:** `uint`
-- **Minimum:** `0`
+- **Type:** `integer` (`uint`)
 - **Default:** unset
 
-Fallback list-size assumption used for list-returning fields that do not define `@listSize`.
+Default per-subgraph maximum estimated cost, applied to every subgraph unless overridden.
 
-#### `strategy.static_estimated.actual_cost_mode`
+#### `subgraphs_budget.subgraphs.<name>`
+
+- **Type:** `integer` (`uint`)
+- **Default:** unset
+
+Per-subgraph maximum estimated cost for the named subgraph. Overrides `subgraphs_budget.all`.
+
+### `default_list_size`
+
+- **Type:** `object`
+- **Default:** unset
+
+Fallback list size used for list-returning fields that do not define `@listSize`.
+
+#### `default_list_size.all`
+
+- **Type:** `integer` (`uint`)
+- **Default:** unset
+
+Default assumed list size for the whole supergraph.
+
+#### `default_list_size.subgraphs.<name>`
+
+- **Type:** `integer` (`uint`)
+- **Default:** unset
+
+Assumed list size for fields resolved at the named subgraph. Overrides `default_list_size.all`.
+
+### `actual_cost_mode`
 
 - **Type:** `string`
 - **Allowed values:** `by_subgraph`, `by_response_shape`
@@ -111,78 +153,35 @@ This option controls how it is calculated:
 - `by_response_shape`: Computes cost only from the fields present in the final merged response.
   Ignores intermediate federation work; lighter to compute.
 
-#### `strategy.static_estimated.subgraph`
-
-Optional per-subgraph demand-control overrides.
-
-##### `strategy.static_estimated.subgraph.all`
-
-Defaults applied to all subgraphs unless overridden in `subgraph.subgraphs`.
-
-###### `strategy.static_estimated.subgraph.all.max`
-
-- **Type:** `integer`
-- **Format:** `uint64`
-- **Minimum:** `0`
-
-Maximum allowed estimated cost per subgraph.
-
-###### `strategy.static_estimated.subgraph.all.list_size`
-
-- **Type:** `integer`
-- **Format:** `uint`
-- **Minimum:** `0`
-
-Fallback list-size assumption per subgraph.
-
-##### `strategy.static_estimated.subgraph.subgraphs`
-
-Map of subgraph names to per-subgraph overrides.
-
-###### `strategy.static_estimated.subgraph.subgraphs.<name>.max`
-
-- **Type:** `integer`
-- **Format:** `uint64`
-- **Minimum:** `0`
-
-Maximum allowed estimated cost for the named subgraph.
-
-###### `strategy.static_estimated.subgraph.subgraphs.<name>.list_size`
-
-- **Type:** `integer`
-- **Format:** `uint`
-- **Minimum:** `0`
-
-Fallback list-size assumption for the named subgraph.
-
 ## Behavior
 
 When demand control is enabled:
 
 - The router estimates operation cost before execution.
-- If global `strategy.static_estimated.max` is exceeded in `mode: enforce`, the request is rejected with
+- If `operation_cost.max` is exceeded and `operation_cost.mode: enforce`, the request is rejected with
   `COST_ESTIMATED_TOO_EXPENSIVE`, before any subgraph is contacted.
-- If subgraph-level limits are exceeded in `mode: enforce`, the router skips only over-budget subgraphs and continues
-  the rest of the plan. Skipped subgraphs return
+- If a per-subgraph budget is exceeded and `subgraphs_budget.mode: enforce`, the router skips only the
+  over-budget subgraphs and continues the rest of the plan. Skipped subgraphs return
   `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE`, producing a partial response.
+- The two modes are independent: `operation_cost.mode` governs whole-operation rejection, while
+  `subgraphs_budget.mode` governs per-subgraph skipping.
 - If an operation uses a `@listSize` field that requires exactly one slicing argument but provides
   zero or several, the request is rejected with `COST_INVALID_SLICING_ARGUMENTS`.
 - Actual cost is computed after execution for observability (metrics and `expose_headers`) but is
   **never** enforced.
-- In `mode: measure`, the request is not rejected, but result codes and telemetry still reflect the
+- In `measure` mode, the request is not rejected, but result codes and telemetry still reflect the
   over-limit state.
 
 ## Precedence
 
 1. Field-level directives (`@cost`, `@listSize`) apply first.
 2. For list-size fallback:
-   - `strategy.static_estimated.subgraph.subgraphs.<name>.list_size`
-   - then `strategy.static_estimated.subgraph.all.list_size`
-   - then global `strategy.static_estimated.list_size`
-3. For subgraph max cost:
-   - `strategy.static_estimated.subgraph.subgraphs.<name>.max`
-   - then `strategy.static_estimated.subgraph.all.max`
-4. Global `strategy.static_estimated.max` is evaluated on full-operation estimated cost.
+   - `default_list_size.subgraphs.<name>`
+   - then `default_list_size.all`
+3. For per-subgraph max cost:
+   - `subgraphs_budget.subgraphs.<name>`
+   - then `subgraphs_budget.all`
+4. `operation_cost.max` is evaluated on the full-operation estimated cost.
 
 ## Examples
 
@@ -191,14 +190,16 @@ When demand control is enabled:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: measure
+  operation_cost:
+    max: 1000
+    mode: measure
+  subgraphs_budget:
+    mode: measure
+  default_list_size:
+    all: 10
   expose_headers:
     estimated: true
     actual: true
-  strategy:
-    static_estimated:
-      max: 1000
-      list_size: 10
 ```
 
 ### Global enforcement
@@ -206,11 +207,13 @@ demand_control:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: enforce
-  strategy:
-    static_estimated:
-      max: 500
-      list_size: 10
+  operation_cost:
+    max: 500
+    mode: enforce
+  subgraphs_budget:
+    mode: enforce
+  default_list_size:
+    all: 10
 ```
 
 ### Subgraph-level enforcement
@@ -218,21 +221,32 @@ demand_control:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: enforce
-  strategy:
-    static_estimated:
-      max: 5000
-      list_size: 10
-      subgraph:
-        all:
-          max: 1000
-          list_size: 20
-        subgraphs:
-          reviews:
-            max: 300
-          search:
-            max: 150
-            list_size: 5
+  operation_cost:
+    max: 5000
+    mode: enforce
+  subgraphs_budget:
+    mode: enforce
+    all: 1000
+    subgraphs:
+      reviews: 300
+      search: 150
+  default_list_size:
+    all: 10
+    subgraphs:
+      search: 5
+```
+
+### Enforce subgraphs while only measuring the operation budget
+
+```yaml title="router.config.yaml"
+demand_control:
+  enabled: true
+  operation_cost:
+    max: 5000
+    mode: measure # observe operation cost, never reject the whole request
+  subgraphs_budget:
+    mode: enforce # but still skip over-budget subgraph fetches
+    all: 1000
 ```
 
 ### Actual-cost observability
@@ -240,11 +254,12 @@ demand_control:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: enforce
+  operation_cost:
+    max: 500
+    mode: enforce
+  subgraphs_budget:
+    mode: enforce
+  actual_cost_mode: by_subgraph
   expose_headers:
     actual: true
-  strategy:
-    static_estimated:
-      max: 500
-      actual_cost_mode: by_subgraph
 ```

@@ -40,9 +40,9 @@ operation structure, not variable values). During request processing:
 
 1. **Estimation phase**: Cost formula is evaluated using request variables to estimate total cost
    before sending requests to subgraphs.
-2. **Limit checking**: If estimated cost exceeds configured limits (`strategy.static_estimated.max`
-   globally or subgraph-specific `max`), the router can reject the operation or skip over-budget
-   subgraphs while continuing others.
+2. **Limit checking**: If estimated cost exceeds configured limits (`operation_cost.max` globally or
+   a per-subgraph budget in `subgraphs_budget`), the router can reject the operation or skip
+   over-budget subgraphs while continuing others.
 3. **Actual cost calculation**: After execution, the router always calculates actual cost and
    compares it with estimated cost. `actual_cost_mode` only controls the calculation method.
 
@@ -248,7 +248,10 @@ Cost breakdown:
 
 ## Configuration modes
 
-The router supports two modes for Demand Control.
+Demand Control is enforced at **two independent levels**, each with its own `enforce`/`measure`
+mode: `operation_cost.mode` governs the whole-operation budget, and `subgraphs_budget.mode` governs
+per-subgraph budgets. You can mix them — e.g. measure the operation budget while enforcing
+per-subgraph budgets.
 
 For the full configuration API reference, see
 [`demand_control` configuration](/docs/router/configuration/demand_control).
@@ -260,11 +263,13 @@ Collect cost metrics without rejecting operations:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: measure
-  strategy:
-    static_estimated:
-      max: 1000
-      list_size: 10
+  operation_cost:
+    max: 1000
+    mode: measure
+  subgraphs_budget:
+    mode: measure
+  default_list_size:
+    all: 10
 ```
 
 Use this during initial rollout to:
@@ -283,14 +288,16 @@ Reject operations that exceed configured limits:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: enforce
-  strategy:
-    static_estimated:
-      max: 500 # Global limit
-      list_size: 10
+  operation_cost:
+    max: 500 # Global limit
+    mode: enforce
+  subgraphs_budget:
+    mode: enforce
+  default_list_size:
+    all: 10
 ```
 
-Operations exceeding `strategy.static_estimated.max` are rejected before any subgraph is contacted,
+Operations exceeding `operation_cost.max` are rejected before any subgraph is contacted,
 with the cost numbers carried in the error's `extensions`:
 
 ```json
@@ -474,28 +481,20 @@ backends:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: enforce
-  strategy:
-    static_estimated:
-      max: 5000 # Global limit - entire operation
-      list_size: 10 # Default for unlisted fields
-      subgraph:
-        # Apply defaults to all subgraphs
-        all:
-          max: 1000 # Any subgraph can use up to 1000 cost
-          list_size: 20
-
-        # Override for specific subgraphs
-        subgraphs:
-          search_engine:
-            max: 200 # Search is expensive, stricter limit
-            list_size: 5
-
-          analytics:
-            max: 500 # Analytics can handle more
-
-          users:
-            list_size: 50 # Users service handles large lists well
+  operation_cost:
+    max: 5000 # Global limit - entire operation
+    mode: enforce
+  subgraphs_budget:
+    mode: enforce
+    all: 1000 # Any subgraph can use up to 1000 cost by default
+    subgraphs:
+      search_engine: 200 # Search is expensive, stricter limit
+      analytics: 500 # Analytics can handle more
+  default_list_size:
+    all: 10 # Default for unlisted fields
+    subgraphs:
+      search_engine: 5
+      users: 50 # Users service handles large lists well
 ```
 
 **Behavior when subgraph limit is exceeded:**
@@ -546,14 +545,15 @@ Each header is enabled independently, with either the default name (`true`) or a
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: enforce
+  operation_cost:
+    max: 500
+    mode: enforce
+  subgraphs_budget:
+    mode: enforce
   expose_headers:
     estimated: true # X-Cost-Estimated
     actual: true # X-Cost-Actual
     max: true # X-Cost-Max
-  strategy:
-    static_estimated:
-      max: 500
 ```
 
 A response then carries, for example:
@@ -658,7 +658,7 @@ never appears in a response — it only flags, in your metrics, operations whose
 
 **Phase 1: Measurement**
 
-- Enable Demand Control in `mode: measure`
+- Enable Demand Control with both modes set to `measure`
 - Optionally enable `expose_headers` to inspect per-response costs while validating
 - Collect cost metrics on all production traffic
 - Use telemetry to build histograms of operation costs
@@ -666,36 +666,40 @@ never appears in a response — it only flags, in your metrics, operations whose
 ```yaml
 demand_control:
   enabled: true
-  mode: measure
+  operation_cost:
+    max: 1000
+    mode: measure
+  subgraphs_budget:
+    mode: measure
+  default_list_size:
+    all: 10
   expose_headers:
     estimated: true
     actual: true
-  strategy:
-    static_estimated:
-      max: 1000
-      list_size: 10
 ```
 
 **Phase 2: Baseline setting**
 
 - Analyze metrics to understand cost distribution
-- Set `strategy.static_estimated.max` to the 99th percentile of observed costs
+- Set `operation_cost.max` to the 99th percentile of observed costs
 - This allows all current traffic through while catching obvious abuse
 
 ```yaml
 demand_control:
   enabled: true
-  mode: enforce
-  strategy:
-    static_estimated:
-      max: 1000 # 99th percentile from Phase 1
-      list_size: 10
+  operation_cost:
+    max: 1000 # 99th percentile from Phase 1
+    mode: enforce
+  subgraphs_budget:
+    mode: enforce
+  default_list_size:
+    all: 10
 ```
 
 **Phase 3: Gradual tightening (ongoing)**
 
 - Monitor rejection rate (target: less than 0.1%)
-- Gradually lower `strategy.static_estimated.max` as developers optimize queries
+- Gradually lower `operation_cost.max` as developers optimize queries
 - Enforce subgraph-level limits for expensive services
 
 **Phase 4: Enforcement with telemetry (production)**

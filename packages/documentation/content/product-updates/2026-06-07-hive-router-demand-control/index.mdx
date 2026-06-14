@@ -37,11 +37,13 @@ operations pay the compilation cost only once.
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: enforce # or `measure` to observe without rejecting
-  strategy:
-    static_estimated:
-      max: 1000 # supergraph-wide budget
-      list_size: 10 # default list size for fields without @listSize
+  operation_cost:
+    max: 1000 # supergraph-wide budget
+    mode: enforce # or `measure` to observe without rejecting
+  subgraphs_budget:
+    mode: enforce
+  default_list_size:
+    all: 10 # default list size for fields without @listSize
 ```
 
 Use `@cost` and `@listSize` directives to model the real cost of your schema:
@@ -55,23 +57,21 @@ type Query {
 
 ## Per-Subgraph Budgets
 
-Beyond the supergraph-wide limit, you can give individual subgraphs their own, tighter budgets. When
-a subgraph's portion of the plan is too expensive, only that fetch is skipped — the rest of the plan
-still runs and the response comes back partial.
+Beyond the supergraph-wide limit, you can give individual subgraphs their own, tighter budgets, with
+their own enforcement mode. When a subgraph's portion of the plan is too expensive, only that fetch
+is skipped — the rest of the plan still runs and the response comes back partial.
 
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: enforce
-  strategy:
-    static_estimated:
-      max: 5000
-      subgraph:
-        all:
-          max: 1000
-        subgraphs:
-          search:
-            max: 200 # search is expensive — stricter limit
+  operation_cost:
+    max: 5000
+    mode: enforce
+  subgraphs_budget:
+    mode: enforce
+    all: 1000
+    subgraphs:
+      search: 200 # search is expensive — stricter limit
 ```
 
 ## Built for Observability
@@ -86,13 +86,14 @@ You can also expose cost back to clients as opt-in HTTP response headers:
 ```yaml title="router.config.yaml"
 demand_control:
   enabled: true
-  mode: measure
+  operation_cost:
+    max: 1000
+    mode: measure
+  subgraphs_budget:
+    mode: measure
   expose_headers:
     estimated: true # X-Cost-Estimated
     actual: true # X-Cost-Actual
-  strategy:
-    static_estimated:
-      max: 1000
 ```
 
 Actual cost is computed after execution for observability only — it is never enforced, so a request
