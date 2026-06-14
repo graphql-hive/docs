@@ -635,6 +635,38 @@ async fn on_execute<'exec>(
 }
 ```
 
+**Read the Demand Control cost**
+
+When [Demand Control](/docs/router/security/demand-control) is enabled, the operation's cost is
+exposed on the payload. The `estimated` and `max` cost are available in the start phase
+(`demand_control_estimate`); the `actual` cost is only known after execution, so the full
+`estimated` / `max` / `actual` triple (`demand_control_cost`) is read in `on_end`. Both are `None`
+when Demand Control is disabled.
+
+```rust
+async fn on_execute<'exec>(
+    &'exec self,
+    payload: OnExecuteStartHookPayload<'exec>,
+) -> OnExecuteStartHookResult<'exec> {
+    // Before execution: estimated + max are known.
+    if let Some(estimate) = payload.demand_control_estimate {
+        tracing::info!(
+            estimated = estimate.estimated,
+            max = estimate.max,
+            "operation cost estimate"
+        );
+    }
+
+    payload.on_end(|end_payload| {
+        // After execution: estimated, max, and actual.
+        if let Some(cost) = end_payload.demand_control_cost {
+            self.billing.record(cost.actual);
+        }
+        end_payload.proceed()
+    })
+}
+```
+
 #### Payload API Reference
 
 - [`OnExecuteStartHookPayload`](https://github.com/graphql-hive/router/blob/main/lib/executor/src/plugins/hooks/on_execute.rs#:~:text=struct%20OnExecuteStartHookPayload)
