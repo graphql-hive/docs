@@ -26,13 +26,42 @@ hive app:create \
   persisted-documents.json
 ```
 
-The parameters `--name` and `--version` are mandatory and uniquily identify your app deployment.
+The `--name` parameter is mandatory. The `--version` parameter is optional - if omitted, a random 7-character alphanumeric version is generated automatically.
 
-| Parameter                  | Description                                                   |
-| -------------------------- | ------------------------------------------------------------- |
-| `--name`                   | The name of the app deployment.                               |
-| `--version`                | The version of the app deployment.                            |
-| `<persistedDocumentsFile>` | The path to the JSON file containing the persisted documents. |
+Instead of a JSON manifest file, you can also pass a directory or a glob pattern. When a directory or glob is provided, `app:create` scans for `*.graphql` files, normalizes each operation, computes a SHA-256 hash per operation, and builds the manifest directly.
+
+```bash title="Create an App Deployment from a directory"
+# from a directory
+hive app:create --name my-app --version 1.0.0 ./src/operations
+
+# from a glob pattern
+hive app:create --name my-app --version 1.0.0 "./src/**/*.graphql"
+
+# from an existing manifest file
+hive app:create --name my-app --version 1.0.0 persisted-operations.json
+
+# with auto-generated version
+hive app:create --name my-app persisted-operations.json
+```
+
+You can also pass `--publish` to publish the app deployment immediately after creation, without needing to run `app:publish` separately.
+
+```bash title="Create and publish in one step"
+hive app:create \
+  --registry.accessToken "<ACCESS_TOKEN>" \
+  --target "<ORGANIZATION>/<PROJECT>/<TARGET>" \
+  --name "my-app" \
+  --version "1.0.0" \
+  --publish \
+  persisted-documents.json
+```
+
+| Parameter                 | Description                                                                                                 |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `--name`                  | The name of the app deployment.                                                                             |
+| `--version`               | The version of the app deployment. Optional - a random version is generated if omitted.                     |
+| `--publish`               | Publish the app deployment immediately after creation. Optional.                                            |
+| `<file\|directory\|glob>` | Path to a JSON manifest file, a directory of `.graphql` files, or a glob pattern matching `.graphql` files. |
 
 An app deployment is uniquely identified by the combination of the `name` and `version` parameters
 for each target.
