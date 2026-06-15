@@ -3,6 +3,7 @@
     "authorization",
     "cors",
     "csrf",
+    "demand-control",
     "introspection",
     "jwt-authentication",
     "tls",

@@ -149,11 +149,11 @@ export const routeRules: Record<string, NitroRouteRules> = {
   ),
 
   // Support pages moved after introducing coprocessors
-  "/docs/router/guides/extending-the-router": redirect(
-    "/docs/router/customizations",
-  ),
   "/docs/router/configuration/graphiql": redirect(
     "/docs/router/configuration/laboratory",
+  ),
+  "/docs/router/guides/extending-the-router": redirect(
+    "/docs/router/customizations",
   ),
   "/docs/router/plugin-system": redirect(
     "/docs/router/customizations/plugin-system",
