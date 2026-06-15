@@ -5,8 +5,9 @@ title: "Demand Control"
 import { Callout } from "@hive/design-system/hive-components/callout";
 
 Demand Control protects your federated GraphQL API from expensive operations by estimating their
-computational cost before execution and enforcing configurable limits per operation and across your
-entire infrastructure.
+computational cost before execution and enforcing configurable budgets. It works at **two
+independent layers**: the **incoming operation** as a whole, and **each subgraph call** the
+operation fans out into.
 
 Unlike structural limits (operation depth, field count), Demand Control prevents operations that are
 computationally expensive regardless of their shape, such as queries that retrieve massive lists or
@@ -46,7 +47,39 @@ operation structure, not variable values). During request processing:
 3. **Actual cost calculation**: After execution, the router always calculates actual cost and
    compares it with estimated cost. `actual_cost_mode` only controls the calculation method.
 
+## Two layers of cost control
+
+Demand Control applies the **same cost model** at **two independent layers**. They are configured
+separately, each has its own budget and its own `enforce`/`measure` mode, and you can use either or
+both:
+
+| | **Operation cost** (`operation_cost`) | **Subgraph budget** (`subgraphs_budget`) |
+| --- | --- | --- |
+| **What it limits** | The total estimated cost of the **whole incoming operation** | The estimated cost of the part of the plan sent to **each individual subgraph** |
+| **When it acts** | Before execution — before any subgraph is contacted | Per subgraph fetch, during execution |
+| **When exceeded** (`enforce`) | The **entire request is rejected** | Only the **over-budget subgraph's fetch is skipped**; the rest of the plan still runs |
+| **Client sees** | A single `COST_ESTIMATED_TOO_EXPENSIVE` error, no `data` | A **partial response** — `data` for everything else, plus a `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` error for the skipped part |
+| **Config** | `operation_cost.max` + `operation_cost.mode` | `subgraphs_budget.all` / `subgraphs_budget.subgraphs.<name>` + `subgraphs_budget.mode` |
+
+Both layers estimate cost the same way (see [Cost model](#cost-model-and-calculation)) and both
+decide _before_ the work happens. The difference is **scope** — the whole operation vs. one
+subgraph's share — and the **blast radius** when a budget is exceeded: reject everything, or drop a
+single subgraph and degrade gracefully.
+
+A good rule of thumb: use the **operation budget** as a hard ceiling against pathological requests,
+and **per-subgraph budgets** to shield specific fragile or expensive backends while still serving
+the rest of the response.
+
+The sections below — [the cost model](#cost-model-and-calculation),
+[configuration modes](#configuration-modes), and [error codes](#error-codes-and-result-states) —
+apply to both layers. [Subgraph-level protection](#subgraph-level-protection) covers the second
+layer specifically.
+
 ## Cost model and calculation
+
+This is the shared engine behind **both** layers — the operation budget scores the whole operation,
+while a subgraph budget scores only the slice of the plan sent to that subgraph, using the exact
+same rules.
 
 Demand Control calculates operation cost as the sum of:
 
@@ -474,9 +507,14 @@ type ProductEdge {
 
 ## Subgraph-level protection
 
+This is the **second layer** ([`subgraphs_budget`](#two-layers-of-cost-control)). Where the
+operation budget gates the request as a whole, a subgraph budget gates the cost of the plan sent to
+**one individual subgraph** — so an over-budget subgraph is skipped while the rest of the operation
+still runs.
+
 Different subgraphs have different performance characteristics and resource constraints. Enforce
-per-subgraph cost limits in addition to global limits to protect expensive or resource-constrained
-backends:
+per-subgraph cost limits in addition to (or instead of) the operation-wide limit to protect
+expensive or resource-constrained backends:
 
 ```yaml title="router.config.yaml"
 demand_control:
