@@ -53,13 +53,13 @@ Demand Control applies the **same cost model** at **two independent layers**. Th
 separately, each has its own budget and its own `enforce`/`measure` mode, and you can use either or
 both:
 
-| | **Operation cost** (`operation_cost`) | **Subgraph budget** (`subgraphs_budget`) |
-| --- | --- | --- |
-| **What it limits** | The total estimated cost of the **whole incoming operation** | The estimated cost of the part of the plan sent to **each individual subgraph** |
-| **When it acts** | Before execution — before any subgraph is contacted | Per subgraph fetch, during execution |
-| **When exceeded** (`enforce`) | The **entire request is rejected** | Only the **over-budget subgraph's fetch is skipped**; the rest of the plan still runs |
-| **Client sees** | A single `COST_ESTIMATED_TOO_EXPENSIVE` error, no `data` | A **partial response** — `data` for everything else, plus a `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` error for the skipped part |
-| **Config** | `operation_cost.max` + `operation_cost.mode` | `subgraphs_budget.all` / `subgraphs_budget.subgraphs.<name>` + `subgraphs_budget.mode` |
+|                               | **Operation cost** (`operation_cost`)                        | **Subgraph budget** (`subgraphs_budget`)                                                                                       |
+| ----------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| **What it limits**            | The total estimated cost of the **whole incoming operation** | The estimated cost of the part of the plan sent to **each individual subgraph**                                                |
+| **When it acts**              | Before execution — before any subgraph is contacted          | Per subgraph fetch, during execution                                                                                           |
+| **When exceeded** (`enforce`) | The **entire request is rejected**                           | Only the **over-budget subgraph's fetch is skipped**; the rest of the plan still runs                                          |
+| **Client sees**               | A single `COST_ESTIMATED_TOO_EXPENSIVE` error, no `data`     | A **partial response** — `data` for everything else, plus a `SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE` error for the skipped part |
+| **Config**                    | `operation_cost.max` + `operation_cost.mode`                 | `subgraphs_budget.all` / `subgraphs_budget.subgraphs.<name>` + `subgraphs_budget.mode`                                         |
 
 Both layers estimate cost the same way (see [Cost model](#cost-model-and-calculation)) and both
 decide _before_ the work happens. The difference is **scope** — the whole operation vs. one
