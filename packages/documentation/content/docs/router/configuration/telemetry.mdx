@@ -129,13 +129,47 @@ Allows you to control how the Hive Router does
 | ---------------------- | ------------------------------------ | ------------------------------------ | ------------------------------------------------------------------------------------------------------- |
 | `enabled`              | `boolean`                            | `false`                              | Explicitly enable or disable usage reporting.                                                           |
 | `endpoint`             | `string`                             | `https://app.graphql-hive.com/usage` | Override for self-hosted Hive.                                                                          |
-| `sample_rate`          | `string`                             | `100%`                               | Percentage between `0%` and `100%`.                                                                     |
+| `sampling`             | `object`                             | `{ rate: "100%" }`                   | Controls how operations are sampled before reporting. See the [`sampling` fields](#sampling) below.     |
 | `exclude`              | `string[] \| { expression: string }` | `[]`                                 | Operations to exclude. Accepts a list of operation names or a VRL expression object. See details below. |
 | `buffer_size`          | `integer`                            | `1000`                               | Buffer size before flush.                                                                               |
 | `accept_invalid_certs` | `boolean`                            | `false`                              | Accept invalid SSL certificates for usage reporting.                                                    |
 | `connect_timeout`      | `string`                             | `5s`                                 | Timeout for connect phase only.                                                                         |
 | `request_timeout`      | `string`                             | `15s`                                | Timeout for the full request.                                                                           |
 | `flush_interval`       | `string`                             | `5s`                                 | Buffer flush interval.                                                                                  |
+
+#### sampling
+
+The `sampling` field controls how operations are sampled before being reported to Hive Console.
+Exclusion (the `exclude` field) is always evaluated **before** sampling, so excluded operations are
+dropped immediately and never affect sampling decisions.
+
+| Field           | Type     | Default    | Notes                                                                                                   |
+| --------------- | -------- | ---------- | ------------------------------------------------------------------------------------------------------- |
+| `rate`          | `string` | `100%`     | Percentage between `0%` and `100%` of operations to report.                                             |
+| `at_least_once` | `object` | _disabled_ | When set, the first request for each unique key is always reported, then the `rate` applies. See below. |
+
+The `at_least_once` object accepts:
+
+| Field               | Type                 | Default      | Notes                                                                                                                              |
+| ------------------- | -------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `key`               | `string \| string[]` | _(required)_ | What makes an operation unique. One or more of `operation_name`, `operation_type`, `operation_body`. Multiple values are combined. |
+| `max_distinct_keys` | `integer`            | `100000`     | Maximum number of unique keys tracked in memory. When the limit is reached, the oldest keys are evicted. Each key uses ~16 bytes.  |
+
+```yaml title="router.config.yaml"
+telemetry:
+  hive:
+    usage_reporting:
+      enabled: true
+      sampling:
+        rate: "10%" # report 10% of operations
+        at_least_once:
+          key: # the combination of operation name and body makes a request unique
+            - operation_name
+            - operation_body
+          max_distinct_keys: 12000
+```
+
+See [Sampling](/docs/router/observability/usage_reporting#sampling) for more details.
 
 The `exclude` field accepts two formats:
 

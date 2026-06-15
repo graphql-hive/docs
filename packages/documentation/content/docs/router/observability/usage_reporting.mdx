@@ -2,6 +2,8 @@
 title: Usage Reporting
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
+
 Hive Router can report usage metrics to the Hive schema registry, giving you
 [insights for executed GraphQL operations](/docs/schema-registry/usage-reporting), and
 [field level usage information](/docs/schema-registry/explorer), but also enabling
@@ -112,6 +114,59 @@ telemetry:
 
 See [Expressions](/docs/router/configuration/expressions) for the full list of available variables
 and functions.
+
+## Sampling
+
+By default, every operation is reported (`100%`). To reduce the volume of usage reports, configure a
+sampling `rate` under `telemetry.hive.usage_reporting.sampling`.
+
+```yaml title="router.config.yaml"
+telemetry:
+  hive:
+    usage_reporting:
+      enabled: true
+      sampling:
+        rate: "10%" # report 10% of operations
+```
+
+### At-least-once sampling
+
+A low sampling `rate` reduces volume, but it can completely miss operations that are rarely executed.
+At-least-once sampling solves this: the **first** request for each unique operation is always
+reported, and later requests for the same operation follow the configured `rate`. This keeps your
+report volume low while making sure every distinct operation is visible in Hive Console at least once.
+
+```yaml title="router.config.yaml"
+telemetry:
+  hive:
+    usage_reporting:
+      enabled: true
+      sampling:
+        rate: "10%"
+        at_least_once:
+          key: # the combination of operation name and body makes a request unique
+            - operation_name
+            - operation_body
+          max_distinct_keys: 12000 # how many keys to track in memory
+```
+
+The `key` defines what makes an operation unique. It accepts one or more of:
+
+- `operation_name` — the name of the GraphQL operation
+- `operation_type` — the operation type (`query`, `mutation`, `subscription`)
+- `operation_body` — the operation body
+
+When you provide multiple values, the router combines them into a single key.
+
+Keys are tracked in memory as 8-byte hashes (~16 bytes per key), up to `max_distinct_keys` (default
+`100000`). When the limit is reached, the oldest keys are evicted, so a previously seen operation may
+be reported as "first seen" again.
+
+<Callout type="info">
+  Exclusion runs **before** sampling. Operations matched by `exclude` are
+  dropped immediately and never count toward sampling or the at-least-once seen
+  keys.
+</Callout>
 
 ## Configuration reference
 
