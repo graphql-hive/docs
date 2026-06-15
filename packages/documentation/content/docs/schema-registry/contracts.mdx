@@ -235,11 +235,58 @@ import hiveCdnAccessContractImage from "./hive-cdn-access-contract.png";
 
 ## Serving a Contract Schema
 
-Point your Hive Gateway or Apollo Router instance to the supergraph of the contract schema:
+Point your Hive Gateway, Hive Router, or Apollo Router instance to the supergraph of the contract
+schema. The contract supergraph endpoint follows this pattern:
 
 ```text title="Example: Contract Supergraph Endpoint"
 https://cdn.graphql-hive.com/artifacts/v1/<target_id>/contracts/<contract_name>/supergraph
 ```
+
+### Hive Gateway
+
+```bash
+docker run --name hive-gateway --rm -p 4000:4000 \
+  ghcr.io/graphql-hive/gateway supergraph \
+  "https://cdn.graphql-hive.com/artifacts/v1/<target_id>/contracts/<contract_name>" \
+  --hive-cdn-key "<hive_cdn_access_key>"
+```
+
+For more information, refer to the
+[Hive Gateway documentation](/docs/gateway/supergraph-proxy-source).
+
+### Hive Router
+
+Configure Hive Router to load the contract supergraph from the Hive CDN by setting `source: hive`
+in your `router.config.yaml`:
+
+```yaml title="router.config.yaml"
+supergraph:
+  source: hive
+  endpoint: https://cdn.graphql-hive.com/artifacts/v1/<target_id>/contracts/<contract_name>
+  key: <hive_cdn_access_key>
+```
+
+Then mount the config file and start the router:
+
+```bash
+docker run --name hive-router --rm -p 4000:4000 \
+  -v ./router.config.yaml:/app/router.config.yaml \
+  ghcr.io/graphql-hive/router:latest
+```
+
+For more information, refer to the [Hive Router documentation](/docs/router/supergraph).
+
+### Apollo Router
+
+```bash
+docker run --name apollo-router -p 4000:4000 --rm \
+  --env HIVE_CDN_ENDPOINT="https://cdn.graphql-hive.com/artifacts/v1/<target_id>/contracts/<contract_name>" \
+  --env HIVE_CDN_KEY="<hive_cdn_access_key>" \
+  ghcr.io/graphql-hive/apollo-router
+```
+
+For more information, refer to the
+[Apollo Router documentation](/docs/other-integrations/apollo-router).
 
 ## Understanding Tag Filtering Behavior
 
