@@ -689,6 +689,22 @@ export const gatewayConfig = defineConfig({
 });
 ```
 
+### `gracefulShutdownTimeout`
+
+Number of milliseconds to wait for in-flight requests to complete after receiving a `SIGTERM` or `SIGINT` signal before force-closing all remaining connections. During this window the server stops accepting new connections and idles out keep-alive connections, allowing active requests to finish naturally.
+
+Defaults to `0` that will immediately close all connections on shutdown.
+
+[See the Graceful Shutdown section in Concurrency & Scaling for more information](/docs/gateway/concurrency-and-scaling#graceful-shutdown)
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  gracefulShutdownTimeout: 10_000, // 10 seconds, default is 0 (immediate shutdown)
+});
+```
+
 ### `sslCredentials` for HTTPS
 
 This is the option to provide SSL Credentials for HTTPS Server. If this is provided, Hive Gateway
