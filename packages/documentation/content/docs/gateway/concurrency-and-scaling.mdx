@@ -148,6 +148,31 @@ Once you have chosen a fork count, head over to
 [Resources Requirements](/docs/gateway/deployment/resources-requirements) to translate that decision
 into concrete CPU and memory allocations for your pods or VMs.
 
+## Graceful Shutdown
+
+When the gateway receives a `SIGTERM` or `SIGINT` signal it enters a graceful shutdown sequence:
+
+1. The server stops accepting new incoming connections.
+2. Existing keep-alive connections are idled out so clients move on naturally.
+3. In-flight requests are given time to complete.
+4. Once all active requests finish - or the timeout expires - all remaining connections are force-closed and the process exits.
+
+The timeout is controlled by `gracefulShutdownTimeout` and defaults to **0** (immediate shutdown).
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  gracefulShutdownTimeout: 10_000, // 10 seconds, defaults to 0 (immediate shutdown)
+});
+```
+
+<Callout type="warning">
+  When using `fork`, each worker process runs its own graceful shutdown sequence
+  independently. The primary process waits for all workers to exit before
+  terminating.
+</Callout>
+
 ## Scaling Considerations for Multiple Instances
 
 When running multiple gateway workers (via forking) or multiple gateway instances (e.g. multiple
