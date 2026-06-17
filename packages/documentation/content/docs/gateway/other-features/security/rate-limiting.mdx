@@ -29,12 +29,13 @@ Hive Gateway supports two complementary approaches:
 ## Programmatic Configuration
 
 Use `rateLimiting` with an array of rules to configure per-field limits directly in
-`gateway.config.ts`. Each rule targets a specific GraphQL type and field, and lets you customize
-the time window, request limit, and how callers are identified.
+`gateway.config.ts`. Each rule targets a specific GraphQL type and field.
 
-### Limit by Authorization Token
+Each rule requires `type`, `field`, `max`, `ttl`, and exactly one of `identifier`, `identifyFn`, or `identityArgs` to determine how callers are identified.
 
-A common pattern is to rate-limit each unique user identified by their authorization token:
+### Default caller identification
+
+When you only need to limit a field by caller without caring about arguments, use `identifier` with a `{context.*}` path. The gateway automatically tries common request properties (`authorization` header, remote address, `x-forwarded-for`, etc.), so for most cases you only need to specify the field limits:
 
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
@@ -44,9 +45,9 @@ export const gatewayConfig = defineConfig({
     {
       type: "Query",
       field: "searchProducts",
-      max: 10, // allow at most 10 calls…
-      ttl: 60000, // …per 60 seconds (in milliseconds)
-      identifier: "{context.headers.authorization}", // per unique token
+      max: 10,
+      ttl: 60000, // 60 seconds in milliseconds
+      identifier: "{context.headers.authorization}",
     },
   ],
 });
@@ -54,7 +55,7 @@ export const gatewayConfig = defineConfig({
 
 ### Limit by Argument Value
 
-Use `identifier: "{args.*}"` to create a separate rate limit bucket per unique argument value. This is useful for unauthenticated endpoints where you want to limit access per resource ID rather than per caller:
+Use `identifier: "{args.*}"` to create a separate rate limit bucket per unique argument value, useful for limiting access per resource ID:
 
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
@@ -65,14 +66,14 @@ export const gatewayConfig = defineConfig({
       type: "Query",
       field: "getProduct",
       max: 10,
-      window: "1m",
+      ttl: 60000,
       identifier: "{args.id}", // one bucket per unique product ID
     },
   ],
 });
 ```
 
-Use `identityArgs` to append one or more argument values to the identity key. This is equivalent to `identifier: "{args.*}"` but supports multiple arguments and dot-notation paths:
+Use `identityArgs` when you need to key on multiple arguments or use dot-notation for nested paths:
 
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
@@ -80,24 +81,17 @@ import { defineConfig } from "@graphql-hive/gateway";
 export const gatewayConfig = defineConfig({
   rateLimiting: [
     {
-      type: "Query",
-      field: "getProduct",
-      max: 10,
-      window: "1m",
-      identityArgs: ["id"], // one bucket per unique id argument value
-    },
-    {
       type: "Mutation",
       field: "createOrder",
       max: 5,
-      window: "1m",
+      ttl: 60000,
       identityArgs: ["input.userId"], // nested path via dot notation
     },
   ],
 });
 ```
 
-You can also combine argument and context values by using a custom `identifyFn`, which receives the resolved argument values as a second parameter:
+Use `identifyFn` when the identity key requires logic that a template string cannot express, such as combining multiple values:
 
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
@@ -108,56 +102,8 @@ export const gatewayConfig = defineConfig({
       type: "Query",
       field: "getProduct",
       max: 10,
-      window: "1m",
+      ttl: 60000,
       identifyFn: (ctx, args) => `${ctx.ip}:${args.id}`,
-    },
-  ],
-});
-```
-
-### Limit by IP Address
-
-If your gateway does not have an authenticated user, you can use the request IP address as the
-identifier:
-
-```ts title="gateway.config.ts"
-import { defineConfig } from "@graphql-hive/gateway";
-
-export const gatewayConfig = defineConfig({
-  rateLimiting: [
-    {
-      type: "Mutation",
-      field: "createComment",
-      max: 5,
-      ttl: 60000, // 60 seconds
-      identifier: "{context.headers.x-forwarded-for}",
-    },
-  ],
-});
-```
-
-### Multiple Rules
-
-You can define rate limits for multiple fields at once:
-
-```ts title="gateway.config.ts"
-import { defineConfig } from "@graphql-hive/gateway";
-
-export const gatewayConfig = defineConfig({
-  rateLimiting: [
-    {
-      type: "Query",
-      field: "searchProducts",
-      max: 10,
-      ttl: 60000,
-      identifier: "{context.headers.authorization}",
-    },
-    {
-      type: "Mutation",
-      field: "createOrder",
-      max: 3,
-      ttl: 60000,
-      identifier: "{context.headers.authorization}",
     },
   ],
 });
@@ -165,16 +111,15 @@ export const gatewayConfig = defineConfig({
 
 ### Configuration Options
 
-| Option         | Type                    | Description                                                                                                                                                                                               |
-| -------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`         | `string`                | The GraphQL type that contains the field to rate-limit (e.g. `"Query"`, `"Mutation"`).                                                                                                                    |
-| `field`        | `string`                | The field name on the given type to rate-limit.                                                                                                                                                           |
-| `max`          | `number`                | Maximum number of requests allowed within the time window.                                                                                                                                                |
-| `ttl`          | `number`                | Duration of the time window in **milliseconds** (e.g. `60000` for 1 minute).                                                                                                                              |
-| `window`       | `string`                | Duration of the time window as a human-readable string (e.g. `"1s"`, `"30s"`, `"1m"`, `"1h"`). Alternative to `ttl`.                                                                                      |
-| `identifier`   | `string`                | Template string for identifying the caller. Supports `{context.*}` for request context values and `{args.*}` for field argument values.                                                                   |
-| `identifyFn`   | `(ctx, args) => string` | Function that returns the caller identity key. Receives the context and the resolved field argument values. Takes precedence over `identifier` when both are set.                                         |
-| `identityArgs` | `string[]`              | Field argument names whose values are appended to the identity key, creating a separate bucket per unique combination of argument values. Supports dot notation for nested paths (e.g. `"input.userId"`). |
+| Option         | Type                    | Description                                                                                                                                                                                                                        |
+| -------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`         | `string`                | The GraphQL type that contains the field to rate-limit (e.g. `"Query"`, `"Mutation"`).                                                                                                                                             |
+| `field`        | `string`                | The field name on the given type to rate-limit.                                                                                                                                                                                    |
+| `max`          | `number`                | Maximum number of requests allowed within the time window.                                                                                                                                                                         |
+| `ttl`          | `number`                | Duration of the time window in **milliseconds** (e.g. `60000` for 1 minute).                                                                                                                                                       |
+| `identifier`   | `string`                | Template string for the caller identity key. Supports `{context.*}` for request context values and `{args.*}` for field argument values. Mutually exclusive with `identifyFn` and `identityArgs`.                                  |
+| `identifyFn`   | `(ctx, args) => string` | Function that returns the caller identity key. Receives the context and the resolved field argument values. Mutually exclusive with `identifier` and `identityArgs`.                                                               |
+| `identityArgs` | `string[]`              | Field argument names whose values are used as the caller identity key, creating a separate bucket per unique combination of values. Supports dot notation for nested paths. Mutually exclusive with `identifier` and `identifyFn`. |
 
 ## Rate Limiting through `@rateLimit` Directive
 
