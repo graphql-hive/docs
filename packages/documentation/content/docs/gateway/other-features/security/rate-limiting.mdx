@@ -37,9 +37,9 @@ Each rule requires `type`, `field`, `max`, `ttl`, and exactly one of `identifier
 
 When you only need to limit a field by caller without caring about arguments, use `identifier` with a `{context.*}` path. The gateway automatically resolves a caller identity by checking the following sources in order:
 
-1. `authorization` header (via `context.headers` or `context.request.headers`)
-2. Remote IP address (via `context.req.socket.remoteAddress`, `context.req.connection.remoteAddress`, or `context.req.ip`)
-3. `x-forwarded-for` header (via `context.request.headers` or `context.headers`)
+1. `authorization` header
+2. Remote IP address
+3. `x-forwarded-for` header
 4. Falls back to `'unknown'` if none of the above are present
 
 For most cases you only need to specify the field limits:
