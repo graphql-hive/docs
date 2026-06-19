@@ -209,20 +209,47 @@ You can also enable subscriptions using the `SUBSCRIPTIONS_ENABLED` environment 
 SUBSCRIPTIONS_ENABLED=true
 ```
 
+### Subgraph Buffer Capacity
+
+Controls the buffer between a subgraph and the router's internal processing pipeline.
+
+When a subscription event arrives from a subgraph (over HTTP streaming or WebSocket), the router runs it through entity resolution before delivering it to clients. If entity resolution is slower than the rate at which the subgraph emits events, this buffer absorbs the difference so the subgraph is never throttled or disconnected by the router's processing speed.
+
+When the buffer is full, the **newest** incoming event is dropped and logged. The subgraph connection stays open and keeps emitting unaffected.
+
+A larger value gives the router more headroom to absorb bursts at the cost of memory. A smaller value keeps memory minimal and drops eagerly, which suits workloads where missing an event under pressure is acceptable.
+
+```yaml
+subscriptions:
+  enabled: true
+  subgraph_buffer_capacity: 1024 # default
+```
+
 ### Broadcast Capacity
 
-Controls the buffer size of the internal broadcast channel used to fan subscription events out to clients.
+Controls the buffer size of the broadcast channel used to fan events out to clients **after** they have been processed by the router (entity resolution complete).
 
-When a consumer falls behind and the buffer fills up, it skips missed messages and continues from
-the latest available event. The consumer is not disconnected - there is a trace log when this
-happens. Increase this value if consumers are frequently falling behind on high-throughput
-subscriptions.
+Each active subscription has its own broadcast channel. If a client consumer falls behind and the buffer fills up, it skips missed messages and continues from the latest available event. The client is not disconnected - a trace log is emitted when this happens.
+
+Subscription events are typically low-frequency, so the default of 32 is sufficient for most workloads. Increase this value if clients are frequently falling behind on high-throughput subscriptions.
 
 ```yaml
 subscriptions:
   enabled: true
   broadcast_capacity: 64 # defaults to 32
 ```
+
+#### How the two buffers relate
+
+These two buffers sit at different points in the subscription pipeline:
+
+```
+subgraph → [subgraph_buffer_capacity] → entity resolution → [broadcast_capacity] → clients
+```
+
+`subgraph_buffer_capacity` protects the subgraph: it decouples event ingestion from processing so the subgraph never stalls waiting for the router. Events are dropped here when the router's processing pipeline cannot keep up.
+
+`broadcast_capacity` protects the router: it decouples event delivery from slow or lagging clients so one slow client cannot block others. Events are dropped here when a specific client cannot consume fast enough.
 
 ### Long-Lived Client Limit
 
