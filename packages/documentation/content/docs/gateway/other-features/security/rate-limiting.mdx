@@ -116,12 +116,73 @@ export const gatewayConfig = defineConfig({
 });
 ```
 
+### Applying Different Limits per Field
+
+To set a default limit for all fields on a type while overriding specific fields with a tighter
+limit, use the negation pattern in the `field` value to exclude the specific fields from the
+catch-all rule:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  rateLimiting: [
+    {
+      type: "Query",
+      field: "!(getProduct)",
+      max: 10,
+      ttl: 1000,
+      identifier: "{context.headers.authorization}",
+    },
+    {
+      type: "Query",
+      field: "getProduct",
+      max: 5,
+      ttl: 1000,
+      identifier: "{context.headers.authorization}",
+    },
+  ],
+});
+```
+
+To exclude multiple fields from the catch-all, list them separated by `|`:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  rateLimiting: [
+    {
+      type: "Query",
+      field: "!(getProduct|me)",
+      max: 10,
+      ttl: 1000,
+      identifier: "{context.headers.authorization}",
+    },
+    {
+      type: "Query",
+      field: "getProduct",
+      max: 5,
+      ttl: 1000,
+      identifier: "{context.headers.authorization}",
+    },
+    {
+      type: "Query",
+      field: "me",
+      max: 3,
+      ttl: 1000,
+      identifier: "{context.headers.authorization}",
+    },
+  ],
+});
+```
+
 ### Configuration Options
 
 | Option         | Type                    | Description                                                                                                                                                                                                                        |
 | -------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `type`         | `string`                | The GraphQL type that contains the field to rate-limit (e.g. `"Query"`, `"Mutation"`).                                                                                                                                             |
-| `field`        | `string`                | The field name on the given type to rate-limit.                                                                                                                                                                                    |
+| `field`        | `string`                | The field name on the given type to rate-limit. Supports negation patterns such as `!(getProduct)` to match all fields except the listed ones, and `!(getProduct\|me)` to exclude multiple fields.                                 |
 | `max`          | `number`                | Maximum number of requests allowed within the time window.                                                                                                                                                                         |
 | `ttl`          | `number`                | Duration of the time window in **milliseconds** (e.g. `60000` for 1 minute).                                                                                                                                                       |
 | `identifier`   | `string`                | Template string for the caller identity key. Supports `{context.*}` for request context values and `{args.*}` for field argument values. Mutually exclusive with `identifyFn` and `identityArgs`.                                  |
