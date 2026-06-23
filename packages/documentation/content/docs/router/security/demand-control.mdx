@@ -362,29 +362,8 @@ subgraph using `extend schema @link`, alongside your other Federation directives
 ```graphql
 extend schema
   @link(
-    url: "https://specs.apollo.dev/federation/v2.0"
-    import: ["@key", "@external", "@requires"]
-  )
-  @link(
     url: "https://specs.apollo.dev/federation/v2.9"
-    import: ["@cost", "@listSize"]
-  )
-```
-
-You can have multiple `@link` entries; one for your base Federation directives and a separate one
-for the cost directives introduced in v2.9. Each subgraph independently declares what it imports.
-
-**Full subgraph example:**
-
-```graphql
-extend schema
-  @link(
-    url: "https://specs.apollo.dev/federation/v2.0"
-    import: ["@key", "@external", "@requires"]
-  )
-  @link(
-    url: "https://specs.apollo.dev/federation/v2.9"
-    import: ["@cost", "@listSize"]
+    import: ["@key", "@external", "@requires", "@cost", "@listSize"]
   )
 
 type Query {
