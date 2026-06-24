@@ -57,6 +57,21 @@ values.
 - `first` - The value from the first subgraph to respond is used.
 - `append` - Values from all subgraph responses are joined by a comma.
 
+#### Restrictive `Cache-Control` Merging
+
+`Cache-Control` does not follow the algorithm above. When you propagate it, the router never just
+picks or concatenates subgraph values - it **merges them using the most conservative directive**, and
+this safe behavior **cannot be turned off**.
+
+- You **must** use `algorithm: append`. Any other algorithm is rejected at compile time, because
+  propagating `Cache-Control` across subgraphs without the restrictive merge is unsafe.
+- A `private` or `no-cache` subgraph **always wins** over a `public` one. Mutations and errored
+  responses are **never** cached.
+- If you don't propagate `Cache-Control`, the merge is inactive and the header is not forwarded.
+
+This matters because without it, a single mis-configured subgraph can silently cache private data or cache a
+mutation. Read the full behavior and examples in **[Restrictive `Cache-Control` Merging](/docs/router/guides/header-manipulation#restrictive-cache-control-merging)**.
+
 ### 2. `insert`
 
 Adds a new header or overwrites an existing one.
