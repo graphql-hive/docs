@@ -29,53 +29,20 @@ Hive Gateway supports two complementary approaches:
 ## Programmatic Configuration
 
 Use `rateLimiting` with an array of rules to configure per-field limits directly in
-`gateway.config.ts`. Each rule targets a specific GraphQL type and field, and lets you customize
-the time window, request limit, and how callers are identified.
+`gateway.config.ts`. Each rule targets a specific GraphQL type and field.
 
-### Limit by Authorization Token
+Each rule requires `type`, `field`, `max`, `ttl`, and exactly one of `identifier`, `identifyFn`, or `identityArgs` to determine how callers are identified.
 
-A common pattern is to rate-limit each unique user identified by their authorization token:
+### Default caller identification
 
-```ts title="gateway.config.ts"
-import { defineConfig } from "@graphql-hive/gateway";
+When you only need to limit a field by caller without caring about arguments, use `identifier` with a `{context.*}` path. The gateway automatically resolves a caller identity by checking the following sources in order:
 
-export const gatewayConfig = defineConfig({
-  rateLimiting: [
-    {
-      type: "Query",
-      field: "searchProducts",
-      max: 10, // allow at most 10 calls…
-      ttl: 60000, // …per 60 seconds (in milliseconds)
-      identifier: "{context.headers.authorization}", // per unique token
-    },
-  ],
-});
-```
+1. `authorization` header
+2. Remote IP address
+3. `x-forwarded-for` header
+4. Falls back to `'unknown'` if none of the above are present
 
-### Limit by IP Address
-
-If your gateway does not have an authenticated user, you can use the request IP address as the
-identifier:
-
-```ts title="gateway.config.ts"
-import { defineConfig } from "@graphql-hive/gateway";
-
-export const gatewayConfig = defineConfig({
-  rateLimiting: [
-    {
-      type: "Mutation",
-      field: "createComment",
-      max: 5,
-      ttl: 60000, // 60 seconds
-      identifier: "{context.headers.x-forwarded-for}",
-    },
-  ],
-});
-```
-
-### Multiple Rules
-
-You can define rate limits for multiple fields at once:
+For most cases you only need to specify the field limits:
 
 ```ts title="gateway.config.ts"
 import { defineConfig } from "@graphql-hive/gateway";
@@ -86,14 +53,124 @@ export const gatewayConfig = defineConfig({
       type: "Query",
       field: "searchProducts",
       max: 10,
-      ttl: 60000,
+      ttl: 60000, // 60 seconds in milliseconds
       identifier: "{context.headers.authorization}",
     },
+  ],
+});
+```
+
+### Limit by Argument Value
+
+Use `identifier: "{args.*}"` to create a separate rate limit bucket per unique argument value, useful for limiting access per resource ID:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  rateLimiting: [
+    {
+      type: "Query",
+      field: "getProduct",
+      max: 10,
+      ttl: 60000,
+      identifier: "{args.id}", // one bucket per unique product ID
+    },
+  ],
+});
+```
+
+Use `identityArgs` when you need to key on multiple arguments or use dot-notation for nested paths:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  rateLimiting: [
     {
       type: "Mutation",
       field: "createOrder",
-      max: 3,
+      max: 5,
       ttl: 60000,
+      identityArgs: ["input.userId"], // nested path via dot notation
+    },
+  ],
+});
+```
+
+Use `identifyFn` when the identity key requires logic that a template string cannot express, such as combining multiple values:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  rateLimiting: [
+    {
+      type: "Query",
+      field: "getProduct",
+      max: 10,
+      ttl: 60000,
+      identifyFn: (ctx, args) => `${ctx.ip}:${args.id}`,
+    },
+  ],
+});
+```
+
+### Applying Different Limits per Field
+
+To set a default limit for all fields on a type while overriding specific fields with a tighter
+limit, use the negation pattern in the `field` value to exclude the specific fields from the
+catch-all rule:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  rateLimiting: [
+    {
+      type: "Query",
+      field: "!(getProduct)",
+      max: 10,
+      ttl: 1000,
+      identifier: "{context.headers.authorization}",
+    },
+    {
+      type: "Query",
+      field: "getProduct",
+      max: 5,
+      ttl: 1000,
+      identifier: "{context.headers.authorization}",
+    },
+  ],
+});
+```
+
+To exclude multiple fields from the catch-all, list them separated by `|`:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  rateLimiting: [
+    {
+      type: "Query",
+      field: "!(getProduct|me)",
+      max: 10,
+      ttl: 1000,
+      identifier: "{context.headers.authorization}",
+    },
+    {
+      type: "Query",
+      field: "getProduct",
+      max: 5,
+      ttl: 1000,
+      identifier: "{context.headers.authorization}",
+    },
+    {
+      type: "Query",
+      field: "me",
+      max: 3,
+      ttl: 1000,
       identifier: "{context.headers.authorization}",
     },
   ],
@@ -102,13 +179,15 @@ export const gatewayConfig = defineConfig({
 
 ### Configuration Options
 
-| Option       | Type     | Description                                                                                                     |
-| ------------ | -------- | --------------------------------------------------------------------------------------------------------------- |
-| `type`       | `string` | The GraphQL type that contains the field to rate-limit (e.g. `"Query"`, `"Mutation"`).                          |
-| `field`      | `string` | The field name on the given type to rate-limit.                                                                 |
-| `max`        | `number` | Maximum number of requests allowed within the `ttl` window.                                                     |
-| `ttl`        | `number` | Duration of the time window in **milliseconds** (e.g. `60000` for 1 minute).                                    |
-| `identifier` | `string` | Template string for identifying the caller. Use `{context.*}` to access request context values such as headers. |
+| Option         | Type                    | Description                                                                                                                                                                                                                        |
+| -------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`         | `string`                | The GraphQL type that contains the field to rate-limit (e.g. `"Query"`, `"Mutation"`).                                                                                                                                             |
+| `field`        | `string`                | The field name on the given type to rate-limit. Supports negation patterns such as `!(getProduct)` to match all fields except the listed ones, and `!(getProduct\|me)` to exclude multiple fields.                                 |
+| `max`          | `number`                | Maximum number of requests allowed within the time window.                                                                                                                                                                         |
+| `ttl`          | `number`                | Duration of the time window in **milliseconds** (e.g. `60000` for 1 minute).                                                                                                                                                       |
+| `identifier`   | `string`                | Template string for the caller identity key. Supports `{context.*}` for request context values and `{args.*}` for field argument values. Mutually exclusive with `identifyFn` and `identityArgs`.                                  |
+| `identifyFn`   | `(ctx, args) => string` | Function that returns the caller identity key. Receives the context and the resolved field argument values. Mutually exclusive with `identifier` and `identityArgs`.                                                               |
+| `identityArgs` | `string[]`              | Field argument names whose values are used as the caller identity key, creating a separate bucket per unique combination of values. Supports dot notation for nested paths. Mutually exclusive with `identifier` and `identifyFn`. |
 
 ## Rate Limiting through `@rateLimit` Directive
 
