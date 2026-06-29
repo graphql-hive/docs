@@ -140,7 +140,6 @@ Maximum time the router will spend handling a single incoming client request, in
 format (e.g. `60s` for 60 seconds, `1m` for 1 minute). The clock starts the moment the request is received and covers the entire pipeline — HTTP body recieving, parsing, validation, query planning, and execution —
 until a response is sent back to the client.
 
-
 If a request exceeds this duration, it is aborted and the client receives a `504 Gateway Timeout` response with a `GATEWAY_TIMEOUT` error.
 
 ```yaml
