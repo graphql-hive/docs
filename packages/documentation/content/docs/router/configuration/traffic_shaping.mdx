@@ -131,6 +131,26 @@ new long-lived connection attempts are rejected with `503 Service Unavailable` a
 This limit only activates when at least one of WebSocket or Subscriptions is enabled. Setting it
 to `0` disables the limit entirely.
 
+### `router.request_timeout`
+
+- **Type:** `string`
+- **Default:** `60s`
+
+Maximum time the router will spend handling a single incoming client request, in duration string
+format (e.g. `60s` for 60 seconds, `1m` for 1 minute). The clock starts the moment the request is received and covers the entire pipeline — HTTP body recieving, parsing, validation, query planning, and execution —
+until a response is sent back to the client.
+
+
+If a request exceeds this duration, it is aborted and the client receives a `504 Gateway Timeout` response with a `GATEWAY_TIMEOUT` error.
+
+```yaml
+traffic_shaping:
+  router:
+    request_timeout: 60s
+```
+
+> This is distinct from the outbound [`request_timeout`](#request_timeout), which bounds how long the router waits for an individual subgraph response.
+
 ### `router.tls` (Client ↔ Router)
 
 Use this configuration field to make the router serve HTTPS traffic (TLS) and optionally require client certificates (mTLS).
