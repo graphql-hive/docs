@@ -127,7 +127,15 @@
                       "enum": ["ROOT", "ENTITY"]
                     }
                   },
-                  "required": ["start", "duration", "status", "fields", "subgraph", "paths", "type"]
+                  "required": [
+                    "start",
+                    "duration",
+                    "status",
+                    "fields",
+                    "subgraph",
+                    "paths",
+                    "type"
+                  ]
                 }
               }
             },
