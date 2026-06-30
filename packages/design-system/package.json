@@ -48,6 +48,6 @@
     "storybook-dark-mode": "4.0.2",
     "tailwindcss": "4.1.18",
     "typescript": "5.9.2",
-    "vite": "6.4.2"
+    "vite": "6.4.3"
   }
 }
