@@ -2200,6 +2200,434 @@ export config gatewayConfig = defineConfig({
 })
 ```
 
+#### Setting attributes from request headers
+
+A common need is forwarding an incoming HTTP header (a tenant id, a feature flag, a correlation id,
+...) as an attribute on the trace, so you can filter or group traces by it in your tracing backend.
+
+`onRequest` runs before the GraphQL operation span exists, so the active span at that point is the
+HTTP root span. Remember that `openTelemetrySetup` must have run (as the first import of your config
+file) for `traces: true` to actually produce spans.
+
+<Tabs items={["With Context Manager", "Without Context Manager"]}>
+
+<Tabs.Tab>
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { trace } from "@graphql-hive/gateway/opentelemetry/api";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+
+openTelemetrySetup({
+  contextManager: new AsyncLocalStorageContextManager(),
+  traces: { console: true },
+});
+
+export const gatewayConfig = defineConfig({
+  openTelemetry: {
+    traces: true,
+  },
+  plugins: () => [
+    {
+      onRequest({ request }) {
+        const span = trace.getActiveSpan();
+        const tenantId = request.headers.get("x-tenant-id");
+        if (tenantId) {
+          span.setAttribute("tenant.id", tenantId);
+        }
+      },
+    },
+  ],
+});
+```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+Use `hive.getHttpContext(request)` instead of `trace.getActiveSpan()`, as described in
+[Access root spans](#access-root-spans):
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { hive, trace } from "@graphql-hive/gateway/opentelemetry/api";
+
+openTelemetrySetup({
+  contextManager: null, // Don't register any context manager
+  traces: { console: true },
+});
+
+export const gatewayConfig = defineConfig({
+  openTelemetry: {
+    useContextManager: false, // Make sure to disable context manager usage
+    traces: true,
+  },
+  plugins: () => [
+    {
+      onRequest({ request }) {
+        const span = trace.getSpan(hive.getHttpContext(request));
+        const tenantId = request.headers.get("x-tenant-id");
+        if (tenantId) {
+          span.setAttribute("tenant.id", tenantId);
+        }
+      },
+    },
+  ],
+});
+```
+
+</Tabs.Tab>
+
+</Tabs>
+
+#### Setting attributes on the response
+
+You can also add attributes once the response is known, for example the size of the payload or a
+cache status header, using `onResponse`:
+
+<Tabs items={["With Context Manager", "Without Context Manager"]}>
+
+<Tabs.Tab>
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { trace } from "@graphql-hive/gateway/opentelemetry/api";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+
+openTelemetrySetup({
+  contextManager: new AsyncLocalStorageContextManager(),
+  traces: { console: true },
+});
+
+export const gatewayConfig = defineConfig({
+  openTelemetry: {
+    traces: true,
+  },
+  plugins: () => [
+    {
+      onResponse({ response }) {
+        const span = trace.getActiveSpan();
+        const cacheStatus = response.headers.get("x-cache-status");
+        if (cacheStatus) {
+          span.setAttribute("cache.status", cacheStatus);
+        }
+      },
+    },
+  ],
+});
+```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+`onResponse` still runs within the HTTP request's context, so the same `hive.getHttpContext(request)`
+lookup applies:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { hive, trace } from "@graphql-hive/gateway/opentelemetry/api";
+
+openTelemetrySetup({
+  contextManager: null, // Don't register any context manager
+  traces: { console: true },
+});
+
+export const gatewayConfig = defineConfig({
+  openTelemetry: {
+    useContextManager: false, // Make sure to disable context manager usage
+    traces: true,
+  },
+  plugins: () => [
+    {
+      onResponse({ request, response }) {
+        const span = trace.getSpan(hive.getHttpContext(request));
+        const cacheStatus = response.headers.get("x-cache-status");
+        if (cacheStatus) {
+          span.setAttribute("cache.status", cacheStatus);
+        }
+      },
+    },
+  ],
+});
+```
+
+</Tabs.Tab>
+
+</Tabs>
+
+#### Adding attributes from the GraphQL context
+
+Once the operation is executing, prefer reading from the GraphQL `context` instead of the request,
+for example to tag the trace with the authenticated user resolved by an auth plugin:
+
+<Tabs items={["With Context Manager", "Without Context Manager"]}>
+
+<Tabs.Tab>
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { trace } from "@graphql-hive/gateway/opentelemetry/api";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+
+openTelemetrySetup({
+  contextManager: new AsyncLocalStorageContextManager(),
+  traces: { console: true },
+});
+
+export const gatewayConfig = defineConfig({
+  openTelemetry: {
+    traces: true,
+  },
+  plugins: () => [
+    {
+      onExecute({ args }) {
+        const span = trace.getActiveSpan();
+        span.setAttribute("user.id", args.contextValue.user?.id ?? "anonymous");
+      },
+    },
+  ],
+});
+```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+Use `hive.getOperationContext(context)` to retrieve the operation span instead:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { hive, trace } from "@graphql-hive/gateway/opentelemetry/api";
+
+openTelemetrySetup({
+  contextManager: null, // Don't register any context manager
+  traces: { console: true },
+});
+
+export const gatewayConfig = defineConfig({
+  openTelemetry: {
+    useContextManager: false, // Make sure to disable context manager usage
+    traces: true,
+  },
+  plugins: () => [
+    {
+      onExecute({ args }) {
+        const span = trace.getSpan(hive.getOperationContext(args.contextValue));
+        span.setAttribute("user.id", args.contextValue.user?.id ?? "anonymous");
+      },
+    },
+  ],
+});
+```
+
+</Tabs.Tab>
+
+</Tabs>
+
+#### Recording events and links
+
+Events let you record something that happened during a span without creating a whole new span, and
+links let you relate the current span to another trace (e.g. a message queue producer/consumer
+relationship):
+
+<Tabs items={["With Context Manager", "Without Context Manager"]}>
+
+<Tabs.Tab>
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { trace } from "@graphql-hive/gateway/opentelemetry/api";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+
+openTelemetrySetup({
+  contextManager: new AsyncLocalStorageContextManager(),
+  traces: { console: true },
+});
+
+export const gatewayConfig = defineConfig({
+  openTelemetry: {
+    traces: true,
+  },
+  plugins: () => [
+    {
+      onRequest({ request }) {
+        const span = trace.getActiveSpan();
+
+        // Record an event with its own attributes
+        span?.addEvent("rate-limit.checked", {
+          "rate-limit.remaining": Number(
+            request.headers.get("x-ratelimit-remaining"),
+          ),
+        });
+      },
+      onSubgraphExecute({ executionRequest }) {
+        const span = trace.getActiveSpan();
+
+        // Link this span to a trace carried in a custom header, e.g. from a queue message
+        const linkedTraceId = executionRequest.context?.linkedTraceId;
+        if (linkedTraceId) {
+          span.addLink({ context: linkedTraceId });
+        }
+      },
+    },
+  ],
+});
+```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+Use `hive.getHttpContext(request)` and `hive.getExecutionRequestContext(executionRequest)` to reach
+the relevant spans:
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { hive, trace } from "@graphql-hive/gateway/opentelemetry/api";
+
+openTelemetrySetup({
+  contextManager: null, // Don't register any context manager
+  traces: { console: true },
+});
+
+export const gatewayConfig = defineConfig({
+  openTelemetry: {
+    useContextManager: false, // Make sure to disable context manager usage
+    traces: true,
+  },
+  plugins: () => [
+    {
+      onRequest({ request }) {
+        const span = trace.getSpan(hive.getHttpContext(request));
+
+        // Record an event with its own attributes
+        span?.addEvent("rate-limit.checked", {
+          "rate-limit.remaining": Number(
+            request.headers.get("x-ratelimit-remaining"),
+          ),
+        });
+      },
+      onSubgraphExecute({ executionRequest }) {
+        const span = trace.getSpan(
+          hive.getExecutionRequestContext(executionRequest),
+        );
+
+        // Link this span to a trace carried in a custom header, e.g. from a queue message
+        const linkedTraceId = executionRequest.context?.linkedTraceId;
+        if (linkedTraceId) {
+          span.addLink({ context: linkedTraceId });
+        }
+      },
+    },
+  ],
+});
+```
+
+</Tabs.Tab>
+
+</Tabs>
+
+#### Recording errors
+
+When you catch an error yourself (instead of letting it bubble up and be reported automatically),
+record it as an [`Exception`](https://opentelemetry.io/docs/specs/otel/trace/exceptions/) so it shows
+up consistently with the rest of the plugin's error spans:
+
+<Tabs items={["With Context Manager", "Without Context Manager"]}>
+
+<Tabs.Tab>
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import { trace, SpanStatusCode } from "@graphql-hive/gateway/opentelemetry/api";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+
+openTelemetrySetup({
+  contextManager: new AsyncLocalStorageContextManager(),
+  traces: { console: true },
+});
+
+export const gatewayConfig = defineConfig({
+  openTelemetry: {
+    traces: true,
+  },
+  plugins: () => [
+    {
+      async onRequest({ request }) {
+        const span = trace.getActiveSpan();
+        try {
+          await someCustomAuthCheck(request);
+        } catch (err) {
+          span.recordException(err);
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: err.message,
+          });
+          throw err;
+        }
+      },
+    },
+  ],
+});
+```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
+import {
+  hive,
+  trace,
+  SpanStatusCode,
+} from "@graphql-hive/gateway/opentelemetry/api";
+
+openTelemetrySetup({
+  contextManager: null, // Don't register any context manager
+  traces: { console: true },
+});
+
+export const gatewayConfig = defineConfig({
+  openTelemetry: {
+    useContextManager: false, // Make sure to disable context manager usage
+    traces: true,
+  },
+  plugins: () => [
+    {
+      async onRequest({ request }) {
+        const span = trace.getSpan(hive.getHttpContext(request));
+        try {
+          await someCustomAuthCheck(request);
+        } catch (err) {
+          span.recordException(err);
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: err.message,
+          });
+          throw err;
+        }
+      },
+    },
+  ],
+});
+```
+
+</Tabs.Tab>
+
+</Tabs>
+
 ### Troubleshooting
 
 The default behavior of the plugin is to log errors and warnings to the console.
