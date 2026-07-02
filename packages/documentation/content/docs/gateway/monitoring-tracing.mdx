@@ -193,13 +193,22 @@ openTelemetrySetup({
 
   traces: {
     // Define your exporter, most of the time the OTLP HTTP one. Traces are batched by default.
-    exporter: new OTLPTraceExporter({ url: process.env["OTLP_URL"] }),
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
 
     // You can easily enable a console exporter for quick debug
     console: process.env["DEBUG_TRACES"] === "1",
   },
 });
 ```
+
+<Callout type="info">
+
+`traces.console` only adds a `ConsoleSpanExporter` writing spans to stdout, on
+top of your real exporter. It's meant for debugging when you struggle to
+receive spans, not as a replacement for a proper exporter in the examples
+below.
+
+</Callout>
 
 After configuring and setting up the telemetry, make sure to import it as the first import in your
 `gateway.config.ts` file and enable OpenTelemetry tracing:
@@ -246,7 +255,7 @@ new NodeSDK({
   // All configuration is optional. OTEL rely on env variables or sensible default value.
 
   // Defines the exporter, HTTP OTLP most of the time. Traces are batched by default
-  traceExporter: new OTLPTraceExporter({ url: process.env["OTLP_URL"] }),
+  traceExporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
 
   // Optional, enables automatic instrumentation, adding traces like network spans.
   instrumentations: getNodeAutoInstrumentations(),
@@ -502,9 +511,6 @@ import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
-  traces: {
-    console: true,
-  },
 });
 ```
 
@@ -1874,11 +1880,14 @@ import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { hive } from "@graphql-hive/gateway/opentelemetry/api";
 import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import { useGenericAuth } from "@envelop/generic-auth";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -1917,11 +1926,12 @@ import { useOpenTelemetry } from '@graphql-hive/plugin-opentelemetry'
 import { hive } from '@graphql-hive/plugin-opentelemetry/api'
 import { openTelemetrySetup } from '@graphql-hive/plugin-opentelemetry/setup'
 import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks'
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { useGenericAuth } from '@envelop/generic-auth'
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
-  traces: { console: true },
+  traces: { exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317"  }) },
 })
 
 export const gateway = createGatewayRuntime({
@@ -1973,11 +1983,14 @@ to get the proper context.
 import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { hive } from "@graphql-hive/gateway/opentelemetry/api";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import { useGenericAuth } from "@envelop/generic-auth";
 
 openTelemetrySetup({
   contextManager: null, // Don't register any context manager
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2016,11 +2029,12 @@ import { createGatewayRuntime } from '@graphql-hive/gateway-runtime'
 import { useOpenTelemetry } from '@graphql-hive/plugin-opentelemetry'
 import { hive } from '@graphql-hive/plugin-opentelemetry/api'
 import { openTelemetrySetup } from '@graphql-hive/plugin-opentelemetry/setup'
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { useGenericAuth } from '@envelop/generic-auth'
 
 openTelemetrySetup({
   contextManager: null, // Don't register any context manager
-  traces: { console: true },
+  traces: { exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317"  }) },
 })
 
 export const gateway = createGatewayRuntime({
@@ -2087,11 +2101,14 @@ import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { trace } from "@graphql-hive/gateway/opentelemetry/api";
 import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import { useGenericAuth } from "@envelop/generic-auth";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2129,10 +2146,13 @@ import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 // This package re-export official @opentelemetry/api package for ease of use
 import { trace, hive } from "@graphql-hive/gateway/opentelemetry/api";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: null, // Don't register any context manager
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2218,10 +2238,13 @@ import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { trace } from "@graphql-hive/gateway/opentelemetry/api";
 import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2253,10 +2276,13 @@ Use `hive.getHttpContext(request)` instead of `trace.getActiveSpan()`, as descri
 import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { hive, trace } from "@graphql-hive/gateway/opentelemetry/api";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: null, // Don't register any context manager
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2296,10 +2322,13 @@ import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { trace } from "@graphql-hive/gateway/opentelemetry/api";
 import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2331,10 +2360,13 @@ lookup applies:
 import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { hive, trace } from "@graphql-hive/gateway/opentelemetry/api";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: null, // Don't register any context manager
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2374,10 +2406,13 @@ import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { trace } from "@graphql-hive/gateway/opentelemetry/api";
 import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2405,10 +2440,13 @@ Use `hive.getOperationContext(context)` to retrieve the operation span instead:
 import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { hive, trace } from "@graphql-hive/gateway/opentelemetry/api";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: null, // Don't register any context manager
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2446,10 +2484,13 @@ import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { trace } from "@graphql-hive/gateway/opentelemetry/api";
 import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2493,10 +2534,13 @@ the relevant spans:
 import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { hive, trace } from "@graphql-hive/gateway/opentelemetry/api";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: null, // Don't register any context manager
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2551,10 +2595,13 @@ import { defineConfig } from "@graphql-hive/gateway";
 import { openTelemetrySetup } from "@graphql-hive/gateway/opentelemetry/setup";
 import { trace, SpanStatusCode } from "@graphql-hive/gateway/opentelemetry/api";
 import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2593,10 +2640,13 @@ import {
   trace,
   SpanStatusCode,
 } from "@graphql-hive/gateway/opentelemetry/api";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 openTelemetrySetup({
   contextManager: null, // Don't register any context manager
-  traces: { console: true },
+  traces: {
+    exporter: new OTLPTraceExporter({ url: "http://<otlp-endpoint>:4317" }),
+  },
 });
 
 export const gatewayConfig = defineConfig({
@@ -2652,9 +2702,6 @@ import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-ho
 
 openTelemetrySetup({
   contextManager: new AsyncLocalStorageContextManager(),
-  traces: {
-    console: true,
-  },
 });
 ```
 
