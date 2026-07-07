@@ -19,8 +19,33 @@ Type is `boolean` and default is `false`.
 
 ### `require_id`
 
-If `true`, requests must contain a resolvable persisted document ID. If Router cannot extract an
-ID, it returns `PERSISTED_DOCUMENT_ID_REQUIRED`. Type is `boolean` and default is `false`.
+Controls whether requests must contain a resolvable persisted document ID. If a request lacks an
+ID and `require_id` is enforced, Router returns `PERSISTED_DOCUMENT_ID_REQUIRED`.
+
+Accepts a static boolean (`true` or `false`, default is `false`) or an **expression** that is
+evaluated per-request. The expression can reference:
+
+| Variable           | Description                          |
+| ------------------ | ------------------------------------ |
+| `.request.headers` | HTTP headers of the incoming request |
+| `.request.method`  | HTTP method (`GET`, `POST`, etc.)    |
+| `.request.url`     | Full request URL                     |
+| `env("VAR")`       | Environment variable at request time |
+
+When the expression returns `true`, the document ID requirement is enforced, but when `false` it is
+skipped for that request.
+
+```yaml
+persisted_documents:
+  require_id:
+    expression: |
+      is_null(env("BYPASS_SECRET"))
+      || .request.headers."x-bypass-require-id" != env("BYPASS_SECRET")
+```
+
+You can also bypass the requirement on a per-request basis at runtime by setting
+`"hive::persisted_documents::skip_enforcement": true` in the request context - see
+[Persisted Documents security guide](/docs/router/security/persisted-documents#per-request-bypass).
 
 ### `log_missing_id`
 
