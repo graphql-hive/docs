@@ -281,6 +281,12 @@ The `include.context` property supports three forms:
 | `hive::telemetry::client_name`    |   ✅    | The name of the client application    |
 | `hive::telemetry::client_version` |   ✅    | The version of the client application |
 
+### Persisted Documents
+
+| Property                                      | Mutable | Description                                                                       |
+| --------------------------------------------- | :-----: | --------------------------------------------------------------------------------- |
+| `hive::persisted_documents::skip_enforcement` |   ✅    | Skip the `require_id` check for this request. Set to `true` to bypass enforcement |
+
 ## Body
 
 - Some stages allow body mutation, but `graphql.analysis` does not.
