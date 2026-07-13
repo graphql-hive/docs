@@ -7,8 +7,8 @@ import { Tabs } from "@hive/design-system/tabs";
 
 import { MetricsSection } from "#components/otel-metrics/metrics-section";
 
-Hive Router exposes OpenTelemetry metrics for gateway traffic, subgraph traffic, cache behavior,
-supergraph lifecycle, and GraphQL errors.
+Hive Router exposes OpenTelemetry metrics for gateway traffic, subgraph traffic, subscriptions,
+cache behavior, supergraph lifecycle, and GraphQL errors.
 
 This guide explains where to export metrics, how to configure OTLP and Prometheus, how to customize
 instruments, and what each metric/label means in practice.
@@ -656,6 +656,134 @@ HTTP client metrics capture outbound requests the router makes to subgraphs.
   ]}
 />
 
+### Subscriptions
+
+Subscription metrics provide end-to-end visibility into operations and transport connections between
+clients, the router, and subgraphs. Operations and connections are measured separately because one
+connection can carry multiple operations, while subscription deduplication can fan one subgraph
+operation out to multiple clients.
+
+<MetricsSection
+  labels={[
+    {
+      meaning: "Subscription transport",
+      name: "subscription.transport",
+      typicalValues: [
+        "websocket",
+        "http_multipart",
+        "http_sse",
+        "http_callback",
+      ],
+    },
+    {
+      meaning: "Reason a client subscription ended",
+      name: "subscription.end_reason",
+      notes: "Used by hive.router.subscriptions.clients.ended_total only",
+      typicalValues: ["completed", "error", "client_disconnected"],
+    },
+    {
+      meaning: "Subgraph identifier",
+      name: "subgraph.name",
+      typicalValues: ["accounts"],
+    },
+  ]}
+  metrics={[
+    {
+      description:
+        "Current number of active subscription operations from clients to the router.",
+      labels: ["subscription.transport"],
+      name: "hive.router.subscriptions.clients.active",
+      type: "UpDownCounter",
+      unit: "{subscription}",
+    },
+    {
+      description:
+        "Current number of client transport connections carrying subscriptions.",
+      labels: ["subscription.transport"],
+      name: "hive.router.subscriptions.clients.connections",
+      type: "UpDownCounter",
+      unit: "{connection}",
+    },
+    {
+      description:
+        "Current number of active subscription operations from the router to subgraphs.",
+      labels: ["subgraph.name"],
+      name: "hive.router.subscriptions.subgraphs.active",
+      type: "UpDownCounter",
+      unit: "{subscription}",
+    },
+    {
+      description:
+        "Current number of transport connections from the router to subgraphs.",
+      labels: ["subgraph.name", "subscription.transport"],
+      name: "hive.router.subscriptions.subgraphs.connections",
+      type: "UpDownCounter",
+      unit: "{connection}",
+    },
+    {
+      description: "Total number of client subscriptions started.",
+      labels: ["subscription.transport"],
+      name: "hive.router.subscriptions.clients.started_total",
+      type: "Counter",
+      unit: "{subscription}",
+    },
+    {
+      description: "Total number of client subscriptions ended.",
+      labels: ["subscription.transport", "subscription.end_reason"],
+      name: "hive.router.subscriptions.clients.ended_total",
+      type: "Counter",
+      unit: "{subscription}",
+    },
+    {
+      description: "Total number of subgraph subscriptions started.",
+      labels: ["subgraph.name"],
+      name: "hive.router.subscriptions.subgraphs.started_total",
+      type: "Counter",
+      unit: "{subscription}",
+    },
+    {
+      description: "Total number of subgraph subscriptions ended.",
+      labels: ["subgraph.name"],
+      name: "hive.router.subscriptions.subgraphs.ended_total",
+      type: "Counter",
+      unit: "{subscription}",
+    },
+    {
+      description:
+        "Total number of messages successfully sent to client subscribers.",
+      labels: ["subscription.transport"],
+      name: "hive.router.subscriptions.clients.sent_messages_total",
+      type: "Counter",
+      unit: "{message}",
+    },
+    {
+      description:
+        "Total number of messages skipped for lagging clients during broadcast fan-out.",
+      labels: ["subscription.transport"],
+      name: "hive.router.subscriptions.clients.lagged_messages_total",
+      type: "Counter",
+      unit: "{message}",
+    },
+    {
+      description:
+        "Total number of subgraph messages dropped because an internal subscription buffer was full.",
+      labels: ["subscription.transport"],
+      name: "hive.router.subscriptions.subgraphs.dropped_messages_total",
+      type: "Counter",
+      unit: "{message}",
+    },
+  ]}
+/>
+
+Every recorded start has exactly one matching end. Client end reasons are `completed` when the
+source finishes normally, `error` when an error is delivered to the client, and
+`client_disconnected` when the client disconnects, unsubscribes, or the router otherwise drops the
+stream.
+
+Lagged and dropped counters increase by the number of messages skipped without terminating the
+subscription. Use `sent_messages_total / (sent_messages_total + lagged_messages_total)` to calculate
+the client delivery ratio for each transport.
+
 ### Coprocessor
 
 Coprocessor metrics capture outbound calls that Hive Router makes to your coprocessor service.
@@ -878,6 +1006,17 @@ across your federated graph.
 
 Break these metrics down by `subgraph.name`, `http.response.status_code`, and `error.type` to
 identify which subgraph is driving tail latency or error spikes.
+
+### Monitor subscription health
+
+Use the active and connection metrics to track current load by transport and subgraph. Compare
+`started_total` and `ended_total` rates to identify churn: a spike in ends can reveal mass
+disconnects, while high start and end rates with stable active subscriptions can reveal reconnect
+loops.
+
+Monitor `lagged_messages_total` and `dropped_messages_total` for slow consumers and saturated
+internal buffers. These events do not terminate subscriptions, so an alert should use their rate
+rather than active subscription count alone.
 
 ### Monitor cache effectiveness and planning pressure
 

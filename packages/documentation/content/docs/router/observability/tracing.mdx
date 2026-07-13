@@ -204,6 +204,13 @@ telemetry:
 Most teams should stay on `spec_compliant`. The other modes are primarily useful when migrating
 legacy dashboards that still expect deprecated attributes.
 
+## Subscription errors
+
+GraphQL errors produced while establishing or running WebSocket subscriptions are recorded in
+traces like errors from HTTP GraphQL requests. This includes authentication, parsing, validation,
+and execution errors, making subscription failures visible in the same tracing backend as other
+router traffic.
+
 ## Troubleshooting
 
 When traces are missing or incomplete, think in layers:
