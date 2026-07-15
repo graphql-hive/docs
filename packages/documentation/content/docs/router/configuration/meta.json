@@ -4,6 +4,7 @@
     "environment-variables",
     "expressions",
     "demand_control",
+    "error_masking",
     "..."
   ]
 }
