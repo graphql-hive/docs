@@ -24,7 +24,8 @@ flowchart TB
       A([on_http_request]) --> B([on_graphql_params])
       B --> D([on_graphql_parse])
       D --> F([on_graphql_validation])
-      F --> H([on_query_plan])
+      F --> G([on_graphql_analysis])
+      G --> H([on_query_plan])
       H --> J([on_execute])
       J -.->|"per error"| GE([on_graphql_error])
       J -->|"per subgraph call"| K([on_subgraph_execute])
@@ -37,6 +38,7 @@ flowchart TB
       click B href "#on_graphql_params"
       click D href "#on_graphql_parse"
       click F href "#on_graphql_validation"
+      click G href "#on_graphql_analysis"
       click H href "#on_query_plan"
       click J href "#on_execute"
       click K href "#on_subgraph_execute"
@@ -489,6 +491,95 @@ async fn on_graphql_validation<'exec>(
 
 - [`root_field_limit`](https://github.com/graphql-hive/router/blob/main/plugin_examples/root_field_limit/src/lib.rs#:~:text=fn%20on_graphql_validation)
 - [`one_of`](https://github.com/graphql-hive/router/blob/main/plugin_examples/one_of/src/lib.rs#:~:text=fn%20on_graphql_validation)
+
+### `on_graphql_analysis`
+
+This hook runs right before query planning, after the operation has been parsed, validated, and normalized. It is the last place where you can inspect the operation with full context - the fields being requested, their types, and the request context - and make per-field decisions before the Router plans execution across subgraphs.
+
+It is the ideal place for authorization, rate limiting, or field-level access control on the operation. In fact, the Router's built-in authorization pipeline uses the same field-filtering mechanism under the hood.
+
+```rust
+async fn on_graphql_analysis<'exec>(
+    &'exec self,
+    payload: &mut OnGraphqlAnalysisHookPayload<'exec>,
+  ) -> OnGraphqlAnalysisHookResult
+```
+
+Unlike most request lifecycle hooks, this hook does not use the start/end pattern. It receives a mutable payload and returns either `OnGraphqlAnalysisHookResult::Proceed` to continue, or
+`OnGraphqlAnalysisHookResult::EndWithResponse(...)` to short-circuit with a response.
+
+#### Filtering fields
+
+Rather than letting plugins replace the entire operation - which risks it getting out of sync with the projection plan - the hook exposes `payload.filter_operation`.
+
+You register a visitor that is called once per field and inline fragment, and returns either `selection.keep()` or `selection.reject(error)`.
+
+Rejected fields are removed from the operation and reported to the client as GraphQL errors.
+
+The Router handles the correctness details for you: **null bubbling** (rejecting a non-null field propagates the null up to the nearest nullable parent) and the corresponding **field projection plan
+adjustments**.
+
+Fields hidden by `@skip`/`@include` are ignored, and each `(type, field)` pair is evaluated only once. The first `reject` for a given field wins.
+
+The `Selection` passed to the visitor is either:
+
+- `Selection::Field(field)` - exposes `field.field_name`, `field.response_key`, `field.parent_type_name` (the type declaring the field), `field.output_type_name`, and `field.is_non_null`.
+- `Selection::Fragment(fragment)` - an inline fragment, exposing `fragment.type_condition` (e.g. `User` in `... on User`) and `fragment.parent_type_name`.
+
+#### Usage Examples
+
+**Deny access to a specific field**
+
+Reject a field based on its parent type and name. The rejection becomes a GraphQL error in the
+response, and any non-null constraints are handled via null bubbling.
+
+```rust
+async fn on_graphql_analysis<'exec>(
+    &'exec self,
+    payload: &mut OnGraphqlAnalysisHookPayload<'exec>,
+) -> OnGraphqlAnalysisHookResult {
+    payload.filter_operation(|selection| match selection {
+        Selection::Field(field)
+            if field.parent_type_name == "User" && field.field_name == "email" =>
+        {
+            selection.reject(GraphQLError::from_message_and_code(
+                "Access to field 'email' is not allowed",
+                "FIELD_ACCESS_DENIED",
+            ))
+        }
+        _ => selection.keep(),
+    });
+
+    OnGraphqlAnalysisHookResult::Proceed
+}
+```
+
+**Short-circuit the request**
+
+Return `EndWithResponse` to skip query planning and execution entirely - useful for rate limiting or
+rejecting the whole operation.
+
+```rust
+async fn on_graphql_analysis<'exec>(
+    &'exec self,
+    payload: &mut OnGraphqlAnalysisHookPayload<'exec>,
+) -> OnGraphqlAnalysisHookResult {
+    if self.rate_limiter.is_exceeded(&payload.client_request_details) {
+        return OnGraphqlAnalysisHookResult::EndWithResponse(/* ... */);
+    }
+
+    OnGraphqlAnalysisHookResult::Proceed
+}
+```
+
+#### Payload API Reference
+
+- [`OnGraphqlAnalysisHookPayload`](https://github.com/graphql-hive/router/blob/main/lib/executor/src/plugins/hooks/on_graphql_analysis.rs#:~:text=struct%20OnGraphqlAnalysisHookPayload)
+- [`OperationFilter`](https://github.com/graphql-hive/router/blob/main/lib/executor/src/operation_filter.rs#:~:text=struct%20OperationFilter)
+
+#### Plugin Examples
+
+- [`field_nulling`](https://github.com/graphql-hive/router/blob/main/plugin_examples/field_nulling/src/plugin.rs#:~:text=fn%20on_graphql_analysis)
 
 ### `on_query_plan`
 
