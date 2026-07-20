@@ -517,7 +517,7 @@ You register a visitor that is called once per field and inline fragment, and re
 Rejected fields are removed from the operation and reported to the client as GraphQL errors.
 
 The Router handles the correctness details for you: **null bubbling** (rejecting a non-null field propagates the null up to the nearest nullable parent) and the corresponding **field projection plan
-adjustments**. 
+adjustments**.
 
 Fields hidden by `@skip`/`@include` are ignored, and each `(type, field)` pair is evaluated only once. The first `reject` for a given field wins.
 
