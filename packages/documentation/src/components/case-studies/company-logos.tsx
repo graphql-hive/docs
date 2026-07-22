@@ -1,4 +1,5 @@
 import {
+  BufferLogo,
   HemnetLogo,
   SoundYXZLogo,
   ToastLogo,
@@ -10,6 +11,7 @@ import {
  * Take note that these logos may have different dimensions than logos used elsewhere.
  */
 export const companyLogos = {
+  buffer: <BufferLogo height={64} width={212} />,
   hemnet: <HemnetLogo height={64} width={212} />,
   "sound-xyz": <SoundYXZLogo height={64} width={193} />,
   toast: <ToastLogo height={64} width={158} />,
