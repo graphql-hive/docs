@@ -88,11 +88,11 @@ In the near future, Buffer will be exploring GraphQL Subscriptions for internal 
 
 ## Where the gaps are
 
-Beyond the Explorer, having API access to Hive has been essential. Buffer is currently building its own deprecation triaging system to stay on top of deprecations for internal clients, which would have been very difficult without an API.
+Beyond the Explorer, having API access to Hive has been essential. Buffer is currently building its own deprecation triaging system to stay on top of [deprecations for internal clients](https://github.com/graphql-hive/console/issues/8245), which would have been very difficult without an API.
 
-Buffer is also missing alerts and proactive monitoring, so right now the team has to check Hive manually when they'd rather get notifications when certain events occur, such as error rate or performance changes. Custom policies would help too, as Buffer has specific standards defined for its GraphQL schema with custom ESLint checks written for them, and without a way to express those in Hive, the team is keeping all its checks in one place for now.
+Buffer is also [missing alerts and proactive monitoring(https://github.com/graphql-hive/console/issues/253), so right now the team has to check Hive manually when they'd rather get notifications when certain events occur, such as error rate or performance changes. Custom policies would help too, as Buffer has specific standards defined for its GraphQL schema with custom ESLint checks written for them, and without a way to express those in Hive, the team is keeping all its checks in one place for now.
 
-Buffer limits requests using complexity scoring, but there's no way to see the complexity score for requests in Hive, so it would be great to be able to configure complexity values and then view that data in Hive alongside everything else. Right now the team tracks this using their own internal solutions, which puts API observability data in more than one place.
+Buffer limits requests using complexity scoring, but there's [no way to see the complexity score for requests in Hive](https://github.com/graphql-hive/console/issues/7803), so it would be great to be able to configure complexity values and then view that data in Hive alongside everything else. Right now the team tracks this using their own internal solutions, which puts API observability data in more than one place.
 
 Hive has already improved Buffer's experience when it comes to identifying clients, but the team has run into some limits with how little data there is for each client beyond its name and version. Being able to add extra data or tags to clients, and filter by them, would make the observability even more flexible.
 
