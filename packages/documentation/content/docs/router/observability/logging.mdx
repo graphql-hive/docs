@@ -1,0 +1,229 @@
+---
+title: "Logging"
+---
+
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
+
+Hive Router emits structured logs designed to be cheap in production and informative when you need
+to debug. This guide explains what the router logs by default, how the log level affects
+performance, how to surface internal details, and how logs correlate with your traces.
+
+For the full list of options and defaults, see the
+[`log` configuration reference](/docs/router/configuration/log).
+
+## Defaults
+
+Out of the box, the router runs with:
+
+- **Level:** `info`
+- **Format:** `json`
+- **Output:** a single per-request summary (the [access log](#access-logs)), plus warnings and
+  errors.
+
+At `info` the router is deliberately quiet: it does **not** print its internal request pipeline.
+Instead, each completed request produces one summary line. This keeps log volume predictable under
+load while still giving you the essentials for every request.
+
+## Log level and performance
+
+The log level is not just a verbosity switch, it directly affects throughput. Higher verbosity means
+more work per request: more strings to format, more lines to write, and more I/O.
+
+- `info` (recommended): only the per-request summary and problems. Lowest overhead.
+- `debug`: adds detailed workflow and pipeline events per request (parsing, planning, execution,
+  subgraph calls). Useful for debugging, but significantly noisier and slower.
+- `warn` / `error`: even quieter than `info`; use when you only care about problems.
+
+<Callout type="warning">
+  **Use `info` in production.** Raise the level to `debug` only temporarily and locally when you are
+  actively investigating an issue. Running `debug` under production traffic can measurably reduce
+  throughput and produce very large log volumes.
+</Callout>
+
+Log levels follow the standard hierarchy, from least to most verbose:
+
+```
+error  <  warn  <  info  <  debug
+```
+
+User-facing problems (such as validation and parsing failures) are logged as **warnings**, while
+router/internal failures are logged as **errors**, so `warn` and above surface both classes of
+problems.
+
+## Access logs
+
+At the default `info` level, the primary output is the **request summary**, one INFO line emitted
+when a request finishes. This is the router's access log. It uses the
+[`router::request`](#log-targets) target and carries a fixed set of attributes:
+
+| Field                   | Description                                             |
+| ----------------------- | ------------------------------------------------------- |
+| `operation_name`        | The GraphQL operation name, when provided.              |
+| `operation_type`        | `query`, `mutation`, or `subscription`.                 |
+| `operation_hash`        | Stable hash of the executed operation.                  |
+| `client_name`           | Client name reported by the request, when provided.     |
+| `client_version`        | Client version reported by the request, when provided.  |
+| `persisted_document_id` | ID of the persisted document, when used.                |
+| `subgraph_requests`     | Number of subgraph requests made for this operation.    |
+| `involved_subgraphs`    | Comma-separated list of subgraphs that were queried.    |
+| `error_count`           | Number of GraphQL errors in the response.               |
+| `partial_response`      | Whether the response was partial (data plus errors).    |
+| `error_code`            | Response error code, when applicable.                   |
+| `response_mode`         | How the response was delivered.                         |
+| `status_code`           | HTTP status code returned to the client.                |
+| `payload_bytes`         | Size of the response payload in bytes.                  |
+| `supergraph_identifier` | Identifier of the supergraph used to serve the request. |
+| `duration_ms`           | Total time spent handling the request, in milliseconds. |
+
+Every line, including the summary, also carries the [correlation fields](#request-correlation)
+`request_id` and (when available) `trace_id`.
+
+<Tabs items={["JSON (default)", "Text"]}>
+
+<Tabs.Tab>
+
+```json
+{
+  "timestamp": "2026-07-15T21:23:27.123456Z",
+  "level": "info",
+  "target": "router::request",
+  "request_id": "01J8...",
+  "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736",
+  "operation_name": "GetProduct",
+  "operation_type": "query",
+  "operation_hash": "1a9246e236afb66a7cccaf18c07c38f2",
+  "subgraph_requests": 2,
+  "involved_subgraphs": "products,reviews",
+  "error_count": 0,
+  "partial_response": false,
+  "status_code": 200,
+  "payload_bytes": 842,
+  "duration_ms": 14
+}
+```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+```
+2026-07-15T21:23:27.123456Z  INFO router::request: operation_name="GetProduct" operation_type="query" subgraph_requests=2 involved_subgraphs="products,reviews" error_count=0 status_code=200 duration_ms=14 request_id=01J8... trace_id=4bf92f3577b34da6a3ce929d0e0e4736
+```
+
+</Tabs.Tab>
+
+</Tabs>
+
+Structured logs are intentionally **flat** (no nested fields), which makes them straightforward to
+ingest and query in log management systems.
+
+## Printing internals
+
+When you need more than the summary, there are two independent levers.
+
+### Router internals
+
+Set the level to `debug` to see the router's own request pipeline (parsing, validation, query
+planning, execution, subgraph requests, and more):
+
+```yaml title="router.config.yaml"
+log:
+  level: "debug"
+```
+
+To keep the global level low while zooming into one subsystem, use a
+[`filter`](/docs/router/configuration/log#filter) instead. It takes comma-separated `target=level`
+directives:
+
+```yaml title="router.config.yaml"
+log:
+  level: "info"
+  filter: "router::executor=debug,router::query_planner=debug"
+```
+
+### Muting a target
+
+The same `filter` mechanism works in reverse: set a target to `off` to silence it while everything
+else keeps logging at the global `level`. This is handy when one subsystem is too chatty, or to drop
+the access log entirely.
+
+```yaml title="router.config.yaml"
+log:
+  level: "info"
+  # Mute the per-request access log, keep everything else at info
+  filter: "router::request=off"
+```
+
+You can combine multiple directives, mixing mutes and level overrides:
+
+```yaml title="router.config.yaml"
+log:
+  level: "debug"
+  # Debug everything, but silence the noisy HTTP client target
+  filter: "router::http_client=off"
+```
+
+The equivalent using the environment variable:
+
+```bash
+LOG_FILTER="router::request=off"
+```
+
+Any [`router::` target](#log-targets) can be muted this way. Directives are comma-separated and each
+takes the form `target=level`, where `level` is one of `error`, `warn`, `info`, `debug`, or `off`.
+
+### Dependency internals
+
+The router suppresses logs from the underlying crates it depends on (such as the `ntex` HTTP server
+and `hyper` clients) by default. Enable them with `log_internals` only when debugging the runtime
+itself:
+
+```yaml title="router.config.yaml"
+log:
+  level: "debug"
+  log_internals: true
+```
+
+You can also toggle this with the `LOG_INTERNALS` environment variable. Keep it disabled in
+production, it is very noisy.
+
+### Log targets
+
+Every log line the router emits is tagged with an explicit `target` under the `router::` namespace,
+which makes filtering and routing precise. Common targets include:
+
+- `router::request` — the per-request summary (access log)
+- `router::core` — core server lifecycle
+- `router::http_server` / `router::http_client` — inbound/outbound HTTP
+- `router::executor` — subgraph execution
+- `router::query_planner` — query planning
+- `router::graphql_parsing` / `router::graphql_validation` / `router::graphql_normalization`
+- `router::coprocessor` / `router::plugin_system` — customizations
+- `router::jwt` / `router::authorization` — security
+
+## Request correlation
+
+Every log line is stamped with correlation identifiers so you can tie related lines together and
+join logs to traces:
+
+- **`request_id`** — taken from the incoming request header configured by
+  [`correlation.id_header`](/docs/router/configuration/log#correlationid_header) (default
+  `x-request-id`). If the header is absent, the router generates a unique ID for the request. This
+  lets you group every log line produced while handling a single request.
+- **`trace_id`** — extracted from the incoming W3C `traceparent` context when
+  [`correlation.trace_propagation`](/docs/router/configuration/log#correlationtrace_propagation) is
+  enabled (the default) and a valid trace context is present. This is the same trace ID exported to
+  your [tracing](/docs/router/observability/tracing) backend, so you can pivot directly from a log
+  line to its distributed trace.
+
+```yaml title="router.config.yaml"
+log:
+  correlation:
+    id_header: "x-request-id"
+    trace_propagation: true
+```
+
+Because `trace_id` in your logs matches the trace ID in your OpenTelemetry backend, a typical
+workflow is: find a slow or failing request via its access log, then open the matching trace to see
+exactly where time was spent or where the error originated.
