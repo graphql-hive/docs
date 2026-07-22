@@ -118,6 +118,16 @@ Every line, including the summary, also carries the [correlation fields](#reques
 Structured logs are intentionally **flat** (no nested fields), which makes them straightforward to
 ingest and query in log management systems.
 
+To disable access logs entirely, mute the `router::request` target while leaving everything else
+untouched:
+
+```bash
+LOG_FILTER=router::request=off
+```
+
+The same can be set via [`log.filter`](/docs/router/configuration/log#filter) in the config file.
+See [muting a target](#muting-a-target).
+
 ## Printing internals
 
 When you need more than the summary, there are two independent levers.
