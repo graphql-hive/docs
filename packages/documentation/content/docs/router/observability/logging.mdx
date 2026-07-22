@@ -36,9 +36,10 @@ more work per request: more strings to format, more lines to write, and more I/O
 - `warn` / `error`: even quieter than `info`; use when you only care about problems.
 
 <Callout type="warning">
-  **Use `info` in production.** Raise the level to `debug` only temporarily and locally when you are
-  actively investigating an issue. Running `debug` under production traffic can measurably reduce
-  throughput and produce very large log volumes.
+  **Use `info` in production.** Raise the level to `debug` only temporarily and
+  locally when you are actively investigating an issue. Running `debug` under
+  production traffic can measurably reduce throughput and produce very large log
+  volumes.
 </Callout>
 
 Log levels follow the standard hierarchy, from least to most verbose:
