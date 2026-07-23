@@ -151,9 +151,9 @@ Overrides extensions masking for this subgraph only, using the same `mode`/`keys
 Setting `DISABLE_SUBGRAPH_ERROR_MASKING=true` forces [`enabled`](#enabled) to `false`, overriding
 the config file. It is a convenient escape hatch for local debugging.
 
-| Name                             | Accepted Values  | Overrides (YAML)                          |
-| :------------------------------- | :--------------- | :---------------------------------------- |
-| `DISABLE_SUBGRAPH_ERROR_MASKING` | `true` / `false` | [`error_masking.enabled`](#enabled)       |
+| Name                             | Accepted Values  | Overrides (YAML)                    |
+| :------------------------------- | :--------------- | :---------------------------------- |
+| `DISABLE_SUBGRAPH_ERROR_MASKING` | `true` / `false` | [`error_masking.enabled`](#enabled) |
 
 <Callout type="info">
   This disables the **entire** feature — both message and `extensions` masking,
