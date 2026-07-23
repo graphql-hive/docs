@@ -128,18 +128,69 @@ When polling is enabled, the router uses conditional `If-None-Match` requests ag
 > loading bucket names/credentials from environment variables via expressions, see the
 > [`storages` reference](./configuration/storages).
 
-## Reloading the Supergraph
+### From a plugin
 
-The reload process of the Supergraph needs to be aligned with other on-going processes running in
-Hive Router.
+A plugin can select a supergraph for each request in `on_http_request`. This supports two models:
 
-When a Supergraph changes, in-flight requests will not be impacted and will complete based on the
-Supergraph version used when the request was initiated.
+- Override a configured file, Hive Console, or storage supergraph for selected requests.
+- Use `supergraph.source: plugin` with no configured fallback.
 
-In addition, internal caches will be invalidated and all new requests will be served from the
-updated Supergraph.
+```yaml title="router.config.yaml"
+supergraph:
+  source: plugin
+```
 
-In cases when the Supergraph reload process fails, Hive Router will continue to serve requests from
-the previous version of the Supergraph and will not impact the performance of the router (see
-[Probes](./observability/probes) to understand how the Supergraph reload process impacts the
-router).
+The plugin constructs and retains an `Arc<Supergraph>`, then selects it with `set_supergraph`:
+
+```rust
+use std::sync::Arc;
+
+use hive_router::plugins::hooks::on_supergraph_load::Supergraph;
+
+let supergraph = Arc::new(Supergraph::from_sdl(
+    include_str!("supergraph.graphql"),
+    Default::default(),
+)?);
+
+// later, in on_http_request
+payload.set_supergraph(supergraph.clone());
+payload.proceed()
+```
+
+A selection is request-local. It does not replace the configured supergraph or become a default for
+other requests. The router pins the selected schema and its router runtime together, so validation,
+introspection, planning, authorization, execution, usage reporting, coprocessors, and request
+deduplication all use the same supergraph instance.
+
+The plugin owns how long a supergraph remains selectable. Dropping its final `Arc<Supergraph>`
+retires it: new requests can no longer select that owner, ordinary in-flight requests finish, and
+subscriptions using it close with `SUBSCRIPTION_SCHEMA_RELOAD`. Plugins should therefore construct
+each reusable variant once and retain its `Arc` rather than constructing it for every request.
+
+In plugin-only mode, every GraphQL and readiness request must receive a selection. Missing selection
+returns HTTP `503` with `NO_SUPERGRAPH_AVAILABLE`. A WebSocket connection is accepted and then
+closed with `No supergraph available yet`, allowing browser clients to observe the failure reason.
+
+See [Selecting a supergraph in `on_http_request`](./customizations/plugin-system/hooks#select-a-supergraph-for-the-request),
+the
+[`replace_schema`](https://github.com/graphql-hive/router/tree/main/plugin_examples/replace_schema)
+example for overriding a configured default, and the
+[`feature_flags`](https://github.com/graphql-hive/router/tree/main/plugin_examples/feature_flags)
+example for a plugin-only source.
+
+## Reloading and retiring a Supergraph
+
+When a configured supergraph changes, in-flight requests continue with the exact schema and runtime
+they selected when the request began. New requests use the newly published supergraph.
+
+Schema-aware validation, normalization, query-plan, and demand-control caches belong to a specific
+supergraph runtime. Replacing one configured supergraph does not clear caches belonging to unrelated
+plugin-selected supergraphs. Old caches remain alive only while requests or streams still use their
+old runtime. The shared parse cache is unaffected because parsing an operation is schema-independent.
+
+Subscriptions close with `SUBSCRIPTION_SCHEMA_RELOAD` only when their selected supergraph retires.
+Configured replacement retires the previous configured generation. For plugin-selected
+supergraphs, retirement occurs when the plugin drops the final owning `Arc<Supergraph>`.
+
+If configured schema or runtime construction fails, Hive Router continues serving the previous
+configured version (see [Probes](./observability/probes) for its effect on router health).
