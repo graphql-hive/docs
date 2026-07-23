@@ -79,7 +79,7 @@ common setups:
 ```yaml title="router.config.yaml"
 error_masking:
   all:
-    error_message: true
+    enabled: true
     extensions:
       mode: allow
       keys: [] # allow none
@@ -90,7 +90,7 @@ error_masking:
 ```yaml title="router.config.yaml"
 error_masking:
   all:
-    error_message: true
+    enabled: true
     extensions:
       mode: allow
       keys:
@@ -101,8 +101,7 @@ error_masking:
 
 ```yaml title="router.config.yaml"
 error_masking:
-  all:
-    error_message: false
+  enabled: false
 ```
 
 Or via environment variable, without editing the config:
