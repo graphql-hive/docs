@@ -5,11 +5,11 @@ title: Metric Alerts
 import { Callout } from "@hive/design-system/hive-components/callout";
 import { Image } from "@hive/design-system/image";
 
-import metricAlertsRulesImage from "./metric-alerts-rules.png";
-import metricAlertsCreateImage from "./metric-alerts-create.png";
-import metricAlertsConditionImage from "./metric-alerts-condition.png";
-import metricAlertsDetailImage from "./metric-alerts-detail.png";
 import metricAlertsActivityImage from "./metric-alerts-activity.png";
+import metricAlertsConditionImage from "./metric-alerts-condition.png";
+import metricAlertsCreateImage from "./metric-alerts-create.png";
+import metricAlertsDetailImage from "./metric-alerts-detail.png";
+import metricAlertsRulesImage from "./metric-alerts-rules.png";
 
 **Metric Alerts** let you watch a target's live operational metrics (traffic, error rate, and
 latency) and get notified the moment they cross a threshold you care about. Instead of finding out
@@ -23,9 +23,9 @@ which are configured at the project level and fire when a schema is published.
 
 <Callout type="info">
   Metric Alerts are evaluated against the usage data Hive collects for your
-  target. Make sure your target is
-  [reporting usage](/docs/schema-registry/usage-reporting). A rule can only fire
-  on metrics that Hive is receiving.
+  target. Make sure your target is [reporting
+  usage](/docs/schema-registry/usage-reporting). A rule can only fire on metrics
+  that Hive is receiving.
 </Callout>
 
 ## Overview
@@ -92,8 +92,8 @@ moment a rule started firing until it recovered.
 />
 
 <Callout type="info">
-  Alert activity history is retained for **7 days** on the Hobby and Pro plans and
-  **30 days** on the Enterprise plan.
+  Alert activity history is retained for **7 days** on the Hobby and Pro plans
+  and **30 days** on the Enterprise plan.
 </Callout>
 
 ## Managing alert rules
@@ -131,14 +131,14 @@ between states in the UI so you can validate the rule, but no notifications are 
 
 - **Metric**, the metric to watch:
 
-  | Metric           | What it measures                                              | Unit       |
-  | ---------------- | ------------------------------------------------------------ | ---------- |
-  | `Total requests` | Number of operations in the window                           | requests   |
-  | `Error rate`     | Share of operations that returned a GraphQL error            | %          |
-  | `p75 latency`    | 75th-percentile operation latency                            | ms         |
-  | `p90 latency`    | 90th-percentile operation latency                            | ms         |
-  | `p95 latency`    | 95th-percentile operation latency                            | ms         |
-  | `p99 latency`    | 99th-percentile operation latency                            | ms         |
+  | Metric           | What it measures                                  | Unit     |
+  | ---------------- | ------------------------------------------------- | -------- |
+  | `Total requests` | Number of operations in the window                | requests |
+  | `Error rate`     | Share of operations that returned a GraphQL error | %        |
+  | `p75 latency`    | 75th-percentile operation latency                 | ms       |
+  | `p90 latency`    | 90th-percentile operation latency                 | ms       |
+  | `p95 latency`    | 95th-percentile operation latency                 | ms       |
+  | `p99 latency`    | 99th-percentile operation latency                 | ms       |
 
 - **Range**, the rolling window the metric is measured over. Available windows are **1, 2, 3, 5, 15,
   and 30 minutes**, and **1 hour, 6 hours, 1 day, and 7 days**. Shorter windows react faster and are
@@ -158,7 +158,6 @@ Give the rule a descriptive **name** and pick a **severity**: **Info**, **Warnin
 />
 
 - **Threshold type** decides what the value is compared against:
-
   - **Fixed value**: the metric over the window is compared directly to your value, in the metric's
     own unit (ms, %, or requests). Use this for absolute limits such as _"error rate above 5%"_.
   - **% change vs. previous**: the current window is compared to the immediately preceding window of
@@ -177,9 +176,9 @@ Give the rule a descriptive **name** and pick a **severity**: **Info**, **Warnin
   operations or clients). The default is **all operations**.
 
   <Callout type="info">
-    Only **shared** saved filters can be attached to an alert. Because alert rules
-    are shared, team-wide resources, private filters aren't selectable. The
-    filter's own saved date range is ignored; the alert always uses its
+    Only **shared** saved filters can be attached to an alert. Because alert
+    rules are shared, team-wide resources, private filters aren't selectable.
+    The filter's own saved date range is ignored; the alert always uses its
     configured range.
   </Callout>
 
@@ -242,10 +241,10 @@ type MetricAlertWebhookPayload = {
 ```
 
 <Callout type="warning">
-  Hive Cloud dispatches webhooks from a Cloudflare Worker. Your endpoint must use
-  a valid hostname (not an IP address) on a standard port. Deliveries carry an
-  `Idempotency-Key` header, so make your handler idempotent to safely tolerate an
-  occasional retry.
+  Hive Cloud dispatches webhooks from a Cloudflare Worker. Your endpoint must
+  use a valid hostname (not an IP address) on a standard port. Deliveries carry
+  an `Idempotency-Key` header, so make your handler idempotent to safely
+  tolerate an occasional retry.
 </Callout>
 
 ## Limits
