@@ -11,19 +11,19 @@ import metricAlertsCreateImage from "./metric-alerts-create.png";
 import metricAlertsDetailImage from "./metric-alerts-detail.png";
 import metricAlertsRulesImage from "./metric-alerts-rules.png";
 
-**Metric Alerts** let you watch a target's live operational metrics (traffic, error rate, and
+**Metric Alerts** let you watch your GraphQL API's live operational metrics (traffic, error rate, and
 latency) and get notified the moment they cross a threshold you care about. Instead of finding out
 about a latency regression or an error spike from your users, Hive evaluates your rules continuously
 and pushes a notification to Slack, MS Teams, or a webhook when something breaches.
 
-Metric Alerts are **scoped to a target** and are managed from the **Alerts** section of that target.
-They complement, but are separate from,
+Metric Alerts are configured and managed per **target**, from its **Alerts** section. They complement,
+but are separate from,
 [schema-change alerts and notifications](/docs/schema-registry/management/projects#alerts-and-notifications),
 which are configured at the project level and fire when a schema is published.
 
 <Callout type="info">
   Metric Alerts are evaluated against the usage data Hive collects for your
-  target. Make sure your target is [reporting
+  GraphQL API. Make sure it's [reporting
   usage](/docs/schema-registry/usage-reporting). A rule can only fire on metrics
   that Hive is receiving.
 </Callout>
@@ -71,7 +71,7 @@ are always re-checked on every tick so state changes aren't delayed.
 
 ## Activity and incidents
 
-The **Alert activity** tab is the timeline of every state change across the target's rules:
+The **Alert activity** tab is the timeline of every state change across your API's rules:
 firings, recoveries, and the transitions in between. You can filter it by **severity**, **type**, and
 **who created the rule**.
 
@@ -98,9 +98,8 @@ moment a rule started firing until it recovered.
 
 ## Managing alert rules
 
-Open your target and go to the **Alert rules** tab. This is the list of every metric alert
-configured for the target, with its type, severity, incident count, when it last triggered, and its
-destinations.
+Open your target and go to the **Alert rules** tab. This lists every metric alert configured for
+your API, with its type, severity, incident count, when it last triggered, and its destinations.
 
 <Image
   alt="Metric alert rules list for a target"
