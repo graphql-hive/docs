@@ -3,8 +3,6 @@ title: "Plugin System Hooks"
 sidebarTitle: "Hooks"
 ---
 
-{/* eslint-disable jsx-a11y/anchor-has-content,jsx-a11y/anchor-is-valid */}
-
 import { Callout } from "@hive/design-system/hive-components/callout";
 
 The following chart describes the execution order and available hooks. Each hook can have a
@@ -168,7 +166,7 @@ validations, short-circuit responses, or serve static assets.
 
 #### Usage Examples
 
-**Reject unauthenticated requests**
+##### Reject unauthenticated requests [!toc]
 
 Check for required HTTP headers in the start phase and short-circuit with an error before any
 GraphQL processing begins.
@@ -189,9 +187,7 @@ fn on_http_request<'req>(
 }
 ```
 
-<a name="select-a-supergraph-for-the-request" />
-
-**Select a supergraph for the request**
+##### Select a supergraph for the request [!toc]
 
 Construct and retain each `Arc<Supergraph>` in plugin state, then select one according to the
 request. The selection is pinned for the complete HTTP request or WebSocket connection and is used
@@ -269,7 +265,7 @@ which overrides a configured default when `x-schema-variant: basic` is present, 
 [`feature_flags`](https://github.com/graphql-hive/router/tree/main/plugin_examples/feature_flags),
 which uses `supergraph.source: plugin` and caches variants by normalized `x-feature-flags` values.
 
-**Add a response header**
+##### Add a response header [!toc]
 
 Use `on_end` with `map_response` to attach custom headers to every outgoing HTTP response.
 
@@ -290,7 +286,7 @@ fn on_http_request<'req>(
 }
 ```
 
-**Override the HTTP response status**
+##### Override the HTTP response status [!toc]
 
 Use `map_response` in `on_end` to rewrite the status code on the outgoing response, for example, to
 normalize all successful responses to `200 OK`.
@@ -311,7 +307,7 @@ fn on_http_request<'req>(
 }
 ```
 
-**Propagate subgraph status codes**
+##### Propagate subgraph status codes [!toc]
 
 Read context data written by a downstream hook (e.g., `on_subgraph_http_request`) and apply it to
 the final HTTP response status.
