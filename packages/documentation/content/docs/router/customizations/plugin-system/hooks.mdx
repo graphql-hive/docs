@@ -3,6 +3,8 @@ title: "Plugin System Hooks"
 sidebarTitle: "Hooks"
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
+
 The following chart describes the execution order and available hooks. Each hook can have a
 **start**/**end** phase, where you can control different parts of the execution flow.
 
@@ -153,9 +155,18 @@ With this hook, you can add custom authentication and authorization logic based 
 method, path, and similar request properties. You can also implement custom restrictions, HTTP
 validations, short-circuit responses, or serve static assets.
 
+<Callout type="warning">
+  This hook also runs for the `/health` and `/readiness` [probe
+  endpoints](/docs/router/observability/probes), so that a plugin can select a
+  supergraph for a readiness request. A plugin that short-circuits the request
+  (for example, rejecting requests without an `Authorization` header) will
+  therefore also fail your probes unless it checks
+  `payload.router_http_request.path()` first.
+</Callout>
+
 #### Usage Examples
 
-**Reject unauthenticated requests**
+##### Reject unauthenticated requests [!toc]
 
 Check for required HTTP headers in the start phase and short-circuit with an error before any
 GraphQL processing begins.
@@ -176,7 +187,85 @@ fn on_http_request<'req>(
 }
 ```
 
-**Add a response header**
+##### Select a supergraph for the request [!toc]
+
+Construct and retain each `Arc<Supergraph>` in plugin state, then select one according to the
+request. The selection is pinned for the complete HTTP request or WebSocket connection and is used
+consistently by validation, introspection, planning, authorization, execution, coprocessors, usage
+reporting, subscriptions, and request deduplication.
+
+```rust
+use std::sync::Arc;
+
+use hive_router::{
+    async_trait,
+    plugins::{
+        hooks::{
+            on_http_request::{OnHttpRequestHookPayload, OnHttpRequestHookResult},
+            on_plugin_init::{OnPluginInitPayload, OnPluginInitResult},
+            on_supergraph_load::Supergraph,
+        },
+        plugin_trait::{RouterPlugin, StartHookPayload},
+    },
+};
+
+struct SchemaVariantsPlugin {
+    basic: Arc<Supergraph>,
+}
+
+#[async_trait]
+impl RouterPlugin for SchemaVariantsPlugin {
+    type Config = ();
+
+    fn plugin_name() -> &'static str {
+        "schema_variants"
+    }
+
+    fn on_plugin_init(payload: OnPluginInitPayload<Self>) -> OnPluginInitResult<Self> {
+        let basic = Arc::new(Supergraph::from_sdl(
+            include_str!("basic.supergraph.graphql"),
+            Default::default(),
+        )?);
+        payload.initialize_plugin(Self { basic })
+    }
+
+    fn on_http_request<'req>(
+        &'req self,
+        payload: OnHttpRequestHookPayload<'req>,
+    ) -> OnHttpRequestHookResult<'req> {
+        if payload.router_http_request.headers().get("x-schema-variant").is_some() {
+            payload.set_supergraph(self.basic.clone());
+        }
+        payload.proceed()
+    }
+}
+```
+
+`Supergraph::from_document` accepts an already parsed document when the plugin needs to transform
+its schema first. Both constructors accept query-planner options only. Router configuration,
+telemetry, subgraph executors, and schema-aware caches remain router-owned.
+
+If a plugin selects a supergraph whose router runtime cannot be constructed, the request fails
+without falling back to the configured supergraph. This prevents a request selected for one schema
+from silently executing against another.
+
+Dropping the plugin's final owning `Arc<Supergraph>` retires that variant. Existing ordinary
+requests finish from their pinned snapshot, while active subscriptions close with
+`SUBSCRIPTION_SCHEMA_RELOAD`. Retain reusable variants in plugin state for as long as new requests
+may select them.
+
+With [`supergraph.source: plugin`](/docs/router/configuration/supergraph#plugin), there is no
+configured fallback. The plugin must select a supergraph for GraphQL and readiness requests.
+Readiness passes through `on_http_request`; health also runs this hook but remains a liveness check.
+WebSocket selection is pinned while processing the first message.
+
+For complete examples, see
+[`replace_schema`](https://github.com/graphql-hive/router/tree/main/plugin_examples/replace_schema),
+which overrides a configured default when `x-schema-variant: basic` is present, and
+[`feature_flags`](https://github.com/graphql-hive/router/tree/main/plugin_examples/feature_flags),
+which uses `supergraph.source: plugin` and caches variants by normalized `x-feature-flags` values.
+
+##### Add a response header [!toc]
 
 Use `on_end` with `map_response` to attach custom headers to every outgoing HTTP response.
 
@@ -197,7 +286,7 @@ fn on_http_request<'req>(
 }
 ```
 
-**Override the HTTP response status**
+##### Override the HTTP response status [!toc]
 
 Use `map_response` in `on_end` to rewrite the status code on the outgoing response, for example, to
 normalize all successful responses to `200 OK`.
@@ -218,7 +307,7 @@ fn on_http_request<'req>(
 }
 ```
 
-**Propagate subgraph status codes**
+##### Propagate subgraph status codes [!toc]
 
 Read context data written by a downstream hook (e.g., `on_subgraph_http_request`) and apply it to
 the final HTTP response status.
@@ -443,7 +532,9 @@ operation has been extracted and parsed from the incoming request, and validatio
 applied against the GraphQL schema.
 
 Plugins can use this hook to add custom validation rules, skip validation entirely, or modify the
-operation prior to validation.
+operation prior to validation. To replace the schema, select a `Supergraph` earlier with
+[`OnHttpRequestHookPayload::set_supergraph`](#select-a-supergraph-for-the-request). Schema replacement
+at validation time cannot keep the rest of the request pipeline on one consistent supergraph.
 
 ```rust
 async fn on_graphql_validation<'exec>(
@@ -1077,14 +1168,18 @@ async fn on_shutdown<'exec>(&'exec self) {
 
 ### `on_supergraph_load`
 
-This hook is called whenever the supergraph is loaded or reloaded. This occurs at startup and any
-time the supergraph is reloaded.
+This hook is called whenever a configured-source supergraph is loaded or reloaded. This occurs at
+startup and whenever a file, Hive Console, or storage source reloads.
 
-Plugins can use this hook to clear or reset caches and state that depends on the schema structure.
+Supergraphs selected with `set_supergraph` do not invoke this hook.
 
-This hook is guaranteed to be called at least once for a healthy router instance during startup. If
-the Router is configured to poll for schema updates, it will be called each time the schema is
-reloaded.
+Plugins can use this hook to inspect or modify a configured supergraph and to clear or reset state
+that depends on its schema structure.
+
+For configured sources, this hook is guaranteed to be called at least once for a healthy router
+instance during startup. If the Router is configured to poll for schema updates, it is called each
+time that configured schema reloads. It is not called in `supergraph.source: plugin` mode because
+that mode has no configured load.
 
 ```rust
 fn on_supergraph_reload<'exec>(
@@ -1114,6 +1209,23 @@ fn on_supergraph_reload<'exec>(
 
     self.tagged_types.store(Arc::new(tagged_types));
     start_payload.proceed()
+}
+```
+
+**Inspect the constructed supergraph**
+
+Use the end hook's `new_supergraph` field to inspect or replace the schema-only `Supergraph` after
+planner construction. This field was previously named `new_supergraph_data`.
+
+```rust
+fn on_supergraph_reload<'exec>(
+    &'exec self,
+    payload: OnSupergraphLoadStartHookPayload,
+) -> OnSupergraphLoadStartHookResult<'exec> {
+    payload.on_end(|payload| {
+        println!("{}", payload.new_supergraph.public_schema.sdl);
+        payload.proceed()
+    })
 }
 ```
 

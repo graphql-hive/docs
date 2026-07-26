@@ -156,6 +156,37 @@ supergraph:
   accept_invalid_certs: false
 ```
 
+## Plugin
+
+Use a router plugin as the source of every request's supergraph. This mode creates no configured
+loader or fallback supergraph.
+
+```yaml title="router.config.yaml"
+supergraph:
+  source: plugin
+```
+
+### `source`
+
+- **Type:** `string`
+- **Value:** `"plugin"`
+
+The plugin must call `OnHttpRequestHookPayload::set_supergraph` for every GraphQL request that needs
+one. The same applies to readiness requests, which pass through `on_http_request`. Health checks
+remain process-liveness checks and do not require a supergraph.
+
+Without a selected supergraph:
+
+- GraphQL requests return HTTP `503` with the `NO_SUPERGRAPH_AVAILABLE` error code.
+- Readiness returns HTTP `503`.
+- WebSocket upgrades are accepted, then closed with `No supergraph available yet` so browser clients
+  can observe the reason.
+
+See [Selecting a supergraph in `on_http_request`](/docs/router/customizations/plugin-system/hooks#select-a-supergraph-for-the-request-toc)
+and the
+[`feature_flags`](https://github.com/graphql-hive/router/tree/main/plugin_examples/feature_flags)
+example for a complete plugin-only setup.
+
 ## Filesystem
 
 The most straightforward way to provide your supergraph schema is as a local file. This works well

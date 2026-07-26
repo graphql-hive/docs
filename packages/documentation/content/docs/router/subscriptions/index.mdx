@@ -190,9 +190,16 @@ Subscriptions participate in the same inbound deduplication mechanism as queries
 
 See [Inbound Deduplication](/docs/router/guides/performance-tuning#inbound-deduplication) for how to enable and configure it.
 
-## Schema Reload
+## Supergraph Retirement
 
-When a new supergraph schema is loaded, the router closes all active subscriptions before the schema is swapped in. Each client receives a final error event with the `SUBSCRIPTION_SCHEMA_RELOAD` error code. Clients are expected to handle this code by reconnecting and re-subscribing. After reconnecting, the subscription runs against the new schema.
+A subscription remains pinned to the supergraph selected when it started. When that supergraph
+retires, the router sends a final error event with the `SUBSCRIPTION_SCHEMA_RELOAD` error code and
+stops its producer. Clients should reconnect and resubscribe.
+
+Reloading a configured supergraph retires only its previous configured generation. A
+plugin-selected supergraph retires when the plugin drops its final owning `Arc<Supergraph>`.
+Subscriptions using unrelated configured or plugin-selected supergraphs are not closed. Internal
+runtime-cache eviction is not retirement and does not stop existing subscriptions.
 
 ## Configuration
 
