@@ -140,7 +140,8 @@ supergraph:
   source: plugin
 ```
 
-The plugin constructs and retains an `Arc<Supergraph>`, then selects it with `set_supergraph`:
+The plugin constructs and retains an `Arc<Supergraph>` once, then selects it per request with
+`set_supergraph`:
 
 ```rust
 use std::sync::Arc;

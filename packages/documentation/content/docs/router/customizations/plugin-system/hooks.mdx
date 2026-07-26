@@ -3,6 +3,8 @@ title: "Plugin System Hooks"
 sidebarTitle: "Hooks"
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
+
 The following chart describes the execution order and available hooks. Each hook can have a
 **start**/**end** phase, where you can control different parts of the execution flow.
 
@@ -153,6 +155,15 @@ With this hook, you can add custom authentication and authorization logic based 
 method, path, and similar request properties. You can also implement custom restrictions, HTTP
 validations, short-circuit responses, or serve static assets.
 
+<Callout type="warning">
+  This hook also runs for the `/health` and `/readiness` [probe
+  endpoints](/docs/router/observability/probes), so that a plugin can select a
+  supergraph for a readiness request. A plugin that short-circuits the request
+  (for example, rejecting requests without an `Authorization` header) will
+  therefore also fail your probes unless it checks
+  `payload.router_http_request.path()` first. 
+</Callout>
+
 #### Usage Examples
 
 **Reject unauthenticated requests**
@@ -175,6 +186,8 @@ fn on_http_request<'req>(
     payload.proceed()
 }
 ```
+
+<a name="select-a-supergraph-for-the-request"></a>
 
 **Select a supergraph for the request**
 
