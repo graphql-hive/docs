@@ -58,24 +58,24 @@ At the default `info` level, the primary output is the **request summary**, one 
 when a request finishes. This is the router's access log. It uses the
 [`router::request`](#log-targets) target and carries a fixed set of attributes:
 
-| Field                   | Description                                             |
-| ----------------------- | ------------------------------------------------------- |
-| `operation_name`        | The GraphQL operation name, when provided.              |
-| `operation_type`        | `query`, `mutation`, or `subscription`.                 |
-| `operation_hash`        | Stable hash of the executed operation.                  |
-| `client_name`           | Client name reported by the request, when provided.     |
-| `client_version`        | Client version reported by the request, when provided.  |
-| `persisted_document_id` | ID of the persisted document, when used.                |
-| `subgraph_requests`     | Number of subgraph requests made for this operation.    |
-| `involved_subgraphs`    | Comma-separated list of subgraphs that were queried.    |
-| `error_count`           | Number of GraphQL errors in the response.               |
-| `partial_response`      | Whether the response was partial (data plus errors).    |
-| `error_code`            | Response error code, when applicable.                   |
-| `response_mode`         | How the response was delivered.                         |
-| `status_code`           | HTTP status code returned to the client.                |
-| `payload_bytes`         | Size of the response payload in bytes.                  |
-| `supergraph_identifier` | Identifier of the supergraph used to serve the request. |
-| `duration_ms`           | Total time spent handling the request, in milliseconds. |
+| Field                   | Description                                                                                                                                               |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `operation_name`        | The GraphQL operation name, when provided.                                                                                                                |
+| `operation_type`        | `query`, `mutation`, or `subscription`.                                                                                                                   |
+| `operation_hash`        | Stable hash of the executed operation.                                                                                                                    |
+| `client_name`           | Client name reported by the request, when provided.                                                                                                       |
+| `client_version`        | Client version reported by the request, when provided.                                                                                                    |
+| `persisted_document_id` | ID of the persisted document, when used.                                                                                                                  |
+| `subgraph_requests`     | Number of subgraph requests made for this operation.                                                                                                      |
+| `involved_subgraphs`    | Comma-separated list of subgraphs that were queried.                                                                                                      |
+| `error_count`           | Number of GraphQL errors in the response.                                                                                                                 |
+| `partial_response`      | Whether the response was partial (data plus errors).                                                                                                      |
+| `error_code`            | Response error code, when applicable.                                                                                                                     |
+| `response_mode`         | How the response was delivered (single/stream).                                                                                                           |
+| `status_code`           | HTTP status code returned to the client.                                                                                                                  |
+| `payload_bytes`         | Size of the response payload in bytes. For streams, this is the total amount of data sent.                                                                |
+| `supergraph_identifier` | Identifier of the supergraph used to serve the request.                                                                                                   |
+| `duration_ms`           | Total time spent handling the request, in milliseconds. For streams, this is the total time since the request started until stream is stopped/terminated. |
 
 Every line, including the summary, also carries the [correlation fields](#request-correlation)
 `request_id` and (when available) `trace_id`.
