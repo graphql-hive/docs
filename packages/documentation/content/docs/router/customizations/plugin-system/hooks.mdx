@@ -3,6 +3,8 @@ title: "Plugin System Hooks"
 sidebarTitle: "Hooks"
 ---
 
+{/* eslint-disable jsx-a11y/anchor-has-content,jsx-a11y/anchor-is-valid */}
+
 import { Callout } from "@hive/design-system/hive-components/callout";
 
 The following chart describes the execution order and available hooks. Each hook can have a
@@ -161,7 +163,7 @@ validations, short-circuit responses, or serve static assets.
   supergraph for a readiness request. A plugin that short-circuits the request
   (for example, rejecting requests without an `Authorization` header) will
   therefore also fail your probes unless it checks
-  `payload.router_http_request.path()` first. 
+  `payload.router_http_request.path()` first.
 </Callout>
 
 #### Usage Examples
@@ -187,7 +189,7 @@ fn on_http_request<'req>(
 }
 ```
 
-<a name="select-a-supergraph-for-the-request"></a>
+<a name="select-a-supergraph-for-the-request" />
 
 **Select a supergraph for the request**
 
