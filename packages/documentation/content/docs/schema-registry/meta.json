@@ -9,6 +9,7 @@
     "management",
     "explorer",
     "[Usage Reporting and Insights](/docs/schema-registry/usage-reporting)",
+    "metric-alerts",
     "laboratory",
     "high-availability-cdn",
     "contracts",

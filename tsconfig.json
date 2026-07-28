@@ -9,6 +9,7 @@
     "noEmit": true,
     "exactOptionalPropertyTypes": false
   },
+  "files": [],
   "exclude": ["node_modules"],
   "references": [
     { "path": "./packages/design-system" },
