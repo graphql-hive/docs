@@ -10,9 +10,11 @@ import { Step, Steps } from "fumadocs-ui/components/steps";
 Hive Console supports SCIM 2.0 for automatically provisioning and deprovisioning organization
 users and groups from an identity provider such as Okta or Microsoft Entra ID.
 
-SCIM provisioning complements [Single Sign-On (SSO)](./sso-oidc-provider): OIDC authenticates
-users, while SCIM controls which users exist, whether they are active, their group memberships, and
-the permissions they receive in Hive Console.
+SCIM provisioning complements [Single Sign-On (SSO)](./sso-oidc-provider):
+
+- OIDC authenticates users
+- SCIM controls which users exist, whether they are active, their group memberships, and
+  the permissions they receive in Hive Console
 
 ## How Permissions Work
 
@@ -35,7 +37,7 @@ Before configuring SCIM, you need:
 - An [OIDC provider connected to the organization](./sso-oidc-provider)
 - Each email domain used by provisioned users registered and verified in the OIDC configuration
 - Permission to manage organization access tokens, OIDC settings, members, and group mappings
-- A SCIM 2.0 integration in your identity provider that supports user and group provisioning
+- A SCIM 2.0 integration in your identity provider (Okta, Entra ID etc.) that supports user and group provisioning
 
 <Callout type="warning">
   Provisioned users sign in through the organization's OIDC provider. SCIM does
@@ -55,8 +57,8 @@ In your identity provider, configure the SCIM `externalId` attribute and an OIDC
 same stable, unique value for a user. Then open your organization **Settings**, manage the OIDC
 provider, and set **User ID Claim** to the name of that OIDC claim.
 
-If **User ID Claim** is empty, Hive Console uses the standard OIDC `sub` claim. This works when your
-identity provider sends the same value as the SCIM `externalId`.
+If no **User ID Claim** is is configured, Hive Console uses the standard OIDC `sub` claim. This works when your
+identity provider sends the same value as the synced SCIM `externalId`.
 
 <Callout type="warning">
   Do not use an attribute that can change, such as an email address, unless your
@@ -177,6 +179,8 @@ Personal access tokens created by a provisioned user remain limited by the user'
 mappings. Deactivating the user or reducing their group permissions also restricts those tokens.
 
 ## Integration Guides
+
+These guides help setting up common providers with Hive Console.
 
 ### Microsoft Entra ID
 
