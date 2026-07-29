@@ -41,9 +41,7 @@ Workspaces) to your organization. This allows you to use then existing Open ID C
 authenticate and automatically add your users to your organization.
 
 Users signing into your organization will be automatically added to your organization and will be
-able to access all the resources that you have granted them access to. Users that sign using the
-Open ID Connect provider will only be scoped to that organization and incapable of creating
-organizations or joining any other organizations.
+able to access all the resources that you have granted them access to.
 
 This page will guide you through the process of connecting your Open ID Connect provider to your
 Hive organization.
@@ -52,6 +50,13 @@ Hive organization.
   SSO is a core feature in Hive, and available for all subscriptions and plans,
   including free plans. [We do not gate any features behind a
   paywall](https://sso.tax/).
+</Callout>
+
+<Callout type="info">
+  OIDC authenticates users. To provision and deprovision users, synchronize
+  groups, and assign access through group-based role mappings, configure [SCIM
+  user and group provisioning](./scim-provisioning) after connecting your OIDC
+  provider.
 </Callout>
 
 ## Setup Instructions
@@ -64,6 +69,12 @@ Hive organization.
   Your OIDC provider needs to support the `email` claim capability in order to
   work correctly with Hive SSO.
 </Callout>
+
+If you plan to use [SCIM provisioning](./scim-provisioning), the OIDC provider must also return a
+stable user identifier that matches the user's SCIM `externalId`. You configure the claim's name as
+the **User ID Claim** in Hive. If no claim is configured, Hive uses the standard OIDC `sub` claim.
+See [Match SCIM and OIDC User Identities](./scim-provisioning#match-scim-and-oidc-user-identities)
+before provisioning users.
 
 Visit your organization **Settings** page and click on the **Connect Open ID Connect Provider**
 button.
@@ -134,11 +145,35 @@ it in the OIDC configuration to any role you've created
 
 In addition, you can also select the resources that shall be assigned to the user by default.
 
+<Callout type="info">
+  This default role applies when OIDC creates users as they first sign in. With
+  [SCIM-managed
+  provisioning](./scim-provisioning#assign-roles-and-resources-to-groups), users
+  receive access from their synchronized groups and group role mappings instead.
+</Callout>
+
 <Image
   alt="Default Member Role Setting"
   className="mt-8 max-w-3xl rounded-lg drop-shadow-md"
   src={hiveOidcDefaultRoleImage}
 />
+</Step>
+
+<Step>
+### Optional: Manage Users and Groups with SCIM
+
+By default, Hive adds an OIDC user to the organization when they first sign in. For centralized
+user lifecycle management, you can instead use SCIM to provision users before their first sign-in,
+synchronize groups and memberships, and disable users from your identity provider.
+
+Configure and test SCIM before changing **User Provisioning** in the OIDC settings to **Managed via
+SCIM**. This mode restricts organization access to active SCIM-provisioned users. Organization
+administrators are excluded from the restriction to preserve administrative access.
+
+Follow the [SCIM user and group provisioning guide](./scim-provisioning) to create a provisioning
+token, connect your identity provider, map groups to Hive roles and resources, and safely enable the
+setting.
+
 </Step>
 </Steps>
 
@@ -246,6 +281,9 @@ you're done.
 And congrats, you now have Okta connected! 🥳🎉
 
 You can use the link provided in the modal left section to let your users login via Okta.
+
+To manage the user lifecycle and synchronize Okta groups, continue with the
+[Okta SCIM provisioning guide](./scim-provisioning#okta).
 
 <Image
   alt="Hive Login URL"
@@ -438,6 +476,9 @@ the steps in the screenshots below to be able to add an `email` for an existing 
 And congrats, you now have Azure AD connected! 🎉
 
 You can use the link provided in the modal right section to let your users login via Azure AD.
+
+To manage the user lifecycle and synchronize Microsoft Entra ID groups, continue with the
+[Microsoft Entra ID SCIM provisioning guide](./scim-provisioning#microsoft-entra-id).
 
 <Image
   alt="Hive Login URL"
