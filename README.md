@@ -1,6 +1,6 @@
-# Hive Docs
+# Hive Platform Docs
 
-Hive Console documentation site.
+Hive Platform documentation site.
 
 ## Quick Start
 
