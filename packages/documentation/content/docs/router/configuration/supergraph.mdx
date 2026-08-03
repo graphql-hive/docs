@@ -156,6 +156,111 @@ supergraph:
   accept_invalid_certs: false
 ```
 
+## Apollo GraphOS
+
+Load the Supergraph schema from [Apollo GraphOS](https://www.apollographql.com/docs/graphos/platform)'s
+managed federation Uplink. Useful when your supergraph is already published to Apollo GraphOS and
+you want to run Hive Router in place of Apollo Router without changing how you publish schemas.
+
+### `source`
+
+- **Type:** `string`
+- **Value:** `"apollo_graphos"`
+
+Load the Supergraph schema from Apollo GraphOS's managed federation Uplink.
+
+### `graph_ref`
+
+- **Type:** `string`
+- **Required:** Yes
+- **Environment Variable:** `APOLLO_GRAPH_REF`
+
+The graph ref of your managed federation graph, in the `<GRAPH_ID>@<VARIANT>` format (for example
+`my-graph@production`).
+
+```yaml {3}title="router.config.yaml"
+supergraph:
+  source: apollo_graphos
+  graph_ref: my-graph@production
+  # ...
+```
+
+### `key`
+
+- **Type:** `string`
+- **Required:** Yes
+- **Environment Variable:** `APOLLO_KEY`
+
+Your Apollo API key, with at least the `service:read` permission.
+
+```yaml {4}title="router.config.yaml"
+supergraph:
+  source: apollo_graphos
+  graph_ref: my-graph@production
+  key: service:my-graph:xxxxxxxxxx
+```
+
+### `endpoint`
+
+- **Type:** `string` or `string[]`
+- **Required:** No
+- **Default:** Apollo's GCP and AWS Uplink endpoints, in that order
+- **Environment Variable:** `APOLLO_UPLINK_ENDPOINTS`
+
+The Apollo Uplink endpoint(s) to poll. The order matters: the router always tries the first
+endpoint, and only moves on to the next one if that attempt fails - matching Apollo Router's own
+behavior.
+
+```yaml {4-6}title="router.config.yaml"
+supergraph:
+  source: apollo_graphos
+  graph_ref: my-graph@production
+  endpoint:
+    - https://uplink.api.apollographql.com/
+    - https://aws.uplink.api.apollographql.com/
+```
+
+If you provide the endpoints using the `APOLLO_UPLINK_ENDPOINTS` environment variable, separate
+them with a comma.
+
+### `timeout`
+
+- **Type:** `string`
+- **Required:** No
+- **Default:** `30s`
+
+A human-readable string representing the request timeout for a single call to Apollo Uplink.
+
+```yaml {4}title="router.config.yaml"
+supergraph:
+  source: apollo_graphos
+  # ...
+  timeout: 30s
+```
+
+### `accept_invalid_certs`
+
+- **Type:** `boolean`
+- **Required:** No
+- **Default:** `false`
+
+If set to `true`, allows accepting invalid TLS certificates when connecting to Apollo Uplink.
+Useful for development or testing environments.
+
+```yaml {4}title="router.config.yaml"
+supergraph:
+  source: apollo_graphos
+  # ...
+  accept_invalid_certs: false
+```
+
+### Polling behavior
+
+Unlike the other network sources, there is no `poll_interval` option to set. Apollo Uplink tells
+the router how long to wait before polling again on every response, and the router honors that
+value - this matches how Apollo Router itself polls Uplink. Before the first successful response,
+the router polls every `10s`.
+
 ## Plugin
 
 Use a router plugin as the source of every request's supergraph. This mode creates no configured
