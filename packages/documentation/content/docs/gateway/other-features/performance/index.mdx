@@ -81,6 +81,54 @@ export const gatewayConfig = defineConfig({
 });
 ```
 
+#### AWS IAM Authentication
+
+Hive Gateway supports IAM authentication for Amazon ElastiCache and MemoryDB. It generates a
+short-lived SigV4 presigned URL and uses it as the Redis password. The token is valid for up to 15
+minutes and uses AWS credentials from the standard credential chain, including environment
+variables, `~/.aws/credentials`, EC2 instance roles and ECS task roles.
+
+Install the optional peer dependencies:
+
+```sh npm2yarn
+npm install @aws-crypto/sha256-js @aws-sdk/credential-providers @aws-sdk/util-format-url @smithy/protocol-http @smithy/signature-v4
+```
+
+These packages are loaded only when `iamAuth` is configured.
+
+```ts title="gateway.config.ts"
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  cache: {
+    type: "redis",
+    host: "my-cluster.abc123.0001.use1.cache.amazonaws.com",
+    port: 6379,
+    username: "iam-user-01",
+    tls: true,
+    iamAuth: {
+      // aws region where the cluster is deployed
+      region: "us-east-1",
+      // cluster name used as the host in the sigv4 presigned url
+      clusterName: "my-cluster",
+      // iam-enabled redis username, matching the elasticache or memorydb user id
+      userId: "iam-user-01",
+      // aws service to sign for, defaults to "elasticache"
+      serviceName: "elasticache",
+      // token expiry in seconds, defaults to the maximum of 900
+      tokenExpirySeconds: 900,
+    },
+  },
+  responseCaching: {
+    session: () => null,
+  },
+});
+```
+
+For the required AWS configuration and IAM policies, see the
+[ElastiCache IAM authentication documentation](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/auth-iam.html).
+For MemoryDB, set `serviceName` to `"memorydb"`.
+
 #### Redis Sentinel
 
 If you are using
