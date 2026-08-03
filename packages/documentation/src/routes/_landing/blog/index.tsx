@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_landing/blog/")({
   component: BlogListRoute,
   head: seo({
     description:
-      "Articles, product updates, and case studies from GraphQL Hive.",
+      "Articles, product updates, and case studies from Hive Console.",
     title: "Hive Blog",
   }),
   loader: () => serverGetBlogPosts(),

@@ -2,7 +2,7 @@ import { Callout } from "@hive/design-system/hive-components/callout";
 
 # Hive Logger
 
-Lightweight and customizable logging utility designed for use within the GraphQL Hive ecosystem. It
+Lightweight and customizable logging utility designed for use within the Hive Console ecosystem. It
 provides structured logging capabilities, making it easier to debug and monitor applications
 effectively.
 
@@ -25,21 +25,21 @@ npm i @graphql-hive/logger
 Create a default logger that set to the `info` log level writing to the console.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger()
+const log = new Logger();
 
-log.debug("I won't be logged by default")
+log.debug("I won't be logged by default");
 
-log.info({ some: 'attributes' }, 'Hello %s!', 'world')
+log.info({ some: "attributes" }, "Hello %s!", "world");
 
-const child = log.child({ requestId: '123-456' })
+const child = log.child({ requestId: "123-456" });
 
-child.warn({ more: 'attributes' }, 'Oh hello child!')
+child.warn({ more: "attributes" }, "Oh hello child!");
 
-const err = new Error('Woah!')
+const err = new Error("Woah!");
 
-child.error({ err }, 'Something went wrong!')
+child.error({ err }, "Something went wrong!");
 ```
 
 Will produce the following output to the console output:
@@ -90,7 +90,7 @@ All logging methods support flexible argument patterns for structured and format
 Logs an empty message at the specified level.
 
 ```ts
-log.debug()
+log.debug();
 ```
 
 ```sh
@@ -102,7 +102,7 @@ log.debug()
 Logs structured attributes without a message.
 
 ```ts
-log.info({ hello: 'world' })
+log.info({ hello: "world" });
 ```
 
 {/* prettier-ignore-start */}
@@ -118,7 +118,7 @@ Logs a formatted message, similar to printf-style formatting. Read more about it
 [Message Formatting section](#message-formatting).
 
 ```ts
-log.warn('Hello %s!', 'World')
+log.warn("Hello %s!", "World");
 ```
 
 {/* prettier-ignore-start */}
@@ -133,8 +133,8 @@ Logs structured attributes and a formatted message. The attributes can be anythi
 including classes.
 
 ```ts
-const err = new Error('Something went wrong!')
-log.error(err, 'Problem occurred at %s', new Date())
+const err = new Error("Something went wrong!");
+log.error(err, "Problem occurred at %s", new Date());
 ```
 
 {/* prettier-ignore-start */}
@@ -155,11 +155,11 @@ The Hive Logger uses the
 messages that include interpolation (e.g., placeholders like %s, %d, etc.).
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger()
+const log = new Logger();
 
-log.info('hello %s %j %d %o', 'world', { obj: true }, 4, { another: 'obj' })
+log.info("hello %s %j %d %o", "world", { obj: true }, 4, { another: "obj" });
 ```
 
 Outputs:
@@ -196,21 +196,21 @@ written. This avoids unnecessary computation for expensive attributes when the l
 due to the current log level.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger({ level: 'info' })
+const log = new Logger({ level: "info" });
 
 log.debug(
   // This function will NOT be called, since 'debug' is below the current log level.
   () => ({ expensive: computeExpensiveValue() }),
-  'This will not be logged'
-)
+  "This will not be logged",
+);
 
 log.info(
   // This function WILL be called, since 'info' log level is set.
   () => ({ expensive: computeExpensiveValue() }),
-  'This will be logged'
-)
+  "This will be logged",
+);
 ```
 
 ### Change on Creation
@@ -219,24 +219,24 @@ When creating an instance of the logger, you can configure the logging level by 
 `level` option. Like this:
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger({ level: 'debug' })
+const log = new Logger({ level: "debug" });
 
 log.trace(
   // you can supply "lazy" attributes which won't be evaluated unless the log level allows logging
   () => ({
-    wont: 'be evaluated',
-    some: expensiveOperation()
+    wont: "be evaluated",
+    some: expensiveOperation(),
   }),
-  "Won't be logged and attributes won't be evaluated"
-)
+  "Won't be logged and attributes won't be evaluated",
+);
 
-log.debug('Hello world!')
+log.debug("Hello world!");
 
-const child = log.child('[prefix] ')
+const child = log.child("[prefix] ");
 
-child.debug('Child loggers inherit the parent log level')
+child.debug("Child loggers inherit the parent log level");
 ```
 
 Outputs the following to the console:
@@ -258,29 +258,29 @@ ways of doing that.
 One way of doing it is by using the log's `setLevel` method.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger({ level: 'debug' })
+const log = new Logger({ level: "debug" });
 
-log.debug('Hello world!')
+log.debug("Hello world!");
 
-const child = log.child('[prefix] ')
+const child = log.child("[prefix] ");
 
-child.debug('Child loggers inherit the parent log level')
+child.debug("Child loggers inherit the parent log level");
 
-log.setLevel('trace')
+log.setLevel("trace");
 
-log.trace(() => ({ hi: 'there' }), 'Now tracing is logged too!')
+log.trace(() => ({ hi: "there" }), "Now tracing is logged too!");
 
-child.trace('Also on the child logger')
+child.trace("Also on the child logger");
 
-child.setLevel('info')
+child.setLevel("info");
 
-log.trace('Still logging!')
+log.trace("Still logging!");
 
-child.debug('Wont be logged because the child has a different log level now')
+child.debug("Wont be logged because the child has a different log level now");
 
-child.info('Hello child!')
+child.info("Hello child!");
 ```
 
 Outputs the following to the console:
@@ -302,31 +302,33 @@ Outputs the following to the console:
 Another way of doing it is to pass a function to the `level` option when creating a logger.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-let isDebug = false
+let isDebug = false;
 
 const log = new Logger({
   level: () => {
     if (isDebug) {
-      return 'debug'
+      return "debug";
     }
-    return 'info'
-  }
-})
+    return "info";
+  },
+});
 
-log.debug("isDebug is false, so this won't be logged")
+log.debug("isDebug is false, so this won't be logged");
 
-log.info('Hello world!')
+log.info("Hello world!");
 
-const child = log.child('[scoped] ')
+const child = log.child("[scoped] ");
 
-child.debug("Child loggers inherit the parent log level function, so this won't be logged either")
+child.debug(
+  "Child loggers inherit the parent log level function, so this won't be logged either",
+);
 
 // enable debug mode
-isDebug = true
+isDebug = true;
 
-child.debug('Now debug is enabled and logged')
+child.debug("Now debug is enabled and logged");
 ```
 
 Outputs the following:
@@ -355,26 +357,27 @@ This makes it easy to organize and structure logs in complex applications, ensur
 logs carry consistent context.
 
 <Callout>
-  In a child logger, attributes provided in individual log calls will overwrite any attributes
-  inherited from the parent logger if they share the same keys. This allows you to override or add
-  context-specific attributes for each log entry.
+  In a child logger, attributes provided in individual log calls will overwrite
+  any attributes inherited from the parent logger if they share the same keys.
+  This allows you to override or add context-specific attributes for each log
+  entry.
 </Callout>
 
 For example, running this:
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger()
+const log = new Logger();
 
-const child = log.child({ requestId: '123-456' }, '[child] ')
+const child = log.child({ requestId: "123-456" }, "[child] ");
 
-child.info('Hello World!')
-child.info({ requestId: 'overwritten attribute' })
+child.info("Hello World!");
+child.info({ requestId: "overwritten attribute" });
 
-const nestedChild = child.child({ traceId: '789-012' }, '[nestedChild] ')
+const nestedChild = child.child({ traceId: "789-012" }, "[nestedChild] ");
 
-nestedChild.info('Hello Deep Down!')
+nestedChild.info("Hello Deep Down!");
 ```
 
 Will output:
@@ -407,15 +410,15 @@ suit your application's needs. The built-ins are:
 Writes the logs to memory allowing you to access the logs. Mostly useful for testing.
 
 ```ts
-import { Logger, MemoryLogWriter } from '@graphql-hive/logger'
+import { Logger, MemoryLogWriter } from "@graphql-hive/logger";
 
-const writer = new MemoryLogWriter()
+const writer = new MemoryLogWriter();
 
-const log = new Logger({ writers: [writer] })
+const log = new Logger({ writers: [writer] });
 
-log.info({ my: 'attrs' }, 'Hello World!')
+log.info({ my: "attrs" }, "Hello World!");
 
-console.log(writer.logs)
+console.log(writer.logs);
 ```
 
 Outputs:
@@ -436,16 +439,16 @@ not supported. This makes `ConsoleLogWriter` ideal for all cases, providing clea
 out of the box.
 
 ```ts
-import { ConsoleLogWriter, Logger } from '@graphql-hive/logger'
+import { ConsoleLogWriter, Logger } from "@graphql-hive/logger";
 
 const writer = new ConsoleLogWriter({
   noColor: true, // defaults to env.NO_COLOR. read more: https://no-color.org/
-  noTimestamp: true
-})
+  noTimestamp: true,
+});
 
-const log = new Logger({ writers: [writer] })
+const log = new Logger({ writers: [writer] });
 
-log.info({ my: 'attrs' }, 'Hello World!')
+log.info({ my: "attrs" }, "Hello World!");
 ```
 
 Outputs:
@@ -465,7 +468,9 @@ environments that need the logger to not color the output will automatically set
 
 ### `JSONLogWriter`
 
-<Callout type="info">Will be used then the `LOG_JSON=1` environment variable is provided.</Callout>
+<Callout type="info">
+  Will be used then the `LOG_JSON=1` environment variable is provided.
+</Callout>
 
 Built-in log writer that outputs each log entry as a structured JSON object. When used, it prints
 logs to the console in JSON format, including all provided attributes, the log level, message, and a
@@ -484,11 +489,11 @@ logging systems, especially useful for production environments or when logs need
 other tools.
 
 ```ts
-import { JSONLogWriter, Logger } from '@graphql-hive/logger'
+import { JSONLogWriter, Logger } from "@graphql-hive/logger";
 
-const log = new Logger({ writers: [new JSONLogWriter()] })
+const log = new Logger({ writers: [new JSONLogWriter()] });
 
-log.info({ my: 'attrs' }, 'Hello World!')
+log.info({ my: "attrs" }, "Hello World!");
 ```
 
 Outputs:
@@ -530,18 +535,18 @@ npm i @logtape/logtape
 ```
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
-import { LogTapeLogWriter } from '@graphql-hive/logger/writers/logtape'
-import { configure, getConsoleSink } from '@logtape/logtape'
+import { Logger } from "@graphql-hive/logger";
+import { LogTapeLogWriter } from "@graphql-hive/logger/writers/logtape";
+import { configure, getConsoleSink } from "@logtape/logtape";
 
 await configure({
   sinks: { console: getConsoleSink() },
-  loggers: [{ category: 'hive-gateway', sinks: ['console'] }]
-})
+  loggers: [{ category: "hive-gateway", sinks: ["console"] }],
+});
 
-const log = new Logger({ writers: [new LogTapeLogWriter()] })
+const log = new Logger({ writers: [new LogTapeLogWriter()] });
 
-log.info({ some: 'attributes' }, 'hello world')
+log.info({ some: "attributes" }, "hello world");
 ```
 
 ```sh
@@ -560,19 +565,19 @@ npm i pino pino-pretty
 ```
 
 ```ts
-import pino from 'pino'
-import { Logger } from '@graphql-hive/logger'
-import { PinoLogWriter } from '@graphql-hive/logger/writers/pino'
+import pino from "pino";
+import { Logger } from "@graphql-hive/logger";
+import { PinoLogWriter } from "@graphql-hive/logger/writers/pino";
 
 const pinoLogger = pino({
   transport: {
-    target: 'pino-pretty'
-  }
-})
+    target: "pino-pretty",
+  },
+});
 
-const log = new Logger({ writers: [new PinoLogWriter(pinoLogger)] })
+const log = new Logger({ writers: [new PinoLogWriter(pinoLogger)] });
 
-log.info({ some: 'attributes' }, 'hello world')
+log.info({ some: "attributes" }, "hello world");
 ```
 
 {/* prettier-ignore-start */}
@@ -594,17 +599,17 @@ npm i winston
 ```
 
 ```ts
-import winston from 'winston'
-import { Logger } from '@graphql-hive/logger'
-import { WinstonLogWriter } from '@graphql-hive/logger/writers/winston'
+import winston from "winston";
+import { Logger } from "@graphql-hive/logger";
+import { WinstonLogWriter } from "@graphql-hive/logger/writers/winston";
 
 const winstonLogger = winston.createLogger({
-  transports: [new winston.transports.Console()]
-})
+  transports: [new winston.transports.Console()],
+});
 
-const log = new Logger({ writers: [new WinstonLogWriter(winstonLogger)] })
+const log = new Logger({ writers: [new WinstonLogWriter(winstonLogger)] });
 
-log.info({ some: 'attributes' }, 'hello world')
+log.info({ some: "attributes" }, "hello world");
 ```
 
 ```sh
@@ -612,8 +617,8 @@ log.info({ some: 'attributes' }, 'hello world')
 ```
 
 <Callout>
-  Winston logger does not have a "trace" log level. Hive Logger will instead use "verbose" when
-  writing logs to Winston.
+  Winston logger does not have a "trace" log level. Hive Logger will instead use
+  "verbose" when writing logs to Winston.
 </Callout>
 
 ### Custom Writers
@@ -636,41 +641,47 @@ writers that need to ensure all logs are written before the application exits or
 longer needed.
 
 ```ts
-import { Attributes, LogLevel } from '@graphql-hive/logger'
+import { Attributes, LogLevel } from "@graphql-hive/logger";
 
 interface LogWriter {
   write(
     level: LogLevel,
     attrs: Attributes | null | undefined,
-    msg: string | null | undefined
-  ): void | Promise<void>
-  flush?(): void | Promise<void>
+    msg: string | null | undefined,
+  ): void | Promise<void>;
+  flush?(): void | Promise<void>;
 }
 ```
 
 #### Example of HTTP Writer
 
 ```ts
-import { Attributes, ConsoleLogWriter, Logger, LogLevel, LogWriter } from '@graphql-hive/logger'
+import {
+  Attributes,
+  ConsoleLogWriter,
+  Logger,
+  LogLevel,
+  LogWriter,
+} from "@graphql-hive/logger";
 
 class HTTPLogWriter implements LogWriter {
   async write(level: LogLevel, attrs: Attributes, msg: string) {
-    await fetch('https://my-log-service.com', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ level, attrs, msg })
-    })
+    await fetch("https://my-log-service.com", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ level, attrs, msg }),
+    });
   }
 }
 
 const log = new Logger({
   // send logs both to the HTTP logging service and output them to the console
-  writers: [new HTTPLogWriter(), new ConsoleLogWriter()]
-})
+  writers: [new HTTPLogWriter(), new ConsoleLogWriter()],
+});
 
-log.info('Hello World!')
+log.info("Hello World!");
 
-await log.flush() // make sure all async writes settle
+await log.flush(); // make sure all async writes settle
 ```
 
 #### Example of Daily File Log Writer (Node.js Only)
@@ -679,19 +690,28 @@ Here is an example of a custom log writer that writes logs to a daily log file. 
 file for each day in a given directory.
 
 ```ts title="daily-file-log-writer.ts"
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { Attributes, jsonStringify, LogLevel, LogWriter } from '@graphql-hive/logger'
+import fs from "node:fs/promises";
+import path from "node:path";
+import {
+  Attributes,
+  jsonStringify,
+  LogLevel,
+  LogWriter,
+} from "@graphql-hive/logger";
 
 export class DailyFileLogWriter implements LogWriter {
   constructor(
     private dir: string,
-    private name: string
+    private name: string,
   ) {}
-  write(level: LogLevel, attrs: Attributes | null | undefined, msg: string | null | undefined) {
-    const date = new Date().toISOString().split('T')[0]
-    const logfile = path.resolve(this.dir, `${this.name}_${date}.log`)
-    return fs.appendFile(logfile, jsonStringify({ level, msg, attrs }))
+  write(
+    level: LogLevel,
+    attrs: Attributes | null | undefined,
+    msg: string | null | undefined,
+  ) {
+    const date = new Date().toISOString().split("T")[0];
+    const logfile = path.resolve(this.dir, `${this.name}_${date}.log`);
+    return fs.appendFile(logfile, jsonStringify({ level, msg, attrs }));
   }
 }
 ```
@@ -721,25 +741,31 @@ operations to complete. This is especially useful in serverless or short-lived e
 you want to guarantee that no logs are lost due to unfinished asynchronous operations.
 
 ```ts
-import { Attributes, ConsoleLogWriter, Logger, LogLevel, LogWriter } from '@graphql-hive/logger'
+import {
+  Attributes,
+  ConsoleLogWriter,
+  Logger,
+  LogLevel,
+  LogWriter,
+} from "@graphql-hive/logger";
 
 class HTTPLogWriter implements LogWriter {
   async write(level: LogLevel, attrs: Attributes, msg: string) {
-    await fetch('https://my-log-service.com', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ level, attrs, msg })
-    })
+    await fetch("https://my-log-service.com", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ level, attrs, msg }),
+    });
   }
 }
 
 {
   await using log = new Logger({
     // send logs both to the HTTP logging service and output them to the console
-    writers: [new HTTPLogWriter(), new ConsoleLogWriter()]
-  })
+    writers: [new HTTPLogWriter(), new ConsoleLogWriter()],
+  });
 
-  log.info('Hello World!')
+  log.info("Hello World!");
 }
 
 // logger went out of scope and all of the logs have been flushed
@@ -754,29 +780,29 @@ writes have settled, if there were any errors, an `AggregateError` is thrown con
 individual write errors.
 
 ```ts
-import { Logger } from './Logger'
+import { Logger } from "./Logger";
 
-let i = 0
+let i = 0;
 const log = new Logger({
   writers: [
     {
       async write() {
-        i++
-        throw new Error('Write failed! #' + i)
-      }
-    }
-  ]
-})
+        i++;
+        throw new Error("Write failed! #" + i);
+      },
+    },
+  ],
+});
 
 // no fail during logs
-log.info('hello')
-log.info('world')
+log.info("hello");
+log.info("world");
 
 try {
-  await log.flush()
+  await log.flush();
 } catch (e) {
   // flush will fail with each individually failed writes
-  console.error(e)
+  console.error(e);
 }
 ```
 
@@ -806,21 +832,21 @@ and readable way. This advanced serialization is applied automatically to all at
 log methods, child loggers, and writers.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
-const log = new Logger()
+const log = new Logger();
 
 class DatabaseError extends Error {
   constructor(message: string) {
-    super(message)
-    this.name = 'DatabaseError'
+    super(message);
+    this.name = "DatabaseError";
   }
 }
-const dbErr = new DatabaseError('Connection failed')
-const userErr = new Error('Updating user failed', { cause: dbErr })
-const errs = new AggregateError([dbErr, userErr], 'Failed to update user')
+const dbErr = new DatabaseError("Connection failed");
+const userErr = new Error("Updating user failed", { cause: dbErr });
+const errs = new AggregateError([dbErr, userErr], "Failed to update user");
 
-log.error(errs)
+log.error(errs);
 ```
 
 {/* prettier-ignore-start */}
@@ -886,17 +912,17 @@ You can provide an array of paths to redact specific fields in your log attribut
 for nested properties and bracket notation with wildcards (`[*]`) for arrays.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
 const logger = new Logger({
-  redact: ['password', 'headers.authorization', 'users[*].secret']
-})
+  redact: ["password", "headers.authorization", "users[*].secret"],
+});
 
 logger.info({
-  password: 'super-secret',
-  headers: { authorization: 'Bearer token', host: 'example.com' },
-  users: [{ secret: 'hidden', name: 'alice' }]
-})
+  password: "super-secret",
+  headers: { authorization: "Bearer token", host: "example.com" },
+  users: [{ secret: "hidden", name: "alice" }],
+});
 // attrs: {
 //   password: '[Redacted]',
 //   headers: { authorization: '[Redacted]', host: 'example.com' },
@@ -909,19 +935,19 @@ logger.info({
 You can specify a custom string to use instead of the default `[Redacted]` censor value.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
 const logger = new Logger({
   redact: {
-    paths: ['password', 'headers.authorization'],
-    censor: '**REDACTED**'
-  }
-})
+    paths: ["password", "headers.authorization"],
+    censor: "**REDACTED**",
+  },
+});
 
 logger.info({
-  password: 'super-secret',
-  headers: { authorization: 'Bearer token', host: 'example.com' }
-})
+  password: "super-secret",
+  headers: { authorization: "Bearer token", host: "example.com" },
+});
 // attrs: {
 //   password: '**REDACTED**',
 //   headers: { authorization: '**REDACTED**', host: 'example.com' },
@@ -934,16 +960,17 @@ For more advanced use cases, you can provide a function that receives the origin
 and returns the censored value.
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
 const logger = new Logger({
   redact: {
-    paths: ['password'],
-    censor: (value, path) => `[${path.join('.')}=${String(value).length} chars]`
-  }
-})
+    paths: ["password"],
+    censor: (value, path) =>
+      `[${path.join(".")}=${String(value).length} chars]`,
+  },
+});
 
-logger.info({ password: 'super-secret' })
+logger.info({ password: "super-secret" });
 // attrs: { password: '[password=12 chars]' }
 ```
 
@@ -961,18 +988,18 @@ because the JSON serializer handles `undefined` by omitting it.
 </Callout>
 
 ```ts
-import { Logger } from '@graphql-hive/logger'
+import { Logger } from "@graphql-hive/logger";
 
 const logger = new Logger({
   redact: {
-    paths: ['password', 'headers.authorization'],
-    remove: true
-  }
-})
+    paths: ["password", "headers.authorization"],
+    remove: true,
+  },
+});
 
 logger.info({
-  password: 'super-secret',
-  headers: { authorization: 'Bearer token', host: 'example.com' }
-})
+  password: "super-secret",
+  headers: { authorization: "Bearer token", host: "example.com" },
+});
 // attrs: { password: undefined, headers: { authorization: undefined, host: 'example.com' } }
 ```

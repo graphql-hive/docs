@@ -164,7 +164,7 @@ const SocialPost = {
 const socialPosts: SocialPost[] = [
   SocialPost.fromTweet(
     "https://x.com/malgamves/status/1272959879054049280",
-    `I was playing around with 
+    `I was playing around with
 @strapijs's GraphQL API & got an error I'd never seen
 
 According to @apollographql - heuristic queries are a thing?
@@ -176,7 +176,7 @@ Lost? I explain it all [here](https://blog.logrocket.com/using-code-gen-to-avoid
   ),
   SocialPost.fromTweet(
     "https://x.com/thewritingdev/status/1705160937697689706",
-    `GraphQL Yoga by @TheGuildDev is THE way to start new GraphQL projects now. 
+    `GraphQL Yoga by @TheGuildDev is THE way to start new GraphQL projects now.
 
 Especially since other similar projects are going the closed-source route, Yoga is the current champion of true Open Source.
 
@@ -190,7 +190,7 @@ It's a batteries-included, cross-platform, and runs anywhere!!`,
   ),
   SocialPost.fromTweet(
     "https://x.com/achrafash_/status/1526654279062278146",
-    `Yoga 2.0 makes it dead simple to build a GraphQL API in NextJS!! 
+    `Yoga 2.0 makes it dead simple to build a GraphQL API in NextJS!!
 and no need to put \`any\` everywhere to make it work lol
 
 ty @TheGuildDev 🙏
@@ -217,7 +217,7 @@ https://the-guild.dev/blog/graphqxl-language`,
   //
   SocialPost.fromTweet(
     "https://x.com/whereischarly/status/1349467930166239232",
-    `Sooo, I'm on a good way for \`spotify-graphql@2.0.0\` that will cover all endpoints of 
+    `Sooo, I'm on a good way for \`spotify-graphql@2.0.0\` that will cover all endpoints of
 @Spotify API (queries + mutations) 🤓
 
 Thanks to the combination of my \`functional-json-schema\` lib and GraphQL Mesh (@TheGuildDev), it's now so much easier to maintain ✨`,
@@ -225,7 +225,7 @@ Thanks to the combination of my \`functional-json-schema\` lib and GraphQL Mesh 
   ),
   SocialPost.fromTweet(
     "https://x.com/daniel2color/status/1408064880377143297",
-    `@TheGuildDev gave me a demo of GraphQL Hive as part of my research on GraphQL observability with Prisma
+    `@TheGuildDev gave me a demo of Hive Console as part of my research on GraphQL observability with Prisma
 
 It's an immensely useful tool:
 - Performance metrics 📈

@@ -92,7 +92,7 @@ export function PricingSlider({
           avoidCollisions
         >
           Every GraphQL request that is processed by your GraphQL API and
-          reported to GraphQL Hive. If your server receives 1M GraphQL requests,
+          reported to Hive Console. If your server receives 1M GraphQL requests,
           all of them will be reported to Hive (assuming no sampling).
         </Content>
       </Root>

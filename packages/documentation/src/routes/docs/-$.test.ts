@@ -108,7 +108,7 @@ describe("llms.txt", () => {
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("text/markdown");
     const text = await res.text();
-    expect(text).toContain("# GraphQL Hive");
+    expect(text).toContain("# Hive Console");
     expect(text).toContain(".md)");
   });
 

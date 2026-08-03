@@ -18,7 +18,7 @@ lists or the Supergraph.
 ## The Problem
 
 The availability of the GraphQL schema artifacts is mission-critical for the success of the Hive
-clients to work flawless, even if there is an incident on the GraphQL Hive side.
+clients to work flawless, even if there is an incident on the Hive Console side.
 
 The schema artifacts might be consumed by GraphQL Gateways, and any outage could prevent them from
 shipping to production.
@@ -62,7 +62,7 @@ We were already using the Cloudflare R2 (S3 Buckets) for storing the schema arti
 artifacts are as close to the Cloudflare Workers as possible we decided that this might be the best
 solution, compared to e.g. a remote Redis or PostgreSQL instance with increased latency.
 
-Cloudflare Workers KV was not an option, as GraphQL Hive supports both hosted (cloud) and
+Cloudflare Workers KV was not an option, as Hive Console supports both hosted (cloud) and
 self-hosted (community) deployments, where the latter should be able to run without the need for ANY
 external (paid) cloud services. We did not have a KV replacement available, on the other site there
 are many S3 compatible storage solutions such as MinIO available.

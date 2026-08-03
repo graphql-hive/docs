@@ -46,7 +46,7 @@ const testimonials: Testimonial[] = [
   {
     company: "Karrot",
     logo: KarrotLogo,
-    text: "We use Hive as schema registry and monitoring tool. As a schema registry, we can publish GraphQL Schema with decoupled any application code. As a monitoring tool, we can find useful metrics. For example operation latency, usage of deprecated field. The great thing about GraphQL Hive is that it is easy to use, we have already integrated many tools like Slack or Github.",
+    text: "We use Hive as schema registry and monitoring tool. As a schema registry, we can publish GraphQL Schema with decoupled any application code. As a monitoring tool, we can find useful metrics. For example operation latency, usage of deprecated field. The great thing about Hive Console is that it is easy to use, we have already integrated many tools like Slack or Github.",
     picture: { img: karrotPicture },
   },
   {

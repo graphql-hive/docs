@@ -1,16 +1,16 @@
 ---
 title: "Building a Unified Financial API: Wealthsimple's Hive Implementation"
 excerpt:
-  'As the company scaled, the need for a robust, flexible, and efficient API architecture became
-  paramount, leading to the adoption of GraphQL with Hive as their central API management solution.'
+  "As the company scaled, the need for a robust, flexible, and efficient API architecture became
+  paramount, leading to the adoption of GraphQL with Hive as their central API management solution."
 category: Finance
 date: 2025-01-27
 ---
 
-import { DocsIcon, LargeCallout } from '#components/large-callout'
-import { Lede } from '#components/lede'
-import { SmallAvatar } from '#components/small-avatar'
-import { CallToAction, ContactButton } from '@theguild/components'
+import { DocsIcon, LargeCallout } from "#components/large-callout";
+import { Lede } from "#components/lede";
+import { SmallAvatar } from "#components/small-avatar";
+import { CallToAction, ContactButton } from "@theguild/components";
 
 [Wealthsimple](https://www.wealthsimple.com/en-ca) is one of Canada's fastest growing financial
 institutions and offers a full suite of simple, sophisticated financial products. As the company
@@ -22,10 +22,10 @@ the adoption of GraphQL with Hive as their central API management solution.
 The primary challenges that led Wealthsimple to seek a GraphQL solution included:
 
 1. **Service Integration Complexity**
-    - Managing a distributed architecture with many microservices
-    - Need for comprehensive usage analytics beyond basic performance monitoring
-    - Coordinating API changes across multiple development teams
-    - Ensuring consistent performance regardless of customer profile
+   - Managing a distributed architecture with many microservices
+   - Need for comprehensive usage analytics beyond basic performance monitoring
+   - Coordinating API changes across multiple development teams
+   - Ensuring consistent performance regardless of customer profile
 
 2. **Development Workflow**
 
@@ -51,7 +51,7 @@ Wealthsimple's financial ecosystem. Most services are built in Ruby, with a smal
 technologies. These services use a mixed architecture approach, where some endpoints expose GraphQL
 interfaces while others maintain REST APIs. To seamlessly integrate REST services, the gateway
 utilizes Apollo data sources, ensuring consistent data access patterns. The team has also developed
-specialized components, including a custom Spring bean for reporting usage metrics to GraphQL Hive.
+specialized components, including a custom Spring bean for reporting usage metrics to Hive Console.
 
 <div>
   > Hive enables Wealthsimple to build flexible and resilient GraphQL APIs. The GitHub integration
@@ -106,9 +106,9 @@ The implementation has delivered several significant benefits:
     </CallToAction>
   }
 >
-  Get a detailed view of all GraphQL operations executed by your consumers, including performance
-  metrics and total counts. Click on any specific query to explore the full list of fields and
-  arguments used in the operation.
+  Get a detailed view of all GraphQL operations executed by your consumers,
+  including performance metrics and total counts. Click on any specific query to
+  explore the full list of fields and arguments used in the operation.
 </LargeCallout>
 
 ## Lessons Learned
@@ -123,7 +123,7 @@ The implementation has delivered several significant benefits:
 
    Cross-platform integration has positioned Wealthsimple as an active contributor to the
    open-source community, where they now maintain the official
-   [GraphQL Hive Ruby client](https://github.com/rperryng/graphql-ruby-hive?tab=readme-ov-file#graphql-hive-graphql-ruby-integration).
+   [Hive Console Ruby client](https://github.com/rperryng/graphql-ruby-hive?tab=readme-ov-file#graphql-hive-graphql-ruby-integration).
    This commitment to open-source development not only supports their own cross-platform needs but
    also benefits the broader GraphQL ecosystem. Their experience demonstrates the importance of both
    consuming and contributing to open-source tools while building a robust financial platform.
@@ -162,9 +162,10 @@ The implementation has delivered several significant benefits:
   variant="primary"
   cta={<ContactButton variant="secondary-inverted" />}
 >
-  Transform your API infrastructure like Wealthsimple. Whether it's migrating to a centralized
-  schema registry, enhancing security, or evolving your gateway architecture, our tools and
-  expertise can help you achieve your goals efficiently.
+  Transform your API infrastructure like Wealthsimple. Whether it's migrating to
+  a centralized schema registry, enhancing security, or evolving your gateway
+  architecture, our tools and expertise can help you achieve your goals
+  efficiently.
 </LargeCallout>
 
 ## Conclusion

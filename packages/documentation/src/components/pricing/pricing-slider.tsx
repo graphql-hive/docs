@@ -97,7 +97,7 @@ export function PricingSlider({
         {popoverOpen && (
           <div className="border-beige-400 bg-beige-100 text-green-1000 absolute bottom-full left-1/2 z-50 mb-2 md:min-w-[300px] max-w-[328px] -translate-x-1/2 overflow-visible rounded-2xl border px-4 py-3 shadow-md sm:max-w-[420px]">
             Every GraphQL request that is processed by your GraphQL API and
-            reported to GraphQL Hive. If your server receives 1M GraphQL
+            reported to Hive Console. If your server receives 1M GraphQL
             requests, all of them will be reported to Hive (assuming no
             sampling).
           </div>
