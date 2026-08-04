@@ -1,6 +1,6 @@
-# Hive Docs
+# Hive Platform Docs
 
-GraphQL Hive documentation site.
+Hive Platform documentation site.
 
 ## Quick Start
 

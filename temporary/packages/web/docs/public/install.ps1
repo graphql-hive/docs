@@ -3,7 +3,7 @@
 # Check for x86 architecture and exit if found
 if (![Environment]::Is64BitOperatingSystem) {
   Write-Host "Unsupported architecture: x86" -ForegroundColor Red
-  Write-Host "GraphQL Hive CLI is only available for x64 systems." -ForegroundColor Red
+  Write-Host "Hive Console CLI is only available for x64 systems." -ForegroundColor Red
   exit 1
 }
 

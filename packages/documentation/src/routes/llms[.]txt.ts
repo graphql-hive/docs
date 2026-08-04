@@ -10,9 +10,9 @@ export const Route = createFileRoute("/llms.txt")({
         const pages = source.getPages();
 
         const lines = [
-          "# GraphQL Hive",
+          "# Hive Console",
           "",
-          "> GraphQL Hive documentation",
+          "> Hive Console documentation",
           "",
           "## Docs",
           "",

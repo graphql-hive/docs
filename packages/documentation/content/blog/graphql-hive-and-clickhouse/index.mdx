@@ -3,26 +3,26 @@ title: How ClickHouse helps us track billions of GraphQL requests monthly
 tags: [graphql, graphql-hive]
 authors: [kamil]
 date: 2022-11-08
-description: Learn how ClickHouse enabled GraphQL Hive to scale from millions to billions of requests monthly.
+description: Learn how ClickHouse enabled Hive Console to scale from millions to billions of requests monthly.
 ---
 
 import { Callout } from "@hive/design-system/hive-components/callout";
 import { LinkCard } from "@hive/design-system/hive-components/link-card";
 
-You will learn how ClickHouse and Kafka enabled GraphQL Hive to collect billions of requests monthly
+You will learn how ClickHouse and Kafka enabled Hive Console to collect billions of requests monthly
 without a drop of sweat. We will also cover the challenges we faced and how we overcame them by
 covering Hive's architecture in detail.
 
-## What Is GraphQL Hive?
+## What Is Hive Console?
 
-[GraphQL Hive](https://the-guild.dev/graphql/hive) is a Schema Registry, Monitoring, and Analytics
+[Hive Console](https://the-guild.dev/graphql/hive) is a Schema Registry, Monitoring, and Analytics
 solution for GraphQL APIs. A fully open-source tool that helps you to track the history of changes
 prevents breaking the API and analyzing the traffic of your API.
 
-GraphQL Hive makes you aware of how your GraphQL API is used and what is the experience of its final
+Hive Console makes you aware of how your GraphQL API is used and what is the experience of its final
 users.
 
-We [launched GraphQL Hive](https://www.the-guild.dev/blog/announcing-graphql-hive-release) a few
+We [launched Hive Console](https://www.the-guild.dev/blog/announcing-graphql-hive-release) a few
 months ago,
 [after a year-long preview program](https://www.the-guild.dev/blog/graphql-hive-preview). In case
 you missed it, we recently
@@ -31,11 +31,11 @@ you missed it, we recently
 ## Monitoring Performance and Usage of GraphQL API
 
 It is important to be aware of how a GraphQL API is used and what is the experience of its final
-users. To answer these questions GraphQL Hive collects
+users. To answer these questions Hive Console collects
 [Usage Reports](https://the-guild.dev/graphql/hive/docs/api-reference/usage-reports). By looking at
-the sample below, you can get an idea of how GraphQL Hive knows when it's safe to delete a type or a
+the sample below, you can get an idea of how Hive Console knows when it's safe to delete a type or a
 field of your GraphQL API. This is the most important building block of all data available in
-GraphQL Hive.
+Hive Console.
 
 ```json
 {
@@ -71,7 +71,7 @@ GraphQL Hive.
 
 ## Why ClickHouse?
 
-The kind of data GraphQL Hive deals with is not meant to be mutated (it never changes) and the
+The kind of data Hive Console deals with is not meant to be mutated (it never changes) and the
 database has to support a good set of functions for analytics and data aggregation.
 
 Our first choice was **ElasticSearch**. It seemed like a good option, but we hit the first scaling
@@ -80,14 +80,14 @@ ElasticSearch were unusable.** We tried to improve it, but we weren't happy with
 anyway.
 
 After looking for alternatives we decided to switch to ClickHouse. We highly recommend reading the
-["100x Faster: GraphQL Hive migration from Elasticsearch to ClickHouse"](https://clickhouse.com/blog/100x-faster-graphql-hive-migration-from-elasticsearch-to-clickhouse)
+["100x Faster: Hive Console migration from Elasticsearch to ClickHouse"](https://clickhouse.com/blog/100x-faster-graphql-hive-migration-from-elasticsearch-to-clickhouse)
 article we wrote with the [ClickHouse Cloud](https://clickhouse.com/cloud) team. It covers in detail
 the problems we were facing and the decision-making process that lead us to love ClickHouse.
 
 ## An Overview of the Architecture
 
-The data pipeline in GraphQL Hive is relatively simple but has proven to be highly scalable and
-reliable. Here's a high-level data flow of the usage reporting part of GraphQL Hive.
+The data pipeline in Hive Console is relatively simple but has proven to be highly scalable and
+reliable. Here's a high-level data flow of the usage reporting part of Hive Console.
 
 ![](./data-pipeline.png "An overview of the architecture")
 
@@ -148,7 +148,7 @@ An overview of our ClickHouse tables.
 
 ![](./tables.png "An overview of our ClickHouse tables")
 
-In GraphQL Hive, we use `MergeTree` to store received GraphQL requests in the
+In Hive Console, we use `MergeTree` to store received GraphQL requests in the
 [`operations` table](https://github.com/kamilkisiela/graphql-hive/blob/64e53f207b413f8bb222eabd6aeb437e3300dbfd/packages/services/storage/migrations/clickhouse.ts#L29-L49).
 
 ```sql
@@ -185,13 +185,13 @@ data to the `MergeTree` table or always scan through billions of rows of the `op
 
 <Callout emoji="🤓" type="info">
   We are not data scientists, at least not yet… but what we learned by
-  developing GraphQL Hive is that in order to squeeze the most performance of a
+  developing Hive Console is that in order to squeeze the most performance of a
   database, you need to design the DB structure with the end goal in mind.
 </Callout>
 
 What do we mean by that? Here's a good example.
 
-GraphQL Hive has the "Operations" page that presents the total number of requests, latency (p90,
+Hive Console has the "Operations" page that presents the total number of requests, latency (p90,
 p95, p99) of all and individual operations, and a lot more other things.
 
 The page contains a date range filter.
@@ -202,7 +202,7 @@ Calculating the percentiles of the latency for a large number of GraphQL request
 might be a challenge, even for ClickHouse. Maybe not for "Last 24 hours" as we get only 1/30 of all
 rows, compared to the "Last 30 days" option. Obviously, it won't be performant enough at some point.
 
-Here's where the `Materialized Views` become super handy. GraphQL Hive defines two "virtual" tables,
+Here's where the `Materialized Views` become super handy. Hive Console defines two "virtual" tables,
 [`operations_hourly`](https://github.com/kamilkisiela/graphql-hive/blob/64e53f207b413f8bb222eabd6aeb437e3300dbfd/packages/services/storage/migrations/clickhouse.ts#L52-L82)
 and
 [`operations_daily`](https://github.com/kamilkisiela/graphql-hive/blob/64e53f207b413f8bb222eabd6aeb437e3300dbfd/packages/services/storage/migrations/clickhouse.ts#L86-L117)
@@ -220,13 +220,13 @@ millions.
 
 You can see how `SummingMergeTree` and `Materialized Views` are crucial to ClickHouse performance.
 
-As you know, GraphQL Hive is open source and built in public, which means you can watch our journey
+As you know, Hive Console is open source and built in public, which means you can watch our journey
 and learn from our mistakes. Here's an excellent example of what we mean, it's an issue where we
 discussed the new data structure of ClickHouse. It shows the latency of the existing queries and how
 we improved it.
 
 <LinkCard
-  alt="See the GitHub issue to learn more on how to improve ClickHouse performance in GraphQL Hive"
+  alt="See the GitHub issue to learn more on how to improve ClickHouse performance in Hive Console"
   href="https://github.com/kamilkisiela/graphql-hive/issues/302"
   src="https://opengraph.githubassets.com/979a5f6740ae58d53ca7d2c363c8457fde46d7ffaac13987efe96dd98e78bbf6/kamilkisiela/graphql-hive/issues/302"
 />
@@ -235,7 +235,7 @@ Here's yet another, this time extreme example of a table designed with an end go
 
 ![](./clients.png "Operations page and the Clients section")
 
-GraphQL Hive allows you to understand who are the consumers of your GraphQL API.
+Hive Console allows you to understand who are the consumers of your GraphQL API.
 
 Here's the SQL query that we previously used to generate the charts:
 
@@ -311,7 +311,7 @@ makes our setup less complex.
 
 ## Conclusion
 
-We did many, many mistakes, and we still do, but what we learned by working on GraphQL Hive and a
+We did many, many mistakes, and we still do, but what we learned by working on Hive Console and a
 large set of data is that the end goal should dictate the shape of data and tables.
 
 > You can use the fastest database on earth and still experience poor performance.
@@ -324,6 +324,6 @@ the architecture of Cloudflare and other big tech companies.
 <Callout emoji="🙋">
   If you find this article interesting, please let us know and tell us what else
   you wish to learn about. We're going to write a couple of articles about
-  technical bits and pieces of GraphQL Hive in the upcoming weeks, so stay
+  technical bits and pieces of Hive Console in the upcoming weeks, so stay
   tuned!
 </Callout>
