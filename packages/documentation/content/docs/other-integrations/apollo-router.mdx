@@ -124,7 +124,7 @@ will be used for authenticating the supergraph polling from the CDN.
     hive_apollo_router_plugin = { git = "https://github.com/graphql-hive/console", branch = "main" }
     ```
 
-    Next, update `src/main.rs` file with the following content to add Hive Console:
+    Next, update `src/main.rs` file with the following content to integrate with Hive Console:
 
     ```diff title="src/main.rs"
       mod plugins;
@@ -146,7 +146,7 @@ will be used for authenticating the supergraph polling from the CDN.
 
     Finally, [build the binary](https://www.apollographql.com/docs/router/customizations/custom-binary/#2-compile-the-router) and [run it](https://www.apollographql.com/docs/router/customizations/custom-binary/#3-run-the-compiled-binary) using `HIVE_CDN_ENDPOINT` and `HIVE_CDN_KEY` environment variables.
 
-    In case of any issues, please refer to the [official guide](https://www.apollographql.com/docs/router/customizations/custom-binary/) or [open an issue](https://github.com/graphql-hive/platform/issues/new) in Hive Console repository.
+    In case of any issues, please refer to the [official guide](https://www.apollographql.com/docs/router/customizations/custom-binary/) or [open an issue](https://github.com/graphql-hive/platform/issues/new) in the Hive Console repository.
 
   </Tabs.Tab>
 </Tabs>
@@ -250,7 +250,7 @@ You can send usage reporting to Hive registry by enabling `hive.usage` plugin in
     hive_apollo_router_plugin = { git = "https://github.com/graphql-hive/console", branch = "main" }
     ```
 
-    Next, update `src/main.rs` file with the following content to add Hive Console:
+    Next, update `src/main.rs` file with the following content to integrate with Hive Console:
 
     ```diff title="src/main.rs"
       mod plugins;
@@ -279,7 +279,7 @@ You can send usage reporting to Hive registry by enabling `hive.usage` plugin in
     Finally, [build the binary](https://www.apollographql.com/docs/router/customizations/custom-binary/#2-compile-the-router) and [run it](https://www.apollographql.com/docs/router/customizations/custom-binary/#3-run-the-compiled-binary) using `HIVE_TOKEN`, `HIVE_CDN_ENDPOINT` and `HIVE_CDN_KEY` environment variables.
     Don't forget to create `router.yaml` file with configuration for `hive.usage` plugin.
 
-    In case of any issues, please refer to the [official guide](https://www.apollographql.com/docs/router/customizations/custom-binary/) or [open an issue](https://github.com/graphql-hive/platform/issues/new) in Hive Console repository.
+    In case of any issues, please refer to the [official guide](https://www.apollographql.com/docs/router/customizations/custom-binary/) or [open an issue](https://github.com/graphql-hive/platform/issues/new) in the Hive Console repository.
 
   </Tabs.Tab>
 </Tabs>
@@ -424,7 +424,7 @@ You may also add the persisted-documents plugin:
 hive_apollo_router_plugin = { git = "https://github.com/graphql-hive/console", branch = "main" }
 ```
 
-Next, update `src/main.rs` file with the following content to add Hive Console:
+Next, update `src/main.rs` file with the following content to integrate with Hive Console:
 
 ```diff title="src/main.rs"
   mod plugins;
