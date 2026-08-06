@@ -238,3 +238,7 @@ log:
 Because `trace_id` in your logs matches the trace ID in your OpenTelemetry backend, a typical
 workflow is: find a slow or failing request via its access log, then open the matching trace to see
 exactly where time was spent or where the error originated.
+
+The correlation also works in reverse: the root `http.server` span for every request carries a
+`router.request_id` attribute set to the same `request_id` used in logs, so you can go from a trace
+straight to its logs as well.
