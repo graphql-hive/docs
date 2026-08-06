@@ -330,6 +330,37 @@ fn on_http_request<'req>(
 }
 ```
 
+##### Customize logging for the request [!toc]
+
+Attach a correlation id as soon as it's known, then customize the request summary line's message
+once the request finishes. These functions are callable from any hook, and this one already runs
+fully correlated (with `request_id`/`trace_id` already in scope) from the start.
+
+```rust
+use hive_router::{get_current_summary, set_log_correlation, set_summary_message};
+
+fn on_http_request<'req>(
+    &'req self,
+    payload: OnHttpRequestHookPayload<'req>,
+) -> OnHttpRequestHookResult<'req> {
+    let project_id = payload.router_http_request.path().split('/').nth(1).unwrap_or("unknown");
+    set_log_correlation("project_id", project_id);
+
+    payload.on_end(|end_payload| {
+        if let Some(summary) = get_current_summary() {
+            set_summary_message(format!(
+                "status={}",
+                summary.status_code.load(std::sync::atomic::Ordering::Relaxed)
+            ));
+        }
+        end_payload.proceed()
+    })
+}
+```
+
+See [Customizing logs from plugins](/docs/router/observability/logging#customizing-logs-from-plugins)
+for the full API reference.
+
 #### Payload API Reference
 
 - [`OnHttpRequestHookPayload`](https://github.com/graphql-hive/router/blob/main/lib/executor/src/plugins/hooks/on_http_request.rs#:~:text=struct%20OnHttpRequestHookPayload)
@@ -339,6 +370,7 @@ fn on_http_request<'req>(
 
 - [`propagate_status_code`](https://github.com/graphql-hive/router/blob/main/plugin_examples/propagate_status_code/src/lib.rs#:~:text=fn%20on_http_request)
 - [`incoming_request_deduplication`](https://github.com/graphql-hive/router/blob/main/plugin_examples/incoming_request_deduplication/src/plugin.rs#:~:text=fn%20on_http_request)
+- [`custom_logger_correlation`](https://github.com/graphql-hive/router/blob/main/plugin_examples/custom_logger_correlation/src/plugin.rs#:~:text=fn%20on_http_request)
 
 ### `on_graphql_params`
 
