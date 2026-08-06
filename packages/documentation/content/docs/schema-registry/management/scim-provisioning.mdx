@@ -1,6 +1,6 @@
 ---
 title: User and Group Provisioning
-sidebarTitle: User Provisioning
+sidebarTitle: User Provisioning (SCIM)
 ---
 
 import { Callout } from "@hive/design-system/hive-components/callout";
@@ -328,6 +328,11 @@ authentication flow.
 Under **How will your users sign in?**, use email as the application username and allow Okta to
 update it when the application is created or updated. Then select **Finish**.
 
+<Callout>
+This sign in configuration is never used in practise, as your users will sign in through SSO.
+The purpose of this application is sorely to provision users.
+</Callout>
+
 ![Configure user sign-in settings](./scim-provisioning/okta/create-swa-integration-user-sign-in.webp)
 
 </Step>
@@ -354,8 +359,7 @@ Open **Provisioning** > **Integration**, edit the SCIM connection, and enter the
 | Authentication Mode               | **HTTP Header**                                            |
 | Authorization                     | An organization access token with `scim:provision` granted |
 
-Select the supported provisioning actions shown in the screenshot: **Import New Users and Profile
-Updates**, **Push New Users**, **Push Profile Updates**, **Push Groups**, and **Import Groups**.
+Select the supported provisioning actions shown in the screenshot: **Push New Users**, **Push Profile Updates** and **Push Groups**..
 
 Select **Test Connector Configuration**. After the connection test succeeds, save the
 configuration.
