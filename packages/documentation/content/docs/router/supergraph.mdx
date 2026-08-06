@@ -67,6 +67,28 @@ supergraph:
 For additional configuration options, refer to the
 [`supergraph` API reference page](./configuration/supergraph).
 
+### From Apollo GraphOS
+
+If your supergraph is already published to [Apollo GraphOS](https://www.apollographql.com/docs/graphos/platform)'s
+managed federation, you can point Hive Router at the same Uplink endpoint Apollo Router uses, with
+`source: apollo_graphos`.
+
+Gather the following from Apollo Studio:
+
+- **Graph ref**: shown at the top of your graph's Schema Reference page, in the
+  `<GRAPH_ID>@<VARIANT>` format.
+- **API key**: create one with at least the `service:read` permission.
+
+```yaml {2-4}title="router.config.yaml"
+supergraph:
+  source: apollo_graphos
+  graph_ref: my-graph@production # Use your graph ref here
+  key: service:my-graph:xxxxxxxxxx # Use your Apollo API key here
+```
+
+For additional configuration options, refer to the
+[`supergraph` API reference page](./configuration/supergraph#apollo-graphos).
+
 ### From the file-system
 
 If you wish to load the Supergraph from the file-system, use the `supergraph` configuration with
