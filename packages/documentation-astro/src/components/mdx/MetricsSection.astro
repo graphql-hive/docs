@@ -1,0 +1,91 @@
+---
+interface Metric {
+  description?: string;
+  labels?: string[];
+  name: string;
+  type: string;
+  unit?: string;
+}
+
+interface Label {
+  meaning: string;
+  name: string;
+  notes?: string;
+  typicalValues?: string[];
+}
+
+const { labels = [], metrics = [] } = Astro.props as {
+  labels?: Label[];
+  metrics?: Metric[];
+};
+---
+
+<div class="metrics">
+  {
+    metrics.length > 0 && (
+      <section>
+        <h4>Metrics</h4>
+        {metrics.map((metric) => (
+          <article>
+            <div class="metric-title">
+              <code>{metric.name}</code>
+              <span>{metric.type}{metric.unit ? ` · ${metric.unit}` : ""}</span>
+            </div>
+            {metric.description && <p>{metric.description}</p>}
+            {metric.labels && <small>Labels: {metric.labels.join(", ")}</small>}
+          </article>
+        ))}
+      </section>
+    )
+  }
+  {
+    labels.length > 0 && (
+      <details>
+        <summary>Labels reference</summary>
+        {labels.map((label) => (
+          <article>
+            <code>{label.name}</code>
+            <p>{label.meaning}</p>
+            {label.typicalValues && <small>Typical values: {label.typicalValues.join(", ")}</small>}
+            {label.notes && <p>{label.notes}</p>}
+          </article>
+        ))}
+      </details>
+    )
+  }
+</div>
+
+<style>
+  .metrics {
+    display: grid;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  article,
+  details {
+    margin: 0.75rem 0;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+    background: var(--surface);
+  }
+
+  .metric-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  span,
+  small {
+    color: var(--muted);
+  }
+
+  summary {
+    cursor: pointer;
+    font-weight: 650;
+    text-transform: capitalize;
+  }
+</style>

@@ -1,0 +1,300 @@
+---
+import "../styles/global.css";
+
+interface NavItem {
+  href: string;
+  section: string;
+  title: string;
+}
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  currentPath: string;
+  description?: string;
+  headings: Heading[];
+  navItems: NavItem[];
+  title: string;
+}
+
+const { currentPath, description, headings, navItems, title } = Astro.props;
+const sections = Map.groupBy(navItems, (item) => item.section);
+const tableOfContents = headings.filter(
+  (heading) => heading.depth >= 2 && heading.depth <= 3,
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description ?? title} />
+    <title>{title} | GraphQL Hive</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/docs"><span>Hive</span> Documentation</a>
+      <a class="github" href="https://github.com/graphql-hive" rel="noreferrer">
+        GitHub
+      </a>
+    </header>
+
+    <div class="mobile-nav">
+      <details>
+        <summary>Documentation menu</summary>
+        <nav>
+          {
+            [...sections].map(([section, items]) => (
+              <div class="nav-section">
+                <strong>{section}</strong>
+                {items.map((item) => (
+                  <a
+                    aria-current={item.href === currentPath ? "page" : undefined}
+                    href={item.href}
+                  >
+                    {item.title}
+                  </a>
+                ))}
+              </div>
+            ))
+          }
+        </nav>
+      </details>
+    </div>
+
+    <div class="docs-shell">
+      <aside class="sidebar">
+        <nav>
+          {
+            [...sections].map(([section, items]) => (
+              <div class="nav-section">
+                <strong>{section}</strong>
+                {items.map((item) => (
+                  <a
+                    aria-current={item.href === currentPath ? "page" : undefined}
+                    href={item.href}
+                  >
+                    {item.title}
+                  </a>
+                ))}
+              </div>
+            ))
+          }
+        </nav>
+      </aside>
+
+      <main>
+        <p class="breadcrumb"><a href="/docs">Docs</a> / {title}</p>
+        <h1>{title}</h1>
+        {description && <p class="description">{description}</p>}
+        <article class="docs-content"><slot /></article>
+      </main>
+
+      <aside class="toc">
+        <strong>On this page</strong>
+        {
+          tableOfContents.map((heading) => (
+              <a class={`depth-${heading.depth}`} href={`#${heading.slug}`}>
+                {heading.text}
+              </a>
+            ))
+        }
+      </aside>
+    </div>
+
+    <footer>
+      <span>GraphQL Hive documentation</span>
+      <a href="https://the-guild.dev/contact">Contact</a>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    position: sticky;
+    z-index: 20;
+    top: 0;
+    display: flex;
+    height: var(--header-height);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgb(17 17 20 / 92%);
+    backdrop-filter: blur(12px);
+  }
+
+  .brand {
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .brand span {
+    margin-right: 0.55rem;
+    color: var(--accent);
+  }
+
+  .github {
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+
+  .docs-shell {
+    display: grid;
+    grid-template-columns: minmax(13rem, 17rem) minmax(0, 48rem) minmax(10rem, 14rem);
+    gap: clamp(2rem, 4vw, 4rem);
+    width: min(96rem, 100%);
+    min-height: calc(100vh - var(--header-height));
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .sidebar,
+  .toc {
+    position: sticky;
+    top: var(--header-height);
+    height: calc(100vh - var(--header-height));
+    padding: 2rem 0;
+    overflow-y: auto;
+  }
+
+  .sidebar {
+    padding-right: 1.25rem;
+    border-right: 1px solid var(--border);
+  }
+
+  .nav-section {
+    display: grid;
+    gap: 0.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .nav-section strong {
+    margin-bottom: 0.35rem;
+    color: var(--text);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .nav-section a,
+  .toc a {
+    padding: 0.35rem 0.55rem;
+    color: var(--muted);
+    border-radius: 0.35rem;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  .nav-section a:hover,
+  .nav-section a[aria-current="page"] {
+    color: var(--text);
+    background: var(--surface-raised);
+  }
+
+  main {
+    min-width: 0;
+    padding: clamp(3rem, 7vw, 6rem) 0 6rem;
+  }
+
+  .breadcrumb {
+    margin: 0 0 1rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .breadcrumb a {
+    color: var(--accent);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    letter-spacing: -0.055em;
+    line-height: 0.98;
+  }
+
+  .description {
+    margin: 1.25rem 0 2.5rem;
+    color: var(--muted);
+    font-size: 1.15rem;
+    line-height: 1.6;
+  }
+
+  .toc {
+    display: grid;
+    align-content: start;
+    gap: 0.15rem;
+  }
+
+  .toc strong {
+    margin: 0 0 0.7rem 0.55rem;
+    font-size: 0.75rem;
+  }
+
+  .toc .depth-3 {
+    padding-left: 1.25rem;
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem max(1.5rem, calc((100% - 93rem) / 2));
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+  }
+
+  .mobile-nav {
+    display: none;
+  }
+
+  @media (max-width: 72rem) {
+    .docs-shell {
+      grid-template-columns: minmax(13rem, 16rem) minmax(0, 48rem);
+    }
+
+    .toc {
+      display: none;
+    }
+  }
+
+  @media (max-width: 48rem) {
+    .mobile-nav {
+      display: block;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-nav summary {
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .mobile-nav nav {
+      max-height: 65vh;
+      margin-top: 1rem;
+      overflow-y: auto;
+    }
+
+    .docs-shell {
+      display: block;
+      padding: 0 1rem;
+    }
+
+    .sidebar {
+      display: none;
+    }
+
+    main {
+      padding-top: 3rem;
+    }
+  }
+</style>

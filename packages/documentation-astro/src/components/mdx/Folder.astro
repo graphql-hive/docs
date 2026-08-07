@@ -1,0 +1,16 @@
+---
+const { name } = Astro.props;
+---
+
+<div class="folder"><strong>▾ {name}/</strong><slot /></div>
+
+<style>
+  .folder {
+    padding: 0.2rem 0;
+  }
+
+  strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+</style>

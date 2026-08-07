@@ -1,0 +1,83 @@
+---
+interface Props {
+  defaultIndex?: number | string;
+  items?: unknown[];
+}
+
+const { defaultIndex = 0, items = [] } = Astro.props;
+const labels = items.map((item) =>
+  typeof item === "string" || typeof item === "number" ? String(item) : undefined,
+);
+const fallbackLabels = ["Hive Gateway", "OpenTelemetry"];
+---
+
+<div class="tabs" data-default-index={defaultIndex}>
+  <div class="tab-list" role="tablist">
+    {
+      labels.map((label, index) => (
+        <button type="button" role="tab" data-index={index}>
+          {label ?? fallbackLabels[index] ?? `Option ${index + 1}`}
+        </button>
+      ))
+    }
+  </div>
+  <div class="tab-panels"><slot /></div>
+</div>
+
+<script>
+  function initializeTabs(root: HTMLElement) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>(":scope > .tab-list > button")];
+    const panels = [...root.querySelectorAll<HTMLElement>(":scope > .tab-panels > .tab-panel")];
+    const show = (index: number) => {
+      tabs.forEach((tab, tabIndex) => {
+        const selected = tabIndex === index;
+        tab.ariaSelected = String(selected);
+        tab.tabIndex = selected ? 0 : -1;
+      });
+      panels.forEach((panel, panelIndex) => (panel.hidden = panelIndex !== index));
+    };
+    tabs.forEach((tab, index) => tab.addEventListener("click", () => show(index)));
+    show(Number(root.dataset.defaultIndex) || 0);
+  }
+
+  document.querySelectorAll<HTMLElement>(".tabs").forEach(initializeTabs);
+</script>
+
+<style>
+  .tabs {
+    margin: 1.5rem 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+  }
+
+  .tab-list {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.4rem;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  button {
+    padding: 0.45rem 0.7rem;
+    color: var(--muted);
+    border: 0;
+    border-radius: 0.35rem;
+    background: transparent;
+    font: inherit;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  button[aria-selected="true"] {
+    color: var(--text);
+    background: var(--surface-raised);
+  }
+
+  .tab-panels {
+    padding: 0.25rem 1rem;
+  }
+</style>

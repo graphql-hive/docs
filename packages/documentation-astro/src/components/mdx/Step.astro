@@ -1,0 +1,28 @@
+<section class="step"><slot /></section>
+
+<style>
+  .step {
+    position: relative;
+    min-height: 3rem;
+    margin-left: 1rem;
+    padding: 0 0 1.5rem 2rem;
+    border-left: 1px solid var(--border);
+    counter-increment: step;
+  }
+
+  .step::before {
+    position: absolute;
+    top: 0;
+    left: -0.85rem;
+    display: grid;
+    width: 1.7rem;
+    height: 1.7rem;
+    place-items: center;
+    color: #111114;
+    border-radius: 50%;
+    background: var(--accent);
+    content: counter(step);
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+</style>

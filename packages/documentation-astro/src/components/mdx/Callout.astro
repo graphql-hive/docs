@@ -1,0 +1,84 @@
+---
+interface Props {
+  class?: string;
+  className?: string;
+  title?: string;
+  type?: "critical" | "info" | "note" | "success" | "tip" | "warning";
+}
+
+const { class: className, className: reactClassName, title, type = "info" } = Astro.props;
+---
+
+<aside class:list={["callout", `callout-${type}`, className, reactClassName]}>
+  <span class="icon" aria-hidden="true">{type === "warning" || type === "critical" ? "!" : "i"}</span>
+  <div>
+    {title && <strong>{title}</strong>}
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .callout {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    gap: 0.7rem;
+    margin: 1.5rem 0;
+    padding: 0.9rem 1rem;
+    color: #d8eaff;
+    border: 1px solid #375b7a;
+    border-radius: 0.6rem;
+    background: #142331;
+  }
+
+  .callout-warning {
+    color: #f3edaa;
+    border-color: #675f28;
+    background: #28250f;
+  }
+
+  .callout-critical {
+    color: #ffc6bb;
+    border-color: #733b35;
+    background: #2d1715;
+  }
+
+  .callout-success {
+    color: #d9f2a7;
+    border-color: #4a622b;
+    background: #1b2610;
+  }
+
+  .callout-note,
+  .callout-tip {
+    color: #dedacf;
+    border-color: #4d4b46;
+    background: #22211f;
+  }
+
+  .icon {
+    display: grid;
+    width: 1.4rem;
+    height: 1.4rem;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  :global(.callout p:first-child) {
+    margin-top: 0;
+  }
+
+  :global(.callout p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

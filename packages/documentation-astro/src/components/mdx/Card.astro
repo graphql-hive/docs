@@ -1,0 +1,47 @@
+---
+interface Props {
+  description?: unknown;
+  href: string;
+  title: string;
+}
+
+const { description, href, title } = Astro.props;
+---
+
+<a class="card" href={href}>
+  <slot />
+  <strong>{title}<span aria-hidden="true">→</span></strong>
+  {description && <p>{description}</p>}
+</a>
+
+<style>
+  .card {
+    display: flex;
+    min-height: 6rem;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem;
+    color: var(--text) !important;
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+    background: var(--surface);
+    text-decoration: none;
+    transition: border-color 150ms ease;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+  }
+
+  strong {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  p {
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+</style>

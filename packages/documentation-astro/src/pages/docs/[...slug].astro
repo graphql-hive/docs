@@ -1,0 +1,65 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+
+import Callout from "../../components/mdx/Callout.astro";
+import Card from "../../components/mdx/Card.astro";
+import Cards from "../../components/mdx/Cards.astro";
+import Image from "../../components/mdx/Image.astro";
+import DocsLayout from "../../layouts/DocsLayout.astro";
+
+type DocsEntry = CollectionEntry<"docs">;
+
+export async function getStaticPaths() {
+  const entries = await getCollection("docs");
+
+  return entries.map((entry) => ({
+    params: {
+      slug:
+        entry.id.replace(/(^|\/)index$/, "").replace(/\.(md|mdx)$/, "") ||
+        undefined,
+    },
+    props: { entry },
+  }));
+}
+
+function toSlug(id: string) {
+  return id.replace(/(^|\/)index$/, "").replace(/\.(md|mdx)$/, "");
+}
+
+function titleFromEntry(entry: DocsEntry) {
+  const data = entry.data as { sidebarTitle?: string; title?: string };
+  return data.sidebarTitle ?? data.title ?? entry.id.split("/").at(-1) ?? entry.id;
+}
+
+const { entry } = Astro.props as { entry: DocsEntry };
+const { Content, headings } = await render(entry);
+const entries = await getCollection("docs");
+const currentPath = `/docs${toSlug(entry.id) ? `/${toSlug(entry.id)}` : ""}`;
+const data = entry.data as { description?: string; title?: string };
+const navItems = entries
+  .map((item) => {
+    const slug = toSlug(item.id);
+    const section = slug.split("/")[0] || "Overview";
+
+    return {
+      href: `/docs${slug ? `/${slug}` : ""}`,
+      section: section.replaceAll("-", " "),
+      title: titleFromEntry(item),
+    };
+  })
+  .sort((a, b) =>
+    a.section === b.section
+      ? a.title.localeCompare(b.title)
+      : a.section.localeCompare(b.section),
+  );
+---
+
+<DocsLayout
+  currentPath={currentPath}
+  description={data.description}
+  headings={headings}
+  navItems={navItems}
+  title={data.title ?? titleFromEntry(entry)}
+>
+  <Content components={{ Callout, Card, Cards, Image, MdxImage: Image }} />
+</DocsLayout>

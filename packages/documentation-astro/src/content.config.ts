@@ -10,30 +10,6 @@ const docs = defineCollection({
   }),
 });
 
-const blog = defineCollection({
-  loader: glob({
-    base: `${contentRoot}/blog`,
-    pattern: "**/*.{md,mdx}",
-  }),
-});
-
-const productUpdates = defineCollection({
-  loader: glob({
-    base: `${contentRoot}/product-updates`,
-    pattern: "**/*.{md,mdx}",
-  }),
-});
-
-const caseStudies = defineCollection({
-  loader: glob({
-    base: `${contentRoot}/case-studies`,
-    pattern: "**/*.{md,mdx}",
-  }),
-});
-
 export const collections = {
-  blog,
-  caseStudies,
   docs,
-  productUpdates,
 };

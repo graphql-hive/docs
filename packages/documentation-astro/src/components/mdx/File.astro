@@ -1,0 +1,16 @@
+---
+const { name } = Astro.props;
+---
+
+<div class="file"><span aria-hidden="true">└</span> {name}</div>
+
+<style>
+  .file {
+    padding: 0.2rem 0 0.2rem 1rem;
+    color: #c7c7cf;
+  }
+
+  span {
+    color: var(--muted);
+  }
+</style>

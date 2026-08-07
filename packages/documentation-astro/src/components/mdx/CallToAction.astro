@@ -1,0 +1,28 @@
+---
+const { href, variant = "primary", className } = Astro.props;
+const Tag = href ? "a" : "span";
+---
+
+<Tag class:list={["cta", `cta-${variant}`, className]} href={href}><slot /></Tag>
+
+<style>
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    color: #111114 !important;
+    border: 1px solid var(--accent);
+    border-radius: 0.5rem;
+    background: var(--accent);
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .cta-secondary,
+  .cta-secondary-inverted {
+    color: var(--text) !important;
+    background: transparent;
+  }
+</style>
