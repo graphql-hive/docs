@@ -32,17 +32,18 @@ const questionId = (question: string) =>
   `faq--${question.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-").replaceAll(/(^-|-$)/g, "")}`;
 ---
 
-<section class:list={["flex flex-col gap-x-6 gap-y-2 px-4 py-6 md:flex-row md:px-10 lg:gap-x-24 lg:px-[120px] lg:py-24", className]}>
-  <h2 class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] basis-1/2">Frequently Asked Questions</h2>
-  <div class="basis-1/2 [&_details:last-child]:border-b [&_details:last-child]:border-beige-400">
-    {faqs.map(([question, answer], index) => (
-      <details class="group border-t border-beige-400" id={questionId(question)} itemscope itemtype="https://schema.org/Question">
-        <summary class="hive-focus grid cursor-pointer list-none grid-cols-[2rem_1fr_1.5rem] items-center gap-3 py-6 font-[650]" itemprop="name">
-          <span class="text-[.7rem] text-green-600">{String(index + 1).padStart(2, "0")}</span>
-          {question}
-          <i class="text-2xl not-italic transition-transform duration-200 group-open:rotate-45" aria-hidden="true">+</i>
+<section class:list={["text-green-1000 flex flex-col gap-x-6 gap-y-2 px-4 py-6 md:flex-row md:px-10 lg:gap-x-24 lg:px-[120px] lg:py-24", className]}>
+  <h2 class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] basis-1/2" id="frequently-asked-questions">Frequently Asked Questions</h2>
+  <div class="divide-beige-400 basis-1/2 divide-y max-xl:grow">
+    {faqs.map(([question, answer]) => (
+      <details class="group relative pb-0 open:pb-4" id={questionId(question)} itemscope itemtype="https://schema.org/Question">
+        <summary class="hive-focus hover:bg-beige-100/80 -mx-2 my-1 flex w-[calc(100%+1rem)] cursor-pointer list-none items-center justify-between gap-3 rounded-xl bg-white px-2 py-3 text-left font-medium transition-colors duration-100 md:my-2 md:py-4" itemprop="name">
+          <span>{question}</span>
+          <svg class="size-5 shrink-0 transition-transform duration-150 group-open:rotate-180" fill="none" height="15" viewBox="0 0 15 15" width="15" xmlns="http://www.w3.org/2000/svg">
+            <path clip-rule="evenodd" d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z" fill="currentColor" fill-rule="evenodd" />
+          </svg>
         </summary>
-        <div class="px-8 pb-6 pl-11 leading-[1.65] text-green-700" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+        <div class="text-green-800" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
           <p itemprop="text" set:html={answer} />
         </div>
       </details>
