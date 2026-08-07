@@ -1,0 +1,163 @@
+---
+// Raw imports prove the external files are available without bundling their legacy MDX components.
+const docs = import.meta.glob(
+  "../../../documentation/content/docs/**/*.{md,mdx}",
+  { eager: true, import: "default", query: "?raw" },
+);
+const blog = import.meta.glob(
+  "../../../documentation/content/blog/**/*.{md,mdx}",
+  { eager: true, import: "default", query: "?raw" },
+);
+const productUpdates = import.meta.glob(
+  "../../../documentation/content/product-updates/**/*.{md,mdx}",
+  { eager: true, import: "default", query: "?raw" },
+);
+const caseStudies = import.meta.glob(
+  "../../../documentation/content/case-studies/**/*.{md,mdx}",
+  { eager: true, import: "default", query: "?raw" },
+);
+
+const collections = [
+  { name: "docs", entries: docs },
+  { name: "blog", entries: blog },
+  { name: "product updates", entries: productUpdates },
+  { name: "case studies", entries: caseStudies },
+];
+
+const total = collections.reduce(
+  (count, collection) => count + Object.keys(collection.entries).length,
+  0,
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="The static Astro replacement for the GraphQL Hive documentation."
+    />
+    <title>GraphQL Hive Documentation</title>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">GraphQL Hive</p>
+      <h1>Documentation</h1>
+      <p class="intro">
+        Astro is reading {total} entries directly from
+        <code>packages/documentation/content</code>. No content has been copied.
+      </p>
+
+      <div class="collections">
+        {
+          collections.map(({ name, entries }) => (
+            <section>
+              <h2>{name}</h2>
+              <strong>{Object.keys(entries).length}</strong>
+              <span>entries</span>
+            </section>
+          ))
+        }
+      </div>
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(body) {
+    margin: 0;
+    color: #e8e8ec;
+    background: #111114;
+    font-family:
+      Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+  }
+
+  main {
+    width: min(68rem, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(5rem, 14vw, 10rem) 0;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.75rem;
+    color: #c4f353;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 12ch;
+    margin: 0;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    font-weight: 650;
+    letter-spacing: -0.07em;
+    line-height: 0.9;
+  }
+
+  .intro {
+    max-width: 42rem;
+    margin: 2rem 0 4rem;
+    color: #aaaab3;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.6;
+  }
+
+  code {
+    color: #e8e8ec;
+  }
+
+  .collections {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid #303038;
+    border-left: 1px solid #303038;
+  }
+
+  section {
+    min-height: 12rem;
+    padding: 1.5rem;
+    border-right: 1px solid #303038;
+    border-bottom: 1px solid #303038;
+  }
+
+  h2 {
+    margin: 0 0 3rem;
+    color: #aaaab3;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+
+  strong {
+    display: block;
+    font-size: 2.5rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  section span {
+    color: #777780;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 48rem) {
+    .collections {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 28rem) {
+    .collections {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
