@@ -1,0 +1,620 @@
+---
+import SiteNavigation from "../components/SiteNavigation.astro";
+import "../styles/global.css";
+
+import hemnetPicture from "../../../documentation/src/components/company-testimonials/hemnet-picture.webp";
+import karrotPicture from "../../../documentation/src/components/company-testimonials/karrot-picture.webp";
+import nacellePicture from "../../../documentation/src/components/company-testimonials/nacelle-picture.webp";
+import prodigyPicture from "../../../documentation/src/components/company-testimonials/prodigy-picture.webp";
+import trivagoPicture from "../../../documentation/src/components/company-testimonials/trivago-picture.webp";
+import wealthsimplePicture from "../../../documentation/src/components/company-testimonials/wealthsimple-picture.webp";
+
+const appUrl = "https://app.graphql-hive.com";
+const contactUrl = "https://the-guild.dev/contact";
+
+const plans = [
+  {
+    name: "Hobby",
+    description: "For personal or small projects",
+    price: "Free forever",
+    adjustable: false,
+    cta: "Get started for free",
+    href: appUrl,
+    features: [
+      ["Operations per month", "1M operations per month"],
+      ["Usage data retention", "7 days"],
+      ["Features", "Full access to everything!"],
+      ["Usage", "Unlimited seats, projects and organizations", "GitHub issues and chat support", "Unlimited schema pushes and checks"],
+      ["Availability", "99.95% uptime for operation", "100% uptime for schema registry CDN"],
+      ["SSO", "Single sign-on via Open ID provider"],
+    ],
+  },
+  {
+    name: "Pro",
+    description: "For scaling API and teams",
+    price: "$20",
+    adjustable: true,
+    cta: "Try free for 30 days",
+    href: appUrl,
+    features: [
+      ["Operations per month", "1M operations per month", "Then $10 per million operations"],
+      ["Usage data retention", "90 days"],
+      ["Features", "Everything in Hobby, plus the ability to scale past 1M operations."],
+      ["Usage", "Unlimited seats, projects and organizations", "GitHub issues and chat support", "Unlimited schema pushes and checks"],
+      ["Availability", "99.95% uptime for operation", "100% uptime for schema registry CDN"],
+      ["SSO", "Single sign-on via Open ID provider"],
+    ],
+  },
+  {
+    name: "Enterprise",
+    description: "Custom plan for large companies",
+    price: "Contact us",
+    adjustable: true,
+    cta: "Shape a custom plan for your business",
+    href: contactUrl,
+    features: [
+      ["Operations per month", "Custom operation limit", "Large request volume discount", "Ability to exceed operation limit without loss of data"],
+      ["Usage data retention", "One year or more"],
+      ["Features", "Everything in Pro, plus full enterprise support."],
+      ["Enterprise support", "Dedicated Slack channel for support", "White-glove onboarding", "GraphQL / APIs support and guidance from The Guild", "365, 24/7 support, SLA tailored to your needs", "Custom Data Processing Agreements (DPA)"],
+      ["Availability", "99.95% uptime for operation", "100% uptime for schema registry CDN"],
+      ["SSO", "Single sign-on via Open ID provider"],
+      ["Customized Billing", "Flexible billing options tailored to enterprise procurement processes"],
+    ],
+  },
+] as const;
+
+type ComparisonRow = {
+  feature: string;
+  href?: string;
+  values: [string, string, string];
+};
+
+const yes: [string, string, string] = ["Yes", "Yes", "Yes"];
+const comparisonSections: { title: string; description: string; rows: ComparisonRow[] }[] = [
+  {
+    title: "Organization and Team",
+    description: "Structure teams your way. No enterprise tax.",
+    rows: [
+      { feature: "Maximum team size", values: ["Unlimited", "Unlimited", "Unlimited"] },
+      { feature: "Single Sign-On (SSO)", href: "/docs/schema-registry/management/sso-oidc-provider", values: yes },
+      { feature: "Role-based Access Control (RBAC)", href: "/docs/schema-registry/management/members-roles-permissions", values: yes },
+      { feature: "GraphQL Management API", href: "/docs/api-reference/graphql-api", values: yes },
+    ],
+  },
+  {
+    title: "Projects",
+    description: "Experiment, iterate and ship to production in no time.",
+    rows: [
+      { feature: "Maximum subgraph count", values: ["Unlimited", "Unlimited", "Unlimited"] },
+      { feature: "Subgraph/schema publishes", href: "/docs/schema-registry#publish-a-schema", values: ["Unlimited", "Unlimited", "Unlimited"] },
+      { feature: "Subgraph/schema checks", href: "/docs/schema-registry#check-a-schema", values: ["Unlimited", "Unlimited", "Unlimited"] },
+      { feature: "Schema Contracts", href: "/docs/schema-registry/contracts", values: ["Unlimited", "Unlimited", "Unlimited"] },
+      { feature: "Schema Linting", href: "/docs/schema-registry/schema-policy", values: yes },
+      { feature: "Manage Persisted Documents", href: "/docs/schema-registry/app-deployments", values: yes },
+    ],
+  },
+  {
+    title: "Analytics, Monitoring & Metrics",
+    description: "Monitor and evolve your schema in a flexible way.",
+    rows: [
+      { feature: "Operation usage reporting and insights", href: "/docs/schema-registry/usage-reporting", values: yes },
+      { feature: "Usage reporting per month", values: ["1M operations", "1M, then $10 per 1 million", "Volume discount negotiable"] },
+      { feature: "Schema usage data retention", values: ["7 days", "90 days", "One-year minimum, customizable"] },
+      { feature: "Traffic-based breaking change detection", href: "/docs/schema-registry/management/targets#conditional-breaking-changes", values: ["7 days", "90 days", "One-year minimum, customizable"] },
+      { feature: "Persisted Document breaking change detection", href: "/docs/schema-registry/app-deployments#schema-checks-and-affected-app-deployments", values: yes },
+      { feature: "Schema check retention", values: ["7 days", "90 days", "One-year minimum, customizable"] },
+    ],
+  },
+  {
+    title: "Gateway",
+    description: "Performant and extendible. Stress-tested in production.",
+    rows: [
+      { feature: "Self-host", values: yes },
+      { feature: "Apollo Federation v1 support", values: yes },
+      { feature: "Apollo Federation v2 support", values: yes },
+      { feature: "Subscriptions over WebSocket and SSE", href: "/docs/gateway/subscriptions", values: yes },
+      { feature: "JWT authentication", href: "/docs/gateway/authorization-authentication", values: yes },
+      { feature: "Role-based Access Control", href: "/docs/gateway/authorization-authentication", values: yes },
+      { feature: "Persisted documents", href: "/docs/gateway/persisted-documents", values: yes },
+      { feature: "OpenTelemetry tracing", href: "/docs/gateway/monitoring-tracing#opentelemetry-traces", values: yes },
+      { feature: "Prometheus metrics", href: "/docs/gateway/monitoring-tracing#prometheus-metrics", values: yes },
+      { feature: "Demand control", href: "/docs/gateway/other-features/security/demand-control", values: yes },
+      { feature: "Rate limiting", href: "/docs/gateway/other-features/security/rate-limiting", values: yes },
+      { feature: "Subgraph request signing", href: "/docs/gateway/other-features/security/hmac-signature", values: yes },
+      { feature: "Response caching", href: "/docs/gateway/other-features/performance/response-caching", values: yes },
+      { feature: "Incremental Delivery (Defer & Stream)", href: "/docs/gateway/defer-stream", values: yes },
+      { feature: "Custom plugins", href: "/docs/gateway/other-features/custom-plugins", values: yes },
+    ],
+  },
+  {
+    title: "Availability",
+    description: "Engineered for uninterrupted performance and reliability.",
+    rows: [
+      { feature: "Support SLA", values: ["Pre-defined SLA", "Pre-defined SLA", "Tailored to your needs"] },
+      { feature: "100% uptime of schema registry CDN", values: yes },
+      { feature: "99.95% uptime for usage/analytics", values: ["No", "No", "Yes"] },
+      { feature: "99.95% uptime for dashboard", values: ["No", "No", "Yes"] },
+    ],
+  },
+  {
+    title: "Support",
+    description: "You can rely on us when you need help.",
+    rows: [
+      { feature: "GitHub issues and chat support", values: yes },
+      { feature: "Dedicated Slack channel for support", values: ["No", "No", "Yes"] },
+      { feature: "White-glove onboarding", values: ["No", "No", "Yes"] },
+      { feature: "Technical Account Manager & guidance from The Guild", values: ["No", "No", "Yes"] },
+      { feature: "Flexible billing options & extended procurement processes", values: ["No", "No", "Yes"] },
+      { feature: "Custom Data Processing Agreements (DPA)", values: ["No", "No", "Yes"] },
+    ],
+  },
+  {
+    title: "Compliance / Security",
+    description: "Enterprise-grade software, affordable for everyone.",
+    rows: [
+      { feature: "SOC 2 Type II Certified", href: "https://security.graphql-hive.com", values: yes },
+      { feature: "Audit logs", href: "/docs/schema-registry/management/audit-logs", values: yes },
+    ],
+  },
+];
+
+const testimonials = [
+  {
+    company: "Hemnet",
+    image: hemnetPicture,
+    href: "/case-studies/hemnet",
+    text: "We expected that moving from Apollo Router to a Hive Gateway would come with a measurable performance cost, but found the Hive Gateway running with less than 30% resource usage than Apollo Router while holding tens of thousands of requests per minute.",
+  },
+  {
+    company: "trivago",
+    image: trivagoPicture,
+    href: "/case-studies/trivago",
+    text: "Most GraphQL Gateway discussions focus on customer-facing applications. trivago's internal GraphQL Gateway use case and perspective were different, and Hive met those demands.",
+  },
+  {
+    company: "Wealthsimple",
+    image: wealthsimplePicture,
+    href: "/case-studies/wealthsimple",
+    text: "Hive enables Wealthsimple to build flexible and resilient GraphQL APIs. Conditional breaking changes let us focus on schema design and confidently evolve our schemas.",
+  },
+  {
+    company: "nacelle",
+    image: nacellePicture,
+    text: "Our migration from Apollo GraphOS to Hive was incredibly straightforward. In less than a month, we had about 20 subgraphs running on Hive in production. The team's openness to feedback fostered a real sense of collaboration and partnership.",
+  },
+  {
+    company: "Karrot",
+    image: karrotPicture,
+    text: "We use Hive as a schema registry and monitoring tool. We can inspect operation latency and deprecated field usage, and integrations with Slack and GitHub make Hive Console easy to use.",
+  },
+  {
+    company: "Prodigy",
+    image: prodigyPicture,
+    text: "Hive is essential to us handling more than 750M GraphQL requests every month. We ship with certainty that schema changes will not break clients.",
+    metric: ">750M requests every month",
+  },
+];
+
+const faqs = [
+  ["What does \"no vendor lock-in\" mean?", "We value your flexibility and independent decision-making. We will never lock you into our ecosystem and continuously add support for other tools, so you decide what your stack should look like."],
+  ["Can Hive Console be self-hosted?", "Yes. The on-premise version, identical to Hive Cloud, is free and open source."],
+  ["What counts as a GraphQL operation?", "Every GraphQL request processed by your API and reported to Hive Console. If your server receives 1M GraphQL requests, all of them are reported to Hive, assuming no sampling."],
+  ["Are you SOC-2 Type II compliant?", "Hive Platform is fully SOC-2 Type II compliant."],
+  ["Do you have a GraphQL Gateway?", "Yes. Hive Gateway, previously known as GraphQL Mesh, supports Apollo Federation and has been battle-tested by our clients for years."],
+] as const;
+
+const questionId = (question: string) =>
+  `faq--${question.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-").replaceAll(/(^-|-$)/g, "")}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Honest pricing plans for GraphQL Federation and other GraphQL APIs, supporting developers to enterprise with Open-Source schema registry, analytics, and gateway solutions" />
+    <link rel="canonical" href="https://the-guild.dev/graphql/hive/pricing" />
+    <meta property="og:title" content="Hive Platform Pricing | Hive" />
+    <meta property="og:description" content="Honest usage-based pricing for GraphQL APIs, from hobby projects to enterprise platforms." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://the-guild.dev/graphql/hive/pricing" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Hive Platform Pricing | Hive</title>
+  </head>
+  <body class="pricing-body">
+    <SiteNavigation />
+    <main class="pricing-page">
+      <header class="hero">
+        <div class="arch arch-left"></div>
+        <div class="arch arch-right"></div>
+        <h1>Honest pricing plans for your API management</h1>
+        <p>From hobbyists to enterprises, enjoy all features and usage-based pricing.</p>
+      </header>
+
+      <section class="pricing-section" aria-labelledby="operations-heading">
+        <div class="section-heading">
+          <h2 id="operations-heading">Operations: learn more about usage-based pricing</h2>
+          <p>Hive Console is completely free to use. We charge only for operations collected and processed.</p>
+        </div>
+
+        <div class="calculator">
+          <div class="calculator-label">
+            <label for="operations">How many operations per month do you need?</label>
+            <output for="operations" id="operations-output">1M <span>operations per month</span></output>
+          </div>
+          <input id="operations" type="range" min="1" max="1000" step="1" value="1" aria-describedby="operations-note" />
+          <div class="range-labels"><span>1M</span><span>1B</span></div>
+          <details class="operations-note" id="operations-note">
+            <summary>Learn about operations</summary>
+            <p>Every GraphQL request processed by your API and reported to Hive Console. If your server receives 1M GraphQL requests, all of them are reported to Hive, assuming no sampling.</p>
+          </details>
+          <aside class="enterprise-hint" hidden>
+            <strong>Consider using our Enterprise plan.</strong>
+            For volumes over 300M operations per month, Enterprise is cheaper, with bulk discounts, dedicated support, and custom SLAs.
+          </aside>
+        </div>
+
+        <div class="plan-grid" id="plan-grid">
+          {plans.map((plan) => (
+            <article class="plan-card" data-plan={plan.name}>
+              <div class="recommended" aria-hidden="true">Recommended</div>
+              <div class="plan-card-inner">
+                <header>
+                  <div>
+                    <h3>{plan.name}</h3>
+                    <p>{plan.description}</p>
+                  </div>
+                  {plan.adjustable && <span class="adjustable">Adjust at any time</span>}
+                </header>
+                <p class="price" data-price={plan.name}>{plan.price}{plan.name === "Pro" && <small> / month</small>}</p>
+                <a class:list={["button", plan.name === "Hobby" ? "button-outline" : "button-primary"]} href={plan.href}>{plan.cta}</a>
+                <button class="feature-toggle" type="button" aria-expanded="false">Show key features</button>
+                <ul class="plan-features">
+                  {plan.features.map(([category, ...features]) => (
+                    <li>
+                      <strong><span class="feature-icon">✓</span>{category}</strong>
+                      {features.map((feature) => <span><i>✓</i>{feature}</span>)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="all-plans">
+        <h2>All plans include <span>every feature</span></h2>
+        <p>We do not gate any features. All our plans are fully-featured, with access to the community. We only charge a premium for support.</p>
+      </section>
+
+      <section class="comparison" aria-labelledby="comparison-heading">
+        <div class="comparison-intro">
+          <h2 id="comparison-heading">Hive Console allows you to do so much more.<br /> On your own terms.</h2>
+          <p>Part of the Hive ecosystem, Hive Console is a fully-fledged solution that you can easily tailor to your needs.</p>
+        </div>
+        <div class="mobile-plan-switcher" aria-label="Choose a plan to compare">
+          {plans.map((plan, index) => <button type="button" data-select-plan={plan.name} aria-pressed={index === 0}>{plan.name}</button>)}
+          <a class="button button-primary" href={appUrl} data-comparison-cta>Get started for free</a>
+        </div>
+        <div class="table-wrap">
+          <table data-active-plan="Hobby">
+            <thead>
+              <tr>
+                <th>Features</th>
+                {plans.map((plan) => <th data-plan-column={plan.name}>{plan.name}</th>)}
+              </tr>
+            </thead>
+            {comparisonSections.map((section) => (
+              <tbody>
+                <tr class="table-section"><th colspan="4"><strong>{section.title}</strong><span>{section.description}</span></th></tr>
+                {section.rows.map((row) => (
+                  <tr>
+                    <th scope="row">{row.href ? <a href={row.href} target="_blank">{row.feature}</a> : row.feature}</th>
+                    {row.values.map((value, index) => (
+                      <td data-plan-column={plans[index].name} class:list={{ yes: value === "Yes", no: value === "No" }}>
+                        {value === "Yes" ? <span aria-label="Included">✓</span> : value === "No" ? <span aria-label="Not included">×</span> : value}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            ))}
+          </table>
+        </div>
+      </section>
+
+      <section class="testimonials" aria-labelledby="testimonials-heading">
+        <h2 id="testimonials-heading">Loved by Developers, Trusted by Businesses</h2>
+        <div class="testimonial-tabs" role="tablist">
+          {testimonials.map((testimonial, index) => <button role="tab" type="button" data-testimonial-tab={index} aria-selected={index === 0}>{testimonial.company}</button>)}
+        </div>
+        <div class="testimonial-panels">
+          {testimonials.map((testimonial, index) => (
+            <article data-testimonial-panel={index} hidden={index !== 0}>
+              <img src={testimonial.image.src} width="300" height="300" alt="" loading="lazy" />
+              <div>
+                <strong class="company-name">{testimonial.company}</strong>
+                <blockquote>{testimonial.text}</blockquote>
+                {testimonial.metric && <p class="metric">{testimonial.metric}</p>}
+                {testimonial.href && <a class="button button-primary" href={testimonial.href}>Read the case study →</a>}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="faq" aria-labelledby="faq-heading">
+        <h2 id="faq-heading">Frequently Asked Questions</h2>
+        <div class="faq-list">
+          {faqs.map(([question, answer], index) => (
+            <details id={questionId(question)} itemscope itemtype="https://schema.org/Question">
+              <summary itemprop="name"><span>{String(index + 1).padStart(2, "0")}</span>{question}<i aria-hidden="true">+</i></summary>
+              <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer"><p itemprop="text">{answer}</p></div>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section class="final-cta">
+        <div class="arch arch-left"></div>
+        <h2>Get your API game right.</h2>
+        <div><a class="button button-primary" href={appUrl}>Get started for free</a><a class="button button-light" href={contactUrl}>Talk to us</a></div>
+      </section>
+    </main>
+
+    <footer class="pricing-footer">
+      <strong>GraphQL Hive</strong>
+      <nav aria-label="Footer"><a href="/docs">Documentation</a><a href="/pricing">Pricing</a><a href="/case-studies">Case Studies</a><a href="https://the-guild.dev/contact">Contact</a><a href="https://the-guild.dev/graphql/hive/privacy-policy.pdf">Privacy Policy</a></nav>
+    </footer>
+
+    <script>
+      const range = document.querySelector<HTMLInputElement>("#operations");
+      const output = document.querySelector<HTMLOutputElement>("#operations-output");
+      const proPrice = document.querySelector<HTMLElement>('[data-price="Pro"]');
+      const enterpriseHint = document.querySelector<HTMLElement>(".enterprise-hint");
+      const cards = [...document.querySelectorAll<HTMLElement>(".plan-card")];
+      const planGrid = document.querySelector<HTMLElement>("#plan-grid");
+
+      const updatePricing = (shouldScroll = false) => {
+        if (!range || !output || !proPrice || !enterpriseHint) return;
+        const value = Number(range.value);
+        const label = value === 1000 ? "1B" : `${value}M`;
+        output.innerHTML = `${label} <span>operations per month</span>`;
+        proPrice.innerHTML = `$${(20 + (value - 1) * 10).toLocaleString()}<small> / month</small>`;
+        const plan = value === 1 ? "Hobby" : value <= 300 ? "Pro" : "Enterprise";
+        cards.forEach((card) => card.classList.toggle("is-recommended", card.dataset.plan === plan));
+        enterpriseHint.hidden = value <= 300;
+        range.style.setProperty("--range-progress", `${((value - 1) / 999) * 100}%`);
+        if (shouldScroll && window.innerWidth >= 640 && planGrid) {
+          const card = cards.find((item) => item.dataset.plan === plan);
+          if (card) planGrid.scrollTo({ behavior: "smooth", left: card.offsetLeft - planGrid.offsetLeft });
+        }
+      };
+      range?.addEventListener("input", () => updatePricing(true));
+      updatePricing();
+
+      document.querySelectorAll<HTMLButtonElement>(".feature-toggle").forEach((button) => {
+        button.addEventListener("click", () => {
+          const expanded = button.getAttribute("aria-expanded") === "true";
+          button.setAttribute("aria-expanded", String(!expanded));
+          button.textContent = expanded ? "Show key features" : "Hide key features";
+          button.closest(".plan-card")?.classList.toggle("features-open", !expanded);
+        });
+      });
+
+      const table = document.querySelector<HTMLTableElement>(".comparison table");
+      const comparisonCta = document.querySelector<HTMLAnchorElement>("[data-comparison-cta]");
+      const planButtons = document.querySelectorAll<HTMLButtonElement>("[data-select-plan]");
+      const ctas = {
+        Hobby: ["Get started for free", "https://app.graphql-hive.com"],
+        Pro: ["Try free for 30 days", "https://app.graphql-hive.com"],
+        Enterprise: ["Shape your business", "https://the-guild.dev/contact"],
+      } as const;
+      planButtons.forEach((button) => button.addEventListener("click", () => {
+        const plan = button.dataset.selectPlan as keyof typeof ctas;
+        if (!plan || !table || !comparisonCta) return;
+        table.dataset.activePlan = plan;
+        planButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+        comparisonCta.textContent = ctas[plan][0];
+        comparisonCta.href = ctas[plan][1];
+      }));
+
+      const testimonialTabs = document.querySelectorAll<HTMLButtonElement>("[data-testimonial-tab]");
+      const testimonialPanels = document.querySelectorAll<HTMLElement>("[data-testimonial-panel]");
+      testimonialTabs.forEach((tab) => tab.addEventListener("click", () => {
+        const selected = tab.dataset.testimonialTab;
+        testimonialTabs.forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
+        testimonialPanels.forEach((panel) => { panel.hidden = panel.dataset.testimonialPanel !== selected; });
+      }));
+
+      const openLinkedFaq = () => {
+        if (!location.hash.startsWith("#faq--")) return;
+        const faq = document.querySelector<HTMLDetailsElement>(location.hash);
+        if (faq) faq.open = true;
+      };
+      openLinkedFaq();
+      window.addEventListener("hashchange", openLinkedFaq);
+    </script>
+  </body>
+</html>
+
+<style>
+  :global(.pricing-body) {
+    color: #0d3937;
+    background: #fff;
+  }
+
+  .pricing-page {
+    width: min(90rem, 100%);
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  h1, h2, h3, p { margin-top: 0; }
+  h1, h2, h3 { letter-spacing: -0.045em; }
+  h2 { font-size: clamp(2rem, 4.4vw, 3.5rem); line-height: 1.05; }
+
+  .hero, .final-cta {
+    position: relative;
+    isolation: isolate;
+    margin: 1.5rem;
+    overflow: hidden;
+    border-radius: 1.5rem;
+  }
+
+  .hero {
+    display: grid;
+    min-height: 27rem;
+    padding: 5rem 2rem;
+    place-content: center;
+    background: #f5f1e7;
+    text-align: center;
+  }
+
+  .hero h1 { max-width: 16ch; margin: 0 auto; font-size: clamp(2.75rem, 6vw, 5.25rem); line-height: .95; }
+  .hero p { margin: 2rem auto 0; color: #4f6c6a; font-size: 1.1rem; }
+  .arch { position: absolute; z-index: -1; width: 19rem; aspect-ratio: 1; border: 3.5rem solid rgba(255,255,255,.7); border-radius: 50%; }
+  .hero .arch-left { top: -13rem; left: -5rem; }
+  .hero .arch-right { right: -6rem; bottom: -13rem; }
+
+  .pricing-section, .comparison { width: min(75rem, calc(100% - 3rem)); margin: 0 auto; padding: clamp(4rem, 9vw, 8rem) 0; }
+  .section-heading { max-width: 60rem; }
+  .section-heading p, .comparison-intro p { color: #4f6c6a; font-size: 1.05rem; }
+  .calculator { margin: 3rem 0 1.5rem; padding: 1.5rem; border: 1px solid #ddd7c8; border-radius: 1rem; background: #faf8f2; }
+  .calculator-label { display: flex; gap: 1rem; align-items: center; justify-content: space-between; font-weight: 650; }
+  output { padding: .5rem .8rem; color: #062d59; border-radius: .55rem; background: #a9d5ff; font-variant-numeric: tabular-nums; }
+  output span { color: #4f6c6a; font-size: .8rem; font-weight: 500; }
+  input[type="range"] { --range-progress: 0%; width: 100%; height: .5rem; margin: 2rem 0 .35rem; border-radius: 99px; appearance: none; background: linear-gradient(to right, #1479d1 var(--range-progress), #d9d5ca var(--range-progress)); cursor: grab; }
+  input[type="range"]::-webkit-slider-thumb { width: 1.6rem; height: 1.6rem; border: 5px solid #1479d1; border-radius: 50%; appearance: none; background: #fff; }
+  .range-labels { display: flex; justify-content: space-between; color: #708482; font-size: .75rem; }
+  .operations-note { position: relative; width: fit-content; margin-top: 1.25rem; color: #156daf; font-size: .85rem; }
+  .operations-note summary { cursor: pointer; font-weight: 650; }
+  .operations-note p { width: min(32rem, calc(100vw - 5rem)); margin: .75rem 0 0; padding: 1rem; color: #294947; border: 1px solid #ddd7c8; border-radius: .75rem; background: white; line-height: 1.5; }
+  .enterprise-hint { margin-top: 1rem; padding: 1rem; border-radius: .75rem; background: #e4f1ff; color: #31546e; line-height: 1.5; }
+  .enterprise-hint strong { display: block; color: #0d3937; }
+
+  .plan-grid { display: flex; gap: 1.5rem; padding: 1.5rem .2rem; overflow-x: auto; scroll-snap-type: x proximity; }
+  .plan-card { min-width: 23.75rem; padding: 4px; border-radius: 1.35rem; scroll-snap-align: start; background: #e6e0d2; }
+  .plan-card.is-recommended { background: linear-gradient(135deg, #1479d1, #70b9ff, #8dd8bf); }
+  .recommended { height: 0; overflow: hidden; color: white; font-size: .72rem; font-weight: 750; letter-spacing: .1em; text-align: center; text-transform: uppercase; transition: height .2s, padding .2s; }
+  .is-recommended .recommended { height: 1.8rem; padding-top: .45rem; }
+  .plan-card-inner { height: 100%; padding: 1.5rem; border-radius: 1.1rem; background: white; }
+  .plan-card header { display: flex; justify-content: space-between; gap: .75rem; }
+  .plan-card h3 { margin: 0; font-size: 1.65rem; }
+  .plan-card header p { margin: .4rem 0 0; color: #617875; font-size: .85rem; }
+  .adjustable { align-self: flex-start; max-width: 8rem; padding: .35rem .55rem; border-radius: 99px; background: #edf6ff; color: #156daf; font-size: .65rem; text-align: center; }
+  .price { min-height: 2.8rem; margin: 2rem 0 1.25rem; font-size: 2rem; font-weight: 650; letter-spacing: -.04em; }
+  .price small { color: #5d7472; font-size: .9rem; font-weight: 500; }
+  .button { display: inline-flex; min-height: 2.75rem; align-items: center; justify-content: center; padding: .7rem 1rem; border: 1px solid transparent; border-radius: .65rem; font-size: .9rem; font-weight: 700; text-decoration: none; }
+  .plan-card .button { width: 100%; }
+  .button-primary { color: white; background: #1168b0; }
+  .button-primary:hover { background: #095997; }
+  .button-outline { border-color: #c9c2b3; background: #fff; }
+  .button-light { color: #0d3937; background: white; }
+  .feature-toggle { display: none; }
+  .plan-features { margin: 1.5rem 0 0; padding: 0; list-style: none; }
+  .plan-features li { display: grid; gap: .45rem; padding: 1rem .25rem; border-top: 1px solid #e6e0d2; color: #4f6c6a; font-size: .82rem; line-height: 1.45; }
+  .plan-features strong, .plan-features span { display: flex; gap: .5rem; }
+  .plan-features strong { color: #173f3d; }
+  .plan-features i, .feature-icon { color: #258364; font-style: normal; }
+
+  .all-plans { margin: 0 1.5rem; padding: clamp(4rem, 8vw, 7rem) 2rem; border-radius: 1.5rem; background: #0d4947; color: white; text-align: center; }
+  .all-plans h2 { margin-bottom: 2rem; }
+  .all-plans h2 span { display: inline-block; padding: .25em .4em; border-radius: .4em; background: linear-gradient(90deg, #8bc8ff, #479eea); color: #062d34; }
+  .all-plans p { max-width: 48rem; margin: 0 auto; color: #d3e4e2; line-height: 1.6; }
+
+  .comparison { width: min(81rem, calc(100% - 3rem)); }
+  .comparison-intro { text-align: center; }
+  .comparison-intro p { margin: 1.5rem auto 4rem; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-spacing: 0; font-size: .86rem; }
+  thead { position: sticky; top: var(--header-height); z-index: 2; background: #f5f1e7; }
+  thead th { padding: 1.4rem 1rem; font-size: 1rem; text-align: left; }
+  thead th:first-child { border-radius: 1rem 0 0 1rem; }
+  thead th:last-child { border-radius: 0 1rem 1rem 0; }
+  th, td { width: 23%; padding: 1rem; border-bottom: 1px solid #ddd7c8; text-align: center; }
+  th:first-child { width: 31%; text-align: left; }
+  tbody th { font-weight: 550; }
+  tbody th a { text-decoration-color: #94a9a7; text-underline-offset: .2em; }
+  td { color: #496a67; }
+  td.yes span { display: inline-grid; width: 1.45rem; height: 1.45rem; place-items: center; border-radius: 50%; background: #d9f4e9; color: #187653; font-weight: 800; }
+  td.no span { color: #be4d52; font-size: 1.5rem; }
+  .table-section th { padding: 3rem 0 1rem; border: 0; }
+  .table-section strong, .table-section span { display: block; }
+  .table-section strong { font-size: 1.75rem; letter-spacing: -.03em; }
+  .table-section span { margin-top: .4rem; color: #617875; font-weight: 400; }
+  .mobile-plan-switcher { display: none; }
+
+  .testimonials { margin: 0 1.5rem; padding: clamp(2rem, 6vw, 5rem); border-radius: 1.5rem; background: #f5f1e7; }
+  .testimonial-tabs { display: flex; margin: 3rem 0; padding: .35rem; border-radius: .9rem; background: #e8e2d5; }
+  .testimonial-tabs button { flex: 1; padding: .9rem; border: 0; border-radius: .65rem; background: transparent; color: #496a67; font: inherit; font-weight: 650; cursor: pointer; }
+  .testimonial-tabs button[aria-selected="true"] { background: white; color: #0d3937; box-shadow: 0 2px 8px #3d504815; }
+  .testimonial-panels article { display: grid; grid-template-columns: 18.75rem 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+  .testimonial-panels article[hidden] { display: none; }
+  .testimonial-panels img { width: 100%; border-radius: 1.25rem; mix-blend-mode: multiply; }
+  .company-name { color: #126bb3; font-size: 1.2rem; }
+  blockquote { margin: 1.5rem 0; font-size: clamp(1.2rem, 2.5vw, 1.7rem); line-height: 1.45; }
+  .metric { color: #126bb3; font-size: 1.6rem; font-weight: 700; }
+
+  .faq { display: grid; grid-template-columns: minmax(14rem, .7fr) minmax(0, 1.3fr); gap: clamp(3rem, 8vw, 8rem); width: min(75rem, calc(100% - 3rem)); margin: 0 auto; padding: clamp(5rem, 10vw, 9rem) 0; }
+  .faq-list details { border-top: 1px solid #d5d0c3; }
+  .faq-list details:last-child { border-bottom: 1px solid #d5d0c3; }
+  .faq-list summary { display: grid; grid-template-columns: 2rem 1fr 1.5rem; gap: .75rem; align-items: center; padding: 1.5rem 0; font-weight: 650; cursor: pointer; list-style: none; }
+  .faq-list summary span { color: #778b89; font-size: .7rem; }
+  .faq-list summary i { font-size: 1.5rem; font-style: normal; transition: transform .2s; }
+  .faq-list details[open] summary i { transform: rotate(45deg); }
+  .faq-list details div { padding: 0 2rem 1.5rem 2.75rem; color: #536f6c; line-height: 1.65; }
+
+  .final-cta { display: flex; min-height: 21rem; align-items: center; justify-content: space-between; gap: 2rem; padding: clamp(3rem, 7vw, 6rem); background: #0c4543; color: white; }
+  .final-cta h2 { max-width: 12ch; margin: 0; }
+  .final-cta > div:last-child { display: flex; gap: .75rem; }
+  .final-cta .arch { left: -8rem; bottom: -13rem; border-color: rgba(255,255,255,.08); }
+  .pricing-footer { display: flex; width: min(87rem, calc(100% - 3rem)); margin: 0 auto; padding: 3rem 0; justify-content: space-between; color: #dbe5e4; }
+  .pricing-footer nav { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+  .pricing-footer a { color: #9fb2b0; font-size: .8rem; text-decoration: none; }
+
+  @media (max-width: 48rem) {
+    .hero { min-height: 20rem; padding: 4rem 1.5rem; }
+    .calculator-label { align-items: flex-start; flex-direction: column; }
+    output span { display: none; }
+    .plan-grid { display: grid; overflow: visible; }
+    .plan-card { min-width: 0; }
+    .feature-toggle { display: block; width: 100%; margin-top: 1rem; padding: .7rem; border: 0; border-radius: .5rem; background: #f5f1e7; color: #31504e; font: inherit; font-weight: 650; }
+    .plan-features { display: none; }
+    .features-open .plan-features { display: block; }
+    .mobile-plan-switcher { position: sticky; top: calc(var(--header-height) + .5rem); z-index: 3; display: grid; grid-template-columns: repeat(3, 1fr); gap: .25rem; margin-bottom: 1.5rem; padding: .5rem; border-radius: .9rem; background: #f5f1e7; box-shadow: 0 6px 20px #233d3920; }
+    .mobile-plan-switcher button { padding: .65rem .25rem; border: 0; border-radius: .55rem; background: transparent; color: #41635f; font: inherit; }
+    .mobile-plan-switcher button[aria-pressed="true"] { background: white; color: #0d3937; font-weight: 700; }
+    .mobile-plan-switcher .button { grid-column: 1 / -1; }
+    thead { display: none; }
+    th, td { width: 50%; }
+    th:first-child { width: 50%; }
+    [data-plan-column] { display: none; }
+    table[data-active-plan="Hobby"] [data-plan-column="Hobby"], table[data-active-plan="Pro"] [data-plan-column="Pro"], table[data-active-plan="Enterprise"] [data-plan-column="Enterprise"] { display: table-cell; }
+    .table-section th { width: 100%; }
+    .testimonial-tabs { margin: 2rem 0 1.5rem; }
+    .testimonial-tabs button { padding: .65rem .25rem; font-size: .75rem; }
+    .testimonial-panels article { grid-template-columns: 1fr; }
+    .testimonial-panels img { display: none; }
+    .faq { grid-template-columns: 1fr; }
+    .final-cta { align-items: stretch; flex-direction: column; text-align: center; }
+    .final-cta h2 { margin: auto; }
+    .final-cta > div:last-child { flex-direction: column; }
+    .pricing-footer { align-items: flex-start; flex-direction: column; gap: 2rem; }
+  }
+
+  @media (max-width: 32rem) {
+    .hero, .all-plans, .testimonials, .final-cta { margin-right: .75rem; margin-left: .75rem; }
+    .pricing-section, .comparison, .faq { width: calc(100% - 1.5rem); }
+    .pricing-section { padding-top: 4rem; }
+    .plan-card-inner { padding: 1.15rem; }
+    .table-section strong { font-size: 1.35rem; }
+    th, td { padding: .8rem .5rem; font-size: .75rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { scroll-behavior: auto !important; transition-duration: 0s !important; }
+  }
+</style>
