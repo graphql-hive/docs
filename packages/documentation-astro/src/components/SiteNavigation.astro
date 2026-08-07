@@ -281,7 +281,7 @@ const isActive = (href: string) =>
     top: 0;
     color: var(--text, #e8e8ec);
     border-bottom: 1px solid transparent;
-    background: rgb(17 17 20 / 96%);
+    background: color-mix(in srgb, var(--background, white) 96%, transparent);
     transition: border-color 200ms ease;
     backdrop-filter: blur(14px);
   }
@@ -375,8 +375,8 @@ const isActive = (href: string) =>
     color: var(--text, #e8e8ec);
     border: 1px solid var(--border, #303038);
     border-radius: 0.8rem;
-    background: #18181c;
-    box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 40%);
+    background: var(--surface, #f8f7f6);
+    box-shadow: 0 1.5rem 4rem rgb(0 52 44 / 16%);
     transform: translateX(-50%);
   }
 
@@ -636,8 +636,8 @@ const isActive = (href: string) =>
     overflow-y: auto;
     border-top: 1px solid var(--border, #303038);
     border-bottom: 1px solid var(--border, #303038);
-    background: #111114;
-    box-shadow: 0 1.5rem 3rem rgb(0 0 0 / 40%);
+    background: var(--background, white);
+    box-shadow: 0 1.5rem 3rem rgb(0 52 44 / 16%);
   }
 
   .mobile-panel > details,

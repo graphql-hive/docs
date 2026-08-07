@@ -1,5 +1,6 @@
 import mdx from "@astrojs/mdx";
 import { unified } from "@astrojs/markdown-remark";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import { fileURLToPath } from "node:url";
 
@@ -13,6 +14,7 @@ export default defineConfig({
   ],
   publicDir: fileURLToPath(new URL("../documentation/public", import.meta.url)),
   vite: {
+    plugins: [tailwindcss()],
     resolve: {
       alias: [
         alias(
