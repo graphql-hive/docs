@@ -1,0 +1,268 @@
+---
+import "../styles/global.css";
+
+import { resolveAuthor } from "../lib/authors";
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  authors: (string | { name: string })[];
+  canonical?: string;
+  date: string;
+  description: string;
+  headings: Heading[];
+  title: string;
+}
+
+const { authors, canonical, date, description, headings, title } = Astro.props;
+const resolvedAuthors = authors.map(resolveAuthor);
+const formattedDate = new Intl.DateTimeFormat("en-US", {
+  day: "numeric",
+  month: "short",
+  timeZone: "UTC",
+  weekday: "long",
+  year: "numeric",
+}).format(new Date(`${date}T00:00:00Z`));
+const tableOfContents = headings.filter(
+  (heading) => heading.depth >= 2 && heading.depth <= 3,
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <title>{title} | GraphQL Hive</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/"><span>Hive</span></a>
+      <nav>
+        <a href="/docs">Documentation</a>
+        <a aria-current="page" href="/product-updates">Product Updates</a>
+        <a href="https://github.com/graphql-hive">GitHub</a>
+      </nav>
+    </header>
+
+    <div class="update-shell">
+      <main>
+        <a class="back" href="/product-updates">← All product updates</a>
+        <h1>{title}</h1>
+        <p class="description">{description}</p>
+        <div class="byline">
+          {
+            resolvedAuthors.map((author) => (
+              <a href={author.link} title={author.name}>
+                <img
+                  alt=""
+                  height="36"
+                  loading="lazy"
+                  src={`https://github.com/${author.github}.png?size=72`}
+                  width="36"
+                />
+                <span>{author.name}</span>
+              </a>
+            ))
+          }
+          <time datetime={date}>{formattedDate}</time>
+        </div>
+        <article class="docs-content"><slot /></article>
+      </main>
+
+      {
+        tableOfContents.length > 0 && (
+          <aside class="toc">
+            <strong>In this update</strong>
+            {tableOfContents.map((heading) => (
+              <a class={`depth-${heading.depth}`} href={`#${heading.slug}`}>
+                {heading.text}
+              </a>
+            ))}
+          </aside>
+        )
+      }
+    </div>
+
+    <footer>
+      <span>GraphQL Hive</span>
+      <a href="https://the-guild.dev/contact">Contact</a>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    position: sticky;
+    z-index: 20;
+    top: 0;
+    display: flex;
+    min-height: var(--header-height);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgb(17 17 20 / 92%);
+    backdrop-filter: blur(12px);
+  }
+
+  .brand {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .brand span {
+    color: var(--accent);
+  }
+
+  nav {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  nav a {
+    color: var(--muted);
+    font-size: 0.82rem;
+    text-decoration: none;
+  }
+
+  nav a:hover,
+  nav a[aria-current="page"] {
+    color: var(--text);
+  }
+
+  .update-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 48rem) minmax(10rem, 14rem);
+    gap: clamp(3rem, 7vw, 7rem);
+    width: min(70rem, calc(100% - 2rem));
+    min-height: calc(100vh - var(--header-height));
+    margin: 0 auto;
+  }
+
+  main {
+    min-width: 0;
+    padding: clamp(4rem, 10vw, 8rem) 0 6rem;
+  }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 2rem;
+    color: var(--accent);
+    font-size: 0.8rem;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.75rem, 7vw, 5.5rem);
+    letter-spacing: -0.06em;
+    line-height: 0.95;
+  }
+
+  .description {
+    max-width: 42rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-size: 1.15rem;
+    line-height: 1.6;
+  }
+
+  .byline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin: 2rem 0 4rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .byline a {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .byline img {
+    border-radius: 50%;
+  }
+
+  time {
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .toc {
+    position: sticky;
+    top: var(--header-height);
+    display: grid;
+    height: fit-content;
+    max-height: calc(100vh - var(--header-height));
+    align-content: start;
+    gap: 0.2rem;
+    padding: 3rem 0;
+    overflow-y: auto;
+  }
+
+  .toc strong {
+    margin: 0 0 0.65rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .toc a {
+    padding: 0.3rem 0.5rem;
+    color: var(--muted);
+    border-radius: 0.3rem;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  .toc a:hover {
+    color: var(--text);
+    background: var(--surface);
+  }
+
+  .toc .depth-3 {
+    padding-left: 1.2rem;
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem max(1.5rem, calc((100% - 68rem) / 2));
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 54rem) {
+    .update-shell {
+      display: block;
+    }
+
+    .toc {
+      display: none;
+    }
+  }
+
+  @media (max-width: 36rem) {
+    .site-header nav a:not([aria-current="page"]) {
+      display: none;
+    }
+
+    h1 {
+      font-size: 2.75rem;
+    }
+  }
+</style>

@@ -38,11 +38,20 @@ export default defineConfig({
           "./src/mdx-shims/contact-us.ts",
         ),
         alias(
+          "@hive/design-system/mdx-components/mdx-video",
+          "./src/mdx-shims/video.ts",
+        ),
+        alias(
+          "@hive/design-system/youtube-iframe",
+          "./src/mdx-shims/youtube-iframe.ts",
+        ),
+        alias(
           "@hive/design-system/hive-components/cli-errors",
           "./src/mdx-shims/cli-errors.ts",
         ),
         alias("fumadocs-ui/components/steps", "./src/mdx-shims/steps.ts"),
         alias("fumadocs-ui/components/files", "./src/mdx-shims/files.ts"),
+        alias("fumadocs-ui/components/callout", "./src/mdx-shims/callout.ts"),
         alias(
           "#components/otel-metrics/metrics-section",
           "./src/mdx-shims/metrics-section.ts",

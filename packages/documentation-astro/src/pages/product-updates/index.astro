@@ -1,0 +1,200 @@
+---
+import { getCollection } from "astro:content";
+
+import "../../styles/global.css";
+
+function dateString(value: unknown) {
+  return value instanceof Date
+    ? value.toISOString().slice(0, 10)
+    : String(value);
+}
+
+const updates = (await getCollection("productUpdates"))
+  .map((entry) => {
+    const data = entry.data as {
+      date: Date | string;
+      description: string;
+      title: string;
+    };
+    const slug = entry.id.replace(/\/index$/, "").replace(/\.(md|mdx)$/, "");
+
+    return { ...data, date: dateString(data.date), slug };
+  })
+  .sort((a, b) => b.date.localeCompare(a.date));
+
+const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "long",
+  timeZone: "UTC",
+  year: "numeric",
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="The most recent developments from Hive Console." />
+    <title>Product Updates | GraphQL Hive</title>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/"><span>Hive</span></a>
+      <nav>
+        <a href="/docs">Documentation</a>
+        <a aria-current="page" href="/product-updates">Product Updates</a>
+        <a href="https://github.com/graphql-hive">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <p class="eyebrow">Changelog</p>
+      <h1>Product Updates</h1>
+      <p class="intro">The most recent developments from Hive Console.</p>
+
+      <ol>
+        {
+          updates.map((update) => (
+            <li>
+              <a href={`/product-updates/${update.slug}`}>
+                <span class="dot" aria-hidden="true" />
+                <time datetime={update.date}>
+                  {dateFormat.format(new Date(`${update.date}T00:00:00Z`))}
+                </time>
+                <h2>{update.title}</h2>
+                <p>{update.description}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </main>
+  </body>
+</html>
+
+<style>
+  header {
+    display: flex;
+    min-height: var(--header-height);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .brand span,
+  .eyebrow {
+    color: var(--accent);
+  }
+
+  nav {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  nav a {
+    color: var(--muted);
+    font-size: 0.82rem;
+    text-decoration: none;
+  }
+
+  nav a:hover,
+  nav a[aria-current="page"] {
+    color: var(--text);
+  }
+
+  main {
+    width: min(54rem, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(5rem, 12vw, 9rem) 0;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(3.25rem, 9vw, 7rem);
+    letter-spacing: -0.07em;
+    line-height: 0.9;
+  }
+
+  .intro {
+    margin: 1.5rem 0 4rem;
+    color: var(--muted);
+    font-size: 1.15rem;
+  }
+
+  ol {
+    margin: 0;
+    padding: 0 0 0 1.5rem;
+    border-left: 1px solid var(--border);
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+    margin: 0 0 3rem;
+  }
+
+  li a {
+    display: block;
+    max-width: 44rem;
+    text-decoration: none;
+  }
+
+  .dot {
+    position: absolute;
+    top: 0.3rem;
+    left: -1.82rem;
+    width: 0.65rem;
+    height: 0.65rem;
+    border: 2px solid var(--background);
+    border-radius: 50%;
+    background: var(--muted);
+    box-shadow: 0 0 0 1px var(--border);
+  }
+
+  li a:hover .dot {
+    background: var(--accent);
+  }
+
+  time {
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  h2 {
+    margin: 0.35rem 0 0.5rem;
+    font-size: 1.35rem;
+    letter-spacing: -0.025em;
+  }
+
+  li a:hover h2 {
+    color: var(--accent);
+  }
+
+  li p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  @media (max-width: 36rem) {
+    nav a:not([aria-current="page"]) {
+      display: none;
+    }
+  }
+</style>

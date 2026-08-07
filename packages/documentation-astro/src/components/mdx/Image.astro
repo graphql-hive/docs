@@ -1,10 +1,14 @@
 ---
+import organizationImage from "../../../../documentation/content/docs/schema-registry/get-started/org.png";
+import projectImage from "../../../../documentation/content/docs/schema-registry/get-started/project.png";
+import signupImage from "../../../../documentation/content/docs/schema-registry/get-started/signup.png";
+
 interface Props {
   alt?: string;
   class?: string;
   className?: string;
   height?: number;
-  src: string | { height?: number; src: string; width?: number };
+  src: string | URL | { height?: number; src: string; width?: number };
   width?: number;
   [key: string]: unknown;
 }
@@ -17,9 +21,21 @@ const {
   height,
   ...props
 } = Astro.props;
-const source = typeof src === "string" ? src : src.src;
-const imageWidth = width ?? (typeof src === "object" ? src.width : undefined);
-const imageHeight = height ?? (typeof src === "object" ? src.height : undefined);
+const legacyUrlImages = {
+  "org.png": organizationImage,
+  "project.png": projectImage,
+  "signup.png": signupImage,
+};
+const urlMetadata =
+  src instanceof URL
+    ? legacyUrlImages[src.pathname.split("/").at(-1) as keyof typeof legacyUrlImages]
+    : undefined;
+const metadata =
+  urlMetadata ??
+  (typeof src === "object" && !(src instanceof URL) ? src : undefined);
+const source = typeof src === "string" ? src : metadata?.src;
+const imageWidth = width ?? metadata?.width;
+const imageHeight = height ?? metadata?.height;
 ---
 
 <img

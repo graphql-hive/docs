@@ -10,6 +10,14 @@ const docs = defineCollection({
   }),
 });
 
+const productUpdates = defineCollection({
+  loader: glob({
+    base: `${contentRoot}/product-updates`,
+    pattern: "**/*.{md,mdx}",
+  }),
+});
+
 export const collections = {
   docs,
+  productUpdates,
 };

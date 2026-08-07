@@ -5,11 +5,17 @@ import { fileURLToPath } from "node:url";
 const docsDirectory = fileURLToPath(
   new URL("../../../documentation/content/docs", import.meta.url),
 );
+const productUpdatesDirectory = fileURLToPath(
+  new URL("../../../documentation/content/product-updates", import.meta.url),
+);
 
 export function remarkRelativeLinks() {
   return (tree, file) => {
     const filePath = file.path ?? file.history?.[0];
     if (!filePath) return;
+    const collection = filePath.startsWith(productUpdatesDirectory)
+      ? { base: "/product-updates", directory: productUpdatesDirectory }
+      : { base: "/docs", directory: docsDirectory };
 
     visit(tree, (node) => {
       if (
@@ -21,13 +27,15 @@ export function remarkRelativeLinks() {
 
       const [rawPath, hash] = node.url.split("#");
       const pathWithoutExtension = rawPath.replace(/\.mdx?$/, "");
-      const resolved = resolveDocument(dirname(filePath), pathWithoutExtension);
+      const resolved =
+        resolveDocument(dirname(filePath), pathWithoutExtension) ??
+        resolveDocument(collection.directory, pathWithoutExtension);
       if (!resolved) return;
 
-      const path = relative(docsDirectory, resolved)
+      const path = relative(collection.directory, resolved)
         .replace(/\.mdx?$/, "")
         .replace(/(^|\/)index$/, "");
-      node.url = `/docs${path ? `/${path}` : ""}${hash ? `#${hash}` : ""}`;
+      node.url = `${collection.base}${path ? `/${path}` : ""}${hash ? `#${hash}` : ""}`;
     });
   };
 }
