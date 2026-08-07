@@ -19,6 +19,17 @@ import guildRaw from "../../../design-system/src/logos/guild.svg?raw";
 import hiveCombinationMarkRaw from "../../../design-system/src/logos/hive-combination-mark.svg?raw";
 import theGuildRaw from "../../../design-system/src/logos/the-guild.svg?raw";
 
+interface DocsNavigationItem {
+  href: string;
+  section: string;
+  title: string;
+}
+
+interface Props {
+  docsNavigation?: DocsNavigationItem[];
+}
+
+const { docsNavigation = [] } = Astro.props;
 const pathname = Astro.url.pathname;
 const hiveHref = pathname === "/" ? "/docs" : "/";
 
@@ -78,7 +89,7 @@ const externalProps = (href: string) =>
   class="sticky top-0 z-20 row-1 border-b border-beige-400/(--border-opacity) bg-[rgb(var(--nextra-bg))] text-green-1000 transition-[border-color] duration-500 [--border-opacity:0%] [grid-area:nav]"
   id="hive-navigation"
 >
-  <div class="flex items-center justify-between p-4 md:hidden">
+  <div class:list={["flex items-center justify-between p-4 md:hidden", pathname.startsWith("/docs") && "w-full bg-beige-100"]}>
     <a class="hive-focus -m-2 flex items-center rounded-md p-2" href="/" aria-label="Hive home">
       <Fragment set:html={withClass(hiveCombinationMarkRaw, "text-green-1000 dark:text-neutral-200 max-sm:h-6 max-sm:w-auto")} />
     </a>
@@ -99,7 +110,29 @@ const externalProps = (href: string) =>
 
   <div class="mobile-navigation-panel absolute inset-x-0 top-full hidden max-h-[calc(100vh-65px)] overflow-y-auto border-y border-beige-400 bg-white p-4 shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] md:hidden" id="mobile-navigation-panel">
     <nav class="grid gap-1" aria-label="Mobile navigation">
-      <a class={`${navigationLinkClass} font-medium`} href="/docs">Documentation</a>
+      {
+        docsNavigation.length > 0 ? (
+          <details class="group" open>
+            <summary class="flex w-full cursor-pointer list-none items-center gap-2 py-2 font-medium text-fd-muted-foreground transition-colors hover:text-fd-foreground">
+              Documentation
+              <svg class="ms-auto size-4 transition-transform group-open:rotate-180" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg>
+            </summary>
+            <div class="grid gap-0.5 pb-2 ps-3">
+              {docsNavigation.map((item) => (
+                <a
+                  class="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-fd-muted-foreground transition-colors hover:bg-fd-accent/50 hover:text-fd-foreground data-[active=true]:bg-fd-sidebar-active-bg data-[active=true]:text-fd-sidebar-active"
+                  data-active={item.href === pathname}
+                  href={item.href}
+                >
+                  {item.title}
+                </a>
+              ))}
+            </div>
+          </details>
+        ) : (
+          <a class={`${navigationLinkClass} font-medium`} href="/docs">Documentation</a>
+        )
+      }
       <a class={`${navigationLinkClass} font-medium`} href="/product-updates">Product Updates</a>
       <a class={`${navigationLinkClass} font-medium`} href="/case-studies">Case Studies</a>
       <a class={`${navigationLinkClass} font-medium`} href="/pricing">Pricing</a>
@@ -110,7 +143,7 @@ const externalProps = (href: string) =>
     </nav>
   </div>
 
-  <nav class="relative z-10 mx-auto hidden w-360 max-w-full flex-1 items-center px-6 py-4 md:flex" id="h-navmenu-container" aria-label="Navigation Menu">
+  <nav class:list={["relative z-10 mx-auto hidden max-w-full flex-1 items-center px-6 py-4 md:flex", pathname.startsWith("/docs") ? "w-full bg-beige-100" : "w-360"]} id="h-navmenu-container" aria-label="Navigation Menu">
     <a class="hive-focus -m-2 flex items-center rounded-md p-2" href="/" aria-label="Hive home">
       <Fragment set:html={withClass(hiveCombinationMarkRaw, "text-green-1000 dark:text-neutral-200 max-sm:h-6 max-sm:w-auto")} />
     </a>

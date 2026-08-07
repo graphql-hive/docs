@@ -3,6 +3,10 @@ import "../styles/global.css";
 
 import SiteNavigation from "../components/SiteNavigation.astro";
 
+import hiveGatewayRaw from "../../../design-system/src/icons/hive-gateway.svg?raw";
+import hiveRaw from "../../../design-system/src/icons/hive.svg?raw";
+import hiveRouterRaw from "../../../design-system/src/icons/hive-router.svg?raw";
+
 interface NavItem {
   href: string;
   section: string;
@@ -24,10 +28,27 @@ interface Props {
 }
 
 const { currentPath, description, headings, navItems, title } = Astro.props;
-const sections = Map.groupBy(navItems, (item) => item.section);
-const tableOfContents = headings.filter(
-  (heading) => heading.depth >= 2 && heading.depth <= 3,
+const sections = Map.groupBy(
+  navItems.filter((item) => item.href !== "/docs"),
+  (item) => item.section,
 );
+const tableOfContents = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 4);
+const currentSection = currentPath.split("/")[2] ?? "overview";
+const sectionDetails: Record<string, { icon?: string; title: string }> = {
+  "api reference": { title: "API Reference" },
+  gateway: { icon: hiveGatewayRaw, title: "Hive Gateway" },
+  logger: { title: "Hive Logger" },
+  "migration guides": { title: "Migration guides" },
+  "new laboratory": { title: "Hive Laboratory" },
+  "other integrations": { title: "Other integrations" },
+  router: { icon: hiveRouterRaw, title: "Hive Router" },
+  "schema registry": { icon: hiveRaw, title: "Hive Console" },
+  "use cases": { title: "Use cases" },
+};
+const currentIndex = navItems.findIndex((item) => item.href === currentPath);
+const previous = currentIndex > 0 ? navItems[currentIndex - 1] : undefined;
+const next = currentIndex >= 0 ? navItems[currentIndex + 1] : undefined;
+const sectionTitle = sectionDetails[currentSection.replaceAll("-", " ")]?.title;
 ---
 
 <!doctype html>
@@ -36,233 +57,185 @@ const tableOfContents = headings.filter(
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description ?? title} />
-    <title>{title} | GraphQL Hive</title>
+    <title>{title} | Hive</title>
   </head>
-  <body>
-    <SiteNavigation />
+  <body class="min-h-screen bg-beige-100 font-sans text-green-1000 antialiased" data-docs>
+    <div
+      class="grid min-h-(--fd-docs-height) auto-cols-auto auto-rows-auto overflow-x-clip transition-[grid-template-columns] [--fd-docs-height:100dvh] [--fd-docs-row-1:var(--fd-banner-height,0px)] [--fd-docs-row-2:var(--fd-docs-row-1)] [--fd-docs-row-3:calc(var(--fd-docs-row-2)+var(--fd-toc-popover-height))] [--fd-header-height:0px] [--fd-sidebar-col:var(--fd-sidebar-width)] [--fd-sidebar-width:0px] [--fd-toc-popover-height:0px] [--fd-toc-width:0px] md:[--fd-sidebar-width:268px] xl:[--fd-toc-width:268px]"
+      id="nd-docs-layout"
+      style={`grid-template: "nav nav nav" "sidebar toc-popover toc" "sidebar main toc" 1fr / var(--fd-sidebar-col) minmax(0, 1fr) minmax(min-content, var(--fd-toc-width))`}
+    >
+      <SiteNavigation docsNavigation={navItems} />
 
-    <div class="mobile-nav">
-      <details>
-        <summary>Documentation menu</summary>
-        <nav>
-          {
-            [...sections].map(([section, items]) => (
-              <div class="nav-section">
-                <strong>{section}</strong>
-                {items.map((item) => (
-                  <a
-                    aria-current={item.href === currentPath ? "page" : undefined}
-                    href={item.href}
-                  >
-                    {item.title}
-                  </a>
-                ))}
+      <div class="pointer-events-none sticky top-(--fd-docs-row-1) z-10 h-[calc(var(--fd-docs-height)-var(--fd-docs-row-1))] [grid-area:sidebar] *:pointer-events-auto max-md:hidden">
+        <aside class="absolute inset-y-0 start-0 flex w-full flex-col items-end border-e bg-transparent text-sm *:w-(--fd-sidebar-width)" id="nd-sidebar">
+          <div class="min-h-0 flex-1 overflow-hidden">
+            <nav class="size-full overflow-y-auto p-4 overscroll-contain [mask-image:linear-gradient(to_bottom,transparent,white_12px,white_calc(100%-12px),transparent)]" aria-label="Documentation">
+              <div class="[&>*:not(:first-child)]:mt-0.5">
+                <a
+                  class="relative flex flex-row items-center gap-2 rounded-lg p-2 text-start text-fd-muted-foreground transition-colors wrap-anywhere hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none data-[active=true]:bg-fd-sidebar-active-bg data-[active=true]:text-fd-sidebar-active data-[active=true]:hover:transition-colors"
+                  data-active={currentPath === "/docs"}
+                  href="/docs"
+                  aria-current={currentPath === "/docs" ? "page" : undefined}
+                >
+                  <span>Introduction</span>
+                </a>
+                {
+                  [...sections].map(([section, items]) => {
+                    const details = sectionDetails[section] ?? { title: section };
+                    const open = currentSection.replaceAll("-", " ") === section;
+                    const directItems = items.filter((item) => item.href.split("/").filter(Boolean).length <= 3);
+                    const nestedItems = Map.groupBy(
+                      items.filter((item) => item.href.split("/").filter(Boolean).length > 3),
+                      (item) => item.href.split("/").filter(Boolean)[2]!,
+                    );
+                    return (
+                      <details class="group" open={open}>
+                        <summary class="relative mt-0.5 flex w-full cursor-pointer list-none flex-row items-center gap-2 rounded-lg p-2 text-start text-fd-muted-foreground transition-colors wrap-anywhere hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none [&_svg]:size-4 [&_svg]:shrink-0">
+                          {details.icon && <span set:html={details.icon} />}
+                          <span>{details.title}</span>
+                          <svg class="ms-auto transition-transform group-open:rotate-0 -rotate-90" aria-hidden="true" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="m6 9 6 6 6-6" /></svg>
+                        </summary>
+                        <div class="relative mt-0.5 before:absolute before:inset-y-1 before:start-2.5 before:w-px before:bg-fd-border before:content-['']">
+                          {directItems.map((item) => {
+                            const itemSlug = item.href.split("/").filter(Boolean).at(-1)!;
+                            const children = nestedItems.get(itemSlug);
+                            if (children) {
+                              const childOpen = currentPath === item.href || currentPath.startsWith(`${item.href}/`);
+                              return (
+                                <details class="group/folder" open={childOpen}>
+                                  <summary class="relative mt-0.5 flex w-full cursor-pointer list-none flex-row items-center gap-2 rounded-lg p-2 ps-8 text-start text-fd-muted-foreground transition-colors wrap-anywhere hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none">
+                                    <span>{item.title}</span>
+                                    <svg class="ms-auto size-4 shrink-0 -rotate-90 transition-transform group-open/folder:rotate-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg>
+                                  </summary>
+                                  <div class="relative mt-0.5">
+                                    {children.map((child) => (
+                                      <a
+                                        class="relative mt-0.5 flex flex-row items-center gap-2 rounded-lg p-2 ps-11 text-start text-fd-muted-foreground transition-colors wrap-anywhere hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none data-[active=true]:bg-fd-sidebar-active-bg data-[active=true]:text-fd-sidebar-active data-[active=true]:hover:transition-colors data-[active=true]:before:absolute data-[active=true]:before:inset-y-2.5 data-[active=true]:before:start-2.5 data-[active=true]:before:w-px data-[active=true]:before:bg-fd-sidebar-active data-[active=true]:before:content-['']"
+                                        data-active={child.href === currentPath}
+                                        aria-current={child.href === currentPath ? "page" : undefined}
+                                        href={child.href}
+                                      >
+                                        {child.title}
+                                      </a>
+                                    ))}
+                                  </div>
+                                </details>
+                              );
+                            }
+                            return (
+                              <a
+                                class="relative mt-0.5 flex flex-row items-center gap-2 rounded-lg p-2 ps-8 text-start text-fd-muted-foreground transition-colors wrap-anywhere hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none data-[active=true]:bg-fd-sidebar-active-bg data-[active=true]:text-fd-sidebar-active data-[active=true]:hover:transition-colors data-[active=true]:before:absolute data-[active=true]:before:inset-y-2.5 data-[active=true]:before:start-2.5 data-[active=true]:before:w-px data-[active=true]:before:bg-fd-sidebar-active data-[active=true]:before:content-['']"
+                                data-active={item.href === currentPath}
+                                aria-current={item.href === currentPath ? "page" : undefined}
+                                href={item.href}
+                              >
+                                {item.title}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </details>
+                    );
+                  })
+                }
               </div>
-            ))
-          }
-        </nav>
-      </details>
-    </div>
+            </nav>
+          </div>
+          <div class="flex flex-col border-t p-4 pt-2">
+            <span class="pt-1 text-xs text-fd-muted-foreground">GraphQL Hive documentation</span>
+          </div>
+        </aside>
+      </div>
 
-    <div class="docs-shell">
-      <aside class="sidebar">
-        <nav>
-          {
-            [...sections].map(([section, items]) => (
-              <div class="nav-section">
-                <strong>{section}</strong>
-                {items.map((item) => (
-                  <a
-                    aria-current={item.href === currentPath ? "page" : undefined}
-                    href={item.href}
-                  >
-                    {item.title}
-                  </a>
-                ))}
-              </div>
-            ))
-          }
-        </nav>
-      </aside>
+      {
+        tableOfContents.length > 0 && (
+          <details class="group sticky top-(--fd-docs-row-2) z-10 h-(--fd-toc-popover-height) [grid-area:toc-popover] max-xl:[--fd-toc-popover-height:--spacing(10)] xl:hidden" data-toc-popover>
+            <summary class="flex h-10 w-full cursor-pointer list-none items-center gap-2.5 border-b bg-beige-100/80 px-4 py-2.5 text-start text-sm text-fd-muted-foreground backdrop-blur-sm focus-visible:outline-none md:px-6">
+              <svg class="size-4 shrink-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" /></svg>
+              <span class="flex-1 truncate">On this page</span>
+              <svg class="size-4 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg>
+            </summary>
+            <nav class="flex max-h-[50vh] flex-col overflow-auto border-b bg-beige-100 px-4 pb-4 shadow-sm md:px-6">
+              {tableOfContents.map((heading) => (
+                <a class="py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere hover:text-fd-primary" href={`#${heading.slug}`}>{heading.text}</a>
+              ))}
+            </nav>
+          </details>
+        )
+      }
 
-      <main>
-        <p class="breadcrumb"><a href="/docs">Docs</a> / {title}</p>
-        <h1>{title}</h1>
-        {description && <p class="description">{description}</p>}
-        <article class="docs-content"><slot /></article>
-      </main>
-
-      <aside class="toc">
-        <strong>On this page</strong>
+      <article class="mx-auto flex w-full max-w-[900px] flex-col gap-4 px-4 py-6 [grid-area:main] md:px-6 md:pt-8 xl:px-8 xl:pb-[52px] xl:pt-8" id="nd-page">
         {
-          tableOfContents.map((heading) => (
-              <a class={`depth-${heading.depth}`} href={`#${heading.slug}`}>
-                {heading.text}
-              </a>
-            ))
+          currentPath !== "/docs" && (
+            <nav class="flex items-center gap-1.5 text-sm text-fd-muted-foreground" aria-label="Breadcrumb">
+              <a class="truncate transition-opacity hover:opacity-80" href="/docs">Docs</a>
+              {sectionTitle && <><span aria-hidden="true">/</span><span class="truncate">{sectionTitle}</span></>}
+              <span aria-hidden="true">/</span><span class="truncate font-medium text-fd-primary">{title}</span>
+            </nav>
+          )
+        }
+        <h1 class="text-[1.75em] font-semibold">{title}</h1>
+        {description && <p class="mb-8 text-lg text-fd-muted-foreground">{description}</p>}
+        <div class="docs-content prose relative flex-1"><slot /></div>
+        {
+          (previous || next) && (
+            <nav class="grid gap-4 sm:grid-cols-2" aria-label="Documentation pages">
+              {previous ? <a class="flex flex-col gap-2 rounded-lg border p-4 text-sm transition-colors hover:bg-fd-accent/80 hover:text-fd-accent-foreground" href={previous.href}><span class="font-medium">← {previous.title}</span></a> : <span />}
+              {next && <a class="flex flex-col gap-2 rounded-lg border p-4 text-end text-sm transition-colors hover:bg-fd-accent/80 hover:text-fd-accent-foreground" href={next.href}><span class="font-medium">{next.title} →</span></a>}
+            </nav>
+          )
+        }
+      </article>
+
+      <aside class="sticky top-(--fd-docs-row-1) flex h-[calc(var(--fd-docs-height)-var(--fd-docs-row-1))] w-(--fd-toc-width) flex-col pt-12 pe-4 pb-2 [grid-area:toc] max-xl:hidden" id="nd-toc">
+        {
+          tableOfContents.length > 0 && (
+            <>
+              <h2 class="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground">
+                <svg class="size-4" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" /></svg>
+                On this page
+              </h2>
+              <div class="relative ms-px min-h-0 overflow-auto py-3 text-sm [mask-image:linear-gradient(to_bottom,transparent,white_16px,white_calc(100%-16px),transparent)] [scrollbar-width:none]">
+                <div class="toc-thumb absolute top-(--fd-top) h-(--fd-height) w-0.5 rounded-e-sm bg-fd-primary transition-[top,height] ease-linear"></div>
+                <nav class="flex flex-col border-s border-fd-foreground/10">
+                  {tableOfContents.map((heading) => (
+                    <a
+                      class:list={[
+                        "toc-link py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere first:pt-0 last:pb-0 data-[active=true]:text-fd-primary",
+                        heading.depth <= 2 ? "ps-3" : heading.depth === 3 ? "ps-6" : "ps-8",
+                      ]}
+                      data-toc-anchor={heading.slug}
+                      href={`#${heading.slug}`}
+                    >
+                      {heading.text}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            </>
+          )
         }
       </aside>
     </div>
 
-    <footer>
-      <span>GraphQL Hive documentation</span>
-      <a href="https://the-guild.dev/contact">Contact</a>
-    </footer>
+    <script>
+      const links = [...document.querySelectorAll<HTMLAnchorElement>(".toc-link")];
+      const thumb = document.querySelector<HTMLElement>(".toc-thumb");
+      const updateToc = () => {
+        if (links.length === 0) return;
+        const active = [...links].reverse().find((link) => {
+          const id = link.dataset.tocAnchor;
+          return id && document.getElementById(id)?.getBoundingClientRect().top! <= 140;
+        }) ?? links[0];
+        links.forEach((link) => link.dataset.active = String(link === active));
+        if (thumb) {
+          thumb.style.setProperty("--fd-top", `${active.offsetTop}px`);
+          thumb.style.setProperty("--fd-height", `${active.offsetHeight}px`);
+        }
+      };
+      updateToc();
+      addEventListener("scroll", updateToc, { passive: true });
+    </script>
   </body>
 </html>
-
-<style>
-  .docs-shell {
-    display: grid;
-    grid-template-columns: minmax(13rem, 17rem) minmax(0, 48rem) minmax(10rem, 14rem);
-    gap: clamp(2rem, 4vw, 4rem);
-    width: min(96rem, 100%);
-    min-height: calc(100vh - var(--header-height));
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-
-  .sidebar,
-  .toc {
-    position: sticky;
-    top: var(--header-height);
-    height: calc(100vh - var(--header-height));
-    padding: 2rem 0;
-    overflow-y: auto;
-  }
-
-  .sidebar {
-    padding-right: 1.25rem;
-    border-right: 1px solid var(--border);
-  }
-
-  .nav-section {
-    display: grid;
-    gap: 0.2rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .nav-section strong {
-    margin-bottom: 0.35rem;
-    color: var(--text);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .nav-section a,
-  .toc a {
-    padding: 0.35rem 0.55rem;
-    color: var(--muted);
-    border-radius: 0.35rem;
-    font-size: 0.82rem;
-    line-height: 1.35;
-    text-decoration: none;
-  }
-
-  .nav-section a:hover,
-  .nav-section a[aria-current="page"] {
-    color: var(--text);
-    background: var(--surface-raised);
-  }
-
-  main {
-    min-width: 0;
-    padding: clamp(3rem, 7vw, 6rem) 0 6rem;
-  }
-
-  .breadcrumb {
-    margin: 0 0 1rem;
-    color: var(--muted);
-    font-size: 0.8rem;
-  }
-
-  .breadcrumb a {
-    color: var(--link);
-  }
-
-  h1 {
-    margin: 0;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    letter-spacing: -0.055em;
-    line-height: 0.98;
-  }
-
-  .description {
-    margin: 1.25rem 0 2.5rem;
-    color: var(--muted);
-    font-size: 1.15rem;
-    line-height: 1.6;
-  }
-
-  .toc {
-    display: grid;
-    align-content: start;
-    gap: 0.15rem;
-  }
-
-  .toc strong {
-    margin: 0 0 0.7rem 0.55rem;
-    font-size: 0.75rem;
-  }
-
-  .toc .depth-3 {
-    padding-left: 1.25rem;
-  }
-
-  footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 2rem max(1.5rem, calc((100% - 93rem) / 2));
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-    font-size: 0.8rem;
-  }
-
-  .mobile-nav {
-    display: none;
-  }
-
-  @media (max-width: 72rem) {
-    .docs-shell {
-      grid-template-columns: minmax(13rem, 16rem) minmax(0, 48rem);
-    }
-
-    .toc {
-      display: none;
-    }
-  }
-
-  @media (max-width: 48rem) {
-    .mobile-nav {
-      display: block;
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .mobile-nav summary {
-      cursor: pointer;
-      font-size: 0.875rem;
-      font-weight: 600;
-    }
-
-    .mobile-nav nav {
-      max-height: 65vh;
-      margin-top: 1rem;
-      overflow-y: auto;
-    }
-
-    .docs-shell {
-      display: block;
-      padding: 0 1rem;
-    }
-
-    .sidebar {
-      display: none;
-    }
-
-    main {
-      padding-top: 3rem;
-    }
-  }
-</style>

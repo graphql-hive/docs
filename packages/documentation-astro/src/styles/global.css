@@ -7,6 +7,25 @@
 
 @custom-variant dark (&:where(.dark, .dark *):not(:where(.light, .light *)));
 
+@theme inline {
+  --color-fd-accent: var(--color-beige-300);
+  --color-fd-accent-foreground: var(--color-green-1000);
+  --color-fd-background: var(--color-white);
+  --color-fd-border: var(--color-beige-400);
+  --color-fd-foreground: var(--color-green-1000);
+  --color-fd-muted: var(--color-beige-200);
+  --color-fd-muted-foreground: var(--color-green-700);
+  --color-fd-primary: var(--color-green-1000);
+  --color-fd-secondary: var(--color-beige-300);
+  --color-fd-secondary-foreground: var(--color-green-1000);
+  --color-fd-sidebar-active: var(--color-blue-900);
+  --color-fd-sidebar-active-bg: color-mix(
+    in oklab,
+    var(--color-blue-400) 20%,
+    transparent
+  );
+}
+
 :root {
   color-scheme: light;
   --nextra-bg: 255 255 255;
@@ -64,9 +83,7 @@ pre {
 }
 
 .docs-content h2 {
-  margin: 3.5rem 0 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
+  margin: 2rem 0 1rem;
   font-size: 1.75rem;
 }
 
@@ -80,15 +97,23 @@ pre {
   font-size: 1.05rem;
 }
 
-.docs-content p,
-.docs-content ul,
-.docs-content ol {
+.docs-content :where(p, ul, ol):not(.hive-card *) {
   color: var(--color-green-800);
 }
 
-.docs-content a {
-  color: var(--link);
-  text-underline-offset: 0.2em;
+.docs-content a:not(.hive-card) {
+  margin: -0.125rem -0.25rem;
+  padding: 0.125rem 0.25rem;
+  color: currentColor;
+  border-radius: 0.125rem;
+  text-decoration-color: var(--color-blue-700);
+  text-decoration-line: underline;
+  text-underline-offset: 0.125rem;
+}
+
+.docs-content a:not(.hive-card):hover {
+  color: var(--color-blue-700);
+  text-decoration: none;
 }
 
 .docs-content img,
