@@ -8,6 +8,7 @@
 @custom-variant dark (&:where(.dark, .dark *):not(:where(.light, .light *)));
 
 @theme inline {
+  --color-blueish-green: #003834;
   --color-fd-accent: var(--color-beige-300);
   --color-fd-accent-foreground: var(--color-green-1000);
   --color-fd-background: var(--color-white);
