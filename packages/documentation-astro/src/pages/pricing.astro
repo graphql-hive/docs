@@ -1,4 +1,5 @@
 ---
+import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import "../styles/global.css";
 
@@ -364,10 +365,7 @@ const questionId = (question: string) =>
       </section>
     </main>
 
-    <footer class="pricing-footer mx-auto flex w-[min(87rem,calc(100%-3rem))] justify-between py-12 text-green-1000 max-md:flex-col max-md:items-start max-md:gap-8">
-      <strong>GraphQL Hive</strong>
-      <nav class="flex flex-wrap gap-6 [&_a]:text-xs [&_a]:text-green-500 [&_a]:no-underline" aria-label="Footer"><a class="hive-focus" href="/docs">Documentation</a><a class="hive-focus" href="/pricing">Pricing</a><a class="hive-focus" href="/case-studies">Case Studies</a><a class="hive-focus" href="https://the-guild.dev/contact">Contact</a><a class="hive-focus" href="https://the-guild.dev/graphql/hive/privacy-policy.pdf">Privacy Policy</a></nav>
-    </footer>
+    <SiteFooter />
 
     <script>
       const range = document.querySelector<HTMLInputElement>("#operations");

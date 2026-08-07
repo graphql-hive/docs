@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
+import SiteFooter from "../../components/SiteFooter.astro";
 import SiteNavigation from "../../components/SiteNavigation.astro";
 import "../../styles/global.css";
 
@@ -71,6 +72,7 @@ const stories = (await getCollection("caseStudies"))
         </div>
       </section>
     </main>
+    <SiteFooter />
   </body>
 </html>
 

@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 
+import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 
 interface Author {
@@ -101,10 +102,7 @@ const { authors, canonical, category, excerpt, otherStories, title } = Astro.pro
       }
     </main>
 
-    <footer>
-      <span>GraphQL Hive</span>
-      <a href="https://the-guild.dev/contact">Contact</a>
-    </footer>
+    <SiteFooter />
   </body>
 </html>
 
@@ -288,15 +286,6 @@ const { authors, canonical, category, excerpt, otherStories, title } = Astro.pro
     line-height: 1.5;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
-  }
-
-  footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 2rem max(1.5rem, calc((100% - 74rem) / 2));
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-    font-size: 0.8rem;
   }
 
   @media (max-width: 52rem) {

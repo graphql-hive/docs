@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 
+import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 
 import hiveGatewayRaw from "../../../design-system/src/icons/hive-gateway.svg?raw";
@@ -218,6 +219,8 @@ const sectionTitle = sectionDetails[currentSection.replaceAll("-", " ")]?.title;
         }
       </aside>
     </div>
+
+    <SiteFooter class="border-t border-fd-border" />
 
     <script>
       const links = [...document.querySelectorAll<HTMLAnchorElement>(".toc-link")];
