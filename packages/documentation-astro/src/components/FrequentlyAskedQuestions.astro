@@ -1,11 +1,13 @@
 ---
 interface Props {
   class?: string;
+  faqs?: readonly (readonly [string, string])[];
+  heading?: string;
 }
 
 const { class: className } = Astro.props;
 
-const faqs = [
+const defaultFaqs = [
   [
     "What does \"no vendor lock-in\" mean?",
     "We value your flexibility and independent decision-making. That means we'll never try to lock you out in our ecosystem and we'll continuously add support for other tools and solutions, so that you decide what your stack should look like!",
@@ -28,12 +30,15 @@ const faqs = [
   ],
 ] as const;
 
+const faqs = Astro.props.faqs ?? defaultFaqs;
+const heading = Astro.props.heading ?? "Frequently Asked Questions";
+
 const questionId = (question: string) =>
   `faq--${question.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-").replaceAll(/(^-|-$)/g, "")}`;
 ---
 
 <section class:list={["text-green-1000 flex flex-col gap-x-6 gap-y-2 px-4 py-6 md:flex-row md:px-10 lg:gap-x-24 lg:px-[120px] lg:py-24", className]}>
-  <h2 class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] basis-1/2" id="frequently-asked-questions">Frequently Asked Questions</h2>
+  <h2 class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] basis-1/2" id="frequently-asked-questions">{heading}</h2>
   <div class="divide-beige-400 basis-1/2 divide-y max-xl:grow">
     {faqs.map(([question, answer]) => (
       <details class="group relative pb-0 open:pb-4" id={questionId(question)} itemscope itemtype="https://schema.org/Question">
