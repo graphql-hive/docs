@@ -6,37 +6,13 @@ import EcosystemIllustration from "../components/landing/EcosystemIllustration.a
 import FeatureTabs from "../components/landing/FeatureTabs.astro";
 import TeamSection from "../components/landing/TeamSection.astro";
 import ToolsAndLibraries from "../components/landing/ToolsAndLibraries.astro";
+import FrequentlyAskedQuestions from "../components/FrequentlyAskedQuestions.astro";
+import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import "../styles/global.css";
 
 const appUrl = "https://app.graphql-hive.com";
-
-const faqs = [
-  [
-    "What does \"no vendor lock-in\" mean?",
-    "We value your flexibility and independent decision-making. That means we'll never try to lock you out in our ecosystem and we'll continuously add support for other tools and solutions, so that you decide what your stack should look like!",
-  ],
-  [
-    "Can Hive Console be self-hosted?",
-    "Yes, the on-premise version (identical to Hive Cloud) is free and open-source. <a class=\"hive-focus underline decoration-blue-500 underline-offset-2\" href=\"/docs/schema-registry/self-hosting/get-started\">Read about Self-Hosting Hive in our documentation.</a>",
-  ],
-  [
-    "What counts as a GraphQL operation?",
-    "Every GraphQL request that is processed by your GraphQL API and reported to Hive Console. If your server receives 1M GraphQL requests, all of them will be reported to Hive (assuming no sampling).",
-  ],
-  [
-    "Are you SOC-2 Type II compliant?",
-    "Hive Platfrom is fully SOC-2 Type II compliant. <a class=\"hive-focus underline decoration-blue-500 underline-offset-2\" href=\"https://security.graphql-hive.com/\" target=\"_blank\" rel=\"noreferrer\">Read more in the Trust Center.</a>",
-  ],
-  [
-    "Do you have a GraphQL Gateway?",
-    "Of course, we do! It is called Hive Gateway (previously known as GraphQL Mesh) that supports Apollo Federation and has been battle-tested by our clients for a few years now. <a class=\"hive-focus underline decoration-blue-500 underline-offset-2\" href=\"/docs/gateway\">Read more in our documentation.</a>",
-  ],
-] as const;
-
-const questionId = (question: string) =>
-  `faq--${question.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-").replaceAll(/(^-|-$)/g, "")}`;
 ---
 
 <!doctype html>
@@ -314,50 +290,10 @@ const questionId = (question: string) =>
       <ToolsAndLibraries class="mx-4 mt-6 md:mx-6" isHive />
 
       <!-- FAQ -->
-      <section class="flex flex-col gap-x-6 gap-y-2 px-4 py-6 md:flex-row md:px-10 lg:gap-x-24 lg:px-[120px] lg:py-24 mx-4 md:mx-6">
-        <h2 class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] basis-1/2">Frequently Asked Questions</h2>
-        <div class="basis-1/2 [&_details:last-child]:border-b [&_details:last-child]:border-beige-400">
-          {faqs.map(([question, answer], index) => (
-            <details class="group border-t border-beige-400" id={questionId(question)} itemscope itemtype="https://schema.org/Question">
-              <summary class="hive-focus grid cursor-pointer list-none grid-cols-[2rem_1fr_1.5rem] items-center gap-3 py-6 font-[650]" itemprop="name">
-                <span class="text-[.7rem] text-green-600">{String(index + 1).padStart(2, "0")}</span>
-                {question}
-                <i class="text-2xl not-italic transition-transform duration-200 group-open:rotate-45" aria-hidden="true">+</i>
-              </summary>
-              <div class="px-8 pb-6 pl-11 leading-[1.65] text-green-700" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-                <p itemprop="text" set:html={answer} />
-              </div>
-            </details>
-          ))}
-        </div>
-      </section>
+      <FrequentlyAskedQuestions class="mx-4 md:mx-6" />
 
       <!-- Get your API game right -->
-      <section class="relative overflow-hidden rounded-3xl bg-primary md:h-[308px] mx-4 sm:mb-6 md:mx-6">
-        <div class="pointer-events-none absolute inset-0 overflow-hidden">
-          <svg class="absolute inset-y-0 right-0 hidden opacity-10 md:block [@media(min-width:1300px)]:opacity-100" fill="none" height="309" viewBox="0 0 538 309" width="538" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 127.88c0 11.695 4.565 22.926 12.679 31.201l63.005 64.257 7.378 7.524 63.005 64.257c8.113 8.275 19.126 12.931 30.594 12.931H546.5v-84.712H147.971c-35.852 0-64.91-29.635-64.91-66.199V-97.857H0V127.88z" fill="url(#gogr-green-arch)"></path>
-            <defs><linearGradient gradientUnits="userSpaceOnUse" id="gogr-green-arch" x1="273.25" x2="273.25" y1="-3.00975" y2="308.05"><stop stop-color="#55998D"></stop><stop offset="1" stop-color="#245850"></stop></linearGradient></defs>
-          </svg>
-          <svg class="absolute right-[607px] max-md:right-[-36px] max-md:top-[-71px] max-md:size-[200px] max-md:rotate-180 md:bottom-0" fill="none" height="284" viewBox="0 0 304 284" width="304" xmlns="http://www.w3.org/2000/svg">
-            <path d="M293.962 111.972a32.561 32.561 0 019.538 23.014V303.55h-62.444V113.073c0-27.66-22.419-50.079-50.079-50.079H.5V.55h168.563a32.565 32.565 0 0123.015 9.538l48.124 48.124 5.636 5.636 48.124 48.124z" stroke="url(#gogr-stroke)"></path>
-            <defs><linearGradient gradientUnits="userSpaceOnUse" id="gogr-stroke" x1="152" x2="294.5" y1="159.05" y2="5.04982"><stop stop-color="#A2C1C4" stop-opacity="0"></stop><stop offset="1" stop-color="#A2C1C4" stop-opacity="0.8"></stop></linearGradient></defs>
-          </svg>
-        </div>
-        <div class="flex items-stretch justify-between gap-x-6 gap-y-4 p-4 max-md:flex-col sm:items-center md:h-[308px] md:px-24">
-          <h2 class="group text-[40px] leading-[1.2] tracking-[-0.2px] max-sm:text-balance max-sm:text-center md:text-[56px] md:leading-[1.142586] md:tracking-[-0.56px]">Get your API game right.</h2>
-          <div class="flex gap-x-4 gap-y-2 whitespace-pre max-sm:flex-col">
-            <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-green-800 hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800/40 sm:w-fit" href="https://app.graphql-hive.com/">
-              <span class="absolute inset-0 rounded-lg border border-green-800"></span>
-              Get started for free
-            </a>
-            <a class="landing-contact relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-transparent focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800 sm:w-fit" href="https://the-guild.dev/contact">
-              <span class="absolute inset-0 rounded-lg border border-green-800"></span>
-              Talk to us
-            </a>
-          </div>
-        </div>
-      </section>
+      <GetYourAPIGameRightSection class="mx-4 sm:mb-6 md:mx-6" />
     </main>
 
     <SiteFooter />
@@ -402,28 +338,6 @@ const questionId = (question: string) =>
         { threshold: 0.3 },
       );
       stats.forEach((stat) => observer.observe(stat));
-
-      // FAQ deep-linking
-      const openLinkedFaq = () => {
-        if (!location.hash.startsWith("#faq--")) return;
-        const faq = document.querySelector<HTMLDetailsElement>(location.hash);
-        if (faq) faq.open = true;
-      };
-      openLinkedFaq();
-      window.addEventListener("hashchange", openLinkedFaq);
-
-      // Contact link opens Crisp chat if available
-      document.querySelectorAll<HTMLAnchorElement>(".landing-contact").forEach((link) => {
-        link.addEventListener("click", (event) => {
-          const crisp = (globalThis as typeof globalThis & {
-            $crisp?: { push(args: unknown[]): void };
-          }).$crisp;
-          if (crisp) {
-            crisp.push(["do", "chat:open"]);
-            event.preventDefault();
-          }
-        });
-      });
     </script>
   </body>
 </html>

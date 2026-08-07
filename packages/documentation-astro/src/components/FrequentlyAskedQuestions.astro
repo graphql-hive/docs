@@ -1,0 +1,61 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const faqs = [
+  [
+    "What does \"no vendor lock-in\" mean?",
+    "We value your flexibility and independent decision-making. That means we'll never try to lock you out in our ecosystem and we'll continuously add support for other tools and solutions, so that you decide what your stack should look like!",
+  ],
+  [
+    "Can Hive Console be self-hosted?",
+    "Yes, the on-premise version (identical to Hive Cloud) is free and open-source. <a class=\"hive-focus underline decoration-blue-500 underline-offset-2\" href=\"/docs/schema-registry/self-hosting/get-started\">Read about Self-Hosting Hive in our documentation.</a>",
+  ],
+  [
+    "What counts as a GraphQL operation?",
+    "Every GraphQL request that is processed by your GraphQL API and reported to Hive Console. If your server receives 1M GraphQL requests, all of them will be reported to Hive (assuming no sampling).",
+  ],
+  [
+    "Are you SOC-2 Type II compliant?",
+    "Hive Platfrom is fully SOC-2 Type II compliant. <a class=\"hive-focus underline decoration-blue-500 underline-offset-2\" href=\"https://security.graphql-hive.com/\" target=\"_blank\" rel=\"noreferrer\">Read more in the Trust Center.</a>",
+  ],
+  [
+    "Do you have a GraphQL Gateway?",
+    "Of course, we do! It is called Hive Gateway (previously known as GraphQL Mesh) that supports Apollo Federation and has been battle-tested by our clients for a few years now. <a class=\"hive-focus underline decoration-blue-500 underline-offset-2\" href=\"/docs/gateway\">Read more in our documentation.</a>",
+  ],
+] as const;
+
+const questionId = (question: string) =>
+  `faq--${question.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-").replaceAll(/(^-|-$)/g, "")}`;
+---
+
+<section class:list={["flex flex-col gap-x-6 gap-y-2 px-4 py-6 md:flex-row md:px-10 lg:gap-x-24 lg:px-[120px] lg:py-24", className]}>
+  <h2 class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] basis-1/2">Frequently Asked Questions</h2>
+  <div class="basis-1/2 [&_details:last-child]:border-b [&_details:last-child]:border-beige-400">
+    {faqs.map(([question, answer], index) => (
+      <details class="group border-t border-beige-400" id={questionId(question)} itemscope itemtype="https://schema.org/Question">
+        <summary class="hive-focus grid cursor-pointer list-none grid-cols-[2rem_1fr_1.5rem] items-center gap-3 py-6 font-[650]" itemprop="name">
+          <span class="text-[.7rem] text-green-600">{String(index + 1).padStart(2, "0")}</span>
+          {question}
+          <i class="text-2xl not-italic transition-transform duration-200 group-open:rotate-45" aria-hidden="true">+</i>
+        </summary>
+        <div class="px-8 pb-6 pl-11 leading-[1.65] text-green-700" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
+          <p itemprop="text" set:html={answer} />
+        </div>
+      </details>
+    ))}
+  </div>
+</section>
+
+<script>
+  const openLinkedFaq = () => {
+    if (!location.hash.startsWith("#faq--")) return;
+    const faq = document.querySelector<HTMLDetailsElement>(location.hash);
+    if (faq) faq.open = true;
+  };
+  openLinkedFaq();
+  window.addEventListener("hashchange", openLinkedFaq);
+</script>
