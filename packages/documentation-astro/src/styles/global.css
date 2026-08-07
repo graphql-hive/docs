@@ -9,6 +9,7 @@
 
 :root {
   color-scheme: light;
+  --nextra-bg: 255 255 255;
   --background: var(--color-white);
   --surface: var(--color-beige-100);
   --surface-raised: var(--color-beige-200);
