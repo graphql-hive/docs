@@ -1,21 +1,13 @@
 ---
-const { className } = Astro.props;
+const { className, ...props } = Astro.props;
 ---
 
-<div class:list={["lede", className]}><slot /></div>
-
-<style>
-  .lede {
-    margin: 0 0 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  :global(.lede p) {
-    margin-top: 0;
-    color: var(--text);
-    font-size: clamp(1.2rem, 2.5vw, 1.55rem);
-    line-height: 1.55;
-    letter-spacing: -0.015em;
-  }
-</style>
+<div
+  {...props}
+  class:list={[
+    "sm:*:text-xl/8 md:*:text-2xl/8 [&>p:first-child]:mt-0",
+    className,
+  ]}
+>
+  <slot />
+</div>

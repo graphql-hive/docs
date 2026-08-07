@@ -47,6 +47,7 @@ const otherStories = (await getCollection("caseStudies"))
       date,
       excerpt: story.excerpt,
       href: `/case-studies/${slug(item.id)}`,
+      slug: slug(item.id),
       title: story.title,
     };
   })
@@ -57,9 +58,9 @@ const otherStories = (await getCollection("caseStudies"))
 <CaseStudyLayout
   authors={data.authors ?? []}
   canonical={data.canonical}
-  category={data.category}
   excerpt={data.excerpt}
   otherStories={otherStories}
+  slug={slug(entry.id)}
   title={data.title}
 >
   <Content />

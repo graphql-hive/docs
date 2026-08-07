@@ -12,11 +12,15 @@
     "@astrojs/mdx": "7.0.5",
     "@hive/design-system": "workspace:*",
     "astro": "7.2.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
     "sharp": "^0.35.3"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@tailwindcss/vite": "4.1.18",
+    "@types/react": "19.2.8",
+    "@types/react-dom": "19.2.3",
     "tailwindcss": "4.1.18",
     "typescript": "5.9.3"
   }
