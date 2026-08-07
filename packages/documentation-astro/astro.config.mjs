@@ -56,6 +56,9 @@ export default defineConfig({
           "#components/otel-metrics/metrics-section",
           "./src/mdx-shims/metrics-section.ts",
         ),
+        alias("#components/large-callout", "./src/mdx-shims/large-callout.ts"),
+        alias("#components/lede", "./src/mdx-shims/lede.ts"),
+        alias("#components/small-avatar", "./src/mdx-shims/small-avatar.ts"),
         alias(
           "@/components/deployment-changelog",
           "./src/mdx-shims/changelog.ts",

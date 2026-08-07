@@ -1,0 +1,373 @@
+---
+import "../styles/global.css";
+
+interface Author {
+  avatar?: string;
+  name: string;
+  position?: string;
+}
+
+interface Story {
+  category: string;
+  excerpt: string;
+  href: string;
+  title: string;
+}
+
+interface Props {
+  authors: Author[];
+  canonical?: string;
+  category: string;
+  excerpt: string;
+  otherStories: Story[];
+  title: string;
+}
+
+const { authors, canonical, category, excerpt, otherStories, title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={excerpt} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <title>{title} | GraphQL Hive</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/"><span>Hive</span></a>
+      <nav>
+        <a href="/docs">Documentation</a>
+        <a aria-current="page" href="/case-studies">Case Studies</a>
+        <a href="/product-updates">Product Updates</a>
+      </nav>
+    </header>
+
+    <main>
+      <header class="story-header">
+        <div>
+          <a class="back" href="/case-studies">← All case studies</a>
+          <p class="category">{category}</p>
+          <h1>{title}</h1>
+          {
+            authors.length > 0 && (
+              <ul class="authors">
+                {authors.map((author) => (
+                  <li>
+                    {author.avatar && (
+                      <img
+                        alt=""
+                        height="40"
+                        loading="lazy"
+                        src={author.avatar}
+                        width="40"
+                      />
+                    )}
+                    <span>
+                      <strong>{author.name}</strong>
+                      {author.position && <small>{author.position}</small>}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )
+          }
+        </div>
+        <div class="company-mark" aria-hidden="true">{category}</div>
+      </header>
+
+      <div class="story-shell">
+        <article class="docs-content"><slot /></article>
+        <aside class="upsell">
+          <p>Looking to use Hive?</p>
+          <strong>Build and evolve your GraphQL API with confidence.</strong>
+          <a href="https://the-guild.dev/contact">Talk to us</a>
+        </aside>
+      </div>
+
+      {
+        otherStories.length > 0 && (
+          <section class="more-stories">
+            <p class="eyebrow">Customer stories</p>
+            <h2>More stories</h2>
+            <div class="story-grid">
+              {otherStories.map((story) => (
+                <a href={story.href}>
+                  <span>{story.category}</span>
+                  <h3>{story.title}</h3>
+                  <p>{story.excerpt}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+        )
+      }
+    </main>
+
+    <footer>
+      <span>GraphQL Hive</span>
+      <a href="https://the-guild.dev/contact">Contact</a>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    position: sticky;
+    z-index: 20;
+    top: 0;
+    display: flex;
+    min-height: var(--header-height);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgb(17 17 20 / 92%);
+    backdrop-filter: blur(12px);
+  }
+
+  .brand {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .brand span,
+  .category,
+  .eyebrow {
+    color: var(--accent);
+  }
+
+  nav {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  nav a {
+    color: var(--muted);
+    font-size: 0.82rem;
+    text-decoration: none;
+  }
+
+  nav a:hover,
+  nav a[aria-current="page"] {
+    color: var(--text);
+  }
+
+  main {
+    width: min(76rem, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .story-header {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(15rem, 1fr);
+    gap: 3rem;
+    align-items: center;
+    padding: clamp(4rem, 10vw, 8rem) 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 2rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .category,
+  .eyebrow {
+    margin: 0 0 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 18ch;
+    margin: 0;
+    font-size: clamp(2.75rem, 6vw, 5rem);
+    letter-spacing: -0.06em;
+    line-height: 0.98;
+  }
+
+  .authors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .authors li {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .authors img {
+    border-radius: 50%;
+  }
+
+  .authors span {
+    display: grid;
+  }
+
+  .authors strong {
+    font-size: 0.82rem;
+  }
+
+  .authors small {
+    color: var(--muted);
+  }
+
+  .company-mark {
+    display: grid;
+    min-height: 14rem;
+    place-items: center;
+    padding: 2rem;
+    color: #111114;
+    border-radius: 1.5rem;
+    background: var(--accent);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 750;
+    letter-spacing: -0.04em;
+    text-align: center;
+  }
+
+  .story-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 48rem) minmax(15rem, 20rem);
+    gap: clamp(3rem, 7vw, 7rem);
+    justify-content: center;
+    padding: 5rem 0;
+  }
+
+  .upsell {
+    position: sticky;
+    top: calc(var(--header-height) + 2rem);
+    height: fit-content;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--surface);
+  }
+
+  .upsell p {
+    margin-top: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .upsell strong {
+    display: block;
+    margin-bottom: 1.25rem;
+    line-height: 1.4;
+  }
+
+  .upsell a {
+    display: block;
+    padding: 0.65rem;
+    color: #111114;
+    border-radius: 0.4rem;
+    background: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .more-stories {
+    padding: 5rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .more-stories > h2 {
+    margin: 0 0 2rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: -0.045em;
+  }
+
+  .story-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .story-grid a {
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--surface);
+    text-decoration: none;
+  }
+
+  .story-grid a:hover {
+    border-color: var(--accent);
+  }
+
+  .story-grid span {
+    color: var(--accent);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+  }
+
+  .story-grid h3 {
+    margin: 0.7rem 0;
+    line-height: 1.25;
+  }
+
+  .story-grid p {
+    display: -webkit-box;
+    margin-bottom: 0;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem max(1.5rem, calc((100% - 74rem) / 2));
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 52rem) {
+    .story-header,
+    .story-shell {
+      display: block;
+    }
+
+    .company-mark {
+      min-height: 8rem;
+      margin-top: 3rem;
+    }
+
+    .story-shell article {
+      margin-bottom: 3rem;
+    }
+
+    .upsell {
+      position: static;
+    }
+
+    .story-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 36rem) {
+    nav a:not([aria-current="page"]) {
+      display: none;
+    }
+  }
+</style>

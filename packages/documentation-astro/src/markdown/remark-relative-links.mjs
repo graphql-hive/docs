@@ -8,6 +8,9 @@ const docsDirectory = fileURLToPath(
 const productUpdatesDirectory = fileURLToPath(
   new URL("../../../documentation/content/product-updates", import.meta.url),
 );
+const caseStudiesDirectory = fileURLToPath(
+  new URL("../../../documentation/content/case-studies", import.meta.url),
+);
 
 export function remarkRelativeLinks() {
   return (tree, file) => {
@@ -15,7 +18,9 @@ export function remarkRelativeLinks() {
     if (!filePath) return;
     const collection = filePath.startsWith(productUpdatesDirectory)
       ? { base: "/product-updates", directory: productUpdatesDirectory }
-      : { base: "/docs", directory: docsDirectory };
+      : filePath.startsWith(caseStudiesDirectory)
+        ? { base: "/case-studies", directory: caseStudiesDirectory }
+        : { base: "/docs", directory: docsDirectory };
 
     visit(tree, (node) => {
       if (

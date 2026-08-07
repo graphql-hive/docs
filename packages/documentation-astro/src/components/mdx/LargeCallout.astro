@@ -1,0 +1,105 @@
+---
+interface Props {
+  className?: string;
+  cta?: unknown;
+  heading?: string;
+  icon?: unknown;
+  variant?: "primary" | "secondary";
+}
+
+const { className, cta, heading, variant = "secondary" } = Astro.props;
+---
+
+<aside class:list={["large-callout", `large-callout-${variant}`, className]}>
+  <div class="copy">
+    {
+      heading && (
+        <header>
+          <svg
+            aria-hidden="true"
+            fill="currentColor"
+            height="25"
+            viewBox="0 0 24 25"
+            width="24"
+          >
+            <path d="M21 18.375H6a1 1 0 000 2h15v2H6a3 3 0 01-3-3v-15a2 2 0 012-2h16v16zm-16-1.95c.162-.033.329-.05.5-.05H19v-12H5v12.05zm11-7.05H8v-2h8v2z" />
+          </svg>
+          <h3>{heading}</h3>
+        </header>
+      )
+    }
+    <div class="body"><slot /></div>
+  </div>
+  {
+    cta && (
+      <a
+        class="action"
+        href={variant === "primary" ? "https://the-guild.dev/contact" : "/docs"}
+      >
+        {variant === "primary" ? "Contact Us" : "Learn More"}
+      </a>
+    )
+  }
+</aside>
+
+<style>
+  .large-callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin: 3rem 0;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    background: var(--surface);
+  }
+
+  .large-callout-primary {
+    color: #111114;
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+
+  .copy {
+    min-width: 0;
+    flex: 1;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  h3 {
+    margin: 0 !important;
+    font-size: 1.1rem !important;
+  }
+
+  :global(.body p) {
+    margin: 0;
+    color: inherit;
+  }
+
+  .action {
+    flex-shrink: 0;
+    padding: 0.65rem 0.9rem;
+    color: var(--text) !important;
+    border: 1px solid currentColor;
+    border-radius: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .large-callout-primary .action {
+    color: #111114 !important;
+  }
+
+  @media (max-width: 36rem) {
+    .large-callout {
+      flex-direction: column;
+    }
+  }
+</style>

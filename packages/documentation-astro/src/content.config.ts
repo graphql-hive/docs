@@ -17,7 +17,15 @@ const productUpdates = defineCollection({
   }),
 });
 
+const caseStudies = defineCollection({
+  loader: glob({
+    base: `${contentRoot}/case-studies`,
+    pattern: "**/*.{md,mdx}",
+  }),
+});
+
 export const collections = {
+  caseStudies,
   docs,
   productUpdates,
 };
