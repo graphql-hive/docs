@@ -1,4 +1,7 @@
 ---
+import SiteNavigation from "../components/SiteNavigation.astro";
+import "../styles/global.css";
+
 // Raw imports prove the external files are available without bundling their legacy MDX components.
 const docs = import.meta.glob(
   "../../../documentation/content/docs/**/*.{md,mdx}",
@@ -42,6 +45,7 @@ const total = collections.reduce(
     <title>GraphQL Hive Documentation</title>
   </head>
   <body>
+    <SiteNavigation />
     <main>
       <p class="eyebrow">GraphQL Hive</p>
       <h1>Documentation</h1>
@@ -66,19 +70,6 @@ const total = collections.reduce(
 </html>
 
 <style>
-  :global(*) {
-    box-sizing: border-box;
-  }
-
-  :global(body) {
-    margin: 0;
-    color: #e8e8ec;
-    background: #111114;
-    font-family:
-      Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-      sans-serif;
-  }
-
   main {
     width: min(68rem, calc(100% - 2rem));
     margin: 0 auto;

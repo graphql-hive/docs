@@ -1,0 +1,750 @@
+---
+import graphQLConfImage from "../../../documentation/src/components/graphql-conf-image.webp";
+
+const pathname = Astro.url.pathname;
+const hiveHref = pathname === "/" ? "/docs" : "/";
+
+const stackProducts = [
+  {
+    description: "GraphQL Federation Gateway",
+    href: "https://the-guild.dev/graphql/hive/gateway",
+    name: "Hive Gateway",
+  },
+  {
+    description: "Anything to GraphQL",
+    href: "https://the-guild.dev/graphql/mesh",
+    name: "Mesh",
+  },
+  {
+    description: "GraphQL Server & Subgraph",
+    href: "https://the-guild.dev/graphql/yoga-server",
+    name: "Yoga",
+  },
+];
+
+const libraries = [
+  ["Codegen", "https://the-guild.dev/graphql/codegen"],
+  ["Inspector", "https://the-guild.dev/graphql/inspector"],
+  ["Envelop", "https://the-guild.dev/graphql/envelop"],
+  ["SOFA", "https://the-guild.dev/graphql/sofa-api"],
+  ["Scalars", "https://the-guild.dev/graphql/scalars"],
+  ["ESLint", "https://the-guild.dev/graphql/eslint"],
+] as const;
+
+const developerLinks = [
+  ["Documentation", "/docs", "D"],
+  ["Status", "https://status.graphql-hive.com/", "S"],
+  ["Product Updates", "/product-updates", "U"],
+  ["Case Studies", "/case-studies", "C"],
+  ["Blog", "/blog", "B"],
+  ["GitHub", "https://github.com/graphql-hive/console", "G"],
+] as const;
+
+const communityLinks = [
+  [
+    "YouTube",
+    "https://www.youtube.com/watch?v=d_GBgH-L5c4&list=PLhCf3AUOg4PgQoY_A6xWDQ70yaNtPYtZd",
+    "Y",
+  ],
+  ["X", "https://x.com/theguilddev", "X"],
+  ["LinkedIn", "https://www.linkedin.com/company/the-guild-software/", "in"],
+  ["Discord", "https://discord.com/invite/xud7bH9", "#"],
+] as const;
+
+const isActive = (href: string) =>
+  href.startsWith("/") && (pathname === href || pathname.startsWith(`${href}/`));
+---
+
+<header class="site-navigation" id="site-navigation">
+  <div class="navigation-bar">
+    <a class="brand" href="/" aria-label="GraphQL Hive home">
+      <svg aria-hidden="true" viewBox="0 0 36 32">
+        <path d="m18 1 15 8.5v13L18 31 3 22.5v-13L18 1Zm0 4.2L7 11.4v8.7l11 6.3 11-6.3v-8.7L18 5.2Z" />
+        <path d="m18 8 7 4v8l-7 4-7-4v-8l7-4Zm0 4.2L15 14v4l3 1.8 3-1.8v-4l-3-1.8Z" />
+      </svg>
+      <span>GraphQL Hive</span>
+    </a>
+
+    <nav class="desktop-navigation" aria-label="Main navigation">
+      <details class="navigation-menu products-menu">
+        <summary>Products <span aria-hidden="true">⌄</span></summary>
+        <div class="menu-panel products-panel">
+          <section class="platform-column">
+            <p class="column-label">Platform</p>
+            <a class="featured-product" href={hiveHref}>
+              <span class="product-icon hive-icon">H</span>
+              <strong>Hive</strong>
+              <small>GraphQL Federation Platform with Schema Registry and Analytics</small>
+            </a>
+            <a class="arrow-link" href="https://app.graphql-hive.com/">Get started →</a>
+          </section>
+
+          <section>
+            <p class="column-label">The GraphQL Stack</p>
+            <ul class="menu-list product-list">
+              {
+                stackProducts.map((product) => (
+                  <li>
+                    <a href={product.href}>
+                      <span class="product-icon">{product.name.at(0)}</span>
+                      <span>
+                        <strong>{product.name}</strong>
+                        <small>{product.description}</small>
+                      </span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </section>
+
+          <section>
+            <p class="column-label">Libraries</p>
+            <ul class="menu-list library-list">
+              {
+                libraries.map(([name, href]) => (
+                  <li>
+                    <a href={href}>
+                      <span class="library-icon">{name.at(0)}</span>
+                      <strong>{name}</strong>
+                      <span class="arrow" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+            <a class="arrow-link" href="/ecosystem">Explore all libraries →</a>
+          </section>
+        </div>
+      </details>
+
+      <details class="navigation-menu developer-menu">
+        <summary>Developer <span aria-hidden="true">⌄</span></summary>
+        <div class="menu-panel developer-panel">
+          <section>
+            <p class="column-label">Developer</p>
+            <ul class="menu-list compact-list">
+              {
+                developerLinks.map(([label, href, icon]) => (
+                  <li>
+                    <a
+                      aria-current={isActive(href) ? "page" : undefined}
+                      href={href}
+                    >
+                      <span class="small-icon">{icon}</span>
+                      <strong>{label}</strong>
+                      <span class="arrow" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </section>
+          <section>
+            <p class="column-label">Community</p>
+            <ul class="menu-list compact-list">
+              {
+                communityLinks.map(([label, href, icon]) => (
+                  <li>
+                    <a href={href}>
+                      <span class="small-icon">{icon}</span>
+                      <strong>{label}</strong>
+                      <span class="arrow" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </section>
+        </div>
+      </details>
+
+      <details class="navigation-menu company-menu">
+        <summary>Company <span aria-hidden="true">⌄</span></summary>
+        <div class="menu-panel company-panel">
+          <section>
+            <p class="column-label">Company</p>
+            <ul class="menu-list compact-list">
+              <li><a href="https://the-guild.dev/about-us"><span class="small-icon">A</span><strong>About Us</strong><span class="arrow">→</span></a></li>
+              <li><a href="https://the-guild.dev/logos"><span class="small-icon">B</span><strong>Brand Assets</strong><span class="arrow">→</span></a></li>
+            </ul>
+            <p class="column-label spaced-label">Proudly made by</p>
+            <a class="organization-link" href="https://the-guild.dev/">
+              <strong>The Guild</strong><span aria-hidden="true">→</span>
+            </a>
+            <p class="column-label spaced-label">Part of</p>
+            <a class="organization-link foundation" href="https://graphql.org/community/foundation/">
+              <strong>GraphQL Foundation</strong><span aria-hidden="true">→</span>
+            </a>
+          </section>
+          <a
+            class="conference-card"
+            href="https://youtube.com/playlist?list=PL43V96KpNj7MKvDbnyOUrRv0k1gCODtjW&si=nOiETn8J21mYA9pm"
+          >
+            <img alt="" src={graphQLConfImage.src} width="358" height="200" />
+            <strong>GraphQLConf 2025</strong>
+            <small>September 08-10 | Amsterdam, NL</small>
+            <p>The official GraphQL conference hosted by GraphQL Foundation.</p>
+            <span>Watch The Guild at GraphQLConf 2025 →</span>
+          </a>
+        </div>
+      </details>
+
+      <a class="plain-link" href="/pricing">Pricing</a>
+    </nav>
+
+    <div class="desktop-actions">
+      <a class="contact-link" href="https://the-guild.dev/contact">Contact us</a>
+      <a class="sign-in" href="https://app.graphql-hive.com/">Sign in</a>
+    </div>
+
+    <details class="mobile-navigation">
+      <summary aria-label="Open navigation menu">
+        <span>Menu</span>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </summary>
+      <div class="mobile-panel">
+        <details>
+          <summary>Products <span>+</span></summary>
+          <div class="mobile-section">
+            <p class="column-label">The GraphQL Stack</p>
+            <a href={hiveHref}>Hive</a>
+            {stackProducts.map((product) => <a href={product.href}>{product.name}</a>)}
+            <p class="column-label">Libraries</p>
+            {libraries.map(([name, href]) => <a href={href}>{name}</a>)}
+            <a href="/ecosystem">Explore all libraries</a>
+          </div>
+        </details>
+        <details>
+          <summary>Developer <span>+</span></summary>
+          <div class="mobile-section">
+            {developerLinks.map(([label, href]) => <a href={href}>{label}</a>)}
+            <p class="column-label">Community</p>
+            {communityLinks.map(([label, href]) => <a href={href}>{label}</a>)}
+          </div>
+        </details>
+        <details>
+          <summary>Company <span>+</span></summary>
+          <div class="mobile-section">
+            <a href="https://the-guild.dev/about-us">About Us</a>
+            <a href="https://the-guild.dev/logos">Brand Assets</a>
+            <a href="https://the-guild.dev/">The Guild</a>
+            <a href="https://graphql.org/community/foundation/">GraphQL Foundation</a>
+          </div>
+        </details>
+        <a class="mobile-direct-link" href="/pricing">Pricing</a>
+        <div class="mobile-actions">
+          <a href="https://the-guild.dev/contact">Contact us</a>
+          <a class="sign-in" href="https://app.graphql-hive.com/">Sign in</a>
+        </div>
+      </div>
+    </details>
+  </div>
+</header>
+
+<script>
+  const navigation = document.querySelector<HTMLElement>("#site-navigation");
+  const topLevelMenus = navigation?.querySelectorAll<HTMLDetailsElement>(
+    ".desktop-navigation > details",
+  );
+
+  topLevelMenus?.forEach((menu) => {
+    menu.addEventListener("toggle", () => {
+      if (!menu.open) return;
+      topLevelMenus.forEach((other) => {
+        if (other !== menu) other.open = false;
+      });
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (navigation?.contains(event.target as Node)) return;
+    topLevelMenus?.forEach((menu) => (menu.open = false));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    topLevelMenus?.forEach((menu) => (menu.open = false));
+  });
+
+  const updateBorder = () => navigation?.toggleAttribute("data-scrolled", scrollY > 1);
+  updateBorder();
+  addEventListener("scroll", updateBorder, { passive: true });
+</script>
+
+<style>
+  .site-navigation {
+    position: sticky;
+    z-index: 50;
+    top: 0;
+    color: var(--text, #e8e8ec);
+    border-bottom: 1px solid transparent;
+    background: rgb(17 17 20 / 96%);
+    transition: border-color 200ms ease;
+    backdrop-filter: blur(14px);
+  }
+
+  .site-navigation[data-scrolled] {
+    border-color: var(--border, #303038);
+  }
+
+  .navigation-bar {
+    display: flex;
+    width: min(90rem, 100%);
+    min-height: var(--header-height, 4rem);
+    align-items: center;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--text, #e8e8ec);
+    font-size: 0.95rem;
+    font-weight: 720;
+    letter-spacing: -0.025em;
+    text-decoration: none;
+  }
+
+  .brand svg {
+    width: 1.8rem;
+    height: 1.6rem;
+    fill: var(--accent, #c4f353);
+  }
+
+  .desktop-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    margin-left: clamp(1rem, 5vw, 4rem);
+    padding: 0.2rem;
+    border: 1px solid var(--border, #303038);
+    border-radius: 0.55rem;
+    background: var(--surface, #18181c);
+  }
+
+  .navigation-menu > summary,
+  .plain-link {
+    padding: 0.55rem 0.7rem;
+    color: var(--muted, #9b9ba5);
+    border-radius: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    list-style: none;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .navigation-menu > summary::-webkit-details-marker,
+  .mobile-navigation summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .navigation-menu > summary span {
+    display: inline-block;
+    margin-left: 0.15rem;
+    transition: transform 150ms ease;
+  }
+
+  .navigation-menu[open] > summary,
+  .navigation-menu > summary:hover,
+  .plain-link:hover {
+    color: var(--text, #e8e8ec);
+    background: var(--surface-raised, #202026);
+  }
+
+  .navigation-menu[open] > summary span {
+    transform: rotate(180deg);
+  }
+
+  .menu-panel {
+    position: fixed;
+    z-index: 60;
+    top: calc(var(--header-height, 4rem) + 0.4rem);
+    left: 50%;
+    display: grid;
+    padding: 1.5rem;
+    overflow: hidden;
+    color: var(--text, #e8e8ec);
+    border: 1px solid var(--border, #303038);
+    border-radius: 0.8rem;
+    background: #18181c;
+    box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 40%);
+    transform: translateX(-50%);
+  }
+
+  .products-panel {
+    grid-template-columns: 14rem 18rem minmax(20rem, 24rem);
+    gap: 1.5rem;
+    width: min(61rem, calc(100vw - 2rem));
+  }
+
+  .menu-panel > section + section,
+  .conference-card {
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--border, #303038);
+  }
+
+  .column-label {
+    margin: 0 0 0.75rem;
+    color: var(--muted, #9b9ba5);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .featured-product {
+    display: grid;
+    gap: 0.45rem;
+    padding: 1rem;
+    color: inherit;
+    border-radius: 0.55rem;
+    text-decoration: none;
+  }
+
+  .featured-product:hover,
+  .menu-list a:hover,
+  .organization-link:hover {
+    background: var(--surface-raised, #202026);
+  }
+
+  .featured-product small,
+  .product-list small,
+  .conference-card small,
+  .conference-card p {
+    color: var(--muted, #9b9ba5);
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+
+  .product-icon {
+    display: grid;
+    width: 2.7rem;
+    height: 2.7rem;
+    flex-shrink: 0;
+    place-items: center;
+    color: #111114;
+    border-radius: 0.55rem;
+    background: #65d9ef;
+    font-weight: 800;
+  }
+
+  .hive-icon {
+    background: var(--accent, #c4f353);
+  }
+
+  .arrow-link {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.45rem 0.65rem;
+    color: var(--muted, #9b9ba5);
+    border-radius: 0.35rem;
+    font-size: 0.75rem;
+    text-decoration: none;
+  }
+
+  .arrow-link:hover {
+    color: var(--text, #e8e8ec);
+  }
+
+  .menu-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .menu-list a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem;
+    color: inherit;
+    border-radius: 0.45rem;
+    text-decoration: none;
+  }
+
+  .product-list strong,
+  .product-list small {
+    display: block;
+  }
+
+  .library-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .library-icon,
+  .small-icon {
+    display: grid;
+    width: 1.8rem;
+    height: 1.8rem;
+    flex-shrink: 0;
+    place-items: center;
+    color: var(--text, #e8e8ec);
+    border-radius: 0.3rem;
+    background: var(--surface-raised, #202026);
+    font-size: 0.7rem;
+    font-weight: 750;
+  }
+
+  .library-list strong,
+  .compact-list strong {
+    font-size: 0.8rem;
+  }
+
+  .arrow {
+    margin-left: auto;
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+
+  .menu-list a:hover .arrow {
+    opacity: 1;
+  }
+
+  .developer-panel {
+    grid-template-columns: repeat(2, 14rem);
+    gap: 1.5rem;
+    width: min(31rem, calc(100vw - 2rem));
+  }
+
+  .compact-list a[aria-current="page"] {
+    background: var(--surface-raised, #202026);
+  }
+
+  .company-panel {
+    grid-template-columns: 16rem 23rem;
+    gap: 1.5rem;
+    width: min(43rem, calc(100vw - 2rem));
+  }
+
+  .spaced-label {
+    margin-top: 1.1rem;
+  }
+
+  .organization-link {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.65rem;
+    color: inherit;
+    border-radius: 0.4rem;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+
+  .foundation {
+    color: #73a8ff;
+  }
+
+  .conference-card {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .conference-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.45rem;
+  }
+
+  .conference-card strong {
+    margin-top: 1rem;
+    font-size: 1.05rem;
+  }
+
+  .conference-card small {
+    margin-top: 0.6rem;
+  }
+
+  .conference-card p {
+    margin: 0.4rem 0 1rem;
+  }
+
+  .conference-card > span {
+    margin-top: auto;
+    color: var(--muted, #9b9ba5);
+    font-size: 0.75rem;
+  }
+
+  .desktop-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-left: auto;
+  }
+
+  .contact-link,
+  .sign-in {
+    padding: 0.55rem 0.8rem;
+    border-radius: 0.45rem;
+    font-size: 0.78rem;
+    font-weight: 650;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .contact-link {
+    color: var(--text, #e8e8ec);
+    border: 1px solid var(--border, #303038);
+  }
+
+  .sign-in {
+    color: #111114;
+    background: var(--accent, #c4f353);
+  }
+
+  .mobile-navigation {
+    display: none;
+    margin-left: auto;
+  }
+
+  .mobile-navigation > summary {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--border, #303038);
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .mobile-navigation > summary svg {
+    width: 1.15rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+  }
+
+  .mobile-panel {
+    position: fixed;
+    top: var(--header-height, 4rem);
+    right: 0;
+    left: 0;
+    max-height: calc(100vh - var(--header-height, 4rem));
+    padding: 1rem;
+    overflow-y: auto;
+    border-top: 1px solid var(--border, #303038);
+    border-bottom: 1px solid var(--border, #303038);
+    background: #111114;
+    box-shadow: 0 1.5rem 3rem rgb(0 0 0 / 40%);
+  }
+
+  .mobile-panel > details,
+  .mobile-direct-link {
+    display: block;
+    border-bottom: 1px solid var(--border, #303038);
+  }
+
+  .mobile-panel > details > summary,
+  .mobile-direct-link {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.9rem 0.25rem;
+    color: var(--text, #e8e8ec);
+    font-size: 0.9rem;
+    font-weight: 650;
+    text-decoration: none;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .mobile-panel > details[open] > summary span {
+    transform: rotate(45deg);
+  }
+
+  .mobile-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.2rem;
+    padding: 0 0 0.8rem;
+  }
+
+  .mobile-section .column-label {
+    grid-column: 1 / -1;
+    margin: 0.8rem 0 0.2rem;
+  }
+
+  .mobile-section a {
+    padding: 0.55rem;
+    color: var(--muted, #9b9ba5);
+    border-radius: 0.35rem;
+    font-size: 0.8rem;
+    text-decoration: none;
+  }
+
+  .mobile-section a:hover {
+    color: var(--text, #e8e8ec);
+    background: var(--surface, #18181c);
+  }
+
+  .mobile-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .mobile-actions a {
+    padding: 0.7rem;
+    color: var(--text, #e8e8ec);
+    border: 1px solid var(--border, #303038);
+    border-radius: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 650;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .mobile-actions .sign-in {
+    color: #111114;
+    border-color: var(--accent, #c4f353);
+  }
+
+  @media (max-width: 66rem) {
+    .brand span {
+      display: none;
+    }
+
+    .desktop-navigation {
+      margin-left: 1rem;
+    }
+  }
+
+  @media (max-width: 52rem) {
+    .navigation-bar {
+      padding: 0 1rem;
+    }
+
+    .brand span {
+      display: inline;
+    }
+
+    .desktop-navigation,
+    .desktop-actions {
+      display: none;
+    }
+
+    .mobile-navigation {
+      display: block;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-navigation,
+    .site-navigation * {
+      scroll-behavior: auto !important;
+      transition-duration: 0ms !important;
+    }
+  }
+</style>

@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 
+import SiteNavigation from "../components/SiteNavigation.astro";
+
 interface NavItem {
   href: string;
   section: string;
@@ -37,12 +39,7 @@ const tableOfContents = headings.filter(
     <title>{title} | GraphQL Hive</title>
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href="/docs"><span>Hive</span> Documentation</a>
-      <a class="github" href="https://github.com/graphql-hive" rel="noreferrer">
-        GitHub
-      </a>
-    </header>
+    <SiteNavigation />
 
     <div class="mobile-nav">
       <details>
@@ -115,35 +112,6 @@ const tableOfContents = headings.filter(
 </html>
 
 <style>
-  .site-header {
-    position: sticky;
-    z-index: 20;
-    top: 0;
-    display: flex;
-    height: var(--header-height);
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1.5rem;
-    border-bottom: 1px solid var(--border);
-    background: rgb(17 17 20 / 92%);
-    backdrop-filter: blur(12px);
-  }
-
-  .brand {
-    font-weight: 650;
-    text-decoration: none;
-  }
-
-  .brand span {
-    margin-right: 0.55rem;
-    color: var(--accent);
-  }
-
-  .github {
-    color: var(--muted);
-    font-size: 0.875rem;
-  }
-
   .docs-shell {
     display: grid;
     grid-template-columns: minmax(13rem, 17rem) minmax(0, 48rem) minmax(10rem, 14rem);

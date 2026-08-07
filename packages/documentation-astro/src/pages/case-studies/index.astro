@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
+import SiteNavigation from "../../components/SiteNavigation.astro";
 import "../../styles/global.css";
 
 const stories = (await getCollection("caseStudies"))
@@ -37,14 +38,7 @@ const stories = (await getCollection("caseStudies"))
     <title>Case Studies | GraphQL Hive</title>
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href="/"><span>Hive</span></a>
-      <nav>
-        <a href="/docs">Documentation</a>
-        <a aria-current="page" href="/case-studies">Case Studies</a>
-        <a href="/product-updates">Product Updates</a>
-      </nav>
-    </header>
+    <SiteNavigation />
 
     <main>
       <header class="hero">
@@ -81,41 +75,9 @@ const stories = (await getCollection("caseStudies"))
 </html>
 
 <style>
-  .site-header {
-    display: flex;
-    min-height: var(--header-height);
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .brand {
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .brand span,
   .eyebrow,
   h1 span {
     color: var(--accent);
-  }
-
-  nav {
-    display: flex;
-    gap: 1.25rem;
-  }
-
-  nav a {
-    color: var(--muted);
-    font-size: 0.82rem;
-    text-decoration: none;
-  }
-
-  nav a:hover,
-  nav a[aria-current="page"] {
-    color: var(--text);
   }
 
   main {
@@ -260,10 +222,6 @@ const stories = (await getCollection("caseStudies"))
   }
 
   @media (max-width: 42rem) {
-    nav a:not([aria-current="page"]) {
-      display: none;
-    }
-
     .story-grid {
       grid-template-columns: 1fr;
     }

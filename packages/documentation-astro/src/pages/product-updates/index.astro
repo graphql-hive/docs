@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
+import SiteNavigation from "../../components/SiteNavigation.astro";
 import "../../styles/global.css";
 
 function dateString(value: unknown) {
@@ -39,14 +40,7 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
     <title>Product Updates | GraphQL Hive</title>
   </head>
   <body>
-    <header>
-      <a class="brand" href="/"><span>Hive</span></a>
-      <nav>
-        <a href="/docs">Documentation</a>
-        <a aria-current="page" href="/product-updates">Product Updates</a>
-        <a href="https://github.com/graphql-hive">GitHub</a>
-      </nav>
-    </header>
+    <SiteNavigation />
 
     <main>
       <p class="eyebrow">Changelog</p>
@@ -74,40 +68,8 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
 </html>
 
 <style>
-  header {
-    display: flex;
-    min-height: var(--header-height);
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .brand {
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .brand span,
   .eyebrow {
     color: var(--accent);
-  }
-
-  nav {
-    display: flex;
-    gap: 1.25rem;
-  }
-
-  nav a {
-    color: var(--muted);
-    font-size: 0.82rem;
-    text-decoration: none;
-  }
-
-  nav a:hover,
-  nav a[aria-current="page"] {
-    color: var(--text);
   }
 
   main {
@@ -192,9 +154,4 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
     line-height: 1.55;
   }
 
-  @media (max-width: 36rem) {
-    nav a:not([aria-current="page"]) {
-      display: none;
-    }
-  }
 </style>

@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 
+import SiteNavigation from "../components/SiteNavigation.astro";
 import { resolveAuthor } from "../lib/authors";
 
 interface Heading {
@@ -42,14 +43,7 @@ const tableOfContents = headings.filter(
     <title>{title} | GraphQL Hive</title>
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href="/"><span>Hive</span></a>
-      <nav>
-        <a href="/docs">Documentation</a>
-        <a aria-current="page" href="/product-updates">Product Updates</a>
-        <a href="https://github.com/graphql-hive">GitHub</a>
-      </nav>
-    </header>
+    <SiteNavigation />
 
     <div class="update-shell">
       <main>
@@ -98,46 +92,6 @@ const tableOfContents = headings.filter(
 </html>
 
 <style>
-  .site-header {
-    position: sticky;
-    z-index: 20;
-    top: 0;
-    display: flex;
-    min-height: var(--header-height);
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1.5rem;
-    border-bottom: 1px solid var(--border);
-    background: rgb(17 17 20 / 92%);
-    backdrop-filter: blur(12px);
-  }
-
-  .brand {
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .brand span {
-    color: var(--accent);
-  }
-
-  nav {
-    display: flex;
-    gap: 1.25rem;
-  }
-
-  nav a {
-    color: var(--muted);
-    font-size: 0.82rem;
-    text-decoration: none;
-  }
-
-  nav a:hover,
-  nav a[aria-current="page"] {
-    color: var(--text);
-  }
-
   .update-shell {
     display: grid;
     grid-template-columns: minmax(0, 48rem) minmax(10rem, 14rem);
@@ -257,10 +211,6 @@ const tableOfContents = headings.filter(
   }
 
   @media (max-width: 36rem) {
-    .site-header nav a:not([aria-current="page"]) {
-      display: none;
-    }
-
     h1 {
       font-size: 2.75rem;
     }
