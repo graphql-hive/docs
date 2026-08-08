@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 
-import MermaidRenderer from "../components/MermaidRenderer.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 
@@ -254,7 +253,6 @@ const sectionTitle = sectionMeta.get(currentSection)?.title;
     </div>
 
     <SiteFooter class="border-t border-fd-border" />
-    <MermaidRenderer />
 
     <script>
       const links = [...document.querySelectorAll<HTMLAnchorElement>(".toc-link")];

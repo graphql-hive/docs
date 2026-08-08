@@ -2,7 +2,6 @@
 import "../styles/global.css";
 
 import BlogAuthors from "../components/blog/BlogAuthors.astro";
-import MermaidRenderer from "../components/MermaidRenderer.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import { resolveAuthor } from "../lib/authors";
@@ -64,7 +63,6 @@ const tableOfContents = headings.filter(
     </div>
 
     <SiteFooter />
-    <MermaidRenderer />
   </body>
 </html>
 

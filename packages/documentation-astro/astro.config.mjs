@@ -4,12 +4,19 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import { fileURLToPath } from "node:url";
 
+import { mermaidRehypePlugin } from "./src/markdown/rehype-mermaid-config.mjs";
 import { remarkRelativeLinks } from "./src/markdown/remark-relative-links.mjs";
 
 export default defineConfig({
   integrations: [
     mdx({
-      processor: unified({ remarkPlugins: [remarkRelativeLinks] }),
+      // Mermaid must run before Shiki, so mermaid code blocks are excluded from
+      // syntax highlighting and reach rehype-mermaid unprocessed.
+      processor: unified({
+        rehypePlugins: [mermaidRehypePlugin],
+        remarkPlugins: [remarkRelativeLinks],
+      }),
+      syntaxHighlight: { excludeLangs: ["mermaid"], type: "shiki" },
     }),
   ],
   publicDir: fileURLToPath(new URL("../documentation/public", import.meta.url)),

@@ -42,6 +42,22 @@
   --header-height: 4rem;
 }
 
+:is(.flowchart, .statediagram, .sequenceDiagram, [aria-roledescription="sequence"]) {
+  --mermaid-fg: var(--color-green-1000);
+  --mermaid-fg-dim: var(--color-green-700);
+  --mermaid-node-fill: var(--color-blue-200);
+  --mermaid-node-stroke: var(--color-blue-400);
+  --mermaid-arrow: var(--color-green-900);
+  --mermaid-cluster-fill: var(--color-beige-100);
+  --mermaid-cluster-stroke: var(--color-beige-400);
+  --mermaid-edge-label-bg: var(--color-white);
+  --mermaid-note-fill: var(--color-beige-200);
+  --mermaid-note-stroke: var(--color-beige-400);
+  --mermaid-note-fg: var(--color-green-1000);
+
+  margin: 1.5rem auto 0 auto;
+}
+
 * {
   box-sizing: border-box;
 }

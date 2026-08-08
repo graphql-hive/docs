@@ -4,7 +4,6 @@ import "../styles/global.css";
 import CaseStudyCard from "../components/case-studies/CaseStudyCard.astro";
 import CaseStudyCta from "../components/case-studies/CaseStudyCta.astro";
 import CompanyLogo from "../components/case-studies/CompanyLogo.astro";
-import MermaidRenderer from "../components/MermaidRenderer.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 
@@ -155,7 +154,6 @@ const { authors, canonical, excerpt, otherStories, slug, title } = Astro.props;
     </div>
 
     <SiteFooter />
-    <MermaidRenderer />
 
     <script>
       document.querySelectorAll<HTMLAnchorElement>("[data-case-study-contact]").forEach((link) => {
