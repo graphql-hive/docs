@@ -1,0 +1,69 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import { getBlogPosts } from "../../lib/get-blog-posts";
+
+type Blog = CollectionEntry<"blog">;
+
+const headerImages = import.meta.glob<{ default: { src: string } }>(
+  "../../../../documentation/content/blog/**/header-image.*",
+  { eager: true },
+);
+const mobileImages = import.meta.glob<{ default: { src: string } }>(
+  "../../../../documentation/content/blog/**/mobile-image.*",
+  { eager: true },
+);
+
+export async function getStaticPaths() {
+  const entries = await getCollection("blog");
+
+  return entries.map((entry) => ({
+    params: {
+      slug: entry.id.replace(/\/index$/, "").replace(/\.(md|mdx)$/, ""),
+    },
+    props: { entry },
+  }));
+}
+
+function slug(id: string) {
+  return id.replace(/\/index$/, "").replace(/\.(md|mdx)$/, "");
+}
+
+function findAsset(map: Record<string, { default: { src: string } }>, entrySlug: string) {
+  const match = Object.entries(map).find(([file]) => file.includes(`/${entrySlug}/`));
+  return match?.[1]?.default?.src;
+}
+
+const { entry } = Astro.props as { entry: Blog };
+const { Content } = await render(entry);
+const data = entry.data as {
+  authors: string | string[];
+  canonical?: string;
+  date: Date | string;
+  description?: string;
+  tags: string[];
+  title: string;
+};
+
+const entrySlug = slug(entry.id);
+const authors = Array.isArray(data.authors) ? data.authors : [data.authors];
+const date =
+  data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date);
+
+const allPosts = await getBlogPosts();
+---
+
+<BlogPostLayout
+  allPosts={allPosts}
+  authors={authors}
+  canonical={data.canonical}
+  date={date}
+  description={data.description ?? ""}
+  image={findAsset(headerImages, entrySlug)}
+  mobileImage={findAsset(mobileImages, entrySlug)}
+  tags={data.tags}
+  title={data.title}
+>
+  <Content />
+</BlogPostLayout>

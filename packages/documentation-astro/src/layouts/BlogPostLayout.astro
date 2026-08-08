@@ -1,0 +1,250 @@
+---
+import "../styles/global.css";
+
+import type { BlogPost } from "../lib/get-blog-posts";
+
+import BlogPostHeader from "../components/blog/BlogPostHeader.astro";
+import SimilarPosts from "../components/blog/SimilarPosts.astro";
+import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteNavigation from "../components/SiteNavigation.astro";
+
+interface Props {
+  allPosts: BlogPost[];
+  authors: string[];
+  canonical?: string;
+  date: string;
+  description: string;
+  image?: string;
+  mobileImage?: string;
+  tags: string[];
+  title: string;
+}
+
+const { allPosts, authors, canonical, date, description, image, mobileImage, tags, title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <title>{title} | GraphQL Hive Blog</title>
+  </head>
+  <body class="min-h-screen antialiased">
+    <SiteNavigation />
+
+    <div class="text-green-1000 mx-auto w-360 max-w-full overflow-hidden dark:text-white">
+      <BlogPostHeader authors={authors} class="mx-auto" date={date} image={image} mobileImage={mobileImage} tags={tags} title={title} />
+
+      <div class="blog-prose-shell mx-auto w-full box-content max-w-360 px-4 md:px-12">
+        <article class="prose dark:prose-invert min-w-0 w-(--article-max-width) max-w-full mx-auto" data-blog-prose>
+          <slot />
+        </article>
+      </div>
+
+      <SimilarPosts allPosts={allPosts} class="mx-4 md:mx-6" currentTags={tags} currentTitle={title} />
+      <GetYourAPIGameRightSection class="light text-green-1000 dark:bg-primary/95 mx-4 sm:mb-6 md:mx-6" />
+    </div>
+
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .blog-prose-shell {
+    --article-max-width: 640px;
+  }
+
+  @media (max-width: 768px) {
+    .blog-prose-shell {
+      --article-max-width: calc(100vw - 2rem);
+    }
+  }
+</style>
+
+<style is:global>
+  [data-blog-prose] {
+    color: rgb(0 52 44 / 90%);
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  [data-blog-prose] > :is(h2, h3, h4, h5, h6, p, ol, ul, figure, hr, iframe):not(.hive-bleed) {
+    max-width: var(--article-max-width);
+    margin-inline: auto;
+  }
+
+  [data-blog-prose] > p:first-of-type {
+    font-size: 1.25rem;
+    line-height: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    [data-blog-prose] > p:first-of-type {
+      font-size: 1.5rem;
+    }
+  }
+
+  [data-blog-prose] :is(h2, h3, h4, h5, h6) {
+    margin-top: 2em;
+    margin-bottom: 1em;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  [data-blog-prose] h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  [data-blog-prose] h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    line-height: 2rem;
+  }
+
+  [data-blog-prose] :is(h2, h3) + :is(h3, p) {
+    margin-top: 0;
+  }
+
+  [data-blog-prose] p {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+  }
+
+  [data-blog-prose] ul,
+  [data-blog-prose] ol,
+  [data-blog-prose] blockquote {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+  }
+
+  [data-blog-prose] ul,
+  [data-blog-prose] ol {
+    padding-left: 1.625em;
+  }
+
+  [data-blog-prose] ul {
+    list-style: disc;
+  }
+
+  [data-blog-prose] ol {
+    list-style: decimal;
+  }
+
+  [data-blog-prose] li {
+    margin-block: 0.5em;
+    padding-left: 0.375em;
+  }
+
+  [data-blog-prose] li > p {
+    margin-top: 0.5rem;
+  }
+
+  [data-blog-prose] a {
+    color: currentColor;
+    text-decoration-color: var(--color-blue-700);
+    text-decoration-line: underline;
+    text-underline-offset: 0.125rem;
+  }
+
+  [data-blog-prose] a:hover {
+    color: var(--color-blue-700);
+    text-decoration: none;
+  }
+
+  [data-blog-prose] img {
+    max-width: 100%;
+    height: auto;
+    margin-block: 2em;
+    border-radius: 1rem;
+  }
+
+  [data-blog-prose] pre {
+    max-height: 602px;
+    margin-block: 1rem;
+    padding-top: 28px;
+    overflow: auto;
+    border: 1px solid var(--color-beige-400);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.8125rem;
+    line-height: 1.42857;
+  }
+
+  [data-blog-prose] table {
+    display: block;
+    width: 100%;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+
+  [data-blog-prose] th,
+  [data-blog-prose] td {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--color-beige-400);
+    text-align: left;
+  }
+
+  [data-blog-prose] div:has(> blockquote) {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: var(--color-beige-100);
+  }
+
+  [data-blog-prose] div:has(> blockquote) blockquote {
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--color-green-1000);
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  [data-blog-prose] div:has(> blockquote) blockquote::before {
+    display: flex;
+    width: 3rem;
+    height: 3rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0.5rem;
+    border-radius: 1rem;
+    background: var(--color-primary);
+    content: "\201c";
+    font-size: 2rem;
+  }
+
+  [data-blog-prose] div:has(> blockquote) blockquote > p {
+    margin: 0;
+  }
+
+  [data-blog-prose] div:has(> blockquote) cite {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    font-style: normal;
+  }
+
+  [data-blog-prose] div:has(> blockquote) cite p {
+    margin-top: 0;
+  }
+
+  @media (max-width: 639px) {
+    [data-blog-prose] div:has(> blockquote) blockquote {
+      flex-direction: column;
+    }
+  }
+</style>

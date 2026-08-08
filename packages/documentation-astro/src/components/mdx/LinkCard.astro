@@ -1,0 +1,30 @@
+---
+interface Props {
+  alt?: string;
+  class?: string;
+  description?: string;
+  href: string;
+  src: string | { src: string };
+  title?: string;
+}
+
+const { alt, class: className, description, href, src, title } = Astro.props;
+const imgSrc = typeof src === "string" ? src : src.src;
+const hasCaption = Boolean(title || description);
+---
+
+{
+  hasCaption ? (
+    <a class:list={["bg-beige-100 mt-6 flex gap-2 overflow-hidden rounded-2xl dark:bg-neutral-900", className]} href={href}>
+      <span class="flex flex-col gap-1 p-6">
+        <strong>{title}</strong>
+        <p class="text-sm">{description}</p>
+      </span>
+      <img alt={alt || ""} class="rounded-none" height="160" role="presentation" src={imgSrc} width="286" />
+    </a>
+  ) : (
+    <a class="border-beige-200 mt-6 block overflow-hidden rounded-2xl border dark:border-neutral-800" href={href}>
+      <img alt={alt || ""} src={imgSrc} width="100%" />
+    </a>
+  )
+}
