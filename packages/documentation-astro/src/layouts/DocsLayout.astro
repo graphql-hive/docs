@@ -1,12 +1,9 @@
 ---
 import "../styles/global.css";
 
+import MermaidRenderer from "../components/MermaidRenderer.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
-
-import hiveGatewayRaw from "../../../design-system/src/icons/hive-gateway.svg?raw";
-import hiveRaw from "../../../design-system/src/icons/hive.svg?raw";
-import hiveRouterRaw from "../../../design-system/src/icons/hive-router.svg?raw";
 
 interface NavItem {
   href: string;
@@ -25,31 +22,73 @@ interface Props {
   description?: string;
   headings: Heading[];
   navItems: NavItem[];
+  sectionMeta: Map<string, { icon?: string; title?: string }>;
   title: string;
 }
 
-const { currentPath, description, headings, navItems, title } = Astro.props;
+const { currentPath, description, headings, navItems, sectionMeta, title } = Astro.props;
 const sections = Map.groupBy(
   navItems.filter((item) => item.href !== "/docs"),
   (item) => item.section,
 );
+
+function humanize(slug: string) {
+  return slug.split("-").map((word) => word[0]!.toUpperCase() + word.slice(1)).join(" ");
+}
+
+type Row =
+  | { children: NavItem[]; folderPrefix: string; title: string; type: "folder" }
+  | { item: NavItem; type: "link" };
+
+function buildRows(items: NavItem[]): Row[] {
+  const nestedItems = Map.groupBy(
+    items.filter((item) => item.href.split("/").filter(Boolean).length > 3),
+    (item) => item.href.split("/").filter(Boolean)[2]!,
+  );
+  const rows: Row[] = [];
+  const opened = new Set<string>();
+
+  for (const item of items) {
+    const segments = item.href.split("/").filter(Boolean);
+    if (segments.length <= 3) {
+      const key = segments.at(-1)!;
+      const children = nestedItems.get(key);
+      if (children) {
+        opened.add(key);
+        rows.push({
+          children,
+          folderPrefix: item.href,
+          title: item.title,
+          type: "folder",
+        });
+      } else {
+        rows.push({ item, type: "link" });
+      }
+      continue;
+    }
+
+    const key = segments[2]!;
+    if (opened.has(key)) continue;
+    opened.add(key);
+    const children = nestedItems.get(key)!;
+    rows.push({
+      children,
+      folderPrefix: children[0]!.href.split("/").slice(0, 4).join("/"),
+      title: humanize(key),
+      type: "folder",
+    });
+  }
+
+  return rows;
+}
+
+const sectionRows = new Map([...sections].map(([section, items]) => [section, buildRows(items)]));
 const tableOfContents = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 4);
-const currentSection = currentPath.split("/")[2] ?? "overview";
-const sectionDetails: Record<string, { icon?: string; title: string }> = {
-  "api reference": { title: "API Reference" },
-  gateway: { icon: hiveGatewayRaw, title: "Hive Gateway" },
-  logger: { title: "Hive Logger" },
-  "migration guides": { title: "Migration guides" },
-  "new laboratory": { title: "Hive Laboratory" },
-  "other integrations": { title: "Other integrations" },
-  router: { icon: hiveRouterRaw, title: "Hive Router" },
-  "schema registry": { icon: hiveRaw, title: "Hive Console" },
-  "use cases": { title: "Use cases" },
-};
+const currentSection = (currentPath.split("/")[2] ?? "overview").replaceAll("-", " ");
 const currentIndex = navItems.findIndex((item) => item.href === currentPath);
 const previous = currentIndex > 0 ? navItems[currentIndex - 1] : undefined;
 const next = currentIndex >= 0 ? navItems[currentIndex + 1] : undefined;
-const sectionTitle = sectionDetails[currentSection.replaceAll("-", " ")]?.title;
+const sectionTitle = sectionMeta.get(currentSection)?.title;
 ---
 
 <!doctype html>
@@ -82,14 +121,9 @@ const sectionTitle = sectionDetails[currentSection.replaceAll("-", " ")]?.title;
                   <span>Introduction</span>
                 </a>
                 {
-                  [...sections].map(([section, items]) => {
-                    const details = sectionDetails[section] ?? { title: section };
-                    const open = currentSection.replaceAll("-", " ") === section;
-                    const directItems = items.filter((item) => item.href.split("/").filter(Boolean).length <= 3);
-                    const nestedItems = Map.groupBy(
-                      items.filter((item) => item.href.split("/").filter(Boolean).length > 3),
-                      (item) => item.href.split("/").filter(Boolean)[2]!,
-                    );
+                  [...sectionRows].map(([section, rows]) => {
+                    const details = sectionMeta.get(section) ?? { title: section };
+                    const open = currentSection === section;
                     return (
                       <details class="group" open={open}>
                         <summary class="relative mt-0.5 flex w-full cursor-pointer list-none flex-row items-center gap-2 rounded-lg p-2 text-start text-fd-muted-foreground transition-colors wrap-anywhere hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none [&_svg]:size-4 [&_svg]:shrink-0">
@@ -98,19 +132,17 @@ const sectionTitle = sectionDetails[currentSection.replaceAll("-", " ")]?.title;
                           <svg class="ms-auto transition-transform group-open:rotate-0 -rotate-90" aria-hidden="true" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="m6 9 6 6 6-6" /></svg>
                         </summary>
                         <div class="relative mt-0.5 before:absolute before:inset-y-1 before:start-2.5 before:w-px before:bg-fd-border before:content-['']">
-                          {directItems.map((item) => {
-                            const itemSlug = item.href.split("/").filter(Boolean).at(-1)!;
-                            const children = nestedItems.get(itemSlug);
-                            if (children) {
-                              const childOpen = currentPath === item.href || currentPath.startsWith(`${item.href}/`);
+                          {rows.map((row) => {
+                            if (row.type === "folder") {
+                              const childOpen = currentPath === row.folderPrefix || currentPath.startsWith(`${row.folderPrefix}/`);
                               return (
                                 <details class="group/folder" open={childOpen}>
                                   <summary class="relative mt-0.5 flex w-full cursor-pointer list-none flex-row items-center gap-2 rounded-lg p-2 ps-8 text-start text-fd-muted-foreground transition-colors wrap-anywhere hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none">
-                                    <span>{item.title}</span>
+                                    <span>{row.title}</span>
                                     <svg class="ms-auto size-4 shrink-0 -rotate-90 transition-transform group-open/folder:rotate-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg>
                                   </summary>
                                   <div class="relative mt-0.5">
-                                    {children.map((child) => (
+                                    {row.children.map((child) => (
                                       <a
                                         class="relative mt-0.5 flex flex-row items-center gap-2 rounded-lg p-2 ps-11 text-start text-fd-muted-foreground transition-colors wrap-anywhere hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none data-[active=true]:bg-fd-sidebar-active-bg data-[active=true]:text-fd-sidebar-active data-[active=true]:hover:transition-colors data-[active=true]:before:absolute data-[active=true]:before:inset-y-2.5 data-[active=true]:before:start-2.5 data-[active=true]:before:w-px data-[active=true]:before:bg-fd-sidebar-active data-[active=true]:before:content-['']"
                                         data-active={child.href === currentPath}
@@ -124,6 +156,7 @@ const sectionTitle = sectionDetails[currentSection.replaceAll("-", " ")]?.title;
                                 </details>
                               );
                             }
+                            const { item } = row;
                             return (
                               <a
                                 class="relative mt-0.5 flex flex-row items-center gap-2 rounded-lg p-2 ps-8 text-start text-fd-muted-foreground transition-colors wrap-anywhere hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none data-[active=true]:bg-fd-sidebar-active-bg data-[active=true]:text-fd-sidebar-active data-[active=true]:hover:transition-colors data-[active=true]:before:absolute data-[active=true]:before:inset-y-2.5 data-[active=true]:before:start-2.5 data-[active=true]:before:w-px data-[active=true]:before:bg-fd-sidebar-active data-[active=true]:before:content-['']"
@@ -221,6 +254,7 @@ const sectionTitle = sectionDetails[currentSection.replaceAll("-", " ")]?.title;
     </div>
 
     <SiteFooter class="border-t border-fd-border" />
+    <MermaidRenderer />
 
     <script>
       const links = [...document.querySelectorAll<HTMLAnchorElement>(".toc-link")];

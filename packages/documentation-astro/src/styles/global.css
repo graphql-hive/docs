@@ -13,6 +13,7 @@
   --color-fd-accent-foreground: var(--color-green-1000);
   --color-fd-background: var(--color-white);
   --color-fd-border: var(--color-beige-400);
+  --color-fd-card: var(--color-white);
   --color-fd-foreground: var(--color-green-1000);
   --color-fd-muted: var(--color-beige-200);
   --color-fd-muted-foreground: var(--color-green-700);
@@ -96,6 +97,36 @@ pre {
 
 .docs-content :where(p, ul, ol):not(.hive-card *) {
   color: var(--color-green-800);
+}
+
+.docs-content p {
+  margin: 1rem 0;
+}
+
+.docs-content ul,
+.docs-content ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.docs-content ul:not(.hive-card *) {
+  list-style: disc;
+}
+
+.docs-content ol:not(.hive-card *) {
+  list-style: decimal;
+}
+
+.docs-content li {
+  margin: 0.4rem 0;
+}
+
+.docs-content li > p {
+  margin: 0.4rem 0;
+}
+
+.docs-content li::marker {
+  color: var(--color-beige-800);
 }
 
 .docs-content a:not(.hive-card) {

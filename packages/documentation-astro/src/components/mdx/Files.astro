@@ -1,13 +1,11 @@
-<div class="files"><slot /></div>
+---
+interface Props {
+  class?: string;
+}
 
-<style>
-  .files {
-    margin: 1.5rem 0;
-    padding: 0.8rem 1rem;
-    border: 1px solid var(--border);
-    border-radius: 0.6rem;
-    background: var(--surface);
-    font-family: "SFMono-Regular", Consolas, monospace;
-    font-size: 0.85rem;
-  }
-</style>
+const { class: className } = Astro.props;
+---
+
+<div class:list={["not-prose rounded-md border border-fd-border bg-fd-card p-2", className]}>
+  <slot />
+</div>

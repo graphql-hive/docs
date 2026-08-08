@@ -1,4 +1,10 @@
 ---
+import calloutCriticalRaw from "../../../../design-system/src/icons/callout-critical.svg?raw";
+import calloutInfoRaw from "../../../../design-system/src/icons/callout-info.svg?raw";
+import calloutNeutralRaw from "../../../../design-system/src/icons/callout-neutral.svg?raw";
+import calloutSuccessRaw from "../../../../design-system/src/icons/callout-success.svg?raw";
+import calloutWarningRaw from "../../../../design-system/src/icons/callout-warning.svg?raw";
+
 interface Props {
   class?: string;
   className?: string;
@@ -7,13 +13,22 @@ interface Props {
 }
 
 const { class: className, className: reactClassName, title, type = "info" } = Astro.props;
+
+const icons = {
+  critical: calloutCriticalRaw,
+  info: calloutInfoRaw,
+  note: calloutNeutralRaw,
+  success: calloutSuccessRaw,
+  tip: calloutNeutralRaw,
+  warning: calloutWarningRaw,
+};
 ---
 
 <aside class:list={["callout", `callout-${type}`, className, reactClassName]}>
-  <span class="icon" aria-hidden="true">{type === "warning" || type === "critical" ? "!" : "i"}</span>
+  <span class="icon" set:html={icons[type]} />
   <div>
     {title && <strong>{title}</strong>}
-    <slot />
+    <div class="body"><slot /></div>
   </div>
 </aside>
 
@@ -21,49 +36,51 @@ const { class: className, className: reactClassName, title, type = "info" } = As
   .callout {
     display: grid;
     grid-template-columns: 1.5rem 1fr;
-    gap: 0.7rem;
+    gap: 0.5rem;
     margin: 1.5rem 0;
-    padding: 0.9rem 1rem;
-    color: #d8eaff;
-    border: 1px solid #375b7a;
-    border-radius: 0.6rem;
-    background: #142331;
+    padding: 0.75rem 0.8125rem;
+    color: var(--color-info-800);
+    border: 1px solid var(--color-info-500);
+    border-radius: 0.5rem;
+    background: color-mix(in srgb, var(--color-info-100) 50%, white);
   }
 
   .callout-warning {
-    color: #f3edaa;
-    border-color: #675f28;
-    background: #28250f;
+    color: var(--color-warning-800);
+    border-color: var(--color-warning-500);
+    background: color-mix(in srgb, var(--color-warning-100) 35%, white);
   }
 
   .callout-critical {
-    color: #ffc6bb;
-    border-color: #733b35;
-    background: #2d1715;
+    color: var(--color-critical-800);
+    border-color: var(--color-critical-500);
+    background: var(--color-critical-100);
   }
 
   .callout-success {
-    color: #d9f2a7;
-    border-color: #4a622b;
-    background: #1b2610;
+    color: var(--color-positive-800);
+    border-color: var(--color-positive-500);
+    background: var(--color-positive-100);
   }
 
   .callout-note,
   .callout-tip {
-    color: #dedacf;
-    border-color: #4d4b46;
-    background: #22211f;
+    color: var(--color-beige-900);
+    border-color: var(--color-beige-500);
+    background: var(--color-beige-200);
   }
 
   .icon {
-    display: grid;
-    width: 1.4rem;
-    height: 1.4rem;
-    place-items: center;
-    border: 1px solid currentColor;
-    border-radius: 50%;
-    font-size: 0.75rem;
-    font-weight: 800;
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0.125rem;
+  }
+
+  .icon :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   strong {
@@ -72,6 +89,10 @@ const { class: className, className: reactClassName, title, type = "info" } = As
     font-size: 0.75rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  .body {
+    color: #171717;
   }
 
   :global(.callout p:first-child) {

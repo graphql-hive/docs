@@ -24,7 +24,15 @@ const caseStudies = defineCollection({
   }),
 });
 
+const blog = defineCollection({
+  loader: glob({
+    base: `${contentRoot}/blog`,
+    pattern: "**/*.{md,mdx}",
+  }),
+});
+
 export const collections = {
+  blog,
   caseStudies,
   docs,
   productUpdates,

@@ -11,11 +11,11 @@ const labels = items.map((item) =>
 const fallbackLabels = ["Hive Gateway", "OpenTelemetry"];
 ---
 
-<div class="tabs" data-default-index={defaultIndex}>
-  <div class="tab-list" role="tablist">
+<div class="fd-tabs" data-default-index={defaultIndex}>
+  <div class="fd-tabs-list" role="tablist">
     {
       labels.map((label, index) => (
-        <button type="button" role="tab" data-index={index}>
+        <button aria-selected={index === Number(defaultIndex)} class="fd-tab-trigger" data-index={index} role="tab" type="button">
           {label ?? fallbackLabels[index] ?? `Option ${index + 1}`}
         </button>
       ))
@@ -26,7 +26,7 @@ const fallbackLabels = ["Hive Gateway", "OpenTelemetry"];
 
 <script>
   function initializeTabs(root: HTMLElement) {
-    const tabs = [...root.querySelectorAll<HTMLButtonElement>(":scope > .tab-list > button")];
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>(":scope > .fd-tabs-list > button")];
     const panels = [...root.querySelectorAll<HTMLElement>(":scope > .tab-panels > .tab-panel")];
     const show = (index: number) => {
       tabs.forEach((tab, tabIndex) => {
@@ -40,44 +40,50 @@ const fallbackLabels = ["Hive Gateway", "OpenTelemetry"];
     show(Number(root.dataset.defaultIndex) || 0);
   }
 
-  document.querySelectorAll<HTMLElement>(".tabs").forEach(initializeTabs);
+  document.querySelectorAll<HTMLElement>(".fd-tabs").forEach(initializeTabs);
 </script>
 
 <style>
-  .tabs {
-    margin: 1.5rem 0;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    border-radius: 0.6rem;
-  }
-
-  .tab-list {
+  .fd-tabs-list {
     display: flex;
-    gap: 0.25rem;
-    padding: 0.4rem;
+    width: 100%;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-bottom: 1px;
     overflow-x: auto;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
+    overflow-y: hidden;
+    box-shadow: inset 0 -1px 0 var(--color-beige-400);
   }
 
-  button {
-    padding: 0.45rem 0.7rem;
-    color: var(--muted);
+  .fd-tab-trigger {
+    position: relative;
+    flex-shrink: 0;
+    margin-bottom: -1px;
+    padding: 0.5rem;
     border: 0;
-    border-radius: 0.35rem;
+    border-bottom: 1px solid transparent;
+    border-radius: 0.25rem 0.25rem 0 0;
     background: transparent;
+    color: var(--color-beige-800);
     font: inherit;
-    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.25rem;
     white-space: nowrap;
     cursor: pointer;
+    transition: color 0.1s, border-color 0.1s;
   }
 
-  button[aria-selected="true"] {
-    color: var(--text);
-    background: var(--surface-raised);
+  .fd-tab-trigger:hover {
+    color: black;
+    border-color: var(--color-beige-400);
+  }
+
+  .fd-tab-trigger[aria-selected="true"] {
+    color: var(--color-green-900);
+    border-color: currentColor;
   }
 
   .tab-panels {
-    padding: 0.25rem 1rem;
+    margin-top: 1.25em;
   }
 </style>

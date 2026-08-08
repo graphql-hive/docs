@@ -51,6 +51,22 @@ export default defineConfig({
           "@hive/design-system/hive-components/cli-errors",
           "./src/mdx-shims/cli-errors.ts",
         ),
+        alias(
+          "@hive/design-system/hive-components/stack-blitz",
+          "./src/mdx-shims/stack-blitz.ts",
+        ),
+        alias(
+          "@hive/design-system/hive-components/code-sandbox",
+          "./src/mdx-shims/code-sandbox.ts",
+        ),
+        alias(
+          "@hive/design-system/hive-components/link-card",
+          "./src/mdx-shims/link-card.ts",
+        ),
+        alias(
+          "@hive/design-system/hive-components/comparison",
+          "./src/mdx-shims/comparison.ts",
+        ),
         alias("fumadocs-ui/components/steps", "./src/mdx-shims/steps.ts"),
         alias("fumadocs-ui/components/files", "./src/mdx-shims/files.ts"),
         alias("fumadocs-ui/components/callout", "./src/mdx-shims/callout.ts"),
@@ -73,6 +89,24 @@ export default defineConfig({
           find: /.*\/src\/components\/arrow-icon\.tsx$/,
           replacement: fileURLToPath(
             new URL("./src/mdx-shims/arrow-icon.ts", import.meta.url),
+          ),
+        },
+        {
+          find: /.*\/src\/components\/blog\/welcome-hive-router-components(\.tsx)?$/,
+          replacement: fileURLToPath(
+            new URL(
+              "./src/mdx-shims/welcome-hive-router-components.ts",
+              import.meta.url,
+            ),
+          ),
+        },
+        {
+          find: /.*\/src\/components\/blog\/welcome-hive-router-zero-copy-json(\.tsx)?$/,
+          replacement: fileURLToPath(
+            new URL(
+              "./src/mdx-shims/welcome-hive-router-zero-copy-json.ts",
+              import.meta.url,
+            ),
           ),
         },
       ],

@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 
+import BlogAuthors from "../components/blog/BlogAuthors.astro";
+import MermaidRenderer from "../components/MermaidRenderer.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import { resolveAuthor } from "../lib/authors";
@@ -21,14 +23,7 @@ interface Props {
 }
 
 const { authors, canonical, date, description, headings, title } = Astro.props;
-const resolvedAuthors = authors.map(resolveAuthor);
-const formattedDate = new Intl.DateTimeFormat("en-US", {
-  day: "numeric",
-  month: "short",
-  timeZone: "UTC",
-  weekday: "long",
-  year: "numeric",
-}).format(new Date(`${date}T00:00:00Z`));
+const authorIds = authors.map((author) => (typeof author === "string" ? author : resolveAuthor(author).name));
 const tableOfContents = headings.filter(
   (heading) => heading.depth >= 2 && heading.depth <= 3,
 );
@@ -43,38 +38,21 @@ const tableOfContents = headings.filter(
     {canonical && <link rel="canonical" href={canonical} />}
     <title>{title} | GraphQL Hive</title>
   </head>
-  <body>
+  <body class="min-h-screen antialiased">
     <SiteNavigation />
 
-    <div class="update-shell">
-      <main>
-        <a class="back" href="/product-updates">← All product updates</a>
-        <h1>{title}</h1>
-        <p class="description">{description}</p>
-        <div class="byline">
-          {
-            resolvedAuthors.map((author) => (
-              <a href={author.link} title={author.name}>
-                <img
-                  alt=""
-                  height="36"
-                  loading="lazy"
-                  src={`https://github.com/${author.github}.png?size=72`}
-                  width="36"
-                />
-                <span>{author.name}</span>
-              </a>
-            ))
-          }
-          <time datetime={date}>{formattedDate}</time>
-        </div>
+    <div class="update-shell text-green-1000 mx-auto">
+      <main class="min-w-0">
+        <a class="hive-focus outline-hidden text-sm text-green-800" href="/product-updates">← All product updates</a>
+        <h1 class="group text-green-1000 mb-0 mt-4 text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px]">{title}</h1>
+        <BlogAuthors align="start" authors={authorIds} class="mb-4" date={date} />
         <article class="docs-content"><slot /></article>
       </main>
 
       {
         tableOfContents.length > 0 && (
           <aside class="toc">
-            <strong>In this update</strong>
+            <strong>On this page</strong>
             {tableOfContents.map((heading) => (
               <a class={`depth-${heading.depth}`} href={`#${heading.slug}`}>
                 {heading.text}
@@ -86,6 +64,7 @@ const tableOfContents = headings.filter(
     </div>
 
     <SiteFooter />
+    <MermaidRenderer />
   </body>
 </html>
 
@@ -96,62 +75,7 @@ const tableOfContents = headings.filter(
     gap: clamp(3rem, 7vw, 7rem);
     width: min(70rem, calc(100% - 2rem));
     min-height: calc(100vh - var(--header-height));
-    margin: 0 auto;
-  }
-
-  main {
-    min-width: 0;
-    padding: clamp(4rem, 10vw, 8rem) 0 6rem;
-  }
-
-  .back {
-    display: inline-block;
-    margin-bottom: 2rem;
-    color: var(--link);
-    font-size: 0.8rem;
-  }
-
-  h1 {
-    margin: 0;
-    font-size: clamp(2.75rem, 7vw, 5.5rem);
-    letter-spacing: -0.06em;
-    line-height: 0.95;
-  }
-
-  .description {
-    max-width: 42rem;
-    margin: 1.5rem 0;
-    color: var(--muted);
-    font-size: 1.15rem;
-    line-height: 1.6;
-  }
-
-  .byline {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem 1rem;
-    margin: 2rem 0 4rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .byline a {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    font-size: 0.82rem;
-    font-weight: 600;
-    text-decoration: none;
-  }
-
-  .byline img {
-    border-radius: 50%;
-  }
-
-  time {
-    color: var(--muted);
-    font-size: 0.78rem;
+    padding: clamp(3rem, 8vw, 6rem) 0;
   }
 
   .toc {
@@ -169,11 +93,12 @@ const tableOfContents = headings.filter(
   .toc strong {
     margin: 0 0 0.65rem 0.5rem;
     font-size: 0.75rem;
+    color: var(--color-fd-muted-foreground);
   }
 
   .toc a {
     padding: 0.3rem 0.5rem;
-    color: var(--muted);
+    color: var(--color-fd-muted-foreground);
     border-radius: 0.3rem;
     font-size: 0.8rem;
     line-height: 1.35;
@@ -181,8 +106,8 @@ const tableOfContents = headings.filter(
   }
 
   .toc a:hover {
-    color: var(--text);
-    background: var(--surface);
+    color: var(--color-fd-primary);
+    background: var(--color-fd-accent);
   }
 
   .toc .depth-3 {
@@ -196,12 +121,6 @@ const tableOfContents = headings.filter(
 
     .toc {
       display: none;
-    }
-  }
-
-  @media (max-width: 36rem) {
-    h1 {
-      font-size: 2.75rem;
     }
   }
 </style>
