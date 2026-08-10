@@ -31,6 +31,17 @@ SCIM provisioning supports creating, updating, disabling, and re-enabling users,
 synchronizing groups and their memberships. Changes made in your identity provider flow into Hive
 Console, including permission changes caused by updated group memberships.
 
+## Safely Adopt Existing Accounts
+
+When SCIM matches an existing organization member, Hive Console does not replace their access
+immediately. Instead, it records a provisioning conflict and keeps the member's existing role and
+status effective until an organization administrator confirms that SCIM should manage the account.
+
+The **User Provisioning** settings show how many accounts need confirmation and link to a filtered
+view of the **Members** page. Administrators can review each member's pending SCIM status and group
+memberships before allowing SCIM management. After confirmation, the identity provider controls the
+member's active status and their access is derived from SCIM group role mappings.
+
 After validating your setup, you can configure your organization's OIDC provider to require SCIM
 provisioning. When enabled, only active SCIM-provisioned users can access the organization through
 OIDC, while organization administrators retain access as a safeguard.
@@ -38,7 +49,7 @@ OIDC, while organization administrators retain access as a safeguard.
 ## Get Started
 
 Create an organization access token with the **Provision users and groups** permission, connect your
-identity provider to Hive's SCIM endpoint, and configure role mappings for your synchronized groups.
-
+identity provider to Hive's SCIM endpoint, resolve any existing-account conflicts, and configure role
+mappings for your synchronized groups.
 The [SCIM provisioning documentation](/docs/schema-registry/management/scim-provisioning) includes
 the complete setup process and step-by-step guides for Okta and Microsoft Entra ID.
