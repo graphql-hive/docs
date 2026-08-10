@@ -40,6 +40,21 @@
   --accent: var(--color-primary);
   --link: var(--color-green-800);
   --header-height: 4rem;
+  --pf-background: var(--color-white);
+  --pf-border: var(--color-beige-400);
+  --pf-border-focus: var(--color-green-500);
+  --pf-border-radius: 0.5rem;
+  --pf-font: var(--font-sans);
+  --pf-hover: var(--color-beige-200);
+  --pf-input-height: 3rem;
+  --pf-mark: var(--color-blue-700);
+  --pf-modal-backdrop: rgb(0 56 52 / 35%);
+  --pf-modal-max-width: 42rem;
+  --pf-outline-focus: var(--color-green-500);
+  --pf-shadow-lg: 0 16px 48px rgb(14 18 27 / 20%);
+  --pf-text: var(--color-green-1000);
+  --pf-text-muted: var(--color-green-700);
+  --pf-text-secondary: var(--color-green-800);
 }
 
 :is(.flowchart, .statediagram, .sequenceDiagram, [aria-roledescription="sequence"]) {

@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && bun run generate:redirects && pagefind --site dist",
+    "generate:redirects": "bun scripts/generate-redirects.ts",
     "typecheck": "astro check"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
     "@tailwindcss/vite": "4.1.18",
     "@types/react": "19.2.8",
     "@types/react-dom": "19.2.3",
+    "pagefind": "1.5.2",
     "tailwindcss": "4.1.18",
     "typescript": "5.9.3"
   }

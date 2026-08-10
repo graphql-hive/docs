@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 
+import DocsSearchModal from "../components/DocsSearchModal.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 
@@ -97,6 +98,8 @@ const sectionTitle = sectionMeta.get(currentSection)?.title;
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description ?? title} />
     <title>{title} | Hive</title>
+    <link href="/pagefind/pagefind-component-ui.css" rel="stylesheet" />
+    <script is:inline src="/pagefind/pagefind-component-ui.js" type="module"></script>
   </head>
   <body class="min-h-screen bg-beige-100 font-sans text-green-1000 antialiased" data-docs>
     <div
@@ -198,7 +201,7 @@ const sectionTitle = sectionMeta.get(currentSection)?.title;
         )
       }
 
-      <article class="mx-auto flex w-full max-w-[900px] flex-col gap-4 px-4 py-6 [grid-area:main] md:px-6 md:pt-8 xl:px-8 xl:pb-[52px] xl:pt-8" id="nd-page">
+      <article class="mx-auto flex w-full max-w-[900px] flex-col gap-4 px-4 py-6 [grid-area:main] md:px-6 md:pt-8 xl:px-8 xl:pb-[52px] xl:pt-8" id="nd-page" data-pagefind-body>
         {
           currentPath !== "/docs" && (
             <nav class="flex items-center gap-1.5 text-sm text-fd-muted-foreground" aria-label="Breadcrumb">
@@ -253,6 +256,7 @@ const sectionTitle = sectionMeta.get(currentSection)?.title;
     </div>
 
     <SiteFooter class="border-t border-fd-border" />
+    <DocsSearchModal />
 
     <script>
       const links = [...document.querySelectorAll<HTMLAnchorElement>(".toc-link")];

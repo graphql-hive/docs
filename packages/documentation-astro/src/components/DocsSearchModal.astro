@@ -1,0 +1,29 @@
+<pagefind-config bundle-path="/pagefind/" excerpt-length="24"></pagefind-config>
+<pagefind-modal reset-on-close></pagefind-modal>
+
+<script>
+  type PagefindModal = HTMLElement & { open: () => void };
+
+  const modal = document.querySelector<PagefindModal>("pagefind-modal");
+  const openSearch = async () => {
+    await customElements.whenDefined("pagefind-modal");
+    modal?.open();
+  };
+
+  document.querySelectorAll<HTMLButtonElement>(".docs-search-trigger").forEach((trigger) => {
+    trigger.addEventListener("click", openSearch);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key.toLowerCase() !== "k" || !(event.metaKey || event.ctrlKey)) return;
+    if (event.target instanceof HTMLElement && event.target.matches("input, textarea, [contenteditable=true]")) return;
+    event.preventDefault();
+    openSearch();
+  });
+
+  if (navigator.platform.includes("Win")) {
+    document.querySelectorAll<HTMLElement>(".docs-search-shortcut").forEach((shortcut) => {
+      shortcut.textContent = "Ctrl K";
+    });
+  }
+</script>
