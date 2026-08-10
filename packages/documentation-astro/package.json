@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && bun run generate:redirects && pagefind --site dist",
+    "build": "astro build && bun run generate:sitemap && bun run generate:redirects && pagefind --site dist",
     "generate:redirects": "bun scripts/generate-redirects.ts",
+    "generate:sitemap": "bun scripts/generate-sitemap.ts",
     "typecheck": "astro check"
   },
   "dependencies": {

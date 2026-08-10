@@ -44,7 +44,7 @@ When tasked to migrate a page follow these steps:
 - [ ] Add Pagefind bodies and metadata for blog posts, product updates, case studies, and any searchable landing pages. The current build indexes only the documentation pages.
 - [ ] Verify search results and navigation for every indexed content collection, including the deployment changelog.
 - [ ] Add shared SEO handling for self-canonical URLs, Open Graph metadata, Twitter metadata, social images, and JSON-LD breadcrumbs.
-- [ ] Add sitemap generation with the correct production host and `/graphql/hive` base path.
+- [x] Add sitemap generation with the correct production host and `/graphql/hive` base path.
 - [ ] Add a build-time SEO validation equivalent to the old site's `check-seo` command.
 - [ ] Remove the public `/stats` migration page or mark it as `noindex`.
 - [ ] Add Astro unit and end-to-end test scripts and run them in CI.
