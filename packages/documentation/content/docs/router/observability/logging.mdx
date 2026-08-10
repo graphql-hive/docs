@@ -238,3 +238,57 @@ log:
 Because `trace_id` in your logs matches the trace ID in your OpenTelemetry backend, a typical
 workflow is: find a slow or failing request via its access log, then open the matching trace to see
 exactly where time was spent or where the error originated.
+
+The correlation also works in reverse: the root `http.server` span for every request carries a
+`router.request_id` attribute set to the same `request_id` used in logs, so you can go from a trace
+straight to its logs as well.
+
+## Customizing logs from plugins
+
+Plugins can enrich the current request's logs through a few functions, callable from any hook (except for `on_plugin_init`):
+
+- **`set_summary_attribute(key, value)`** — adds a custom field to the request summary line. The
+  value can be anything `impl Into<sonic_rs::Value>`, including a nested object. Setting the same
+  key again overwrites the previous value.
+- **`set_log_correlation(key, value)`** — attaches a correlation id (e.g. a tenant or project id) to
+  **every** log line of the request from that point on, the same way the built-in `request_id` and
+  `trace_id` work.
+- **`set_summary_message(message)`** — overrides the summary line's `message` field. The first call
+  wins; later calls for the same request are no-ops.
+- **`get_current_summary()`** — reads the current request's in-progress summary (`operation_name`,
+  `status_code`, and so on), so a plugin can build a message from data only known once the request
+  is finishing.
+
+```rust
+use hive_router::{get_current_summary, set_log_correlation, set_summary_message};
+
+fn on_http_request<'req>(
+    &'req self,
+    payload: OnHttpRequestHookPayload<'req>,
+) -> OnHttpRequestHookResult<'req> {
+    // Attach a correlation as soon as it's known, so it's on every log line for the rest
+    // of this request, including this one.
+    let project_id = payload.router_http_request.path().split('/').nth(1).unwrap_or("unknown");
+    set_log_correlation("project_id", project_id);
+
+    payload.on_end(|end_payload| {
+        // Customize the access log message using data only known once the request is done.
+        if let Some(summary) = get_current_summary() {
+            set_summary_message(format!(
+                "status={}",
+                summary.status_code.load(std::sync::atomic::Ordering::Relaxed)
+            ));
+        }
+        end_payload.proceed()
+    })
+}
+```
+
+<Callout type="info">
+  These functions are a no-op outside a request (e.g. during `on_plugin_init`).
+</Callout>
+
+See the full
+[`custom_logger_correlation`](https://github.com/graphql-hive/router/tree/main/plugin_examples/custom_logger_correlation)
+plugin example, and the [`on_http_request`](/docs/router/customizations/plugin-system/hooks#on_http_request)
+hook reference.

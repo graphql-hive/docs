@@ -76,6 +76,38 @@ limit on the number of aliases.
 
 The maximum allowed number of aliases in incoming GraphQL operations.
 
+### `max_request_body_size`
+
+- **Type:** `string`
+- **Default:** `"2MB"`
+
+The maximum size of an incoming HTTP request body (as a human-readable size, e.g. `"5MB"`).
+Requests exceeding this limit are rejected before being processed.
+
+### `max_request_header_size`
+
+- **Type:** `string`
+- **Default:** `"64 KiB"`
+
+The maximum total size of the incoming HTTP request headers. Requests exceeding this limit are
+rejected.
+
+```yaml title="router.config.yaml"
+limits:
+  max_request_header_size: 8KiB
+```
+
+```json title="Response"
+{
+  "errors": [
+    {
+      "message": "Request headers exceed the maximum allowed size",
+      "extensions": { "code": "REQUEST_HEADER_FIELDS_TOO_LARGE" }
+    }
+  ]
+}
+```
+
 ## Examples
 
 ### Limit Query Depth to 2
