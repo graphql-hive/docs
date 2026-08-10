@@ -49,7 +49,8 @@ persisted_documents:
 
 ## Storage
 
-Hive Router supports two persisted document storage types.
+Hive Router supports three persisted document storage types. For the full field reference, see
+[`persisted_documents.storage`](/docs/router/configuration/persisted_documents#storage).
 
 ### File storage
 
@@ -57,6 +58,33 @@ File storage reads a local manifest and resolves IDs from memory. It supports bo
 manifests (`{ "id": "query" }`) and Apollo manifest format. File **watch mode** is enabled by
 default (`watch: true`), so changes are reloaded automatically, which works well with workflows
 like `relay-compiler --watch`.
+
+### Storage-backed manifest (S3 / S3-compatible)
+
+You can also load the manifest from a named backend declared under the top-level
+[`storages`](/docs/router/configuration/storages) section (Amazon S3, Cloudflare R2, MinIO,
+LocalStack, or any other S3-compatible service):
+
+```yaml title="router.config.yaml"
+storages:
+  artifacts:
+    type: s3
+    bucket: my-router-artifacts
+    region: eu-west-1
+
+persisted_documents:
+  enabled: true
+  require_id: true
+  storage:
+    type: storage
+    storage_id: artifacts
+    location: persisted/manifest.json
+    poll_interval: 30s
+```
+
+It uses the same manifest format as file storage. Set `poll_interval` to have Router periodically
+re-check the object (via conditional `ETag` requests) and reload it when it changes; omit it to load
+the manifest once at startup only.
 
 ### Hive CDN storage
 
