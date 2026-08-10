@@ -1,0 +1,15 @@
+<script is:inline>
+  (() => {
+    const media = matchMedia("(prefers-color-scheme: dark)");
+    const apply = () => {
+      const preference = localStorage.getItem("theme") || "system";
+      const dark = preference === "dark" || (preference === "system" && media.matches);
+      document.documentElement.classList.toggle("dark", dark);
+      document.documentElement.classList.toggle("light", !dark);
+      document.documentElement.dataset.theme = preference;
+      document.documentElement.style.colorScheme = dark ? "dark" : "light";
+    };
+    apply();
+    media.addEventListener("change", apply);
+  })();
+</script>

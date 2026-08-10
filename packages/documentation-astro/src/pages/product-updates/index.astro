@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteNavigation from "../../components/SiteNavigation.astro";
 import SocialMetadata from "../../components/SocialMetadata.astro";
+import ThemeInit from "../../components/ThemeInit.astro";
 import "../../styles/global.css";
 
 function dateString(value: unknown) {
@@ -38,30 +39,31 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <ThemeInit />
     <SocialMetadata
       description="The most recent developments from Hive Console."
       title="Product Updates | Hive"
     />
   </head>
-  <body class="min-h-screen antialiased">
+  <body class="min-h-screen antialiased dark:bg-[rgb(var(--nextra-bg))] dark:text-neutral-200" data-theme-enabled>
     <SiteNavigation />
 
-    <main class="text-green-1000 mx-auto w-full max-w-360 px-4">
+    <main class="text-green-1000 mx-auto w-full max-w-360 px-4 dark:text-neutral-200">
       <div class="mx-auto w-[872px] max-w-full pt-16 max-sm:mt-2">
-        <h1 class="group text-green-1000 text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px]">Product Updates</h1>
-        <p class="mt-2 leading-6 text-green-800">The most recent developments from Hive Console.</p>
+        <h1 class="group text-green-1000 text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] dark:text-white">Product Updates</h1>
+        <p class="mt-2 leading-6 text-green-800 dark:text-neutral-400">The most recent developments from Hive Console.</p>
 
-        <ol class="relative mx-auto mt-12 w-[872px] max-w-full border-l border-blue-300">
+        <ol class="relative mx-auto mt-12 w-[872px] max-w-full border-l border-blue-300 dark:border-neutral-700">
           {
             updates.map((update) => (
               <li class="mb-10 ml-4">
                 <a class="group outline-hidden focus-visible:ring-3" href={`/product-updates/${update.slug}`}>
-                  <div class="absolute -left-1.5 mt-1.5 size-3 -translate-x-[.5px] rounded-full border border-white bg-blue-300 group-hover:bg-blue-400" />
-                  <time class="mb-1 text-sm font-normal leading-none text-green-800" datetime={update.date}>
+                  <div class="absolute -left-1.5 mt-1.5 size-3 -translate-x-[.5px] rounded-full border border-white bg-blue-300 group-hover:bg-blue-400 dark:border-neutral-900 dark:bg-neutral-700 dark:group-hover:bg-neutral-200" />
+                  <time class="mb-1 text-sm font-normal leading-none text-green-800 dark:text-neutral-400" datetime={update.date}>
                     {dateFormat.format(new Date(`${update.date}T00:00:00Z`))}
                   </time>
-                  <h3 class="text-lg font-semibold text-green-900 group-hover:underline">{update.title}</h3>
-                  <div class="mb-4 mt-1 max-w-[600px] text-base/6 font-normal text-green-900">{update.description}</div>
+                  <h3 class="text-lg font-semibold text-green-900 group-hover:underline dark:text-white">{update.title}</h3>
+                  <div class="mb-4 mt-1 max-w-[600px] text-base/6 font-normal text-green-900 dark:text-neutral-400">{update.description}</div>
                 </a>
               </li>
             ))

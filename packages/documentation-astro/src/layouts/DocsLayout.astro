@@ -5,6 +5,8 @@ import DocsSearchModal from "../components/DocsSearchModal.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import SocialMetadata from "../components/SocialMetadata.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import ThemeInit from "../components/ThemeInit.astro";
 
 interface NavItem {
   href: string;
@@ -98,11 +100,12 @@ const pageTitle = `${title} | Hive`;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <ThemeInit />
     <SocialMetadata description={description ?? title} imageAlt={title} title={pageTitle} />
     <link href="/pagefind/pagefind-component-ui.css" rel="stylesheet" />
     <script is:inline src="/pagefind/pagefind-component-ui.js" type="module"></script>
   </head>
-  <body class="min-h-screen bg-beige-100 font-sans text-green-1000 antialiased" data-docs>
+  <body class="min-h-screen bg-beige-100 font-sans text-green-1000 antialiased dark:bg-[rgb(var(--nextra-bg))] dark:text-neutral-200" data-docs data-theme-enabled>
     <div
       class="grid min-h-(--fd-docs-height) auto-cols-auto auto-rows-auto overflow-x-clip transition-[grid-template-columns] [--fd-docs-height:100dvh] [--fd-docs-row-1:var(--fd-banner-height,0px)] [--fd-docs-row-2:var(--fd-docs-row-1)] [--fd-docs-row-3:calc(var(--fd-docs-row-2)+var(--fd-toc-popover-height))] [--fd-header-height:0px] [--fd-sidebar-col:var(--fd-sidebar-width)] [--fd-sidebar-width:0px] [--fd-toc-popover-height:0px] [--fd-toc-width:0px] md:[--fd-sidebar-width:268px] xl:[--fd-toc-width:268px]"
       id="nd-docs-layout"
@@ -111,7 +114,7 @@ const pageTitle = `${title} | Hive`;
       <SiteNavigation docsNavigation={navItems} />
 
       <div class="pointer-events-none sticky top-(--fd-docs-row-1) z-10 h-[calc(var(--fd-docs-height)-var(--fd-docs-row-1))] [grid-area:sidebar] *:pointer-events-auto max-md:hidden">
-        <aside class="absolute inset-y-0 start-0 flex w-full flex-col items-end border-e bg-transparent text-sm *:w-(--fd-sidebar-width)" id="nd-sidebar">
+        <aside class="absolute inset-y-0 start-0 flex w-full flex-col items-end border-e border-fd-border bg-transparent text-sm *:w-(--fd-sidebar-width)" id="nd-sidebar">
           <div class="min-h-0 flex-1 overflow-hidden">
             <nav class="size-full overflow-y-auto p-4 overscroll-contain [mask-image:linear-gradient(to_bottom,transparent,white_12px,white_calc(100%-12px),transparent)]" aria-label="Documentation">
               <div class="[&>*:not(:first-child)]:mt-0.5">
@@ -180,7 +183,7 @@ const pageTitle = `${title} | Hive`;
             </nav>
           </div>
           <div class="flex flex-col border-t p-4 pt-2">
-            <span class="pt-1 text-xs text-fd-muted-foreground">GraphQL Hive documentation</span>
+            <ThemeToggle />
           </div>
         </aside>
       </div>
@@ -188,12 +191,12 @@ const pageTitle = `${title} | Hive`;
       {
         tableOfContents.length > 0 && (
           <details class="group sticky top-(--fd-docs-row-2) z-10 h-(--fd-toc-popover-height) [grid-area:toc-popover] max-xl:[--fd-toc-popover-height:--spacing(10)] xl:hidden" data-toc-popover>
-            <summary class="flex h-10 w-full cursor-pointer list-none items-center gap-2.5 border-b bg-beige-100/80 px-4 py-2.5 text-start text-sm text-fd-muted-foreground backdrop-blur-sm focus-visible:outline-none md:px-6">
+            <summary class="flex h-10 w-full cursor-pointer list-none items-center gap-2.5 border-b bg-beige-100/80 px-4 py-2.5 text-start text-sm text-fd-muted-foreground backdrop-blur-sm focus-visible:outline-none md:px-6 dark:bg-neutral-900/80">
               <svg class="size-4 shrink-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" /></svg>
               <span class="flex-1 truncate">On this page</span>
               <svg class="size-4 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg>
             </summary>
-            <nav class="flex max-h-[50vh] flex-col overflow-auto border-b bg-beige-100 px-4 pb-4 shadow-sm md:px-6">
+            <nav class="flex max-h-[50vh] flex-col overflow-auto border-b bg-beige-100 px-4 pb-4 shadow-sm md:px-6 dark:bg-neutral-900">
               {tableOfContents.map((heading) => (
                 <a class="py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere hover:text-fd-primary" href={`#${heading.slug}`}>{heading.text}</a>
               ))}
@@ -260,6 +263,35 @@ const pageTitle = `${title} | Hive`;
     <DocsSearchModal />
 
     <script>
+      const themeMedia = matchMedia("(prefers-color-scheme: dark)");
+      const applyTheme = (preference: string) => {
+        const dark = preference === "dark" || (preference === "system" && themeMedia.matches);
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.classList.toggle("light", !dark);
+        document.documentElement.dataset.theme = preference;
+        document.documentElement.style.colorScheme = dark ? "dark" : "light";
+        document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle] [data-theme]").forEach((button) => {
+          const active = button.dataset.theme === preference;
+          button.setAttribute("aria-pressed", String(active));
+          button.classList.toggle("bg-fd-accent", active);
+          button.classList.toggle("text-fd-accent-foreground", active);
+          button.classList.toggle("text-fd-muted-foreground", !active);
+        });
+      };
+      const savedTheme = localStorage.getItem("theme") || "system";
+      applyTheme(savedTheme);
+      document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle] [data-theme]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const preference = button.dataset.theme;
+          if (!preference) return;
+          localStorage.setItem("theme", preference);
+          applyTheme(preference);
+        });
+      });
+      themeMedia.addEventListener("change", () => {
+        if ((localStorage.getItem("theme") || "system") === "system") applyTheme("system");
+      });
+
       const links = [...document.querySelectorAll<HTMLAnchorElement>(".toc-link")];
       const thumb = document.querySelector<HTMLElement>(".toc-thumb");
       const updateToc = () => {

@@ -2,6 +2,7 @@
 import graphQLConfImage from "../../../documentation/src/components/graphql-conf-image.webp";
 
 import DocsSearchTrigger from "./DocsSearchTrigger.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 
 import accountBoxRaw from "../../../design-system/src/icons/account-box.svg?raw";
 import appsRaw from "../../../design-system/src/icons/apps.svg?raw";
@@ -88,17 +89,19 @@ const externalProps = (href: string) =>
 ---
 
 <header
-  class="sticky top-0 z-20 row-1 border-b border-beige-400/(--border-opacity) bg-[rgb(var(--nextra-bg))] text-green-1000 transition-[border-color] duration-500 [--border-opacity:0%] [grid-area:nav]"
+  class="sticky top-0 z-20 row-1 border-b border-beige-400/(--border-opacity) bg-[rgb(var(--nextra-bg))] text-green-1000 transition-[border-color] duration-500 [--border-opacity:0%] [grid-area:nav] dark:border-neutral-700/(--border-opacity) dark:text-neutral-200"
+  data-docs-navigation={docsNavigation.length > 0}
   id="hive-navigation"
+  style={docsNavigation.length > 0 ? "--border-opacity: 100%" : undefined}
 >
-  <div class:list={["flex items-center justify-between p-4 md:hidden", pathname.startsWith("/docs") && "w-full bg-beige-100"]}>
+  <div class:list={["flex items-center justify-between p-4 md:hidden", pathname.startsWith("/docs") && "w-full bg-beige-100 dark:bg-[rgb(var(--nextra-bg))]"]}>
     <a class="hive-focus -m-2 flex items-center rounded-md p-2" href="/" aria-label="Hive home">
       <Fragment set:html={withClass(hiveCombinationMarkRaw, "text-green-1000 dark:text-neutral-200 max-sm:h-6 max-sm:w-auto")} />
     </a>
     <div class="flex items-center gap-2">
-      {docsNavigation.length > 0 && <DocsSearchTrigger compact />}
+      {docsNavigation.length > 0 && <><ThemeToggle /><DocsSearchTrigger compact /></>}
       <button
-        class="mobile-menu-trigger -m-1 rounded-lg bg-transparent p-1 text-green-1000 focus-visible:outline-hidden focus-visible:ring-3 active:bg-beige-200 md:hidden"
+        class="mobile-menu-trigger -m-1 rounded-lg bg-transparent p-1 text-green-1000 focus-visible:outline-hidden focus-visible:ring-3 active:bg-beige-200 md:hidden dark:text-neutral-200 dark:active:bg-neutral-800"
         type="button"
         aria-controls="mobile-navigation-panel"
         aria-expanded="false"
@@ -113,7 +116,7 @@ const externalProps = (href: string) =>
     </div>
   </div>
 
-  <div class="mobile-navigation-panel absolute inset-x-0 top-full hidden max-h-[calc(100vh-65px)] overflow-y-auto border-y border-beige-400 bg-white p-4 shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] md:hidden" id="mobile-navigation-panel">
+  <div class="mobile-navigation-panel absolute inset-x-0 top-full hidden max-h-[calc(100vh-65px)] overflow-y-auto border-y border-beige-400 bg-white p-4 shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] md:hidden dark:border-neutral-700 dark:bg-neutral-900" id="mobile-navigation-panel">
     <nav class="grid gap-1" aria-label="Mobile navigation">
       {
         docsNavigation.length > 0 ? (
@@ -148,19 +151,19 @@ const externalProps = (href: string) =>
     </nav>
   </div>
 
-  <nav class:list={["relative z-10 mx-auto hidden max-w-full flex-1 items-center px-6 py-4 md:flex", pathname.startsWith("/docs") ? "w-full bg-beige-100" : "w-360"]} id="h-navmenu-container" aria-label="Navigation Menu">
+  <nav class:list={["relative z-10 mx-auto hidden max-w-full flex-1 items-center px-6 py-4 md:flex", pathname.startsWith("/docs") ? "w-full bg-beige-100 dark:bg-[rgb(var(--nextra-bg))]" : "w-360"]} id="h-navmenu-container" aria-label="Navigation Menu">
     <a class="hive-focus -m-2 flex items-center rounded-md p-2" href="/" aria-label="Hive home">
       <Fragment set:html={withClass(hiveCombinationMarkRaw, "text-green-1000 dark:text-neutral-200 max-sm:h-6 max-sm:w-auto")} />
     </a>
 
-    <ul class="group ml-4 flex flex-1 list-none items-center rounded-lg bg-white px-1.5 [@media(min-width:1180px)]:ml-16 lg:border lg:border-beige-200 lg:px-3">
+    <ul class="group ml-4 flex flex-1 list-none items-center rounded-lg bg-white px-1.5 [@media(min-width:1180px)]:ml-16 lg:border lg:border-beige-200 lg:px-3 dark:border-neutral-800 dark:bg-transparent">
       {[
         ["Products", "products"],
         ["Developer", "developer"],
         ["Company", "company"],
       ].map(([label, menu]) => (
         <li>
-          <button class="menu-trigger hive-focus cursor-default rounded-sm p-3 font-medium leading-normal text-green-800 aria-expanded:text-green-1000" type="button" aria-expanded="false" data-menu-trigger={menu}>{label}</button>
+          <button class="menu-trigger hive-focus cursor-default rounded-sm p-3 font-medium leading-normal text-green-800 aria-expanded:text-green-1000 dark:text-neutral-300 dark:aria-expanded:text-neutral-100" type="button" aria-expanded="false" data-menu-trigger={menu}>{label}</button>
         </li>
       ))}
       <li class="flex">
@@ -171,8 +174,8 @@ const externalProps = (href: string) =>
     <div class="flex-1"></div>
     {docsNavigation.length > 0 && <DocsSearchTrigger />}
 
-    <a class="relative ml-4 hidden items-center justify-center gap-2 text-nowrap rounded-lg bg-transparent px-6 py-3 font-medium leading-6 text-green-1000 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800 lg:flex" href="https://the-guild.dev/contact" rel="noopener noreferrer" target="_blank">
-      <span class="absolute inset-0 rounded-lg border border-green-800"></span>
+    <a class="relative ml-4 hidden items-center justify-center gap-2 text-nowrap rounded-lg bg-transparent px-6 py-3 font-medium leading-6 text-green-1000 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800 lg:flex dark:text-neutral-200" href="https://the-guild.dev/contact" rel="noopener noreferrer" target="_blank">
+      <span class="absolute inset-0 rounded-lg border border-green-800 dark:border-neutral-500"></span>
       Contact <span class="hidden xl:contents">us</span>
     </a>
     <a class="relative ml-4 flex items-center justify-center gap-2 text-nowrap rounded-lg bg-primary px-6 py-3 font-medium leading-6 text-green-1000 hover:bg-green-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800 sm:w-fit" href="https://app.graphql-hive.com/">
@@ -180,8 +183,8 @@ const externalProps = (href: string) =>
     </a>
 
     <div class="pointer-events-none absolute top-full left-0 flex [perspective:2000px]" id="h-navmenu-viewport">
-      <div class="navigation-viewport pointer-events-auto relative mt-1.5 origin-top overflow-hidden rounded-xl border border-beige-200 bg-white opacity-0 shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] transition-[width,height,transform,opacity,scale] duration-250 ease-out scale-95 pointer-events-none">
-        <section class="menu-content hidden bg-white p-6" data-menu-content="products">
+      <div class="navigation-viewport pointer-events-auto relative mt-1.5 origin-top overflow-hidden rounded-xl border border-beige-200 bg-white opacity-0 shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] transition-[width,height,transform,opacity,scale] duration-250 ease-out scale-95 pointer-events-none dark:border-neutral-700 dark:bg-neutral-900">
+        <section class="menu-content hidden bg-white p-6 dark:bg-neutral-900" data-menu-content="products">
           <div class="flex gap-x-6 *:flex *:flex-col *:gap-4">
             <div class="w-55">
               <p class="px-4 text-sm/5 text-green-700">Platform</p>
@@ -229,7 +232,7 @@ const externalProps = (href: string) =>
           </div>
         </section>
 
-        <section class="menu-content hidden bg-white p-6" data-menu-content="developer">
+        <section class="menu-content hidden bg-white p-6 dark:bg-neutral-900" data-menu-content="developer">
           <div class="flex gap-x-6 *:flex *:flex-col *:gap-4">
             <div>
               <p class="px-4 text-sm/5 text-green-700">Developer</p>
@@ -259,7 +262,7 @@ const externalProps = (href: string) =>
           </div>
         </section>
 
-        <section class="menu-content hidden bg-white p-6" data-menu-content="company">
+        <section class="menu-content hidden bg-white p-6 dark:bg-neutral-900" data-menu-content="company">
           <div class="flex gap-x-6 *:flex *:flex-col *:gap-4">
             <div>
               <p class="px-4 text-sm/5 text-green-700">Company</p>
@@ -341,7 +344,10 @@ const externalProps = (href: string) =>
     mobilePanel?.classList.toggle("hidden", !open);
   });
 
-  const updateBorder = () => navigation?.style.setProperty("--border-opacity", scrollY > 1 ? "100%" : "0%");
+  const updateBorder = () => navigation?.style.setProperty(
+    "--border-opacity",
+    navigation.dataset.docsNavigation === "true" || scrollY > 1 ? "100%" : "0%",
+  );
   updateBorder();
   addEventListener("scroll", updateBorder, { passive: true });
 </script>

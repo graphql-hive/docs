@@ -71,7 +71,7 @@ const testimonialId = (company: string) => encodeURIComponent(company.toLowerCas
     <div class="lg:bg-beige-200 z-10 order-1 mt-4 flex flex-row justify-center rounded-2xl px-1 -mx-1 lg:order-first lg:my-16" role="tablist">
       {testimonials.map((testimonial, i) => (
         <button
-          class="hive-focus lg:aria-selected:bg-white aria-selected:text-green-1000 lg:aria-selected:border-beige-600 flex flex-1 grow-0 items-center justify-center rounded-[15px] border-transparent p-0.5 font-medium leading-6 text-green-800 lg:grow lg:border lg:bg-transparent lg:p-4 [&[aria-selected=true]>:first-child]:bg-blue-400"
+          class="hive-focus lg:aria-selected:bg-white aria-selected:text-green-1000 lg:aria-selected:border-beige-600 flex flex-1 grow-0 items-center justify-center rounded-[15px] border-transparent p-0.5 font-medium leading-6 text-green-800 lg:grow lg:border lg:bg-transparent lg:p-4 [&[aria-selected=true]>:first-child]:bg-blue-400 cursor-pointer"
           data-testimonial-tab={testimonial.company}
           role="tab"
           type="button"
