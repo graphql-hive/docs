@@ -4,6 +4,7 @@ import "../styles/global.css";
 import BlogAuthors from "../components/blog/BlogAuthors.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 import { resolveAuthor } from "../lib/authors";
 
 interface Heading {
@@ -26,6 +27,7 @@ const authorIds = authors.map((author) => (typeof author === "string" ? author :
 const tableOfContents = headings.filter(
   (heading) => heading.depth >= 2 && heading.depth <= 3,
 );
+const pageTitle = `${title} | Hive`;
 ---
 
 <!doctype html>
@@ -33,9 +35,7 @@ const tableOfContents = headings.filter(
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={description} />
-    {canonical && <link rel="canonical" href={canonical} />}
-    <title>{title} | GraphQL Hive</title>
+    <SocialMetadata canonical={canonical} description={description} imageAlt={title} title={pageTitle} type="article" />
   </head>
   <body class="min-h-screen antialiased">
     <SiteNavigation />

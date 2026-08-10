@@ -14,6 +14,10 @@ const mobileImages = import.meta.glob<{ default: { src: string } }>(
   "../../../../documentation/content/blog/**/mobile-image.*",
   { eager: true },
 );
+const socialImages = import.meta.glob<{ default: { src: string } }>(
+  "../../../../documentation/content/blog/**/opengraph-image.*",
+  { eager: true },
+);
 
 export async function getStaticPaths() {
   const entries = await getCollection("blog");
@@ -42,6 +46,7 @@ const data = entry.data as {
   canonical?: string;
   date: Date | string;
   description?: string;
+  ogImage?: string;
   tags: string[];
   title: string;
 };
@@ -52,6 +57,8 @@ const date =
   data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date);
 
 const allPosts = await getBlogPosts();
+const headerImage = findAsset(headerImages, entrySlug);
+const socialImage = data.ogImage ?? findAsset(socialImages, entrySlug) ?? headerImage;
 ---
 
 <BlogPostLayout
@@ -60,8 +67,9 @@ const allPosts = await getBlogPosts();
   canonical={data.canonical}
   date={date}
   description={data.description ?? ""}
-  image={findAsset(headerImages, entrySlug)}
+  image={headerImage}
   mobileImage={findAsset(mobileImages, entrySlug)}
+  socialImage={socialImage}
   tags={data.tags}
   title={data.title}
 >

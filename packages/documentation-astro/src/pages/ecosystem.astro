@@ -3,6 +3,7 @@ import GotAnIdeaSection from "../components/ecosystem/GotAnIdeaSection.astro";
 import ProductCard from "../components/ecosystem/ProductCard.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 import "../styles/global.css";
 
 const lettermark = (mark: string) =>
@@ -166,14 +167,10 @@ const sections: {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Everything you need to scale your API infrastructure" />
-    <link rel="canonical" href="https://the-guild.dev/graphql/hive/ecosystem" />
-    <meta property="og:title" content="The Ecosystem | Hive" />
-    <meta property="og:description" content="Everything you need to scale your API infrastructure" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://the-guild.dev/graphql/hive/ecosystem" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>The Ecosystem | Hive</title>
+    <SocialMetadata
+      description="Everything you need to scale your API infrastructure"
+      title="The Ecosystem | Hive"
+    />
   </head>
   <body class="text-green-1000 bg-white font-sans [color-scheme:light]">
     <SiteNavigation />

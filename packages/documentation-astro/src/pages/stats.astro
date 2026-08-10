@@ -1,6 +1,7 @@
 ---
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 import "../styles/global.css";
 
 // Raw imports prove the external files are available without bundling their legacy MDX components.
@@ -39,11 +40,10 @@ const total = collections.reduce(
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta
-      name="description"
-      content="The static Astro replacement for the GraphQL Hive documentation."
+    <SocialMetadata
+      description="The static Astro replacement for the GraphQL Hive documentation."
+      title="GraphQL Hive Documentation"
     />
-    <title>GraphQL Hive Documentation</title>
   </head>
   <body>
     <SiteNavigation />

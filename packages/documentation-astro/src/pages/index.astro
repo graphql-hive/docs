@@ -10,6 +10,7 @@ import FrequentlyAskedQuestions from "../components/FrequentlyAskedQuestions.ast
 import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 import "../styles/global.css";
 
 const appUrl = "https://app.graphql-hive.com";
@@ -20,14 +21,10 @@ const appUrl = "https://app.graphql-hive.com";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Fully Open-Source schema registry, analytics and gateway for GraphQL federation and other GraphQL APIs" />
-    <link rel="canonical" href="https://the-guild.dev/graphql/hive" />
-    <meta property="og:title" content="Open-Source GraphQL Federation Platform | Hive" />
-    <meta property="og:description" content="Fully Open-Source schema registry, analytics and gateway for GraphQL federation and other GraphQL APIs" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://the-guild.dev/graphql/hive" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>Open-Source GraphQL Federation Platform | Hive</title>
+    <SocialMetadata
+      description="Fully Open-Source schema registry, analytics and gateway for GraphQL federation and other GraphQL APIs"
+      title="The Open-Source GraphQL Federation Platform | Hive"
+    />
   </head>
   <body class="text-green-1000 bg-white font-sans [color-scheme:light]">
     <SiteNavigation />

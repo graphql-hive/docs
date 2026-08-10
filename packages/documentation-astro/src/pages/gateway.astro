@@ -9,6 +9,7 @@ import FrequentlyAskedQuestions from "../components/FrequentlyAskedQuestions.ast
 import GetYourAPIGameRightList from "../components/GetYourAPIGameRightList.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 import "../styles/global.css";
 
 import hiveGatewayIconRaw from "../../../design-system/src/icons/hive-gateway.svg?raw";
@@ -55,14 +56,10 @@ const faqs: [string, string][] = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Unify and accelerate your data graph with Hive Gateway, which seamlessly integrates with Apollo Federation." />
-    <link rel="canonical" href="https://the-guild.dev/graphql/hive/gateway" />
-    <meta property="og:title" content="Hive Gateway" />
-    <meta property="og:description" content="Unify and accelerate your data graph with Hive Gateway, which seamlessly integrates with Apollo Federation." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://the-guild.dev/graphql/hive/gateway" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>Hive Gateway</title>
+    <SocialMetadata
+      description="Unify and accelerate your data graph with Hive Gateway, which seamlessly integrates with Apollo Federation."
+      title="Hive Gateway"
+    />
   </head>
   <body class="text-green-1000 bg-white font-sans [color-scheme:light]">
     <SiteNavigation />

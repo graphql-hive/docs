@@ -4,6 +4,7 @@ import FrequentlyAskedQuestions from "../components/FrequentlyAskedQuestions.ast
 import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 import "../styles/global.css";
 
 import codeIconWhite from "../../../documentation/src/components/code-icon-white.svg?url";
@@ -208,14 +209,10 @@ const smallCtaVariant = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Honest pricing plans for GraphQL Federation and other GraphQL APIs, supporting developers to enterprise with Open-Source schema registry, analytics, and gateway solutions" />
-    <link rel="canonical" href="https://the-guild.dev/graphql/hive/pricing" />
-    <meta property="og:title" content="Hive Platform Pricing" />
-    <meta property="og:description" content="Honest pricing plans for GraphQL Federation and other GraphQL APIs, supporting developers to enterprise with Open-Source schema registry, analytics, and gateway solutions" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://the-guild.dev/graphql/hive/pricing" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>Hive Platform Pricing</title>
+    <SocialMetadata
+      description="Honest pricing plans for GraphQL Federation and other GraphQL APIs, supporting developers to enterprise with Open-Source schema registry, analytics, and gateway solutions"
+      title="Pricing | Hive"
+    />
   </head>
   <body class="text-green-1000 bg-white font-sans [color-scheme:light]">
     <SiteNavigation />

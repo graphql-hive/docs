@@ -6,6 +6,7 @@ import CaseStudyCta from "../components/case-studies/CaseStudyCta.astro";
 import CompanyLogo from "../components/case-studies/CompanyLogo.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 
 interface Author {
   avatar?: string;
@@ -31,6 +32,7 @@ interface Props {
 }
 
 const { authors, canonical, excerpt, otherStories, slug, title } = Astro.props;
+const pageTitle = `${title} | Hive`;
 ---
 
 <!doctype html>
@@ -38,9 +40,7 @@ const { authors, canonical, excerpt, otherStories, slug, title } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={excerpt} />
-    {canonical && <link rel="canonical" href={canonical} />}
-    <title>{title} | Hive</title>
+    <SocialMetadata canonical={canonical} description={excerpt} imageAlt={title} title={pageTitle} type="article" />
   </head>
   <body class="min-h-screen antialiased">
     <SiteNavigation />

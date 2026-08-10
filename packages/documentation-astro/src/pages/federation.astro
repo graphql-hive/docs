@@ -1,6 +1,7 @@
 ---
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 import "../styles/global.css";
 
 import federationDiagram from "../../../documentation/src/routes/_landing/_light-only/federation/federation-diagram.png";
@@ -54,15 +55,12 @@ const faqs: [string, string[]][] = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Discover what GraphQL Federation is, how it unifies multiple APIs into a Supergraph, its core benefits, and the building blocks like subgraphs, schema composition and gateway." />
-    <link rel="canonical" href="https://the-guild.dev/graphql/hive/federation" />
-    <meta property="og:title" content="What is GraphQL Federation? | Hive" />
-    <meta property="og:description" content="Discover what GraphQL Federation is, how it unifies multiple APIs into a Supergraph, its core benefits, and the building blocks like subgraphs, schema composition and gateway." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://the-guild.dev/graphql/hive/federation" />
-    <meta property="og:image" content={ogImage.src} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>What is GraphQL Federation? | Hive</title>
+    <SocialMetadata
+      description="Discover what GraphQL Federation is, how it unifies multiple APIs into a Supergraph, its core benefits, and the building blocks like subgraphs, schema composition and gateway."
+      image={ogImage}
+      imageAlt="GraphQL Federation with Hive"
+      title="What is GraphQL Federation? | Hive"
+    />
   </head>
   <body class="text-green-1000 bg-white font-sans [color-scheme:light]">
     <SiteNavigation />

@@ -5,6 +5,7 @@ import CaseStudyCard from "../../components/case-studies/CaseStudyCard.astro";
 import CaseStudyCta from "../../components/case-studies/CaseStudyCta.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteNavigation from "../../components/SiteNavigation.astro";
+import SocialMetadata from "../../components/SocialMetadata.astro";
 import "../../styles/global.css";
 
 const caseStudies = (await getCollection("caseStudies"))
@@ -35,11 +36,10 @@ const caseStudies = (await getCollection("caseStudies"))
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta
-      name="description"
-      content="See the results our customers achieved by switching to Hive."
+    <SocialMetadata
+      description="See the results our customers achieved by switching to Hive."
+      title="Case Studies | Hive"
     />
-    <title>Case Studies | Hive</title>
   </head>
   <body class="min-h-screen antialiased">
     <SiteNavigation />

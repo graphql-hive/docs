@@ -6,6 +6,7 @@ import CompanyNewsAndPressSection from "../components/blog/CompanyNewsAndPressSe
 import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 
 interface Props {
   description: string;
@@ -20,8 +21,7 @@ const { description, title } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={description} />
-    <title>{title}</title>
+    <SocialMetadata description={description} title={title} />
   </head>
   <body class="min-h-screen antialiased">
     <SiteNavigation />

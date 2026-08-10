@@ -1,6 +1,7 @@
 ---
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 import "../styles/global.css";
 
 interface OSSFriend {
@@ -26,14 +27,10 @@ try {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="We love open source. Meet our friends who share the same passion." />
-    <link rel="canonical" href="https://the-guild.dev/graphql/hive/oss-friends" />
-    <meta property="og:title" content="Our Open Source Friends | Hive" />
-    <meta property="og:description" content="We love open source. Meet our friends who share the same passion." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://the-guild.dev/graphql/hive/oss-friends" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>Our Open Source Friends | Hive</title>
+    <SocialMetadata
+      description="We love open source. Meet our friends who share the same passion."
+      title="Our Open Source Friends | Hive"
+    />
   </head>
   <body class="text-green-1000 bg-white font-sans [color-scheme:light]">
     <SiteNavigation />

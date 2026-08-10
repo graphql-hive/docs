@@ -4,6 +4,7 @@ import "../styles/global.css";
 import DocsSearchModal from "../components/DocsSearchModal.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 
 interface NavItem {
   href: string;
@@ -89,6 +90,7 @@ const currentIndex = navItems.findIndex((item) => item.href === currentPath);
 const previous = currentIndex > 0 ? navItems[currentIndex - 1] : undefined;
 const next = currentIndex >= 0 ? navItems[currentIndex + 1] : undefined;
 const sectionTitle = sectionMeta.get(currentSection)?.title;
+const pageTitle = `${title} | Hive`;
 ---
 
 <!doctype html>
@@ -96,8 +98,7 @@ const sectionTitle = sectionMeta.get(currentSection)?.title;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={description ?? title} />
-    <title>{title} | Hive</title>
+    <SocialMetadata description={description ?? title} imageAlt={title} title={pageTitle} />
     <link href="/pagefind/pagefind-component-ui.css" rel="stylesheet" />
     <script is:inline src="/pagefind/pagefind-component-ui.js" type="module"></script>
   </head>

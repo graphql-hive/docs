@@ -3,6 +3,7 @@ import FrequentlyAskedQuestions from "../components/FrequentlyAskedQuestions.ast
 import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 import "../styles/global.css";
 
 import ogImage from "../../../documentation/src/routes/_landing/_light-only/partners.opengraph-image.png";
@@ -39,15 +40,12 @@ const partners = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Accelerate GraphQL Federation adoption with the Hive Partner Network. Access enterprise-grade tools and expertise to build scalable, unified APIs across distributed systems. Join our network of federation experts." />
-    <link rel="canonical" href="https://the-guild.dev/graphql/hive/partners" />
-    <meta property="og:title" content="Partnerships | Hive" />
-    <meta property="og:description" content="Accelerate GraphQL Federation adoption with the Hive Partner Network. Access enterprise-grade tools and expertise to build scalable, unified APIs across distributed systems. Join our network of federation experts." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://the-guild.dev/graphql/hive/partners" />
-    <meta property="og:image" content={ogImage.src} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <title>Partnerships | Hive</title>
+    <SocialMetadata
+      description="Accelerate GraphQL Federation adoption with the Hive Partner Network. Access enterprise-grade tools and expertise to build scalable, unified APIs across distributed systems. Join our network of federation experts."
+      image={ogImage}
+      imageAlt="Hive Partner Network"
+      title="Partnerships | Hive"
+    />
   </head>
   <body class="text-green-1000 bg-white font-sans [color-scheme:light]">
     <SiteNavigation />

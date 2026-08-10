@@ -8,6 +8,7 @@ import SimilarPosts from "../components/blog/SimilarPosts.astro";
 import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
 
 interface Props {
   allPosts: BlogPost[];
@@ -17,11 +18,13 @@ interface Props {
   description: string;
   image?: string;
   mobileImage?: string;
+  socialImage?: string;
   tags: string[];
   title: string;
 }
 
-const { allPosts, authors, canonical, date, description, image, mobileImage, tags, title } = Astro.props;
+const { allPosts, authors, canonical, date, description, image, mobileImage, socialImage, tags, title } = Astro.props;
+const pageTitle = `${title} | GraphQL Hive Blog`;
 ---
 
 <!doctype html>
@@ -29,9 +32,7 @@ const { allPosts, authors, canonical, date, description, image, mobileImage, tag
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={description} />
-    {canonical && <link rel="canonical" href={canonical} />}
-    <title>{title} | GraphQL Hive Blog</title>
+    <SocialMetadata canonical={canonical} description={description} image={socialImage} imageAlt={title} title={pageTitle} type="article" />
   </head>
   <body class="min-h-screen antialiased">
     <SiteNavigation />

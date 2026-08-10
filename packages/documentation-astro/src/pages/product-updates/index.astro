@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteNavigation from "../../components/SiteNavigation.astro";
+import SocialMetadata from "../../components/SocialMetadata.astro";
 import "../../styles/global.css";
 
 function dateString(value: unknown) {
@@ -37,8 +38,10 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="The most recent developments from Hive Console." />
-    <title>Product Updates | GraphQL Hive</title>
+    <SocialMetadata
+      description="The most recent developments from Hive Console."
+      title="Product Updates | Hive"
+    />
   </head>
   <body class="min-h-screen antialiased">
     <SiteNavigation />
