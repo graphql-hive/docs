@@ -37,8 +37,8 @@ When a request arrives, the router validates the JWT token and extracts scopes f
 your schema against these extracted scopes to determine if the query should proceed or fail.
 
 <Callout type="info">
-  Identity providers that grant authorization data under a different claim
-  name (like Microsoft Entra ID's `roles` claim) can be supported by setting
+  Identity providers that grant authorization data under a different claim name
+  (like Microsoft Entra ID's `roles` claim) can be supported by setting
   [`jwt.scopes_claim`](/docs/router/configuration/jwt#scopes_claim).
 </Callout>
 
