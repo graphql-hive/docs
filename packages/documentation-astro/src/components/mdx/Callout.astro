@@ -22,84 +22,42 @@ const icons = {
   tip: calloutNeutralRaw,
   warning: calloutWarningRaw,
 };
+
+const variants = {
+  critical:
+    "border-critical-500 bg-critical-100 text-critical-800 dark:border-[rgba(255,198,187,0.2)] dark:bg-[rgba(255,240,232,0.2)] dark:text-[#ffc6bb]",
+  info:
+    "border-info-500 bg-info-100/50 text-info-800 dark:border-info-500/25 dark:bg-info-500/3 dark:text-[#e7f7ff]",
+  note:
+    "border-beige-500 bg-beige-200 text-beige-900 dark:border-[rgba(109,106,99,0.4)] dark:bg-[rgba(77,75,70,0.4)] dark:text-[#dedacf]",
+  success:
+    "border-positive-500 bg-positive-100 text-positive-800 dark:border-[rgba(175,213,99,0.2)] dark:bg-[rgba(175,213,99,0.2)] dark:text-[#afd563]",
+  tip:
+    "border-beige-500 bg-beige-200 text-beige-900 dark:border-[rgba(109,106,99,0.4)] dark:bg-[rgba(77,75,70,0.4)] dark:text-[#dedacf]",
+  warning:
+    "border-warning-500 bg-warning-100/35 text-warning-800 dark:border-[rgba(231,222,98,0.2)] dark:bg-[rgba(251,248,203,0.2)] dark:text-[#d7cf53]",
+};
 ---
 
-<aside class:list={["callout", `callout-${type}`, className, reactClassName]}>
-  <span class="icon" set:html={icons[type]} />
-  <div>
-    {title && <strong>{title}</strong>}
-    <div class="body"><slot /></div>
+<aside
+  class:list={[
+    "mt-6 grid grid-cols-[1.5rem_1fr] gap-2 rounded-lg border px-[13px] py-3",
+    variants[type],
+    className,
+    reactClassName,
+  ]}
+>
+  <span class="mt-0.5 block size-6 [&_svg]:block [&_svg]:size-full" set:html={icons[type]} />
+  <div class="min-w-0">
+    {
+      title && (
+        <strong class="mb-1 block font-mono text-xs uppercase tracking-[0.08em]">
+          {title}
+        </strong>
+      )
+    }
+    <div class="text-current [&_a]:text-current! [&_a]:decoration-current [&_li::marker]:text-current! [&_ol]:text-current! [&_p]:text-current! [&_ul]:text-current! [&>p:first-child]:mt-0 [&>*:last-child]:mb-0">
+      <slot />
+    </div>
   </div>
 </aside>
-
-<style>
-  .callout {
-    display: grid;
-    grid-template-columns: 1.5rem 1fr;
-    gap: 0.5rem;
-    margin: 1.5rem 0;
-    padding: 0.75rem 0.8125rem;
-    color: var(--color-info-800);
-    border: 1px solid var(--color-info-500);
-    border-radius: 0.5rem;
-    background: color-mix(in srgb, var(--color-info-100) 50%, white);
-  }
-
-  .callout-warning {
-    color: var(--color-warning-800);
-    border-color: var(--color-warning-500);
-    background: color-mix(in srgb, var(--color-warning-100) 35%, white);
-  }
-
-  .callout-critical {
-    color: var(--color-critical-800);
-    border-color: var(--color-critical-500);
-    background: var(--color-critical-100);
-  }
-
-  .callout-success {
-    color: var(--color-positive-800);
-    border-color: var(--color-positive-500);
-    background: var(--color-positive-100);
-  }
-
-  .callout-note,
-  .callout-tip {
-    color: var(--color-beige-900);
-    border-color: var(--color-beige-500);
-    background: var(--color-beige-200);
-  }
-
-  .icon {
-    display: block;
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-top: 0.125rem;
-  }
-
-  .icon :global(svg) {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  strong {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .body {
-    color: #171717;
-  }
-
-  :global(.callout p:first-child) {
-    margin-top: 0;
-  }
-
-  :global(.callout p:last-child) {
-    margin-bottom: 0;
-  }
-</style>

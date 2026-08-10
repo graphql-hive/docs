@@ -12,16 +12,25 @@ const fallbackLabels = ["Hive Gateway", "OpenTelemetry"];
 ---
 
 <div class="fd-tabs" data-default-index={defaultIndex}>
-  <div class="fd-tabs-list" role="tablist">
+  <div
+    class="fd-tabs-list mt-4 flex w-full gap-2 overflow-x-auto overflow-y-hidden pb-px shadow-[inset_0_-1px_0_var(--color-beige-400)] dark:shadow-[inset_0_-1px_0_var(--color-neutral-800)]"
+    role="tablist"
+  >
     {
       labels.map((label, index) => (
-        <button aria-selected={index === Number(defaultIndex)} class="fd-tab-trigger" data-index={index} role="tab" type="button">
+        <button
+          aria-selected={index === Number(defaultIndex)}
+          class="fd-tab-trigger -mb-px shrink-0 cursor-pointer whitespace-nowrap rounded-t border-b border-transparent bg-transparent p-2 font-medium leading-5 text-beige-800 transition-colors hover:border-beige-400 hover:text-black focus-visible:outline-2 focus-visible:-outline-offset-2 aria-selected:border-current aria-selected:text-green-900 dark:text-beige-200 dark:hover:border-neutral-800 dark:hover:text-white dark:aria-selected:text-primary"
+          data-index={index}
+          role="tab"
+          type="button"
+        >
           {label ?? fallbackLabels[index] ?? `Option ${index + 1}`}
         </button>
       ))
     }
   </div>
-  <div class="tab-panels"><slot /></div>
+  <div class="tab-panels mt-5"><slot /></div>
 </div>
 
 <script>
@@ -42,48 +51,3 @@ const fallbackLabels = ["Hive Gateway", "OpenTelemetry"];
 
   document.querySelectorAll<HTMLElement>(".fd-tabs").forEach(initializeTabs);
 </script>
-
-<style>
-  .fd-tabs-list {
-    display: flex;
-    width: 100%;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    padding-bottom: 1px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    box-shadow: inset 0 -1px 0 var(--color-beige-400);
-  }
-
-  .fd-tab-trigger {
-    position: relative;
-    flex-shrink: 0;
-    margin-bottom: -1px;
-    padding: 0.5rem;
-    border: 0;
-    border-bottom: 1px solid transparent;
-    border-radius: 0.25rem 0.25rem 0 0;
-    background: transparent;
-    color: var(--color-beige-800);
-    font: inherit;
-    font-weight: 500;
-    line-height: 1.25rem;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: color 0.1s, border-color 0.1s;
-  }
-
-  .fd-tab-trigger:hover {
-    color: black;
-    border-color: var(--color-beige-400);
-  }
-
-  .fd-tab-trigger[aria-selected="true"] {
-    color: var(--color-green-900);
-    border-color: currentColor;
-  }
-
-  .tab-panels {
-    margin-top: 1.25em;
-  }
-</style>
