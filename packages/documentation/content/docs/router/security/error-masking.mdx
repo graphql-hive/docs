@@ -12,7 +12,7 @@ Because the router masks on their behalf, your subgraphs don't need to sanitize 
 they can return rich, detailed errors for observability, and trust the router to redact them at the
 edge.
 
-<Callout type="info" title="Enabled by default">
+<Callout title="Enabled by default" type="info">
   Error masking is **on by default**. Out of the box, every subgraph error
   message is replaced with `"Unexpected error"`, so no internal message reaches
   clients unless you opt out.
@@ -49,7 +49,7 @@ When masking applies, the router can:
 
 Both are independent and configurable globally or per subgraph.
 
-<Callout type="info" title="Observability is unaffected">
+<Callout title="Observability is unaffected" type="info">
   Masking runs **last** in the response pipeline — after metrics, tracing, and
   logging. Your telemetry always records the original, unmasked error; only the
   client-facing response is redacted.
