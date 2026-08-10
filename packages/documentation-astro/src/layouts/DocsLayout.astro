@@ -23,13 +23,14 @@ interface Heading {
 interface Props {
   currentPath: string;
   description?: string;
+  githubUrl: string;
   headings: Heading[];
   navItems: NavItem[];
   sectionMeta: Map<string, { icon?: string; title?: string }>;
   title: string;
 }
 
-const { currentPath, description, headings, navItems, sectionMeta, title } = Astro.props;
+const { currentPath, description, githubUrl, headings, navItems, sectionMeta, title } = Astro.props;
 const sections = Map.groupBy(
   navItems.filter((item) => item.href !== "/docs"),
   (item) => item.section,
@@ -229,33 +230,47 @@ const pageTitle = `${title} | Hive`;
       </article>
 
       <aside class="sticky top-(--fd-docs-row-1) flex h-[calc(var(--fd-docs-height)-var(--fd-docs-row-1))] w-(--fd-toc-width) flex-col pt-12 pe-4 pb-2 [grid-area:toc] max-xl:hidden" id="nd-toc">
-        {
-          tableOfContents.length > 0 && (
-            <>
-              <h2 class="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground">
-                <svg class="size-4" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" /></svg>
-                On this page
-              </h2>
-              <div class="relative ms-px min-h-0 overflow-auto py-3 text-sm [mask-image:linear-gradient(to_bottom,transparent,white_16px,white_calc(100%-16px),transparent)] [scrollbar-width:none]">
-                <div class="toc-thumb absolute top-(--fd-top) h-(--fd-height) w-0.5 rounded-e-sm bg-fd-primary transition-[top,height] ease-linear"></div>
-                <nav class="flex flex-col border-s border-fd-foreground/10">
-                  {tableOfContents.map((heading) => (
-                    <a
-                      class:list={[
-                        "toc-link py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere first:pt-0 last:pb-0 data-[active=true]:text-fd-primary",
-                        heading.depth <= 2 ? "ps-3" : heading.depth === 3 ? "ps-6" : "ps-8",
-                      ]}
-                      data-toc-anchor={heading.slug}
-                      href={`#${heading.slug}`}
-                    >
-                      {heading.text}
-                    </a>
-                  ))}
-                </nav>
-              </div>
-            </>
-          )
-        }
+        <div class="flex min-h-0 flex-1 flex-col">
+          {
+            tableOfContents.length > 0 && (
+              <>
+                <h2 class="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground">
+                  <svg class="size-4" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" /></svg>
+                  On this page
+                </h2>
+                <div class="relative ms-px min-h-0 overflow-auto py-3 text-sm [mask-image:linear-gradient(to_bottom,transparent,white_16px,white_calc(100%-16px),transparent)] [scrollbar-width:none]">
+                  <div class="toc-thumb absolute top-(--fd-top) h-(--fd-height) w-0.5 rounded-e-sm bg-fd-primary transition-[top,height] ease-linear"></div>
+                  <nav class="flex flex-col border-s border-fd-foreground/10">
+                    {tableOfContents.map((heading) => (
+                      <a
+                        class:list={[
+                          "toc-link py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere first:pt-0 last:pb-0 data-[active=true]:text-fd-primary",
+                          heading.depth <= 2 ? "ps-3" : heading.depth === 3 ? "ps-6" : "ps-8",
+                        ]}
+                        data-toc-anchor={heading.slug}
+                        href={`#${heading.slug}`}
+                      >
+                        {heading.text}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              </>
+            )
+          }
+          <a
+            class:list={[
+              "inline-flex items-center gap-2 py-3 text-sm text-fd-muted-foreground transition-colors hover:text-fd-primary focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500/50",
+              tableOfContents.length > 0 && "mt-auto border-t border-fd-border",
+            ]}
+            href={githubUrl}
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            <svg class="size-3.5" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .7a11.5 11.5 0 0 0-3.64 22.4c.58.1.79-.25.79-.56v-2.02c-3.22.7-3.9-1.37-3.9-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.04 1.77 2.72 1.26 3.38.96.1-.75.4-1.26.74-1.55-2.57-.3-5.27-1.28-5.27-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.16 1.18a10.97 10.97 0 0 1 5.75 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.28 5.67.42.36.79 1.06.79 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z" /></svg>
+            View on GitHub
+          </a>
+        </div>
       </aside>
     </div>
 
