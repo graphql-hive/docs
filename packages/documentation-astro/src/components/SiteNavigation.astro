@@ -183,8 +183,8 @@ const externalProps = (href: string) =>
     </a>
 
     <div class="pointer-events-none absolute top-full left-0 flex [perspective:2000px]" id="h-navmenu-viewport">
-      <div class="navigation-viewport pointer-events-auto relative mt-1.5 origin-top overflow-hidden rounded-xl border border-beige-200 bg-white opacity-0 shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] transition-[width,height,transform,opacity,scale] duration-250 ease-out scale-95 pointer-events-none dark:border-neutral-700 dark:bg-neutral-900">
-        <section class="menu-content hidden bg-white p-6 dark:bg-neutral-900" data-menu-content="products">
+      <div class="navigation-viewport pointer-events-auto relative mt-1.5 min-w-0 origin-top overflow-hidden rounded-xl border border-beige-200 bg-white opacity-0 shadow-[0px_16px_32px_-12px_rgba(14,18,27,0.10)] transition-[width,height,transform,opacity,scale] duration-250 ease-out scale-95 pointer-events-none dark:border-neutral-700 dark:bg-neutral-900">
+        <section class="menu-content hidden w-max bg-white p-6 dark:bg-neutral-900" data-menu-content="products">
           <div class="flex gap-x-6 *:flex *:flex-col *:gap-4">
             <div class="w-55">
               <p class="px-4 text-sm/5 text-green-700">Platform</p>
@@ -232,7 +232,7 @@ const externalProps = (href: string) =>
           </div>
         </section>
 
-        <section class="menu-content hidden bg-white p-6 dark:bg-neutral-900" data-menu-content="developer">
+        <section class="menu-content hidden w-max bg-white p-6 dark:bg-neutral-900" data-menu-content="developer">
           <div class="flex gap-x-6 *:flex *:flex-col *:gap-4">
             <div>
               <p class="px-4 text-sm/5 text-green-700">Developer</p>
@@ -262,7 +262,7 @@ const externalProps = (href: string) =>
           </div>
         </section>
 
-        <section class="menu-content hidden bg-white p-6 dark:bg-neutral-900" data-menu-content="company">
+        <section class="menu-content hidden w-max bg-white p-6 dark:bg-neutral-900" data-menu-content="company">
           <div class="flex gap-x-6 *:flex *:flex-col *:gap-4">
             <div>
               <p class="px-4 text-sm/5 text-green-700">Company</p>
@@ -297,8 +297,11 @@ const externalProps = (href: string) =>
   const triggers = [...document.querySelectorAll<HTMLButtonElement>("[data-menu-trigger]")];
   const contents = [...document.querySelectorAll<HTMLElement>("[data-menu-content]")];
   let activeMenu: string | undefined;
+  let closeTimeout: number | undefined;
 
   const closeMenu = () => {
+    window.clearTimeout(closeTimeout);
+    closeTimeout = undefined;
     activeMenu = undefined;
     triggers.forEach((trigger) => trigger.setAttribute("aria-expanded", "false"));
     viewport?.classList.add("pointer-events-none", "opacity-0", "scale-95");
@@ -306,6 +309,8 @@ const externalProps = (href: string) =>
   };
 
   const openMenu = (trigger: HTMLButtonElement) => {
+    window.clearTimeout(closeTimeout);
+    closeTimeout = undefined;
     const menu = trigger.dataset.menuTrigger;
     const content = contents.find((item) => item.dataset.menuContent === menu);
     if (!menu || !content || !viewport || !container) return;
@@ -313,8 +318,10 @@ const externalProps = (href: string) =>
     triggers.forEach((item) => item.setAttribute("aria-expanded", String(item === trigger)));
     contents.forEach((item) => item.classList.toggle("hidden", item !== content));
     viewport.classList.remove("pointer-events-none", "opacity-0", "scale-95");
-    viewport.style.width = `${content.offsetWidth}px`;
-    viewport.style.height = `${content.offsetHeight}px`;
+    const borderWidth = viewport.offsetWidth - viewport.clientWidth;
+    const borderHeight = viewport.offsetHeight - viewport.clientHeight;
+    viewport.style.width = `${content.offsetWidth + borderWidth}px`;
+    viewport.style.height = `${content.offsetHeight + borderHeight}px`;
     const left = trigger.getBoundingClientRect().left - container.getBoundingClientRect().left - 32;
     const maxLeft = window.innerWidth - viewport.offsetWidth - container.getBoundingClientRect().left - 32;
     viewport.parentElement!.style.transform = `translateX(${Math.min(left, maxLeft)}px)`;
@@ -325,8 +332,11 @@ const externalProps = (href: string) =>
     trigger.addEventListener("focus", () => openMenu(trigger));
     trigger.addEventListener("click", () => activeMenu === trigger.dataset.menuTrigger ? closeMenu() : openMenu(trigger));
   });
+  navigation?.addEventListener("pointerenter", () => window.clearTimeout(closeTimeout));
   navigation?.addEventListener("pointerleave", (event) => {
-    if (!(event.relatedTarget instanceof Node) || !navigation.contains(event.relatedTarget)) closeMenu();
+    if (!(event.relatedTarget instanceof Node) || !navigation.contains(event.relatedTarget)) {
+      closeTimeout = window.setTimeout(closeMenu, 150);
+    }
   });
   document.addEventListener("click", (event) => {
     if (event.target instanceof Node && !navigation?.contains(event.target)) closeMenu();
