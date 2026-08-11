@@ -127,36 +127,6 @@ permissions from group mappings.
 </Step>
 
 <Step>
-### Resolve Existing Account Conflicts
-
-When a provisioned identity matches an existing organization member, Hive Console does not
-immediately replace the member's current access with SCIM management. The account is marked as
-awaiting confirmation, and its existing role assignments and status remain effective. SCIM status,
-groups, and group role mappings do not control the account until it is confirmed.
-
-The **User Provisioning** section of the organization's OIDC settings shows the number of unresolved
-conflicts. To resolve them:
-
-1. Follow the link from **User Provisioning** to open a filtered view of the organization
-   **Members** page.
-2. Select **SCIM matched this existing account** for a member.
-3. Review the pending SCIM user status and group memberships. Verify that those groups have the role
-   mappings the member needs.
-4. Select **Allow SCIM management**.
-5. Repeat these steps for each conflicting member.
-
-After confirmation, the identity provider controls the member's active status and their effective
-permissions come from SCIM group role mappings instead of their previous direct role assignment.
-
-<Callout type="warning">
-  Confirming an account can remove its access immediately if the pending SCIM
-  user is disabled or its groups do not have sufficient role mappings. Review
-  both the pending status and groups before confirming.
-</Callout>
-
-</Step>
-
-<Step>
 ### Assign Roles and Resources to Groups
 
 Open your organization **Members** page and select **Groups**. For each synchronized group:
@@ -191,6 +161,37 @@ administrators are excluded from this restriction to preserve administrative acc
 </Callout>
 
 </Step>
+
+<Step>
+### Resolve Existing Account Conflicts
+
+When a provisioned identity matches an existing organization member, Hive Console does not
+immediately replace the member's current access with SCIM management. The account is marked as
+awaiting confirmation, and its existing role assignments and status remain effective. SCIM status,
+groups, and group role mappings do not control the account until it is confirmed.
+
+The **User Provisioning** section of the organization's OIDC settings shows the number of unresolved
+conflicts. To resolve them:
+
+1. Follow the link from **User Provisioning** to open a filtered view of the organization
+   **Members** page.
+2. Select **SCIM matched this existing account** for a member.
+3. Review the pending SCIM user status and group memberships. Verify that those groups have the role
+   mappings the member needs.
+4. Select **Allow SCIM management**.
+5. Repeat these steps for each conflicting member.
+
+After confirmation, the identity provider controls the member's active status and their effective
+permissions come from SCIM group role mappings instead of their previous direct role assignment.
+
+<Callout type="warning">
+  Confirming an account can remove its access immediately if the pending SCIM
+  user is disabled or its groups do not have sufficient role mappings. Review
+  both the pending status and groups before confirming.
+</Callout>
+
+</Step>
+
 </Steps>
 
 ## Managing Provisioned Users
