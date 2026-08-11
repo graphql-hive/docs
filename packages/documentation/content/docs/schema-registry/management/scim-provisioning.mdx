@@ -363,8 +363,8 @@ Under **How will your users sign in?**, use email as the application username an
 update it when the application is created or updated. Then select **Finish**.
 
 <Callout>
-This sign in configuration is never used in practise, as your users will sign in through SSO.
-The purpose of this application is sorely to provision users.
+  This sign in configuration is never used in practise, as your users will sign
+  in through SSO. The purpose of this application is sorely to provision users.
 </Callout>
 
 ![Configure user sign-in settings](./scim-provisioning/okta/create-swa-integration-user-sign-in.webp)
@@ -420,14 +420,14 @@ Open **Provisioning** > **To App**, edit the settings, and enable these actions:
 
 On the **To App** page, verify that the user attributes include these mappings:
 
-| SCIM attribute     | Okta value or expression                                   |
-| ------------------ | ---------------------------------------------------------- |
-| `userName`         | The application username configured on the **Sign On** tab |
-| `givenName`        | `user.firstName`                                           |
-| `familyName`       | `user.lastName`                                            |
-| `email`            | `user.email`                                               |
-| `emailType`        | `(user.email != null && user.email != "") ? "work" : ""`   |
-| `displayName`      | `user.displayName`                                         |
+| SCIM attribute | Okta value or expression                                   |
+| -------------- | ---------------------------------------------------------- |
+| `userName`     | The application username configured on the **Sign On** tab |
+| `givenName`    | `user.firstName`                                           |
+| `familyName`   | `user.lastName`                                            |
+| `email`        | `user.email`                                               |
+| `emailType`    | `(user.email != null && user.email != "") ? "work" : ""`   |
+| `displayName`  | `user.displayName`                                         |
 
 ![User attribute mappings](./scim-provisioning/okta/user-attribute-mappings.webp)
 
