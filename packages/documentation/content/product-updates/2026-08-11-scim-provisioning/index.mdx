@@ -25,17 +25,23 @@ A user's permissions are combined from all of their group mappings. This makes i
 broad read access through one group and more focused permissions, such as schema check approval for
 selected services, through another.
 
+![SCIM group role mappings](./scim-group-role-mappings.webp)
+
 ## Keep the User Lifecycle in Your Identity Provider
 
 SCIM provisioning supports creating, updating, disabling, and re-enabling users, as well as
 synchronizing groups and their memberships. Changes made in your identity provider flow into Hive
 Console, including permission changes caused by updated group memberships.
 
+![SCIM-provisioned organization members](./scim-provisioned-members.webp)
+
 ## Safely Adopt Existing Accounts
 
 When SCIM matches an existing organization member, Hive Console does not replace their access
 immediately. Instead, it records a provisioning conflict and keeps the member's existing role and
 status effective until an organization administrator confirms that SCIM should manage the account.
+
+![SCIM existing-account provisioning conflict](./scim-existing-account-conflict.webp)
 
 The **User Provisioning** settings show how many accounts need confirmation and link to a filtered
 view of the **Members** page. Administrators can review each member's pending SCIM status and group
