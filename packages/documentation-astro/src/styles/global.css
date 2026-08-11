@@ -124,11 +124,11 @@
 
 .dark body[data-theme-enabled] .docs-content a:not(.hive-card) {
   color: var(--color-neutral-200);
-  text-decoration-color: var(--color-blue-300);
+  text-decoration-color: var(--color-primary);
 }
 
 .dark body[data-theme-enabled] .docs-content a:not(.hive-card):hover {
-  color: var(--color-blue-300);
+  color: var(--color-primary);
 }
 
 .dark #hive-navigation .menu-content [class*="text-green-1000"] {
@@ -250,7 +250,7 @@ pre {
   color: var(--color-green-800);
 }
 
-.docs-content p {
+.docs-content p:not(:first-child) {
   margin: 1rem 0;
 }
 
