@@ -106,7 +106,7 @@ const testimonialId = (company: string) => encodeURIComponent(company.toLowerCas
             src={testimonial.picture.src}
             width="300"
           />
-          <div class="max-lg:mt-6 lg:relative" id={testimonialId(testimonial.company)}>
+          <div class="max-lg:mt-6 lg:relative flex flex-col" id={testimonialId(testimonial.company)}>
             <div class="logo-svg-wrap text-blue-1000 mb-6 lg:hidden" style="height:32px">
               <CompanyLogo height={32} slug={testimonial.slug} title={testimonial.company} />
             </div>
@@ -115,7 +115,7 @@ const testimonialId = (company: string) => encodeURIComponent(company.toLowerCas
             </blockquote>
             {"caseStudyHref" in testimonial && testimonial.caseStudyHref && (
               <a
-                class="absolute bottom-0 w-full max-sm:hidden md:w-fit relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-green-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800"
+                class="absolute bottom-0 w-full max-sm:hidden md:w-fit relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-green-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800 mt-auto mt-0"
                 href={testimonial.caseStudyHref}
               >
                 <span class="absolute inset-0 rounded-lg border border-green-800"></span>

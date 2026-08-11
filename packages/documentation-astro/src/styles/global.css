@@ -7,6 +7,32 @@
 
 @custom-variant dark (&:where(.dark, .dark *):not(:where(.light, .light *)));
 
+@utility blockquote-* {
+  position: relative;
+  quotes: "" " " "" "'" "'";
+  --blockquote-color: --value(--color-*, [color]);
+
+  &::before,
+  &::after {
+    position: relative;
+    display: inline-block;
+    width: 0;
+    color: var(--blockquote-color);
+    font-size: 2.25em;
+    line-height: 0;
+    vertical-align: middle;
+  }
+
+  &::before {
+    left: -0.375em;
+    content: open-quote;
+  }
+
+  &::after {
+    content: close-quote;
+  }
+}
+
 @theme {
   --color-blueish-green: #003834;
   --color-fd-accent: var(--color-beige-300);
