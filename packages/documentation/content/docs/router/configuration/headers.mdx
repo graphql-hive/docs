@@ -57,6 +57,15 @@ values.
 - `first` - The value from the first subgraph to respond is used.
 - `append` - Values from all subgraph responses are joined by a comma.
 
+#### `Set-Cookie` and `WWW-Authenticate`
+
+`Set-Cookie` and `WWW-Authenticate` are special cases of HTTP headers, that are never comma-joined, regardless of `algorithm`.
+
+Comma-joining would produce an invalid header, since each is only valid as its own instance.
+
+Instead, every value - including multiple `Set-Cookie` values returned by a single subgraph - is propagated as a separate
+header field on the client response.
+
 #### Restrictive `Cache-Control` Merging
 
 `Cache-Control` does not follow the algorithm above. When you propagate it, the router never just

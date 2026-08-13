@@ -112,3 +112,15 @@ DISABLE_SUBGRAPH_ERROR_MASKING=true
 
 See the [`error_masking` configuration reference](/docs/router/configuration/error_masking) for the
 full set of options, per-subgraph overrides, and more examples.
+
+## Internal router errors
+
+The masking above only covers **subgraph** errors. Errors that originate in the router itself -
+not from a subgraph - are handled separately and are **not** configurable:
+
+- Errors caused by the client's own request (invalid queries, failed validation, bad variables)
+  still return their real message, since it only ever describes the client's own mistake.
+- Any other internal error (storage/network failures, unexpected failures, misconfiguration) always returns a
+  generic `"Internal server error"` message, never the underlying error. The real error is still
+  logged for debugging. This prevents details such as subgraph URLs or backend internals from
+  leaking to clients through router-side errors.

@@ -148,12 +148,19 @@ know yet if the request is a GraphQL request or not.
 fn on_http_request<'req>(
     &'req self,
     payload: OnHttpRequestHookPayload<'req>
-  ) -> OnHttpRequestHookResult<'req>
+  ) -> OnHttpRequestHookFuture<'req>
 ```
+
+`OnHttpRequestHookFuture<'req>` is a boxed, thread-local future (`Pin<Box<dyn Future<Output = OnHttpRequestHookResult<'req>> + 'req>>`),
+so the hook body is an `async move` block you can `await` inside - for example to call an upstream
+auth or feature-flag service before the rest of the request pipeline runs. The hook always runs on
+the same worker thread it started on and is never moved across threads, so the future doesn't need
+to be `Send`.
 
 With this hook, you can add custom authentication and authorization logic based on HTTP headers,
 method, path, and similar request properties. You can also implement custom restrictions, HTTP
-validations, short-circuit responses, or serve static assets.
+validations, short-circuit responses, serve static assets, or await an external call before the
+request continues.
 
 <Callout type="warning">
   This hook also runs for the `/health` and `/readiness` [probe
@@ -175,15 +182,17 @@ GraphQL processing begins.
 fn on_http_request<'req>(
     &'req self,
     payload: OnHttpRequestHookPayload<'req>,
-) -> OnHttpRequestHookResult<'req> {
-    if payload.router_http_request.headers().get("authorization").is_none() {
-        return payload.end_with_graphql_error(
-            GraphQLError::from_message_and_code("Unauthorized", "UNAUTHORIZED"),
-            StatusCode::UNAUTHORIZED,
-        );
-    }
+) -> OnHttpRequestHookFuture<'req> {
+    Box::pin(async move {
+        if payload.router_http_request.headers().get("authorization").is_none() {
+            return payload.end_with_graphql_error(
+                GraphQLError::from_message_and_code("Unauthorized", "UNAUTHORIZED"),
+                StatusCode::UNAUTHORIZED,
+            );
+        }
 
-    payload.proceed()
+        payload.proceed()
+    })
 }
 ```
 
@@ -201,7 +210,7 @@ use hive_router::{
     async_trait,
     plugins::{
         hooks::{
-            on_http_request::{OnHttpRequestHookPayload, OnHttpRequestHookResult},
+            on_http_request::{OnHttpRequestHookFuture, OnHttpRequestHookPayload},
             on_plugin_init::{OnPluginInitPayload, OnPluginInitResult},
             on_supergraph_load::Supergraph,
         },
@@ -232,11 +241,13 @@ impl RouterPlugin for SchemaVariantsPlugin {
     fn on_http_request<'req>(
         &'req self,
         payload: OnHttpRequestHookPayload<'req>,
-    ) -> OnHttpRequestHookResult<'req> {
-        if payload.router_http_request.headers().get("x-schema-variant").is_some() {
-            payload.set_supergraph(self.basic.clone());
-        }
-        payload.proceed()
+    ) -> OnHttpRequestHookFuture<'req> {
+        Box::pin(async move {
+            if payload.router_http_request.headers().get("x-schema-variant").is_some() {
+                payload.set_supergraph(self.basic.clone());
+            }
+            payload.proceed()
+        })
     }
 }
 ```
@@ -273,15 +284,17 @@ Use `on_end` with `map_response` to attach custom headers to every outgoing HTTP
 fn on_http_request<'req>(
     &'req self,
     payload: OnHttpRequestHookPayload<'req>,
-) -> OnHttpRequestHookResult<'req> {
-    payload.on_end(|payload| {
-        payload.map_response(|mut response| {
-            response.response_mut().headers_mut().insert(
-                "x-served-by",
-                "hive-router".parse().unwrap(),
-            );
-            response
-        }).proceed()
+) -> OnHttpRequestHookFuture<'req> {
+    Box::pin(async move {
+        payload.on_end(|payload| {
+            payload.map_response(|mut response| {
+                response.response_mut().headers_mut().insert(
+                    "x-served-by",
+                    "hive-router".parse().unwrap(),
+                );
+                response
+            }).proceed()
+        })
     })
 }
 ```
@@ -297,12 +310,14 @@ use hive_router::http::StatusCode;
 fn on_http_request<'req>(
     &'req self,
     payload: OnHttpRequestHookPayload<'req>,
-) -> OnHttpRequestHookResult<'req> {
-    payload.on_end(|end_payload| {
-        end_payload.map_response(|mut response| {
-            *response.response_mut().status_mut() = StatusCode::OK;
-            response
-        }).proceed()
+) -> OnHttpRequestHookFuture<'req> {
+    Box::pin(async move {
+        payload.on_end(|end_payload| {
+            end_payload.map_response(|mut response| {
+                *response.response_mut().status_mut() = StatusCode::OK;
+                response
+            }).proceed()
+        })
     })
 }
 ```
@@ -316,16 +331,18 @@ the final HTTP response status.
 fn on_http_request<'req>(
     &'req self,
     payload: OnHttpRequestHookPayload<'req>,
-) -> OnHttpRequestHookResult<'req> {
-    payload.on_end(|payload| {
-        let ctx = payload.context.get_ref::<PropagateStatusCodeCtx>();
-        if let Some(ctx) = ctx {
-            return payload.map_response(|mut response| {
-                *response.response_mut().status_mut() = ctx.status_code;
-                response
-            }).proceed();
-        }
-        payload.proceed()
+) -> OnHttpRequestHookFuture<'req> {
+    Box::pin(async move {
+        payload.on_end(|payload| {
+            let ctx = payload.context.get_ref::<PropagateStatusCodeCtx>();
+            if let Some(ctx) = ctx {
+                return payload.map_response(|mut response| {
+                    *response.response_mut().status_mut() = ctx.status_code;
+                    response
+                }).proceed();
+            }
+            payload.proceed()
+        })
     })
 }
 ```
@@ -342,18 +359,20 @@ use hive_router::{get_current_summary, set_log_correlation, set_summary_message}
 fn on_http_request<'req>(
     &'req self,
     payload: OnHttpRequestHookPayload<'req>,
-) -> OnHttpRequestHookResult<'req> {
-    let project_id = payload.router_http_request.path().split('/').nth(1).unwrap_or("unknown");
-    set_log_correlation("project_id", project_id);
+) -> OnHttpRequestHookFuture<'req> {
+    Box::pin(async move {
+        let project_id = payload.router_http_request.path().split('/').nth(1).unwrap_or("unknown");
+        set_log_correlation("project_id", project_id);
 
-    payload.on_end(|end_payload| {
-        if let Some(summary) = get_current_summary() {
-            set_summary_message(format!(
-                "status={}",
-                summary.status_code.load(std::sync::atomic::Ordering::Relaxed)
-            ));
-        }
-        end_payload.proceed()
+        payload.on_end(|end_payload| {
+            if let Some(summary) = get_current_summary() {
+                set_summary_message(format!(
+                    "status={}",
+                    summary.status_code.load(std::sync::atomic::Ordering::Relaxed)
+                ));
+            }
+            end_payload.proceed()
+        })
     })
 }
 ```
@@ -361,9 +380,49 @@ fn on_http_request<'req>(
 See [Customizing logs from plugins](/docs/router/observability/logging#customizing-logs-from-plugins)
 for the full API reference.
 
+##### Await an upstream call before proceeding [!toc]
+
+Call out to an external service - an auth check, a feature-flag lookup, anything async - and await
+the result before the rest of the pipeline (parsing, validation, planning, execution) runs. Store
+the result in `context` so a later `on_end` can read it back onto the response.
+
+```rust
+struct FetchedGreeting(String);
+
+fn on_http_request<'req>(
+    &'req self,
+    payload: OnHttpRequestHookPayload<'req>,
+) -> OnHttpRequestHookFuture<'req> {
+    Box::pin(async move {
+        let greeting = fetch_greeting(&self.client, &self.upstream_url).await;
+        payload.context.insert(FetchedGreeting(greeting));
+
+        payload.on_end(|payload| {
+            let greeting = payload
+                .context
+                .get_ref::<FetchedGreeting>()
+                .map(|entry| entry.0.clone())
+                .unwrap_or_default();
+            payload
+                .map_response(move |mut response| {
+                    if let Ok(header_value) = HeaderValue::from_str(&greeting) {
+                        response.response_mut().headers_mut().insert(
+                            "x-fetched-greeting",
+                            header_value,
+                        );
+                    }
+                    response
+                })
+                .proceed()
+        })
+    })
+}
+```
+
 #### Payload API Reference
 
 - [`OnHttpRequestHookPayload`](https://github.com/graphql-hive/router/blob/main/lib/executor/src/plugins/hooks/on_http_request.rs#:~:text=struct%20OnHttpRequestHookPayload)
+- [`OnHttpRequestHookFuture`](https://github.com/graphql-hive/router/blob/main/lib/executor/src/plugins/hooks/on_http_request.rs#:~:text=type%20OnHttpRequestHookFuture)
 - [`OnHttpResponseHookPayload`](https://github.com/graphql-hive/router/blob/main/lib/executor/src/plugins/hooks/on_http_request.rs#:~:text=struct%20OnHttpResponseHookPayload)
 
 #### Plugin Examples
@@ -371,6 +430,7 @@ for the full API reference.
 - [`propagate_status_code`](https://github.com/graphql-hive/router/blob/main/plugin_examples/propagate_status_code/src/lib.rs#:~:text=fn%20on_http_request)
 - [`incoming_request_deduplication`](https://github.com/graphql-hive/router/blob/main/plugin_examples/incoming_request_deduplication/src/plugin.rs#:~:text=fn%20on_http_request)
 - [`custom_logger_correlation`](https://github.com/graphql-hive/router/blob/main/plugin_examples/custom_logger_correlation/src/plugin.rs#:~:text=fn%20on_http_request)
+- [`async_http_fetch`](https://github.com/graphql-hive/router/blob/main/plugin_examples/async_http_fetch/src/plugin.rs#:~:text=fn%20on_http_request)
 
 ### `on_graphql_params`
 

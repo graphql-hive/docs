@@ -210,10 +210,12 @@ use tracing::{debug};
 fn on_http_request<'req>(
     &'req self,
     payload: OnHttpRequestHookPayload<'req>,
-) -> OnHttpRequestHookResult<'req> {
-    debug!("on_http_request is called now!");
+) -> OnHttpRequestHookFuture<'req> {
+    Box::pin(async move {
+        debug!("on_http_request is called now!");
 
-    payload.proceed()
+        payload.proceed()
+    })
 }
 ```
 
@@ -232,11 +234,13 @@ use tracing::{debug, span, Level};
 fn on_http_request<'req>(
     &'req self,
     payload: OnHttpRequestHookPayload<'req>,
-) -> OnHttpRequestHookResult<'req> {
-    // Create and enter the span; the guard finalizes it when the function returns
-    let my_span = span!(Level::INFO, "my_plugin_on_http_request");
-    let _guard = my_span.enter();
+) -> OnHttpRequestHookFuture<'req> {
+    Box::pin(async move {
+        // Create and enter the span; the guard finalizes it when the block returns
+        let my_span = span!(Level::INFO, "my_plugin_on_http_request");
+        let _guard = my_span.enter();
 
-    payload.proceed()
+        payload.proceed()
+    })
 }
 ```

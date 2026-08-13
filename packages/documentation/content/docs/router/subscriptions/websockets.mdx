@@ -15,7 +15,7 @@ Hive Router does not support the deprecated [`subscriptions-transport-ws`](https
 
 ## Subgraphs
 
-To forward subscriptions to subgraphs over WebSockets, configure the `subscriptions.websocket` section. Subgraphs must implement the [GraphQL over WebSocket protocol](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md) for the router to connect to them over WebSockets. When a client starts a subscription, the router opens a **dedicated WebSocket connection to the subgraph for that subscription**. Each active subscription gets its own connection - there is no connection multiplexing between the router and subgraphs.
+To forward subscriptions to subgraphs over WebSockets, configure the `subscriptions.websocket` section. Subgraphs must implement the [GraphQL over WebSocket protocol](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md) for the router to connect to them over WebSockets. By default, subscriptions that share the same subgraph, resolved WebSocket endpoint, and inbound connection identity **multiplex over one pooled WebSocket connection** to the subgraph instead of each opening a dedicated socket. See [Connection reuse and execution mode](#connection-reuse-and-execution-mode) below to control or disable this.
 
 Headers are forwarded to the subgraph WebSocket connection according to your [header propagation configuration](/docs/router/configuration/headers). The same rules that apply to regular HTTP requests apply here, so authorization headers, tracing headers, and any other propagated headers are carried through to the subgraph.
 
@@ -43,6 +43,29 @@ The `path` option controls the URL path used for the WebSocket connection to the
 Setting `subscriptions.websocket.all` opts all subgraphs (not claimed by the HTTP Callback protocol) into WebSocket mode. Use `subscriptions.websocket.subgraphs` to target specific subgraphs instead.
 
 </Callout>
+
+### Connection reuse and execution mode
+
+Reuse and transport selection are controlled separately from the endpoint path, under
+[`traffic_shaping.all.websocket`](/docs/router/configuration/traffic_shaping#websocket-router--subgraphs)
+(or per-subgraph under `traffic_shaping.subgraphs.<name>.websocket`):
+
+```yaml
+subscriptions:
+  enabled: true
+  websocket:
+    subgraphs:
+      reviews:
+        path: /reviews/ws
+
+traffic_shaping:
+  all:
+    websocket:
+      reuse_connections: true # default
+      execute_mode: http # default
+```
+
+See [`traffic_shaping.<>.websocket.websocketexecute_mode`](/docs/router/configuration/traffic_shaping#websocketexecute_mode) configuration flag for additional information and options.
 
 ## Clients
 
