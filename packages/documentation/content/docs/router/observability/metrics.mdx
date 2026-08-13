@@ -318,6 +318,78 @@ lifecycle.
   ]}
 />
 
+### Demand Control
+
+[Demand Control](/docs/router/security/demand-control) metrics record the estimated and actual cost
+of operations, and how far actual cost drifted from the estimate. They're only emitted when
+[`demand_control.enabled`](/docs/router/configuration/demand_control#enabled) is `true`.
+
+<Callout type="info">
+  These histograms use a `{cost}` unit with cost-shaped bucket boundaries (`0`,
+  `10`, `50`, `200`, `1000`, `5000`, `10000`) instead of the default
+  latency/size buckets, since a cost value is neither a duration nor a byte
+  size.
+</Callout>
+
+<MetricsSection
+  labels={[
+    {
+      meaning: "Demand control result for the operation",
+      name: "cost.result",
+      typicalValues: [
+        "COST_OK",
+        "COST_ESTIMATED_TOO_EXPENSIVE",
+        "COST_ACTUAL_TOO_EXPENSIVE",
+        "SUBGRAPH_COST_ESTIMATED_TOO_EXPENSIVE",
+      ],
+    },
+    {
+      meaning: "GraphQL operation name, when available",
+      name: "graphql.operation.name",
+      notes:
+        "Highest-cardinality label here - disable via telemetry.metrics.instrumentation.instruments if needed.",
+      typicalValues: ["GetUser"],
+    },
+  ]}
+  metrics={[
+    {
+      description: "The estimated cost of an operation before execution.",
+      labels: ["cost.result", "graphql.operation.name"],
+      name: "hive.router.demand_control.cost.estimated",
+      type: "Histogram",
+      unit: "{cost}",
+    },
+    {
+      description:
+        "The actual cost of an operation, measured after execution.",
+      labels: ["cost.result", "graphql.operation.name"],
+      name: "hive.router.demand_control.cost.actual",
+      type: "Histogram",
+      unit: "{cost}",
+    },
+    {
+      description:
+        "The difference between actual and estimated operation cost.",
+      labels: ["cost.result", "graphql.operation.name"],
+      name: "hive.router.demand_control.cost.delta",
+      type: "Histogram",
+      unit: "{cost}",
+    },
+  ]}
+/>
+
+`cost.estimated` is recorded for every operation once demand control is enabled, regardless of
+`operation_cost.mode`. `cost.actual` and `cost.delta` are recorded after execution for every
+operation that wasn't rejected pre-execution - `cost.delta` can be negative (actual below the
+estimate), so it's a float histogram rather than an integer one.
+
+`COST_ACTUAL_TOO_EXPENSIVE` only ever appears as a `cost.result` value in these metrics - actual
+cost is never enforced, so it's never returned to a client as an error. Use it to find operations
+whose real cost exceeded `operation_cost.max` even though their estimate passed, which is a signal
+to tune `@cost` weights or `@listSize` assumptions. See
+[Actual cost calculation](/docs/router/security/demand-control#actual-cost-calculation) for how
+`actual_cost_mode` affects the `cost.actual` calculation.
+
 ### Supergraph
 
 Supergraph metrics cover polling and processing lifecycle of schema updates.
