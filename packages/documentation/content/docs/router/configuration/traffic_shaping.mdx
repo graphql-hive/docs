@@ -187,9 +187,9 @@ traffic_shaping:
 ## Outbound Options
 
 The following options (`allow_only_http2`, `circuit_breaker`, `dedupe_enabled`,
-`forward_operation_name`, `pool_idle_timeout`, `request_timeout`, and `tls`) can be set globally for
-all subgraphs or overridden on a per-subgraph basis by nesting them under the subgraph's name within
-the `traffic_shaping` map.
+`forward_operation_name`, `pool_idle_timeout`, `request_timeout`, `tls`, and `websocket`) can be set
+globally for all subgraphs or overridden on a per-subgraph basis by nesting them under the
+subgraph's name within the `traffic_shaping` map.
 
 For example, the following example shows how to set global defaults and override them for a specific
 subgraph named `products`:
@@ -468,6 +468,82 @@ traffic_shaping:
 
 This example sets a shorter timeout for high-priority requests based on a custom header, and
 configures the `product` subgraph to have a different timeout for requests originating from Europe.
+
+### `websocket` (Router ↔ Subgraphs)
+
+Controls whether WebSocket-enabled subgraphs (configured under
+[`subscriptions.websocket`](/docs/router/configuration/subscriptions#websocket)) reuse pooled
+connections and whether queries and mutations can also be sent over WebSocket instead of always
+using HTTP. 
+
+For a walkthrough of the resulting routing behavior, see [Connection reuse and execution mode](/docs/router/subscriptions/websockets#connection-reuse-and-execution-mode).
+
+```yaml title="router.config.yaml"
+traffic_shaping:
+  all:
+    pool_idle_timeout: 50s # default
+    websocket:
+      reuse_connections: true
+      execute_mode: reuse_existing
+  subgraphs:
+    payments:
+      pool_idle_timeout: 5s
+      websocket:
+        reuse_connections: false
+        execute_mode: websocket
+```
+
+#### `websocket.reuse_connections`
+
+- **Type:** `boolean`
+- **Default:** `true`
+
+When `true`, WebSocket operations that share the same subgraph, resolved WebSocket endpoint, and
+connection fingerprint (see below) multiplex over one pooled, initialized connection instead of each
+opening a dedicated socket. When `false`, every WebSocket operation opens and owns its own
+connection, and nothing is inserted into the shared pool.
+
+#### `websocket.execute_mode`
+
+- **Type:** `"http" | "reuse_existing" | "websocket"`
+- **Default:** `"http"`
+
+Controls how **queries and mutations** are transported for WebSocket-enabled subgraphs. This has no
+effect on subscriptions, which always use WebSocket.
+
+- **`http`** - queries and mutations always use HTTP, even when a matching WebSocket connection is
+  open. Subscriptions still pool their connection when `reuse_connections` is `true`.
+- **`reuse_existing`** - queries and mutations use an already-initialized matching pooled WebSocket
+  connection when one is available, and use HTTP in case there is none available. This never opens or waits for a new
+  WebSocket connection, so a request is never delayed by a handshake.
+- **`websocket`** - queries and mutations always use WebSocket, initializing or joining a pooled
+  connection when `reuse_connections` is `true`, or opening a dedicated connection when it's `false`.
+  The first operation for a given identity initializes the connection; concurrent operations join
+  that initialization instead of opening duplicate connections.
+
+Once an operation is sent over WebSocket, transport failures and timeouts are returned to the client
+without retrying over HTTP - this avoids executing a mutation twice after an uncertain send.
+
+Pooled WebSocket connections use the effective `pool_idle_timeout` for the same subgraph and close after being idle for that duration. Active
+operations keep the connection open regardless of the timeout.
+
+#### Connection fingerprint
+
+The dedupe/pooling fingerprint is built from the headers selected by
+[`router.dedupe.headers`](#routerdedupeheaders), even when inbound request deduplication itself is
+disabled. If you use a custom header selection, make sure it includes every header that affects
+connection-scoped authentication, authorization, cookies, or tenant identity - for example:
+
+```yaml
+traffic_shaping:
+  router:
+    dedupe:
+      headers:
+        include: [authorization, cookie, x-tenant]
+```
+
+Operations with different identities (different fingerprints) never share a pooled connection, even
+for the same subgraph and endpoint.
 
 ### `tls` (Router ↔ Subgraphs)
 

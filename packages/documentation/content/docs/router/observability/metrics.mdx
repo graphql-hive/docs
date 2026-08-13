@@ -784,6 +784,106 @@ Lagged and dropped counters increase by the number of messages skipped without t
 subscription. Use `sent_messages_total / (sent_messages_total + lagged_messages_total)` to calculate
 the client delivery ratio for each transport.
 
+### WebSocket Connection Pool
+
+When [WebSocket connection reuse](/docs/router/configuration/traffic_shaping#websocket-router--subgraphs)
+is enabled, these metrics distinguish the lifetime of pooled **physical connections** from the
+**logical operations** (subscriptions, and queries/mutations when `execute_mode` allows it)
+multiplexed over them.
+
+<MetricsSection
+  labels={[
+    {
+      meaning: "Subgraph identifier",
+      name: "subgraph.name",
+      typicalValues: ["reviews"],
+    },
+    {
+      meaning: "Result of the operation",
+      name: "result",
+      notes:
+        'On initializations_total: "success" | "error". On lookups_total: "hit" | "miss".',
+      typicalValues: ["success", "error", "hit", "miss"],
+    },
+    {
+      meaning: "Why a pooled physical connection closed",
+      name: "websocket_pool.connection.close_reason",
+      typicalValues: ["idle", "dispatcher", "pool_dropped"],
+    },
+    {
+      meaning: "Kind of logical operation multiplexed over the pool",
+      name: "websocket_pool.operation.type",
+      typicalValues: ["execute", "subscribe"],
+    },
+  ]}
+  metrics={[
+    {
+      description: "Active connections in the WebSocket pool.",
+      labels: ["subgraph.name"],
+      name: "hive.router.websocket_pool.connections.active",
+      type: "UpDownCounter",
+      unit: "{connection}",
+    },
+    {
+      description: "Completed WebSocket pool connection initialization attempts.",
+      labels: ["subgraph.name", "result"],
+      name: "hive.router.websocket_pool.connections.initializations_total",
+      type: "Counter",
+      unit: "{connection}",
+    },
+    {
+      description:
+        "Requests that waited for an in-progress connection initialization.",
+      labels: ["subgraph.name"],
+      name: "hive.router.websocket_pool.connections.initialization_waiters_total",
+      type: "Counter",
+    },
+    {
+      description: "Attempts to reuse an existing WebSocket pool connection.",
+      labels: ["subgraph.name", "result"],
+      name: "hive.router.websocket_pool.connections.lookups_total",
+      type: "Counter",
+    },
+    {
+      description: "Why pooled physical connections ended.",
+      labels: ["subgraph.name", "websocket_pool.connection.close_reason"],
+      name: "hive.router.websocket_pool.connections.closed_total",
+      type: "Counter",
+      unit: "{connection}",
+    },
+    {
+      description: "Active operations using WebSocket pool connections.",
+      labels: ["subgraph.name", "websocket_pool.operation.type"],
+      name: "hive.router.websocket_pool.operations.active",
+      type: "UpDownCounter",
+    },
+    {
+      description: "Operations started through the WebSocket pool.",
+      labels: ["subgraph.name", "websocket_pool.operation.type"],
+      name: "hive.router.websocket_pool.operations.started_total",
+      type: "Counter",
+    },
+  ]}
+/>
+
+Fingerprints, headers, and endpoints are intentionally excluded from every label to avoid leaking
+identity data and creating unbounded cardinality.
+
+A few ratios worth alerting on:
+
+- **Lookup hit ratio** - `hit / (hit + miss)` on `lookups_total`. A low ratio while using
+  `execute_mode: reuse_existing` means most queries and mutations still fall back to HTTP, either
+  because subscriptions rarely overlap with them, connection fingerprints are too fragmented, or
+  `pool_idle_timeout` is too short.
+- **Initialization failure ratio** - `error / (success + error)` on `initializations_total`.
+  Surfaces DNS, TCP, TLS, WebSocket upgrade, `connection_init`, or acknowledgement failures.
+- **Multiplexing factor** - `operations.active` divided by `connections.active` for the same
+  subgraph. Values above `1` confirm operations are sharing connections instead of opening one
+  socket each.
+- **Connection churn** - the rate of `initializations_total{result="success"}` compared with
+  `closed_total`. High churn with mostly `idle` closures suggests raising `pool_idle_timeout`; high
+  `dispatcher` closures point to subgraph or network instability instead.
+
 ### Coprocessor
 
 Coprocessor metrics capture outbound calls that Hive Router makes to your coprocessor service.
