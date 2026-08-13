@@ -265,21 +265,23 @@ use hive_router::{get_current_summary, set_log_correlation, set_summary_message}
 fn on_http_request<'req>(
     &'req self,
     payload: OnHttpRequestHookPayload<'req>,
-) -> OnHttpRequestHookResult<'req> {
-    // Attach a correlation as soon as it's known, so it's on every log line for the rest
-    // of this request, including this one.
-    let project_id = payload.router_http_request.path().split('/').nth(1).unwrap_or("unknown");
-    set_log_correlation("project_id", project_id);
+) -> OnHttpRequestHookFuture<'req> {
+    Box::pin(async move {
+        // Attach a correlation as soon as it's known, so it's on every log line for the rest
+        // of this request, including this one.
+        let project_id = payload.router_http_request.path().split('/').nth(1).unwrap_or("unknown");
+        set_log_correlation("project_id", project_id);
 
-    payload.on_end(|end_payload| {
-        // Customize the access log message using data only known once the request is done.
-        if let Some(summary) = get_current_summary() {
-            set_summary_message(format!(
-                "status={}",
-                summary.status_code.load(std::sync::atomic::Ordering::Relaxed)
-            ));
-        }
-        end_payload.proceed()
+        payload.on_end(|end_payload| {
+            // Customize the access log message using data only known once the request is done.
+            if let Some(summary) = get_current_summary() {
+                set_summary_message(format!(
+                    "status={}",
+                    summary.status_code.load(std::sync::atomic::Ordering::Relaxed)
+                ));
+            }
+            end_payload.proceed()
+        })
     })
 }
 ```

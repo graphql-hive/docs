@@ -161,11 +161,13 @@ impl RouterPlugin for MyPlugin {
     fn on_http_request<'req>(
         &'req self,
         payload: OnHttpRequestHookPayload<'req>,
-    ) -> OnHttpRequestHookResult<'req> {
-        // For the sake of the demo, this plugin only stores the paths for all requests
-        self.state.lock().unwrap().push(payload.request.uri().path().to_string());
+    ) -> OnHttpRequestHookFuture<'req> {
+        Box::pin(async move {
+            // For the sake of the demo, this plugin only stores the paths for all requests
+            self.state.lock().unwrap().push(payload.request.uri().path().to_string());
 
-        payload.proceed()
+            payload.proceed()
+        })
     }
 }
 ```
