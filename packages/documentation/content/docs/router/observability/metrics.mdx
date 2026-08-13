@@ -360,8 +360,7 @@ of operations, and how far actual cost drifted from the estimate. They're only e
       unit: "{cost}",
     },
     {
-      description:
-        "The actual cost of an operation, measured after execution.",
+      description: "The actual cost of an operation, measured after execution.",
       labels: ["cost.result", "graphql.operation.name"],
       name: "hive.router.demand_control.cost.actual",
       type: "Histogram",
@@ -897,7 +896,8 @@ multiplexed over them.
       unit: "{connection}",
     },
     {
-      description: "Completed WebSocket pool connection initialization attempts.",
+      description:
+        "Completed WebSocket pool connection initialization attempts.",
       labels: ["subgraph.name", "result"],
       name: "hive.router.websocket_pool.connections.initializations_total",
       type: "Counter",
