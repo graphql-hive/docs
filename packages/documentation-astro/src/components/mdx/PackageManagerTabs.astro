@@ -23,17 +23,16 @@ const packageManagers = ["npm", "yarn", "pnpm", "bun"];
 
 <style>
   .package-manager-tabs {
-    margin: 1.5rem 0;
+    margin: 1rem 0;
     overflow: hidden;
-    border: 1px solid var(--border);
-    border-radius: 0.6rem;
-    background: #0b0b0d;
+    border: 1px solid var(--color-fd-border);
+    border-radius: 0.75rem;
+    background: var(--color-fd-card);
   }
 
   .package-manager-tabs-list {
     display: flex;
     overflow-x: auto;
-    border-bottom: 1px solid var(--border);
   }
 
   button {
@@ -43,19 +42,19 @@ const packageManagers = ["npm", "yarn", "pnpm", "bun"];
     border: 0;
     border-bottom: 2px solid transparent;
     background: transparent;
-    color: #a3a3a3;
+    color: var(--color-fd-muted-foreground);
     font: inherit;
     font-size: 0.8rem;
     font-weight: 600;
   }
 
   button:hover {
-    color: white;
+    color: var(--color-fd-foreground);
   }
 
   button[aria-selected="true"] {
     border-bottom-color: var(--color-blue-500);
-    color: white;
+    color: var(--color-fd-foreground);
   }
 
   button:focus-visible {
@@ -64,13 +63,14 @@ const packageManagers = ["npm", "yarn", "pnpm", "bun"];
   }
 
   :global(.package-manager-tab-panels > .tab-panel > .code-block) {
-    margin: 0;
+    margin: 0 -1px -1px;
+    border-radius: 0 0 0.75rem 0.75rem;
+    background: var(--color-fd-card);
+    box-shadow: none;
   }
 
-  :global(.package-manager-tab-panels > .tab-panel > .code-block > pre) {
-    margin: 0;
-    border: 0;
-    border-radius: 0;
+  :global(.dark .package-manager-tab-panels > .tab-panel > .code-block) {
+    background: var(--color-fd-secondary);
   }
 </style>
 
