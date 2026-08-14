@@ -22,7 +22,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
 {image && <BlogPostPicture image={image} mobileImage={mobileImage} />}
 <header
   class:list={[
-    "flex flex-col px-2 pb-6 pt-4 sm:items-center md:px-12 md:pb-16 md:pt-12 xl:w-[888px]",
+    "relative flex flex-col px-2 pb-6 pt-4 sm:items-center md:px-12 md:pb-16 md:pt-12 xl:w-[888px]",
     image && "-mt-10 sm:-mt-16 max-sm:mx-6 rounded-3xl bg-white dark:bg-[rgb(var(--nextra-bg))] items-center",
     className,
   ]}
