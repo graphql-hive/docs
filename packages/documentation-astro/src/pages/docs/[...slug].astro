@@ -9,6 +9,7 @@ import Image from "../../components/mdx/Image.astro";
 import PackageManagerTabs from "../../components/mdx/PackageManagerTabs.astro";
 import PackageManagerTab from "../../components/mdx/Tab.astro";
 import DocsLayout from "../../layouts/DocsLayout.astro";
+import { getDocsSlug } from "../../lib/docs-markdown";
 import { getDocsNav } from "../../lib/docs-nav";
 
 type DocsEntry = CollectionEntry<"docs">;
@@ -26,10 +27,6 @@ export async function getStaticPaths() {
   }));
 }
 
-function toSlug(id: string) {
-  return id.replace(/(^|\/)index$/, "").replace(/\.(md|mdx)$/, "");
-}
-
 function titleFromEntry(entry: DocsEntry) {
   const data = entry.data as { sidebarTitle?: string; title?: string };
   return data.sidebarTitle ?? data.title ?? entry.id.split("/").at(-1) ?? entry.id;
@@ -37,7 +34,8 @@ function titleFromEntry(entry: DocsEntry) {
 
 const { entry } = Astro.props as { entry: DocsEntry };
 const { Content, headings } = await render(entry);
-const currentPath = `/docs${toSlug(entry.id) ? `/${toSlug(entry.id)}` : ""}`;
+const slug = getDocsSlug(entry);
+const currentPath = `/docs${slug ? `/${slug}` : ""}`;
 const data = entry.data as { description?: string; title?: string };
 const sourceExtension = entry.filePath?.match(/\.mdx?$/)?.[0];
 if (!sourceExtension) throw new Error(`Cannot determine source file for docs entry: ${entry.id}`);
@@ -50,6 +48,7 @@ const { items: navItems, tree: navTree } = await getDocsNav();
   description={data.description}
   githubUrl={githubUrl}
   headings={headings}
+  markdownUrl={`${currentPath}.md`}
   navItems={navItems}
   navTree={navTree}
   title={data.title ?? titleFromEntry(entry)}
