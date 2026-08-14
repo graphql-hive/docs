@@ -4,6 +4,7 @@ import linkedInRaw from "../../../design-system/src/icons/linkedin.svg?raw";
 import youTubeRaw from "../../../design-system/src/icons/youtube.svg?raw";
 import hiveCombinationMarkRaw from "../../../design-system/src/logos/hive-combination-mark.svg?raw";
 import soc2Badge from "../../../design-system/src/hive-footer/soc2-badge.webp?url";
+import CookiesConsent from "./CookiesConsent.astro";
 
 interface LinkItem {
   children: string;
@@ -357,6 +358,8 @@ const standaloneLinks: LinkItem[] = [
     </defs>
   </svg>
 </footer>
+
+<CookiesConsent />
 
 <script>
   document.querySelectorAll<HTMLAnchorElement>("[data-contact-link]").forEach((link) => {
