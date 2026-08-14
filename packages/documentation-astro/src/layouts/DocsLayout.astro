@@ -4,6 +4,7 @@ import "../styles/global.css";
 import CopyMarkdown from "../components/CopyMarkdown.astro";
 import DocsSearchModal from "../components/DocsSearchModal.astro";
 import DocsNavigationTree from "../components/DocsNavigationTree.astro";
+import HeadingPermalinks from "../components/HeadingPermalinks.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import SocialMetadata from "../components/SocialMetadata.astro";
@@ -46,6 +47,7 @@ function findBreadcrumbs(nodes: DocsNavNode[]): string[] | undefined {
 }
 const breadcrumbs = findBreadcrumbs(navTree) ?? [];
 const pageTitle = `${title} | Hive`;
+const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
 ---
 
 <!doctype html>
@@ -98,7 +100,7 @@ const pageTitle = `${title} | Hive`;
         )
       }
 
-      <article class="mx-auto flex w-full max-w-[900px] flex-col gap-4 px-4 py-6 [grid-area:main] md:px-6 md:pt-8 xl:px-8 xl:pb-[52px] xl:pt-8" id="nd-page" data-pagefind-body>
+      <article class="mx-auto flex w-full max-w-[900px] flex-col gap-4 px-4 py-6 [grid-area:main] md:px-6 md:pt-8 xl:px-8 xl:pb-[52px] xl:pt-8" id="nd-page" data-heading-permalinks data-pagefind-body>
         {
           currentPath !== "/docs" && (
             <nav class="flex items-center gap-1.5 text-sm text-fd-muted-foreground" aria-label="Breadcrumb">
@@ -108,7 +110,7 @@ const pageTitle = `${title} | Hive`;
             </nav>
           )
         }
-        <h1 class="text-[1.75em] font-semibold">{title}</h1>
+        <h1 class="text-[1.75em] font-semibold" id={titleId}>{title}</h1>
         {description && <p class="mb-8 text-lg text-fd-muted-foreground">{description}</p>}
         <div class="docs-content prose relative flex-1"><slot /></div>
         {
@@ -166,6 +168,7 @@ const pageTitle = `${title} | Hive`;
 
     <SiteFooter class="border-t border-fd-border" />
     <DocsSearchModal />
+    <HeadingPermalinks />
 
     <script>
       const themeMedia = matchMedia("(prefers-color-scheme: dark)");

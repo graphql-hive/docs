@@ -41,14 +41,14 @@ const variants = {
 
 <aside
   class:list={[
-    "mt-6 grid grid-cols-[1.5rem_1fr] gap-2 rounded-lg border px-[13px] py-3",
+    "hive-callout mt-6 flex min-h-12 gap-2 rounded-lg border px-[13px] py-[9px]",
     variants[type],
     className,
     reactClassName,
   ]}
 >
-  <span class="mt-0.5 block size-6 [&_svg]:block [&_svg]:size-full" set:html={icons[type]} />
-  <div class="min-w-0">
+  <span class="mt-0.5 block size-6 shrink-0 [&_svg]:block [&_svg]:size-full" set:html={icons[type]} />
+  <div class="min-w-0 flex-1">
     {
       title && (
         <strong class="mb-1 block font-mono text-xs uppercase tracking-[0.08em]">
@@ -56,8 +56,18 @@ const variants = {
         </strong>
       )
     }
-    <div class="text-current [&_a]:text-current! [&_a]:decoration-current [&_li::marker]:text-current! [&_ol]:text-current! [&_p]:text-current! [&_ul]:text-current! [&>p:first-child]:mt-0 [&>*:last-child]:mb-0">
+    <div class="callout-content text-current [&_a]:text-current! [&_a]:decoration-current [&_li::marker]:text-current! [&_ol]:text-current! [&_p]:text-current! [&_ul]:text-current!">
       <slot />
     </div>
   </div>
 </aside>
+
+<style>
+  .callout-content > :global(:first-child) {
+    margin-top: 0;
+  }
+
+  .callout-content > :global(:last-child) {
+    margin-bottom: 0;
+  }
+</style>

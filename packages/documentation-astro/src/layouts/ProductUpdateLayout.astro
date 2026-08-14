@@ -2,6 +2,7 @@
 import "../styles/global.css";
 
 import BlogAuthors from "../components/blog/BlogAuthors.astro";
+import HeadingPermalinks from "../components/HeadingPermalinks.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import SocialMetadata from "../components/SocialMetadata.astro";
@@ -29,6 +30,7 @@ const tableOfContents = headings.filter(
   (heading) => heading.depth >= 2 && heading.depth <= 3,
 );
 const pageTitle = `${title} | Hive`;
+const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
 ---
 
 <!doctype html>
@@ -43,9 +45,9 @@ const pageTitle = `${title} | Hive`;
     <SiteNavigation />
 
     <div class="update-shell text-green-1000 mx-auto dark:text-neutral-200">
-      <main class="min-w-0">
+      <main class="min-w-0" data-heading-permalinks>
         <a class="hive-focus outline-hidden text-sm text-green-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="/product-updates">← All product updates</a>
-        <h1 class="group text-green-1000 mb-0 mt-4 text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] dark:text-neutral-200">{title}</h1>
+        <h1 class="group text-green-1000 mb-0 mt-4 text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] dark:text-neutral-200" id={titleId}>{title}</h1>
         <BlogAuthors align="start" authors={authorIds} class="mb-4" date={date} />
         <article class="docs-content"><slot /></article>
       </main>
@@ -65,6 +67,7 @@ const pageTitle = `${title} | Hive`;
     </div>
 
     <SiteFooter />
+    <HeadingPermalinks />
   </body>
 </html>
 

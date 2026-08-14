@@ -4,11 +4,18 @@ import "../styles/global.css";
 import type { BlogPost } from "../lib/get-blog-posts";
 
 import BlogPostHeader from "../components/blog/BlogPostHeader.astro";
+import HeadingPermalinks from "../components/HeadingPermalinks.astro";
 import SimilarPosts from "../components/blog/SimilarPosts.astro";
 import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import SocialMetadata from "../components/SocialMetadata.astro";
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
 
 interface Props {
   allPosts: BlogPost[];
@@ -17,13 +24,15 @@ interface Props {
   date: string;
   description: string;
   image?: string;
+  headings: Heading[];
   mobileImage?: string;
   socialImage?: string;
   tags: string[];
   title: string;
 }
 
-const { allPosts, authors, canonical, date, description, image, mobileImage, socialImage, tags, title } = Astro.props;
+const { allPosts, authors, canonical, date, description, image, headings, mobileImage, socialImage, tags, title } = Astro.props;
+const tableOfContents = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 4);
 const pageTitle = `${title} | GraphQL Hive Blog`;
 ---
 
@@ -38,13 +47,43 @@ const pageTitle = `${title} | GraphQL Hive Blog`;
   <body class="min-h-screen antialiased">
     <SiteNavigation />
 
-    <div class="text-green-1000 mx-auto w-360 max-w-full overflow-hidden dark:text-white">
+    <div class="text-green-1000 mx-auto w-360 max-w-full overflow-x-clip dark:text-white" data-heading-permalinks>
       <BlogPostHeader authors={authors} class="mx-auto" date={date} image={image} mobileImage={mobileImage} tags={tags} title={title} />
 
-      <div class="blog-prose-shell mx-auto w-full box-content max-w-360 px-4 md:px-12">
-        <article class="prose dark:prose-invert min-w-0 w-(--article-max-width) max-w-full mx-auto" data-blog-prose>
+      <div class="blog-prose-shell mx-auto grid w-full max-w-[1436px] grid-cols-1 px-4 md:px-12 xl:grid-cols-[268px_minmax(0,900px)_268px] xl:px-0">
+        <article class="prose dark:prose-invert min-w-0 w-(--article-max-width) max-w-full mx-auto xl:col-start-2" data-blog-prose>
           <slot />
         </article>
+
+        <aside class="sticky top-(--header-height) col-start-3 row-start-1 hidden h-[calc(100vh-var(--header-height))] w-68 flex-col pb-2 pt-12 pe-4 xl:flex" id="nd-toc">
+          {
+            tableOfContents.length > 0 && (
+              <>
+                <h2 class="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground">
+                  <svg class="size-4" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" /></svg>
+                  On this page
+                </h2>
+                <div class="relative ms-px min-h-0 overflow-auto py-3 text-sm [mask-image:linear-gradient(to_bottom,transparent,white_16px,white_calc(100%-16px),transparent)] [scrollbar-width:none]">
+                  <div class="toc-thumb absolute top-(--fd-top) h-(--fd-height) w-0.5 rounded-e-sm bg-fd-primary transition-[top,height] ease-linear"></div>
+                  <nav class="flex flex-col border-s border-fd-foreground/10">
+                    {tableOfContents.map((heading) => (
+                      <a
+                        class:list={[
+                          "toc-link py-1.5 text-sm text-fd-muted-foreground no-underline transition-colors wrap-anywhere first:pt-0 last:pb-0 data-[active=true]:text-fd-primary",
+                          heading.depth <= 2 ? "ps-3" : heading.depth === 3 ? "ps-6" : "ps-8",
+                        ]}
+                        data-toc-anchor={heading.slug}
+                        href={`#${heading.slug}`}
+                      >
+                        {heading.text}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              </>
+            )
+          }
+        </aside>
       </div>
 
       <SimilarPosts allPosts={allPosts} class="mx-4 md:mx-6" currentTags={tags} currentTitle={title} />
@@ -52,6 +91,26 @@ const pageTitle = `${title} | GraphQL Hive Blog`;
     </div>
 
     <SiteFooter />
+    <HeadingPermalinks />
+
+    <script>
+      const links = [...document.querySelectorAll<HTMLAnchorElement>(".toc-link")];
+      const thumb = document.querySelector<HTMLElement>(".toc-thumb");
+      const updateToc = () => {
+        if (links.length === 0) return;
+        const active = [...links].reverse().find((link) => {
+          const id = link.dataset.tocAnchor;
+          return id && document.getElementById(id)?.getBoundingClientRect().top! <= 140;
+        }) ?? links[0];
+        links.forEach((link) => link.dataset.active = String(link === active));
+        if (thumb) {
+          thumb.style.setProperty("--fd-top", `${active.offsetTop}px`);
+          thumb.style.setProperty("--fd-height", `${active.offsetHeight}px`);
+        }
+      };
+      updateToc();
+      addEventListener("scroll", updateToc, { passive: true });
+    </script>
   </body>
 </html>
 
@@ -159,6 +218,24 @@ const pageTitle = `${title} | GraphQL Hive Blog`;
     text-decoration: none;
   }
 
+  [data-blog-prose] :not(pre) > code {
+    padding: 0.1875rem;
+    overflow-wrap: break-word;
+    border: 1px solid var(--color-fd-border);
+    border-radius: 0.3125rem;
+    background: var(--color-neutral-100);
+    font-size: 0.8125rem;
+    line-height: inherit;
+  }
+
+  [data-blog-prose] :is(h2, h3, h4, h5, h6) code {
+    font-size: 0.875em;
+  }
+
+  :global(.dark) [data-blog-prose] :not(pre) > code {
+    background: var(--color-neutral-800);
+  }
+
   [data-blog-prose] img {
     max-width: 100%;
     height: auto;
@@ -166,33 +243,37 @@ const pageTitle = `${title} | GraphQL Hive Blog`;
     border-radius: 1rem;
   }
 
-  [data-blog-prose] pre {
-    max-height: 602px;
-    margin-block: 1rem;
-    padding-top: 28px;
-    overflow: auto;
-    border: 1px solid var(--color-beige-400);
-    border-radius: 0.75rem;
-    box-shadow: var(--shadow-sm);
-    font-family:
-      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.8125rem;
-    line-height: 1.42857;
-  }
-
   [data-blog-prose] table {
-    display: block;
+    display: table;
     width: 100%;
-    margin: 1.5rem 0;
-    overflow-x: auto;
-    border-collapse: collapse;
+    overflow: hidden;
+    border: 1px solid var(--color-fd-border);
+    border-radius: 0.5rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--color-fd-card);
+    font-size: 0.875rem;
+    line-height: 1.5rem;
   }
 
   [data-blog-prose] th,
   [data-blog-prose] td {
-    padding: 0.5rem;
+    padding: 0.625rem;
     border-bottom: 1px solid var(--color-beige-400);
     text-align: left;
+  }
+
+  [data-blog-prose] th {
+    background: var(--color-neutral-100);
+    font-weight: 600;
+  }
+
+  [data-blog-prose] tr:last-child td {
+    border-bottom: 0;
+  }
+
+  :global(.dark) [data-blog-prose] th {
+    background: var(--color-neutral-800);
   }
 
   [data-blog-prose] div:has(> blockquote) {

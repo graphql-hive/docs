@@ -2,6 +2,7 @@
 import { getCollection, render, type CollectionEntry } from "astro:content";
 
 import CodeBlock from "../../components/mdx/CodeBlock.astro";
+import Link from "../../components/mdx/Link.astro";
 import PackageManagerTabs from "../../components/mdx/PackageManagerTabs.astro";
 import PackageManagerTab from "../../components/mdx/Tab.astro";
 import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
@@ -43,7 +44,7 @@ function findAsset(map: Record<string, { default: { src: string } }>, entrySlug:
 }
 
 const { entry } = Astro.props as { entry: Blog };
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 const data = entry.data as {
   authors: string | string[];
   canonical?: string;
@@ -71,10 +72,11 @@ const socialImage = data.ogImage ?? findAsset(socialImages, entrySlug) ?? header
   date={date}
   description={data.description ?? ""}
   image={headerImage}
+  headings={headings}
   mobileImage={findAsset(mobileImages, entrySlug)}
   socialImage={socialImage}
   tags={data.tags}
   title={data.title}
 >
-  <Content components={{ PackageManagerTab, PackageManagerTabs, pre: CodeBlock }} />
+  <Content components={{ a: Link, PackageManagerTab, PackageManagerTabs, pre: CodeBlock }} />
 </BlogPostLayout>

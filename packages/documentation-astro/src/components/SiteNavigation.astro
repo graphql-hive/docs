@@ -86,7 +86,7 @@ const externalProps = (href: string) =>
 ---
 
 <header
-  class="sticky top-0 z-20 row-1 border-b border-beige-400/(--border-opacity) bg-[rgb(var(--nextra-bg))] text-green-1000 transition-[border-color] duration-500 [--border-opacity:0%] [grid-area:nav] dark:border-neutral-700/(--border-opacity) dark:text-neutral-200"
+  class:list={["sticky top-0 z-20 row-1 border-b border-beige-400/(--border-opacity) bg-[rgb(var(--nextra-bg))] text-green-1000 [--border-opacity:0%] [grid-area:nav] dark:border-neutral-700/(--border-opacity) dark:text-neutral-200", pathname.startsWith("/docs") ? "" : "transition-[border-color] duration-500" ]}
   data-docs-navigation={docsNavigation.length > 0}
   id="hive-navigation"
   style={docsNavigation.length > 0 ? "--border-opacity: 100%" : undefined}
