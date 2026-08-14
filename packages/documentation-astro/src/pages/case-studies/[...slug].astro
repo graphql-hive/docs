@@ -1,6 +1,8 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content";
 
+import PackageManagerTabs from "../../components/mdx/PackageManagerTabs.astro";
+import PackageManagerTab from "../../components/mdx/Tab.astro";
 import CaseStudyLayout from "../../layouts/CaseStudyLayout.astro";
 
 type CaseStudy = CollectionEntry<"caseStudies">;
@@ -63,5 +65,5 @@ const otherStories = (await getCollection("caseStudies"))
   slug={slug(entry.id)}
   title={data.title}
 >
-  <Content />
+  <Content components={{ PackageManagerTab, PackageManagerTabs }} />
 </CaseStudyLayout>

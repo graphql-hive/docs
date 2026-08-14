@@ -1,4 +1,8 @@
-<section class="tab-panel" role="tabpanel"><slot /></section>
+---
+const { class: className, ...props } = Astro.props;
+---
+
+<section class:list={["tab-panel", className]} role="tabpanel" tabindex="0" {...props}><slot /></section>
 
 <style>
   section[hidden] {

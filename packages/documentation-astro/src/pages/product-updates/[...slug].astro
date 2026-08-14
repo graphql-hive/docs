@@ -3,6 +3,8 @@ import { getCollection, render, type CollectionEntry } from "astro:content";
 
 import Callout from "../../components/mdx/Callout.astro";
 import Image from "../../components/mdx/Image.astro";
+import PackageManagerTabs from "../../components/mdx/PackageManagerTabs.astro";
+import PackageManagerTab from "../../components/mdx/Tab.astro";
 import ProductUpdateLayout from "../../layouts/ProductUpdateLayout.astro";
 
 type ProductUpdate = CollectionEntry<"productUpdates">;
@@ -43,5 +45,5 @@ const data = entry.data as {
   headings={headings}
   title={data.title}
 >
-  <Content components={{ Callout, Image, MdxImage: Image }} />
+  <Content components={{ Callout, Image, MdxImage: Image, PackageManagerTab, PackageManagerTabs }} />
 </ProductUpdateLayout>

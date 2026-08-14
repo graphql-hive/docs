@@ -1,6 +1,8 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content";
 
+import PackageManagerTabs from "../../components/mdx/PackageManagerTabs.astro";
+import PackageManagerTab from "../../components/mdx/Tab.astro";
 import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 import { getBlogPosts } from "../../lib/get-blog-posts";
 
@@ -73,5 +75,5 @@ const socialImage = data.ogImage ?? findAsset(socialImages, entrySlug) ?? header
   tags={data.tags}
   title={data.title}
 >
-  <Content />
+  <Content components={{ PackageManagerTab, PackageManagerTabs }} />
 </BlogPostLayout>

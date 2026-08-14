@@ -5,6 +5,7 @@ import { defineConfig } from "astro/config";
 import { fileURLToPath } from "node:url";
 
 import { mermaidRehypePlugin } from "./src/markdown/rehype-mermaid-config.mjs";
+import { remarkNpm2Yarn } from "./src/markdown/remark-npm2yarn.mjs";
 import { remarkRelativeLinks } from "./src/markdown/remark-relative-links.mjs";
 
 export default defineConfig({
@@ -14,7 +15,7 @@ export default defineConfig({
       // syntax highlighting and reach rehype-mermaid unprocessed.
       processor: unified({
         rehypePlugins: [mermaidRehypePlugin],
-        remarkPlugins: [remarkRelativeLinks],
+        remarkPlugins: [remarkNpm2Yarn, remarkRelativeLinks],
       }),
       syntaxHighlight: { excludeLangs: ["mermaid"], type: "shiki" },
     }),
