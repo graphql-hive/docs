@@ -217,6 +217,7 @@ body {
   color: var(--text);
   background: var(--background);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
 body[data-docs] {
