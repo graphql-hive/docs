@@ -4,6 +4,7 @@ import { getCollection, render, type CollectionEntry } from "astro:content";
 import Callout from "../../components/mdx/Callout.astro";
 import Card from "../../components/mdx/Card.astro";
 import Cards from "../../components/mdx/Cards.astro";
+import CodeBlock from "../../components/mdx/CodeBlock.astro";
 import Image from "../../components/mdx/Image.astro";
 import PackageManagerTabs from "../../components/mdx/PackageManagerTabs.astro";
 import PackageManagerTab from "../../components/mdx/Tab.astro";
@@ -53,5 +54,5 @@ const { items: navItems, tree: navTree } = await getDocsNav();
   navTree={navTree}
   title={data.title ?? titleFromEntry(entry)}
 >
-  <Content components={{ Callout, Card, Cards, Image, MdxImage: Image, PackageManagerTab, PackageManagerTabs }} />
+  <Content components={{ Callout, Card, Cards, Image, MdxImage: Image, PackageManagerTab, PackageManagerTabs, pre: CodeBlock }} />
 </DocsLayout>

@@ -63,7 +63,11 @@ const packageManagers = ["npm", "yarn", "pnpm", "bun"];
     outline-offset: -3px;
   }
 
-  :global(.package-manager-tab-panels > .tab-panel > pre) {
+  :global(.package-manager-tab-panels > .tab-panel > .code-block) {
+    margin: 0;
+  }
+
+  :global(.package-manager-tab-panels > .tab-panel > .code-block > pre) {
     margin: 0;
     border: 0;
     border-radius: 0;
