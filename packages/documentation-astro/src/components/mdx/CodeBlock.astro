@@ -111,6 +111,30 @@ const { class: className, icon, tabindex: _tabindex, title, ...props } = Astro.p
     padding-left: 1rem;
   }
 
+  .code-block :global(.line.diff::before) {
+    position: absolute;
+    left: 0.375rem;
+  }
+
+  .code-block :global(.line.diff.remove) {
+    background: rgb(200 10 100 / 12%);
+    opacity: 0.7;
+  }
+
+  .code-block :global(.line.diff.remove::before) {
+    color: rgb(230 10 100);
+    content: "-";
+  }
+
+  .code-block :global(.line.diff.add) {
+    background: rgb(14 180 100 / 10%);
+  }
+
+  .code-block :global(.line.diff.add::before) {
+    color: rgb(10 200 100);
+    content: "+";
+  }
+
   button {
     display: grid;
     width: 1.75rem;
