@@ -1,4 +1,9 @@
-import { type ByteMapEntry, COLORS, type IdMapperInfo, type JsonValue } from "./zero-copy-data";
+import {
+  type ByteMapEntry,
+  COLORS,
+  type IdMapperInfo,
+  type JsonValue,
+} from "./zero-copy-data";
 
 function escapeHtml(value: string) {
   return value
@@ -34,7 +39,9 @@ function coloredSpan(text: string, kind: keyof typeof COLORS, gid: string) {
 
 function refChip(
   gid: string,
-  sliceLookupFn?: (gid: string) => { len: number; src: "A" | "B"; start: number } | null,
+  sliceLookupFn?: (
+    gid: string,
+  ) => { len: number; src: "A" | "B"; start: number } | null,
 ) {
   if (!sliceLookupFn) return "";
   const info = sliceLookupFn(gid);
@@ -46,7 +53,9 @@ interface RenderOptions {
   idMapper?: (info: IdMapperInfo) => string | null | undefined;
   idPrefix?: string;
   pretty: boolean;
-  sliceLookup?: (gid: string) => { len: number; src: "A" | "B"; start: number } | null;
+  sliceLookup?: (
+    gid: string,
+  ) => { len: number; src: "A" | "B"; start: number } | null;
 }
 
 function kindOf(v: boolean | number | string | null): keyof typeof COLORS {
@@ -59,7 +68,12 @@ function kindOf(v: boolean | number | string | null): keyof typeof COLORS {
         : "null";
 }
 
-function renderVal(v: JsonValue, path: string, indent: number, opts: RenderOptions): string {
+function renderVal(
+  v: JsonValue,
+  path: string,
+  indent: number,
+  opts: RenderOptions,
+): string {
   const idPrefix = opts.idPrefix ?? "";
   const pad = "  ".repeat(indent);
   let out = "";
@@ -72,7 +86,8 @@ function renderVal(v: JsonValue, path: string, indent: number, opts: RenderOptio
       if (isPrimitive(item)) {
         const localId = idxValId(path, idx);
         const globalId = opts.idMapper
-          ? opts.idMapper({ index: idx, kind: "index", path }) || `${idPrefix}${localId}`
+          ? opts.idMapper({ index: idx, kind: "index", path }) ||
+            `${idPrefix}${localId}`
           : `${idPrefix}${localId}`;
         const kind = kindOf(item);
         if (typeof item === "string") out += "&quot;";
@@ -97,7 +112,8 @@ function renderVal(v: JsonValue, path: string, indent: number, opts: RenderOptio
     for (const [idx, k] of keys.entries()) {
       const localKeyId = keyId(path, k);
       const keyGlobalId = opts.idMapper
-        ? opts.idMapper({ key: k, kind: "key", path }) || `${idPrefix}${localKeyId}`
+        ? opts.idMapper({ key: k, kind: "key", path }) ||
+          `${idPrefix}${localKeyId}`
         : `${idPrefix}${localKeyId}`;
       if (opts.pretty) out += pad + "  ";
       out += `&quot;${coloredSpan(k, "key", keyGlobalId)}&quot;:`;
@@ -105,7 +121,8 @@ function renderVal(v: JsonValue, path: string, indent: number, opts: RenderOptio
       if (isPrimitive(v2)) {
         const localValId = valId(path, k);
         const valGlobalId = opts.idMapper
-          ? opts.idMapper({ key: k, kind: "value", path }) || `${idPrefix}${localValId}`
+          ? opts.idMapper({ key: k, kind: "value", path }) ||
+            `${idPrefix}${localValId}`
           : `${idPrefix}${localValId}`;
         const kind = kindOf(v2);
         if (typeof v2 === "string") out += "&quot;";
@@ -158,7 +175,11 @@ export function renderByteBuffer(
   const H = 12;
   const viewW = Math.max(bytes.length * PX, 1);
 
-  const backgroundRects = Array.from(bytes, (_, i) => `<rect fill="#111111" height="${H}" width="${PX - 1}" x="${i * PX}" y="4"></rect>`).join("");
+  const backgroundRects = Array.from(
+    bytes,
+    (_, i) =>
+      `<rect fill="#111111" height="${H}" width="${PX - 1}" x="${i * PX}" y="4"></rect>`,
+  ).join("");
   const entryRects = entries
     .map((e) => {
       const x = e.start * PX;

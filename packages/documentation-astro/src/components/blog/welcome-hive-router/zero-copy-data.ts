@@ -67,23 +67,43 @@ export function serializeWithByteMap(val: JsonValue) {
             const content = escapeJSONString(item);
             const start = bytePos;
             push(content);
-            entries.push({ kind: "string", len: enc(content).length, localId: idxValId(path, idx), start });
+            entries.push({
+              kind: "string",
+              len: enc(content).length,
+              localId: idxValId(path, idx),
+              start,
+            });
             push('"');
           } else if (typeof item === "number") {
             const text = String(item);
             const start = bytePos;
             push(text);
-            entries.push({ kind: "number", len: enc(text).length, localId: idxValId(path, idx), start });
+            entries.push({
+              kind: "number",
+              len: enc(text).length,
+              localId: idxValId(path, idx),
+              start,
+            });
           } else if (typeof item === "boolean") {
             const text = item ? "true" : "false";
             const start = bytePos;
             push(text);
-            entries.push({ kind: "bool", len: enc(text).length, localId: idxValId(path, idx), start });
+            entries.push({
+              kind: "bool",
+              len: enc(text).length,
+              localId: idxValId(path, idx),
+              start,
+            });
           } else if (item === null) {
             const text = "null";
             const start = bytePos;
             push(text);
-            entries.push({ kind: "null", len: enc(text).length, localId: idxValId(path, idx), start });
+            entries.push({
+              kind: "null",
+              len: enc(text).length,
+              localId: idxValId(path, idx),
+              start,
+            });
           }
         } else {
           walk(item, `${path}/${idx}`);
@@ -102,7 +122,12 @@ export function serializeWithByteMap(val: JsonValue) {
         const kEsc = escapeJSONString(k);
         const kStart = bytePos;
         push(kEsc);
-        entries.push({ kind: "key", len: enc(kEsc).length, localId: keyId(path, k), start: kStart });
+        entries.push({
+          kind: "key",
+          len: enc(kEsc).length,
+          localId: keyId(path, k),
+          start: kStart,
+        });
         push('"');
         push(":");
         const child = (v as Record<string, JsonValue>)[k]!;
@@ -112,23 +137,43 @@ export function serializeWithByteMap(val: JsonValue) {
             const content = escapeJSONString(child);
             const start = bytePos;
             push(content);
-            entries.push({ kind: "string", len: enc(content).length, localId: valId(path, k), start });
+            entries.push({
+              kind: "string",
+              len: enc(content).length,
+              localId: valId(path, k),
+              start,
+            });
             push('"');
           } else if (typeof child === "number") {
             const text = String(child);
             const start = bytePos;
             push(text);
-            entries.push({ kind: "number", len: enc(text).length, localId: valId(path, k), start });
+            entries.push({
+              kind: "number",
+              len: enc(text).length,
+              localId: valId(path, k),
+              start,
+            });
           } else if (typeof child === "boolean") {
             const text = child ? "true" : "false";
             const start = bytePos;
             push(text);
-            entries.push({ kind: "bool", len: enc(text).length, localId: valId(path, k), start });
+            entries.push({
+              kind: "bool",
+              len: enc(text).length,
+              localId: valId(path, k),
+              start,
+            });
           } else if (child === null) {
             const text = "null";
             const start = bytePos;
             push(text);
-            entries.push({ kind: "null", len: enc(text).length, localId: valId(path, k), start });
+            entries.push({
+              kind: "null",
+              len: enc(text).length,
+              localId: valId(path, k),
+              start,
+            });
           }
         } else {
           walk(child, `${path}/${k}`);
@@ -144,23 +189,43 @@ export function serializeWithByteMap(val: JsonValue) {
       const content = escapeJSONString(v);
       const start = bytePos;
       push(content);
-      entries.push({ kind: "string", len: enc(content).length, localId: `${path}#value`, start });
+      entries.push({
+        kind: "string",
+        len: enc(content).length,
+        localId: `${path}#value`,
+        start,
+      });
       push('"');
     } else if (typeof v === "number") {
       const text = String(v);
       const start = bytePos;
       push(text);
-      entries.push({ kind: "number", len: enc(text).length, localId: `${path}#value`, start });
+      entries.push({
+        kind: "number",
+        len: enc(text).length,
+        localId: `${path}#value`,
+        start,
+      });
     } else if (typeof v === "boolean") {
       const text = v ? "true" : "false";
       const start = bytePos;
       push(text);
-      entries.push({ kind: "bool", len: enc(text).length, localId: `${path}#value`, start });
+      entries.push({
+        kind: "bool",
+        len: enc(text).length,
+        localId: `${path}#value`,
+        start,
+      });
     } else if (v === null) {
       const text = "null";
       const start = bytePos;
       push(text);
-      entries.push({ kind: "null", len: enc(text).length, localId: `${path}#value`, start });
+      entries.push({
+        kind: "null",
+        len: enc(text).length,
+        localId: `${path}#value`,
+        start,
+      });
     }
   };
 
@@ -201,15 +266,22 @@ export interface IdMapperInfo {
 }
 
 export function idMapperFinal(info: IdMapperInfo) {
-  if (info.kind === "key" && info.key) return FINAL_MAP.get(`${info.path}/${info.key}#key`);
-  if (info.kind === "value" && info.key) return FINAL_MAP.get(`${info.path}/${info.key}#value`);
-  if (info.kind === "index" && typeof info.index === "number") return FINAL_MAP.get(`${info.path}/${info.index}#value`);
+  if (info.kind === "key" && info.key)
+    return FINAL_MAP.get(`${info.path}/${info.key}#key`);
+  if (info.kind === "value" && info.key)
+    return FINAL_MAP.get(`${info.path}/${info.key}#value`);
+  if (info.kind === "index" && typeof info.index === "number")
+    return FINAL_MAP.get(`${info.path}/${info.index}#value`);
   return undefined;
 }
 
 const adata = serializeWithByteMap(subgraphA);
-const mapA = new Map<string, { kind: keyof typeof COLORS; len: number; start: number }>();
-for (const e of adata.entries) mapA.set(e.localId, { kind: e.kind, len: e.len, start: e.start });
+const mapA = new Map<
+  string,
+  { kind: keyof typeof COLORS; len: number; start: number }
+>();
+for (const e of adata.entries)
+  mapA.set(e.localId, { kind: e.kind, len: e.len, start: e.start });
 
 export function getAdata() {
   return adata;

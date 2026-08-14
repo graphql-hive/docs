@@ -96,7 +96,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     };
   });
 
-  return [...blogPosts, ...productUpdatePosts, ...caseStudyPosts].sort(
-    (a, b) => (a.date < b.date ? 1 : -1),
+  return [...blogPosts, ...productUpdatePosts, ...caseStudyPosts].sort((a, b) =>
+    a.date < b.date ? 1 : -1,
   );
 }

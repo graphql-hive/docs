@@ -2,9 +2,15 @@ import { fileURLToPath } from "node:url";
 
 const SITE_URL = "https://the-guild.dev/graphql/hive";
 const distDirectory = fileURLToPath(new URL("../dist", import.meta.url));
-const pages = [...new Bun.Glob("**/index.html").scanSync({ cwd: distDirectory, onlyFiles: true })]
+const pages = [
+  ...new Bun.Glob("**/index.html").scanSync({
+    cwd: distDirectory,
+    onlyFiles: true,
+  }),
+]
   .map((file) => {
-    const path = file === "index.html" ? "" : `/${file.replace(/\/index\.html$/, "")}`;
+    const path =
+      file === "index.html" ? "" : `/${file.replace(/\/index\.html$/, "")}`;
     return `${SITE_URL}${path}`;
   })
   .sort();

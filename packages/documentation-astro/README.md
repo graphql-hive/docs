@@ -7,6 +7,7 @@ The goal is to keep all the content (assets, markdown files) withion the old doc
 All the pages implemented should follow the existing components within the `../documentation` and `../design-system` folders.
 
 When tasked to migrate a page follow these steps:
+
 - find the corresponding page within the old docs, trace the components
 - create the new components as astro components (keep markdown and classes identical if possible)
 - implement the new pages

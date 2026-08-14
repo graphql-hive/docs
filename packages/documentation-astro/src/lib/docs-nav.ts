@@ -60,19 +60,27 @@ function parseBracket(entry: string) {
 }
 
 function humanize(slug: string) {
-  return slug.split("-").map((word) => word[0]!.toUpperCase() + word.slice(1)).join(" ");
+  return slug
+    .split("-")
+    .map((word) => word[0]!.toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 function iconRawSvg(iconName: string) {
-  const fileName = iconName.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+  const fileName = iconName
+    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+    .toLowerCase();
   return iconModules[`../../../design-system/src/icons/${fileName}.svg`];
 }
 
-const iconModules = import.meta.glob<string>("../../../design-system/src/icons/*.svg", {
-  eager: true,
-  import: "default",
-  query: "?raw",
-});
+const iconModules = import.meta.glob<string>(
+  "../../../design-system/src/icons/*.svg",
+  {
+    eager: true,
+    import: "default",
+    query: "?raw",
+  },
+);
 
 function analyzeDir(dir: string, slugs: Set<string>) {
   const prefix = dir ? `${dir}/` : "";
@@ -125,7 +133,9 @@ function resolveDir(
     if (bracket) {
       const slug = hrefToSlug(bracket.href);
       const prefix = dir ? `${dir}/` : "";
-      const rest = slug.startsWith(prefix) ? slug.slice(prefix.length) : undefined;
+      const rest = slug.startsWith(prefix)
+        ? slug.slice(prefix.length)
+        : undefined;
       const top = rest?.split("/")[0];
       if (top) referenced.add(top);
     } else {
@@ -136,17 +146,27 @@ function resolveDir(
   const emitChild = (name: string) => {
     const slug = dir ? `${dir}/${name}` : name;
     if (folders.has(name)) children.push(resolveDir(slug, slugs, titles));
-    else if (files.has(name)) children.push(page(slug, titles.get(slug) ?? humanize(name)));
+    else if (files.has(name))
+      children.push(page(slug, titles.get(slug) ?? humanize(name)));
   };
 
   for (const entry of pages) {
     if (entry === "...") {
-      const remaining = [...folders, ...files].filter((name) => !referenced.has(name)).sort();
+      const remaining = [...folders, ...files]
+        .filter((name) => !referenced.has(name))
+        .sort();
       for (const name of remaining) emitChild(name);
       continue;
     }
     if (entry === "index") {
-      if (hasOwnIndex) children.push(page(dir, titles.get(dir) ?? humanize(dir.split("/").at(-1) || "Introduction")));
+      if (hasOwnIndex)
+        children.push(
+          page(
+            dir,
+            titles.get(dir) ??
+              humanize(dir.split("/").at(-1) || "Introduction"),
+          ),
+        );
       continue;
     }
     const bracket = parseBracket(entry);
@@ -169,7 +189,10 @@ function resolveDir(
   const name = dir.split("/").at(-1) || "Documentation";
   return {
     children,
-    href: hasOwnIndex && !hasExplicitIndex ? `/docs${dir ? `/${dir}` : ""}` : undefined,
+    href:
+      hasOwnIndex && !hasExplicitIndex
+        ? `/docs${dir ? `/${dir}` : ""}`
+        : undefined,
     icon: meta?.icon ? iconRawSvg(meta.icon) : undefined,
     root: meta?.root,
     title: meta?.title ?? titles.get(dir) ?? humanize(name),
@@ -196,10 +219,17 @@ export async function getDocsNav(): Promise<DocsNav> {
 
   const entries = await getCollection("docs");
   const slugs = new Set(entries.map((entry) => toSlug(entry.id)));
-  const titles = new Map(entries.map((entry) => {
-    const data = entry.data as { sidebarTitle?: string; title?: string };
-    return [toSlug(entry.id), data.sidebarTitle ?? data.title ?? humanize(entry.id.split("/").at(-1) ?? entry.id)];
-  }));
+  const titles = new Map(
+    entries.map((entry) => {
+      const data = entry.data as { sidebarTitle?: string; title?: string };
+      return [
+        toSlug(entry.id),
+        data.sidebarTitle ??
+          data.title ??
+          humanize(entry.id.split("/").at(-1) ?? entry.id),
+      ];
+    }),
+  );
   const tree = resolveDir("", slugs, titles).children;
 
   cached = { items: flatten(tree), tree };
