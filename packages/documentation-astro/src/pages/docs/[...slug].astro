@@ -34,27 +34,12 @@ function titleFromEntry(entry: DocsEntry) {
 
 const { entry } = Astro.props as { entry: DocsEntry };
 const { Content, headings } = await render(entry);
-const entries = await getCollection("docs");
 const currentPath = `/docs${toSlug(entry.id) ? `/${toSlug(entry.id)}` : ""}`;
 const data = entry.data as { description?: string; title?: string };
 const sourceExtension = entry.filePath?.match(/\.mdx?$/)?.[0];
 if (!sourceExtension) throw new Error(`Cannot determine source file for docs entry: ${entry.id}`);
 const githubUrl = `https://github.com/graphql-hive/docs/blob/main/packages/documentation/content/docs/${entry.id}${sourceExtension}`;
-const { order, sectionMeta, titleOverrides } = await getDocsNav();
-const orderIndex = new Map(order.map((slug, index) => [slug, index]));
-const navItems = entries
-  .map((item) => {
-    const slug = toSlug(item.id);
-    const section = (slug.split("/")[0] || "Overview").replaceAll("-", " ");
-
-    return {
-      href: `/docs${slug ? `/${slug}` : ""}`,
-      order: orderIndex.get(slug) ?? Number.MAX_SAFE_INTEGER,
-      section,
-      title: titleOverrides.get(slug) ?? titleFromEntry(item),
-    };
-  })
-  .sort((a, b) => a.order - b.order);
+const { items: navItems, tree: navTree } = await getDocsNav();
 ---
 
 <DocsLayout
@@ -63,7 +48,7 @@ const navItems = entries
   githubUrl={githubUrl}
   headings={headings}
   navItems={navItems}
-  sectionMeta={sectionMeta}
+  navTree={navTree}
   title={data.title ?? titleFromEntry(entry)}
 >
   <Content components={{ Callout, Card, Cards, Image, MdxImage: Image }} />
