@@ -31,6 +31,13 @@ jobs:
     if: ${{ !github.event.pull_request.head.repo.fork }}
     secrets: inherit
 
+  astro-website-preview:
+    uses: ./.github/workflows/website-astro.yml
+    with:
+      environment: astro-preview
+    if: ${{ !github.event.pull_request.head.repo.fork }}
+    secrets: inherit
+
   storybook-preview:
     uses: ./.github/workflows/storybook.yml
     with:

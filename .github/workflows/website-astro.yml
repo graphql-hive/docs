@@ -1,0 +1,43 @@
+name: Astro website
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+
+jobs:
+  deployment:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: build
+        run: bun run build
+        working-directory: packages/documentation-astro
+        env:
+          NODE_OPTIONS: "--max-old-space-size=8192"
+
+      - name: deploy to cloudflare workers
+        uses: cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65 # v3.14.1
+        id: deploy
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          packageManager: bun
+          workingDirectory: packages/documentation-astro
+          command: |
+            ${{ github.ref == 'refs/heads/main' && 'deploy' || 'versions upload' }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
