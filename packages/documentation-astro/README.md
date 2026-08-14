@@ -35,36 +35,13 @@ When tasked to migrate a page follow these steps:
   - [x] fix the tab component — `Tabs`/`Tab` now match the real `@hive/design-system/tabs` component (flat underline-style tab list) instead of a boxed pill-button tab bar.
   - [x] fix the mermaid diagrams — now rendered at build time with `rehype-mermaid` + Playwright, matching the old site exactly: added `rehype-mermaid` and `playwright` as dependencies, wired the plugin into the `unified()` markdown processor in `astro.config.mjs` (`src/markdown/rehype-mermaid-config.mjs`, ported verbatim from `packages/documentation/source.config.ts`'s `mermaidConfig()`), and excluded `mermaid` from Shiki syntax highlighting (`mdx({ syntaxHighlight: { excludeLangs: ["mermaid"] } })`) so rehype-mermaid sees the unprocessed code block — Shiki would otherwise tokenize it first since Astro/MDX apply syntax highlighting before user rehype plugins by default. Diagrams are now static inline SVGs styled via the same `--mermaid-*` CSS custom properties as the old site (ported into `global.css`, light-mode values only). No client JS, no flash of raw code. (Superseded the earlier client-side `mermaid.js` approach from the previous pass in this file.)
 
-## Remaining release blockers
-
-- [ ] Define the production deployment target and add the required Astro adapter and hosting configuration.
-- [ ] Support the production `/graphql/hive` base path for pages, Astro assets, Pagefind assets, images, videos, feeds, and redirects.
-- [ ] Update the preview and production GitHub workflows to build and deploy `documentation-astro`.
-- [ ] Ensure the generated `_redirects` file is consumed by the selected deployment platform and test exact and wildcard redirects.
-- [ ] Make search available from every site layout, not only documentation pages.
-- [ ] Add Pagefind bodies and metadata for blog posts, product updates, case studies, and any searchable landing pages. The current build indexes only the documentation pages.
-- [ ] Verify search results and navigation for every indexed content collection, including the deployment changelog.
-- [ ] Add shared SEO handling for self-canonical URLs, Open Graph metadata, Twitter metadata, social images, and JSON-LD breadcrumbs.
-- [x] Add sitemap generation with the correct production host and `/graphql/hive` base path.
-- [ ] Add a build-time SEO validation equivalent to the old site's `check-seo` command.
-- [ ] Remove the public `/stats` migration page or mark it as `noindex`.
-- [ ] Add Astro unit and end-to-end test scripts and run them in CI.
-- [ ] Port coverage for search, documentation navigation, landing pages, blog pages, relative links, the deployment changelog, redirects, public files, desktop browsers, and mobile browsers.
-
 ## Remaining documentation features
 
-- [ ] Restore light, dark, and system themes, including initial theme detection, persisted preferences, and theme controls in desktop and mobile navigation.
 - [ ] Restore documentation page actions: Copy Markdown, View on GitHub, and Edit on GitHub.
 - [ ] Restore last-updated metadata on documentation pages.
-- [ ] Generate `/llms.txt` and `/llms-full.txt`.
-- [ ] Generate processed Markdown for every documentation page.
-- [ ] Decide whether production must retain Markdown content negotiation and implement it if required.
 - [ ] Restore the inline self-hosting deployment changelog instead of linking to GitHub.
 - [ ] Include deployment changelog headings in the page table of contents and search index.
 - [ ] Restore the root deployment changelog RSS feed and add RSS discovery links.
-- [ ] Preserve the complete recursive `meta.json` documentation hierarchy in the desktop sidebar.
-- [ ] Replace the flat mobile documentation list with grouped, recursive navigation.
-- [ ] Restore the old mobile navigation destinations, including products, libraries, blog, GitHub, status, community, and company links.
 - [ ] Restore rich code-block behavior: copy buttons, titles, highlighted lines, `npm2yarn`, light/dark themes, and explicitly triggered Twoslash.
 
 ## Remaining quality work

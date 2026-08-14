@@ -324,14 +324,14 @@ pre {
 
 .docs-content pre {
   max-width: 100%;
-  margin: 1.5rem 0;
-  padding: 1rem;
-  overflow: auto;
-  border: 1px solid var(--border);
-  border-radius: 0.6rem;
-  background: #0b0b0d;
-  font-size: 0.875rem;
-  line-height: 1.6;
+}
+
+.shiki code span {
+  color: var(--shiki-light);
+}
+
+.dark .shiki code span {
+  color: var(--shiki-dark);
 }
 
 .docs-content :not(pre) > code {

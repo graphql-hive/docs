@@ -2,8 +2,13 @@ import mdx from "@astrojs/mdx";
 import { unified } from "@astrojs/markdown-remark";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
+import { rehypeCode, rehypeCodeDefaultOptions } from "fumadocs-core/mdx-plugins";
 import { fileURLToPath } from "node:url";
 
+import {
+  DOCS_CODE_LANGS,
+  DOCS_CODE_THEMES,
+} from "../documentation/src/lib/docs-code-config.ts";
 import { mermaidRehypePlugin } from "./src/markdown/rehype-mermaid-config.mjs";
 import { remarkNpm2Yarn } from "./src/markdown/remark-npm2yarn.mjs";
 import { remarkRelativeLinks } from "./src/markdown/remark-relative-links.mjs";
@@ -11,13 +16,24 @@ import { remarkRelativeLinks } from "./src/markdown/remark-relative-links.mjs";
 export default defineConfig({
   integrations: [
     mdx({
-      // Mermaid must run before Shiki, so mermaid code blocks are excluded from
-      // syntax highlighting and reach rehype-mermaid unprocessed.
       processor: unified({
-        rehypePlugins: [mermaidRehypePlugin],
+        // Keep this in sync with the Fumadocs pipeline so code-block metadata,
+        // including filenames, has identical semantics in both sites.
+        rehypePlugins: [
+          mermaidRehypePlugin,
+          [
+            rehypeCode,
+            {
+              langs: [...DOCS_CODE_LANGS],
+              tab: false,
+              themes: DOCS_CODE_THEMES,
+              transformers: rehypeCodeDefaultOptions.transformers,
+            },
+          ],
+        ],
         remarkPlugins: [remarkNpm2Yarn, remarkRelativeLinks],
       }),
-      syntaxHighlight: { excludeLangs: ["mermaid"], type: "shiki" },
+      syntaxHighlight: false,
     }),
   ],
   publicDir: fileURLToPath(new URL("../documentation/public", import.meta.url)),
