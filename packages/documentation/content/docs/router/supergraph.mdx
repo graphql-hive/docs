@@ -232,6 +232,10 @@ example for overriding a configured default, and the
 [`feature_flags`](https://github.com/graphql-hive/router/tree/main/plugin_examples/feature_flags)
 example for a plugin-only source.
 
+In custom plugin mode, every GraphQL and readiness request must receive a selection. Missing selection
+returns HTTP `503` with `NO_SUPERGRAPH_AVAILABLE`. A WebSocket connection is accepted and then
+closed with an error, allowing browser clients to observe the failure reason/code.
+
 #### Reloading and retiring a Supergraph
 
 When a configured supergraph changes, in-flight requests continue with the exact schema and runtime
