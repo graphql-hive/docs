@@ -212,7 +212,7 @@ use hive_router::{
         hooks::{
             on_http_request::{OnHttpRequestHookFuture, OnHttpRequestHookPayload},
             on_plugin_init::{OnPluginInitPayload, OnPluginInitResult},
-            on_supergraph_load::Supergraph,
+            on_supergraph_load::{Supergraph, SupergraphOptions},
         },
         plugin_trait::{RouterPlugin, StartHookPayload},
     },
@@ -231,9 +231,14 @@ impl RouterPlugin for SchemaVariantsPlugin {
     }
 
     fn on_plugin_init(payload: OnPluginInitPayload<Self>) -> OnPluginInitResult<Self> {
+        let mut options = SupergraphOptions::default();
+        options.traffic_shaping.all.forward_operation_name = true;
+        options.error_masking.redacted_error_message = "Basic variant error".to_string();
+        options.hive_target = Some("organization/project/basic".to_string());
+
         let basic = Arc::new(Supergraph::from_sdl(
             include_str!("basic.supergraph.graphql"),
-            Default::default(),
+            options,
         )?);
         payload.initialize_plugin(Self { basic })
     }
@@ -253,8 +258,14 @@ impl RouterPlugin for SchemaVariantsPlugin {
 ```
 
 `Supergraph::from_document` accepts an already parsed document when the plugin needs to transform
-its schema first. Both constructors accept query-planner options only. Router configuration,
-telemetry, subgraph executors, and schema-aware caches remain router-owned.
+its schema first. Both constructors take a complete `SupergraphOptions` value: planner options,
+executor-side traffic shaping, header rules, URL overrides, override labels, demand control,
+subgraph subscription transports, error masking, persisted documents, and the Hive target. A
+plugin-owned variant does not inherit any of these from the router's configured supergraph — fields
+left at `SupergraphOptions::default()` simply use the defaults. Live router infrastructure (HTTP
+clients, caches, telemetry agents, storage runtimes) is still built by the router and stays out of
+`SupergraphOptions`. See [Supergraph-bound configuration](/docs/router/supergraph#supergraph-bound-configuration)
+for the complete field reference.
 
 If a plugin selects a supergraph whose router runtime cannot be constructed, the request fails
 without falling back to the configured supergraph. This prevents a request selected for one schema
