@@ -82,7 +82,7 @@ GitHub Merge Queue tests the accumulated changes from multiple pull requests. If
 compares the complete merge group against the latest schema in the registry, it can report breaking
 changes introduced and approved by an earlier pull request again.
 
-Pass `--base` with a `<revision>:<path>` value to compare the checked-out
+Pass `--baseline` with a `<revision>:<path>` value to compare the checked-out
 service schema against a schema file at the merge group's base commit. Hive composes both versions
 with the other services currently stored in the registry and evaluates only the difference between
 those compositions. Composition errors, conditional breaking changes, and contract checks are still
@@ -111,7 +111,7 @@ jobs:
             --registry.accessToken "${{ secrets.HIVE_TOKEN }}" \
             --target "<YOUR_ORGANIZATION>/<YOUR_PROJECT>/<YOUR_TARGET>" \
             --service "<YOUR_SERVICE_NAME>" \
-            --base "$MERGE_GROUP_BASE_SHA:path/to/schema.graphql" \
+            --baseline "$MERGE_GROUP_BASE_SHA:path/to/schema.graphql" \
             --github
 ```
 
@@ -119,7 +119,7 @@ For a `merge_group` event, the Hive CLI automatically extracts the pull request 
 group head commit. The `--github` flag reports the result on that commit and uses the same context as
 the pull request workflow, so approved breaking changes remain associated with the pull request.
 
-The `--base` option also accepts a local schema file. When using the Git revision syntax shown above,
+The `--baseline` option also accepts a local schema file. When using the Git revision syntax shown above,
 the value must reference one file and the checkout must contain the referenced commit.
 
 <Callout type="warning">

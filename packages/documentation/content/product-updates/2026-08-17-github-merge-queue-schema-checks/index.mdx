@@ -3,7 +3,7 @@ title: Improved Schema Checks in GitHub Merge Queues
 description:
   Hive schema checks can now compare a merge queue entry against its base commit, isolating the
   schema changes introduced by the current pull request.
-date: 2026-08-10
+date: 2026-08-17
 authors: [laurin]
 ---
 
@@ -17,7 +17,7 @@ introduced and approved in an earlier pull request for a second time.
 
 ## Compare the merge queue entry
 
-The Hive CLI's new `--base` option accepts a base schema as either a local file or a file from Git
+The Hive CLI's new `--baseline` option accepts a base schema as either a local file or a file from Git
 history using `<revision>:<path>`. Hive composes that base version and the proposed version with the
 other services in the registry, then compares the resulting schemas. The check therefore evaluates
 only the changes introduced between the merge group's base and head commits.
@@ -26,7 +26,7 @@ only the changes introduced between the merge group's base and head commits.
 hive schema:check "services/products/schema.graphql" \
   --service products \
   --target "the-guild/hive-console/development" \
-  --base "$MERGE_GROUP_BASE_SHA:services/products/schema.graphql"
+  --baseline "$MERGE_GROUP_BASE_SHA:services/products/schema.graphql"
 ```
 
 Composition errors and newly applicable conditional breaking changes are still detected in the
