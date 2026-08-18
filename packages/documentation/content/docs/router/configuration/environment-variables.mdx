@@ -2,7 +2,9 @@
 title: "Environment Variables"
 ---
 
-## Available Environment Variables
+To configure Hive Router using environment variables, you use the pre-defined environment variables listed below, or hook any configuration field to an environment variable.
+
+## Pre-defined Environment Variables
 
 The following environment variables are accepted by the router, and they override other
 configurations that can be set in the router's configuration file (`router.config.yaml`):
@@ -30,6 +32,34 @@ configurations that can be set in the router's configuration file (`router.confi
 
 > In cases where a configuration file (`router.config.yaml`) is used with environment variables at
 > the same time, environment variables will only override the specific configuration values.
+
+> In cases where the pre-defined environment variables are used, along with `from_env`, the pre-defined environment variable will be used
+> as they are considered preferred over the configuration file values.
+
+## Setting Any Config Value from an Environment Variable
+
+Beyond the fixed overrides above, any primitive field anywhere in the configuration file — strings,
+numbers, booleans — can be set from an environment variable using `from_env`, instead of a literal value:
+
+```yaml title="router.config.yaml"
+http:
+  port:
+    from_env: PORT
+```
+
+If the referenced environment variable is not set, the field falls back to its own default (or fails
+validation as usual if the field is required). You can also supply an inline fallback with `default`,
+which is used instead of the field's own default when the environment variable is unset:
+
+```yaml title="router.config.yaml"
+http:
+  port:
+    from_env: PORT
+    default: 4000
+```
+
+If you are using the plugin system, `from_env` also works inside a plugin's own `config` block, since it's resolved before the
+configuration is split up and handed to each plugin.
 
 ## Accessing Environment Variables in Expressions
 

@@ -952,6 +952,42 @@ async fn on_execute<'exec>(
 }
 ```
 
+**Report per-subgraph call durations**
+
+The request summary tracks `subgraph_calls_duration`, a map of subgraph name to the duration of
+every call made to it. Read it via
+[`get_current_summary()`](/docs/router/observability/logging#customizing-logs-from-plugins) in
+`on_end` and expose it however you like, e.g. as a response extension.
+
+```rust
+use hive_router::get_current_summary;
+use std::collections::BTreeMap;
+
+async fn on_execute<'exec>(
+    &'exec self,
+    payload: OnExecuteStartHookPayload<'exec>,
+) -> OnExecuteStartHookResult<'exec> {
+    payload.on_end(|mut end_payload: OnExecuteEndHookPayload<'exec>| {
+        let subgraph_calls: BTreeMap<String, u64> = get_current_summary()
+            .and_then(|summary| {
+                summary.subgraph_calls_duration.lock().ok().map(|durations| {
+                    durations
+                        .iter()
+                        .map(|(name, calls)| {
+                            let total_ms = calls.iter().map(|d| d.as_millis() as u64).sum();
+                            (name.clone(), total_ms)
+                        })
+                        .collect()
+                })
+            })
+            .unwrap_or_default();
+
+        end_payload.add_extension("subgraph_calls", subgraph_calls);
+        end_payload.proceed()
+    })
+}
+```
+
 #### Payload API Reference
 
 - [`OnExecuteStartHookPayload`](https://github.com/graphql-hive/router/blob/main/lib/executor/src/plugins/hooks/on_execute.rs#:~:text=struct%20OnExecuteStartHookPayload)

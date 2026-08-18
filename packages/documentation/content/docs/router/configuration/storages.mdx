@@ -204,6 +204,15 @@ endpoint:
   are not dynamic in the way that header or routing expressions are.
 </Callout>
 
+For simple cases (no fallback logic beyond a single default), the more general
+[`from_env`](./environment-variables#setting-any-config-value-from-an-environment-variable) shorthand
+works here too, and on any other primitive field in the config:
+
+```yaml
+bucket:
+  from_env: S3_BUCKET
+```
+
 ## Provider examples
 
 ### Amazon S3 (production, EKS via IRSA)

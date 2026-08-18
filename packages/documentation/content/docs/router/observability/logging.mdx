@@ -212,6 +212,7 @@ which makes filtering and routing precise. Common targets include:
 - `router::graphql_parsing` / `router::graphql_validation` / `router::graphql_normalization`
 - `router::coprocessor` / `router::plugin_system` — customizations
 - `router::jwt` / `router::authorization` — security
+- `router::config` — rotuer configuration loading
 
 ## Request correlation
 
@@ -256,8 +257,8 @@ Plugins can enrich the current request's logs through a few functions, callable 
 - **`set_summary_message(message)`** — overrides the summary line's `message` field. The first call
   wins; later calls for the same request are no-ops.
 - **`get_current_summary()`** — reads the current request's in-progress summary (`operation_name`,
-  `status_code`, and so on), so a plugin can build a message from data only known once the request
-  is finishing.
+  `status_code`, `subgraph_calls_duration`, and so on), so a plugin can build a message from data
+  only known once the request is finishing.
 
 ```rust
 use hive_router::{get_current_summary, set_log_correlation, set_summary_message};
