@@ -31,3 +31,55 @@ export function markdownResponse(entry: DocsEntry) {
     },
   });
 }
+
+function escapeHtml(value: string) {
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+}
+
+function renderHeadingInlineHtml(raw: string) {
+  return raw
+    .split(/(`[^`]+`)/g)
+    .map((segment) => {
+      if (segment.startsWith("`") && segment.endsWith("`") && segment.length >= 2) {
+        return `<code>${escapeHtml(segment.slice(1, -1))}</code>`;
+      }
+      return escapeHtml(segment)
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+        .replace(/\*\*([^*]+)\*\*/g, "$1")
+        .replace(/__([^_]+)__/g, "$1")
+        .replace(/\*([^*]+)\*/g, "$1");
+    })
+    .join("");
+}
+
+/**
+ * Astro's built-in heading collector (used by `render()`) flattens heading
+ * content to plain text, so inline code like `` `fetch` `` loses its `<code>`
+ * element by the time it reaches the table of contents. This re-derives an
+ * HTML string per heading straight from the Markdown source, matching
+ * headings by position (both walk the document in the same top-level order).
+ */
+export function getHeadingHtmlBySlug(
+  markdown: string,
+  headings: { slug: string; text: string }[],
+) {
+  const rawHeadings: string[] = [];
+  let inFence = false;
+  for (const line of markdown.split("\n")) {
+    if (/^(```|~~~)/.test(line.trim())) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+    const match = /^#{1,6}\s+(.*)$/.exec(line);
+    if (!match) continue;
+    rawHeadings.push(match[1].replace(/\s*\{#[\w-]+\}\s*$/, "").trim());
+  }
+
+  const htmlBySlug = new Map<string, string>();
+  headings.forEach((heading, index) => {
+    const raw = rawHeadings[index];
+    htmlBySlug.set(heading.slug, raw === undefined ? escapeHtml(heading.text) : renderHeadingInlineHtml(raw));
+  });
+  return htmlBySlug;
+}

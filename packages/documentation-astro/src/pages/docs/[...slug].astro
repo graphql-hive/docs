@@ -9,7 +9,7 @@ import Image from "../../components/mdx/Image.astro";
 import PackageManagerTabs from "../../components/mdx/PackageManagerTabs.astro";
 import PackageManagerTab from "../../components/mdx/Tab.astro";
 import DocsLayout from "../../layouts/DocsLayout.astro";
-import { getDocsSlug } from "../../lib/docs-markdown";
+import { getDocsSlug, getHeadingHtmlBySlug } from "../../lib/docs-markdown";
 import { getDocsNav } from "../../lib/docs-nav";
 
 type DocsEntry = CollectionEntry<"docs">;
@@ -33,7 +33,12 @@ function titleFromEntry(entry: DocsEntry) {
 }
 
 const { entry } = Astro.props as { entry: DocsEntry };
-const { Content, headings } = await render(entry);
+const { Content, headings: renderedHeadings } = await render(entry);
+const headingHtmlBySlug = getHeadingHtmlBySlug(entry.body ?? "", renderedHeadings);
+const headings = renderedHeadings.map((heading) => ({
+  ...heading,
+  html: headingHtmlBySlug.get(heading.slug) ?? heading.text,
+}));
 const slug = getDocsSlug(entry);
 const currentPath = `/docs${slug ? `/${slug}` : ""}`;
 const data = entry.data as { description?: string; title?: string };

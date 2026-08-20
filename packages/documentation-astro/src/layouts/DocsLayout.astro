@@ -16,6 +16,7 @@ interface Heading {
   depth: number;
   slug: string;
   text: string;
+  html: string;
 }
 
 interface Props {
@@ -93,7 +94,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
             </summary>
             <nav class="flex max-h-[50vh] flex-col overflow-auto border-b bg-beige-100 px-4 pb-4 shadow-sm md:px-6 dark:bg-neutral-900">
               {tableOfContents.map((heading) => (
-                <a class="py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere hover:text-fd-primary" href={`#${heading.slug}`}>{heading.text}</a>
+                <a class="py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere hover:text-fd-primary" href={`#${heading.slug}`} set:html={heading.html} />
               ))}
             </nav>
           </details>
@@ -142,9 +143,8 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
                       ]}
                       data-toc-anchor={heading.slug}
                       href={`#${heading.slug}`}
-                    >
-                      {heading.text}
-                    </a>
+                      set:html={heading.html}
+                    />
                   ))}
                 </nav>
               </div>
