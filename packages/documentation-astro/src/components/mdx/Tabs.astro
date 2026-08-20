@@ -8,7 +8,6 @@ const { defaultIndex = 0, items = [] } = Astro.props;
 const labels = items.map((item) =>
   typeof item === "string" || typeof item === "number" ? String(item) : undefined,
 );
-const fallbackLabels = ["Hive Gateway", "OpenTelemetry"];
 ---
 
 <div class="fd-tabs" data-default-index={defaultIndex}>
@@ -22,10 +21,11 @@ const fallbackLabels = ["Hive Gateway", "OpenTelemetry"];
           aria-selected={index === Number(defaultIndex)}
           class="fd-tab-trigger -mb-px shrink-0 cursor-pointer whitespace-nowrap rounded-t border-b border-transparent bg-transparent p-2 font-medium leading-5 text-beige-800 transition-colors hover:border-beige-400 hover:text-black focus-visible:outline-2 focus-visible:-outline-offset-2 aria-selected:border-current aria-selected:text-green-900 dark:text-beige-200 dark:hover:border-neutral-800 dark:hover:text-white dark:aria-selected:text-primary"
           data-index={index}
+          data-tab-label={label}
           role="tab"
           type="button"
         >
-          {label ?? fallbackLabels[index] ?? `Option ${index + 1}`}
+          {label}
         </button>
       ))
     }
@@ -37,16 +37,28 @@ const fallbackLabels = ["Hive Gateway", "OpenTelemetry"];
   function initializeTabs(root: HTMLElement) {
     const tabs = [...root.querySelectorAll<HTMLButtonElement>(":scope > .fd-tabs-list > button")];
     const panels = [...root.querySelectorAll<HTMLElement>(":scope > .tab-panels > .tab-panel")];
-    const show = (index: number) => {
+    const show = (index: number, updateUrl = false) => {
       tabs.forEach((tab, tabIndex) => {
         const selected = tabIndex === index;
         tab.ariaSelected = String(selected);
         tab.tabIndex = selected ? 0 : -1;
       });
       panels.forEach((panel, panelIndex) => (panel.hidden = panelIndex !== index));
+
+      if (updateUrl) {
+        const label = tabs[index]?.dataset.tabLabel;
+        if (label) {
+          const url = new URL(window.location.href);
+          url.searchParams.set("tab", label);
+          window.history.replaceState(window.history.state, "", url);
+        }
+      }
     };
-    tabs.forEach((tab, index) => tab.addEventListener("click", () => show(index)));
-    show(Number(root.dataset.defaultIndex) || 0);
+    tabs.forEach((tab, index) => tab.addEventListener("click", () => show(index, true)));
+
+    const tabParam = new URLSearchParams(window.location.search).get("tab");
+    const matchedIndex = tabParam ? tabs.findIndex((tab) => tab.dataset.tabLabel === tabParam) : -1;
+    show(matchedIndex !== -1 ? matchedIndex : Number(root.dataset.defaultIndex) || 0);
   }
 
   document.querySelectorAll<HTMLElement>(".fd-tabs").forEach(initializeTabs);
