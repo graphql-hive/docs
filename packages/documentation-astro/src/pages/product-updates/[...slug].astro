@@ -7,6 +7,7 @@ import Image from "../../components/mdx/Image.astro";
 import PackageManagerTabs from "../../components/mdx/PackageManagerTabs.astro";
 import PackageManagerTab from "../../components/mdx/Tab.astro";
 import ProductUpdateLayout from "../../layouts/ProductUpdateLayout.astro";
+import { getHeadingHtmlBySlug } from "../../lib/docs-markdown";
 
 type ProductUpdate = CollectionEntry<"productUpdates">;
 
@@ -28,7 +29,12 @@ function dateString(value: unknown) {
 }
 
 const { entry } = Astro.props as { entry: ProductUpdate };
-const { Content, headings } = await render(entry);
+const { Content, headings: renderedHeadings } = await render(entry);
+const headingHtmlBySlug = getHeadingHtmlBySlug(entry.body ?? "", renderedHeadings);
+const headings = renderedHeadings.map((heading) => ({
+  ...heading,
+  html: headingHtmlBySlug.get(heading.slug) ?? heading.text,
+}));
 const data = entry.data as {
   authors: (string | { name: string })[];
   canonical?: string;

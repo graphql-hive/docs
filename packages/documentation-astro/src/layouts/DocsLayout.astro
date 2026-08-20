@@ -10,20 +10,16 @@ import SiteNavigation from "../components/SiteNavigation.astro";
 import SocialMetadata from "../components/SocialMetadata.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import ThemeInit from "../components/ThemeInit.astro";
+import TocAsideContent from "../components/TocAsideContent.astro";
+import TocPopoverContent from "../components/TocPopoverContent.astro";
 import type { DocsNavNode, DocsNavPage } from "../lib/docs-nav";
-
-interface Heading {
-  depth: number;
-  slug: string;
-  text: string;
-  html: string;
-}
+import { filterToc, type TocHeading } from "../lib/toc";
 
 interface Props {
   currentPath: string;
   description?: string;
   githubUrl: string;
-  headings: Heading[];
+  headings: TocHeading[];
   markdownUrl: string;
   navItems: DocsNavPage[];
   navTree: DocsNavNode[];
@@ -31,7 +27,7 @@ interface Props {
 }
 
 const { currentPath, description, githubUrl, headings, markdownUrl, navItems, navTree, title } = Astro.props;
-const tableOfContents = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 4);
+const tableOfContents = filterToc(headings);
 const currentIndex = navItems.findIndex((item) => item.href === currentPath);
 const previous = currentIndex > 0 ? navItems[currentIndex - 1] : undefined;
 const next = currentIndex >= 0 ? navItems[currentIndex + 1] : undefined;
@@ -87,16 +83,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
       {
         tableOfContents.length > 0 && (
           <details class="group sticky top-(--fd-docs-row-2) z-10 h-(--fd-toc-popover-height) [grid-area:toc-popover] max-xl:[--fd-toc-popover-height:--spacing(10)] xl:hidden" data-toc-popover>
-            <summary class="flex h-10 w-full cursor-pointer list-none items-center gap-2.5 border-b bg-beige-100/80 px-4 py-2.5 text-start text-sm text-fd-muted-foreground backdrop-blur-sm focus-visible:outline-none md:px-6 dark:bg-neutral-900/80">
-              <svg class="size-4 shrink-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" /></svg>
-              <span class="flex-1 truncate">On this page</span>
-              <svg class="size-4 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg>
-            </summary>
-            <nav class="flex max-h-[50vh] flex-col overflow-auto border-b bg-beige-100 px-4 pb-4 shadow-sm md:px-6 dark:bg-neutral-900">
-              {tableOfContents.map((heading) => (
-                <a class="py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere hover:text-fd-primary" href={`#${heading.slug}`} set:html={heading.html} />
-              ))}
-            </nav>
+            <TocPopoverContent headings={tableOfContents} />
           </details>
         )
       }
@@ -125,32 +112,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
       </article>
 
       <aside class="sticky top-(--fd-docs-row-1) flex h-[calc(var(--fd-docs-height)-var(--fd-docs-row-1))] w-(--fd-toc-width) flex-col pt-12 pe-4 pb-2 [grid-area:toc] max-xl:hidden" id="nd-toc">
-        {
-          tableOfContents.length > 0 && (
-            <>
-              <h2 class="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground">
-                <svg class="size-4" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10" /></svg>
-                On this page
-              </h2>
-              <div class="relative ms-px min-h-0 overflow-auto py-3 text-sm [mask-image:linear-gradient(to_bottom,transparent,white_16px,white_calc(100%-16px),transparent)] [scrollbar-width:none]">
-                <div class="toc-thumb absolute top-(--fd-top) h-(--fd-height) w-0.5 rounded-e-sm bg-fd-primary transition-[top,height] ease-linear"></div>
-                <nav class="flex flex-col border-s border-fd-foreground/10">
-                  {tableOfContents.map((heading) => (
-                    <a
-                      class:list={[
-                        "toc-link py-1.5 text-sm text-fd-muted-foreground transition-colors wrap-anywhere first:pt-0 last:pb-0 data-[active=true]:text-fd-primary",
-                        heading.depth <= 2 ? "ps-3" : heading.depth === 3 ? "ps-6" : "ps-8",
-                      ]}
-                      data-toc-anchor={heading.slug}
-                      href={`#${heading.slug}`}
-                      set:html={heading.html}
-                    />
-                  ))}
-                </nav>
-              </div>
-            </>
-          )
-        }
+        {tableOfContents.length > 0 && <TocAsideContent headings={tableOfContents} />}
         <div class="flex flex-col items-start gap-2">
           <CopyMarkdown markdownUrl={markdownUrl} />
           <a
@@ -199,23 +161,6 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
       themeMedia.addEventListener("change", () => {
         if ((localStorage.getItem("theme") || "system") === "system") applyTheme("system");
       });
-
-      const links = [...document.querySelectorAll<HTMLAnchorElement>(".toc-link")];
-      const thumb = document.querySelector<HTMLElement>(".toc-thumb");
-      const updateToc = () => {
-        if (links.length === 0) return;
-        const active = [...links].reverse().find((link) => {
-          const id = link.dataset.tocAnchor;
-          return id && document.getElementById(id)?.getBoundingClientRect().top! <= 140;
-        }) ?? links[0];
-        links.forEach((link) => link.dataset.active = String(link === active));
-        if (thumb) {
-          thumb.style.setProperty("--fd-top", `${active.offsetTop}px`);
-          thumb.style.setProperty("--fd-height", `${active.offsetHeight}px`);
-        }
-      };
-      updateToc();
-      addEventListener("scroll", updateToc, { passive: true });
     </script>
   </body>
 </html>

@@ -7,28 +7,23 @@ import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import SocialMetadata from "../components/SocialMetadata.astro";
 import ThemeInit from "../components/ThemeInit.astro";
+import TocAsideContent from "../components/TocAsideContent.astro";
+import TocPopoverContent from "../components/TocPopoverContent.astro";
 import { resolveAuthor } from "../lib/authors";
-
-interface Heading {
-  depth: number;
-  slug: string;
-  text: string;
-}
+import { filterToc, type TocHeading } from "../lib/toc";
 
 interface Props {
   authors: (string | { name: string })[];
   canonical?: string;
   date: string;
   description: string;
-  headings: Heading[];
+  headings: TocHeading[];
   title: string;
 }
 
 const { authors, canonical, date, description, headings, title } = Astro.props;
 const authorIds = authors.map((author) => (typeof author === "string" ? author : resolveAuthor(author).name));
-const tableOfContents = headings.filter(
-  (heading) => heading.depth >= 2 && heading.depth <= 3,
-);
+const tableOfContents = filterToc(headings, 2, 3);
 const pageTitle = `${title} | Hive`;
 const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
 ---
@@ -44,7 +39,15 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
   <body class="min-h-screen antialiased dark:bg-[rgb(var(--nextra-bg))] dark:text-neutral-200" data-theme-enabled>
     <SiteNavigation />
 
-    <div class="update-shell text-green-1000 mx-auto dark:text-neutral-200">
+    <div class="update-shell mx-auto grid w-full grid-cols-1 text-green-1000 xl:grid-cols-[minmax(0,48rem)_268px] dark:text-neutral-200">
+      {
+        tableOfContents.length > 0 && (
+          <details class="group sticky top-(--header-height) z-10 h-10 xl:hidden" data-toc-popover>
+            <TocPopoverContent headings={tableOfContents} />
+          </details>
+        )
+      }
+
       <main class="min-w-0" data-heading-permalinks>
         <a class="hive-focus outline-hidden text-sm text-green-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="/product-updates">← All product updates</a>
         <h1 class="group text-green-1000 mb-0 mt-4 text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] dark:text-neutral-200" id={titleId}>{title}</h1>
@@ -52,18 +55,9 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
         <article class="docs-content"><slot /></article>
       </main>
 
-      {
-        tableOfContents.length > 0 && (
-          <aside class="toc">
-            <strong>On this page</strong>
-            {tableOfContents.map((heading) => (
-              <a class={`depth-${heading.depth}`} href={`#${heading.slug}`}>
-                {heading.text}
-              </a>
-            ))}
-          </aside>
-        )
-      }
+      <aside class="sticky top-(--header-height) col-start-2 row-start-1 hidden h-[calc(100vh-var(--header-height))] w-full flex-col pb-2 pt-12 pe-4 xl:flex" id="nd-toc">
+        {tableOfContents.length > 0 && <TocAsideContent headings={tableOfContents} />}
+      </aside>
     </div>
 
     <SiteFooter />
@@ -73,57 +67,9 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
 
 <style>
   .update-shell {
-    display: grid;
-    grid-template-columns: minmax(0, 48rem) minmax(10rem, 14rem);
     gap: clamp(3rem, 7vw, 7rem);
     width: min(70rem, calc(100% - 2rem));
     min-height: calc(100vh - var(--header-height));
     padding: clamp(3rem, 8vw, 6rem) 0;
-  }
-
-  .toc {
-    position: sticky;
-    top: var(--header-height);
-    display: grid;
-    height: fit-content;
-    max-height: calc(100vh - var(--header-height));
-    align-content: start;
-    gap: 0.2rem;
-    padding: 3rem 0;
-    overflow-y: auto;
-  }
-
-  .toc strong {
-    margin: 0 0 0.65rem 0.5rem;
-    font-size: 0.75rem;
-    color: var(--color-fd-muted-foreground);
-  }
-
-  .toc a {
-    padding: 0.3rem 0.5rem;
-    color: var(--color-fd-muted-foreground);
-    border-radius: 0.3rem;
-    font-size: 0.8rem;
-    line-height: 1.35;
-    text-decoration: none;
-  }
-
-  .toc a:hover {
-    color: var(--color-fd-primary);
-    background: var(--color-fd-accent);
-  }
-
-  .toc .depth-3 {
-    padding-left: 1.2rem;
-  }
-
-  @media (max-width: 54rem) {
-    .update-shell {
-      display: block;
-    }
-
-    .toc {
-      display: none;
-    }
   }
 </style>
