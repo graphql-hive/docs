@@ -33,14 +33,21 @@ export function markdownResponse(entry: DocsEntry) {
 }
 
 function escapeHtml(value: string) {
-  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 }
 
 function renderHeadingInlineHtml(raw: string) {
   return raw
     .split(/(`[^`]+`)/g)
     .map((segment) => {
-      if (segment.startsWith("`") && segment.endsWith("`") && segment.length >= 2) {
+      if (
+        segment.startsWith("`") &&
+        segment.endsWith("`") &&
+        segment.length >= 2
+      ) {
         return `<code>${escapeHtml(segment.slice(1, -1))}</code>`;
       }
       return escapeHtml(segment)
@@ -79,7 +86,12 @@ export function getHeadingHtmlBySlug(
   const htmlBySlug = new Map<string, string>();
   headings.forEach((heading, index) => {
     const raw = rawHeadings[index];
-    htmlBySlug.set(heading.slug, raw === undefined ? escapeHtml(heading.text) : renderHeadingInlineHtml(raw));
+    htmlBySlug.set(
+      heading.slug,
+      raw === undefined
+        ? escapeHtml(heading.text)
+        : renderHeadingInlineHtml(raw),
+    );
   });
   return htmlBySlug;
 }
