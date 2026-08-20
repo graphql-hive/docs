@@ -54,6 +54,21 @@
   );
 }
 
+@keyframes pop-up {
+  from {
+    opacity: 0;
+    transform: translateY(3px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@utility animate-pop-up {
+  animation: pop-up 400ms var(--hive-ease-overshoot-far) forwards;
+}
+
 :root {
   color-scheme: light;
   --nextra-bg: 255 255 255;
