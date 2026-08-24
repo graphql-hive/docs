@@ -1,0 +1,208 @@
+---
+title: OpenTelemetry with GraphQL Yoga and Hive Gateway
+sidebarTitle: OpenTelemetry
+description: Set up OpenTelemetry tracing for GraphQL Yoga or Hive Gateway and send traces to Hive Console.
+---
+
+import { Callout } from "@hive/design-system/hive-components/callout";
+import { Tabs } from "@hive/design-system/tabs";
+
+<Callout type="warning">
+  OpenTelemetry tracing in Hive Console is currently in preview. Reach out to
+  us to enable it for your organization.
+</Callout>
+
+The `@graphql-hive/plugin-opentelemetry` package instruments incoming HTTP requests, the GraphQL
+execution lifecycle, and outgoing subgraph requests. You can use it with GraphQL Yoga or a
+programmatic Hive Gateway deployment.
+
+This guide configures the plugin in a Node.js application. You can send traces only to Hive Console
+or add Hive Console as a second destination alongside Datadog, Grafana, Honeycomb, or another
+existing OpenTelemetry backend. For more configuration options, see the Hive Gateway
+[Monitoring and Tracing guide](/docs/gateway/monitoring-tracing#opentelemetry-setup).
+
+## Prerequisites
+
+Create [an access token](/docs/schema-registry/management/access-tokens) with permission to send
+traces and find your [target](/docs/schema-registry/management/targets) reference. The target can be
+a slug in the format `$organizationSlug/$projectSlug/$targetSlug` or a target UUID.
+
+Make both values available to your application:
+
+```sh
+HIVE_TARGET="my-organization/my-project/production"
+HIVE_TRACING_ACCESS_TOKEN="your-access-token"
+```
+
+## Installation
+
+```sh npm2yarn
+npm i @graphql-hive/plugin-opentelemetry @opentelemetry/context-async-hooks
+```
+
+## Initialize OpenTelemetry
+
+Create a module that registers the OpenTelemetry context manager, trace provider, and Hive exporter:
+
+```ts title="telemetry.ts"
+import { hiveTracingSetup } from "@graphql-hive/plugin-opentelemetry/setup";
+import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks";
+
+hiveTracingSetup({
+  contextManager: new AsyncLocalStorageContextManager(),
+  target: process.env["HIVE_TARGET"]!,
+  accessToken: process.env["HIVE_TRACING_ACCESS_TOKEN"]!,
+  resource: {
+    serviceName: "my-graphql-service",
+  },
+  // Optional for self-hosted Hive:
+  // endpoint: process.env["HIVE_TRACING_ENDPOINT"],
+});
+```
+
+Import this module before importing and creating Yoga or Hive Gateway. Call `hiveTracingSetup` only
+once in each process because it registers global OpenTelemetry APIs.
+
+<Callout type="info">
+  `hiveTracingSetup` configures where spans are exported. `useOpenTelemetry`
+  instruments requests and creates the spans. Both steps are required unless
+  your application already initializes an OpenTelemetry SDK and exporter.
+</Callout>
+
+## Keep your existing OpenTelemetry backend
+
+Probably your applications already send traces to an observability provider like DataDog. You do not need to replace that
+setup to try Hive Console. Use one OpenTelemetry provider and configure it with a span processor for
+each destination.
+
+Do not call `hiveTracingSetup` or register a second provider in this case. Add
+`HiveTracingSpanProcessor` to your existing SDK configuration before starting the provider:
+
+```sh npm2yarn
+npm i @opentelemetry/exporter-trace-otlp-http @opentelemetry/sdk-node
+```
+
+```ts title="telemetry.ts"
+import { HiveTracingSpanProcessor } from "@graphql-hive/plugin-opentelemetry/setup";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { NodeSDK, tracing } from "@opentelemetry/sdk-node";
+
+const sdk = new NodeSDK({
+  // Keep your existing resource, instrumentations, and other SDK options here.
+  spanProcessors: [
+    // Your existing backend. This exporter can also use the standard OTEL_EXPORTER_* variables.
+    new tracing.BatchSpanProcessor(
+      new OTLPTraceExporter({
+        url: process.env["EXISTING_OTLP_TRACES_ENDPOINT"],
+      }),
+    ),
+    // HiveTracingSpanProcessor batches and exports a copy of each Hive trace to Hive Console.
+    new HiveTracingSpanProcessor({
+      endpoint:
+        process.env["HIVE_TRACING_ENDPOINT"] ??
+        "https://api.graphql-hive.com/otel/v1/traces",
+      target: process.env["HIVE_TARGET"]!,
+      accessToken: process.env["HIVE_TRACING_ACCESS_TOKEN"]!,
+    }),
+  ],
+});
+
+sdk.start();
+```
+
+Your existing backend continues receiving all spans. The Hive processor selects and transforms Hive
+request traces before sending them to Hive Console. Use this same `telemetry.ts` as the first import
+in the Yoga or Gateway examples below.
+
+## Add the plugin
+
+<Tabs items={["GraphQL Yoga", "Hive Gateway config", "Programmatic Hive Gateway"]}>
+
+<Tabs.Tab>
+
+Import the setup module first, then add `useOpenTelemetry` to Yoga's plugins:
+
+```ts title="server.ts"
+import "./telemetry";
+import { createServer } from "node:http";
+import { useOpenTelemetry } from "@graphql-hive/plugin-opentelemetry";
+import { createYoga } from "graphql-yoga";
+import { schema } from "./schema";
+
+const yoga = createYoga({
+  schema,
+  plugins: [
+    useOpenTelemetry({
+      traces: true,
+    }),
+  ],
+});
+
+createServer(yoga).listen(4000);
+```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+When running Hive Gateway from a configuration file, use its `openTelemetry` option. Gateway adds
+`useOpenTelemetry` internally and supplies its runtime context to the plugin:
+
+```ts title="gateway.config.ts"
+import "./telemetry";
+import { defineConfig } from "@graphql-hive/gateway";
+
+export const gatewayConfig = defineConfig({
+  openTelemetry: {
+    traces: true,
+  },
+});
+```
+
+The Gateway package also re-exports the setup utility from
+`@graphql-hive/gateway/opentelemetry/setup`. The direct plugin import used in this guide works for
+both Yoga and programmatic Gateway applications.
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+
+When creating the Gateway runtime programmatically, add the plugin directly. Spread the runtime
+context into the options so the plugin can instrument Gateway-specific operations and use the
+Gateway logger:
+
+```ts title="gateway.ts"
+import "./telemetry";
+import { createGatewayRuntime } from "@graphql-hive/gateway-runtime";
+import { useOpenTelemetry } from "@graphql-hive/plugin-opentelemetry";
+
+export const gateway = createGatewayRuntime({
+  plugins: (context) => [
+    useOpenTelemetry({
+      ...context,
+      traces: true,
+    }),
+  ],
+});
+```
+
+</Tabs.Tab>
+
+</Tabs>
+
+## Verify the setup
+
+Start the server and send a GraphQL operation through its HTTP endpoint. Open the target's **Traces**
+view in Hive Console and select a recent operation. The trace should contain the HTTP and GraphQL
+lifecycle spans. Gateway traces also contain spans for subgraph requests.
+
+If no traces appear, verify that:
+
+- `telemetry.ts` is imported before the server or Gateway is created.
+- The access token can send traces to the configured target.
+- `HIVE_TARGET` points to the same target you opened in Hive Console.
+- A self-hosted `HIVE_TRACING_ENDPOINT` is reachable from the application.
+- `OTEL_SDK_DISABLED` is not set to `true`.
+
+For sampling, custom exporters, context propagation, span filters, and custom attributes, see the
+[OpenTelemetry Traces reference](/docs/gateway/monitoring-tracing#opentelemetry-traces).
