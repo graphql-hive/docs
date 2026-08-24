@@ -2,6 +2,7 @@
 title: "OpenTelemetry Tracing"
 ---
 
+import { Callout } from "@hive/design-system/hive-components/callout";
 import { Tabs } from "@hive/design-system/tabs";
 
 Hive Router supports distributed tracing so you can follow requests across the gateway and your
@@ -21,6 +22,11 @@ and others) usually prefer OTLP because it fits into existing telemetry pipeline
 routing rules.
 
 ## Send traces to Hive Console
+
+<Callout type="warning">
+  OpenTelemetry tracing in Hive Console is currently in preview. Submit a
+  support ticket to enable it for your organization.
+</Callout>
 
 If you are already using Hive, sending traces to Console is usually the smoothest starting point. It
 keeps tracing data close to schema and usage insights, so it is easier to move from "this request is

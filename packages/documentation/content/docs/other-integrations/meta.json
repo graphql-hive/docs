@@ -12,6 +12,7 @@
     "graphql-code-generator",
     "graphql-ruby",
     "graphql-yoga",
+    "opentelemetry",
     "lighthouse",
     "schema-stitching"
   ]
