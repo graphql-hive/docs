@@ -206,3 +206,102 @@ If no traces appear, verify that:
 
 For sampling, custom exporters, context propagation, span filters, and custom attributes, see the
 [OpenTelemetry Traces reference](/docs/gateway/monitoring-tracing#opentelemetry-traces).
+
+
+## Send traces without the JavaScript plugin
+
+Servers and routers written in other languages can send OTLP over HTTP directly to Hive Console:
+
+```text
+POST https://api.graphql-hive.com/otel/v1/traces
+Authorization: Bearer <HIVE_TRACING_ACCESS_TOKEN>
+X-Hive-Target-Ref: <ORGANIZATION>/<PROJECT>/<TARGET>
+```
+
+Use the normal OTLP protobuf or JSON request format. The target header also accepts a target UUID.
+
+### Operation root span
+
+Hive Console treats a parentless span with a truthy `hive.graphql` attribute as a GraphQL operation
+root. This marker is the only attribute required for ingestion, but the supporting attributes below
+are needed for useful labels, filters, error status, and federation views.
+
+Emit one operation root for every executed GraphQL operation with this minimum shape:
+
+```text
+parent span ID: empty
+span name: graphql.operation
+attributes:
+  hive.graphql: true
+  graphql.operation.type: query
+  graphql.operation.name: GetProducts
+  graphql.document: query GetProducts { products { id name } }
+  http.status_code: 200
+```
+
+If your instrumentation creates an HTTP server span above the operation, either export the operation
+as the parentless Hive trace root or reproduce the transformation performed by
+`HiveTracingSpanProcessor`: remove the operation's parent, copy the HTTP attributes to it, and use the
+HTTP request's start and end times. This makes the operation discoverable while preserving the full
+request duration.
+
+### Hive attributes
+
+Use native OTLP booleans, integers, strings, and string arrays rather than encoding values as JSON
+strings.
+
+| Attribute                               | Type       | Span                 | Description                                                                                              |
+| --------------------------------------- | ---------- | -------------------- | -------------------------------------------------------------------------------------------------------- |
+| `hive.graphql`                          | `boolean`  | Operation root       | Required marker for a GraphQL operation trace. Set it to `true`.                                         |
+| `hive.graphql.operation.hash`           | `string`   | Operation root       | Stable identity of the normalized operation. Used to correlate and filter repeated operations.           |
+| `hive.graphql.error.count`              | `integer`  | Operation root       | Total GraphQL parse, validation, and execution errors. Omit it or set it to `0` when there are no errors. |
+| `hive.graphql.error.codes`              | `string[]` | Operation root       | Values of `error.extensions.code` for GraphQL errors that provide a code.                                |
+| `hive.client.name`                      | `string`   | Operation root       | Client application name, commonly read from `graphql-client-name` or `x-graphql-client-name`.             |
+| `hive.client.version`                   | `string`   | Operation root       | Client version, commonly read from `graphql-client-version` or `x-graphql-client-version`.                |
+| `hive.request.id`                       | `string`   | Operation root       | Application request ID for correlation with logs and other telemetry.                                    |
+| `hive.gateway.operation.subgraph.names` | `string[]` | Operation root       | Names of all subgraphs contacted while executing a federated operation.                                  |
+| `hive.gateway.upstream.subgraph.name`   | `string`   | Subgraph client span | Name of the subgraph represented by this span.                                                            |
+| `hive.upstream`                         | `boolean`  | Subgraph client span | Marks a logical subgraph execution. Set it to `true`.                                                     |
+| `hive.request`                          | `boolean`  | HTTP server span     | Marks the plugin's HTTP request span for processing. Not needed when emitting the final operation root.   |
+
+The JavaScript plugin's operation hash is a lowercase MD5 digest of the normalized operation body,
+selected operation name, and sorted unique schema coordinates. Its normalization removes aliases,
+normalizes literal values, and sorts definitions, selections, arguments, directives, and variables.
+Other implementations may provide their own stable hash, but matching this algorithm keeps operation
+identities consistent across services using the JavaScript plugin.
+
+For a federated trace, make each logical subgraph execution a child client span of the operation.
+Set both `hive.upstream` and `hive.gateway.upstream.subgraph.name` on that span, then make the
+outgoing HTTP request span its child. Also add the complete list of contacted subgraphs to
+`hive.gateway.operation.subgraph.names` on the operation root.
+
+### GraphQL attributes
+
+These attributes are not in the `hive.*` namespace, but Hive Console uses them as first-class
+operation metadata:
+
+| Attribute                | Type     | Description                                                       |
+| ------------------------ | -------- | ----------------------------------------------------------------- |
+| `graphql.document`       | `string` | Printed GraphQL document. Also enables the operation source view. |
+| `graphql.operation.name` | `string` | Selected operation name. Omit it for an anonymous operation.      |
+| `graphql.operation.type` | `string` | One of `query`, `mutation`, or `subscription`.                    |
+
+### HTTP attributes
+
+Copy these HTTP server span attributes to the operation root. Hive Console currently uses these
+exact attribute names for trace filters and success classification:
+
+| Attribute          | Type      | Description                |
+| ------------------ | --------- | -------------------------- |
+| `http.status_code` | `integer` | HTTP response status code. |
+| `http.method`      | `string`  | HTTP request method.       |
+| `http.host`        | `string`  | Request host.              |
+| `http.route`       | `string`  | Matched server route.      |
+| `http.url`         | `string`  | Full request URL.          |
+
+Set the standard OpenTelemetry span status to `ERROR` for failures. You can also record standard
+`exception` events with `exception.type`, `exception.message`, and `exception.stacktrace`; Hive
+Console renders these in the span details.
+
+Set `service.name` and `service.version` as standard OpenTelemetry resource attributes. All other
+resource attributes, span attributes, links, and events remain available in the detailed trace view.
