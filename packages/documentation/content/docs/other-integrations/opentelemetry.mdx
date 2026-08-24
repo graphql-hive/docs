@@ -207,7 +207,6 @@ If no traces appear, verify that:
 For sampling, custom exporters, context propagation, span filters, and custom attributes, see the
 [OpenTelemetry Traces reference](/docs/gateway/monitoring-tracing#opentelemetry-traces).
 
-
 ## Send traces without the JavaScript plugin
 
 Servers and routers written in other languages can send OTLP over HTTP directly to Hive Console:
@@ -250,16 +249,16 @@ request duration.
 Use native OTLP booleans, integers, strings, and string arrays rather than encoding values as JSON
 strings.
 
-| Attribute                               | Type       | Span                 | Description                                                                                              |
-| --------------------------------------- | ---------- | -------------------- | -------------------------------------------------------------------------------------------------------- |
-| `hive.graphql`                          | `boolean`  | Operation root       | Required marker for a GraphQL operation trace. Set it to `true`.                                         |
-| `hive.graphql.operation.hash`           | `string`   | Operation root       | Stable identity of the normalized operation. Used to correlate and filter repeated operations.           |
+| Attribute                               | Type       | Span                 | Description                                                                                               |
+| --------------------------------------- | ---------- | -------------------- | --------------------------------------------------------------------------------------------------------- |
+| `hive.graphql`                          | `boolean`  | Operation root       | Required marker for a GraphQL operation trace. Set it to `true`.                                          |
+| `hive.graphql.operation.hash`           | `string`   | Operation root       | Stable identity of the normalized operation. Used to correlate and filter repeated operations.            |
 | `hive.graphql.error.count`              | `integer`  | Operation root       | Total GraphQL parse, validation, and execution errors. Omit it or set it to `0` when there are no errors. |
-| `hive.graphql.error.codes`              | `string[]` | Operation root       | Values of `error.extensions.code` for GraphQL errors that provide a code.                                |
+| `hive.graphql.error.codes`              | `string[]` | Operation root       | Values of `error.extensions.code` for GraphQL errors that provide a code.                                 |
 | `hive.client.name`                      | `string`   | Operation root       | Client application name, commonly read from `graphql-client-name` or `x-graphql-client-name`.             |
 | `hive.client.version`                   | `string`   | Operation root       | Client version, commonly read from `graphql-client-version` or `x-graphql-client-version`.                |
-| `hive.request.id`                       | `string`   | Operation root       | Application request ID for correlation with logs and other telemetry.                                    |
-| `hive.gateway.operation.subgraph.names` | `string[]` | Operation root       | Names of all subgraphs contacted while executing a federated operation.                                  |
+| `hive.request.id`                       | `string`   | Operation root       | Application request ID for correlation with logs and other telemetry.                                     |
+| `hive.gateway.operation.subgraph.names` | `string[]` | Operation root       | Names of all subgraphs contacted while executing a federated operation.                                   |
 | `hive.gateway.upstream.subgraph.name`   | `string`   | Subgraph client span | Name of the subgraph represented by this span.                                                            |
 | `hive.upstream`                         | `boolean`  | Subgraph client span | Marks a logical subgraph execution. Set it to `true`.                                                     |
 | `hive.request`                          | `boolean`  | HTTP server span     | Marks the plugin's HTTP request span for processing. Not needed when emitting the final operation root.   |
