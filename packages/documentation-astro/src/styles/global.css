@@ -136,7 +136,7 @@
 .dark
   body[data-theme-enabled]
   .docs-content
-  :where(p, ul, ol):not(.hive-card *) {
+  :where(p, ul, ol):not(.hive-card *, .not-prose *) {
   color: color-mix(in oklab, var(--color-neutral-200) 90%, transparent);
 }
 
@@ -144,12 +144,18 @@
   color: var(--color-neutral-500);
 }
 
-.dark body[data-theme-enabled] .docs-content a:not(.hive-card) {
+.dark
+  body[data-theme-enabled]
+  .docs-content
+  a:not(.hive-card, .not-prose, .not-prose *) {
   color: var(--color-neutral-200);
   text-decoration-color: var(--color-primary);
 }
 
-.dark body[data-theme-enabled] .docs-content a:not(.hive-card):hover {
+.dark
+  body[data-theme-enabled]
+  .docs-content
+  a:not(.hive-card, .not-prose, .not-prose *):hover {
   color: var(--color-primary);
 }
 
@@ -219,6 +225,16 @@
   margin: 1.5rem auto 0 auto;
 }
 
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-fd-border, currentColor);
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -264,30 +280,32 @@ h4 {
 .docs-content h2,
 .docs-content h3,
 .docs-content h4 {
-  line-height: 1.25;
-  letter-spacing: -0.02em;
+  font-weight: 600;
 }
 
 .docs-content h2 {
-  margin: 2rem 0 1rem;
-  font-size: 1.75rem;
+  margin: 3rem 0 1.5rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .docs-content h3 {
-  margin: 2.5rem 0 0.75rem;
-  font-size: 1.35rem;
+  margin: 2rem 0 0.75rem;
+  font-size: 1.25rem;
+  line-height: 2rem;
 }
 
 .docs-content h4 {
-  margin: 2rem 0 0.5rem;
-  font-size: 1.05rem;
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
-.docs-content :where(p, ul, ol):not(.hive-card *) {
+.docs-content :where(p, ul, ol):not(.hive-card *, .not-prose *) {
   color: var(--color-green-800);
 }
 
-.docs-content p:not(:first-child) {
+.docs-content p:not(:first-child, .not-prose *) {
   margin: 1rem 0;
 }
 
@@ -317,7 +335,7 @@ h4 {
   color: var(--color-beige-800);
 }
 
-.docs-content a:not(.hive-card) {
+.docs-content a:not(.hive-card, .not-prose, .not-prose *) {
   margin: -0.125rem -0.25rem;
   padding: 0.125rem 0.25rem;
   color: currentColor;
@@ -327,7 +345,7 @@ h4 {
   text-underline-offset: 0.125rem;
 }
 
-.docs-content a:not(.hive-card):hover {
+.docs-content a:not(.hive-card, .not-prose, .not-prose *):hover {
   color: var(--color-blue-700);
   text-decoration: none;
 }
@@ -368,29 +386,8 @@ h4 {
   font-size: 0.85em;
 }
 
-.docs-content table {
-  display: block;
-  width: 100%;
-  margin: 1.5rem 0;
-  overflow-x: auto;
-  border-collapse: collapse;
-}
-
-.docs-content th,
-.docs-content td {
-  padding: 0.65rem 0.8rem;
-  border: 1px solid var(--border);
-  text-align: left;
-}
-
 .docs-content blockquote {
   margin: 1.5rem 0;
   padding-left: 1rem;
   border-left: 3px solid var(--border);
-}
-
-@media (max-width: 48rem) {
-  .docs-content h2 {
-    font-size: 1.5rem;
-  }
 }
