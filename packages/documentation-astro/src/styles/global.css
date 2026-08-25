@@ -136,7 +136,7 @@
 .dark
   body[data-theme-enabled]
   .docs-content
-  :where(p, ul, ol):not(.hive-card *) {
+  :where(p, ul, ol):not(.hive-card *, .not-prose *) {
   color: color-mix(in oklab, var(--color-neutral-200) 90%, transparent);
 }
 
@@ -144,12 +144,18 @@
   color: var(--color-neutral-500);
 }
 
-.dark body[data-theme-enabled] .docs-content a:not(.hive-card) {
+.dark
+  body[data-theme-enabled]
+  .docs-content
+  a:not(.hive-card, .not-prose, .not-prose *) {
   color: var(--color-neutral-200);
   text-decoration-color: var(--color-primary);
 }
 
-.dark body[data-theme-enabled] .docs-content a:not(.hive-card):hover {
+.dark
+  body[data-theme-enabled]
+  .docs-content
+  a:not(.hive-card, .not-prose, .not-prose *):hover {
   color: var(--color-primary);
 }
 
@@ -295,11 +301,11 @@ h4 {
   line-height: 1.5rem;
 }
 
-.docs-content :where(p, ul, ol):not(.hive-card *) {
+.docs-content :where(p, ul, ol):not(.hive-card *, .not-prose *) {
   color: var(--color-green-800);
 }
 
-.docs-content p:not(:first-child) {
+.docs-content p:not(:first-child, .not-prose *) {
   margin: 1rem 0;
 }
 
@@ -329,7 +335,7 @@ h4 {
   color: var(--color-beige-800);
 }
 
-.docs-content a:not(.hive-card) {
+.docs-content a:not(.hive-card, .not-prose, .not-prose *) {
   margin: -0.125rem -0.25rem;
   padding: 0.125rem 0.25rem;
   color: currentColor;
@@ -339,7 +345,7 @@ h4 {
   text-underline-offset: 0.125rem;
 }
 
-.docs-content a:not(.hive-card):hover {
+.docs-content a:not(.hive-card, .not-prose, .not-prose *):hover {
   color: var(--color-blue-700);
   text-decoration: none;
 }
