@@ -219,6 +219,16 @@
   margin: 1.5rem auto 0 auto;
 }
 
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-fd-border, currentColor);
+  }
+}
+
 * {
   box-sizing: border-box;
 }
