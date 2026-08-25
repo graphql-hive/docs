@@ -378,21 +378,6 @@ h4 {
   font-size: 0.85em;
 }
 
-.docs-content table {
-  display: block;
-  width: 100%;
-  margin: 1.5rem 0;
-  overflow-x: auto;
-  border-collapse: collapse;
-}
-
-.docs-content th,
-.docs-content td {
-  padding: 0.65rem 0.8rem;
-  border: 1px solid var(--border);
-  text-align: left;
-}
-
 .docs-content blockquote {
   margin: 1.5rem 0;
   padding-left: 1rem;

@@ -8,6 +8,7 @@ import PackageManagerTabs from "../../components/mdx/PackageManagerTabs.astro";
 import PackageManagerTab from "../../components/mdx/Tab.astro";
 import ProductUpdateLayout from "../../layouts/ProductUpdateLayout.astro";
 import { getHeadingHtmlBySlug } from "../../lib/docs-markdown";
+import Table from "../../components/mdx/Table.astro";
 
 type ProductUpdate = CollectionEntry<"productUpdates">;
 
@@ -52,5 +53,5 @@ const data = entry.data as {
   headings={headings}
   title={data.title}
 >
-  <Content components={{ Callout, Image, MdxImage: Image, PackageManagerTab, PackageManagerTabs, pre: CodeBlock }} />
+  <Content components={{ Callout, Image, MdxImage: Image, PackageManagerTab, PackageManagerTabs, pre: CodeBlock, table: Table }} />
 </ProductUpdateLayout>
