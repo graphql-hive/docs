@@ -274,23 +274,25 @@ h4 {
 .docs-content h2,
 .docs-content h3,
 .docs-content h4 {
-  line-height: 1.25;
-  letter-spacing: -0.02em;
+  font-weight: 600;
 }
 
 .docs-content h2 {
-  margin: 2rem 0 1rem;
-  font-size: 1.75rem;
+  margin: 3rem 0 1.5rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .docs-content h3 {
-  margin: 2.5rem 0 0.75rem;
-  font-size: 1.35rem;
+  margin: 2rem 0 0.75rem;
+  font-size: 1.25rem;
+  line-height: 2rem;
 }
 
 .docs-content h4 {
-  margin: 2rem 0 0.5rem;
-  font-size: 1.05rem;
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .docs-content :where(p, ul, ol):not(.hive-card *) {
@@ -382,10 +384,4 @@ h4 {
   margin: 1.5rem 0;
   padding-left: 1rem;
   border-left: 3px solid var(--border);
-}
-
-@media (max-width: 48rem) {
-  .docs-content h2 {
-    font-size: 1.5rem;
-  }
 }
