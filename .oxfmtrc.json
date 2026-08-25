@@ -13,6 +13,7 @@
     ".vercel/",
     ".output/",
     ".cache/",
+    ".astro/",
     ".source/",
     ".tldr/",
     ".context/",

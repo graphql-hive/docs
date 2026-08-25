@@ -54,6 +54,12 @@ jobs:
       environment: production
     secrets: inherit
 
+  astro-website:
+    uses: ./.github/workflows/website-astro.yml
+    with:
+      environment: astro-production
+    secrets: inherit
+
   storybook:
     uses: ./.github/workflows/storybook.yml
     with:

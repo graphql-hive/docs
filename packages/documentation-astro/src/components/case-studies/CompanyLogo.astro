@@ -1,0 +1,18 @@
+---
+import { getCompanyLogo } from "../../../../documentation/src/components/case-studies/company-logos";
+import { renderToStaticMarkup } from "react-dom/server";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+let logo = "";
+try {
+  logo = renderToStaticMarkup(getCompanyLogo(slug));
+} catch {
+  // Detail pages remain usable when a new case study has no mapped logo yet.
+}
+---
+
+{logo && <Fragment set:html={logo} />}
