@@ -1,6 +1,7 @@
 import {
   BufferLogo,
   HemnetLogo,
+  ReverbLogo,
   SoundYXZLogo,
   ToastLogo,
   TrivagoLogo,
@@ -13,6 +14,7 @@ import {
 export const companyLogos = {
   buffer: <BufferLogo height={64} width={212} />,
   hemnet: <HemnetLogo height={64} width={212} />,
+  reverb: <ReverbLogo height={64} width={224} />,
   "sound-xyz": <SoundYXZLogo height={64} width={193} />,
   toast: <ToastLogo height={64} width={158} />,
   trivago: <TrivagoLogo height={64} width={212} />,
