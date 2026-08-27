@@ -324,8 +324,25 @@ const externalProps = (href: string) =>
   navigation?.addEventListener("pointerenter", () => window.clearTimeout(closeTimeout));
   navigation?.addEventListener("pointerleave", (event) => {
     if (!(event.relatedTarget instanceof Node) || !navigation.contains(event.relatedTarget)) {
+      window.clearTimeout(closeTimeout);
       closeTimeout = window.setTimeout(closeMenu, 150);
     }
+  });
+  // Hovering anything in the header that is not a menu trigger or the open
+  // menu itself (e.g. the Pricing link) closes the menu, like Radix
+  // NavigationMenu does on the React site.
+  navigation?.addEventListener("pointerover", (event) => {
+    if (!activeMenu || !(event.target instanceof Element)) return;
+    if (
+      event.target.closest("[data-menu-trigger]") ||
+      event.target.closest("#h-navmenu-viewport")
+    ) {
+      window.clearTimeout(closeTimeout);
+      closeTimeout = undefined;
+      return;
+    }
+    window.clearTimeout(closeTimeout);
+    closeTimeout = window.setTimeout(closeMenu, 150);
   });
   document.addEventListener("click", (event) => {
     if (event.target instanceof Node && !navigation?.contains(event.target)) closeMenu();

@@ -183,28 +183,33 @@ const pageTitle = `${title} | Hive`;
     margin-inline: auto;
   }
 
-  [data-case-study-prose] :is(h2, h3, h4, h5, h6) {
+  [data-case-study-prose] :is(h2, h3, h4, h5, h6):not(:where(.not-prose *)) {
     margin-top: 2em;
     margin-bottom: 1em;
+    color: var(--color-green-1000);
     font-weight: 600;
     line-height: 1.25;
   }
 
-  [data-case-study-prose] h2 {
+  [data-case-study-prose] h2:not(:where(.not-prose *)) {
     font-size: 1.5rem;
     line-height: 2rem;
   }
 
-  [data-case-study-prose] h3 {
+  [data-case-study-prose] h3:not(:where(.not-prose *)) {
     font-size: 1.25rem;
     line-height: 2rem;
     margin-top: 2rem;
     margin-bottom: 0.75rem;
   }
 
-  [data-case-study-prose] p {
+  [data-case-study-prose] p:not(:where(.not-prose *)) {
     margin-top: 1.25em;
     margin-bottom: 1.25em;
+  }
+
+  [data-case-study-prose] .hive-lede > p:first-child {
+    margin-top: 0;
   }
 
   [data-case-study-prose] :is(h2, h3) + :is(h3, p) {
@@ -212,10 +217,25 @@ const pageTitle = `${title} | Hive`;
   }
 
   [data-case-study-prose] ul,
-  [data-case-study-prose] ol,
-  [data-case-study-prose] blockquote {
+  [data-case-study-prose] ol {
     margin-top: 1.25em;
     margin-bottom: 1.25em;
+  }
+
+  [data-case-study-prose] blockquote {
+    margin-block: 1.6em;
+    padding-left: 1rem;
+    border-left: 4px solid var(--color-beige-400);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  [data-case-study-prose] blockquote p:first-of-type::before {
+    content: open-quote;
+  }
+
+  [data-case-study-prose] blockquote p:last-of-type::after {
+    content: close-quote;
   }
 
   [data-case-study-prose] ul,
@@ -240,14 +260,18 @@ const pageTitle = `${title} | Hive`;
     margin-top: 0.5rem;
   }
 
-  [data-case-study-prose] a {
+  [data-case-study-prose] a:not(:where(.not-prose, .not-prose *)) {
+    margin: -2px -4px;
+    padding: 2px 4px;
+    border-radius: 0.25rem;
     color: currentColor;
+    font-weight: 500;
     text-decoration-color: var(--color-blue-700);
     text-decoration-line: underline;
     text-underline-offset: 0.125rem;
   }
 
-  [data-case-study-prose] a:hover {
+  [data-case-study-prose] a:not(:where(.not-prose, .not-prose *)):hover {
     color: var(--color-blue-700);
     text-decoration: none;
   }
@@ -290,6 +314,13 @@ const pageTitle = `${title} | Hive`;
     font-weight: 400;
   }
 
+  @media (min-width: 640px) {
+    [data-case-study-prose] div:has(> blockquote) blockquote {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+  }
+
   [data-case-study-prose] div:has(> blockquote) blockquote::before {
     display: flex;
     width: 3rem;
@@ -300,12 +331,16 @@ const pageTitle = `${title} | Hive`;
     padding-top: 0.5rem;
     border-radius: 1rem;
     background: var(--color-primary);
-    content: "\201c";
-    font-size: 2rem;
+    content: url("../styles/quotemark.svg");
   }
 
   [data-case-study-prose] div:has(> blockquote) blockquote > p {
     margin: 0;
+  }
+
+  [data-case-study-prose] div:has(> blockquote) blockquote p:first-of-type::before,
+  [data-case-study-prose] div:has(> blockquote) blockquote p:last-of-type::after {
+    content: none;
   }
 
   [data-case-study-prose] div:has(> blockquote) cite {
@@ -315,6 +350,18 @@ const pageTitle = `${title} | Hive`;
     margin-top: 1.5rem;
     font-size: 0.875rem;
     font-style: normal;
+  }
+
+  [data-case-study-prose] div:has(> blockquote) cite p {
+    margin-top: 0;
+  }
+
+  [data-case-study-prose] div:has(> blockquote) cite :nth-child(2) {
+    font-weight: 500;
+  }
+
+  [data-case-study-prose] div:has(> blockquote) cite img {
+    margin-block: 0;
   }
 
   @media (max-width: 768px) {

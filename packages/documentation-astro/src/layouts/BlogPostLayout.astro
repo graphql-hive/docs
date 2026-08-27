@@ -88,7 +88,7 @@ const pageTitle = `${title} | GraphQL Hive Blog`;
 
 <style is:global>
   [data-blog-prose] {
-    color: rgb(0 52 44 / 90%);
+    color: var(--color-green-1000);
     font-size: 1rem;
     line-height: 1.75;
   }
@@ -109,19 +109,20 @@ const pageTitle = `${title} | GraphQL Hive Blog`;
     }
   }
 
-  [data-blog-prose] :is(h2, h3, h4, h5, h6) {
+  [data-blog-prose] :is(h2, h3, h4, h5, h6):not(:where(.not-prose *)) {
     margin-top: 2em;
     margin-bottom: 1em;
+    color: var(--color-green-1000);
     font-weight: 600;
     line-height: 1.25;
   }
 
-  [data-blog-prose] h2 {
+  [data-blog-prose] h2:not(:where(.not-prose *)) {
     font-size: 1.5rem;
     line-height: 2rem;
   }
 
-  [data-blog-prose] h3 {
+  [data-blog-prose] h3:not(:where(.not-prose *)) {
     margin-top: 2rem;
     margin-bottom: 0.75rem;
     font-size: 1.25rem;
@@ -132,21 +133,20 @@ const pageTitle = `${title} | GraphQL Hive Blog`;
     margin-top: 0;
   }
 
-  [data-blog-prose] p {
+  [data-blog-prose] p:not(:where(.not-prose *)) {
     margin-top: 1.25em;
     margin-bottom: 1.25em;
   }
 
-  [data-blog-prose] ul,
-  [data-blog-prose] ol,
-  [data-blog-prose] blockquote {
-    margin-top: 1.25em;
-    margin-bottom: 1.25em;
+  [data-blog-prose] .hive-lede > p:first-child {
+    margin-top: 0;
   }
 
   [data-blog-prose] ul,
   [data-blog-prose] ol {
-    padding-left: 1.625em;
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    padding-left: 1rem;
   }
 
   [data-blog-prose] ul {
@@ -159,21 +159,40 @@ const pageTitle = `${title} | GraphQL Hive Blog`;
 
   [data-blog-prose] li {
     margin-block: 0.5em;
-    padding-left: 0.375em;
+  }
+
+  [data-blog-prose] blockquote {
+    margin-block: 1.6em;
+    padding-left: 1rem;
+    border-left: 4px solid var(--color-beige-400);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  [data-blog-prose] blockquote p:first-of-type::before {
+    content: open-quote;
+  }
+
+  [data-blog-prose] blockquote p:last-of-type::after {
+    content: close-quote;
   }
 
   [data-blog-prose] li > p {
     margin-top: 0.5rem;
   }
 
-  [data-blog-prose] a {
+  [data-blog-prose] a:not(:where(.not-prose, .not-prose *)) {
+    margin: -2px -4px;
+    padding: 2px 4px;
+    border-radius: 0.25rem;
     color: currentColor;
+    font-weight: 500;
     text-decoration-color: var(--color-blue-700);
     text-decoration-line: underline;
     text-underline-offset: 0.125rem;
   }
 
-  [data-blog-prose] a:hover {
+  [data-blog-prose] a:not(:where(.not-prose, .not-prose *)):hover {
     color: var(--color-blue-700);
     text-decoration: none;
   }
@@ -254,6 +273,13 @@ const pageTitle = `${title} | GraphQL Hive Blog`;
     font-weight: 400;
   }
 
+  @media (min-width: 640px) {
+    [data-blog-prose] div:has(> blockquote) blockquote {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+  }
+
   [data-blog-prose] div:has(> blockquote) blockquote::before {
     display: flex;
     width: 3rem;
@@ -264,12 +290,16 @@ const pageTitle = `${title} | GraphQL Hive Blog`;
     padding-top: 0.5rem;
     border-radius: 1rem;
     background: var(--color-primary);
-    content: "\201c";
-    font-size: 2rem;
+    content: url("../styles/quotemark.svg");
   }
 
   [data-blog-prose] div:has(> blockquote) blockquote > p {
     margin: 0;
+  }
+
+  [data-blog-prose] div:has(> blockquote) blockquote p:first-of-type::before,
+  [data-blog-prose] div:has(> blockquote) blockquote p:last-of-type::after {
+    content: none;
   }
 
   [data-blog-prose] div:has(> blockquote) cite {
@@ -283,6 +313,14 @@ const pageTitle = `${title} | GraphQL Hive Blog`;
 
   [data-blog-prose] div:has(> blockquote) cite p {
     margin-top: 0;
+  }
+
+  [data-blog-prose] div:has(> blockquote) cite :nth-child(2) {
+    font-weight: 500;
+  }
+
+  [data-blog-prose] div:has(> blockquote) cite img {
+    margin-block: 0;
   }
 
   @media (max-width: 639px) {
