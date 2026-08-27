@@ -19,7 +19,7 @@ import { Lede } from "#components/lede";
   new, used, and vintage musical instruments. Founded in Chicago in 2013 — and
   newly independent again after six years as part of Etsy — Reverb serves
   millions of musicians through its web, iOS, and Android apps. Most of those
-  requests flow through a single front door: Hive Gateway.
+  requests flow through a single front door: [Hive Gateway](/gateway).
 </Lede>
 
 ## An early adopter's inheritance
@@ -59,7 +59,7 @@ federation gateway at the center of it.
 
 The team built a new GraphQL server, CoreQL, directly on the Rails monolith using GraphQL Ruby —
 same schema as the legacy server, with about 90% of resolution happening as straightforward
-ActiveRecord data loading. Then they put Hive Gateway in front of both stacks and migrated query by
+ActiveRecord data loading. Then they put [Hive Gateway](/gateway) in front of both stacks and migrated query by
 query: the gateway inspects each incoming operation name, and if that query has been onboarded to
 the new stack, it routes there; otherwise it falls back to the legacy server.
 
@@ -80,7 +80,7 @@ flowchart TD
     NEW --> M
 ```
 
-_Phase 2 — the migration: Hive Gateway in front of both stacks, moving traffic query by query with
+_Phase 2 — the migration: [Hive Gateway](/gateway) in front of both stacks, moving traffic query by query with
 the schema held at parity._
 
 The gateway also unlocked the end-state the team actually wanted: true federation for the systems
@@ -148,7 +148,7 @@ And for a team in Reverb's exact position — a working registry pipeline, no us
 the on-ramp is free: using the hosted Hive Console purely as a schema registry, without traffic
 reporting, costs nothing.
 
-The team's creativity didn't stop there. Reverb wrote a custom Hive Gateway plugin — a "node
+The team's creativity didn't stop there. Reverb wrote a custom [Hive Gateway](/gateway) plugin — a "node
 multiplexer" — that splits large incoming queries at the root, fans them out as smaller parallel
 queries to the Ruby server, and merges the responses. A very big graph becomes many small graphs,
 and the monolith stays responsive. It's the kind of off-label extension the gateway's plugin system
@@ -172,7 +172,7 @@ That set the tone for what came next:
   workers. The fix was one config line, and The Guild wrote a new Concurrency and Scaling
   documentation page so the next team wouldn't have to ask.
 - When a stubborn request-waterfall was adding over 100ms to the p50 of a high-traffic query, The
-  Guild's engineers dug in — and found the bottleneck not in Hive Gateway, but in Reverb's own
+  Guild's engineers dug in — and found the bottleneck not in [Hive Gateway](/gateway), but in Reverb's own
   multiplexer plugin, where a `Promise.all` was holding merged responses hostage to the slowest
   sub-query. "Thanks so much for catching this in our code," the team wrote back.
 
@@ -192,7 +192,7 @@ In April 2026, Reverb's Web Architecture Team posted this, unprompted, in the sh
 
 ## Measurable results
 
-In May 2026, Reverb completed the upgrade to Hive Gateway v2 in production. Thirty days of Datadog
+In May 2026, Reverb completed the upgrade to [Hive Gateway](/gateway) v2 in production. Thirty days of Datadog
 data later:
 
 - **30% lower CPU usage** (median total cores)
@@ -229,7 +229,7 @@ breaking-change checks, and schema-change alerts on top of the registry pipeline
   icon={<DocsIcon />}
   variant="primary"
 >
-  Hive Gateway and the Hive schema registry are fully open source (MIT) — use
-  every piece standalone, self-host the whole platform, or start with the hosted
-  registry for free.
+  [Hive Gateway](/gateway) and the Hive schema registry are fully open source
+  (MIT) — use every piece standalone, self-host the whole platform, or start
+  with the hosted registry for free.
 </LargeCallout>
