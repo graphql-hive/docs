@@ -6,6 +6,14 @@ import { Callout } from "@hive/design-system/hive-components/callout";
 import { Image } from "@hive/design-system/image";
 import { Tabs } from "@hive/design-system/tabs";
 
+App Deployments let you publish the GraphQL operations used by each version of your application as
+[Persisted Documents](/persisted-documents). Hive validates these operations against your schema,
+makes published deployments available through the Hive CDN, and helps you identify which
+applications are affected by schema changes.
+
+This guide explains how to create, publish, and manage App Deployments and configure your clients
+and GraphQL gateway to use them.
+
 ## Create an App Deployment
 
 To create an app deployment with the extracted persisted documents, you need to have
