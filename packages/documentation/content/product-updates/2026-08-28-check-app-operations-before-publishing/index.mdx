@@ -32,7 +32,7 @@ no longer add deployments that need to be cleaned up.
 ## Publish Only During Deployment
 
 After the pull request is merged and the application is ready to deploy, create and publish its App
-Deployment from your CD (continious deployment) pipelined:
+Deployment from your CD (continuous deployment) pipeline:
 
 ```bash
 hive app:create persisted-documents.json \
@@ -43,7 +43,8 @@ hive app:create persisted-documents.json \
   --publish
 ```
 
-Creating the app deployment will still fail in case the oeprations are no longer valid against the latest schema version used within the target.
+Creating the app deployment will still fail if the operations are no longer valid against the latest
+schema version used within the target.
 
 Publishing the operations before deploying the application ensures that its persisted document IDs
 are already available to your gateway or GraphQL server through the Hive CDN.
@@ -53,4 +54,5 @@ We updated the App Deployments guide with best practices.
 ---
 
 - [App Deployments CI/CD guide and GitHub Actions example](/docs/schema-registry/app-deployments#continuous-integration-and-deployment)
+- [Learn about persisted and trusted documents](/persisted-documents)
 - [Hive CLI documentation](/docs/api-reference/cli)
