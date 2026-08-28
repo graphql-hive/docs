@@ -888,33 +888,121 @@ function fetchQuery(operation, variables) {
 
 </Tabs>
 
-## Continuous Deployment (CD) Integration
+## Continuous Integration and Deployment
 
-We recommend integrating the app deployment creation and publishing into your CD pipeline for
-automating the creating and publishing of app deployments.
+We recommend checking persisted documents on every pull request and publishing a new app deployment
+from your CD pipeline:
 
-Usually the following steps are performed.
+1. In CI, generate the persisted documents and run `hive app:check`. The command validates the
+   operations against the target's latest valid schema without creating an app deployment.
+2. In CD, generate the persisted documents again and run `hive app:create --publish` before deploying
+   the application.
 
 ```mermaid
-
 graph TD
-    A[Extract Persisted Documents from App] --> B[Create App Deployment via Hive CLI]
-    B --> C[Publish App Deployment via Hive CLI]
-    C --> D[Deploy Application]
+    subgraph CI[Pull Request CI]
+        A[Generate Persisted Documents] --> B[hive app:check]
+    end
+    B --> C{Checks Pass?}
+    C -->|No| D[Block Merge]
+    C -->|Yes| E[Merge Pull Request]
+    subgraph CD[Continuous Deployment]
+        E --> F[Generate Persisted Documents]
+        F --> G[hive app:create --publish]
+        G --> H[Deploy Application]
+    end
 ```
 
-Since the application will be configured to send requests with the persisted document ID, we need to
-ensure that these documents are available on the Hive CDN before deploying the application.
+`app:check` accepts a GraphQL Code Generator, Relay, or Apollo persisted operations manifest, a
+directory containing `.graphql` files, or a glob pattern. It exits with a non-zero status when an
+operation is invalid, so it can block a pull request before incompatible operations are merged.
 
-Extracting the persisted documents usually happens during the build step of your application. E.g.
-if you are using GraphQL Code Generator with the client preset or Relay, the persisted document JSON
-mapping is generated as an artifact.
+```bash title="Check Persisted Documents in CI"
+hive app:check \
+  --registry.accessToken "<ACCESS_TOKEN>" \
+  --target "<ORGANIZATION>/<PROJECT>/<TARGET>" \
+  persisted-documents.json
+```
 
-In your CLI pipeline, you can then use the Hive CLI (or Hive CLI docker container) to create and
-publish the app deployment.
+Publishing must happen before deploying the application. This ensures the Hive CDN contains every
+persisted document ID that the new application version can send.
 
-After that, you can deploy your application with confidence.
+```bash title="Publish an App Deployment in CD"
+hive app:create \
+  --registry.accessToken "<ACCESS_TOKEN>" \
+  --target "<ORGANIZATION>/<PROJECT>/<TARGET>" \
+  --name "my-app" \
+  --version "<APP_VERSION>" \
+  --publish \
+  persisted-documents.json
+```
 
-Tools like GitHub Actions, Pulumni, or Terraform can be used to model this flow. We use it ourselves
-for
-[deploying the Hive Console Dashboard using Pulumni](https://github.com/graphql-hive/platform/blob/main/deployment/utils/publish-app-deployment.ts).
+### GitHub Actions Example
+
+The following workflow checks operations on pull requests and publishes an app deployment after a
+change is merged to `main`. Replace the build command and manifest path with those used by your
+application.
+
+```yaml title=".github/workflows/app-deployment.yml"
+name: App deployment
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Generate persisted documents
+        run: npm run build
+      - name: Check persisted documents
+        env:
+          HIVE_TOKEN: ${{ secrets.HIVE_TOKEN }}
+        run: |
+          curl -sSL https://graphql-hive.com/install.sh | sh
+          hive app:check persisted-documents.json \
+            --registry.accessToken "$HIVE_TOKEN" \
+            --target "<ORGANIZATION>/<PROJECT>/<TARGET>"
+
+  publish:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Generate persisted documents
+        run: npm run build
+      - name: Publish app deployment
+        env:
+          HIVE_TOKEN: ${{ secrets.HIVE_TOKEN }}
+        run: |
+          curl -sSL https://graphql-hive.com/install.sh | sh
+          hive app:create persisted-documents.json \
+            --registry.accessToken "$HIVE_TOKEN" \
+            --target "<ORGANIZATION>/<PROJECT>/<TARGET>" \
+            --name "my-app" \
+            --version "${{ github.sha }}" \
+            --publish
+      - name: Deploy application
+        run: npm run deploy
+```
+
+<Callout type="info">
+
+We are using the publish workflow ourselves for [deploying the Hive Console Dashboard using Pulumi](https://github.com/graphql-hive/platform/blob/main/deployment/utils/publish-app-deployment.ts).
+
+</Callout>
