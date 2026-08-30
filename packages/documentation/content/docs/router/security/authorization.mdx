@@ -337,8 +337,14 @@ type Movie @requiresScopes(scopes: [["movie:read"]]) {
 {
   media {
     __typename # Always allowed
-    ... on Book { title } # Requires book:read
-    ... on Movie { title } # Requires movie:read
+    ... on Book {
+      # Requires book:read
+      title
+    }
+    ... on Movie {
+      # Requires movie:read
+      title
+    }
   }
 }
 ```

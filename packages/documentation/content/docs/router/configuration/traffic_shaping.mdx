@@ -42,10 +42,12 @@ For a detailed explanation and tuning guidance see the
 the Performance Tuning guide.
 
 <Callout type="info">
-  When the built-in header allowlist below isn't enough, a custom plugin can contribute
-  its own partition to the dedupe fingerprint via `add_inbound_dedupe_partition` -
-  see the [`on_http_request`](/docs/router/customizations/plugin-system/hooks#on_http_request)
-  and [`on_graphql_params`](/docs/router/customizations/plugin-system/hooks#on_graphql_params)
+  When the built-in header allowlist below isn't enough, a custom plugin can
+  contribute its own partition to the dedupe fingerprint via
+  `add_inbound_dedupe_partition` - see the
+  [`on_http_request`](/docs/router/customizations/plugin-system/hooks#on_http_request)
+  and
+  [`on_graphql_params`](/docs/router/customizations/plugin-system/hooks#on_graphql_params)
   hooks.
 </Callout>
 
