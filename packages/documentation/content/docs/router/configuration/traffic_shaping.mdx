@@ -41,6 +41,16 @@ For a detailed explanation and tuning guidance see the
 [Request Deduplication section](/docs/router/guides/performance-tuning#request-deduplication) of
 the Performance Tuning guide.
 
+<Callout type="info">
+  When the built-in header allowlist below isn't enough, a custom plugin can
+  contribute its own partition to the dedupe fingerprint via
+  `add_inbound_dedupe_partition` - see the
+  [`on_http_request`](/docs/router/customizations/plugin-system/hooks#on_http_request)
+  and
+  [`on_graphql_params`](/docs/router/customizations/plugin-system/hooks#on_graphql_params)
+  hooks.
+</Callout>
+
 #### `router.dedupe.enabled`
 
 - **Type:** `boolean`
@@ -149,6 +159,27 @@ traffic_shaping:
 ```
 
 > This is distinct from the outbound [`request_timeout`](#request_timeout), which bounds how long the router waits for an individual subgraph response.
+
+### `router.keep_alive`
+
+- **Type:** `string`
+- **Default:** `5s`
+- **Environment Variable:** `ROUTER_HTTP_KEEP_ALIVE`
+
+How long the router's HTTP server waits for a follow-up request on an idle keep-alive connection
+before closing it, in duration string format (e.g. `80s`, `1m`). Applies to both the main server and
+the dedicated subscription callback server.
+
+Set this above the idle timeout of any reverse proxy sitting in front of the router, so the proxy
+closes an idle connection first rather than reusing a socket the router has already dropped.
+
+```yaml
+traffic_shaping:
+  router:
+    keep_alive: 80s
+```
+
+Setting it to `0s` disables keep-alive entirely.
 
 ### `router.tls` (Client ↔ Router)
 

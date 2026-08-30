@@ -315,6 +315,45 @@ interface Item @authenticated @requiresScopes(scopes: [["video:read"]]) {
 In this example, when querying items through the `Item` interface, both the `Book` and `Video` type
 requirements must be satisfied.
 
+### Union Members
+
+Each member of a `union` is authorized independently, using only its own directives. A directive on
+one member type has no effect on sibling members, and `__typename` — the only field that can be
+queried directly on a union — is always allowed, since it exposes no data.
+
+```graphql
+union Media = Book | Movie
+
+type Book @requiresScopes(scopes: [["book:read"]]) {
+  title: String
+}
+
+type Movie @requiresScopes(scopes: [["movie:read"]]) {
+  title: String
+}
+```
+
+```graphql
+{
+  media {
+    __typename # Always allowed
+    ... on Book {
+      # Requires book:read
+      title
+    }
+    ... on Movie {
+      # Requires movie:read
+      title
+    }
+  }
+}
+```
+
+A client with only the `book:read` scope receives `Book.title` in the response, while `Movie.title`
+is filtered out (or the whole request is rejected in `reject` mode) — each inline fragment is
+tracked by its own type condition, so rejecting one sibling never affects the other, even though
+both select a field named `title`.
+
 ### Fields with `@requires`
 
 A field using `@requires` to access fields from another subgraph must define an authorization policy

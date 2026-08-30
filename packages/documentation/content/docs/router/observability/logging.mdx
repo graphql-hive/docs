@@ -58,6 +58,14 @@ At the default `info` level, the primary output is the **request summary**, one 
 when a request finishes. This is the router's access log. It uses the
 [`router::request`](#log-targets) target and carries a fixed set of attributes:
 
+<Callout type="info">
+  The summary line is also emitted for requests rejected early by a plugin's
+  [`on_http_request`](/docs/router/customizations/plugin-system/hooks#on_http_request)
+  hook (for example, a missing or malformed `Authorization` header), not just
+  requests that reach the GraphQL handler. Unrelated routes, such as health and
+  metrics scraping endpoints, never produce a `router::request` line.
+</Callout>
+
 | Field                   | Description                                                                                                                                               |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `operation_name`        | The GraphQL operation name, when provided.                                                                                                                |
