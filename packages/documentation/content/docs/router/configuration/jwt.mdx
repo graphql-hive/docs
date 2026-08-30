@@ -108,6 +108,8 @@ services access user information from the token.
 
 - **`enabled`**: `boolean` - Turn on claim forwarding
 - **`field_name`**: `string` - Key name for the claims in the extensions object
+- **`include_claims`**: `string[]` (optional) - Only forward these root-level claim keys, instead of
+  the entire JWT payload. If not set, all claims are forwarded.
 
 ## Examples
 
@@ -170,6 +172,36 @@ With this setup, your subgraphs receive the JWT claims like this:
       "sub": "user123",
       "email": "user@example.com",
       "role": "admin"
+    }
+  }
+}
+```
+
+### Forward Only Specific Claims to Subgraphs
+
+```yaml title="router.config.yaml"
+jwt:
+  require_authentication: true
+  jwks_providers:
+    - source: remote
+      url: https://your-domain.auth0.com/.well-known/jwks.json
+  forward_claims_to_upstream_extensions:
+    enabled: true
+    field_name: "jwt"
+    include_claims:
+      - sub
+      - org_id
+```
+
+With this setup, your subgraphs only receive the listed claims, even if the JWT carries more:
+
+```json
+{
+  "query": "{ me { name } }",
+  "extensions": {
+    "jwt": {
+      "sub": "user123",
+      "org_id": "acme-corp"
     }
   }
 }

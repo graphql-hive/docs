@@ -59,6 +59,31 @@ Any named path parameters captured by the pattern (for example, `tenant` in
 [Dynamic Subgraph Routing](/docs/router/guides/dynamic-subgraph-routing#multi-tenant-routing-with-path-parameters)
 for an example.
 
+### `shutdown_timeout`
+
+- **Type:** `string`
+- **Default:** `30s`
+- **Environment Variable:** `ROUTER_HTTP_SHUTDOWN_TIMEOUT`
+
+How long the HTTP server waits for in-flight requests to finish after receiving `SIGTERM`, before
+remaining connections are force-dropped, in duration string format (e.g. `90s`, `1m30s`). Applies to
+both the main server and the dedicated subscription callback server.
+
+Set this above
+[`traffic_shaping.router.request_timeout`](./traffic_shaping#routerrequest_timeout) so the longest
+request the router accepts can still finish during a drain. When running under an orchestrator, the
+platform's own grace period (for example Kubernetes' `terminationGracePeriodSeconds`) must in turn
+exceed `shutdown_timeout`, otherwise the process is killed before the drain completes.
+
+```yaml title="router.config.yaml"
+http:
+  shutdown_timeout: 90s
+
+traffic_shaping:
+  router:
+    request_timeout: 85s
+```
+
 ## Example
 
 This example configures the router to listen only on the localhost interface on port `8080`, use `4`

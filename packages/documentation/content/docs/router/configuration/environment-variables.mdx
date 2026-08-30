@@ -18,6 +18,8 @@ configurations that can be set in the router's configuration file (`router.confi
 | `PORT`                            | `number` (port number)                               | [`http.port`](./http#port)                                           |
 | `HOST`                            | `string` (host name or IP address)                   | [`http.host`](./http#host)                                           |
 | `ROUTER_HTTP_WORKERS`             | `number` (worker thread count)                       | [`http.workers`](./http#workers)                                     |
+| `ROUTER_HTTP_SHUTDOWN_TIMEOUT`    | `string` (human-readable, for example: `90s`)        | [`http.shutdown_timeout`](./http#shutdown_timeout)                   |
+| `ROUTER_HTTP_KEEP_ALIVE`          | `string` (human-readable, for example: `80s`)        | [`traffic_shaping.router.keep_alive`](./traffic_shaping#routerkeep_alive) |
 | `SUPERGRAPH_FILE_PATH`            | `string` (relative or absolute path to a local file) | [`supergraph[file].path`](./supergraph#path)                         |
 | `HIVE_CDN_ENDPOINT`               | `string` (full url to Hive CDN supergraph artifact)  | [`supergraph[hive].endpoint`](./supergraph#endpoint)                 |
 | `HIVE_CDN_KEY`                    | `string` (Hive CDN key)                              | [`supergraph[hive].key`](./supergraph#key)                           |
@@ -60,6 +62,23 @@ http:
 
 If you are using the plugin system, `from_env` also works inside a plugin's own `config` block, since it's resolved before the
 configuration is split up and handed to each plugin.
+
+When a configuration field is a list, the `from_env.default` field and the environment variable's value is split on `,` into one
+item per entry (each item is trimmed of surrounding whitespace) instead of being treated as a single
+literal string:
+
+```yaml title="router.config.yaml"
+cors:
+  policies:
+    - origins:
+        from_env: CORS_ALLOWED_ORIGINS
+        default:
+          - http://localhost:3000
+          - http://localhost:4000
+```
+
+Given `CORS_ALLOWED_ORIGINS=https://a.example.com, https://b.example.com`, `origins` resolves to
+`["https://a.example.com", "https://b.example.com"]`.
 
 ## Accessing Environment Variables in Expressions
 

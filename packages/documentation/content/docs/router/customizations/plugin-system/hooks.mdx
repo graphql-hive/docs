@@ -89,6 +89,20 @@ fn on_plugin_init(payload: OnPluginInitPayload<Self>) -> OnPluginInitResult<Self
 }
 ```
 
+**Access the resolved router configuration**
+
+Use `payload.router_config()` for read-only access to the router's fully resolved configuration
+(not just this plugin's own scoped config), so the plugin can adapt its behavior to router-wide
+settings such as the configured GraphQL path or telemetry setup.
+
+```rust
+fn on_plugin_init(payload: OnPluginInitPayload<Self>) -> OnPluginInitResult<Self> {
+    let graphql_path = payload.router_config().graphql_path();
+    // use router-wide settings to initialize the plugin...
+    payload.initialize_plugin_with_defaults()
+}
+```
+
 **Customize plugin instance**
 
 Build the plugin's initial state from the parsed configuration before the router starts serving
@@ -430,6 +444,30 @@ fn on_http_request<'req>(
 }
 ```
 
+##### Add a custom dedupe partition [!toc]
+
+Call `add_inbound_dedupe_partition` to mix an extra value into the router's inbound
+query/subscription dedupe fingerprint. Requests with different partitions are never coalesced into
+the same in-flight response, even if [`traffic_shaping.router.dedupe.headers`](/docs/router/configuration/traffic_shaping#routerdedupeheaders)
+would otherwise treat them as identical - useful for partitioning by an authenticated user extracted
+from a header without hashing the entire header value. This method is only available from
+`on_http_request` and `on_graphql_params`, since those are the only hooks that run before the router
+computes the fingerprint.
+
+```rust
+fn on_http_request<'req>(
+    &'req self,
+    payload: OnHttpRequestHookPayload<'req>,
+) -> OnHttpRequestHookFuture<'req> {
+    Box::pin(async move {
+        if let Some(user_id) = extract_user_id(&payload.router_http_request) {
+            payload.add_inbound_dedupe_partition(hash_user_id(user_id));
+        }
+        payload.proceed()
+    })
+}
+```
+
 #### Payload API Reference
 
 - [`OnHttpRequestHookPayload`](https://github.com/graphql-hive/router/blob/main/lib/executor/src/plugins/hooks/on_http_request.rs#:~:text=struct%20OnHttpRequestHookPayload)
@@ -558,6 +596,24 @@ async fn on_graphql_params<'exec>(
         }
         payload.proceed()
     })
+}
+```
+
+**Add a custom dedupe partition**
+
+Call `add_inbound_dedupe_partition` to mix an extra value into the router's inbound
+query/subscription dedupe fingerprint, based on data only available once GraphQL params are parsed.
+See [Add a custom dedupe partition](#on_http_request) under `on_http_request` for the full
+explanation.
+
+```rust
+async fn on_graphql_params<'exec>(
+    &'exec self,
+    payload: OnGraphQLParamsStartHookPayload<'exec>,
+) -> OnGraphQLParamsStartHookResult<'exec> {
+    let partition = compute_partition_from_identity(&payload);
+    payload.add_inbound_dedupe_partition(partition);
+    payload.proceed()
 }
 ```
 
