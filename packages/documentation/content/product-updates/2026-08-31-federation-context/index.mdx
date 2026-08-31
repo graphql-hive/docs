@@ -1,1 +1,52 @@
-test
+---
+title: Federation Contextual Arguments in Hive Native Composition
+description:
+Hive native composition now supports Federation's `@context` and `@fromContext` directives, enabling
+contextual arguments in federated schemas.
+date: 2026-08-31
+authors: [kamil]
+---
+
+Hive's native Federation composition now supports contextual arguments through the `@context` and
+`@fromContext` directives.
+
+Contextual arguments were introduced in Federation 2.8 and allow a router to pass data from an
+earlier part of an operation into a field argument without exposing that argument to API consumers.
+
+A type can provide context using `@context`:
+
+```graphql
+type Product @key(fields: "id") @context(name: "productContext") {
+  id: ID!
+  currency: String!
+}
+```
+
+A field argument can then consume a value from that context using `@fromContext`:
+
+```graphql
+type Product @key(fields: "id") {
+  id: ID!
+  price(
+    currency: String @fromContext(field: "$productContext { currency }")
+  ): Money!
+}
+```
+
+The `currency` argument isn't part of the public API schema. Instead, a compatible router or gateway
+resolves the value from the nearest `productContext` provider and supplies it when executing the
+field.
+
+This makes it possible to propagate information through a federated operation without adding
+client-facing arguments or relying on additional entity fields purely for passing execution state.
+
+## Native composition support
+
+With `@theguild/federation-composition` v0.26.0, Hive's native composition understands these
+directives and validates contextual arguments as part of schema composition.
+
+Schemas using `@context` and `@fromContext` can now be published and checked using Hive's native
+composition like any other Federation schema.
+
+Note that execution still requires a router or gateway with support for Federation contextual
+arguments.
