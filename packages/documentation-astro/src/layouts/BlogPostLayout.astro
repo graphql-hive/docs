@@ -30,7 +30,8 @@ interface Props {
 
 const { allPosts, authors, canonical, date, description, image, headings, mobileImage, socialImage, tags, title } = Astro.props;
 const tableOfContents = filterToc(headings);
-const pageTitle = `${title} | GraphQL Hive Blog`;
+// Titles that carry their own "|" branding are kept as-is, like the old site.
+const pageTitle = title.includes("|") ? title : `${title} | Hive`;
 ---
 
 <!doctype html>
