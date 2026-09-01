@@ -58,13 +58,17 @@ for (const file of new Bun.Glob("**/*.{html,css}").scanSync({
   }
 }
 
+// _redirects stays fully un-prefixed on purpose: the router strips the
+// prefix before the worker matches sources, and prefixes upstream Location
+// headers itself — a prefixed destination would be redirected twice.
 const redirects = Bun.file(`${distDirectory}/_redirects`);
 if (await redirects.exists()) {
   for (const line of (await redirects.text()).split("\n")) {
     if (!line || line.startsWith("#")) continue;
-    const destination = line.split(/\s+/)[1];
-    if (destination?.startsWith("/") && isUnprefixed(destination)) {
-      report("_redirects", destination);
+    for (const path of line.split(/\s+/).slice(0, 2)) {
+      if (path === base || path?.startsWith(`${base}/`)) {
+        report("_redirects", path);
+      }
     }
   }
 }
