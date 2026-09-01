@@ -27,7 +27,12 @@ test.describe("Content User Journeys", () => {
     await page.goto(appPath("/case-studies"));
 
     await page.route("**/_serverFn/**", (route) => route.abort());
-    await page
+    // FeaturedCaseStudiesGrid (rendered once there are 6+ case studies) is
+    // hidden on mobile (max-xl:hidden), so click a card in AllCaseStudiesList
+    const storiesSection = page.locator("section", {
+      has: page.getByRole("heading", { name: "Explore customer stories" }),
+    });
+    await storiesSection
       .locator(`a[href^="${appPath("/case-studies/")}"]`)
       .first()
       .click();
