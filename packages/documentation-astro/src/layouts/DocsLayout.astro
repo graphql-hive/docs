@@ -43,7 +43,14 @@ function findBreadcrumbs(nodes: DocsNavNode[]): string[] | undefined {
   }
 }
 const breadcrumbs = findBreadcrumbs(navTree) ?? [];
-const pageTitle = `${title} | Hive`;
+// Match the old site's title templates: gateway and router docs carry their
+// product name as the suffix, and titles with their own "|" stay untouched.
+const section = /^\/docs\/gateway(\/|$)/.test(currentPath)
+  ? "Hive Gateway"
+  : /^\/docs\/router(\/|$)/.test(currentPath)
+    ? "Hive Router"
+    : "Hive";
+const pageTitle = title.includes("|") ? title : `${title} | ${section}`;
 const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
 ---
 

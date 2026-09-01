@@ -174,4 +174,7 @@ export const routeRules: Record<string, NitroRouteRules> = {
   "/product-updates/2024-01-25-schema-contracts-for-federation": redirect(
     "/product-updates/2024-02-06-schema-contracts-for-federation",
   ),
+
+  // Tag casing was unified to lowercase (content used both "DI" and "di")
+  "/blog/tag/DI": redirect("/blog/tag/di"),
 };

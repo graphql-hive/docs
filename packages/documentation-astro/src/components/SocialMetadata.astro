@@ -26,8 +26,12 @@ const {
   type = "website",
 } = Astro.props;
 
-const currentPath = Astro.url.pathname.replace(/^\/graphql\/hive(?=\/|$)/, "");
-const canonicalUrl = canonical ?? `${SITE_URL}${currentPath === "/" ? "" : currentPath}`;
+// Strip the trailing slash so canonicals keep the old site's URL shape and
+// agree with the generated sitemap (which lists slash-less URLs).
+const currentPath = Astro.url.pathname
+  .replace(/^\/graphql\/hive(?=\/|$)/, "")
+  .replace(/\/$/, "");
+const canonicalUrl = canonical ?? `${SITE_URL}${currentPath}`;
 const imagePath = typeof image === "string" ? image : image.src;
 const imageUrl = /^https?:\/\//.test(imagePath)
   ? imagePath

@@ -6,3 +6,6 @@ preview_urls = true
 [assets]
 directory = "./dist"
 not_found_handling = "404-page"
+# Keep the old site's URL shape: pages live at /path, not /path/. The default
+# (auto-trailing-slash) would 307-redirect every existing slash-less deep link.
+html_handling = "drop-trailing-slash"
