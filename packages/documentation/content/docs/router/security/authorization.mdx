@@ -129,6 +129,23 @@ In this example, `billingReport` requires a user to have both `admin` and `billi
 `allUsers` field requires either the `read:admin` or the `manage:users` scope, but `email` only the
 `email:read` scope.
 
+### `@policy`
+
+Delegates the authorization decision to a [coprocessor](/docs/router/customizations/coprocessors/stages-and-protocol),
+for rules the router can't evaluate on its own, like resource ownership or tenant isolation.
+
+```graphql
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.6", import: ["@policy"])
+
+type Query {
+  users: [User] @policy(policies: [["admin"], ["read_users", "internal"]])
+}
+```
+
+See [Custom Authorization Policies](/docs/router/security/policy) for the full guide, including a
+coprocessor request/response example.
+
 ## Directives on Types and Fields
 
 **Type-level directives** protect all fields of that type.

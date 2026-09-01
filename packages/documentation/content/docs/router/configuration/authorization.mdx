@@ -3,8 +3,9 @@ title: "authorization"
 ---
 
 The `authorization` configuration lets you control fine-grained access to your GraphQL schema using
-directives like `@authenticated` and `@requiresScopes`. This allows you to restrict which fields
-authenticated users can access based on their authentication status or specific scopes.
+directives like `@authenticated`, `@requiresScopes`, and `@policy`. This allows you to restrict which
+fields authenticated users can access based on their authentication status, specific scopes, or a
+decision made by a coprocessor.
 
 For practical examples and a guide to authorization concepts, see
 **["Authorization"](/docs/router/security/authorization)** in the documentation.
@@ -15,6 +16,8 @@ Access control is defined within the supergraph schema using the following direc
 
 - `@authenticated` - restricts access to authenticated users only
 - `@requiresScopes(scopes: [[String]])` - restricts access based on specific scopes
+- `@policy(policies: [[String]])` - restricts access based on a coprocessor's decision, see
+  [Custom Authorization Policies](/docs/router/security/policy)
 
 ## Configuration Options
 

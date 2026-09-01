@@ -1,6 +1,7 @@
 {
   "pages": [
     "authorization",
+    "policy",
     "cors",
     "csrf",
     "demand-control",
