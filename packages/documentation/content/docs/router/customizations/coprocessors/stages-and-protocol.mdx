@@ -267,6 +267,12 @@ The `include.context` property supports three forms:
 | `hive::authentication::jwt_scopes` | Scopes extracted from the current authenticated user's JWT.                       |
 | `hive::authentication::jwt_status` | Authentication status. If `true`, the request has been verified as authenticated. |
 
+### Authorization
+
+| Property                                 | Mutable | Description                                                                                                                                                                                                                                                  |
+| ---------------------------------------- | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `hive::authorization::required_policies` |   ✅    | Map of `@policy` policy names to their decision (`true`, `false`, or `null` for undecided). Seeded by the router before `graphql.analysis`; a coprocessor decides by overwriting entries. See [Custom Authorization Policies](/docs/router/security/policy). |
+
 ### Progressive Override
 
 | Property                                         | Description                                                  |
