@@ -1,4 +1,8 @@
-<pagefind-config base-url="/" bundle-path="/pagefind/" excerpt-length="24"></pagefind-config>
+---
+import { withBase } from "../lib/base-path";
+---
+
+<pagefind-config base-url={withBase("/")} bundle-path={withBase("/pagefind/")} excerpt-length="24"></pagefind-config>
 <pagefind-modal reset-on-close></pagefind-modal>
 
 <script>

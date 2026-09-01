@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 import { getCollection } from "astro:content";
 
 import CaseStudyCard from "../../components/case-studies/CaseStudyCard.astro";
@@ -63,7 +64,7 @@ const caseStudies = (await getCollection("caseStudies"))
           </a>
           <a
             class="outline-hidden focus-visible:ring-3 relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 focus-visible:outline focus-visible:ring-0 focus-visible:ring-offset-0 sm:w-fit dark:text-neutral-200 [&:hover>:first-child]:-inset-px [&:hover>:first-child]:rounded-[9px] bg-transparent text-green-1000 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800"
-            href="/pricing"
+            href={withBase("/pricing")}
           >
             <span class="absolute inset-0 rounded-lg border border-green-800 dark:border-neutral-200"></span>
             Explore Pricing
@@ -95,7 +96,7 @@ const caseStudies = (await getCollection("caseStudies"))
                   category={story.category}
                   class="h-full"
                   excerpt={story.excerpt}
-                  href={story.href}
+                  href={withBase(story.href)}
                   slug={story.slug}
                 />
               </li>

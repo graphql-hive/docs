@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../lib/base-path";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import SocialMetadata from "../components/SocialMetadata.astro";
@@ -28,7 +29,7 @@ import "../styles/global.css";
         </p>
         <a
           class="bg-primary text-green-1000 mt-4 rounded-lg px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90"
-          href="/"
+          href={withBase("/")}
         >
           Back to Home
         </a>

@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../lib/base-path";
 import CloudNativeSection from "../components/gateway/CloudNativeSection.astro";
 import FederationCompatibleBenchmarksSection from "../components/gateway/FederationCompatibleBenchmarksSection.astro";
 import GatewayFeatureTabs from "../components/gateway/GatewayFeatureTabs.astro";
@@ -106,7 +107,7 @@ const faqs: [string, string][] = [
         <div class="flex w-full justify-center gap-2 px-0.5 max-sm:flex-col sm:gap-4">
           <a
             class="outline-hidden focus-visible:ring-3 relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 bg-primary text-green-1000 hover:bg-white focus-visible:outline-4 focus-visible:outline-offset-0 focus-visible:outline-white/40 sm:w-fit"
-            href="/docs/gateway"
+            href={withBase("/docs/gateway")}
           >
             <span class="absolute inset-0 rounded-lg border border-green-800"></span>
             Get Started

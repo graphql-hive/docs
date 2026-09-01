@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 interface Props {
   class?: string;
   decoration?: string;
@@ -26,7 +27,7 @@ const blurId = `eco-pc-blur-${name.toLowerCase().replace(/\s+/g, "-")}`;
     >
       <a
         class="outline-hidden focus-visible:ring-3 relative z-10 flex h-full flex-1 flex-col justify-between p-8 focus-visible:outline-hidden"
-        href={href}
+        href={withBase(href)}
       >
         <p class="relative z-10 font-medium">{name}</p>
         <div class="relative z-0 mt-8 size-12" set:html={icon} />
@@ -77,7 +78,7 @@ const blurId = `eco-pc-blur-${name.toLowerCase().replace(/\s+/g, "-")}`;
     >
       <a
         class="outline-hidden focus-visible:ring-3 relative flex h-full flex-col justify-between rounded-[inherit] p-8 focus:outline-hidden focus-visible:outline-hidden"
-        href={href}
+        href={withBase(href)}
       >
         <div>
           <p class="font-medium">{name}</p>

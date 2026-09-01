@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 import { prettyPrintTag } from "../../lib/pretty-print-tag";
 
 interface Props {
@@ -28,7 +29,7 @@ const chipClasses = [
   ) : (
     <a
       class:list={["outline-hidden focus-visible:ring-3 rounded-full px-3 py-1 text-white text-sm", chipClasses]}
-      href={`/blog/tag/${tag}`}
+      href={withBase(`/blog/tag/${tag}`)}
     >
       {prettyPrintTag(tag)}
     </a>

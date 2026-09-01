@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 interface Props {
   class?: string;
   isHive?: boolean;
@@ -93,7 +94,7 @@ const ancillaryProducts = [
           product.isHive ? "bg-green-1000 text-white" : "bg-blue-400 text-green-1000",
         ]}
       >
-        <a class="relative z-10 flex h-full flex-1 flex-col justify-between p-8 outline-hidden focus-visible:outline-hidden" href={product.href}>
+        <a class="relative z-10 flex h-full flex-1 flex-col justify-between p-8 outline-hidden focus-visible:outline-hidden" href={withBase(product.href)}>
           <p class="font-medium relative z-10">{product.name}</p>
           <div class="mt-8 relative z-0 size-12" set:html={product.icon} />
           <svg class="absolute z-10 bottom-8 right-8" fill="currentColor" height="24" viewBox="0 0 24 24" width="24"><path d="m15.755 11.1-4.828-4.828L12.2 5l7 7-7 7-1.273-1.272 4.828-4.828H4.8v-1.8h10.955Z"></path></svg>
@@ -117,7 +118,7 @@ const ancillaryProducts = [
   <ul class="nextra-scrollbar -mx-12 -my-2 flex h-max grid-cols-6 gap-[22px] overflow-x-auto overflow-y-hidden px-12 py-2 max-sm:-mx-8 max-sm:px-8 sm:grid sm:grid-cols-2 lg:grid-cols-3">
     {ancillaryProducts.map((product) => (
       <li class="hive-focus-within shrink-0 basis-[283.5px] rounded-2xl bg-beige-200 text-green-1000 transition-colors duration-500 hover:bg-beige-400 max-sm:min-w-[283.5px]">
-        <a class="relative flex h-full flex-col justify-between rounded-[inherit] p-8 focus:outline-hidden focus-visible:outline-hidden" href={product.href}>
+        <a class="relative flex h-full flex-col justify-between rounded-[inherit] p-8 focus:outline-hidden focus-visible:outline-hidden" href={withBase(product.href)}>
           <div>
             <p class="font-medium">{product.name}</p>
             <p class="mt-2 text-sm text-green-800">{product.title}</p>
@@ -132,7 +133,7 @@ const ancillaryProducts = [
   </ul>
   <a
     class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 focus-visible:outline focus-visible:ring-0 focus-visible:ring-offset-0 sm:w-fit bg-primary hover:bg-green-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800"
-    href={isHive ? "/ecosystem" : "https://the-guild.dev/graphql/hive/ecosystem"}
+    href={withBase(isHive ? "/ecosystem" : "https://the-guild.dev/graphql/hive/ecosystem")}
   >
     <span class="absolute inset-0 rounded-lg border border-green-800"></span>
     Explore the Ecosystem

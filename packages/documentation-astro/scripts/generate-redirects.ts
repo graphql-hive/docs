@@ -9,13 +9,29 @@ const outputFile = fileURLToPath(
 );
 
 /**
+ * Redirect *destinations* are what the browser follows, so behind the
+ * the-guild.dev router they must carry the mount prefix. Sources stay
+ * un-prefixed — the router strips the prefix before the worker matches them.
+ */
+const rawBase = process.env["ASTRO_BASE_PATH"]?.trim();
+const base =
+  rawBase && rawBase !== "/" ? `/${rawBase.replace(/^\/+|\/+$/g, "")}` : "";
+
+function prefixDestination(destination: string) {
+  if (!base || !destination.startsWith("/") || destination.startsWith("//")) {
+    return destination;
+  }
+  return `${base}${destination}`;
+}
+
+/**
  * Redirects that only apply to the Astro deployment: the old site serves raw
  * per-page MDX at /llms.mdx/docs/*, which this site replaces with /docs/*.md.
  */
 const astroOnlyRedirects = [
   {
     source: "/llms.mdx/docs/*",
-    destination: "/docs/:splat.md",
+    destination: prefixDestination("/docs/:splat.md"),
     status: 301,
   },
 ];
@@ -28,7 +44,7 @@ const redirects = [
 
     return {
       source: source.replace(/\/\*\*$/, "/*"),
-      destination: rule.redirect.to,
+      destination: prefixDestination(rule.redirect.to),
       status: rule.redirect.status,
     };
   }),

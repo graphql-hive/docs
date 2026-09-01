@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../lib/base-path";
 import FrequentlyAskedQuestions from "../components/FrequentlyAskedQuestions.astro";
 import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
@@ -71,7 +72,7 @@ const partners = [
           Accelerate Your Federation Journey
         </h1>
         <p class="mx-auto w-[512px] max-w-[80%] text-center leading-6 text-white/80">
-          The Hive Partner Network accelerates your <a class="hive-focus underline decoration-white/30 underline-offset-2 hover:decoration-white/80" href="/federation" title="Visit our guide to learn more about GraphQL federation">federation</a> journey, delivering expert solutions and best-in-class technology for faster value realization.
+          The Hive Partner Network accelerates your <a class="hive-focus underline decoration-white/30 underline-offset-2 hover:decoration-white/80" href={withBase("/federation")} title="Visit our guide to learn more about GraphQL federation">federation</a> journey, delivering expert solutions and best-in-class technology for faster value realization.
         </p>
         <div class="relative z-10 flex flex-col justify-center gap-2 px-0.5 sm:flex-row sm:gap-4">
           <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-white focus-visible:outline-4 focus-visible:outline-offset-0 focus-visible:outline-white/40 sm:w-fit" data-contact-link href="https://the-guild.dev/contact">
@@ -109,7 +110,7 @@ const partners = [
           <li class="flex-1 basis-full rounded-2xl md:rounded-3xl lg:basis-0 bg-beige-100 p-6 md:p-12">
             <div class="w-fit rounded-lg bg-[linear-gradient(135deg,#68A8B6,#3B736A)] p-[9px] text-white"><svg fill="none" height="15" viewBox="0 0 15 15" width="15" xmlns="http://www.w3.org/2000/svg"><path d="M9.96424 2.68571C10.0668 2.42931 9.94209 2.13833 9.6857 2.03577C9.4293 1.93322 9.13832 2.05792 9.03576 2.31432L5.03576 12.3143C4.9332 12.5707 5.05791 12.8617 5.3143 12.9642C5.5707 13.0668 5.86168 12.9421 5.96424 12.6857L9.96424 2.68571ZM3.85355 5.14646C4.04882 5.34172 4.04882 5.6583 3.85355 5.85356L2.20711 7.50001L3.85355 9.14646C4.04882 9.34172 4.04882 9.6583 3.85355 9.85356C3.65829 10.0488 3.34171 10.0488 3.14645 9.85356L1.14645 7.85356C0.951184 7.6583 0.951184 7.34172 1.14645 7.14646L3.14645 5.14646C3.34171 4.9512 3.65829 4.9512 3.85355 5.14646ZM11.1464 5.14646C11.3417 4.9512 11.6583 4.9512 11.8536 5.14646L13.8536 7.14646C14.0488 7.34172 14.0488 7.6583 13.8536 7.85356L11.8536 9.85356C11.6583 10.0488 11.3417 10.0488 11.1464 9.85356C10.9512 9.6583 10.9512 9.34172 11.1464 9.14646L12.7929 7.50001L11.1464 5.85356C10.9512 5.6583 10.9512 5.34172 11.1464 5.14646Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></div>
             <h3 class="mt-4 text-xl font-medium leading-[1.4] text-green-1000 md:mt-6">Drive Technical Excellence</h3>
-            <div class="mt-2 space-y-2 text-green-800 md:mt-4">Enable your customers to build more reliable and observable GraphQL APIs through our comprehensive schema registry, <a class="hive-focus underline decoration-slate-400 hover:decoration-slate-700" href="/federation" title="Visit our guide to learn more about GraphQL federation">federation</a> support, and performance monitoring tools.</div>
+            <div class="mt-2 space-y-2 text-green-800 md:mt-4">Enable your customers to build more reliable and observable GraphQL APIs through our comprehensive schema registry, <a class="hive-focus underline decoration-slate-400 hover:decoration-slate-700" href={withBase("/federation")} title="Visit our guide to learn more about GraphQL federation">federation</a> support, and performance monitoring tools.</div>
           </li>
         </ul>
       </section>
@@ -120,9 +121,9 @@ const partners = [
         <p class="mx-auto mt-4 max-w-3xl text-center">Our solution partners are experts in their field, providing a range of services to help you get the most out of the Hive platform. From consulting to implementation, our partners are here to help you succeed.</p>
         <ul class="mt-10 grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {partners.map((partner) => (
-            <a href={`${partner.href}?utm_source=hive&utm_medium=website&utm_campaign=partners`} rel="noreferrer" target="_blank">
+            <a href={withBase(`${partner.href}?utm_source=hive&utm_medium=website&utm_campaign=partners`)} rel="noreferrer" target="_blank">
               <li class:list={["flex h-32 w-56 cursor-pointer flex-col items-center justify-center rounded-3xl border border-black hover:bg-slate-300", partner.class]}>
-                <img alt={partner.name} class="h-10 w-auto" src={partner.logo} />
+                <img alt={partner.name} class="h-10 w-auto" src={withBase(partner.logo)} />
               </li>
             </a>
           ))}

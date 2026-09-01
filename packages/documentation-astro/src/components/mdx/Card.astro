@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 interface Props {
   class?: string;
   className?: string;
@@ -80,7 +81,7 @@ const descriptionHtml = renderMdxNode(description);
     classNameProp,
     className,
   ]}
-  href={href}
+  href={withBase(href)}
   rel={external ? "noreferrer" : undefined}
   target={external ? "_blank" : undefined}
 >

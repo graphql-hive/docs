@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../lib/base-path";
 interface Props {
   class?: string;
   faqs?: readonly (readonly [string, string])[];
@@ -49,7 +50,7 @@ const questionId = (question: string) =>
           </svg>
         </summary>
         <div class="text-green-800" itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-          <p itemprop="text" set:html={answer} />
+          <p itemprop="text" set:html={answer.replaceAll('href="/', `href="${withBase("/")}`)} />
         </div>
       </details>
     ))}

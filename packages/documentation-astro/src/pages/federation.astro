@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../lib/base-path";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import SocialMetadata from "../components/SocialMetadata.astro";
@@ -89,7 +90,7 @@ const faqs: [string, string[]][] = [
           Learn what GraphQL Federation is and how to combine multiple GraphQL APIs called subgraphs into one unified API (supergraph), and serve data from a single endpoint using a GraphQL gateway.
         </p>
         <div class="relative z-10 flex flex-col justify-center gap-2 px-0.5 sm:flex-row sm:gap-4">
-          <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-white focus-visible:outline-4 focus-visible:outline-offset-0 focus-visible:outline-white/40 sm:w-fit" href="/" title="Learn about our Open-Source GraphQL Federation Solution - Hive">
+          <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-white focus-visible:outline-4 focus-visible:outline-offset-0 focus-visible:outline-white/40 sm:w-fit" href={withBase("/")} title="Learn about our Open-Source GraphQL Federation Solution - Hive">
             <span class="absolute inset-0 rounded-lg border border-green-800"></span>
             Try Hive for Federation
           </a>
@@ -192,7 +193,7 @@ const faqs: [string, string[]][] = [
                 </ul>
                 <p>By implementing GraphQL federation, organizations can break free from monolithic constraints while maintaining the benefits of a unified GraphQL API.</p>
               </div>
-              <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-green-800 hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800/40 mt-6 max-xl:order-1 max-md:w-full xl:mt-12" href="/docs/schema-registry/get-started/apollo-federation#publish-subgraphs" title="Start by publishing your subgraphs to Hive">
+              <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-green-800 hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800/40 mt-6 max-xl:order-1 max-md:w-full xl:mt-12" href={withBase("/docs/schema-registry/get-started/apollo-federation#publish-subgraphs")} title="Start by publishing your subgraphs to Hive">
                 <span class="absolute inset-0 rounded-lg border border-green-800"></span>
                 How to publish subgraphs
                 <svg fill="currentColor" height="24" viewBox="0 0 24 24" width="24"><path d="m15.755 11.1-4.828-4.828L12.2 5l7 7-7 7-1.273-1.272 4.828-4.828H4.8v-1.8h10.955Z"></path></svg>
@@ -223,7 +224,7 @@ const faqs: [string, string[]][] = [
                 <p>During composition in GraphQL federation, the <strong class="text-green-1000">Schema Registry validates all possible operations - queries, mutations, and subscriptions - to ensure the GraphQL gateway can properly resolve them.</strong> This proactive validation is crucial for preventing runtime errors.</p>
                 <p>The Schema Registry plays a vital role in GraphQL federation's workflow. As a centralized repository, it manages subgraph registration, schema validation, and supergraph composition. When implementing GraphQL federation, the <a class="hive-focus underline underline-offset-2" href="https://graphql.org/conf/2024/schedule/af55205b1d68ec3b3d1b1663e4bd2adf/?name=In-House%20Schema%20Registry%20-%20the%20Good%2C%20the%20Bad%2C%20and%20the%20Ugly" target="_blank" rel="noreferrer" title="Learn why your federated GraphQL setup needs a Schema Registry and why you shouldn't build your own">Schema Registry becomes an essential tool for maintaining your distributed GraphQL architecture</a> and ensuring successful composition across all subgraphs.</p>
               </div>
-              <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-green-800 hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800/40 mt-6 max-xl:order-1 max-md:w-full xl:mt-12" href="/docs/schema-registry" title="Learn how to use Schema Registry to compose your schema and validate it">
+              <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-green-800 hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800/40 mt-6 max-xl:order-1 max-md:w-full xl:mt-12" href={withBase("/docs/schema-registry")} title="Learn how to use Schema Registry to compose your schema and validate it">
                 <span class="absolute inset-0 rounded-lg border border-green-800"></span>
                 How to use Schema Registry
                 <svg fill="currentColor" height="24" viewBox="0 0 24 24" width="24"><path d="m15.755 11.1-4.828-4.828L12.2 5l7 7-7 7-1.273-1.272 4.828-4.828H4.8v-1.8h10.955Z"></path></svg>
@@ -262,7 +263,7 @@ const faqs: [string, string[]][] = [
                 <p>When choosing a federation gateway, verify its compliance with the Apollo Federation specification. This will help you prevent unexpected runtime behavior and data resolution failures.</p>
                 <p>At <a class="hive-focus underline underline-offset-2" href="https://the-guild.dev" target="_blank" rel="noreferrer" title="Company behind Hive">The Guild</a>, we maintain <a class="hive-focus underline underline-offset-2" href="https://the-guild.dev/graphql/hive/federation-gateway-audit" target="_blank" rel="noreferrer" title="Apollo Federation Gateway Audit">an open-source Federation Testing Suite</a> to verify the gateway's specification compliance. This test suite helps ensure your gateway correctly implements federation features beyond basic directive support.</p>
               </div>
-              <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-green-800 hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800/40 mt-6 max-xl:order-1 max-md:w-full xl:mt-12" href="/docs/gateway" title="Learn how to use Hive Gateway to serve your supergraph to clients">
+              <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-green-800 hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800/40 mt-6 max-xl:order-1 max-md:w-full xl:mt-12" href={withBase("/docs/gateway")} title="Learn how to use Hive Gateway to serve your supergraph to clients">
                 <span class="absolute inset-0 rounded-lg border border-green-800"></span>
                 How to use a GraphQL Gateway
                 <svg fill="currentColor" height="24" viewBox="0 0 24 24" width="24"><path d="m15.755 11.1-4.828-4.828L12.2 5l7 7-7 7-1.273-1.272 4.828-4.828H4.8v-1.8h10.955Z"></path></svg>
@@ -347,7 +348,7 @@ const faqs: [string, string[]][] = [
       <section class="relative overflow-hidden rounded-3xl p-12 text-center sm:p-24 mx-4 md:mx-6">
         <h2 class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px]">Get Started with GraphQL Federation</h2>
         <p class="relative mx-auto mt-4 max-w-[700px]">Begin your journey with GraphQL Federation through our <strong>step-by-step guide</strong>, which walks you through Apollo Federation fundamentals and helps you <strong>build your first gateway and subgraphs from scratch</strong>.</p>
-        <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-green-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800 sm:w-fit mx-auto mt-8" href="/docs/schema-registry/get-started/apollo-federation" title="Step by step guide to Apollo Federation">
+        <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-green-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800 sm:w-fit mx-auto mt-8" href={withBase("/docs/schema-registry/get-started/apollo-federation")} title="Step by step guide to Apollo Federation">
           <span class="absolute inset-0 rounded-lg border border-green-800"></span>
           Start building now
         </a>
