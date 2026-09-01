@@ -82,7 +82,6 @@ test("changelog page renders remote markdown with mdx components", async ({
   );
 });
 
-
 test("changelog code blocks respect dark theme", async ({ isMobile, page }) => {
   await page.goto(appPath("/docs/schema-registry/self-hosting/changelog"), {
     waitUntil: "load",
