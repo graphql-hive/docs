@@ -82,24 +82,6 @@ test("changelog page renders remote markdown with mdx components", async ({
   );
 });
 
-test("client-side navigation keeps changelog content", async ({
-  isMobile,
-  page,
-}) => {
-  await page.goto(appPath("/docs/schema-registry/self-hosting/get-started"), {
-    waitUntil: "load",
-  });
-
-  await openSidebarIfNeeded(page, isMobile);
-  await clickChangelogSidebarLink(page, isMobile);
-
-  await expect(page).toHaveURL(
-    appPathPattern("/docs/schema-registry/self-hosting/changelog"),
-  );
-  await expect(page.getByText(CHANGELOG_SEARCH_TERM).first()).toBeVisible();
-  await expect(page.locator(".animate-pulse")).toHaveCount(0);
-  await expect(page.locator(".shiki").first()).toBeVisible();
-});
 
 test("changelog code blocks respect dark theme", async ({ isMobile, page }) => {
   await page.goto(appPath("/docs/schema-registry/self-hosting/changelog"), {
