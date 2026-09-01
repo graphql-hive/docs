@@ -132,17 +132,21 @@ source (MIT) like the rest of the platform, "graduating" doesn't mean giving up 
 self-hosted inside your own infrastructure, which fits a GitOps model with ephemeral sandbox
 environments like Reverb's just as well as the hosted cloud version does.
 
-What Console adds on top of a pipeline like Reverb's is everything that's hard to hand-roll: usage
-insights down to the individual field and coordinate; conditional breaking-change detection that
-judges every schema change not just against static client code, but against real production
-traffic, stored trusted documents (persisted queries), and exposed MCP tools; schema-change
-notifications to Slack or anywhere a webhook reaches; the new Metric Alerts — threshold and
-relative-change alerting on error rates, latency percentiles, and traffic drops, delivered to
-Slack, MS Teams, or webhooks so the platform team hears about an incident before users do; a
-schema explorer that gives every engineer — not just the platform team — visibility into the
-supergraph: who owns what, and how and by whom it's being used; schema contracts for serving
-tailored views of the graph to different consumers; and with Gateway v2's OpenTelemetry support,
-distributed tracing of every operation across the gateway and subgraphs.
+What Console adds on top of a pipeline like Reverb's is everything that's hard to hand-roll:
+
+- **Usage insights** down to the individual field and coordinate.
+- **Conditional breaking-change detection** that judges every schema change not just against
+  static client code, but against real production traffic, stored trusted documents (persisted
+  queries), and exposed MCP tools.
+- **Schema-change notifications** to Slack or anywhere a webhook reaches.
+- **Metric Alerts** — threshold and relative-change alerting on error rates, latency percentiles,
+  and traffic drops, delivered to Slack, MS Teams, or webhooks so the platform team hears about an
+  incident before users do.
+- **A schema explorer** that gives every engineer — not just the platform team — visibility into
+  the supergraph: who owns what, and how and by whom it's being used.
+- **Schema contracts** for serving tailored views of the graph to different consumers.
+- **Distributed tracing** of every operation across the gateway and subgraphs, with Gateway v2's
+  OpenTelemetry support.
 
 And for a team in Reverb's exact position — a working registry pipeline, no usage reporting yet —
 the on-ramp is free: using the hosted Hive Console purely as a schema registry, without traffic
