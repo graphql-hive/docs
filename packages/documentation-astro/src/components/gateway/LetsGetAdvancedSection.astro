@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 interface Props {
   class?: string;
 }
@@ -51,7 +52,7 @@ const cards = [
             <div class="grow"></div>
             <a
               class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 focus-visible:outline focus-visible:ring-0 focus-visible:ring-offset-0 sm:w-fit bg-transparent focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800 mt-5! xl:w-full"
-              href={card.ctaHref}
+              href={withBase(card.ctaHref)}
             >
               <span class="absolute inset-0 rounded-lg border border-green-800"></span>
               Documentation

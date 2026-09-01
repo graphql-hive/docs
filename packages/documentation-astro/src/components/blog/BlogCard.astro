@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 import { resolveAuthor } from "../../lib/authors";
 import BlogTagChip from "./BlogTagChip.astro";
 
@@ -36,7 +37,7 @@ const dateLabel = date.toLocaleDateString("en-US", {
     "group/card @container/card hive-focus outline-hidden focus-visible:ring-3 hover:ring-beige-400 block rounded-2xl dark:ring-neutral-600 hover:not-focus:ring dark:hover:not-focus:ring-neutral-600",
     className,
   ]}
-  href={post.route}
+  href={withBase(post.route)}
 >
   <article
     class:list={[

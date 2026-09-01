@@ -13,10 +13,26 @@ import {
   DOCS_CODE_THEMES,
 } from "../documentation/src/lib/docs-code-config.ts";
 import { mermaidRehypePlugin } from "./src/markdown/rehype-mermaid-config.mjs";
+import { remarkBasePath } from "./src/markdown/remark-base-path.mjs";
 import { remarkNpm2Yarn } from "./src/markdown/remark-npm2yarn.mjs";
 import { remarkRelativeLinks } from "./src/markdown/remark-relative-links.mjs";
 
 export default defineConfig({
+  /**
+   * Behind the the-guild.dev router the site is mounted under a path prefix
+   * (e.g. /graphql/hive) which the router strips before proxying — the worker
+   * serves un-prefixed paths, but every URL the browser requests must carry
+   * the prefix. Main deploys build with ASTRO_BASE_PATH set; PR previews run
+   * standalone on workers.dev and build without it.
+   */
+  base: process.env.ASTRO_BASE_PATH || "/",
+  /**
+   * Plain .md content (unlike .mdx) is rendered by Astro's built-in markdown
+   * pipeline, so the link plugins must be registered here as well.
+   */
+  markdown: {
+    remarkPlugins: [remarkRelativeLinks, remarkBasePath],
+  },
   integrations: [
     mdx({
       processor: unified({
@@ -34,7 +50,7 @@ export default defineConfig({
             },
           ],
         ],
-        remarkPlugins: [remarkNpm2Yarn, remarkRelativeLinks],
+        remarkPlugins: [remarkNpm2Yarn, remarkRelativeLinks, remarkBasePath],
       }),
       syntaxHighlight: false,
     }),

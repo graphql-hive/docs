@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 import auditImage from "../../../../documentation/src/components/landing-page-feature-tabs/audit.png";
 import observabilityClientsImage from "../../../../documentation/src/components/landing-page-feature-tabs/clients.webp";
 import registryExplorerImage from "../../../../documentation/src/components/landing-page-feature-tabs/explorer.webp";
@@ -151,7 +152,7 @@ const allHighlights = Object.values(highlights).flat();
                 <a
                   class="hover:bg-beige-100 -m-2 block rounded-lg p-2 md:-m-4 md:rounded-xl md:p-4"
                   data-highlight-hover={highlight.title}
-                  href={highlight.link}
+                  href={withBase(highlight.link)}
                   title={`Learn more about ${highlight.title}`}
                 >
                   <dt class="text-green-1000 font-medium">{highlight.title}</dt>
@@ -167,7 +168,7 @@ const allHighlights = Object.values(highlights).flat();
           </dl>
           <a
             class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 focus-visible:outline focus-visible:ring-0 focus-visible:ring-offset-0 sm:w-fit bg-primary hover:bg-green-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800"
-            href={tab.documentationLink}
+            href={withBase(tab.documentationLink)}
           >
             <span class="absolute inset-0 rounded-lg border border-green-800"></span>
             Learn more

@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 import achrafash from "../../../../documentation/src/components/community-section/achrafash_.png";
 import chimameRt from "../../../../documentation/src/components/community-section/chimame_rt.png";
 import daniel2Color from "../../../../documentation/src/components/community-section/daniel2color.jpg";
@@ -137,7 +138,7 @@ const iconFor = (href: string) => {
     <div class="flex flex-col">
       <p class="font-medium text-white">Available for Free</p>
       <p class="mb-4 mt-2 flex-1 text-white/80">Free Hobby plan that fits perfectly for most side projects.</p>
-      <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-green-800 hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800/40 sm:w-fit" href="/pricing">
+      <a class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-green-800 hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800/40 sm:w-fit" href={withBase("/pricing")}>
         <span class="absolute inset-0 rounded-lg border border-green-800"></span>
         Check Pricing
       </a>
@@ -154,7 +155,7 @@ const iconFor = (href: string) => {
                 <div class="relative">
                   <a
                     class="hive-focus absolute -left-1.5 -top-1.5 z-10 rounded-full border-2 border-transparent p-[5px] text-white hover:border-white focus-visible:ring-offset-0 focus-visible:ring-offset-green-900"
-                    href={post.href}
+                    href={withBase(post.href)}
                     rel="noopener noreferrer"
                     style={`background-color: ${iconFor(post.href) === "discord" ? "#5865F2" : "#222530"}`}
                     target="_blank"

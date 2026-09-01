@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../lib/base-path";
 import type { DocsNavNode } from "../lib/docs-nav";
 
 interface Props {
@@ -29,7 +30,7 @@ function containsCurrentPath(node: DocsNavNode): boolean {
           ]}
           data-active={node.href === currentPath}
           aria-current={node.href === currentPath ? "page" : undefined}
-          href={node.href}
+          href={withBase(node.href)}
         >
           {node.title}
         </a>
@@ -43,7 +44,7 @@ function containsCurrentPath(node: DocsNavNode): boolean {
         <a
           class:list={["relative mt-0.5 flex items-center rounded-lg p-2 text-fd-muted-foreground hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80", linkPadding]}
           data-active={currentPath === node.href}
-          href={node.href}
+          href={withBase(node.href)}
         >
           {node.title}
         </a>
@@ -61,7 +62,7 @@ function containsCurrentPath(node: DocsNavNode): boolean {
               class="flex min-w-0 flex-1 items-center gap-2 py-2"
               data-active={currentPath === node.href}
               aria-current={currentPath === node.href ? "page" : undefined}
-              href={node.href}
+              href={withBase(node.href)}
             >
               {node.icon && <span class="[&_svg]:size-4 [&_svg]:shrink-0" set:html={node.icon} />}
               <span>{node.title}</span>

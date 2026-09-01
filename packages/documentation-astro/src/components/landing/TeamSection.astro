@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 import saihajPhoto from "../../../../documentation/src/components/saihaj.webp";
 
 interface Props {
@@ -53,7 +54,7 @@ const teamMembers = [
         <li>
           <a
             class="group relative flex flex-col focus-visible:outline-hidden focus-visible:ring-transparent focus-visible:ring-offset-transparent"
-            href={member.link}
+            href={withBase(member.link)}
             rel="noreferrer"
             target="_blank"
           >

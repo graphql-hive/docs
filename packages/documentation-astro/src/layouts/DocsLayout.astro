@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../lib/base-path";
 import "../styles/global.css";
 
 import CopyMarkdown from "../components/CopyMarkdown.astro";
@@ -61,8 +62,8 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
     <meta name="viewport" content="width=device-width" />
     <ThemeInit />
     <SocialMetadata description={description ?? title} imageAlt={title} title={pageTitle} />
-    <link href="/pagefind/pagefind-component-ui.css" rel="stylesheet" />
-    <script is:inline src="/pagefind/pagefind-component-ui.js" type="module"></script>
+    <link href={withBase("/pagefind/pagefind-component-ui.css")} rel="stylesheet" />
+    <script is:inline src={withBase("/pagefind/pagefind-component-ui.js")} type="module"></script>
   </head>
   <body class="min-h-screen bg-beige-100 font-sans text-green-1000 antialiased dark:bg-[rgb(var(--nextra-bg))] dark:text-neutral-200" data-docs data-theme-enabled>
     <div
@@ -99,7 +100,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
         {
           currentPath !== "/docs" && (
             <nav class="flex items-center gap-1.5 text-sm text-fd-muted-foreground" aria-label="Breadcrumb">
-              <a class="truncate transition-opacity hover:opacity-80" href="/docs">Docs</a>
+              <a class="truncate transition-opacity hover:opacity-80" href={withBase("/docs")}>Docs</a>
               {breadcrumbs.map((breadcrumb) => <><span aria-hidden="true">/</span><span class="truncate">{breadcrumb}</span></>)}
               <span aria-hidden="true">/</span><span class="truncate font-medium text-fd-primary">{title}</span>
             </nav>
@@ -111,8 +112,8 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
         {
           (previous || next) && (
             <nav class="grid gap-4 sm:grid-cols-2" aria-label="Documentation pages">
-              {previous ? <a class="flex flex-col gap-2 rounded-lg border p-4 text-sm transition-colors hover:bg-fd-accent/80 hover:text-fd-accent-foreground" href={previous.href}><span class="font-medium">← {previous.title}</span></a> : <span />}
-              {next && <a class="flex flex-col gap-2 rounded-lg border p-4 text-end text-sm transition-colors hover:bg-fd-accent/80 hover:text-fd-accent-foreground" href={next.href}><span class="font-medium">{next.title} →</span></a>}
+              {previous ? <a class="flex flex-col gap-2 rounded-lg border p-4 text-sm transition-colors hover:bg-fd-accent/80 hover:text-fd-accent-foreground" href={withBase(previous.href)}><span class="font-medium">← {previous.title}</span></a> : <span />}
+              {next && <a class="flex flex-col gap-2 rounded-lg border p-4 text-end text-sm transition-colors hover:bg-fd-accent/80 hover:text-fd-accent-foreground" href={withBase(next.href)}><span class="font-medium">{next.title} →</span></a>}
             </nav>
           )
         }
@@ -124,7 +125,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
           <CopyMarkdown markdownUrl={markdownUrl} />
           <a
             class="inline-flex items-center gap-2 text-sm text-fd-muted-foreground transition-colors hover:text-fd-primary focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500/50"
-            href={githubUrl}
+            href={withBase(githubUrl)}
             rel="noreferrer noopener"
             target="_blank"
           >

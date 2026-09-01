@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../lib/base-path";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
 import SocialMetadata from "../components/SocialMetadata.astro";
@@ -63,7 +64,7 @@ try {
               <div class="mx-auto leading-6 text-green-800">
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {friends.map((friend) => (
-                    <a class="hover:bg-beige-200 bg-beige-100 relative block rounded-lg p-4 shadow-xs" href={friend.href} target="_blank" rel="noreferrer">
+                    <a class="hover:bg-beige-200 bg-beige-100 relative block rounded-lg p-4 shadow-xs" href={withBase(friend.href)} target="_blank" rel="noreferrer">
                       <dt class="text-green-1000 font-medium">{friend.name}</dt>
                       <dd class="mt-2 text-sm/5 text-green-800">{friend.description}</dd>
                       <svg aria-hidden="true" class="absolute bottom-2 right-2 size-6 rotate-135 opacity-20" fill="currentColor" height="200px" stroke="currentColor" stroke-width="0" viewBox="0 0 512 512" width="200px" xmlns="http://www.w3.org/2000/svg">
@@ -100,7 +101,7 @@ try {
         </div>
         <h3 class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] text-white">Open Source GraphQL Platform</h3>
         <p class="relative mt-4 text-white/80">Start building your federated GraphQL API today, by following our guide, that will walk you through the basics of Apollo Federation.</p>
-        <a class="mx-auto mt-8 relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-white focus-visible:outline-4 focus-visible:outline-offset-0 focus-visible:outline-white/40 sm:w-fit" href="/docs/schema-registry/get-started/apollo-federation">
+        <a class="mx-auto mt-8 relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-white focus-visible:outline-4 focus-visible:outline-offset-0 focus-visible:outline-white/40 sm:w-fit" href={withBase("/docs/schema-registry/get-started/apollo-federation")}>
           <span class="absolute inset-0 rounded-lg border border-green-800"></span>
           Start building now
         </a>

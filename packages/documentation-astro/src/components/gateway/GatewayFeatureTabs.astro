@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 import GatewayMarqueeRows from "./GatewayMarqueeRows.astro";
 
 interface Props {
@@ -118,7 +119,7 @@ const tabs = [
           </dl>
           <a
             class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 focus-visible:outline focus-visible:ring-0 focus-visible:ring-offset-0 sm:w-fit bg-primary hover:bg-green-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800"
-            href={tab.documentationLink}
+            href={withBase(tab.documentationLink)}
           >
             <span class="absolute inset-0 rounded-lg border border-green-800"></span>
             {tab.documentationText}

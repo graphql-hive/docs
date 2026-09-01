@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../lib/base-path";
 import arrowIconRaw from "../../../design-system/src/icons/arrow-icon.svg?raw";
 import hiveGatewayIconRaw from "../../../design-system/src/icons/hive-gateway.svg?raw";
 import hiveIconRaw from "../../../design-system/src/icons/hive.svg?raw";
@@ -69,7 +70,7 @@ const products = [
     <h2 class="group text-[32px]/[1.25] tracking-[-0.16px] text-pretty">Explore Hive 360° GraphQL Ecosystem to reach full potential</h2>
     <a
       class="outline-hidden focus-visible:ring-3 hive-focus -mx-1 -my-0.5 inline-flex items-center gap-2 rounded-sm px-1 py-0.5 hover:text-blue-700 mt-4 text-green-800 lg:mt-6"
-      href={isHivePage ? "/ecosystem" : "https://the-guild.dev/graphql/hive/ecosystem"}
+      href={withBase(isHivePage ? "/ecosystem" : "https://the-guild.dev/graphql/hive/ecosystem")}
     >
       Learn more
       <Fragment set:html={arrowIconRaw} />
@@ -78,7 +79,7 @@ const products = [
   <ul class="nextra-scrollbar -mx-12 -my-2 flex shrink-0 grow gap-[22px] overflow-auto px-12 py-2 [@media(max-width:1490px)]:w-full [@media(min-width:1490px)]:overflow-visible [&>:nth-child(n+5)]:[@media(min-width:1490px)]:hidden">
     {products.map((product) => (
       <li class:list={["hive-focus-within group relative flex-1 shrink-0 basis-[283.5px] overflow-hidden rounded-2xl max-md:min-w-[283.5px]", product.isHive ? "bg-green-1000 text-white" : "bg-blue-400 text-green-1000"]}>
-        <a class="relative z-10 flex h-full flex-1 flex-col justify-between p-8 outline-hidden focus-visible:outline-hidden" href={product.href} target="_blank" rel="noreferrer">
+        <a class="relative z-10 flex h-full flex-1 flex-col justify-between p-8 outline-hidden focus-visible:outline-hidden" href={withBase(product.href)} target="_blank" rel="noreferrer">
           <p class="relative z-10 font-medium">{product.name}</p>
           <Fragment set:html={withAttrs(product.icon, `class="mt-8 relative z-0"`)} />
           <Fragment set:html={withAttrs(arrowIconRaw, `class="absolute z-10 bottom-8 right-8"`)} />

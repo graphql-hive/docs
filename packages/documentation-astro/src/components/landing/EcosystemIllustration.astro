@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 interface Props {
   class?: string;
 }
@@ -127,7 +128,7 @@ const fullHeight = `calc(${boxHeight}px + var(--edge) + ${stellateHeight}px + va
 
     <div class="z-20 flex justify-center">
       <div class="eco-node firefox:[backdrop-filter:blur(12px)] relative z-10 flex min-h-[96px] items-center gap-4 rounded-2xl bg-[linear-gradient(135deg,rgb(255_255_255/0.10),rgb(255_255_255/0.20))] p-4 backdrop-blur-md xl:p-[22px] [&>svg]:shrink-0 h-(--gateway-height) flex-row gap-2 px-8">
-        <a class="flex flex-col items-center gap-2" href="/gateway" target="_blank">
+        <a class="flex flex-col items-center gap-2" href={withBase("/gateway")} target="_blank">
           <svg class="size-12" fill="url(#eco-linear-blue)" stroke="url(#eco-linear-white)" stroke-width="0.5px" viewBox="0 0 52 53" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <path d="m25 .524872-7.7758.000001V13.6981c0 2.2382-1.8128 4.051-4.0509 4.051H0l7.2e-7 7.7758H8.48411c1.06096 0 2.07849-.4215 2.82859-1.1718l12.5159-12.5176C24.5786 11.0854 25 10.068 25 9.00727V.524872Zm2 0 7.7758.000001V13.6981c0 2.2382 1.8128 4.051 4.0509 4.051H52v7.7758h-8.4841c-1.061 0-2.0785-.4215-2.8286-1.1718L28.1714 11.8355C27.4214 11.0854 27 10.068 27 9.00727V.524872ZM25 52.5249h-7.7758V39.3516c0-2.2381-1.8128-4.0509-4.0509-4.0509H0l7.2e-7-7.7758H8.48411c1.06096 0 2.07849.4215 2.82859 1.1717l12.5159 12.5176c.75.7502 1.1714 1.7675 1.1714 2.8283v8.4824Zm2 0h7.7758V39.3516c0-2.2381 1.8128-4.0509 4.0509-4.0509H52v-7.7758h-8.4841c-1.061 0-2.0785.4215-2.8286 1.1717L28.1714 41.2142c-.75.7502-1.1714 1.7675-1.1714 2.8283v8.4824Zm2.8369-29.837H22.163v7.6739h7.6739v-7.6739Z" id="eco-gateway-path"></path>
@@ -139,7 +140,7 @@ const fullHeight = `calc(${boxHeight}px + var(--edge) + ${stellateHeight}px + va
           <span class="text-sm text-green-200">(JavaScript)</span></span>
         </a>
         <div class="w-px bg-green-700"></div>
-        <a class="flex flex-col items-center gap-2" href="/docs/router" target="_blank">
+        <a class="flex flex-col items-center gap-2" href={withBase("/docs/router")} target="_blank">
           <svg class="size-12" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <path d="M41.7695 8.98828L48 15.2188V34.8838L34.8848 48H15.2197L8.98828 41.7676L8.41406 41.1367H37.5615C39.5368 41.1366 41.1366 39.5368 41.1367 37.5615V8.41406L41.7695 8.98828ZM39.0117 6.23242L39.5859 6.86328H10.4385C8.46325 6.86343 6.86343 8.46325 6.86328 10.4385V39.5859L6.23047 39.0117L0 32.7812V13.1162L13.1152 0H32.7803L39.0117 6.23242ZM17.2676 12.2441H26.7217L36.3291 21.8535V28.6875L36.335 31.3066V36.335H21.8477L12.2393 26.7266V12.2393H17.2676V12.2441ZM19.8867 17.2715C18.4398 17.2716 17.2676 18.4446 17.2676 19.8916V28.6875C17.2676 30.1345 18.4398 31.3065 19.8867 31.3066H28.6826C30.1297 31.3066 31.3018 30.1346 31.3018 28.6875V19.8916C31.3018 18.4445 30.1297 17.2715 28.6826 17.2715H19.8867Z" fill="url(#eco-linear-blue)" stroke="url(#eco-linear-white)" stroke-width="0.2px"></path>
           </svg>
@@ -220,7 +221,7 @@ const fullHeight = `calc(${boxHeight}px + var(--edge) + ${stellateHeight}px + va
   </div>
 
   <!-- Col 5: Console (Desktop) -->
-  <a class="hidden items-center justify-start md:flex"  href="/docs/schema-registry">
+  <a class="hidden items-center justify-start md:flex"  href={withBase("/docs/schema-registry")}>
     <div class="eco-node firefox:[backdrop-filter:blur(12px)] relative z-10 flex min-h-[96px] flex-row items-center gap-4 rounded-2xl bg-[linear-gradient(135deg,rgb(255_255_255/0.10),rgb(255_255_255/0.20))] p-4 backdrop-blur-md xl:p-[22px] [&>svg]:shrink-0 z-20">
       <svg class="size-12" fill="none" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
         <g clip-path="url(#eco-hive-clip)" fill="url(#eco-linear-blue)" stroke="url(#eco-linear-white)" stroke-width="0.2px">

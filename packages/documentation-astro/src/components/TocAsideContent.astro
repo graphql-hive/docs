@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../lib/base-path";
 import type { TocHeading } from "../lib/toc";
 
 interface Props {
@@ -22,7 +23,7 @@ const { headings } = Astro.props;
           heading.depth <= 2 ? "ps-3" : heading.depth === 3 ? "ps-6" : "ps-8",
         ]}
         data-toc-anchor={heading.slug}
-        href={`#${heading.slug}`}
+        href={withBase(`#${heading.slug}`)}
         set:html={heading.html}
       />
     ))}

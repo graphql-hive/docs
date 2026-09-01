@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 import CompanyLogo from "./CompanyLogo.astro";
 
 import hemnetPicture from "../../../../documentation/src/components/company-testimonials/hemnet-picture.webp";
@@ -116,7 +117,7 @@ const testimonialId = (company: string) => encodeURIComponent(company.toLowerCas
             {"caseStudyHref" in testimonial && testimonial.caseStudyHref && (
               <a
                 class="absolute bottom-0 w-full max-sm:hidden md:w-fit relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-green-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800 mt-auto mt-0"
-                href={testimonial.caseStudyHref}
+                href={withBase(testimonial.caseStudyHref)}
               >
                 <span class="absolute inset-0 rounded-lg border border-green-800"></span>
                 Read the case study

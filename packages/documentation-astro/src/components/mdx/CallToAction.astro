@@ -1,4 +1,5 @@
 ---
+import { withBase } from "../../lib/base-path";
 const { href, variant = "primary", className, ...props } = Astro.props;
 const variants: Record<string, string> = {
   primary:
@@ -22,7 +23,7 @@ const external = typeof href === "string" && href.startsWith("http");
     variants[variant],
     className,
   ]}
-  href={href}
+  href={withBase(href)}
   rel={external ? "noreferrer" : undefined}
   target={external ? "_blank" : undefined}
 >
