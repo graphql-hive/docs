@@ -137,6 +137,45 @@ authorized even though `admin` was denied.
   undecided and still access the field it protects.
 </Callout>
 
+## Deciding Policies from a Plugin
+
+A [plugin](/docs/router/customizations/plugin-system) can decide `@policy` grants too, using the
+exact same mechanism as a coprocessor: its `on_graphql_analysis` hook runs before enforcement, reads
+`required_policies` off the request context, and writes back a `true`/`false` decision for each:
+
+```rust
+async fn on_graphql_analysis<'exec>(
+    &'exec self,
+    payload: &mut OnGraphqlAnalysisHookPayload<'exec>,
+) -> OnGraphqlAnalysisHookResult {
+    let required_policies: Vec<String> = payload
+        .request_context
+        .read()
+        .ok()
+        .and_then(|read| read.authorization().required_policies().cloned())
+        .map(|policies| policies.into_keys().collect())
+        .unwrap_or_default();
+
+    if let Ok(mut write) = payload.request_context.write() {
+        let mut authorization = write.authorization();
+        for policy in required_policies {
+            let granted = self.user_has_policy(&payload.client_request_details, &policy);
+            authorization.set_policy_decision(policy, granted);
+        }
+    }
+
+    OnGraphqlAnalysisHookResult::Proceed
+}
+```
+
+Reach for a plugin instead of a coprocessor when the router binary itself is already the right place
+to own the decision - no network hop, no separate service to run. Reach for a coprocessor when the
+logic is shared across services or owned by a different team.
+
+See the [`custom_policy`](https://github.com/graphql-hive/router/tree/main/plugin_examples/custom_policy)
+plugin example, and the [`on_graphql_analysis` hook reference](/docs/router/customizations/plugin-system/hooks#on_graphql_analysis)
+for the full API.
+
 ## Handling Denied Policies
 
 A denied policy is handled exactly like any other unauthorized field access - the field is filtered

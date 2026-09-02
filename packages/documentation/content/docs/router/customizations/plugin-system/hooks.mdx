@@ -822,14 +822,50 @@ async fn on_graphql_analysis<'exec>(
 }
 ```
 
+**Decide [`@policy`](/docs/router/security/policy) grants**
+
+This is the same hook a [coprocessor](/docs/router/customizations/coprocessors/stages-and-protocol)
+answers at the `graphql.analysis` stage, so a plugin can decide `@policy` grants exactly like a
+coprocessor does - by reading the policies the operation depends on off the request context, and
+writing a `true`/`false` decision for each back onto it before returning:
+
+```rust
+async fn on_graphql_analysis<'exec>(
+    &'exec self,
+    payload: &mut OnGraphqlAnalysisHookPayload<'exec>,
+) -> OnGraphqlAnalysisHookResult {
+    let required_policies: Vec<String> = payload
+        .request_context
+        .read()
+        .ok()
+        .and_then(|read| read.authorization().required_policies().cloned())
+        .map(|policies| policies.into_keys().collect())
+        .unwrap_or_default();
+
+    if let Ok(mut write) = payload.request_context.write() {
+        let mut authorization = write.authorization();
+        for policy in required_policies {
+            let granted = self.user_has_policy(&payload.client_request_details, &policy);
+            authorization.set_policy_decision(policy, granted);
+        }
+    }
+
+    OnGraphqlAnalysisHookResult::Proceed
+}
+```
+
+Any policy left undecided when this hook returns is denied - there's no need to explicitly deny one,
+only to grant it.
+
 #### Payload API Reference
 
-- [`OnGraphqlAnalysisHookPayload`](https://github.com/graphql-hive/router/blob/main/lib/executor/src/plugins/hooks/on_graphql_analysis.rs#:~:text=struct%20OnGraphqlAnalysisHookPayload)
-- [`OperationFilter`](https://github.com/graphql-hive/router/blob/main/lib/executor/src/operation_filter.rs#:~:text=struct%20OperationFilter)
+- [`OnGraphqlAnalysisHookPayload`](https://github.com/graphql-hive/router/blob/main/bin/router/src/executor/plugins/hooks/on_graphql_analysis.rs#:~:text=struct%20OnGraphqlAnalysisHookPayload)
+- [`OperationFilter`](https://github.com/graphql-hive/router/blob/main/bin/router/src/executor/operation_filter.rs#:~:text=struct%20OperationFilter)
 
 #### Plugin Examples
 
 - [`field_nulling`](https://github.com/graphql-hive/router/blob/main/plugin_examples/field_nulling/src/plugin.rs#:~:text=fn%20on_graphql_analysis)
+- [`custom_policy`](https://github.com/graphql-hive/router/blob/main/plugin_examples/custom_policy/src/plugin.rs#:~:text=fn%20on_graphql_analysis)
 
 ### `on_query_plan`
 
