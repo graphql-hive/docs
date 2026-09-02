@@ -391,3 +391,51 @@ h4 {
   padding-left: 1rem;
   border-left: 3px solid var(--border);
 }
+
+/* The section filter dropdown opens below the modal header; the dialog clips
+   overflow for its rounded corners, which cut the menu off when the result
+   list is short. Let the menu escape — inner containers keep their own
+   scrolling. */
+/* !important: pagefind's own stylesheet loads after the bundled CSS and sets
+   overflow: hidden at the same specificity. */
+dialog.pf-modal {
+  overflow: visible !important;
+}
+
+/* Composed search modal layout: the header element re-parents its children
+   into .pf-modal-header-content (portaled into a top-level dialog), which stacked the input and the section
+   dropdown with no spacing — the dropdown border sat on the input's focus
+   ring. Stack them with a real gap. */
+/* !important: pagefind's stylesheet inflates specificity with an
+   :is(*, #\#) hack (three ID-level selectors) on these containers. */
+.pf-modal .pf-modal-header-content {
+  display: flex !important;
+  flex: 1 !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 0.75rem !important;
+}
+
+.pf-modal .pf-modal-header-content pagefind-input,
+.pf-modal .pf-modal-header-content pagefind-filter-dropdown {
+  display: block;
+}
+
+/* Loading skeletons in our brand colors for both themes. html.dark outranks
+   pagefind's [data-pf-theme="dark"] defaults, which load later at equal
+   specificity and would otherwise override the brand palette. */
+:root {
+  --pf-skeleton: var(--color-beige-200);
+  --pf-skeleton-shine: var(--color-beige-100);
+}
+
+html.dark {
+  --pf-background: var(--color-neutral-900);
+  --pf-border: var(--color-neutral-700);
+  --pf-hover: var(--color-neutral-800);
+  --pf-skeleton: var(--color-neutral-800);
+  --pf-skeleton-shine: var(--color-neutral-700);
+  --pf-text: var(--color-neutral-100);
+  --pf-text-muted: var(--color-neutral-400);
+  --pf-text-secondary: var(--color-neutral-300);
+}
