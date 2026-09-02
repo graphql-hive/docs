@@ -1,31 +1,21 @@
 ---
-import { renderToStaticMarkup } from "react-dom/server";
-
 import {
-  AligentLogo,
-  HemnetLogo,
-  KarrotLogo,
-  LinktreeLogo,
-  MeetupLogo,
-  NacelleLogo,
-  ProdigyLogo,
-  SoundYXZLogo,
-  TrivagoLogo,
-  WealthsimpleLogo,
+  renderLogo,
+  type LogoName,
 } from "../../../../documentation/src/components/company-logos";
 
 const logos = {
-  aligent: AligentLogo,
-  hemnet: HemnetLogo,
-  karrot: KarrotLogo,
-  linktree: LinktreeLogo,
-  meetup: MeetupLogo,
-  nacelle: NacelleLogo,
-  prodigy: ProdigyLogo,
-  "sound-xyz": SoundYXZLogo,
-  trivago: TrivagoLogo,
-  wealthsimple: WealthsimpleLogo,
-} as const;
+  aligent: "AligentLogo",
+  hemnet: "HemnetLogo",
+  karrot: "KarrotLogo",
+  linktree: "LinktreeLogo",
+  meetup: "MeetupLogo",
+  nacelle: "NacelleLogo",
+  prodigy: "ProdigyLogo",
+  "sound-xyz": "SoundYXZLogo",
+  trivago: "TrivagoLogo",
+  wealthsimple: "WealthsimpleLogo",
+} as const satisfies Record<string, LogoName>;
 
 interface Props {
   class?: string;
@@ -35,8 +25,7 @@ interface Props {
 }
 
 const { class: className, height = 32, slug, title } = Astro.props;
-const Logo = logos[slug];
-const markup = renderToStaticMarkup(Logo({ className, height, title }));
+const markup = renderLogo(logos[slug], { className, height, title });
 ---
 
 <Fragment set:html={markup} />
