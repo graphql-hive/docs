@@ -21,16 +21,12 @@
     "fumadocs-core": "16.4.7",
     "npm-to-yarn": "3.0.1",
     "playwright": "1.57.0",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
     "rehype-mermaid": "3.0.0",
     "sharp": "^0.35.3"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@tailwindcss/vite": "4.1.18",
-    "@types/react": "19.2.8",
-    "@types/react-dom": "19.2.3",
     "pagefind": "1.5.2",
     "tailwindcss": "4.1.18",
     "typescript": "5.9.3"
