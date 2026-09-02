@@ -62,6 +62,9 @@
     },
     "packages/documentation": {
       "name": "docs",
+      "dependencies": {
+        "react": "19.2.4",
+      },
     },
     "packages/documentation-astro": {
       "name": "documentation-astro",
