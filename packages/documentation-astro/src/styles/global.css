@@ -391,3 +391,13 @@ h4 {
   padding-left: 1rem;
   border-left: 3px solid var(--border);
 }
+
+/* The section filter dropdown opens below the modal header; the dialog clips
+   overflow for its rounded corners, which cut the menu off when the result
+   list is short. Let the menu escape — inner containers keep their own
+   scrolling. */
+/* !important: pagefind's own stylesheet loads after the bundled CSS and sets
+   overflow: hidden at the same specificity. */
+dialog.pf-modal {
+  overflow: visible !important;
+}

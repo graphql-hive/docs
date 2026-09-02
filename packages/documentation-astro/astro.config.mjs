@@ -16,6 +16,7 @@ import { mermaidRehypePlugin } from "./src/markdown/rehype-mermaid-config.mjs";
 import { remarkBasePath } from "./src/markdown/remark-base-path.mjs";
 import { remarkNpm2Yarn } from "./src/markdown/remark-npm2yarn.mjs";
 import { remarkRelativeLinks } from "./src/markdown/remark-relative-links.mjs";
+import { remarkTocMarkers } from "./src/markdown/remark-toc-markers.mjs";
 
 export default defineConfig({
   /**
@@ -31,7 +32,7 @@ export default defineConfig({
    * pipeline, so the link plugins must be registered here as well.
    */
   markdown: {
-    remarkPlugins: [remarkRelativeLinks, remarkBasePath],
+    remarkPlugins: [remarkRelativeLinks, remarkBasePath, remarkTocMarkers],
   },
   integrations: [
     mdx({
@@ -50,7 +51,12 @@ export default defineConfig({
             },
           ],
         ],
-        remarkPlugins: [remarkNpm2Yarn, remarkRelativeLinks, remarkBasePath],
+        remarkPlugins: [
+          remarkNpm2Yarn,
+          remarkRelativeLinks,
+          remarkBasePath,
+          remarkTocMarkers,
+        ],
       }),
       syntaxHighlight: false,
     }),

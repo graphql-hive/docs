@@ -120,7 +120,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
         )
       }
 
-      <article class="mx-auto flex w-full max-w-[900px] flex-col gap-4 px-4 py-6 [grid-area:main] md:px-6 md:pt-8 xl:px-8 xl:pb-[52px] xl:pt-8" id="nd-page" data-heading-permalinks data-pagefind-body data-pagefind-filter="section[data-search-section]" data-pagefind-meta="section[data-search-section], url[data-search-url], title[data-search-title]" data-search-section={searchSection} data-search-url={withBase(currentPath)} data-search-title={`${title} · ${searchSection}`}>
+      <article class="mx-auto flex w-full max-w-[900px] flex-col gap-4 px-4 py-6 [grid-area:main] md:px-6 md:pt-8 xl:px-8 xl:pb-[52px] xl:pt-8" id="nd-page" data-heading-permalinks>
         {
           currentPath !== "/docs" && (
             <nav class="flex items-center gap-1.5 text-sm text-fd-muted-foreground" aria-label="Breadcrumb">
@@ -131,8 +131,14 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
           )
         }
         <h1 class="text-[1.75em] font-semibold" id={titleId}>{title}</h1>
-        {description && <p class="mb-8 text-lg text-fd-muted-foreground">{description}</p>}
-        <div class="docs-content prose relative flex-1"><slot /></div>
+        {/* Search indexing is scoped here: the h1 stays outside so pagefind
+            does not emit it as a sub-result duplicating the page result, and
+            breadcrumbs / prev-next links stay out of excerpts. The page title
+            comes from the explicit title metadata instead. */}
+        <div class="flex flex-1 flex-col gap-4" data-pagefind-body data-pagefind-filter="section[data-search-section]" data-pagefind-meta="section[data-search-section], url[data-search-url], title[data-search-title]" data-search-section={searchSection} data-search-url={withBase(currentPath)} data-search-title={`${title} · ${searchSection}`}>
+          {description && <p class="mb-8 text-lg text-fd-muted-foreground">{description}</p>}
+          <div class="docs-content prose relative flex-1"><slot /></div>
+        </div>
         {
           (previous || next) && (
             <nav class="grid gap-4 sm:grid-cols-2" aria-label="Documentation pages">
