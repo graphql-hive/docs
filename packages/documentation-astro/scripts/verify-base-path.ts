@@ -50,6 +50,11 @@ for (const file of new Bun.Glob("**/*.{html,css}").scanSync({
   for (const match of content.matchAll(ATTR_PATTERN)) {
     if (isUnprefixed(match[1]!)) report(file, match[1]!);
   }
+  // A doubled prefix means some absolute-URL builder joined an
+  // already-base-prefixed path onto the site URL (e.g. og:image).
+  if (content.includes(`${base}${base}/`)) {
+    report(file, `${base}${base}/… (double prefix)`);
+  }
   for (const match of content.matchAll(SRCSET_PATTERN)) {
     for (const candidate of match[1]!.split(",")) {
       const url = candidate.trim().split(/\s+/)[0];

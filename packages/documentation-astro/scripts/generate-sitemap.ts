@@ -11,7 +11,8 @@ const pages = [
   .map((file) => {
     const path =
       file === "index.html" ? "" : `/${file.replace(/\/index\.html$/, "")}`;
-    return `${SITE_URL}${path}`;
+    // Percent-encode: tag pages contain spaces, invalid raw inside <loc>.
+    return `${SITE_URL}${encodeURI(path)}`;
   })
   .sort();
 
