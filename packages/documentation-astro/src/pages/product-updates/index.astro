@@ -4,7 +4,7 @@ import { getCollection } from "astro:content";
 
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteNavigation from "../../components/SiteNavigation.astro";
-import SocialMetadata from "../../components/SocialMetadata.astro";
+import BaseHead from "../../components/BaseHead.astro";
 import ThemeInit from "../../components/ThemeInit.astro";
 import "../../styles/global.css";
 
@@ -41,7 +41,7 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <ThemeInit />
-    <SocialMetadata
+    <BaseHead
       description="The most recent developments from Hive Console."
       title="Product Updates | Hive"
     />

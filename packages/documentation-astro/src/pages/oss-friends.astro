@@ -2,7 +2,7 @@
 import { withBase } from "../lib/base-path";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
-import SocialMetadata from "../components/SocialMetadata.astro";
+import BaseHead from "../components/BaseHead.astro";
 import "../styles/global.css";
 
 interface OSSFriend {
@@ -28,7 +28,7 @@ try {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <SocialMetadata
+    <BaseHead
       description="We love open source. Meet our friends who share the same passion."
       title="Our Open Source Friends | Hive"
     />

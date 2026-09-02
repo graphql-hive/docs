@@ -6,7 +6,7 @@ import BlogAuthors from "../components/blog/BlogAuthors.astro";
 import HeadingPermalinks from "../components/HeadingPermalinks.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
-import SocialMetadata from "../components/SocialMetadata.astro";
+import BaseHead from "../components/BaseHead.astro";
 import ThemeInit from "../components/ThemeInit.astro";
 import TocAsideContent from "../components/TocAsideContent.astro";
 import TocPopoverContent from "../components/TocPopoverContent.astro";
@@ -35,7 +35,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <ThemeInit />
-    <SocialMetadata breadcrumbs={[{ name: "Product Updates", path: "/product-updates" }]} canonical={canonical} description={description} imageAlt={title} title={pageTitle} type="article" />
+    <BaseHead breadcrumbs={[{ name: "Product Updates", path: "/product-updates" }]} canonical={canonical} description={description} imageAlt={title} title={pageTitle} type="article" />
     <link rel="alternate" type="application/rss+xml" title="Hive Changelog" href="https://the-guild.dev/graphql/hive/feed.xml" />
   </head>
   <body class="min-h-screen antialiased dark:bg-[rgb(var(--nextra-bg))] dark:text-neutral-200" data-theme-enabled>

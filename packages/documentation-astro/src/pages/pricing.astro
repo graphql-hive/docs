@@ -5,7 +5,7 @@ import FrequentlyAskedQuestions from "../components/FrequentlyAskedQuestions.ast
 import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
-import SocialMetadata from "../components/SocialMetadata.astro";
+import BaseHead from "../components/BaseHead.astro";
 import "../styles/global.css";
 
 import codeIconWhite from "../../../documentation/src/components/code-icon-white.svg?url";
@@ -244,7 +244,7 @@ const smallCtaVariant = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <SocialMetadata
+    <BaseHead
       description="Honest pricing plans for GraphQL Federation and other GraphQL APIs, supporting developers to enterprise with Open-Source schema registry, analytics, and gateway solutions"
       title="Hive Platform Pricing | Hive"
     />

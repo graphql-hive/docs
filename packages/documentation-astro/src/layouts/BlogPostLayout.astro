@@ -9,7 +9,7 @@ import SimilarPosts from "../components/blog/SimilarPosts.astro";
 import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
-import SocialMetadata from "../components/SocialMetadata.astro";
+import BaseHead from "../components/BaseHead.astro";
 import TocAsideContent from "../components/TocAsideContent.astro";
 import TocPopoverContent from "../components/TocPopoverContent.astro";
 import { filterToc, type TocHeading } from "../lib/toc";
@@ -39,7 +39,7 @@ const pageTitle = title.includes("|") ? title : `${title} | Hive`;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <SocialMetadata breadcrumbs={[{ name: "Blog", path: "/blog" }]} canonical={canonical} description={description} image={socialImage} imageAlt={title} title={pageTitle} type="article" />
+    <BaseHead breadcrumbs={[{ name: "Blog", path: "/blog" }]} canonical={canonical} description={description} image={socialImage} imageAlt={title} title={pageTitle} type="article" />
     <link rel="alternate" type="application/rss+xml" title="Hive Blog" href="https://the-guild.dev/graphql/hive/blog/feed.xml" />
   </head>
   <body class="min-h-screen antialiased">
