@@ -224,6 +224,19 @@ traffic_shaping:
 
 </Tabs>
 
+#### Metrics
+
+Inbound deduplication exposes the following metrics:
+
+| Metric                                    | Type    | Description                                                                                                      |
+| ----------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
+| `hive.router.request_dedupe.joined_total` | counter | Number of inbound requests that joined an already in-flight deduplicated request instead of executing their own. |
+
+The counter increments once per client request (HTTP or WebSocket) that was coalesced into an
+in-flight leader request, carrying a `graphql.operation.type` attribute (`query` or
+`subscription`). It stays at zero when `router.dedupe` is disabled, or when every request executes
+independently.
+
 **When to enable it:**
 
 - Many clients frequently issue the same popular queries (dashboards, landing pages, product
