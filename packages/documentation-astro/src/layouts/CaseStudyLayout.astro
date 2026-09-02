@@ -7,7 +7,7 @@ import CaseStudyCta from "../components/case-studies/CaseStudyCta.astro";
 import CompanyLogo from "../components/case-studies/CompanyLogo.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
-import SocialMetadata from "../components/SocialMetadata.astro";
+import BaseHead from "../components/BaseHead.astro";
 
 interface Author {
   avatar?: string;
@@ -41,7 +41,7 @@ const pageTitle = `${title} | Hive`;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <SocialMetadata breadcrumbs={[{ name: "Case Studies", path: "/case-studies" }]} canonical={canonical} description={excerpt} imageAlt={title} title={pageTitle} type="article" />
+    <BaseHead breadcrumbs={[{ name: "Case Studies", path: "/case-studies" }]} canonical={canonical} description={excerpt} imageAlt={title} title={pageTitle} type="article" />
   </head>
   <body class="min-h-screen antialiased">
     <SiteNavigation />

@@ -4,7 +4,7 @@ import { getCollection } from "astro:content";
 
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteNavigation from "../../components/SiteNavigation.astro";
-import SocialMetadata from "../../components/SocialMetadata.astro";
+import BaseHead from "../../components/BaseHead.astro";
 import ThemeInit from "../../components/ThemeInit.astro";
 import "../../styles/global.css";
 
@@ -41,10 +41,11 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <ThemeInit />
-    <SocialMetadata
+    <BaseHead
       description="The most recent developments from Hive Console."
       title="Product Updates | Hive"
     />
+    <link rel="alternate" type="application/rss+xml" title="Hive Changelog" href="https://the-guild.dev/graphql/hive/feed.xml" />
   </head>
   <body class="min-h-screen antialiased dark:bg-[rgb(var(--nextra-bg))] dark:text-neutral-200" data-theme-enabled>
     <SiteNavigation />

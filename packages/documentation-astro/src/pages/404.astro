@@ -2,7 +2,7 @@
 import { withBase } from "../lib/base-path";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
-import SocialMetadata from "../components/SocialMetadata.astro";
+import BaseHead from "../components/BaseHead.astro";
 import "../styles/global.css";
 ---
 
@@ -12,7 +12,7 @@ import "../styles/global.css";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="robots" content="noindex" />
-    <SocialMetadata
+    <BaseHead
       description="The page you are looking for might have been removed, had its name changed, or is temporarily unavailable."
       title="Page Not Found | Hive"
     />

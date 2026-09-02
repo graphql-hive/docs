@@ -2,7 +2,7 @@
 import { withBase } from "../lib/base-path";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
-import SocialMetadata from "../components/SocialMetadata.astro";
+import BaseHead from "../components/BaseHead.astro";
 import "../styles/global.css";
 
 import federationDiagram from "../../../documentation/src/routes/_landing/_light-only/federation/federation-diagram.png";
@@ -56,7 +56,7 @@ const faqs: [string, string[]][] = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <SocialMetadata
+    <BaseHead
       description="Discover what GraphQL Federation is, how it unifies multiple APIs into a Supergraph, its core benefits, and the building blocks like subgraphs, schema composition and gateway."
       image={ogImage}
       imageAlt="GraphQL Federation with Hive"

@@ -4,7 +4,7 @@ import GotAnIdeaSection from "../components/ecosystem/GotAnIdeaSection.astro";
 import ProductCard from "../components/ecosystem/ProductCard.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
-import SocialMetadata from "../components/SocialMetadata.astro";
+import BaseHead from "../components/BaseHead.astro";
 import "../styles/global.css";
 
 const lettermark = (mark: string) =>
@@ -168,7 +168,7 @@ const sections: {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <SocialMetadata
+    <BaseHead
       description="Everything you need to scale your API infrastructure"
       title="The Ecosystem | Hive"
     />

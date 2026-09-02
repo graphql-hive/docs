@@ -8,7 +8,7 @@ import DocsNavigationTree from "../components/DocsNavigationTree.astro";
 import HeadingPermalinks from "../components/HeadingPermalinks.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
-import SocialMetadata from "../components/SocialMetadata.astro";
+import BaseHead from "../components/BaseHead.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import ThemeInit from "../components/ThemeInit.astro";
 import TocAsideContent from "../components/TocAsideContent.astro";
@@ -85,7 +85,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <ThemeInit />
-    <SocialMetadata breadcrumbs={jsonLdBreadcrumbs} description={description ?? title} imageAlt={title} title={pageTitle} />
+    <BaseHead breadcrumbs={jsonLdBreadcrumbs} description={description ?? title} imageAlt={title} title={pageTitle} />
     <link href={withBase("/pagefind/pagefind-component-ui.css")} rel="stylesheet" />
     <script is:inline src={withBase("/pagefind/pagefind-component-ui.js")} type="module"></script>
   </head>

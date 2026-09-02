@@ -6,7 +6,7 @@ import CompanyNewsAndPressSection from "../components/blog/CompanyNewsAndPressSe
 import GetYourAPIGameRightSection from "../components/GetYourAPIGameRightSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteNavigation from "../components/SiteNavigation.astro";
-import SocialMetadata from "../components/SocialMetadata.astro";
+import BaseHead from "../components/BaseHead.astro";
 
 interface Props {
   description: string;
@@ -21,7 +21,7 @@ const { description, title } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <SocialMetadata description={description} title={`${title} | Hive`} />
+    <BaseHead description={description} title={`${title} | Hive`} />
     <link rel="alternate" type="application/rss+xml" title="Hive Blog" href="https://the-guild.dev/graphql/hive/blog/feed.xml" />
   </head>
   <body class="min-h-screen antialiased">
