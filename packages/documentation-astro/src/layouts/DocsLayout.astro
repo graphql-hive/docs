@@ -32,18 +32,35 @@ const tableOfContents = filterToc(headings);
 const currentIndex = navItems.findIndex((item) => item.href === currentPath);
 const previous = currentIndex > 0 ? navItems[currentIndex - 1] : undefined;
 const next = currentIndex >= 0 ? navItems[currentIndex + 1] : undefined;
-function findBreadcrumbs(nodes: DocsNavNode[]): string[] | undefined {
+function findBreadcrumbTrail(
+  nodes: DocsNavNode[],
+): { href?: string; title: string }[] | undefined {
   for (const node of nodes) {
     if (node.type === "page") {
       if (node.href === currentPath) return [];
       continue;
     }
     if (node.href === currentPath) return [];
-    const children = findBreadcrumbs(node.children);
-    if (children) return [node.title, ...children];
+    const children = findBreadcrumbTrail(node.children);
+    if (children) return [{ href: node.href, title: node.title }, ...children];
   }
 }
-const breadcrumbs = findBreadcrumbs(navTree) ?? [];
+const breadcrumbTrail = findBreadcrumbTrail(navTree) ?? [];
+const breadcrumbs = breadcrumbTrail.map((crumb) => crumb.title);
+// Ancestors for the BreadcrumbList structured data, like the old site's.
+// Categories without a page of their own get their URL from the path
+// segments, matching how the old site built breadcrumb items.
+const pathSegments = currentPath
+  .replace(/^\/docs\/?/, "")
+  .split("/")
+  .filter(Boolean);
+const jsonLdBreadcrumbs = [
+  { name: "Docs", path: "/docs" },
+  ...breadcrumbTrail.map((crumb, index) => ({
+    name: crumb.title,
+    path: crumb.href ?? `/docs/${pathSegments.slice(0, index + 1).join("/")}`,
+  })),
+];
 // Match the old site's title templates: gateway and router docs carry their
 // product name as the suffix, and titles with their own "|" stay untouched.
 const section = /^\/docs\/gateway(\/|$)/.test(currentPath)
@@ -61,7 +78,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <ThemeInit />
-    <SocialMetadata description={description ?? title} imageAlt={title} title={pageTitle} />
+    <SocialMetadata breadcrumbs={jsonLdBreadcrumbs} description={description ?? title} imageAlt={title} title={pageTitle} />
     <link href={withBase("/pagefind/pagefind-component-ui.css")} rel="stylesheet" />
     <script is:inline src={withBase("/pagefind/pagefind-component-ui.js")} type="module"></script>
   </head>

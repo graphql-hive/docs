@@ -35,7 +35,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <ThemeInit />
-    <SocialMetadata canonical={canonical} description={description} imageAlt={title} title={pageTitle} type="article" />
+    <SocialMetadata breadcrumbs={[{ name: "Product Updates", path: "/product-updates" }]} canonical={canonical} description={description} imageAlt={title} title={pageTitle} type="article" />
   </head>
   <body class="min-h-screen antialiased dark:bg-[rgb(var(--nextra-bg))] dark:text-neutral-200" data-theme-enabled>
     <SiteNavigation />
