@@ -8,7 +8,10 @@
     "generate:redirects": "bun scripts/generate-redirects.ts",
     "generate:headers": "bun scripts/generate-headers.ts",
     "generate:sitemap": "bun scripts/generate-sitemap.ts",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "postinstall": "bun playwright install chromium",
+    "test:bun": "bun test src",
+    "check-seo": "bun scripts/check-seo.ts"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "7.2.2",

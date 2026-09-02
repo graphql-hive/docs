@@ -16,12 +16,5 @@ jobs:
       - name: install dependencies
         run: bun install --frozen-lockfile
 
-      - name: build
-        run: bun run build
-        working-directory: packages/documentation
-        env:
-          NODE_OPTIONS: "--max-old-space-size=8192"
-        timeout-minutes: 20
-
       - name: run integration and unit tests
         run: bun test:bun
