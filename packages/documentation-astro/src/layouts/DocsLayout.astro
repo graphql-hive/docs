@@ -69,6 +69,13 @@ const section = /^\/docs\/gateway(\/|$)/.test(currentPath)
     ? "Hive Router"
     : "Hive";
 const pageTitle = title.includes("|") ? title : `${title} | ${section}`;
+// Search metadata: each docs page is tagged with its product section so the
+// search modal can badge results and default to the section being browsed.
+const searchSection = /^\/docs\/router(\/|$)/.test(currentPath)
+  ? "Router"
+  : /^\/docs\/gateway(\/|$)/.test(currentPath)
+    ? "Gateway"
+    : "Console";
 const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
 ---
 
@@ -113,7 +120,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
         )
       }
 
-      <article class="mx-auto flex w-full max-w-[900px] flex-col gap-4 px-4 py-6 [grid-area:main] md:px-6 md:pt-8 xl:px-8 xl:pb-[52px] xl:pt-8" id="nd-page" data-heading-permalinks data-pagefind-body>
+      <article class="mx-auto flex w-full max-w-[900px] flex-col gap-4 px-4 py-6 [grid-area:main] md:px-6 md:pt-8 xl:px-8 xl:pb-[52px] xl:pt-8" id="nd-page" data-heading-permalinks data-pagefind-body data-pagefind-filter="section[data-search-section]" data-pagefind-meta="section[data-search-section], url[data-search-url], title[data-search-title]" data-search-section={searchSection} data-search-url={withBase(currentPath)} data-search-title={`${title} · ${searchSection}`}>
         {
           currentPath !== "/docs" && (
             <nav class="flex items-center gap-1.5 text-sm text-fd-muted-foreground" aria-label="Breadcrumb">
@@ -154,7 +161,7 @@ const titleId = title.replaceAll(/[\s.,]+/g, "-").toLowerCase();
     </div>
 
     <SiteFooter class="border-t border-fd-border" />
-    <DocsSearchModal />
+    <DocsSearchModal section={searchSection} />
     <HeadingPermalinks />
 
     <script>
