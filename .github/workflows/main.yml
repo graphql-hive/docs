@@ -21,9 +21,6 @@ jobs:
   test:
     uses: ./.github/workflows/test.yml
 
-  e2e:
-    uses: ./.github/workflows/e2e.yml
-
   search-api:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -47,12 +44,6 @@ jobs:
           packageManager: bun
           workingDirectory: packages/search-api
           command: deploy
-
-  website:
-    uses: ./.github/workflows/website.yml
-    with:
-      environment: production
-    secrets: inherit
 
   astro-website:
     uses: ./.github/workflows/website-astro.yml

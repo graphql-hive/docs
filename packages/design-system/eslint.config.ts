@@ -42,7 +42,7 @@ const config: Linter.Config[] = [
     settings: {
       "better-tailwindcss": {
         entryPoint: new URL(
-          "../documentation/src/styles/app.css",
+          "../documentation-astro/src/styles/global.css",
           import.meta.url,
         ).pathname,
       },

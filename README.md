@@ -1,6 +1,6 @@
 # Hive Platform Docs
 
-Hive Platform documentation site.
+Hive Platform documentation site — https://the-guild.dev/graphql/hive
 
 ## Quick Start
 
@@ -11,8 +11,10 @@ bun dev
 
 ## Structure
 
-- `packages/documentation/` - TanStack Start + Fumadocs docs site
-- `packages/design-system/` - React components with Tailwind CSS v4
+- `packages/documentation-astro/` — the website (Astro), serving docs, blog, case studies, product updates, and landing pages
+- `packages/documentation/` — shared MDX content, public assets, and redirect rules consumed by the site
+- `packages/design-system/` — React components with Tailwind CSS v4
+- `packages/search-api/` — Cloudflare Worker for search-related APIs
 
 ## Commands
 
@@ -22,14 +24,15 @@ bun test         # Run tests
 bun fix          # Lint and format
 ```
 
+## Deployment
+
+The site deploys as static assets on a Cloudflare Worker. In production it is
+mounted behind the the-guild.dev router under `/graphql/hive` — main-branch
+builds set `ASTRO_BASE_PATH` accordingly, while PR previews run standalone.
+
 ## Tech
 
 - Bun + Turborepo
-- React 19 + TypeScript
-- TanStack Start + Fumadocs
-- Tailwind CSS v4
-- Playwright testing
-
-## Choices
-
-- Using Mermaid Rehype plugin instead of runtime mermaid to save bundle size
+- Astro + Tailwind CSS v4
+- pagefind search
+- Mermaid rendered at build time (rehype-mermaid via Playwright)

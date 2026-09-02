@@ -16,11 +16,11 @@ jobs:
 
       - name: build documentation
         run: bun run build
-        working-directory: packages/documentation
+        working-directory: packages/documentation-astro
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
         timeout-minutes: 20
 
       - name: check seo
         run: bun run check-seo
-        working-directory: packages/documentation
+        working-directory: packages/documentation-astro

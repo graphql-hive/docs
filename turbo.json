@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", ".output/**", "dist/**"],
+      "outputs": ["dist/**"],
       "env": ["VERCEL", "NODE_OPTIONS"]
     },
     "lint": {
@@ -20,12 +20,6 @@
     "dev": {
       "cache": false,
       "persistent": true
-    },
-    "test": {
-      "dependsOn": ["^test"]
-    },
-    "test:e2e": {
-      "dependsOn": ["^test:e2e"]
     },
     "test:bun": {
       "dependsOn": ["^test:bun"]
