@@ -14,6 +14,7 @@ const { align = "center", authors: rawAuthors, class: className, date } = Astro.
 const dateFormat = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
   month: "short",
+  timeZone: "UTC",
   weekday: "long",
   year: "numeric",
 });
