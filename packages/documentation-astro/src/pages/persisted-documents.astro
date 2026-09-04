@@ -1,0 +1,1119 @@
+---
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteNavigation from "../components/SiteNavigation.astro";
+import SocialMetadata from "../components/SocialMetadata.astro";
+import "../styles/global.css";
+
+import ogImage from "../../../documentation/src/routes/opengraph-image.png";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <SocialMetadata
+      description="Learn how trusted GraphQL documents reduce your API's attack surface, and how Hive Console, Router, and Gateway make them practical to adopt."
+      image={ogImage}
+      imageAlt="GraphQL Hive"
+      title="Secure your GraphQL API with Persisted Documents | Hive"
+    />
+  </head>
+  <body class="text-green-1000 bg-white font-sans [color-scheme:light]">
+    <SiteNavigation />
+
+    <main class="text-green-1000 light mx-auto max-w-360 overflow-hidden">
+      <!-- Hero -->
+      <div
+        class="bg-green-1000 relative isolate flex max-w-360 flex-col gap-6 overflow-hidden rounded-3xl px-4 py-6 sm:pb-28 sm:pt-12 md:gap-8 lg:pb-[168px] lg:pt-24 mx-4 max-sm:mt-2 md:mx-6"
+      >
+        <div class="pointer-events-none absolute inset-0 overflow-hidden">
+          <svg
+            class="pointer-events-none absolute left-[-46px] top-[-20px] size-[200px] rotate-180 md:left-[-186px] md:top-[-76px] md:size-auto"
+            height="432"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 432 432"
+            width="432"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M.75 431v.25h90.24V160.868c0-38.596 31.282-69.878 69.878-69.878H431.25V.75H191.864a47.017 47.017 0 0 0-33.23 13.771l-68.07 68.071-7.972 7.971-68.07 68.071A47.018 47.018 0 0 0 .75 191.864V431Z"
+              fill="url(#trusted-hero-arch-a)"
+              stroke="url(#trusted-hero-arch-b)"
+              stroke-width=".5"
+            ></path></svg
+          ><svg
+            class="pointer-events-none absolute bottom-0 right-[-53px] size-[200px] md:-bottom-32 md:size-auto lg:bottom-0 lg:right-[-72px]"
+            height="432"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 432 432"
+            width="432"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M.75 431v.25h90.24V160.868c0-38.596 31.282-69.878 69.878-69.878H431.25V.75H191.864a47.017 47.017 0 0 0-33.23 13.771l-68.07 68.071-7.972 7.971-68.07 68.071A47.018 47.018 0 0 0 .75 191.864V431Z"
+              fill="url(#trusted-hero-arch-a)"
+              stroke="url(#trusted-hero-arch-b)"
+              stroke-width=".5"
+            ></path></svg
+          ><svg
+            class="absolute -z-10"
+            height="432"
+            viewBox="0 0 432 432"
+            width="432"
+          >
+            <defs>
+              <linearGradient
+                gradientUnits="userSpaceOnUse"
+                id="trusted-hero-arch-a"
+                x1="48.5"
+                x2="302.5"
+                y1="53.5"
+                y2="341"
+              >
+                <stop stop-color="#fff" stop-opacity=".1"></stop>
+                <stop offset="1" stop-color="#fff" stop-opacity=".3"></stop>
+              </linearGradient>
+              <linearGradient
+                gradientUnits="userSpaceOnUse"
+                id="trusted-hero-arch-b"
+                x1="1"
+                x2="431"
+                y1="1"
+                y2="431"
+              >
+                <stop stop-color="#fff" stop-opacity=".1"></stop>
+                <stop offset="1" stop-color="#fff" stop-opacity=".4"></stop>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1
+          class="group text-4xl leading-[1.2] md:text-[4rem] md:leading-[1.1875] tracking-[-0.64px] mx-auto max-w-3xl text-balance text-center text-white"
+        >
+          Secure your GraphQL API with Persisted Documents
+        </h1>
+        <p
+          class="mx-auto w-[512px] max-w-[80%] text-center leading-6 text-white/80"
+        >
+          Execute only the GraphQL operations your apps need and reject everything
+          else. Learn how persisted documents shrink your API's attack surface.
+        </p>
+        <div
+          class="relative z-10 flex flex-col justify-center gap-2 px-0.5 sm:flex-row sm:gap-4"
+        >
+          <a
+            class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-white focus-visible:outline-4 focus-visible:outline-offset-0 focus-visible:outline-white/40 sm:w-fit"
+            href="/docs/schema-registry/app-deployments"
+            title="Set up App Deployments in Hive"
+            ><span
+              class="absolute inset-0 rounded-lg border border-green-800"
+            ></span
+            >Set up App Deployments</a
+          ><a
+            class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-green-300 hover:bg-green-200 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-300/40 sm:w-fit"
+            href="#what-are-trusted-documents"
+            title="Understand the persisted documents pattern"
+            ><span
+              class="absolute inset-0 rounded-lg border border-green-800"
+            ></span
+            >Understand the pattern</a
+          >
+        </div>
+        <div class="pointer-events-none absolute inset-0 overflow-hidden">
+          <svg
+            class="pointer-events-none absolute right-0 top-[-22px] overflow-visible firefox-highlight-fix"
+            fill="#86B6C1"
+            height="674"
+            viewBox="0 0 895 674"
+            width="895"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g filter="url(#trusted-hero-highlight-blur)">
+              <path
+                d="M350 280.534C350 296.208 356.24 311.261 367.33 322.351L453.447 408.468L463.532 418.553L549.649 504.67C560.739 515.76 575.792 522 591.466 522L894 522L894 408.468L552.251 408.468C503.249 408.468 463.532 368.751 463.532 319.749L463.532 -22L350 -22L350 280.534Z"
+              ></path>
+            </g>
+            <defs>
+              <filter
+                color-interpolation-filters="sRGB"
+                filterUnits="userSpaceOnUse"
+                height="1244"
+                id="trusted-hero-highlight-blur"
+                width="1244"
+                x="-3.05176e-05"
+                y="-372"
+              >
+                <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                <feBlend
+                  in="SourceGraphic"
+                  in2="BackgroundImageFix"
+                  mode="normal"
+                  result="shape"
+                ></feBlend>
+                <feGaussianBlur
+                  result="effect1_foregroundBlur"
+                  stdDeviation="175"
+                ></feGaussianBlur>
+              </filter>
+            </defs>
+          </svg>
+        </div>
+      </div>
+      <!-- Intro -->
+      <div class="relative mt-6 sm:mt-[-72px]">
+        <section
+          id="what-are-trusted-documents"
+          class="border-beige-400 isolate mx-auto w-[1200px] max-w-full rounded-3xl bg-white sm:max-w-[calc(100%-4rem)] sm:border sm:p-6"
+        >
+          <div
+            class="relative mx-auto flex w-[1392px] max-w-full flex-col gap-x-4 gap-y-6 md:gap-y-12 lg:flex-row [@media(min-width:1400px)]:gap-x-[120px]"
+          >
+            <div class="flex grow flex-col gap-12 px-4 md:px-0 lg:w-[650px]">
+              <h2
+                class="group text-[40px] leading-[1.2] tracking-[-0.2px] text-green-1000"
+              >
+                What are Persisted Documents?
+              </h2>
+              <div class="mx-auto space-y-4 leading-6 text-green-800 lg:space-y-6">
+                <p>
+                  A GraphQL endpoint allows executing arbitary queries. That
+                  flexibility is useful for developers, but a risk for production GraphQL
+                  APIs. Unless you are running a public GraphQL API, there is no reason for an unknown client to use an ad-hoc
+                  operation in production.
+                </p>
+                <p>
+                    A <strong class="text-green-1000">persisted document</strong> (also referred to as <strong class="text-green-1000">trusted document</strong> or  <strong class="text-green-1000">persisted query</strong>) is a
+                  query, mutation, or subscription that that has a stable ID assigned and is known by the GraphQL server or Gateway.
+                </p>
+                <p>
+                  Clients send the document ID instead of the document string to your GraphQL endpoint.
+                </p>
+                <p>
+                  Your GraphQL server or gateway attempts to loads the corresponding document from a persisted document store.
+                  Arbitary GraphQL operations are rejected and attack surface is reduced.
+                </p>
+                <p>
+                <strong class="text-green-1000">Executing arbitary queries belongs in the development process, not the production environment.</strong>
+                </p>
+              </div>
+            </div>
+            <div
+              class="relative mx-4 overflow-hidden rounded-3xl p-6 md:ml-6 md:mr-0 lg:w-[450px] lg:shrink-0"
+            >
+              <div class="rounded-2xl p-5">
+                <p
+                  class="text-xs font-semibold uppercase tracking-[0.1em] text-green-700"
+                >
+                  Client
+                </p>
+                <div class="mt-4 rounded-xl bg-beige-100 p-4 font-mono text-sm">
+                  <div class="flex items-center justify-between text-green-700">
+                    <span>POST /graphql</span>
+                  </div>
+                  <div class="mt-4 leading-7">
+                    <span class="text-blue-700">documentId:</span><br /><span
+                      class="break-all pl-2"
+                      >sha256:7c6fa92e</span
+                    >
+                  </div>
+                </div>
+                <p
+                  class="mt-6 text-xs font-semibold uppercase tracking-[0.1em] text-green-700"
+                >
+                  GraphQL endpoint
+                </p>
+                <div class="mt-4 space-y-2">
+                  <div
+                    class="flex items-center gap-3 rounded-xl border border-green-200 bg-green-50 p-4"
+                  >
+                    <span
+                      class="grid size-7 shrink-0 place-items-center rounded-full bg-green-700 text-sm text-white"
+                      >✓</span
+                    >
+                    <div>
+                      <strong class="block font-medium">Known document</strong
+                      ><span class="text-sm text-green-700"
+                        >Resolve and execute</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 p-4"
+                  >
+                    <span
+                      class="grid size-7 shrink-0 place-items-center rounded-full bg-red-600 text-sm text-white"
+                      >×</span
+                    >
+                    <div>
+                      <strong class="block font-medium">Anything else</strong
+                      ><span class="text-sm text-green-700"
+                        >Reject before execution</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- Why persisted documents -->
+      <section class="p-6 sm:py-20 md:py-24">
+        <h2
+          class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] text-balance text-center"
+        >
+          Why Persisted Documents?
+        </h2>
+        <div class="relative mx-auto mt-4 space-y-2 text-center lg:max-w-[880px]">
+          <p>
+            Persisted Documents turn your GraphQL endpoint from an open execution
+            surface into an allowlist. <br />The benefits reach far beyond security.
+          </p>
+        </div>
+        <ul
+          class="mt-6 flex flex-row flex-wrap justify-center gap-2 md:mt-16 md:gap-6"
+        >
+          <li class="flex-1 rounded-2xl md:rounded-3xl bg-beige-100 p-6 md:p-12">
+           <div class="w-fit rounded-lg bg-[linear-gradient(135deg,#68A8B6,#3B736A)] p-[9px] text-white"><svg fill="currentColor" height="24" width="24"><path d="M5.25 7.5a2.25 2.25 0 1 1 3 2.122v4.756a2.251 2.251 0 1 1-1.5 0V9.622A2.25 2.25 0 0 1 5.25 7.5Zm9.22-2.03a.75.75 0 0 1 1.06 0l.97.97.97-.97a.75.75 0 1 1 1.06 1.06l-.97.97.97.97a.75.75 0 0 1-1.06 1.06l-.97-.97-.97.97a.75.75 0 1 1-1.06-1.06l.97-.97-.97-.97a.75.75 0 0 1 0-1.06Zm2.03 5.03a.75.75 0 0 1 .75.75v3.128a2.251 2.251 0 1 1-1.5 0V11.25a.75.75 0 0 1 .75-.75Z"></path></svg></div>
+            <h3
+              class="mt-4 text-xl font-medium leading-[1.4] text-green-1000 md:mt-6"
+            >
+              Shrink the Attack Surface
+            </h3>
+            <div class="mt-2 space-y-2 text-green-800 md:mt-4">
+              <p>
+                Unknown operations never reach
+                {" "}<strong>parsing, validation, planning, or execution</strong>.
+                Attackers cannot craft malicious queries against your production API.
+              </p>
+              <p>
+                The allowlist is enforced before any GraphQL query validation or execution happens.
+              </p>
+            </div>
+          </li>
+          <li
+            class="flex-1 basis-full rounded-2xl md:basis-0 md:rounded-3xl bg-beige-100 p-6 md:p-12"
+          >
+              <div class="w-fit rounded-lg bg-[linear-gradient(135deg,#68A8B6,#3B736A)] p-[9px] text-white"><svg fill="currentColor" height="24" width="24"><path d="M5.25 7.5a2.25 2.25 0 1 1 3 2.122v4.756a2.251 2.251 0 1 1-1.5 0V9.622A2.25 2.25 0 0 1 5.25 7.5Zm9.22-2.03a.75.75 0 0 1 1.06 0l.97.97.97-.97a.75.75 0 1 1 1.06 1.06l-.97.97.97.97a.75.75 0 0 1-1.06 1.06l-.97-.97-.97.97a.75.75 0 1 1-1.06-1.06l.97-.97-.97-.97a.75.75 0 0 1 0-1.06Zm2.03 5.03a.75.75 0 0 1 .75.75v3.128a2.251 2.251 0 1 1-1.5 0V11.25a.75.75 0 0 1 .75-.75Z"></path></svg></div>
+            <h3
+              class="mt-4 text-xl font-medium leading-[1.4] text-green-1000 md:mt-6"
+            >
+              Send Smaller Requests
+            </h3>
+            <div class="mt-2 space-y-2 text-green-800 md:mt-4">
+              <p>
+                A short document ID replaces the complete GraphQL document string on every
+                request.
+              </p>
+              <p>
+                Mobile and low-bandwidth clients pay a fraction of the payload cost
+                they would otherwise send on each HTTP call.
+              </p>
+            </div>
+          </li>
+          <li
+            class="flex-1 basis-full rounded-2xl md:rounded-3xl lg:basis-0 bg-beige-100 p-6 md:p-12"
+          >
+              <div class="w-fit rounded-lg bg-[linear-gradient(135deg,#68A8B6,#3B736A)] p-[9px] text-white"><svg fill="currentColor" height="24" width="24"><path d="M5.25 7.5a2.25 2.25 0 1 1 3 2.122v4.756a2.251 2.251 0 1 1-1.5 0V9.622A2.25 2.25 0 0 1 5.25 7.5Zm9.22-2.03a.75.75 0 0 1 1.06 0l.97.97.97-.97a.75.75 0 1 1 1.06 1.06l-.97.97.97.97a.75.75 0 0 1-1.06 1.06l-.97-.97-.97.97a.75.75 0 1 1-1.06-1.06l.97-.97-.97-.97a.75.75 0 0 1 0-1.06Zm2.03 5.03a.75.75 0 0 1 .75.75v3.128a2.251 2.251 0 1 1-1.5 0V11.25a.75.75 0 0 1 .75-.75Z"></path></svg></div>
+            <h3
+              class="mt-4 text-xl font-medium leading-[1.4] text-green-1000 md:mt-6"
+            >
+              Know What Can Break
+            </h3>
+            <div class="mt-2 space-y-2 text-green-800 md:mt-4">
+              <p>
+                Validate schema changes against
+                {" "}<strong>every operation and every active application version</strong
+                >.
+              </p>
+              <p>
+                Breaking-change checks become precise instead of speculative.
+              </p>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <!-- How it works -->
+      <div class="mx-4 md:mx-6">
+      <section class="p-6 sm:py-20 md:py-24">
+             <h2
+               class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] text-balance text-center"
+             >
+               Adopting Persisted Documents
+             </h2>
+             <p
+               class="relative mx-auto mt-4 max-w-[700px] text-center text-green-800"
+             >
+               Build an allowlist from your client operations, publish them to a store,
+               and enforce it on your GraphQL endpoint.
+             </p>
+             <ol
+               class="mt-6 flex flex-row flex-wrap justify-center gap-2 md:mt-16 md:gap-6"
+             >
+               <li class="flex-1 rounded-2xl bg-beige-100 p-6 md:rounded-3xl md:p-12">
+                 <span class="text-sm font-medium uppercase tracking-wide text-green-700"
+                   >Step 1</span
+                 >
+                 <h3 class="mt-2 text-xl font-medium leading-[1.4] text-green-1000">
+                   Generate your document manifest
+                 </h3>
+                  <p class="mt-2 text-green-800">
+                    Extract the reviewed GraphQL operations from your client code and
+                    assign each one a stable document ID (e.g. SHA-256 hash). Generate
+                    the manifest with
+                    {" "}<a
+                      class="hive-focus underline underline-offset-2"
+                      href="https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#persisted-documents"
+                      target="_blank"
+                      rel="noreferrer"
+                      >GraphQL Code Generator</a
+                    >{" "}or
+                    {" "}<a
+                      class="hive-focus underline underline-offset-2"
+                      href="https://relay.dev/docs/guides/persisted-queries/"
+                      target="_blank"
+                      rel="noreferrer"
+                      >Relay</a
+                    >.
+                  </p>
+               </li>
+               <li
+                 class="flex-1 basis-full rounded-2xl bg-beige-100 p-6 md:basis-0 md:rounded-3xl md:p-12"
+               >
+                 <span class="text-sm font-medium uppercase tracking-wide text-green-700"
+                   >Step 2</span
+                 >
+                 <h3 class="mt-2 text-xl font-medium leading-[1.4] text-green-1000">
+                   Write manifest to store or registry
+                 </h3>
+                 <p class="mt-2 text-green-800">
+                   Write the manifest to a blob storage such as S3 or use a schema registry such as
+                   Hive, which futher validates the manifest against your schema, groups it by app and
+                   version, and distributes the approved documents through its CDN.
+                 </p>
+               </li>
+               <li
+                 class="flex-1 basis-full rounded-2xl bg-beige-100 p-6 md:rounded-3xl md:p-12 lg:basis-0"
+               >
+                 <span class="text-sm font-medium uppercase tracking-wide text-green-700"
+                   >Step 3</span
+                 >
+                 <h3 class="mt-2 text-xl font-medium leading-[1.4] text-green-1000">
+                   Enforce on your GraphQL endpoint
+                 </h3>
+                 <p class="mt-2 text-green-800">
+                   Clients send hashes instead of operation strings. Your server, router, or gateway resolves each document ID via your store or schema registry and rejects
+                   anything that was not reviewed and published before execution.
+                 </p>
+               </li>
+             </ol>
+        </section>
+        <div class="mt-6 md:mt-16">
+          <div class="mb-6 text-center md:mb-16">
+            <h2
+              class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] text-balance"
+            >
+              Persisted Documents on Hive
+            </h2>
+            <p class="relative mx-auto mt-4 max-w-[700px] text-green-800">
+              From development to publishing to distribution and GraphQL endpoint enforcement, see how
+              each part of the workflow fits together with the Hive Platform.
+            </p>
+          </div>
+          <!-- Open vs trusted execution -->
+          <section
+            class="relative isolate max-w-full rounded-none px-4 py-6 lg:px-8 lg:py-24 xl:px-16 [@media(min-width:1358px)]:px-24 flex flex-col gap-6 lg:flex-row lg:gap-12 bg-beige-100 rounded-3xl rounded-b-none"
+          >
+            <div
+              class="mx-auto flex max-w-full shrink flex-col flex-wrap justify-center gap-x-2"
+            >
+              <h3
+                class="group text-[40px] leading-[1.2] tracking-[-0.2px] max-w-full text-balance text-green-1000"
+              >
+                Arbitary vs. Allowlist Execution
+              </h3>
+              <div class="mt-4 max-w-full space-y-2 lg:mt-6 text-green-800">
+                <p>
+                  Without an allowlist, any valid operation can run. A curious
+                  visitor or malicious actor has full access to your GraphQL schema and can craft potential harmful queries.
+                </p>
+                <p>
+                  Disabling Introspection and disabling suggestions might reduce risk, but tools exist for reverse engineering the full GraphQL schema via brute-force.
+                </p>
+                <h4 class="pt-2 text-lg font-semibold text-green-1000">
+                  What changes with persisted documents
+                </h4>
+                <p>
+                  With persisted documents, the runtime resolves a
+                  {" "}<code class="font-mono text-green-1000">documentId</code> against
+                  a published allowlist. Operations that were never reviewed,
+                  published, or shipped are rejected before they are ever executed.
+                </p>
+                <ul class="list-inside list-disc space-y-2">
+                  <li>Only operations that passed code review can run</li>
+                  <li>Unpublished or tampered IDs are rejected outright</li>
+                  <li>No introspection-based discovery of hidden fields</li>
+                </ul>
+                <h4 class="pt-2 text-lg font-semibold text-green-1000">
+                  Do not confuse this with APQ
+                </h4>
+                <p>
+                  <strong class="text-green-1000"
+                    >Automatic Persisted Queries are a bandwidth
+                    optimization.</strong
+                  >
+                  {" "}An unknown ID is retried with the full query and stored
+                  automatically. persisted documents are registered through an
+                  authenticated delivery pipeline; production clients cannot add new
+                  operations.
+                </p>
+              </div>
+              <a
+                class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-green-800 hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800/40 mt-6 max-xl:order-1 max-md:w-full xl:mt-12"
+                href="https://benjie.dev/graphql/trusted-documents"
+                target="_blank"
+                rel="noreferrer"
+                title="Read the persisted documents guide"
+                ><span
+                  class="absolute inset-0 rounded-lg border border-green-800"
+                ></span
+                >Read the persisted documents guide<svg
+                  fill="currentColor"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  width="24"
+                >
+                  <path
+                    d="m15.755 11.1-4.828-4.828L12.2 5l7 7-7 7-1.273-1.272 4.828-4.828H4.8v-1.8h10.955Z"
+                  ></path></svg
+              ></a>
+            </div>
+            <div class="mx-auto shrink-0 lg:w-[350px] xl:w-[450px] text-green-800">
+              <div
+                class="flex flex-row flex-wrap justify-normal gap-4 lg:flex-col lg:justify-start lg:gap-12"
+              >
+                <div class="min-w-[300px] max-w-[450px] shrink">
+                  <div
+                    class="z-20 block w-full space-y-3 rounded-xl bg-white p-5 font-mono text-sm shadow-xl"
+                  >
+                    <div
+                      class="rounded-lg border border-beige-400 bg-beige-100 p-4"
+                    >
+                      <div class="flex items-center justify-between gap-3">
+                        <span class="text-green-700">your-app</span
+                        ><span class="text-green-600">200</span>
+                      </div>
+                      <p class="mt-2 truncate">
+                        query GetAccount &lbrace; account &lbrace; id &rbrace;
+                        &rbrace;
+                      </p>
+                    </div>
+                    <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+                      <div class="flex items-center justify-between gap-3">
+                        <span class="text-red-700">unknown-client</span
+                        ><span class="text-red-700">200</span>
+                      </div>
+                      <p class="mt-2 truncate">
+                        query ExploreAdmin &lbrace; admin &lbrace; users &rbrace;
+                        &rbrace;
+                      </p>
+                    </div>
+                    <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+                      <div class="flex items-center justify-between gap-3">
+                        <span class="text-red-700">unknown-client</span
+                        ><span class="text-red-700">200</span>
+                      </div>
+                      <p class="mt-2 truncate">
+                        query ExpensiveSearch(first: 99999){" {"}
+                      </p>
+                    </div>
+                  </div>
+                  <p class="mt-4 text-center text-sm">
+                    No allowlist: any valid operation runs, whoever sends it.
+                  </p>
+                </div>
+                <div class="min-w-[300px] max-w-[450px] shrink">
+                  <div
+                    class="z-20 block w-full space-y-3 rounded-xl bg-green-1000 p-5 font-mono text-sm text-white shadow-xl"
+                  >
+                    <div class="rounded-lg border border-primary/30 bg-white/5 p-4">
+                      <div class="flex items-center justify-between gap-3">
+                        <span class="text-blue-200">sha256:2e94ac18</span
+                        ><span class="text-primary">ALLOW</span>
+                      </div>
+                      <p class="mt-2 text-white/65">GetAccount · web 4.8.0</p>
+                    </div>
+                    <div class="rounded-lg border border-white/10 bg-black/15 p-4">
+                      <div class="flex items-center justify-between gap-3">
+                        <span class="text-white/45">query ExploreAdmin{"{"}</span
+                        ><span class="text-red-300">REJECT</span>
+                      </div>
+                      <p class="mt-2 text-white/45">No document ID</p>
+                    </div>
+                    <div class="rounded-lg border border-white/10 bg-black/15 p-4">
+                      <div class="flex items-center justify-between gap-3">
+                        <span class="text-white/45">sha256:unknown</span
+                        ><span class="text-red-300">REJECT</span>
+                      </div>
+                      <p class="mt-2 text-white/45">Document not published</p>
+                    </div>
+                  </div>
+                  <p class="mt-4 text-center text-sm">
+                    Allowlist: only the persisted documents you allow can run.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Hive Console -->
+          <section
+            class="relative isolate max-w-full rounded-none px-4 py-6 lg:px-8 lg:py-24 xl:px-16 [@media(min-width:1358px)]:px-24 flex flex-col gap-6 lg:flex-row lg:gap-12 bg-blue-400 before:absolute before:-top-24 before:left-0 before:hidden before:size-24 before:rounded-bl-3xl before:shadow-[0_48px_0_0] before:content-[''] before:lg:block before:bg-beige-100 before:shadow-blue-400 after:absolute after:right-0 after:top-0 after:hidden after:size-24 after:rounded-tr-3xl after:shadow-[0_-48px_0_0] after:content-[''] after:lg:block after:shadow-beige-100 after:bg-blue-400"
+          >
+            <div
+              class="mx-auto flex max-w-full shrink flex-col flex-wrap justify-center gap-x-2"
+            >
+              <h3
+                class="group text-[40px] leading-[1.2] tracking-[-0.2px] max-w-full text-balance text-green-1000"
+              >
+                Hive Console and App Deployments
+              </h3>
+              <div class="mt-4 max-w-full space-y-2 lg:mt-6 text-green-800">
+                <p>
+                  <strong class="text-green-1000"
+                    >App Deployments group persisted documents by application and
+                    version.</strong
+                  >{" "}
+                  Hive validates them against your schema, distributes them through
+                  its CDN, tracks their usage, and includes active versions in
+                  breaking-change checks for proposed schema changes.
+                </p>
+                <h4 class="pt-2 text-lg font-semibold text-green-1000">
+                  Check on pull requests, publish on deploy
+                </h4>
+                <p>
+                  Generate a manifest from your client operations, verify it in CI,
+                  and publish it from your CD pipeline before the application
+                  that depends on it goes live.
+                </p>
+                <ul class="list-inside list-disc space-y-2">
+                  <li>
+                    <strong class="text-green-1000">Generate</strong> — build the
+                    manifest from your client operations
+                  </li>
+                  <li>
+                    <strong class="text-green-1000">Check</strong> — run
+                    {" "}<code class="font-mono text-green-1000">hive app:check</code>{" "}
+                    in pull-request CI to validate against your latest schema
+                  </li>
+                  <li>
+                    <strong class="text-green-1000">Publish</strong> — run
+                    {" "}<code class="font-mono text-green-1000"
+                      >hive app:create --publish</code
+                    >{" "}
+                    from CD to upload your manifest
+                  </li>
+                  <li>
+                    <strong class="text-green-1000">Deploy</strong> — release your application only
+                    after documents are available
+                  </li>
+                </ul>
+                <p>
+                  Because Hive knows which app versions are still active, you can alter your GraphQL schema with confidence.
+                </p>
+              </div>
+              <a
+                class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-green-800 hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800/40 mt-6 max-xl:order-1 max-md:w-full xl:mt-12"
+                href="/docs/schema-registry/app-deployments"
+                title="Learn how to use App Deployments in Hive"
+                ><span
+                  class="absolute inset-0 rounded-lg border border-green-800"
+                ></span
+                >Explore App Deployments<svg
+                  fill="currentColor"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  width="24"
+                >
+                  <path
+                    d="m15.755 11.1-4.828-4.828L12.2 5l7 7-7 7-1.273-1.272 4.828-4.828H4.8v-1.8h10.955Z"
+                  ></path></svg
+              ></a>
+            </div>
+            <div class="mx-auto shrink-0 lg:w-[350px] xl:w-[450px] text-green-800">
+              <div class="min-w-[300px] max-w-[450px] shrink">
+                <div
+                  class="z-20 block w-full overflow-hidden rounded-xl bg-white shadow-xl"
+                >
+                  <div
+                    class="flex items-center justify-between border-b border-beige-400 px-5 py-4"
+                  >
+                    <div>
+                      <p class="font-medium text-green-1000">storefront</p>
+                      <p class="text-sm text-green-700">Active documents</p>
+                    </div>
+                    <span
+                      class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-800"
+                      >3 versions</span
+                    >
+                  </div>
+                  <div class="divide-y divide-beige-400">
+                    <div class="flex items-center justify-between gap-3 px-5 py-4">
+                      <div>
+                        <p class="font-medium text-green-1000">GetAccount</p>
+                        <code class="font-mono text-xs text-green-600"
+                          >sha256:2e94ac18</code
+                        >
+                        <p class="mt-1 text-xs text-green-700">web · 4.8.0</p>
+                      </div>
+                      <span
+                        class="shrink-0 rounded-md bg-primary/50 px-2 py-1 text-xs font-medium text-green-1000"
+                        >published</span
+                      >
+                    </div>
+                    <div class="flex items-center justify-between gap-3 px-5 py-4">
+                      <div>
+                        <p class="font-medium text-green-1000">CompleteCheckout</p>
+                        <code class="font-mono text-xs text-green-600"
+                          >sha256:7c6fa92e</code
+                        >
+                        <p class="mt-1 text-xs text-green-700">web · 4.8.0</p>
+                      </div>
+                      <span
+                        class="shrink-0 rounded-md bg-primary/50 px-2 py-1 text-xs font-medium text-green-1000"
+                        >published</span
+                      >
+                    </div>
+                    <div class="flex items-center justify-between gap-3 px-5 py-4">
+                      <div>
+                        <p class="font-medium text-green-1000">UpdateProfile</p>
+                        <code class="font-mono text-xs text-green-600"
+                          >sha256:913dbe03</code
+                        >
+                        <p class="mt-1 text-xs text-green-700">ios · 12.2.1</p>
+                      </div>
+                      <span
+                        class="shrink-0 rounded-md bg-primary/50 px-2 py-1 text-xs font-medium text-green-1000"
+                        >published</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <p class="mt-4 text-center text-sm">
+                  Hive Console groups persisted documents by application and version.
+                </p>
+              </div>
+            </div>
+          </section>
+          <!-- Runtime enforcement -->
+          <section
+            class="relative isolate max-w-full rounded-none px-4 py-6 lg:px-8 lg:py-24 xl:px-16 [@media(min-width:1358px)]:px-24 flex flex-col gap-6 lg:flex-row lg:gap-12 bg-green-1000 rounded-3xl rounded-t-none before:absolute before:-top-24 before:left-0 before:hidden before:size-24 before:rounded-bl-3xl before:shadow-[0_48px_0_0] before:content-[''] before:lg:block before:shadow-green-1000 before:bg-blue-400 after:absolute after:right-0 after:top-0 after:hidden after:size-24 after:rounded-tr-3xl after:shadow-[0_-48px_0_0] after:content-[''] after:lg:block after:bg-green-1000 after:shadow-blue-400"
+          >
+            <div
+              class="mx-auto flex max-w-full shrink flex-col flex-wrap justify-center gap-x-2"
+            >
+              <h3
+                class="group text-[40px] leading-[1.2] tracking-[-0.2px] max-w-full text-balance text-white"
+              >
+                Enforce It in Any GraphQL Runtime
+              </h3>
+              <div class="mt-4 max-w-full space-y-2 lg:mt-6 text-white/80">
+                <p>
+                  <strong class="text-white"
+                    >Enforcement happens on your GraphQL endpoint.</strong
+                  >{" "}
+                  You do not need a dedicated router or gateway. Add simple
+                  middleware to your existing GraphQL server, use GraphQL Yoga, or
+                  choose a runtime with persisted document support built in.
+                </p>
+                <p>
+                  Hive provides two ready-made options: the Rust
+                  {" "}<strong class="text-white">Hive Router</strong> for
+                  high performance, or the JavaScript{" "}
+                  <strong class="text-white">Hive Gateway</strong> for flexible
+                  customization. Both resolve published documents from the Hive CDN
+                  and reject arbitrary GraphQL documents.
+                </p>
+                <h4 class="pt-2 text-lg font-semibold text-white">
+                  The request path
+                </h4>
+                <ul class="list-inside list-disc space-y-2">
+                  <li>
+                    The client sends a{" "}
+                    <code class="font-mono text-white">documentId</code> and
+                    variables
+                  </li>
+                  <li>Your GraphQL runtime resolves that ID from the document store</li>
+                  <li>Unknown IDs stop there</li>
+                  <li>
+                    Known documents execute
+                  </li>
+                </ul>
+                <h4 class="pt-2 text-lg font-semibold text-white">
+                  Migrating an existing API
+                </h4>
+                <p>
+                  For an existing API, first observe requests arriving without IDs,
+                  migrate those clients, and only then enable strict enforcement.
+                  Hive's usage reporting tells you when it is safe to flip the
+                  switch.
+                </p>
+              </div>
+              <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+                <a
+                  class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-white focus-visible:outline-4 focus-visible:outline-offset-0 focus-visible:outline-white/40 sm:w-fit"
+                  href="https://the-guild.dev/graphql/yoga-server/docs/features/persisted-operations"
+                  target="_blank"
+                  rel="noreferrer"
+                  title="Configure persisted operations in GraphQL Yoga"
+                  ><span
+                    class="absolute inset-0 rounded-lg border border-green-800"
+                  ></span
+                  >Configure GraphQL Yoga</a
+                >
+                <a
+                  class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-white/5 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-white/40 sm:w-fit"
+                  href="/docs/router/security/persisted-documents"
+                  title="Configure persisted documents in Hive Router"
+                  ><span
+                    class="absolute inset-0 rounded-lg border border-white/25"
+                  ></span
+                  >Configure Hive Router</a
+                ><a
+                  class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-white bg-white/5 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-white/40 sm:w-fit"
+                  href="/docs/gateway/persisted-documents"
+                  title="Configure persisted documents in Hive Gateway"
+                  ><span
+                    class="absolute inset-0 rounded-lg border border-white/25"
+                  ></span
+                  >Configure Hive Gateway</a
+                >
+              </div>
+            </div>
+            <div class="mx-auto shrink-0 lg:w-[350px] xl:w-[450px] text-white/80">
+              <div
+                class="flex flex-row flex-wrap justify-normal gap-4 lg:flex-col lg:justify-start lg:gap-12"
+              >
+                <div class="min-w-[300px] max-w-[450px] shrink">
+                  <div
+                    class="z-20 block w-full space-y-3 rounded-xl "
+                  >
+                    <div class="rounded-lg border border-white/15 bg-white/5 p-4">
+                      <p class="text-xs uppercase tracking-wider text-blue-300">
+                        Request
+                      </p>
+                      <code class="mt-3 block font-mono text-sm text-white"
+                        >documentId:<br /><span class="text-primary ml-2"
+                          >sha256:7c6fa92e</span
+                        ></code
+                      >
+                    </div>
+                    <div
+                      class="rounded-lg border border-primary/30 bg-primary/10 p-4"
+                    >
+                      <p class="text-xs uppercase tracking-wider text-blue-300">
+                        GraphQL API
+                      </p>
+                      <p class="mt-3 font-medium text-white">
+                        Resolve ID from Hive CDN
+                      </p>
+                      <p class="mt-1 text-sm text-white/55">
+                        Unknown IDs stop here.
+                      </p>
+                    </div>
+                    <div class="rounded-lg border border-white/15 bg-white/5 p-4">
+                      <p class="text-xs uppercase tracking-wider text-blue-300">
+                        GraphQL API
+                      </p>
+                      <p class="mt-3 font-medium text-white">
+                        Execute persisted document
+                      </p>
+                      <p class="mt-1 text-sm text-white/55">
+                        Variables and identity still validated.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+      <!-- Why Hive -->
+      <section
+        class="bg-beige-100 mt-6 rounded-3xl px-4 pt-6 sm:py-24 md:px-6 md:py-[120px] mx-4 md:mx-6"
+      >
+        <h2
+          class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] text-balance sm:px-6 sm:text-center"
+        >
+          Why Choose Hive for persisted documents?
+        </h2>
+        <ul
+          class="flex flex-row flex-wrap justify-center divide-y divide-solid divide-gray-200 sm:mt-6 sm:divide-x sm:divide-y-0 md:mt-16 md:px-6 xl:px-16"
+        >
+          <li class="flex-1 text-balance px-0 sm:px-8 sm:py-0 md:px-8 md:py-0">
+            <div
+              class="w-fit rounded-lg bg-[linear-gradient(135deg,#68A8B6,#3B736A)] p-[9px] text-white"
+            >
+              <svg fill="none" height="24" viewBox="0 0 24 24" width="24">
+                <path
+                  d="M7 10V8a5 5 0 0 1 10 0v2m-11 0h12v10H6V10Z"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.6"
+                ></path>
+              </svg>
+            </div>
+            <h3
+              class="mt-4 text-xl font-medium leading-[1.4] text-green-1000 md:mt-6"
+            >
+              End-to-End Pipeline
+            </h3>
+            <div class="mt-2 space-y-2 text-green-800 md:mt-4">
+              <ul class="space-y-2">
+                <li>
+                  <span class="font-semibold">CLI — </span>generate and check
+                  manifests inside your existing CI.
+                </li>
+                <li>
+                  <span class="font-semibold">Registry — </span>validate documents
+                  against the live schema before publishing.
+                </li>
+                <li>
+                  <span class="font-semibold">CDN — </span>distribute published
+                  documents globally to your runtimes.
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li
+            class="flex-1 basis-full text-balance px-0 sm:basis-0 sm:px-8 sm:py-0 md:px-8 md:py-0"
+          >
+            <div
+              class="w-fit rounded-lg bg-[linear-gradient(135deg,#68A8B6,#3B736A)] p-[9px] text-white"
+            >
+              <svg fill="none" height="24" viewBox="0 0 24 24" width="24">
+                <path
+                  d="M12 3 4 6v6c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V6l-8-3Z"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.6"
+                ></path>
+              </svg>
+            </div>
+            <h3
+              class="mt-4 text-xl font-medium leading-[1.4] text-green-1000 md:mt-6"
+            >
+              Enforcement You Own
+            </h3>
+            <div class="mt-2 space-y-2 text-green-800 md:mt-4">
+              <ul class="space-y-2">
+                <li>
+                  <span class="font-semibold">Your Runtime — </span>use GraphQL
+                  Yoga, custom middleware, Hive Router, or Hive Gateway.
+                </li>
+                <li>
+                  <span class="font-semibold">MIT License — </span>every component
+                  is open source and self-hostable.
+                </li>
+                <li>
+                  <span class="font-semibold">No Lock-in — </span>works alongside
+                  other vendors and existing runtimes.
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="flex-1 text-balance px-0 sm:px-8 sm:py-0 md:px-8 md:py-0">
+            <div
+              class="w-fit rounded-lg bg-[linear-gradient(135deg,#68A8B6,#3B736A)] p-[9px] text-white"
+            >
+              <svg fill="none" height="24" viewBox="0 0 24 24" width="24">
+                <path
+                  d="M4 19V5m0 14h16M8 16V9m4 7V6m4 10v-4"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.6"
+                ></path>
+              </svg>
+            </div>
+            <h3
+              class="mt-4 text-xl font-medium leading-[1.4] text-green-1000 md:mt-6"
+            >
+              Safe Schema Evolution
+            </h3>
+            <div class="mt-2 space-y-2 text-green-800 md:mt-4">
+              <ul class="space-y-2">
+                <li>
+                  <span class="font-semibold">Version Awareness — </span>know which
+                  app versions still use an operation.
+                </li>
+                <li>
+                  <span class="font-semibold">Breaking-Change Checks — </span
+                  >validate changes against active deployments.
+                </li>
+                <li>
+                  <span class="font-semibold">Usage Insights — </span>retire fields
+                  and operations with evidence, not guesswork.
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <!-- Frequently Asked Questions -->
+      <section
+        class="text-green-1000 flex flex-col gap-8 px-4 py-6 md:px-14 lg:flex-row lg:px-[120px] lg:py-24 mx-4 md:mx-6"
+      >
+        <h2
+          class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px] basis-1/2"
+        >
+          Frequently Asked Questions About Persisted Documents
+        </h2>
+        <ul class="space-y-8">
+          <li itemscope itemtype="https://schema.org/Question">
+            <h3 class="pb-2 text-left font-medium" itemprop="name">
+              What is the difference between persisted documents and Automatic
+              Persisted Queries?
+            </h3>
+            <div
+              class="mx-4 overflow-hidden bg-white text-green-800"
+              itemprop="acceptedAnswer"
+              itemscope
+              itemtype="https://schema.org/Answer"
+            >
+              <div class="max-w-[700px] space-y-2" itemprop="text">
+                <p>
+                  <strong class="text-green-1000"
+                    >Automatic Persisted Queries (APQ)</strong
+                  >{" "}
+                  are a bandwidth optimization. When the server does not recognize
+                  an ID, the client retries with the full query and the server
+                  stores it automatically.
+                </p>
+                <p>
+                  <strong class="text-green-1000">Persisted Documents</strong> are
+                  registered ahead of time through an authenticated delivery
+                  pipeline. Production clients cannot add new operations, which is
+                  what makes the allowlist a security boundary.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li itemscope itemtype="https://schema.org/Question">
+            <h3 class="pb-2 text-left font-medium" itemprop="name">
+              Do Persisted Documents replace authentication and authorization?
+            </h3>
+            <div
+              class="mx-4 overflow-hidden bg-white text-green-800"
+              itemprop="acceptedAnswer"
+              itemscope
+              itemtype="https://schema.org/Answer"
+            >
+              <div class="max-w-[700px] space-y-2" itemprop="text">
+                <p>
+                  No. persisted documents are a boundary, not a silver bullet. Keep
+                  authentication, authorization, input validation, pagination
+                  limits, rate limiting, and demand controls in place.
+                </p>
+                <p>
+                  A trusted operation can still receive hostile variables or be
+                  called at an abusive rate.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li itemscope itemtype="https://schema.org/Question">
+            <h3 class="pb-2 text-left font-medium" itemprop="name">
+              Is disabling introspection enough to secure a GraphQL API?
+            </h3>
+            <div
+              class="mx-4 overflow-hidden bg-white text-green-800"
+              itemprop="acceptedAnswer"
+              itemscope
+              itemtype="https://schema.org/Answer"
+            >
+              <div class="max-w-[700px] space-y-2" itemprop="text">
+                <p>
+                  No. Hiding introspection only makes discovery slower; schemas can
+                  still be inferred from client bundles and field-suggestion errors.
+                  The security boundary is the allowlist of operations your API is
+                  willing to execute.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li itemscope itemtype="https://schema.org/Question">
+            <h3 class="pb-2 text-left font-medium" itemprop="name">
+              How do I adopt persisted documents on an existing API?
+            </h3>
+            <div
+              class="mx-4 overflow-hidden bg-white text-green-800"
+              itemprop="acceptedAnswer"
+              itemscope
+              itemtype="https://schema.org/Answer"
+            >
+              <div class="max-w-[700px] space-y-2" itemprop="text">
+                <p>
+                  Start by observing: report requests that arrive without a
+                  document ID, identify the clients behind them, and migrate those
+                  clients to use persisted documents.
+                </p>
+                <p>
+                  Once traffic without IDs of known clients drops to zero, enable strict enforcement
+                  in your GraphQL server, middleware, router, or gateway.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li itemscope itemtype="https://schema.org/Question">
+            <h3 class="pb-2 text-left font-medium" itemprop="name">
+              Do persisted documents work with GraphQL Federation?
+            </h3>
+            <div
+              class="mx-4 overflow-hidden bg-white text-green-800"
+              itemprop="acceptedAnswer"
+              itemscope
+              itemtype="https://schema.org/Answer"
+            >
+              <div class="max-w-[700px] space-y-2" itemprop="text">
+                <p>
+                  Yes. Enforcement happens at the gateway or router, in front of
+                  your supergraph, so subgraphs are unaffected. Documents are
+                  validated against the composed supergraph schema before they are
+                  published.
+                </p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <!-- Get Started -->
+      <section
+        class="relative overflow-hidden rounded-3xl p-12 text-center sm:p-24 mx-4 md:mx-6"
+      >
+        <h2
+          class="group text-4xl leading-[1.2] md:text-5xl md:leading-[1.16667] tracking-[-0.48px]"
+        >
+          Get Started with Persisted Documents
+        </h2>
+        <p class="relative mx-auto mt-4 max-w-[700px]">
+          Begin with our <strong>step-by-step App Deployments guide</strong>, which
+          walks you through generating a manifest, checking it in CI, publishing it,
+          and <strong>enforcing it at your GraphQL edge</strong>.
+        </p>
+        <a
+          class="relative flex items-center justify-center gap-2 text-nowrap rounded-lg px-6 py-3 font-medium leading-6 text-green-1000 bg-primary hover:bg-green-800 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-green-800 sm:w-fit mx-auto mt-8"
+          href="/docs/schema-registry/app-deployments"
+          title="Step by step guide to App Deployments"
+          ><span class="absolute inset-0 rounded-lg border border-green-800"></span
+          >Start building now</a
+        >
+      </section>
+    </main>
+
+    <SiteFooter />
+  </body>
+</html>
